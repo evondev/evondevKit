@@ -1,11 +1,12 @@
-# evon
+# evondevKit
 
-Plugin Claude Code chứa gu UI/UX của Tuấn, đóng gói để cài global.
+Bộ skill Claude Code của evondev. Hiện có một plugin: **`evon`**, chứa skill
+**`ui-ux`** — gu UI/UX cho hệ thống dashboard.
 
 ```
 .claude-plugin/
 ├── plugin.json           khai báo plugin "evon"
-└── marketplace.json      để cài thẳng từ thư mục này
+└── marketplace.json      marketplace "evondevkit", cài được cả local lẫn GitHub
 skills/
 └── ui-ux/                → gọi bằng /evon:ui-ux
     ├── SKILL.md          bộ định tuyến: 4 câu hỏi vào việc, luật phạm vi, bảng mở doc
@@ -31,20 +32,32 @@ archive/                  nhánh landing đã gỡ khỏi skill, giữ lại đ�
 
 ## Cài
 
+**Từ GitHub** (sau khi đã push):
+
+```bash
+/plugin marketplace add evondev/evondevKit
+/plugin install evon@evondevkit
+```
+
+**Từ máy**, để test trước khi push:
+
 ```bash
 /plugin marketplace add ~/dev/ui-taste
-/plugin install evon@evon
+/plugin install evon@evondevkit
 ```
 
-Rồi gọi bằng `/evon:ui-ux`.
+Cả hai cách đều gọi skill bằng `/evon:ui-ux`.
 
-Đẩy lên GitHub thì đổi `source` trong `.claude-plugin/marketplace.json` thành:
+| Thứ | Tên |
+| --- | --- |
+| Repo | `evondev/evondevKit` |
+| Marketplace | `evondevkit` |
+| Plugin | `evon` |
+| Skill | `ui-ux` → gọi `/evon:ui-ux` |
 
-```json
-"source": { "source": "github", "repo": "<user>/<repo>" }
-```
-
-Người khác cài bằng `/plugin marketplace add <user>/<repo>`.
+Thêm plugin thứ hai sau này thì tạo thư mục riêng cho nó rồi thêm một mục vào
+`plugins` trong `.claude-plugin/marketplace.json`, và đổi `source` của `evon`
+từ `"./"` sang đường dẫn thư mục của nó.
 
 ### Hoặc gọi thẳng, không cài
 

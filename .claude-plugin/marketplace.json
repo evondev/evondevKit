@@ -1,9 +1,12 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "evon",
-  "owner": { "name": "Tuấn Trần" },
+  "name": "evondevkit",
+  "owner": {
+    "name": "Tuấn Trần",
+    "email": "trananhtuan400@gmail.com"
+  },
   "metadata": {
-    "description": "Skill nội bộ của Evon — gu UI/UX cho hệ thống dashboard."
+    "description": "Bộ skill của evondev cho Claude Code."
   },
   "plugins": [
     {

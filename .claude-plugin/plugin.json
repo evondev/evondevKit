@@ -3,5 +3,7 @@
   "description": "Gu UI/UX cho hệ thống dashboard: dựng màn mới theo bố cục chốt trước, và refactor codebase đã có mà không vỡ giao diện.",
   "version": "0.1.0",
   "author": { "name": "Tuấn Trần" },
+  "homepage": "https://github.com/evondev/evondevKit",
+  "repository": "https://github.com/evondev/evondevKit",
   "license": "MIT"
 }
