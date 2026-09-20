@@ -40,9 +40,11 @@ find app components src -name "*.css" 2>/dev/null | xargs wc -l | sort -rn | hea
 grep -roE 'var\(--' --include='*.css' . | wc -l          # dùng đúng
 grep -roE '#[0-9a-fA-F]{3,8}\b' --include='*.css' . | wc -l  # màu thô
 
-# nợ ở tầng component
+# nợ ở tầng component — đổi *.tsx cho khớp dự án:
+# .vue, .svelte, .html, .php, .erb... Ra 0 vì grep sai đuôi file
+# thì kết luận "sạch" là sai.
 grep -rl "<button" --include="*.tsx" . | wc -l
-grep -rl "style={{" --include="*.tsx" . | wc -l
+grep -rl "style={{\|style=\"" --include="*.tsx" --include="*.html" . | wc -l
 
 # selector trùng = dấu hiệu bồi đắp
 grep -hoE '^\s*\.[a-zA-Z][a-zA-Z0-9_-]*\s*\{' $(find . -name '*.css') \

@@ -39,6 +39,7 @@ Skill này **bám theo codebase**, không áp bộ công cụ của mình lên d
 Grep trước, rồi mới quyết:
 
 ```bash
+ls package.json 2>/dev/null || echo "KHÔNG CÓ package.json — xem dòng cuối bảng"
 cat package.json 2>/dev/null | grep -E '"(tailwindcss|@radix-ui|@mui|antd|@chakra|bootstrap)"'
 ls components/ui src/components/ui 2>/dev/null          # dấu hiệu shadcn
 grep -rn "@theme\|--primary\|--brand\|font-family" \
@@ -53,6 +54,7 @@ Rồi áp theo bảng này:
 | **Không có Tailwind** | **Theo quy ước của họ** — CSS Module, styled-components, SCSS, gì cũng được. Skill này chi phối *token, nhịp, bố cục, phạm vi*, không chi phối cách bro viết style |
 | **shadcn / Radix / MUI / Ant / bộ nội bộ** | **Dùng component của họ.** Viết lại một cái `Button` trong project đã có shadcn là làm hỏng tính nhất quán, không phải làm đẹp thêm |
 | **Chưa có component nào** | Gợi ý code từ `references/components/`. Nói rõ đây là gợi ý để họ đặt vào đâu thì đặt |
+| **Không có `package.json`** | HTML/CSS thuần, hoặc WordPress, PHP, Rails, Django. Mẫu trong `references/components/` viết bằng `.tsx` — **dịch sang thẻ HTML + class rồi mới đưa**, đừng dán JSX vào dự án không có React. `references/tokens.css` thì dán thẳng được, nó là CSS thuần |
 
 **Có token sẵn thì dùng, không hỏi.** Chỉ khi grep ra rỗng mới lấy
 `references/tokens.css` và dựng luôn. Chỉ hỏi trước khi biết chắc đang làm cho

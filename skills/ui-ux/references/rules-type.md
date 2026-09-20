@@ -133,8 +133,7 @@ thiếu nó thì các chữ số rộng khác nhau và cột nhảy lung tung kh
 
 **T18. Không dấu gạch dài trong copy tiếng Việt.** Lộ ngay là AI viết.
 
-**T19. Không emoji trong tiêu đề, câu chào, hay làm icon.** Icon lấy từ
-`lucide-react`.
+**T19. Không emoji trong tiêu đề, câu chào, hay làm icon.** Icon theo `F15`.
 
 **T20. Không chữ hướng dẫn thừa.** Nút đã ghi "Lưu" thì đừng thêm dòng "Bấm để
 lưu". Không viết chữ lặp lại thứ icon đã nói: có dấu tick rồi thì bỏ chữ "Có"

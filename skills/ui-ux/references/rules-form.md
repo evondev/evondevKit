@@ -104,8 +104,16 @@ chiều cao là bo sai ngay, mà không ai nhớ để sửa kèm.
 
 ## Icon
 
-**F15. Icon lấy từ `lucide-react`, nét mảnh, một màu xám.** Không SVG inline tự
-vẽ, không emoji.
+**F15. Icon nét mảnh, một màu xám, và cả màn chỉ dùng một bộ.** Không SVG inline
+tự vẽ, không emoji. Lấy ở đâu thì tuỳ dự án có gì:
+
+| Dự án | Lấy icon ở đâu |
+| --- | --- |
+| Có npm | `lucide-react` (mặc định), hoặc bộ icon họ đã cài sẵn — đừng thêm bộ thứ hai |
+| Không có npm, HTML thuần | Lucide qua CDN, hoặc dán SVG của Lucide vào. Vẫn là Lucide, chỉ khác cách nạp |
+| Họ đã có bộ icon riêng | Dùng bộ của họ. Trộn hai bộ icon vào một màn lộ ngay |
+
+Luật ở đây là **nét mảnh, một màu, đồng bộ** — không phải tên thư viện.
 
 **F16. Ngoại lệ: logo thương hiệu bên thứ ba.** Nút đăng nhập bằng Google, Apple,
 GitHub phải có đúng logo của họ, giữ nguyên màu gốc, dán SVG thẳng vào. Lucide

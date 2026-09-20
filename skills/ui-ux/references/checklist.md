@@ -11,6 +11,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 
 - [ ] Đây là **refactor** hay **dựng mới**? Chưa trả lời thì chưa được đi tiếp.
 - [ ] Đã grep `package.json` và `components/ui` chưa — họ dùng Tailwind? shadcn? Hay bộ khác?
+- [ ] **Không có `package.json`?** Vậy sắp đưa code gì ra — `.tsx` hay HTML thuần? Đưa JSX cho dự án không React là hỏng.
 - [ ] Đã grep token sẵn có chưa (`--primary`, `--brand`, `font-family`)? Có thì dùng, đừng hỏi.
 - [ ] Đề bài có từ nào mơ hồ không (bảng, thẻ, danh sách, khung, trang, lịch)?
 - [ ] Đề để hở mà đã hỏi phạm vi chưa, hay tự quyết rồi làm mỏng dính?

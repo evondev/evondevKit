@@ -82,6 +82,9 @@ Skill **bám theo codebase của dự án**, không áp bộ công cụ của m�
 - Mặc định là Tailwind. Không dùng Tailwind thì theo quy ước của họ.
 - Có shadcn / Radix / MUI / Ant / bộ nội bộ thì **dùng component của họ**, chỉ chỉnh token cho khớp.
 - Chưa có component nào thì gợi ý code từ `references/components/`.
+- **Không có `package.json`** — HTML thuần, WordPress, PHP, Rails — thì dịch mẫu sang
+  HTML + class rồi mới đưa. Luật `M` `T` `F` `I` `R` là quyết định thiết kế, không
+  phụ thuộc framework; chỉ tầng code mẫu mới cần dịch.
 
 Skill chi phối **token, nhịp, bố cục, và phạm vi**. Nó không quy định bro lấy
 `<Button>` ở đâu.
