@@ -42,7 +42,7 @@ archive/                  nhánh landing đã gỡ khỏi skill, giữ lại đ�
 **Từ máy**, để test trước khi push:
 
 ```bash
-/plugin marketplace add ~/dev/ui-taste
+/plugin marketplace add ~/dev/evondevKit
 /plugin install evon@evondevkit
 ```
 
@@ -61,7 +61,7 @@ từ `"./"` sang đường dẫn thư mục của nó.
 
 ### Hoặc gọi thẳng, không cài
 
-> đọc `~/dev/ui-taste/skills/ui-ux/SKILL.md` rồi dựng lại màn danh sách theo đúng đó
+> đọc `~/dev/evondevKit/skills/ui-ux/SKILL.md` rồi dựng lại màn danh sách theo đúng đó
 
 ---
 

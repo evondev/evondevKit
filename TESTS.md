@@ -20,7 +20,7 @@ dựng luôn.
 
 ### Bản theo skill
 
-> Đọc `~/dev/ui-taste/skills/ui-ux/SKILL.md` và làm đúng theo đó, kể cả các file trong `references/` mà nó trỏ tới.
+> Đọc `~/dev/evondevKit/skills/ui-ux/SKILL.md` và làm đúng theo đó, kể cả các file trong `references/` mà nó trỏ tới.
 >
 > Dựng màn hình danh sách công việc có bộ lọc cho một app quản lý công việc. Xuất ra `taste/tasks.html`, một file HTML dùng Tailwind qua CDN, không build, mở bằng trình duyệt là chạy. Nội dung tiếng Việt.
 
@@ -37,7 +37,7 @@ Kiểm tra skill có hiểu đúng "chỉ hỏi bố cục, không hỏi lại n
 
 ### Bản theo skill
 
-> Đọc `~/dev/ui-taste/skills/ui-ux/SKILL.md` và làm đúng theo đó, kể cả các file trong `references/` mà nó trỏ tới.
+> Đọc `~/dev/evondevKit/skills/ui-ux/SKILL.md` và làm đúng theo đó, kể cả các file trong `references/` mà nó trỏ tới.
 >
 > Dựng trang đăng nhập gồm: ô email, ô mật khẩu, link quên mật khẩu, nút đăng nhập, nút đăng nhập bằng Google, dòng "chưa có tài khoản" dẫn sang trang đăng ký. Không thêm gì ngoài danh sách trên.
 >
@@ -56,7 +56,7 @@ vòng đo đúng một thứ.
 
 ### V22 — Nhận đúng nhánh refactor
 
-> Mở session ở một project Next có sẵn CSS cũ. Đọc `~/dev/ui-taste/skills/ui-ux/SKILL.md` và làm đúng theo đó.
+> Mở session ở một project Next có sẵn CSS cũ. Đọc `~/dev/evondevKit/skills/ui-ux/SKILL.md` và làm đúng theo đó.
 >
 > Làm lại giao diện trang danh sách cho đẹp hơn.
 
