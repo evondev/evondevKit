@@ -41,6 +41,44 @@ chữ trong form, chỉ căn giữa cả khối.
 
 ---
 
+## Nút đăng nhập mạng xã hội
+
+Số lượng quyết định bố cục, và **từ 3 nút trở lên thì phải hỏi**, đừng tự xếp:
+
+| Số nút | Bố cục |
+| --- | --- |
+| 1–2 | Xếp dọc, full width, có chữ: `Đăng nhập bằng Google` |
+| **3 trở lên** | **Hỏi người dùng**, đưa hai phương án dưới đây rồi chờ chọn |
+
+Xếp dọc 3–4 nút full width thì phần mạng xã hội **dài hơn cả form thật**, và
+người dùng phải cuộn qua một dãy nút giống hệt nhau mới thấy ô email. Thứ chính
+của màn bị đẩy lên trên thành thứ phụ.
+
+**A. Chia cột, chỉ icon** (nghiêng về cái này khi có từ 3 nút)
+
+```
+        │ [   Đăng nhập   ]  │
+        │ ─── hoặc ───       │
+        │ [ G ] [ GH ] [ X ] │
+        └────────────────────┘
+```
+
+- Nút vuông, cao bằng ô nhập, chia đều `grid-cols-3`.
+- **Bắt buộc có `aria-label`** — không có chữ thì trình đọc màn hình chỉ thấy một cái nút trống.
+- Logo giữ màu gốc theo `F16`, đừng tô xám cho "đồng bộ".
+- Quá 4 nút thì không xếp một hàng nữa: giữ 2–3 cái dùng nhiều nhất, phần còn lại bỏ hẳn.
+
+**B. Vẫn xếp dọc, đủ chữ** (hợp khi người dùng ít rành công nghệ, hoặc logo dễ nhầm)
+
+Chữ đầy đủ đọc rõ hơn icon trần, đổi lại tốn chiều dọc. Chọn B thì nói rõ
+đánh đổi đó lúc giao.
+
+**Nhớ đâu là cái chính.** Ô email và nút đăng nhập là nhân vật chính của màn,
+khối mạng xã hội là đường tắt. Khối tắt mà chiếm nhiều chỗ hơn đường chính thì
+bố cục đã sai, dù từng nút đều đẹp.
+
+---
+
 ## Đánh dấu trường bắt buộc
 
 Người dùng phải biết trường nào bắt buộc **trước khi** bấm gửi, không phải sau

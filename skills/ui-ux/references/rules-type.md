@@ -146,3 +146,38 @@ hệt nhau thì bỏ cả ba.
 
 **T23. Nhãn : giá trị thì nhãn xám, giá trị đậm, cùng một dòng.** "Ngày đặt:
 Thứ tư 14/09". Đừng xuống dòng, đừng cho nhãn cùng màu với giá trị.
+
+---
+
+## Ngôn ngữ
+
+**T24. Chốt ngôn ngữ của copy TRƯỚC khi viết cái nhãn đầu tiên.** Tự tìm, chỉ hỏi
+khi tìm ra mâu thuẫn:
+
+| Tìm thấy | Theo cái gì |
+| --- | --- |
+| Có i18n (`locales/`, `messages/`, json có khoá `en` / `vi`) | Theo đó, và đặt chuỗi vào đúng file i18n — đừng viết cứng vào JSX |
+| Không i18n nhưng đã có nhãn sẵn trong code | Đếm nhãn hiện có đang tiếng gì, theo tiếng đó |
+| Dự án trống, chưa có nhãn nào | Theo ngôn ngữ người dùng đang nói với mình |
+| Codebase trộn hai thứ tiếng | **Hỏi một câu.** Đây là chỗ đoán sai thì phải sửa lại toàn bộ nhãn, không phải sửa một dòng |
+
+**Trộn hai thứ tiếng trong một màn nặng hơn chọn nhầm tiếng.** "Mật khẩu" đứng
+cạnh "Sign in" đọc ra là làm dở dang. Chọn nhầm tiếng thì ít ra còn nhất quán.
+
+**T25. Placeholder là câu hướng dẫn, không phải ví dụ giả.**
+
+| Tiếng | Email | Mật khẩu |
+| --- | --- | --- |
+| Việt | Nhập email của bạn | Nhập mật khẩu của bạn |
+| Anh | Enter your email address | Enter your password |
+
+Ví dụ giả kiểu `ten@congty.com` bị đọc nhầm thành **chữ đã gõ sẵn**. Người dùng
+phải nhìn lần thứ hai mới biết ô đang trống, và trên mobile thì gần như luôn
+nhầm.
+
+**Cả form phải thống nhất.** Đã cho ô email placeholder thì ô mật khẩu cũng phải
+có. Một ô có một ô không thì ô trống trông như đang lỗi — lỗi này đã dính ở vòng
+test form đăng nhập.
+
+Placeholder **không thay được nhãn.** Gõ vào là placeholder biến mất, lúc đó
+người dùng không còn gì để biết ô này là ô gì.

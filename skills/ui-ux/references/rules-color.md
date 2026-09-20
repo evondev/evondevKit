@@ -164,7 +164,7 @@ lại. Cần đường bao quanh avatar, quanh ô vuông cỡ chuẩn thì dùng
 
 **M18. Phần tử con trong hàng có hover không được trùng token với nền hover của hàng.**
 
-Hàng hover chìm về nền trang (luật `I6`). Nếu ô vuông trạng thái, checkbox hay
+Hàng hover chìm về nền trang (luật `I10`). Nếu ô vuông trạng thái, checkbox hay
 avatar bên trong cũng dùng đúng token đó làm nền, hoặc chỉ có viền nhạt, thì rê
 chuột vào là chúng **biến mất**.
 

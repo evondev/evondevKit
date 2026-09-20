@@ -56,6 +56,10 @@ Rồi áp theo bảng này:
 | **Chưa có component nào** | Gợi ý code từ `references/components/`. Nói rõ đây là gợi ý để họ đặt vào đâu thì đặt |
 | **Không có `package.json`** | HTML/CSS thuần, hoặc WordPress, PHP, Rails, Django. Mẫu trong `references/components/` viết bằng `.tsx` — **dịch sang thẻ HTML + class rồi mới đưa**, đừng dán JSX vào dự án không có React. `references/tokens.css` thì dán thẳng được, nó là CSS thuần |
 
+**Ngôn ngữ của copy cũng tự tìm ở bước này** — grep i18n và nhãn hiện có, luật
+`T24`. Chốt trước khi viết cái nhãn đầu tiên, vì đoán sai thì phải sửa lại toàn
+bộ nhãn chứ không phải một dòng.
+
 **Có token sẵn thì dùng, không hỏi.** Chỉ khi grep ra rỗng mới lấy
 `references/tokens.css` và dựng luôn. Chỉ hỏi trước khi biết chắc đang làm cho
 khách đã có bộ nhận diện. **Không bao giờ hỏi số lượng font.**
@@ -87,6 +91,16 @@ giao, để lượt sau không có ai "sửa lại cho đúng luật".
 
 Chọn xong thì trả lời luôn câu này: **có cần dark mode không.** Mặc định là
 không — xem `M20`.
+
+**Đề có form thì hỏi thêm đúng một câu: ô nhập có icon trái không.** Mặc định là
+**không**. Đây là lựa chọn thẩm mỹ chứ không phải luật, và nó đổi luôn lề chữ
+trong ô nên phải chốt trước khi dựng, không phải thêm sau. Hỏi gộp vào cùng lượt
+với câu 3, đừng tách thành một lượt riêng. Người dùng muốn thì dựng theo
+`references/components/input.md`, lấy icon theo `F15`.
+
+Đây là **ngoại lệ có chủ ý của `S4`** — bình thường skill chỉ hỏi về bố cục.
+Cho phép vì icon trong ô nhập đổi kích thước và lề của thứ đang dựng ngay lượt
+này, khác với việc chào bán thêm thành phần chưa ai cần.
 
 ### Câu 4 — Bố cục: đưa 2–3 phương án rồi DỪNG HẲN
 

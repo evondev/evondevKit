@@ -57,8 +57,16 @@ dùng đọc ra là nút disabled. Chênh lệch nền của nút phụ với n�
 
 ## Hover và focus
 
-**I9. Mọi trạng thái hover phải nhìn thấy được.** Đổi màu xong tự hỏi: chênh lệch
-này có nhận ra khi liếc không.
+**I9. Mọi phần tử bấm được phải CÓ hover, và hover đó phải nhìn thấy được.**
+
+Hai vế, hay sót vế đầu. Đổi màu xong tự hỏi: chênh lệch này có nhận ra khi liếc
+không.
+
+⚠️ **Nút `primary` là chỗ bị quên nhiều nhất.** Nó đã nổi sẵn nên nhìn tĩnh thấy
+ổn, và người dựng bỏ qua. Nhưng nút chính của cả màn mà rê vào không phản hồi gì
+thì nó là thứ duy nhất trong trang trông như ảnh chụp. Luôn có
+`hover:bg-primary-hover` — token đã có sẵn trong `tokens.css`, không phải tự chế
+màu.
 
 **I10. Hover của một dòng là chìm xuống nền, không tô đậm lên, không phóng to.**
 
@@ -154,3 +162,54 @@ nút đã mở, khoá cuộn nền, và aria đúng chuẩn — tự dựng thì
 **I25. Hành động "đánh dấu đã đọc" phải theo đúng phạm vi đang xem.** Đang lọc
 còn 2 dòng mà bấm lại xoá sạch thông báo của phạm vi người dùng **không nhìn
 thấy** là mất dữ liệu thầm lặng.
+
+---
+
+## Ô nhập
+
+**I26. Nhãn phải gắn vào ô, có `cursor-pointer`, và chỉ rộng bằng chữ.**
+
+Ba thứ đi liền nhau, thiếu một cái là lỗi:
+
+```html
+<label for="email" class="w-fit cursor-pointer text-sm font-medium">Email</label>
+<input id="email" />
+```
+
+- **`for` / `htmlFor` khớp `id`** — bấm vào chữ là ô nhận tiêu điểm. Không có thì nhãn chỉ là chữ trang trí, và trình đọc màn hình cũng không biết ô này tên gì.
+- **`cursor-pointer`** — nhãn bấm được mà con trỏ vẫn là que gõ chữ thì không ai biết để mà bấm.
+- **`w-fit`** — chỗ sót nhiều nhất. `<label>` là block, không có `w-fit` thì nó chiếm trọn chiều ngang. Bấm vào khoảng trắng trống bên phải chữ, cách chữ 300px, ô vẫn sáng lên. Người dùng bấm hụt ra ngoài mà thấy ô phản hồi thì tưởng mình bấm trúng cái gì đó.
+
+**I27. Ô mật khẩu phải có nút hiện/ẩn.** Không có thì người dùng gõ sai một ký tự
+là phải xoá hết gõ lại, và đó là lý do rời form phổ biến nhất ở màn đăng nhập.
+
+- Nút **chỉ có icon**, `absolute` trong ô, căn phải. Icon `Eye` / `EyeOff` theo `F15`.
+- **`type="button"`.** Quên thì nó mặc định là `submit` — bấm xem mật khẩu hoá ra gửi form.
+- `aria-label` đổi theo trạng thái: "Hiện mật khẩu" / "Ẩn mật khẩu". Không phải một nhãn cố định.
+- Chừa chỗ cho nút bằng padding phải trên chính ô (`pr-11`), đừng để chữ gõ dài chui xuống dưới icon.
+- Mặc định là **ẩn**. Mở sẵn thì mật khẩu phơi ra trước mặt người đứng sau lưng.
+
+**I28. KHÔNG tắt gợi ý điền sẵn của trình duyệt. Khai báo cho nó đúng.**
+
+Cái khung đen Chrome bật lên khi chạm vào ô email là **trình quản lý mật khẩu**,
+không phải lỗi giao diện. Người dùng bấm một cái là điền xong cả form. Tắt nó đi
+là ép người ta gõ tay mật khẩu 20 ký tự, và đẩy họ sang chỗ đặt mật khẩu dễ nhớ.
+
+`autocomplete="off"` ở form đăng nhập còn bị Chrome, Safari, Firefox **cố tình
+bỏ qua** — tắt không được, chỉ làm hỏng phần gợi ý chứ không tắt hẳn.
+
+Việc phải làm là ngược lại: khai báo đủ để nó đoán đúng.
+
+| Ô | `autocomplete` |
+| --- | --- |
+| Email / tên đăng nhập | `username` (hoặc `email`) |
+| Mật khẩu, màn **đăng nhập** | `current-password` |
+| Mật khẩu, màn **đăng ký** hoặc đổi mật khẩu | `new-password` |
+| Mã OTP | `one-time-code` |
+
+Mỗi ô cũng phải có `name`. Thiếu `name` thì trình duyệt không có gì để lưu, và
+lần sau không gợi ý được.
+
+Khung gợi ý **che mất ô ngay dưới** — đó là hành vi bình thường của trình duyệt,
+nó tự đóng khi gõ hoặc khi rời ô. Đừng đẩy khoảng cách các trường ra xa để
+"tránh" nó.

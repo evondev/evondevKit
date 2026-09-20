@@ -35,9 +35,21 @@ Skill này chỉ lo **màn hình trong app** — dashboard, danh sách, bảng, 
 | Padding section | `py-4` |
 | Chiều cao dòng danh sách | 12–16px chiều dọc |
 | Chiều cao nút | `py-2.5` |
+| **Nút trong form** | **`h-12`, bằng đúng ô nhập, ở MỌI breakpoint** |
 | Nút "xem tất cả", "đọc thêm" | `h-10`, ngang `px-3` tới `px-4`, căn phải |
 | Viền card | đường tóc 1px, một token duy nhất |
 | Bóng card | **không có** |
+
+**Nút trong form phải cao bằng ô nhập, và cả hai phải đổi cùng nhau.** Ô nhập giữ
+`h-12` ở mọi bề rộng màn (`R8`), nên nút trong form cũng giữ `h-12` — **không**
+hạ về `h-10` ở mobile như `R4` nói cho nút thường.
+
+Hạ một cái mà giữ cái kia là lỗi thấy ngay: nút đăng nhập 40px nằm dưới ô nhập
+48px trông như hai thứ của hai bộ khác nhau. Đây là lỗi đã dính ở vòng test form
+đăng nhập, và lý do là `R4` bị áp máy móc cho nút submit.
+
+Áp cho mọi nút nằm trong luồng form — đăng nhập, đăng ký, đổi mật khẩu, nút
+`Lưu` / `Huỷ` cuối form. Không áp cho nút trong header hay trong dòng danh sách.
 
 `p-3` cho padding trang **chỉ** dành cho màn hình cố ý sát mép: trang tab mới của
 trình duyệt, bảng điều khiển toàn màn, kiosk. Trang app bình thường dùng
