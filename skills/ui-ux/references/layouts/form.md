@@ -17,9 +17,9 @@ về cái nào.
         │                 │
         │ nhãn            │
         │ [ô nhập       ] │
-        │ nhãn            │
+        │ nhãn   quên mk? │
         │ [ô nhập       ] │
-        │        quên mk? │
+        │ (chỗ câu lỗi)   │
         │ [   NÚT       ] │
         │ ─── hoặc ───    │
         │ [ nút Google  ] │
@@ -38,6 +38,40 @@ Không căn giữa chữ trong form, chỉ căn giữa cả khối.
 │              │  dẫn khách   │
 └──────────────┴──────────────┘
 ```
+
+---
+
+## "Quên mật khẩu?"
+
+**Nằm cùng hàng với nhãn "Mật khẩu", căn phải.** Không nằm dưới ô nhập, không
+nằm dưới nút submit.
+
+```html
+<div class="flex items-center justify-between">
+  <label for="password" class="w-fit cursor-pointer text-sm font-medium">Mật khẩu</label>
+  <a href="/quen-mat-khau" class="text-sm text-foreground hover:underline">Quên mật khẩu?</a>
+</div>
+```
+
+**Vì sao không để dưới ô nhập** — dòng đó đã có chủ: gợi ý lúc thường, câu lỗi
+khi sai. Và "gõ sai mật khẩu" chính là lúc link này cần rõ nhất, nên hai thứ đạt
+đỉnh cùng lúc ở cùng một chỗ. Hàng nhãn thì luôn chỉ có một dòng, không bao giờ
+đụng.
+
+**Vì sao không để dưới nút submit** — ở đó nó lẫn vào khu "hoặc / đăng nhập bằng
+Google / chưa có tài khoản?", thành một link tình cờ nằm giữa một đống link.
+
+Ba thông số:
+
+| | Lấy gì | Vì sao |
+| --- | --- | --- |
+| Cỡ | `text-sm`, **bằng nhãn** | Cùng hàng mà lệch cỡ thì trông như canh hụt. Nhỏ hơn cũng làm vùng chạm mobile hẹp lại |
+| Màu | `--foreground`, **không làm mờ** | Chữ nhạt đọc ra là đã bị khoá (`I8`). Đây là lối thoát duy nhất của người không vào được tài khoản — làm nó trông disabled là chặn đúng người đang cần |
+| Độ đậm | `font-normal` (nhãn là `font-medium`) | Phân cấp bằng **một** thứ thôi. `M13`: thứ bậc đến từ cỡ chữ, độ đậm, màu chữ — dùng cả ba cùng lúc là thừa |
+
+**Là link, không phải nút.** `I7` bắt "Xem tất cả" phải là nút, nhưng đó là luật
+cho dashboard. Trong form mà thành nút thì nó cạnh tranh với nút đăng nhập nằm
+ngay dưới. Có `cursor-pointer`, gạch chân khi hover.
 
 ---
 

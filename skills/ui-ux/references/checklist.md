@@ -66,6 +66,8 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Mọi ô trong form đều có placeholder, hoặc đều không có — không được chỗ có chỗ không (`T25`).
 - [ ] Đọc từng câu lỗi: có câu nào **trùng chữ** với placeholder hay nhãn của chính ô đó không? Trùng là bỏ.
 - [ ] Chữ đỏ dưới ô có thật sự là lỗi không, hay là **gợi ý bị tô đỏ**? Gợi ý thì xám và hiện sẵn.
+- [ ] "Quên mật khẩu?" có nằm cùng hàng với nhãn không? Dưới ô nhập là **tranh chỗ với câu lỗi**.
+- [ ] "Quên mật khẩu?" có bị làm mờ không? Mờ là đọc ra disabled (`I8`).
 - [ ] Modal có ô nhập mà bấm ra ngoài vẫn đóng không? (`I20`)
 - [ ] Modal đã gỡ dismiss thì **còn đường đóng khác** chưa?
 - [ ] Có đủ ba trạng thái chưa: đang tải, rỗng, lỗi? Khung chờ có **đúng hình** nội dung không?
