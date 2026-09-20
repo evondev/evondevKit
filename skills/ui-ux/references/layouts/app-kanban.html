@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bảng công việc</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      /* ===== KHỐI ĐỔI THƯƠNG HIỆU. Ngoài khối này không có mã màu nào khác. ===== */
+      :root {
+        /* ===== FONT, KHAI MỘT LẦN, DÙNG CHUNG =====
+           Một font cho cả app. Phân vai bằng weight:
+           heading 700 + tracking-tight, body 400, nhãn phụ 500. */
+        --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+        /* ========================================== */
+
+        /* ===== MÀU NHẤN, NỀN SÁNG ===== */
+        --primary: #1a1d29;          /* mặc định gần đen. Màu riêng thì thay vào đây */
+        --primary-foreground: #ffffff;
+        --primary-hover: #2c3040;    /* nhạt hơn --primary một bậc */
+        /* ============================== */
+
+        --background: #f4f4f6;   /* nền trang, xám nhạt, không bao giờ trắng */
+        --surface: #ffffff;      /* nền card, input, header */
+        --foreground: #2c2c2c;   /* chữ chính */
+        --muted: #828282;        /* chữ phụ, label, placeholder, icon phụ */
+        /* MỘT token cho mọi đường tóc: viền card, viền ô nhập, đường chia. */
+        --border: #eff0f0;
+        --border-strong: #ececec;   /* đậm hơn đúng một bậc, dùng lúc hover */
+
+        --background-hover: #e7e7ea;
+        --ring-focus: rgba(26, 29, 41, 0.1);
+        --border-focus: var(--primary);
+
+        --danger: #e11d48;       /* chỉ dùng để báo quá hạn */
+        --done: #059669;         /* chỉ dùng để báo đã xong */
+      }
+      /* ===== HẾT KHỐI ĐỔI THƯƠNG HIỆU ===== */
+
+      body {
+        font-family: var(--font-sans);
+      }
+
+      /* Ẩn hẳn scrollbar nhưng vẫn cuộn được. */
+      .scrollbar-clean {
+        scrollbar-width: none;
+      }
+      .scrollbar-clean::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "var(--primary)",
+              "primary-hover": "var(--primary-hover)",
+              "primary-foreground": "var(--primary-foreground)",
+              background: "var(--background)",
+              "background-hover": "var(--background-hover)",
+              surface: "var(--surface)",
+              foreground: "var(--foreground)",
+              muted: "var(--muted)",
+              border: "var(--border)",
+              "border-strong": "var(--border-strong)",
+              danger: "var(--danger)",
+              done: "var(--done)",
+            },
+            ringColor: {
+              focus: "var(--ring-focus)",
+            },
+            borderColor: {
+              focus: "var(--border-focus)",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body class="bg-background text-foreground antialiased">
+    <div class="flex min-h-screen w-full flex-col p-3 sm:p-5">
+      <header
+        class="mb-3 flex items-center justify-between gap-3 rounded-full bg-surface p-2 pl-4 pr-2 border border-border sm:pl-5"
+      >
+        <div class="min-w-0">
+          <h1 class="truncate text-base font-bold tracking-tight text-foreground">Bảng công việc</h1>
+        </div>
+
+        <button
+          type="button"
+          class="inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+        >
+          Thêm việc
+        </button>
+      </header>
+
+      <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div class="scrollbar-clean -mx-1 overflow-x-auto px-1 py-0.5">
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              class="inline-flex h-9 shrink-0 cursor-pointer items-center rounded-full bg-primary px-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+            >
+              Tất cả
+            </button>
+            <button
+              type="button"
+              class="inline-flex h-9 shrink-0 cursor-pointer items-center rounded-full bg-surface px-3.5 text-sm font-medium text-muted transition-colors hover:bg-background-hover hover:text-foreground"
+            >
+              Của tôi
+            </button>
+            <button
+              type="button"
+              class="inline-flex h-9 shrink-0 cursor-pointer items-center rounded-full bg-surface px-3.5 text-sm font-medium text-muted transition-colors hover:bg-background-hover hover:text-foreground"
+            >
+              Quá hạn
+            </button>
+          </div>
+        </div>
+
+        <label class="relative block w-full shrink-0 sm:w-64">
+          <span class="sr-only">Tìm việc</span>
+          <input
+            type="search"
+            placeholder="Tìm việc"
+            class="h-10 w-full rounded-xl border border-border bg-surface px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted focus:border-focus focus:ring-2 focus:ring-focus sm:text-sm"
+          />
+        </label>
+      </div>
+
+      <div class="scrollbar-clean -mx-3 flex-1 overflow-x-auto sm:-mx-5">
+        <div class="flex items-start gap-4 px-3 pb-2 sm:px-5">
+          <section class="w-[280px] min-w-0 shrink-0">
+            <header class="mb-3 flex items-center gap-2 px-1">
+              <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Cần làm</h2>
+              <span class="text-xs font-medium text-muted">4</span>
+            </header>
+
+            <ul class="flex flex-col gap-3">
+              <li
+                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+              >
+                <p class="line-clamp-2 text-sm font-medium text-foreground">
+                  Viết lại nội dung trang giới thiệu theo bản brief mới
+                </p>
+                <p class="mt-2 text-xs text-muted">Website · 22/08</p>
+              </li>
+              <li
+                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+              >
+                <p class="line-clamp-2 text-sm font-medium text-foreground">
+                  Chuẩn bị số liệu doanh thu tháng 7 cho buổi họp
+                </p>
+                <p class="mt-2 text-xs"><span class="text-muted">Báo cáo · </span><span class="font-medium text-danger">Quá hạn 2 ngày</span></p>
+              </li>
+              <li
+                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+              >
+                <p class="line-clamp-2 text-sm font-medium text-foreground">
+                  Dọn danh sách khách hàng trùng trong CRM
+                </p>
+                <p class="mt-2 text-xs text-muted">Vận hành · 26/08</p>
+              </li>
+              <li
+                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+              >
+                <p class="line-clamp-2 text-sm font-medium text-foreground">
+                  Đặt lịch phỏng vấn hai ứng viên vòng cuối
+                </p>
+                <p class="mt-2 text-xs text-muted">Tuyển dụng · 29/08</p>
+              </li>
+            </ul>
+          </section>
+
+          <section class="w-[280px] min-w-0 shrink-0">
+            <header class="mb-3 flex items-center gap-2 px-1">
+              <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Đang làm</h2>
+              <span class="text-xs font-medium text-muted">3</span>
+            </header>
+
+            <ul class="flex flex-col gap-3">
+              <li
+                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+              >
+                <p class="line-clamp-2 text-sm font-medium text-foreground">
+                  Dựng màn hình thanh toán cho gói năm
+                </p>
+                <p class="mt-2 text-xs text-muted">Sản phẩm · 21/08</p>
+              </li>
+              <li
+                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+              >
+                <p class="line-clamp-2 text-sm font-medium text-foreground">
+                  Chuyển kho ảnh sản phẩm sang CDN mới
+                </p>
+                <p class="mt-2 text-xs text-muted">Hạ tầng · 25/08</p>
+              </li>
+              <li
+                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+              >
+                <p class="line-clamp-2 text-sm font-medium text-foreground">
+                  Trả lời 18 phản hồi còn tồn trong hộp thư hỗ trợ
+                </p>
+                <p class="mt-2 text-xs"><span class="text-muted">Hỗ trợ · </span><span class="font-medium text-danger">Hạn hôm nay</span></p>
+              </li>
+            </ul>
+          </section>
+
+          <section class="w-[280px] min-w-0 shrink-0">
+            <header class="mb-3 flex items-center gap-2 px-1">
+              <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Chờ duyệt</h2>
+              <span class="text-xs font-medium text-muted">2</span>
+            </header>
+
+            <ul class="flex flex-col gap-3">
+              <li
+                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+              >
+                <p class="line-clamp-2 text-sm font-medium text-foreground">
+                  Bảng giá mới cho gói doanh nghiệp
+                </p>
+                <p class="mt-2 text-xs text-muted">Kinh doanh · gửi 19/08</p>
+              </li>
+              <li
+                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+              >
+                <p class="line-clamp-2 text-sm font-medium text-foreground">
+                  Hợp đồng gia hạn với nhà cung cấp máy chủ
+                </p>
+                <p class="mt-2 text-xs text-muted">Pháp lý · gửi 20/08</p>
+              </li>
+            </ul>
+          </section>
+
+          <section class="w-[280px] min-w-0 shrink-0">
+            <header class="mb-3 flex items-center gap-2 px-1">
+              <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Xong</h2>
+              <span class="text-xs font-medium text-muted">3</span>
+            </header>
+
+            <ul class="flex flex-col gap-3">
+              <li
+                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+              >
+                <div class="flex items-start gap-2">
+                  <i data-lucide="check" class="mt-0.5 h-4 w-4 shrink-0 text-done"></i>
+                  <p class="line-clamp-2 min-w-0 text-sm font-medium text-foreground">
+                    Chốt bản thiết kế trang chủ với khách
+                  </p>
+                </div>
+                <p class="mt-2 pl-6 text-xs text-muted">Website · xong 18/08</p>
+              </li>
+              <li
+                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+              >
+                <div class="flex items-start gap-2">
+                  <i data-lucide="check" class="mt-0.5 h-4 w-4 shrink-0 text-done"></i>
+                  <p class="line-clamp-2 min-w-0 text-sm font-medium text-foreground">
+                    Sao lưu cơ sở dữ liệu quý 2
+                  </p>
+                </div>
+                <p class="mt-2 pl-6 text-xs text-muted">Hạ tầng · xong 17/08</p>
+              </li>
+              <li
+                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+              >
+                <div class="flex items-start gap-2">
+                  <i data-lucide="check" class="mt-0.5 h-4 w-4 shrink-0 text-done"></i>
+                  <p class="line-clamp-2 min-w-0 text-sm font-medium text-foreground">
+                    Gửi hoá đơn tháng 7 cho 12 khách hàng
+                  </p>
+                </div>
+                <p class="mt-2 pl-6 text-xs text-muted">Kế toán · xong 15/08</p>
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,149 @@
+# Chữ — luật T
+
+Nguồn duy nhất cho mọi luật về chữ. Con số cỡ chữ cụ thể nằm ở `budgets.md`.
+
+---
+
+## Font
+
+**T1. `antialiased` trên `body`.** Một dòng, đặt một lần, và nó đổi cảm giác của
+cả trang: chữ mảnh hơn, sạch hơn, bớt cái vẻ nặng nề của font render mặc định.
+
+```html
+<body class="antialiased">
+```
+
+**T2. Một họ chữ cho cả app.** Phân vai bằng weight và cỡ, không bằng font thứ
+hai: tiêu đề `700` kèm `tracking-tight`, body `400`, nhãn phụ `500`.
+
+Font thứ hai chỉ được dùng cho **tiêu đề của trang trình diễn** (trang giới
+thiệu, bảng giá, trang pháp lý) và phải nói được nó khác font body ở chỗ nào.
+Trong trang làm việc của app thì không.
+
+**T3. Font thứ hai không bao giờ cho số.** Giá, số liệu, chỉ số luôn dùng font
+body. Lỗi đã xảy ra thật: "99K" viết bằng font tiêu đề trông như bìa tạp chí.
+
+**T4. Nạp đúng số weight cần, và biết mình đang nạp gì.**
+
+focus.camp nạp 400 / 500 / 600 và **cố ý không nạp 700**: 553 chỗ trong repo khai
+`font-weight: 700/800` theo luật cũ, không có face 700 thì trình duyệt vẽ bằng
+face gần nhất là 600, giao diện giữ nguyên. Cái bẫy đi kèm: `.font-strong` đặt
+weight 900 nhưng **không chạy**, vì không có face nào trên 600.
+
+Nghĩa là: đọc `font-weight` trong code không nói được chữ sẽ dày bao nhiêu. Phải
+biết font đã nạp những face nào.
+
+**T5. Kiểm dấu tiếng Việt trước khi chốt font.** Font phải có subset
+`vietnamese`. Dấu nặng và dấu ngã chồng lên nhau là lỗi chỉ lộ ra ở chữ thật,
+không lộ ra ở "Lorem ipsum". Xem `brand-tokens.md`.
+
+---
+
+## Thang cỡ
+
+**T6. Cỡ chữ mặc định trong app là cỡ nhỏ, không phải cỡ trang giới thiệu.**
+`text-sm` là mặc định, `text-xs` cho chú thích. Con số ở `budgets.md`.
+
+**T7. Không dùng inline pixel font-size ngoài thang token.** Thấy một
+`style={{ fontSize: 13 }}` thì quy nó về bậc gần nhất, đừng để nó sống.
+
+**T8. Tiêu đề của một khối phải lớn hơn chữ lớn nhất bên trong khối, ít nhất một bậc.**
+
+Tiêu đề card `text-base font-semibold` thì mục bên trong tối đa `text-sm`. Bằng
+nhau là mắt không đọc ra đâu là nhãn của khối, đâu là nội dung, và cả khối trông
+phẳng lì.
+
+Cùng nguyên tắc cho độ đậm: tiêu đề khối `600`–`700`, mục bên trong tối đa `500`.
+
+Thứ bậc đầy đủ của một trang app: **tên trang > tiêu đề khối > tên thẻ**.
+
+**T9. Trang chi tiết của nội dung lặp lại không dùng cỡ hero.**
+
+Mở một bài viết, một khoá học, một sản phẩm thì tiêu đề nên **bằng đúng cỡ tiêu
+đề của nó ở danh sách**, không nhảy lên một bậc. Nhảy size gây cảm giác "chữ bự"
+so với nội dung bên dưới. Chốt ở focus.camp 16/09/2026 sau khi hạ tên trang từ
+24px về 20px.
+
+Cỡ hero chỉ còn cho trang trình diễn thật sự.
+
+---
+
+## Xuống dòng
+
+**T10. Không để chữ đơn côi ở dòng cuối.**
+
+Một tiêu đề xuống dòng rồi còn trơ một chữ ở hàng dưới thì nhìn như lỗi. Tệ hơn
+là **chẻ sai nghĩa**: "làm gì có" bị bẻ thành "làm" ở dòng trên và "gì có" ở dòng
+dưới, đọc vấp.
+
+Cách xử, theo thứ tự:
+
+1. **`text-balance`** cho tiêu đề và câu dẫn ngắn — trình duyệt tự chia đều các dòng. Đây là lưới đỡ đúng ở **mọi** bề ngang, không phải vá cho một bề ngang. Đoạn dài thì `text-pretty`, vì Chrome bỏ qua `balance` khi quá ~6 dòng.
+2. Nới `max-w-*` để câu vừa đúng một dòng ở desktop.
+3. `&nbsp;` giữa hai chữ cuối — chỉ khi hai cách trên không đủ.
+4. Rút gọn câu. Thường đây mới là cách đúng nhất.
+
+Kiểm ở đúng bề rộng thật, nhất là 375px: chữ đơn côi chỉ lộ ở một vài bề rộng.
+
+**T11. Không để dòng chữ dài quá 75 ký tự.** Mọi khối văn bản có `max-width`.
+
+**T12. Chữ dài luôn căn trái.** Không căn giữa mọi thứ.
+
+---
+
+## Cắt chữ
+
+**T13. `min-w-0` cho mọi flex và grid item chứa nội dung động.**
+
+Flex item và grid item mặc định có `min-width: auto`, tức **không chịu co nhỏ hơn
+nội dung của nó**. Một con số `1.284.500`, một cái tên dài là đủ để cột nở ra,
+lưới nở theo, cả trang tràn ngang.
+
+Đây là **nguyên nhân số một của lỗi cuộn ngang**, và chỉ lộ ra ở màn hẹp.
+
+**T14. Tiêu đề một dòng thì cắt, câu giải thích thì xuống dòng.**
+
+Chữ trong danh sách dày dùng `truncate` kèm `min-w-0`. Nhưng dòng mô tả thì cho
+xuống dòng, đừng cắt — mô tả bị cắt thì mất luôn lý do nó tồn tại.
+
+**T15. Nhãn nút không được `white-space: nowrap`.**
+
+Nhãn tiếng Việt của nút khá dài ("Gia hạn / Đổi gói", "Tham gia cộng đồng"). Với
+`nowrap`, chỗ chứa hẹp hơn nhãn thì nút không co được — hoặc đẩy tràn ra ngoài,
+hoặc chữ trào ra khỏi viên nút khi bị `max-width` chặn.
+
+Đo thật ở focus.camp: hộp 140px, nút cũ rộng 192px, **tràn 60px**.
+
+Công thức đúng: `white-space: normal` + `line-height: 1.25` (để hai dòng không
+dính nhau) + `overflow-wrap: anywhere` (ngắt cả URL và mã dài) + `max-width: 100%`.
+
+---
+
+## Số
+
+**T16. Số xếp cột dùng `tabular-nums`.** Bảng số liệu, cột tiền, cột phần trăm —
+thiếu nó thì các chữ số rộng khác nhau và cột nhảy lung tung khi dữ liệu đổi.
+
+**T17. Mã và định danh dùng `font-mono`.** Mã đơn hàng, mã giảm giá, ID. Nó nói
+"đây là thứ để copy chính xác", không phải chữ để đọc.
+
+---
+
+## Copy
+
+**T18. Không dấu gạch dài trong copy tiếng Việt.** Lộ ngay là AI viết.
+
+**T19. Không emoji trong tiêu đề, câu chào, hay làm icon.** Icon lấy từ
+`lucide-react`.
+
+**T20. Không chữ hướng dẫn thừa.** Nút đã ghi "Lưu" thì đừng thêm dòng "Bấm để
+lưu". Không viết chữ lặp lại thứ icon đã nói: có dấu tick rồi thì bỏ chữ "Có"
+bên cạnh.
+
+**T21. Không badge kiểu "✨ AI-powered", "🚀 Fast", "New!".**
+
+**T22. Dòng phụ dưới nút phải mang thông tin riêng của từng mục.** Ba dòng giống
+hệt nhau thì bỏ cả ba.
+
+**T23. Nhãn : giá trị thì nhãn xám, giá trị đậm, cùng một dòng.** "Ngày đặt:
+Thứ tư 14/09". Đừng xuống dòng, đừng cho nhãn cùng màu với giá trị.

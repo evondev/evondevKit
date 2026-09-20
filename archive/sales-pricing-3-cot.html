@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="vi" class="h-full">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bảng giá</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* ===== KHỐI ĐỔI THƯƠNG HIỆU. Ngoài khối này không có mã màu nào khác ===== */
+      :root {
+        /* FONT: khai một lần, dùng chung cho heading, body và số */
+        --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+        /* MÀU NHẤN */
+        --primary: #1a1d29;
+        --primary-foreground: #ffffff;
+        --primary-hover: #2c3040;
+        --primary-light: #1a1d290d;
+
+        --background: #f4f4f6;
+        --surface: #ffffff;
+        --foreground: #2c2c2c;
+        --muted: #828282;
+        --border: #eff0f0;
+        --border-card: transparent;
+        --secondary: #e7e8ec;
+        --secondary-hover: #dbdce2;
+      }
+      /* ======================================================================= */
+
+      body {
+        font-family: var(--font-sans);
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "var(--primary)",
+              "primary-hover": "var(--primary-hover)",
+              "primary-foreground": "var(--primary-foreground)",
+              "primary-light": "var(--primary-light)",
+              background: "var(--background)",
+              surface: "var(--surface)",
+              foreground: "var(--foreground)",
+              muted: "var(--muted)",
+              border: "var(--border)",
+              "border-card": "var(--border-card)",
+              secondary: "var(--secondary)",
+              "secondary-hover": "var(--secondary-hover)",
+            },
+            boxShadow: {
+              soft: "0 2px 16px rgba(0,0,0,0.06)",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body class="min-h-full bg-background text-foreground antialiased">
+    <main class="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+      <div class="grid items-center gap-6 lg:grid-cols-[1fr_1.12fr_1fr]">
+        <!-- Gói Cơ bản -->
+        <section
+          class="flex flex-col rounded-3xl bg-surface p-8 shadow-soft ring-1 ring-border-card transition-all hover:shadow-lg"
+        >
+          <h2 class="text-xl font-bold tracking-tight text-foreground">
+            Cơ bản
+          </h2>
+          <p class="mt-2 min-h-[3rem] max-w-[42ch] text-base text-muted">
+            Cho cá nhân và nhóm nhỏ mới bắt đầu làm việc chung.
+          </p>
+
+          <div class="mt-6 flex h-16 items-center gap-4">
+            <span
+              class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-light text-foreground"
+              aria-hidden="true"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-5 w-5"
+              >
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+              </svg>
+            </span>
+            <p class="flex items-baseline gap-1">
+              <span
+                class="text-4xl font-extrabold tracking-tight text-foreground"
+                >99K</span
+              >
+              <span class="text-base font-medium text-muted">/tháng</span>
+            </p>
+          </div>
+          <p class="mt-3 min-h-[1.25rem] text-sm text-muted">
+            Thanh toán theo tháng
+          </p>
+
+          <hr class="my-7 border-0 border-t border-border" />
+
+          <ul class="mb-8 flex flex-col gap-3.5">
+            <li class="flex min-w-0 items-center gap-3">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-4 w-4 shrink-0 text-muted"
+                aria-hidden="true"
+              >
+                <path d="m5 12 5 5L20 7" />
+              </svg>
+              <span class="min-w-0 flex-1 truncate text-base text-foreground"
+                >Thành viên</span
+              >
+              <span class="shrink-0 text-sm font-medium text-muted"
+                >3 người</span
+              >
+            </li>
+            <li class="flex min-w-0 items-center gap-3">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-4 w-4 shrink-0 text-muted"
+                aria-hidden="true"
+              >
+                <path d="m5 12 5 5L20 7" />
+              </svg>
+              <span class="min-w-0 flex-1 truncate text-base text-foreground"
+                >Dung lượng</span
+              >
+              <span class="shrink-0 text-sm font-medium text-muted">20 GB</span>
+            </li>
+            <li class="flex min-w-0 items-center gap-3">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-4 w-4 shrink-0 text-muted"
+                aria-hidden="true"
+              >
+                <path d="m5 12 5 5L20 7" />
+              </svg>
+              <span class="min-w-0 flex-1 truncate text-base text-foreground"
+                >Dự án</span
+              >
+              <span class="shrink-0 text-sm font-medium text-muted">10</span>
+            </li>
+            <li class="flex min-w-0 items-center gap-3">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-4 w-4 shrink-0 text-muted"
+                aria-hidden="true"
+              >
+                <path d="m5 12 5 5L20 7" />
+              </svg>
+              <span class="min-w-0 flex-1 truncate text-base text-foreground"
+                >Lịch sử chỉnh sửa</span
+              >
+              <span class="shrink-0 text-sm font-medium text-muted"
+                >30 ngày</span
+              >
+            </li>
+            <li class="flex min-w-0 items-center gap-3">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-4 w-4 shrink-0 text-muted"
+                aria-hidden="true"
+              >
+                <path d="m5 12 5 5L20 7" />
+              </svg>
+              <span class="min-w-0 flex-1 truncate text-base text-foreground"
+                >Hỗ trợ</span
+              >
+              <span class="shrink-0 text-sm font-medium text-muted">Email</span>
+            </li>
+          </ul>
+
+          <a
+            href="#"
+            class="mt-auto inline-flex w-full cursor-pointer items-center justify-center rounded-xl bg-secondary px-4 py-3.5 text-base font-semibold text-foreground transition-colors hover:bg-secondary-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+            >Đăng ký gói Cơ bản</a
+          >
+          <p class="mt-3 text-center text-sm text-muted">
+            Dùng thử 14 ngày, không cần thẻ
+          </p>
+        </section>
+
+        <!-- Gói Chuyên nghiệp, gói được chọn giúp -->
+        <section
+          class="relative flex flex-col rounded-3xl bg-surface p-8 shadow-soft transition-all hover:shadow-lg lg:py-12"
+        >
+          <span
+            class="absolute -top-4 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-primary px-4 py-1.5 text-sm font-semibold text-primary-foreground"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="h-3.5 w-3.5"
+              aria-hidden="true"
+            >
+              <path
+                d="m12 3 2.6 5.6 6.1.8-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6L3.3 9.4l6.1-.8L12 3Z"
+              />
+            </svg>
+            Chọn nhiều nhất
+          </span>
+
+          <h2 class="text-xl font-bold tracking-tight text-foreground">
+            Chuyên nghiệp
+          </h2>
+          <p class="mt-2 min-h-[3rem] max-w-[42ch] text-base text-muted">
+            Cho đội đang chạy nhiều dự án cùng lúc và cần quyền chi tiết.
+          </p>
+
+          <div class="mt-6 flex h-16 items-center gap-4">
+            <span
+              class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-light text-foreground"
+              aria-hidden="true"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-5 w-5"
+              >
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </span>
+            <p class="flex items-baseline gap-1">
+              <span
+                class="text-5xl font-extrabold tracking-tight text-foreground"
+                >199K</span
+              >
+              <span class="text-base font-medium text-muted">/tháng</span>
+            </p>
+          </div>
+          <p class="mt-3 min-h-[1.25rem] text-sm text-muted">
+            Trả theo năm còn 169K mỗi tháng
+          </p>
+
+          <hr class="my-7 border-0 border-t border-border" />
+
+          <ul class="mb-8 flex flex-col gap-3.5">
+            <li class="flex min-w-0 items-center gap-3">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-4 w-4 shrink-0 text-primary"
+                aria-hidden="true"
+              >
+                <path d="m5 12 5 5L20 7" />
+              </svg>
+              <span class="min-w-0 flex-1 truncate text-base text-foreground"
+                >Thành viên</span
+              >
+              <span class="shrink-0 text-sm font-medium text-muted"
+                >15 người</span
+              >
+            </li>
+            <li class="flex min-w-0 items-center gap-3">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-4 w-4 shrink-0 text-primary"
+                aria-hidden="true"
+              >
+                <path d="m5 12 5 5L20 7" />
+              </svg>
+              <span class="min-w-0 flex-1 truncate text-base text-foreground"
+                >Dung lượng</span
+              >
+              <span class="shrink-0 text-sm font-medium text-muted"
+                >200 GB</span
+              >
+            </li>
+            <li class="flex min-w-0 items-center gap-3">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-4 w-4 shrink-0 text-primary"
+                aria-hidden="true"
+              >
+                <path d="m5 12 5 5L20 7" />
+              </svg>
+              <span class="min-w-0 flex-1 truncate text-base text-foreground"
+                >Dự án</span
+              >
+              <span class="shrink-0 text-sm font-medium text-muted"
+                >Không giới hạn</span
+              >
+            </li>
+            <li class="flex min-w-0 items-center gap-3">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-4 w-4 shrink-0 text-primary"
+                aria-hidden="true"
+              >
+                <path d="m5 12 5 5L20 7" />
+              </svg>
+              <span class="min-w-0 flex-1 truncate text-base text-foreground"
+                >Lịch sử chỉnh sửa</span
+              >
+              <span class="shrink-0 text-sm font-medium text-muted"
+                >12 tháng</span
+              >
+            </li>
+            <li class="flex min-w-0 items-center gap-3">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-4 w-4 shrink-0 text-primary"
+                aria-hidden="true"
+              >
+                <path d="m5 12 5 5L20 7" />
+              </svg>
+              <span class="min-w-0 flex-1 truncate text-base text-foreground"
+                >Hỗ trợ</span
+              >
+              <span class="shrink-0 text-sm font-medium text-muted"
+                >Ưu tiên, phản hồi 4 giờ</span
+              >
+            </li>
+          </ul>
+
+          <a
+            href="#"
+            class="mt-auto inline-flex w-full cursor-pointer items-center justify-center rounded-xl bg-primary px-4 py-4 text-base font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+            >Đăng ký gói Chuyên nghiệp</a
+          >
+          <p class="mt-3 text-center text-sm text-muted">
+            Hoàn tiền trong 30 ngày nếu không hợp
+          </p>
+        </section>
+
+        <!-- Gói Doanh nghiệp -->
+        <section
+          class="flex flex-col rounded-3xl bg-surface p-8 shadow-soft ring-1 ring-border-card transition-all hover:shadow-lg"
+        >
+          <h2 class="text-xl font-bold tracking-tight text-foreground">
+            Doanh nghiệp
+          </h2>
+          <p class="mt-2 min-h-[3rem] max-w-[42ch] text-base text-muted">
+            Cho công ty cần phân quyền, nhật ký truy cập và hợp đồng riêng.
+          </p>
+
+          <div class="mt-6 flex h-16 items-center gap-4">
+            <span
+              class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-light text-foreground"
+              aria-hidden="true"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-5 w-5"
+              >
+                <path d="M3 21h18" />
+                <path d="M5 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16" />
+                <path d="M15 21V11h2a2 2 0 0 1 2 2v8" />
+                <path d="M9 7h2M9 11h2M9 15h2" />
+              </svg>
+            </span>
+            <p class="flex items-baseline gap-1">
+              <span
+                class="text-4xl font-extrabold tracking-tight text-foreground"
+                >299K</span
+              >
+              <span class="text-base font-medium text-muted">/tháng</span>
+            </p>
+          </div>
+          <p class="mt-3 min-h-[1.25rem] text-sm text-muted">
+            Tính theo từng chỗ ngồi
+          </p>
+
+          <hr class="my-7 border-0 border-t border-border" />
+
+          <ul class="mb-8 flex flex-col gap-3.5">
+            <li class="flex min-w-0 items-center gap-3">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-4 w-4 shrink-0 text-muted"
+                aria-hidden="true"
+              >
+                <path d="m5 12 5 5L20 7" />
+              </svg>
+              <span class="min-w-0 flex-1 truncate text-base text-foreground"
+                >Thành viên</span
+              >
+              <span class="shrink-0 text-sm font-medium text-muted"
+                >50 người</span
+              >
+            </li>
+            <li class="flex min-w-0 items-center gap-3">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-4 w-4 shrink-0 text-muted"
+                aria-hidden="true"
+              >
+                <path d="m5 12 5 5L20 7" />
+              </svg>
+              <span class="min-w-0 flex-1 truncate text-base text-foreground"
+                >Dung lượng</span
+              >
+              <span class="shrink-0 text-sm font-medium text-muted">1 TB</span>
+            </li>
+            <li class="flex min-w-0 items-center gap-3">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-4 w-4 shrink-0 text-muted"
+                aria-hidden="true"
+              >
+                <path d="m5 12 5 5L20 7" />
+              </svg>
+              <span class="min-w-0 flex-1 truncate text-base text-foreground"
+                >Dự án</span
+              >
+              <span class="shrink-0 text-sm font-medium text-muted"
+                >Không giới hạn</span
+              >
+            </li>
+            <li class="flex min-w-0 items-center gap-3">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-4 w-4 shrink-0 text-muted"
+                aria-hidden="true"
+              >
+                <path d="m5 12 5 5L20 7" />
+              </svg>
+              <span class="min-w-0 flex-1 truncate text-base text-foreground"
+                >Lịch sử chỉnh sửa</span
+              >
+              <span class="shrink-0 text-sm font-medium text-muted">3 năm</span>
+            </li>
+            <li class="flex min-w-0 items-center gap-3">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-4 w-4 shrink-0 text-muted"
+                aria-hidden="true"
+              >
+                <path d="m5 12 5 5L20 7" />
+              </svg>
+              <span class="min-w-0 flex-1 truncate text-base text-foreground"
+                >Hỗ trợ</span
+              >
+              <span class="shrink-0 text-sm font-medium text-muted"
+                >Chuyên viên riêng</span
+              >
+            </li>
+          </ul>
+
+          <a
+            href="#"
+            class="mt-auto inline-flex w-full cursor-pointer items-center justify-center rounded-xl bg-secondary px-4 py-3.5 text-base font-semibold text-foreground transition-colors hover:bg-secondary-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+            >Đăng ký gói Doanh nghiệp</a
+          >
+          <p class="mt-3 text-center text-sm text-muted">
+            Có hoá đơn VAT và hợp đồng riêng
+          </p>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

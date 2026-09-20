@@ -1,0 +1,108 @@
+/* Bộ token khởi đầu. Đặt trong globals.css hoặc index.css.
+
+   ĐỔI THƯƠNG HIỆU: màu nhấn có HAI chỗ phải sửa, font chỉ có MỘT dòng.
+   Ngoài các khối đánh dấu bên dưới, không rải mã màu ở bất kỳ đâu. */
+
+:root {
+  /* ===== FONT, KHAI MỘT LẦN, DÙNG CHUNG CHO CẢ SÁNG LẪN TỐI =====
+     Một font cho cả app. Phân vai bằng weight, không bằng font thứ hai:
+     heading 700 + tracking-tight, body 400, nhãn phụ 500. */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  /* ============================================================== */
+
+  /* ===== MÀU NHẤN, CHỖ 1 TRONG 2: NỀN SÁNG ===== */
+  --primary: #1a1d29;          /* mặc định gần đen. Màu riêng thì thay vào đây */
+  --primary-hover: #2c3040;    /* nhạt hơn --primary một bậc */
+  --primary-foreground: #ffffff;  /* màu chữ ĐỨNG TRÊN nền nhấn. Bắt buộc phải
+                                     có, vì ở nền tối màu nhấn thành gần trắng,
+                                     lúc đó viết cứng `text-white` là mất chữ. */
+  --primary-light: #1a1d290d;  /* CHỈ dùng khi --primary có sắc.
+                                  Màu nhấn trung tính như mặc định thì biến này
+                                  ra xám bẩn gần như vô hình, badge phải dùng
+                                  --background làm nền và --foreground làm chữ. */
+  /* ============================================= */
+
+  --background: #f4f4f6;   /* nền trang, xám nhạt, không bao giờ trắng */
+  --surface: #ffffff;      /* nền card, input, header */
+  --foreground: #2c2c2c;   /* chữ chính */
+  --muted: #828282;        /* chữ phụ, label, placeholder, icon phụ */
+  /* MỘT token cho mọi đường tóc: viền card, viền ô nhập, đường chia trong
+     danh sách. Một tên duy nhất để đường tóc trong app không chỗ đậm chỗ nhạt.
+     Xem luật M13 và M14. */
+  --border: #eff0f0;
+  /* Đậm hơn ĐÚNG một bậc. Chỉ dùng khi --border mờ quá so với nền ở một chỗ cụ
+     thể. Đây là token viền thứ hai và cũng là token cuối, xem luật M16. */
+  --border-strong: #ececec;
+
+  /* Bậc hover cho nút phụ và cho dòng danh sách. Cần biến riêng vì --border
+     và --background chênh nhau quá ít, hover bằng --border là gần như vô hình. */
+  /* Bề mặt của nút phụ và vùng chìm trong card. Luôn CHÌM hơn --surface. */
+  --secondary: #e7e8ec;
+  --secondary-hover: #dbdce2;
+
+  --background-hover: #e7e7ea;
+  /* Cũng là nền của ô trạng thái nhỏ nằm trong hàng có hover: ô ngày, ô vuông
+     chuỗi, ô rỗng. Đừng dùng --background cho chúng, vì hàng hover cũng về
+     --background thì con tan vào nền. Xem luật M18. */
+
+  /* Ring lúc focus. Rất mờ, chỉ đủ cảm thấy, đi kèm với viền đậm lên. */
+  --ring-focus: rgba(26, 29, 41, 0.1);
+
+  /* Viền lúc focus. Ở nền sáng thì chính là màu nhấn. Ở nền tối thì KHÔNG
+     dùng màu nhấn đặc, xem khối .dark bên dưới. */
+  --border-focus: var(--primary);
+
+  --radius: 0.625rem;
+}
+
+/* Dark mode là navy rất tối, không phải xám trung tính.
+   Viền là rgba mờ chứ không phải màu đặc, nếu không sẽ thành lưới kẻ ô.
+
+   Khối này chỉ cần khi sản phẩm thật sự có dark mode. Không làm thì xoá đi. */
+.dark {
+  /* ===== MÀU NHẤN, CHỖ 2 TRONG 2: NỀN TỐI =====
+     BẮT BUỘC khai lại. Màu nhấn của nền sáng đem nguyên sang nền tối là
+     tàng hình, và mọi nút nhấn sẽ phải đảo thành trắng, mất sạch thứ bậc.
+     Màu gần đen thì bản tối là gần trắng. Màu có sắc thì lấy bản sáng hơn
+     khoảng hai bậc của chính nó. */
+  --primary: #e9edf5;
+  --primary-hover: #ffffff;
+  --primary-foreground: #05060f;  /* nền nhấn giờ gần trắng, chữ phải đảo lại */
+  --primary-light: rgba(233, 237, 245, 0.1);
+  /* ============================================ */
+
+  --background: #05060f;
+  /* Nút phụ vẫn phải CHÌM hơn card, y như ở nền sáng. Lấy chính nền trang.
+     Sáng hơn card là đảo ngược quan hệ, xem luật M21. */
+  --secondary: #05060f;
+  --secondary-hover: #12151f;
+
+  --background-hover: #171a26;
+  --ring-focus: rgba(233, 237, 245, 0.12);
+
+  /* Màu nhấn ở nền tối là gần trắng. Dùng làm NỀN thì đẹp, dùng làm ĐƯỜNG MẢNH
+     thì thành sợi trắng đặc, cắt vào mắt. Viền focus lấy chính màu đó nhưng hạ
+     độ đục xuống, sáng hơn viền thường là đủ. Xem luật M22. */
+  --border-focus: rgba(233, 237, 245, 0.35);
+  --surface: #0f111a;
+  --foreground: #e9edf5;
+  --muted: #8b93a7;
+  /* Ở nền tối viền ĐẢO VAI: #0f111a với #05060f chênh nhau quá ít nên viền
+     trở thành thứ chính để tách khối, còn bóng gần như vô dụng. Xem luật M23. */
+  --border: rgba(160, 180, 220, 0.12);
+  --border-strong: rgba(160, 180, 220, 0.2);
+}
+
+/* Ẩn hẳn scrollbar nhưng vẫn cuộn được. */
+.scrollbar-clean {
+  scrollbar-width: none;
+}
+.scrollbar-clean::-webkit-scrollbar {
+  display: none;
+}
+
+/* Chữ mảnh và sạch hơn. Một dòng, đặt một lần cho cả trang. Xem luật T1. */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

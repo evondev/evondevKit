@@ -1,0 +1,15 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "evon",
+  "owner": { "name": "Tuấn Trần" },
+  "metadata": {
+    "description": "Skill nội bộ của Evon — gu UI/UX cho hệ thống dashboard."
+  },
+  "plugins": [
+    {
+      "name": "evon",
+      "source": "./",
+      "description": "Gu UI/UX cho hệ thống dashboard: dựng màn mới theo bố cục chốt trước, và refactor codebase đã có mà không vỡ giao diện."
+    }
+  ]
+}

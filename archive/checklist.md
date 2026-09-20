@@ -1,0 +1,82 @@
+# Checklist trước khi giao
+
+Chạy hết trước khi báo xong. Mỗi dòng là một lỗi đã thật sự xảy ra.
+
+- [ ] Đề bài có từ nào mơ hồ không (bảng, thẻ, danh sách, khung, trang, lịch). Có thì hỏi trước.
+- [ ] **Không có skeleton mà đã đưa 2-3 bố cục rồi CHỜ người dùng chọn chưa.** Tự chọn hộ là sai.
+- [ ] **Đối chiếu với đề bài: có section nào mình tự thêm không.** Có thì bỏ.
+- [ ] Có con số hay chính sách nào mình tự bịa không. Có thì đổi thành `[cần điền]`.
+- [ ] Đếm màu nhấn trên màn hình. Nhiều hơn một thì cắt. Tag phân loại dữ liệu không tính, xem M4b.
+- [ ] Nút phụ trong màn có trộn hai dạng không (nền chìm với viền tóc). Chọn một thôi.
+- [ ] Sidebar: mục đang chọn có tô màu nhấn không. Phải tô xám.
+- [ ] Phím tắt hiện trong menu có đúng là phím tắt thật không.
+- [ ] Đề để hở mà đã hỏi phạm vi chưa, hay tự quyết rồi làm mỏng dính.
+- [ ] Widget nào có khoảng trống chết quá một phần ba chiều cao không. Có là nội dung chưa giãn.
+- [ ] Biểu đồ có nhiều hơn một sắc màu không. Ô số liệu có bị tô mỗi ô một màu không.
+- [ ] Có emoji nào trong tiêu đề hay câu chào không.
+- [ ] Grep `gradient`, `backdrop-blur`, `shadow-xl`, `scale-1`, `text-transparent`, `border-dashed`. Phải sạch.
+- [ ] Màu nhấn trung tính mà có dùng `brand-light` không. Có là badge sẽ mờ tịt.
+- [ ] Nền trang có phải trắng tinh không.
+- [ ] Có dòng chữ nào dài quá 75 ký tự không.
+- [ ] Có nút nào nhét icon mà icon không mang chức năng không.
+- [ ] Có emoji nào đang đóng vai icon không.
+- [ ] Bo góc có nằm trong bốn bậc không, và có bo nhầm link chữ không nền không.
+- [ ] Nút đăng nhập bằng Google hay Apple đã có logo gốc chưa.
+- [ ] Có chỗ nào mỗi mục một card không. Có thì gom thành một khối chia đường kẻ.
+- [ ] Card cùng lưới đã thẳng chân chưa. Nút CTA có cùng độ cao không.
+- [ ] **Đường kẻ ngang của các card có thẳng hàng nhau không.** Lệch là thiếu `min-h` cho khối mô tả.
+- [ ] Dòng phụ dưới ba nút có giống hệt nhau không. Giống thì bỏ hết.
+- [ ] Danh sách tính năng đang dùng tick hay chấm tròn.
+- [ ] Đang là trang bán hàng mà có đang xài nhịp `p-5 gap-3` của app không.
+- [ ] Trang bán hàng mà card còn viền không. Có bóng rồi thì bỏ viền.
+- [ ] Trong nhóm lựa chọn có đúng một nút `primary` không.
+- [ ] Có chỗ nào "Xem tất cả" hay "Đọc thêm" đang là link chữ không. Phải là nút phụ, căn phải, không icon.
+- [ ] Có cột nào ghi "Có" bên cạnh dấu tick không.
+- [ ] Đối chiếu lại ảnh gốc: vị trí badge, ô icon, thứ tự khối có đúng chưa.
+- [ ] Có accordion nào dưới 6 mục không. Có thì mở hết ra.
+- [ ] Grep mã hex trong file. Chỉ được có trong khối đổi thương hiệu ở đầu.
+- [ ] Mọi mã hex có đúng 6 hoặc 8 ký tự sau dấu `#` không. Lệch là CSS chết âm thầm.
+- [ ] Khối thương hiệu có khớp từng ký tự với `references/tokens.css` không.
+- [ ] Có dòng mô tả nào đang bị `truncate` không. Mô tả thì cho xuống dòng.
+- [ ] Form có đánh dấu trường bắt buộc không, hay để người ta bấm gửi rồi mới biết.
+- [ ] Form dài hơn một màn mà có banner tóm tắt lỗi kèm link nhảy chưa.
+- [ ] Project có sẵn thư viện component không. Có thì dùng của họ, đừng viết lại.
+- [ ] Lúc giao đã báo dòng nào chứa `--primary` và hai dòng font chưa.
+- [ ] Có dark mode thì `.dark` đã khai lại `--primary` chưa. Chưa là màu nhấn tàng hình.
+- [ ] Có tự làm dark mode khi không ai yêu cầu không.
+- [ ] Font đã nạp chưa, hay đang rơi về `system-ui`.
+- [ ] **Rê chuột lên một hàng trong danh sách. Có phần tử con nào biến mất không.**
+- [ ] Rê chuột lên hàng: nền hover có ôm sát chữ không. Phải có padding đủ bốn phía.
+- [ ] Tiêu đề khối có lớn hơn chữ bên trong ít nhất một bậc không.
+- [ ] `body` đã có `antialiased` chưa.
+- [ ] Card đang dùng `ring-border` hay `ring-border-card`. Card phải là `border-card`.
+- [ ] Padding trang có đang là `p-3` không. Trang app phải `p-4 sm:p-6`.
+- [ ] Nút phụ có trông như đã bị khoá không. Chữ và nền có đủ chênh không.
+- [ ] Có dòng nào đang để `[cần điền]` mà lẽ ra phải điền số giả không.
+- [ ] Có tự gán mỗi mục một icon khác nhau không. Cùng nhóm thì cùng một icon.
+- [ ] **Thu cửa sổ xuống 375px. Trang có cuộn ngang không.** Có là hỏng, phải sửa.
+- [ ] Chip lọc chính có đứng cùng hàng với input không, và có chênh chiều cao quá một bậc không.
+- [ ] **Cuộn hết sang phải ở 375px. Phần tử cuối có dính sát mép không.** Có là lề đang đặt sai chỗ.
+- [ ] Ở 375px, hàng chip có rớt xuống hàng dưới một cái lẻ không. Phải cho cuộn ngang.
+- [ ] Board hay dòng thời gian có bị wrap thành 2 hàng ở màn hẹp không. Phải cuộn ngang trong khung.
+- [ ] **Grep `border` và `ring-1`.** Chỗ nào không phải ô nhập thì hỏi lại: có thật sự cần không, và nếu cần thì đã 1px và mờ chưa.
+- [ ] Có token viền nào tự đẻ ra ngoài `--border`, `--border-card`, `--border-focus` không. Nút thì không bao giờ có viền.
+- [ ] Phần tử nổi bật có đang mang quá một dấu hiệu không (badge cộng viền cộng to hơn).
+- [ ] Có đường kẻ nào đang tách hai khối lớn không. Đổi sang tách bằng nền.
+- [ ] Thẻ nhỏ có bị hạ xuống `p-3` cho gọn không.
+- [ ] Ở 375px, có cụm nút nào rớt hàng không. Có phần tử nào đứng lẻ ở hàng dưới không.
+- [ ] Lưới 3 mục có chèn `sm:grid-cols-2` không. Số cột lẻ thì đi thẳng 1 lên 3.
+- [ ] Card ở mobile còn `p-8` không. Phải `p-4`, tối đa `p-5`.
+- [ ] Ngày tháng có nhỏ hơn tiêu đề một bậc không.
+- [ ] Thu 375px xong nhìn lại: có chỗ nào chật dồn cục không. Chật là chưa xong.
+- [ ] Có tiêu đề nào rớt lại một chữ ở dòng cuối không, hay bị chẻ sai nghĩa.
+- [ ] Bảng ở mobile có bị bóp cột không. Phải cuộn ngang trong khung, có `min-w`.
+- [ ] Danh sách quá 25 dòng đã có phân trang chưa, và có hiện tổng số không.
+- [ ] Lưới nào còn giữ 2 cột ở mobile không. Ô số liệu phải xuống 1 cột.
+- [ ] Flex và grid item chứa nội dung động đã có `min-w-0` chưa.
+- [ ] Dữ liệu dài có làm vỡ layout không. Thử một tiêu đề 200 ký tự và một số `1.284.500`.
+- [ ] Xem lại ở dark mode.
+- [ ] Dark mode: có chỗ nào dùng màu nhấn làm **đường mảnh** không (viền focus, gạch chân, chỉ báo đang chọn). Có thì hạ độ đục.
+- [ ] Dark mode: bóng còn tác dụng không, hay đang phải nhờ viền để tách khối.
+- [ ] Grep `text-white`. Chữ trên nền nhấn phải là `text-primary-foreground`.
+- [ ] Dark mode: nút phụ có chìm hơn card không, hay đang nổi lên. Thang bề mặt phải cùng thứ tự ở cả hai theme.
