@@ -121,6 +121,8 @@ Không bao giờ cho nút, card, nền trang, hay chữ (`bg-clip-text text-tran
 
 Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu chữ.
 
+*Ngoại lệ: card đứng một mình giữa trang trống — xem `M29`.*
+
 | Phần tử | Công thức |
 | --- | --- |
 | Thẻ / khung | trắng, viền 1px xám rất nhạt, bo ~12px, **không bóng** |
@@ -146,6 +148,8 @@ trang. Mọi thứ nằm **trong** trang thì không.
 
 Định thêm `shadow-*` cho khối nằm trong trang → thử viền trước, xem có đủ tách
 khối không. Gần như luôn là đủ.
+
+*Ngoại lệ: card đứng một mình giữa trang trống — xem `M29`.*
 
 **M16. Không đẻ token viền mới từ màu nhấn.**
 
@@ -229,3 +233,28 @@ copy, không gõ lại từ trí nhớ, không tự nghĩ mã hex. Đã có lầ
 
 **M28. Lúc giao phải chỉ rõ chỗ đổi thương hiệu.** Một dòng: "đổi màu nhấn ở dòng
 14, font ở dòng 8". Có dark mode thì nói rõ là hai chỗ.
+
+---
+
+## Card đứng một mình
+
+**M29. Màn chỉ có đúng MỘT card giữa trang trống thì bỏ viền. Chìm quá thì dùng
+bóng rất mờ, không phải viền đậm hơn.**
+
+Đăng nhập, đăng ký, quên mật khẩu, màn onboarding một khối, trang 404. Đặc điểm
+chung: **không có khối thứ hai nào để mà tách khỏi.**
+
+`M13` bắt viền vì viền là thứ phân định ranh giới giữa các khối nằm cạnh nhau.
+Trên màn chỉ có một card, không còn việc đó để làm — đường viền lúc này chỉ là
+một nét vẽ quanh hộp, và nó làm card trông như một cái khung chờ nội dung.
+
+Thứ tự thử, dừng ngay khi đủ:
+
+1. **Không viền, không bóng.** Nền trang xám (`--background`) + card trắng (`--surface`) đã đủ chênh để đọc ra ranh giới. Đây là mặc định.
+2. **Chìm quá thì thêm bóng rất mờ.** Cỡ `shadow-sm` của Tailwind — mờ đến mức chỉ cảm thấy chứ không nhìn ra. Card lúc này đang **nổi trên** một trang trống, nên nó hợp tinh thần "lớp nổi" của `M15` hơn là khối nằm trong trang.
+3. **Không bao giờ dùng cả viền lẫn bóng.** Hai thứ cùng làm một việc. Có bóng rồi mà vẫn thấy cần viền thì bóng đang đặt sai, không phải thiếu viền.
+
+**Đừng chữa cháy bằng viền đậm hơn.** Thấy card chìm mà tăng độ đậm của viền là
+đi ngược `M14` — viền đậm lên thì cái hộp hiện ra rõ hơn nội dung bên trong nó.
+
+Có từ hai card trở lên trên màn thì quay về `M13` như thường.

@@ -58,6 +58,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] "Xem tất cả" / "Đọc thêm" có đang là link chữ không? Phải là nút, căn phải, không icon mũi tên.
 - [ ] **Rê chuột lên một hàng: có phần tử con nào biến mất không?** (`M18`)
 - [ ] Rê chuột lên hàng: nền hover có ôm sát chữ không? Phải có padding đủ bốn phía.
+- [ ] Màn chỉ có MỘT card giữa trang trống? Vậy card phải **không viền** (`M29`), và không bao giờ có cả viền lẫn bóng.
 - [ ] Rê chuột lên **nút chính**: có đổi màu không? Nút `primary` là chỗ hay quên hover nhất (`I9`).
 - [ ] **Bấm vào chữ nhãn**: ô có focus không (`for`/`htmlFor`)? Con trỏ có thành bàn tay không?
 - [ ] **Bấm vào khoảng trắng bên phải chữ nhãn**: ô KHÔNG được focus. Focus là thiếu `w-fit` (`I26`).

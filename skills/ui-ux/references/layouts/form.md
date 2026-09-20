@@ -27,8 +27,8 @@ về cái nào.
         └─────────────────┘
 ```
 
-Khối rộng `max-w-md`, không viền cũng được nếu nền trang đã xám. Không căn giữa
-chữ trong form, chỉ căn giữa cả khối.
+Khối rộng `max-w-md`. **Không viền** — đây là card đứng một mình, xem `M29`.
+Không căn giữa chữ trong form, chỉ căn giữa cả khối.
 
 **B. Hai cột, form trái ảnh phải** (hợp khi muốn chèn lời chứng thực hoặc ảnh sản phẩm)
 
