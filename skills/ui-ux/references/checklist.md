@@ -64,6 +64,8 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] **Bấm vào khoảng trắng bên phải chữ nhãn**: ô KHÔNG được focus. Focus là thiếu `w-fit` (`I26`).
 - [ ] Form có ô mật khẩu: có nút hiện/ẩn chưa, và nó có `type="button"` không (`I27`)?
 - [ ] Mọi ô trong form đều có placeholder, hoặc đều không có — không được chỗ có chỗ không (`T25`).
+- [ ] Đọc từng câu lỗi: có câu nào **trùng chữ** với placeholder hay nhãn của chính ô đó không? Trùng là bỏ.
+- [ ] Chữ đỏ dưới ô có thật sự là lỗi không, hay là **gợi ý bị tô đỏ**? Gợi ý thì xám và hiện sẵn.
 - [ ] Modal có ô nhập mà bấm ra ngoài vẫn đóng không? (`I20`)
 - [ ] Modal đã gỡ dismiss thì **còn đường đóng khác** chưa?
 - [ ] Có đủ ba trạng thái chưa: đang tải, rỗng, lỗi? Khung chờ có **đúng hình** nội dung không?

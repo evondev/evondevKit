@@ -136,6 +136,7 @@ Email này đã có người dùng     <- chữ đỏ, text-xs, ngay dưới ô
 
 - Viền `red-500` đặc, ring `red-500/10` rất mờ. Không tô nền đỏ cả ô.
 - Câu lỗi nói **cách sửa**, không nói "không hợp lệ". "Email này đã có người dùng" chứ không phải "Email không hợp lệ".
+- **Câu lỗi không được trùng chữ với placeholder hay nhãn.** Trùng là dấu hiệu nó không mang thêm thông tin nào — xem mục dưới.
 - Chỉ hiện lỗi sau khi người ta rời khỏi ô hoặc bấm gửi, không hiện ngay khi vừa gõ ký tự đầu.
 - **Form dài hơn một màn thì phải có banner tóm tắt lỗi ở đầu**, liệt kê từng lỗi kèm link nhảy tới đúng trường đó. Banner **không thay thế** lỗi hiện tại chỗ, phải có cả hai. Form ngắn gọn trong một màn thì không cần banner, vì mắt thấy hết rồi.
 
@@ -149,3 +150,39 @@ Email này đã có người dùng     <- chữ đỏ, text-xs, ngay dưới ô
 ```
 
 Đây là chỗ duy nhất được tô nền đỏ. Ô nhập thì không bao giờ.
+
+---
+
+## Gợi ý và câu lỗi là hai thứ khác nhau
+
+Một field có **ba** chỗ chứa chữ, mỗi chỗ một việc. Lẫn lộn chúng là lỗi hay gặp
+nhất ở form, và nhìn ảnh chụp rất khó nhận ra vì "trông vẫn đủ chữ".
+
+| Chỗ | Việc | Màu | Khi nào hiện |
+| --- | --- | --- | --- |
+| **Nhãn** | Ô này là gì | `--foreground` | Luôn |
+| **Gợi ý** | Thứ người dùng chưa biết trước khi gõ | `--muted`, `text-xs` | Luôn |
+| **Câu lỗi** | Vừa gõ sai cái gì, sửa thế nào | đỏ, `text-xs` | Chỉ khi sai |
+
+**Dưới ô chỉ có MỘT dòng.** Có lỗi thì câu lỗi **thay chỗ** gợi ý, không đẩy gợi
+ý xuống thành hai dòng chồng nhau.
+
+### Ba câu hỏi trước khi viết một dòng chữ đỏ
+
+1. **Câu này có trùng chữ với placeholder hoặc nhãn không?** Trùng thì bỏ. Placeholder ghi "Nhập mật khẩu của bạn" mà chữ đỏ dưới ô cũng ghi "Nhập mật khẩu của bạn" thì người dùng đọc hai lần cùng một câu, và vẫn không biết mình sai ở đâu.
+2. **Nó nói người dùng LÀM GÌ tiếp, hay chỉ nói ô đang trống?** Mắt đã thấy ô trống rồi.
+3. **Nó có phải lỗi không, hay là gợi ý bị tô nhầm màu đỏ?** "Nhập email bạn dùng để đăng nhập" là gợi ý — nó đúng cả khi người dùng chưa làm gì sai. Gợi ý thì xám và hiện sẵn, đừng đợi có lỗi mới đỏ lên.
+
+### Ô trống thì viết gì
+
+| Ô | Sai | Đúng |
+| --- | --- | --- |
+| Email | `Nhập email của bạn` *(trùng placeholder)* | `Chưa nhập email` |
+| Mật khẩu | `Nhập mật khẩu của bạn` *(trùng placeholder)* | `Chưa nhập mật khẩu` |
+| Email sai định dạng | `Email không hợp lệ` | `Email phải có dấu @` |
+| Mật khẩu ngắn | `Mật khẩu không hợp lệ` | `Mật khẩu cần ít nhất 8 ký tự` |
+| Sai thông tin đăng nhập | `Đăng nhập thất bại` | `Email hoặc mật khẩu chưa đúng` |
+
+Dòng cuối là ca riêng: nói rõ sai cái nào **là lỗ hổng bảo mật** — người ngoài dò
+được email nào có tài khoản. Nên ở đúng ca này thì mơ hồ là cố ý, và câu lỗi đặt
+ở banner đầu form chứ không dưới một ô cụ thể.
