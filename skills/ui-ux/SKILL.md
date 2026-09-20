@@ -92,15 +92,14 @@ giao, để lượt sau không có ai "sửa lại cho đúng luật".
 Chọn xong thì trả lời luôn câu này: **có cần dark mode không.** Mặc định là
 không — xem `M20`.
 
-**Đề có form thì hỏi thêm đúng một câu: ô nhập có icon trái không.** Mặc định là
-**không**. Đây là lựa chọn thẩm mỹ chứ không phải luật, và nó đổi luôn lề chữ
-trong ô nên phải chốt trước khi dựng, không phải thêm sau. Hỏi gộp vào cùng lượt
-với câu 3, đừng tách thành một lượt riêng. Người dùng muốn thì dựng theo
-`references/components/input.md`, lấy icon theo `F15`.
+**Đề có form: ô nhập mặc định KHÔNG có icon trái.** Đừng hỏi, cứ dựng không icon
+rồi **báo một dòng** cùng với câu bố cục: *"ô nhập đang để trơn, muốn có icon
+trái thì nói."* Họ muốn thì dựng theo `references/components/input.md`, lấy icon
+theo `F15`.
 
-Đây là **ngoại lệ có chủ ý của `S4`** — bình thường skill chỉ hỏi về bố cục.
-Cho phép vì icon trong ô nhập đổi kích thước và lề của thứ đang dựng ngay lượt
-này, khác với việc chào bán thêm thành phần chưa ai cần.
+Cùng cách làm với bộ mặc định của màn xác thực trong
+`references/layouts/form.md`: **mặc định + một dòng báo**, không phải một bảng
+câu hỏi.
 
 ### Câu 4 — Bố cục: đưa 2–3 phương án rồi DỪNG HẲN
 
@@ -148,6 +147,11 @@ mà quên tiêu đề thì cứ đặt, vì nó là cấu trúc chứ không ph�
 nhãn ô nhập, chữ trên nút, câu lỗi. Còn lại thì không — không thêm logo, không
 thêm câu quảng cáo, không thêm ô "ghi nhớ đăng nhập", không thêm nhà cung cấp
 đăng nhập thứ hai.
+
+⚠️ **Màn xác thực có bộ mặc định riêng, xem `references/layouts/form.md`.**
+"Quên mật khẩu" thì dựng luôn; ghi nhớ đăng nhập và đăng nhập mạng xã hội thì
+không, vì cả hai cần backend. **Báo một dòng** về những lựa chọn đó ngay trong
+lượt hỏi bố cục — đừng biến nó thành một bảng câu hỏi.
 
 **S4. Chỉ hỏi về bố cục, không hỏi lại nội dung.** Người dùng đã liệt kê rõ màn
 hình có những gì thì giữ nguyên đúng danh sách đó. Câu hỏi duy nhất được phép đặt

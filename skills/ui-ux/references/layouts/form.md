@@ -41,6 +41,42 @@ Không căn giữa chữ trong form, chỉ căn giữa cả khối.
 
 ---
 
+## Mặc định cho màn xác thực — dựng luôn, báo một dòng
+
+**Đừng hỏi bốn câu.** Người dùng gõ "dựng màn đăng nhập" là muốn thấy màn đăng
+nhập, không muốn làm một bài khảo sát. Dựng theo mặc định dưới đây, rồi **nói
+một dòng** cho họ biết mình đã chọn gì.
+
+| Thứ | Mặc định | Vì sao |
+| --- | --- | --- |
+| **"Quên mật khẩu?"** | **Có** | Thiếu nó thì người quên mật khẩu không còn đường nào vào. Đây là phần tử duy nhất mà thiếu là hỏng chức năng, không phải hỏng thẩm mỹ |
+| **Ghi nhớ đăng nhập** | **Không** | Nó đổi thời hạn phiên ở **backend**, không phải chỉ là cái checkbox. Vẽ ra mà backend không làm gì là lừa người dùng — sai nhiều hơn là thiếu |
+| **Đăng nhập mạng xã hội** | **Không** | Phải có backend và nhà cung cấp cụ thể mới có nghĩa, mà cái đó thì không đoán được |
+| **Kiểu placeholder** | **Câu hướng dẫn** (`T25`) | Xem `T25` cho ca ngoại lệ |
+
+**Dòng báo, đặt chung lượt với câu bố cục ở mục 0** — lượt đó vốn đã dừng chờ
+người dùng chọn, nên không tốn thêm lượt nào:
+
+> Mình sẽ dựng kèm "Quên mật khẩu?", chưa có ghi nhớ đăng nhập và đăng nhập mạng
+> xã hội (hai cái đó cần backend). Muốn khác thì nói luôn trong câu trả lời này.
+
+Một dòng, không phải một bảng câu hỏi. Người dùng **không nhắc gì** thì coi như
+đồng ý, dựng theo mặc định, đi tiếp.
+
+**Họ nói muốn thêm thì thêm ngay, đừng hỏi lại.** "Thêm remember me" là đủ rõ —
+dựng luôn, không hỏi "bro muốn tích sẵn không, đặt ở đâu". Mặc định phần dưới
+đã trả lời hết mấy câu đó rồi.
+
+### Ghi nhớ đăng nhập — khi họ yêu cầu
+
+- **Không tích sẵn.** Tích sẵn là quyết định hộ người dùng về bảo mật.
+- Nhãn **"Ghi nhớ đăng nhập"**, đừng dịch thẳng "Nhớ tôi" — tiếng Việt đọc ra như máy dịch (`T24`).
+- Đặt cùng hàng với "Quên mật khẩu?": checkbox trái, link phải.
+- Nói một câu lúc giao: cái này cần backend đổi thời hạn phiên, không chỉ là checkbox.
+- App có dữ liệu nhạy cảm hoặc hay dùng trên máy chung — ngân hàng, hồ sơ sức khoẻ, quản trị nội bộ — thì **nói một câu khuyên bỏ**, rồi vẫn làm theo ý họ.
+
+---
+
 ## "Quên mật khẩu?"
 
 **Nằm cùng hàng với nhãn "Mật khẩu", căn phải.** Không nằm dưới ô nhập, không

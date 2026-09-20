@@ -181,3 +181,35 @@ test form đăng nhập.
 
 Placeholder **không thay được nhãn.** Gõ vào là placeholder biến mất, lúc đó
 người dùng không còn gì để biết ô này là ô gì.
+
+**Ngoại lệ: ô mà ĐỊNH DẠNG không hiển nhiên.** Lúc đó ví dụ mới có giá trị, vì
+thứ người dùng thiếu là khuôn chứ không phải việc phải làm.
+
+| Ô | Placeholder |
+| --- | --- |
+| Email, họ tên, mật khẩu | Câu hướng dẫn — định dạng ai cũng biết |
+| Điện thoại, ngày tháng, mã số thuế, biển số, mã giảm giá | Ví dụ đúng khuôn: `0901 234 567`, `31/12/2026` |
+
+Phép thử: **người dùng có thể gõ sai khuôn không?** Không thể sai thì đừng đưa ví
+dụ, chỉ tổ làm họ nhìn hai lần.
+
+**T26. Ô mật khẩu KHÔNG dùng dấu chấm tròn làm placeholder.**
+
+`••••••••` nhìn **y hệt mật khẩu đã gõ**. Người dùng không phân biệt được ô đang
+trống hay đang có chữ — đây là ca tệ nhất của cái lỗi `T25` cảnh báo, vì hai thứ
+trông giống nhau tuyệt đối chứ không chỉ na ná.
+
+Và đếm chấm để đoán độ dài tối thiểu thì không ai làm. Tám chấm với chín chấm
+nhìn như nhau.
+
+**Độ dài tối thiểu là GỢI Ý, viết bằng chữ**, đặt ở dòng gợi ý dưới ô (xem
+`layouts/form.md`):
+
+```
+Mật khẩu
+[ Nhập mật khẩu của bạn              👁 ]
+Ít nhất 8 ký tự
+```
+
+Gợi ý này hiện **sẵn từ đầu**, không đợi gõ sai mới hiện. Nói trước một câu rẻ
+hơn bắt người ta gõ xong rồi báo sai.
