@@ -4,7 +4,8 @@
 > dễ đọc mọi đề mơ hồ thành kanban. Xem luật `S12` trong `../../SKILL.md`.
 
 
-Chưa có skeleton thì đưa 2-3 phương án cho chọn. Nhịp ở đây là nhịp app:
+Không có wireframe thì dựng bố cục mặc định (hoặc cái mà điều kiện trong đề
+chọn), báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`. Nhịp ở đây là nhịp app:
 `p-5`, `gap-3`, `text-sm`, viền mảnh, bóng gần như không.
 
 ---

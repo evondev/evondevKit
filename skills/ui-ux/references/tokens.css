@@ -28,9 +28,10 @@
   --muted: #828282;        /* chữ phụ, label, placeholder, icon phụ */
   /* Đường tóc trang trí: viền card, viền khung dropdown, đường chia trong danh
      sách và trong menu. Nhạt đến mức chỉ đủ vạch ranh giới. Xem luật M13, M14. */
-  --border: #f3f3f4;
-  /* Đậm hơn ĐÚNG một bậc. Cho viền Ô NHẬP (viền là thứ duy nhất báo "đây là chỗ
-     gõ", vì ô nhập cùng nền trắng với card) và viền card khi hover. Đây là token
+  --border: #f7f7f8;
+  /* Đậm hơn ĐÚNG một bậc. Cho viền Ô NHẬP và NÚT OUTLINE (viền là thứ duy nhất
+     báo "đây là chỗ gõ / chỗ bấm", vì cả hai cùng nền trắng với card) và viền
+     card khi hover. Đây là token
      viền thứ hai và cũng là token cuối, xem luật M14, M16. */
   --border-strong: #ececec;
 

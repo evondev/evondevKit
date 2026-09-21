@@ -22,9 +22,9 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] **Copy sắp viết bằng tiếng gì** — đã grep i18n và nhãn hiện có chưa (`T24`)?
 - [ ] Đề bài có từ nào mơ hồ không (bảng, thẻ, danh sách, khung, trang, lịch)?
 - [ ] Đề để hở mà đã hỏi phạm vi chưa, hay tự quyết rồi làm mỏng dính?
-- [ ] Không có skeleton mà **đã đưa 2–3 bố cục rồi DỪNG chờ chọn chưa**? Tự chọn hộ là sai.
+- [ ] Không có wireframe thì đã dựng **bố cục mặc định** trong file layout chưa, hay tự bịa? Đã báo một dòng "muốn kiểu khác thì nói" chưa?
 - [ ] Đề nhiều hơn một màn? Đã chốt **hợp đồng nguyên tố** (`system.md` `D1`) chưa?
-- [ ] Người dùng nói "chưa biết muốn UI thế nào" → đã đưa 3 hướng kèm lý do chưa?
+- [ ] Người dùng nói "chưa biết muốn UI thế nào" → đã dựng hướng A và báo còn B, C chưa?
 
 ---
 

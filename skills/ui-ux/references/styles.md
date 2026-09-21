@@ -15,7 +15,7 @@ Ba ca, chọn đúng một:
 | Ca | Làm gì |
 | --- | --- |
 | **Người dùng tự nêu phong cách** ("làm trang giá kiểu glassmorphism") | Làm theo phong cách đó, **không hỏi lại** |
-| **Audit thấy dự án có phong cách khác flat** (`P4`) | **Hỏi một câu**, gộp cùng lượt với câu bố cục ở mục 0 (mẫu bên dưới) |
+| **Audit thấy dự án có phong cách khác flat** (`P4`) | **Hỏi một câu** trước khi dựng (mẫu bên dưới) |
 | **Dự án flat hoặc trống**, người dùng không nêu gì | Flat (`P6`). Không hỏi về phong cách |
 
 Mẫu câu hỏi, kèm hệ quả của từng lựa chọn để người dùng chọn có căn cứ:

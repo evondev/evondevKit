@@ -1,7 +1,7 @@
 # Bố cục khối nổi
 
-Modal, panel trượt, dropdown, toast. Chưa có skeleton thì đưa 2-3 phương án cho
-chọn.
+Modal, panel trượt, dropdown, toast. Không có wireframe thì dựng đúng khuôn
+dưới đây, báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`.
 
 ---
 

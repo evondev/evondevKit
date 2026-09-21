@@ -1,7 +1,7 @@
 # Bố cục form và xác thực
 
-Chưa có skeleton thì đưa 2-3 phương án cho chọn, kèm một câu vì sao mình nghiêng
-về cái nào.
+Không có wireframe thì dựng bố cục mặc định (hoặc cái mà điều kiện trong đề
+chọn), rồi báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`.
 
 ---
 
@@ -54,11 +54,10 @@ một dòng** cho họ biết mình đã chọn gì.
 | **Đăng nhập mạng xã hội** | **Không** | Phải có backend và nhà cung cấp cụ thể mới có nghĩa, mà cái đó thì không đoán được |
 | **Kiểu placeholder** | **Câu hướng dẫn** (`T25`) | Xem `T25` cho ca ngoại lệ |
 
-**Dòng báo, đặt chung lượt với câu bố cục ở mục 0** — lượt đó vốn đã dừng chờ
-người dùng chọn, nên không tốn thêm lượt nào:
+**Dòng báo, đặt chung với dòng báo bố cục lúc giao:**
 
 > Mình sẽ dựng kèm "Quên mật khẩu?", chưa có ghi nhớ đăng nhập và đăng nhập mạng
-> xã hội (hai cái đó cần backend). Muốn khác thì nói luôn trong câu trả lời này.
+> xã hội (hai cái đó cần backend). Muốn khác thì nói.
 
 Một dòng, không phải một bảng câu hỏi. Người dùng **không nhắc gì** thì coi như
 đồng ý, dựng theo mặc định, đi tiếp.
@@ -113,18 +112,18 @@ ngay dưới. Có `cursor-pointer`, gạch chân khi hover.
 
 ## Nút đăng nhập mạng xã hội
 
-Số lượng quyết định bố cục, và **từ 3 nút trở lên thì phải hỏi**, đừng tự xếp:
+Số lượng quyết định bố cục:
 
 | Số nút | Bố cục |
 | --- | --- |
 | 1–2 | Xếp dọc, full width, có chữ: `Đăng nhập bằng Google` |
-| **3 trở lên** | **Hỏi người dùng**, đưa hai phương án dưới đây rồi chờ chọn |
+| **3 trở lên** | **A** bên dưới. Báo một dòng lúc giao: muốn xếp dọc đủ chữ thì nói |
 
 Xếp dọc 3–4 nút full width thì phần mạng xã hội **dài hơn cả form thật**, và
 người dùng phải cuộn qua một dãy nút giống hệt nhau mới thấy ô email. Thứ chính
 của màn bị đẩy lên trên thành thứ phụ.
 
-**A. Chia cột, chỉ icon** (nghiêng về cái này khi có từ 3 nút)
+**A. Chia cột, chỉ icon** (mặc định khi có từ 3 nút)
 
 ```
         │ [   Đăng nhập   ]  │
@@ -138,7 +137,7 @@ của màn bị đẩy lên trên thành thứ phụ.
 - Logo giữ màu gốc theo `F16`, đừng tô xám cho "đồng bộ".
 - Quá 4 nút thì không xếp một hàng nữa: giữ 2–3 cái dùng nhiều nhất, phần còn lại bỏ hẳn.
 
-**B. Vẫn xếp dọc, đủ chữ** (hợp khi người dùng ít rành công nghệ, hoặc logo dễ nhầm)
+**B. Vẫn xếp dọc, đủ chữ** (chỉ khi người dùng yêu cầu)
 
 Chữ đầy đủ đọc rõ hơn icon trần, đổi lại tốn chiều dọc. Chọn B thì nói rõ
 đánh đổi đó lúc giao.

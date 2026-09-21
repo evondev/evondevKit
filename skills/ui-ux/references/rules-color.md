@@ -147,13 +147,15 @@ Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu
 | Token | Cho | Vì sao |
 | --- | --- | --- |
 | `--border` | Viền card, khung dropdown, đường chia trong danh sách và menu | **Trang trí**: chỉ vạch ranh giới, nhạt được bao nhiêu thì nhạt |
-| `--border-strong` | **Viền ô nhập**, viền card khi hover | **Chức năng**: ô nhập cùng nền trắng với card, viền là thứ duy nhất báo "đây là chỗ gõ" |
+| `--border-strong` | **Viền ô nhập**, **viền nút outline**, viền card khi hover | **Chức năng**: ô nhập và nút outline cùng nền trắng với card, viền là thứ duy nhất báo "đây là chỗ gõ", "đây là chỗ bấm" (`I8`) |
 
 Trong mỗi nhóm thì mọi chỗ dùng chung đúng một token, để đường tóc không chỗ
 đậm chỗ nhạt. Muốn viền card nhạt đi thì hạ `--border`, ô nhập không nhạt theo.
 
-⚠️ **Đừng lấy `--border` cho ô nhập để "cho đồng bộ".** Hạ `--border` cho card
-nhẹ đi là ô nhập tan luôn vào nền.
+⚠️ **Đừng lấy `--border` cho ô nhập hay nút outline để "cho đồng bộ".** Hạ
+`--border` cho card và dropdown nhẹ đi là ô nhập và nút tan luôn vào nền. Đã xảy
+ra thật (2026-09): `--border` hạ từ `#f3f3f4` xuống `#f7f7f8` cho khung dropdown,
+nút outline đang dùng chung token nên trông như đã bị khoá.
 
 ⚠️ Thiếu class màu viền thì Tailwind v4 để `border-color: currentColor` — nút chữ
 đen sẽ ra **viền gần đen**. Thấy viền đậm bất thường thì kiểm chỗ này trước khi

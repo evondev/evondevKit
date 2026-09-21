@@ -69,15 +69,12 @@ Màu vẫn theo `M4`: đây là trạng thái thật, nên được dùng màu.
 
 ---
 
-## D4. Nhiều màn thì hỏi bố cục MỘT LƯỢT cho cả bộ
+## D4. Nhiều màn thì báo bố cục MỘT LẦN cho cả bộ
 
-`SKILL.md` mục 0 ngầm giả định một màn hình. Với đề nhiều màn, đừng hỏi tám lần.
-
-Gộp thành một lượt: liệt kê đủ các bề mặt mình đếm được, đề xuất bố cục cho
-**các màn chính** (thường là 2–3 màn), và nói rõ các bề mặt phụ (form, hộp xác
-nhận, trạng thái rỗng) sẽ theo khuôn chung nào.
-
-Rồi **dừng hẳn** chờ chọn, đúng như luật `S2`.
+`SKILL.md` mục 0 ngầm giả định một màn hình. Với đề nhiều màn, dựng cả bộ theo
+bố cục mặc định của từng loại màn, rồi báo **một** đoạn lúc giao: liệt kê các bề
+mặt đã dựng, màn chính theo bố cục nào, bề mặt phụ (form, hộp xác nhận, trạng
+thái rỗng) theo khuôn chung nào. Muốn đổi thì người dùng nói.
 
 ---
 
