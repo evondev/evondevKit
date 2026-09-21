@@ -10,7 +10,13 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 ## Cổng 1 — trước khi viết dòng class đầu tiên
 
 - [ ] Đây là **refactor** hay **dựng mới**? Chưa trả lời thì chưa được đi tiếp.
+- [ ] **Đã báo dòng "Audit: …" chưa?** Không có dòng đó là chưa audit, dù có grep hay không.
 - [ ] Đã grep `package.json` và `components/ui` chưa — họ dùng Tailwind? shadcn? Hay bộ khác?
+- [ ] **Thứ sắp dựng đã có trong codebase chưa?** Grep tên nó (`Avatar`, `Dropdown`, `Modal`…). Có rồi thì dùng, đừng dựng cái thứ hai.
+- [ ] **Đã chạy audit tầng 3 (phong cách) chưa?** Dự án có phong cách khác flat mà chưa hỏi là sai; người dùng chưa chọn mà tự đổi sang glass cũng sai (`P1`).
+- [ ] Phong cách đã chọn không phải flat: đã mở đúng khối của nó trong `styles.md` và kiểm hết mục **Bẫy** chưa?
+- [ ] **Tương phản (`P3`)**: chữ thường ≥ 4.5 : 1, đo ở **chỗ tệ nhất** — đầu nhạt của gradient, vùng sáng nhất phía sau kính. Chữ phụ `/50` là thứ trượt trước.
+- [ ] Theo phong cách của dự án nhưng **không theo lỗi** của dự án: vẫn chỉ một nút chính (`I3`), vẫn một màu nhấn (`M3`).
 - [ ] **Không có `package.json`?** Vậy sắp đưa code gì ra — `.tsx` hay HTML thuần? Đưa JSX cho dự án không React là hỏng.
 - [ ] Đã grep token sẵn có chưa (`--primary`, `--brand`, `font-family`)? Có thì dùng, đừng hỏi.
 - [ ] **Copy sắp viết bằng tiếng gì** — đã grep i18n và nhãn hiện có chưa (`T24`)?
@@ -59,6 +65,9 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] **Rê chuột lên một hàng: có phần tử con nào biến mất không?** (`M18`)
 - [ ] Rê chuột lên hàng: nền hover có ôm sát chữ không? Phải có padding đủ bốn phía.
 - [ ] Màn chỉ có MỘT card giữa trang trống? Vậy card phải **không viền** (`M29`), và không bao giờ có cả viền lẫn bóng.
+- [ ] Rê chuột lên mục **đăng xuất / xoá**: chữ, icon VÀ nền cùng đỏ lên chưa (`I4`)? Icon còn xám là thiếu `group`.
+- [ ] Đỏ đang dùng đúng sắc chưa (`M30`)? Lỗi là `red`, hành động nguy hiểm lúc rê vào là `rose`. Không có viền hay banner `rose`.
+- [ ] Đường chia trong dropdown, card: có chạm hai mép khối không, hay thụt theo padding (`F25`)?
 - [ ] Rê chuột lên **nút chính**: có đổi màu không? Nút `primary` là chỗ hay quên hover nhất (`I9`).
 - [ ] **Bấm vào chữ nhãn**: ô có focus không (`for`/`htmlFor`)? Con trỏ có thành bàn tay không?
 - [ ] **Bấm vào khoảng trắng bên phải chữ nhãn**: ô KHÔNG được focus. Focus là thiếu `w-fit` (`I26`).

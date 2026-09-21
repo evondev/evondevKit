@@ -1,6 +1,6 @@
 ---
 name: ui-ux
-description: Gu UI/UX cho hệ thống dashboard — dashboard, danh sách, bảng, form, cài đặt, modal. Hai nhánh - dựng màn mới, và refactor codebase đã có mà không vỡ giao diện. Bám theo thư viện component và token sẵn có của dự án. Dùng khi dựng hoặc sửa bất kỳ giao diện app nào, khi refactor CSS, hoặc khi người dùng nhắc "làm UI cho đẹp", "đừng làm kiểu AI", "theo gu của mình", "ui-ux", "evon".
+description: Gu UI/UX cho hệ thống dashboard — dashboard, danh sách, bảng, form, cài đặt, modal. Hai nhánh - dựng màn mới, và refactor codebase đã có mà không vỡ giao diện. Bám theo thư viện component và token sẵn có của dự án. Mặc định flat, làm được glassmorphism, gradient, nổi, nền tối khi được chọn. Dùng khi dựng hoặc sửa bất kỳ giao diện app nào, khi refactor CSS, hoặc khi người dùng nhắc "làm UI cho đẹp", "đừng làm kiểu AI", "theo gu của mình", "ui-ux", "evon".
 ---
 
 # UI/UX cho hệ thống dashboard
@@ -35,16 +35,70 @@ dù người dùng gọi nó là "làm lại giao diện".
 
 ### Câu 2 — Dự án đang dùng gì? (TỰ TÌM, ĐỪNG HỎI)
 
+> **Audit là CỔNG CHẶN, không phải bước tham khảo.** Chưa chạy xong khối lệnh
+> dưới đây thì chưa được mở file layout, chưa được đề xuất bố cục, chưa được
+> viết dòng code nào — kể cả khi đề bài nhỏ như "thêm một cái dropdown".
+
 Skill này **bám theo codebase**, không áp bộ công cụ của mình lên dự án người ta.
-Grep trước, rồi mới quyết:
+Audit ba tầng: **stack** (dự án dùng gì), **component** (thứ sắp dựng đã có
+chưa), và **phong cách** (dự án đang flat, glass, gradient hay tối).
 
 ```bash
+# Tầng 1 — stack
 ls package.json 2>/dev/null || echo "KHÔNG CÓ package.json — xem dòng cuối bảng"
 cat package.json 2>/dev/null | grep -E '"(tailwindcss|@radix-ui|@mui|antd|@chakra|bootstrap)"'
 ls components/ui src/components/ui 2>/dev/null          # dấu hiệu shadcn
 grep -rn "@theme\|--primary\|--brand\|font-family" \
   app/globals.css src/index.css tailwind.config.* 2>/dev/null | head
+
+# Tầng 2 — thứ sắp dựng đã có chưa. Thay TÊN bằng thứ đang dựng:
+# avatar, dropdown, menu, modal, dialog, button, input, badge, toast...
+find . -path ./node_modules -prune -o -iname "*TÊN*" -print 2>/dev/null | head
+grep -rliE "function TÊN|const TÊN|export.*TÊN" --include="*.tsx" --include="*.jsx" \
+  --include="*.vue" --include="*.svelte" . 2>/dev/null | grep -v node_modules | head
 ```
+
+**Tầng 2 là tầng hay bị bỏ.** Dự án có sẵn `Avatar` mà dựng thêm một cái nữa thì
+app có hai kiểu avatar, và cái mới dựng lệch với mọi chỗ khác. Đã có thì **dùng
+cái của họ**, chỉ chỉnh token nếu nó trái luật.
+
+**Báo kết quả audit một dòng trước khi đi tiếp**, kể cả khi không tìm thấy gì:
+
+> Audit: Next + Tailwind v4, có shadcn, token ở `globals.css`. Đã có `Avatar` ở
+> `components/ui/avatar.tsx` — dùng cái đó. Chưa có dropdown — dựng mới.
+
+Dòng này làm cho việc bỏ audit **nhìn thấy được**. Không có dòng này thì người
+dùng không biết AI đã kiểm hay đoán.
+
+**Tầng 3 — phong cách.** Đếm **số file** có tín hiệu, không đếm số dòng:
+
+```bash
+count_files() {
+  grep -rlE "$1" --include='*.tsx' --include='*.jsx' --include='*.vue' --include='*.svelte' \
+    --include='*.html' --include='*.css' --include='*.scss' . 2>/dev/null \
+    | grep -viE 'node_modules|dialog|modal|popover|dropdown|menu|select|toast|tooltip|sheet|drawer|command' \
+    | wc -l | tr -d ' '
+}
+echo "glass:    $(count_files 'backdrop-blur|backdrop-filter')"
+echo "gradient: $(count_files 'bg-gradient-|bg-linear-|bg-radial-|linear-gradient\(|radial-gradient\(')"
+echo "nổi:      $(count_files 'shadow-(md|lg|xl|2xl)')"
+# Tối: chỉ cần MỘT file, là layout gốc
+grep -rlE '<(body|html)[^>]*(bg-black|bg-(zinc|neutral|slate|gray|stone)-9[0-9]{2})|color-scheme: *dark' \
+  --include='*.tsx' --include='*.jsx' --include='*.html' --include='*.css' . 2>/dev/null | grep -v node_modules | head -3
+# Token phong cách: có là có chủ đích, dù đếm file ra ít
+grep -rhoE -- '--(glass|gradient|shadow|blur)[a-z0-9-]*' --include='*.css' . 2>/dev/null | grep -v node_modules | sort -u | head
+```
+
+Lệnh **cố ý bỏ qua** file dialog, dropdown, toast... vì `M15` cho lớp nổi có
+bóng và blur. Không bỏ qua thì dự án flat nào dùng shadcn cũng bị đếm thành "nổi".
+
+Đọc số theo `P4` trong `references/styles.md`. **Mặc định luôn là flat.** Thấy
+phong cách khác thì **hỏi** ở câu 3, không tự đổi (`P1`).
+
+Dòng `Audit:` thêm phần phong cách:
+
+> Audit: Next + Tailwind v4, có shadcn. Đã có `Avatar`. **Phong cách: glass ở 7
+> file** (card, sidebar, header) — sẽ hỏi flat hay glass.
 
 Rồi áp theo bảng này:
 
@@ -72,6 +126,16 @@ Dùng thư viện của họ thì cách áp skill là **chỉnh token cho khớp
 - Kiểm bóng: nhiều bộ cho card `shadow-sm` mặc định, mà luật `M15` chỉ cho bóng ở lớp nổi.
 
 ### Câu 3 — Muốn UI trông như thế nào?
+
+**Phong cách mặc định là flat**, theo `P1` trong `references/styles.md`:
+
+- **Người dùng tự nêu phong cách** ("kiểu glassmorphism", "gradient như Stripe") → làm theo, không hỏi lại. Mở `references/styles.md` lấy khối của phong cách đó.
+- **Audit tầng 3 thấy dự án có phong cách khác flat** → **hỏi một câu**: flat, hay theo phong cách của dự án. Kèm hệ quả của từng lựa chọn, mẫu ở `P1`. Gộp cùng lượt với câu 4.
+- **Còn lại** → flat, không hỏi về phong cách.
+
+Chọn phong cách nào thì mở khối của nó trong `references/styles.md`: khối đó nói
+luật gu flat nào được đè, và bẫy riêng của phong cách đó. **Nguyên tắc thì không
+phong cách nào đè** (`P2`).
 
 Có ảnh tham chiếu, có mô tả, có sản phẩm muốn giống → **bám theo cái đó**, bỏ
 qua phần còn lại của câu này.
@@ -236,6 +300,7 @@ thì một trong hai chỗ là sai.
 | **D** | `references/system.md` | Đề nhiều hơn một màn: hợp đồng nguyên tố |
 | **L** | `references/refactor.md` | Refactor codebase đã có |
 | **W** | `references/tailwind-v4-traps.md` | Bẫy Tailwind v4 khi có CSS cũ |
+| **P** | `references/styles.md` | Phong cách thị giác: flat, nổi, glass, gradient, tối. Luật nào được đè, bẫy riêng, **tương phản** |
 
 **Luôn mở, mọi task:**
 
@@ -255,6 +320,7 @@ thì một trong hai chỗ là sai.
 | Dòng trong danh sách | `references/components/list-row.md` |
 | Danh sách rỗng, đang tải | `references/components/empty-state.md` |
 | Chip lọc, nút chỉ có icon | `references/components/small-controls.md` |
+| Avatar, nhóm avatar chồng nhau | `references/components/avatar.md` |
 | Biểu đồ, số liệu, thanh tiến độ | `references/components/charts.md` |
 
 **Code mẫu đã duyệt** (chỉ mở sau khi chốt loại màn hình, luật `S11`):

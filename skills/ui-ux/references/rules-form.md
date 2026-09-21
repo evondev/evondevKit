@@ -135,7 +135,11 @@ mục thì ô icon mất sạch ý nghĩa — thà bỏ hẳn.
 — ví dụ người dùng đặt được ảnh nền nên độ trong của vỏ đổi theo. Không có ảnh
 nền thì không blur.
 
+*Gu flat — phong cách khác đã chọn theo `P1` thì xem `P2` trong `references/styles.md`.*
+
 **F20. Không viền phát sáng, không `ring-4`, không shadow màu neon.**
+
+*Gu flat — phong cách khác đã chọn theo `P1` thì xem `P2` trong `references/styles.md`.*
 
 **F21. Không `border-dashed`.** Hai ngoại lệ: khung kéo thả tệp, và ô rỗng trong
 board hay lịch.
@@ -143,8 +147,51 @@ board hay lịch.
 **F22. Không animate hình khối.** Không `scale-105` khi hover, không nhấc lên,
 không đổ bóng thêm.
 
+*Gu flat — phong cách khác đã chọn theo `P1` thì xem `P2` trong `references/styles.md`.*
+
 **F23. Không hiệu ứng xuất hiện cho nội dung tĩnh.** Không fade-in cả trang,
 không cho biểu đồ tự vẽ, cột tự mọc, số tự đếm lên.
 
 **F24. Không `transition-all`** trừ đúng một chỗ: card hover. Còn lại là
 `transition-colors`.
+
+---
+
+## Đường chia
+
+**F25. Đường chia trong khối có padding phải tràn hết bề ngang, không thụt theo
+padding.**
+
+Dropdown, card, panel đều có `p-*` quanh nội dung. Đặt `<hr>` vào trong đó thì
+nó thụt vào hai đầu, thành một đoạn gạch lơ lửng giữa khối — nhìn như vẽ hụt chứ
+không như một vách ngăn.
+
+Đường chia là thứ **chia khối**, nên nó phải chạm hai mép khối. Hai cách, chọn
+theo cấu trúc:
+
+```html
+<!-- Cách 1: âm lề bằng đúng padding của cha -->
+<div class="p-1.5">
+  <button>…</button>
+  <hr class="-mx-1.5 my-1.5 border-border" />
+  <button>…</button>
+</div>
+
+<!-- Cách 2 (nên dùng): cha không padding ngang, padding nằm ở từng mục -->
+<div class="py-1.5">
+  <button class="px-3">…</button>
+  <hr class="my-1.5 border-border" />
+  <button class="px-3">…</button>
+</div>
+```
+
+**Cách 2 bền hơn.** Cách 1 phải giữ `-mx-*` khớp đúng `p-*` của cha — đổi padding
+cha mà quên đổi âm lề là đường chia lại hụt, hoặc tràn ra khỏi khung. Cách 2 không
+có hai con số nào phải khớp nhau.
+
+Cùng lý do, `divide-y` trên danh sách trong card cũng tràn hết bề ngang — xem
+`references/components/card.md`.
+
+Ngoại lệ duy nhất: đường chia **giữa các dòng của một danh sách** mà muốn bắt đầu
+thẳng hàng với chữ (bỏ qua avatar bên trái). Cái đó là thụt có chủ ý, và phải
+thụt đúng bằng chiều rộng avatar cộng gap, không phải bằng padding.

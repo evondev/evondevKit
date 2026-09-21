@@ -47,7 +47,8 @@ cần nhìn thấy danh sách phía sau. Không dùng panel cho một câu xác 
 ## Dropdown
 
 Bám mép trái của nút mở, rộng tối thiểu bằng nút. Mục nguy hiểm tách xuống cuối,
-cách bằng một đường kẻ. Không quá 8 mục, hơn thì thêm ô tìm.
+cách bằng một đường kẻ — hover của nó theo `I4`, đường kẻ tràn hết bề ngang theo
+`F25`. Không quá 8 mục, hơn thì thêm ô tìm.
 
 ## Phím tắt trong menu
 

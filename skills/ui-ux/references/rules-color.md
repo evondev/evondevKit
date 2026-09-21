@@ -11,7 +11,11 @@ Luật có dấu ⚑ là chưa qua vòng test nào.
 
 **M1. Nền trang xám nhạt, không trắng tinh. Card mới trắng.**
 
+*Gu flat — phong cách khác đã chọn theo `P1` thì xem `P2` trong `references/styles.md`.*
+
 **M2. 95% trung tính, 5% điểm nhấn.**
+
+*Gu flat — phong cách khác đã chọn theo `P1` thì xem `P2` trong `references/styles.md`.*
 
 Đây là luật quan trọng nhất trong nhóm, và là thứ quyết định một màn hình trông
 có chủ ý hay trông như chưa ai quyết định gì.
@@ -44,7 +48,10 @@ Bảng màu của MỘT màn hình, không thêm:
 | Xám trung tính | Mọi thứ còn lại: khung, chữ phụ, badge, icon, viền |
 | Màu nhấn | Trạng thái "đã xong", và nút hành động chính khi thật cần nổi |
 | Hổ phách | "Cần chú ý": quá hạn, nộp trễ, bỏ lỡ |
-| Đỏ | CHỈ lỗi thật mà người dùng phải xử lý: bài bị từ chối, lỗi form |
+| Đỏ lỗi — `red` | Lỗi thật mà người dùng phải xử lý: bài bị từ chối, lỗi form |
+| Đỏ nguy hiểm — `rose` | **Chỉ khi rê vào** hành động không lấy lại được: xoá, đăng xuất, huỷ tài khoản. Lúc thường không đỏ |
+
+Hai sắc đỏ là cố ý, không phải gõ nhầm — xem `M30`.
 
 Cách áp: định thêm một màu nền cho một loại khối thì **dừng lại và hỏi — màu đó
 báo trạng thái gì?** Không trả lời được thì nó là trang trí, dùng xám.
@@ -106,6 +113,8 @@ thật ra xem. Xem `refactor.md` luật L3.
 — avatar người dùng, icon workspace, logo tổ chức. Chúng là hình tròn hoặc vuông
 nhỏ dưới 40px, và gradient ở đó đóng vai ảnh chứ không đóng vai nền.
 
+*Gu flat — phong cách khác đã chọn theo `P1` thì xem `P2` trong `references/styles.md`.*
+
 Không bao giờ cho nút, card, nền trang, hay chữ (`bg-clip-text text-transparent`).
 
 ---
@@ -118,6 +127,8 @@ Không bao giờ cho nút, card, nền trang, hay chữ (`bg-clip-text text-tran
 > ngày 11/09/2026 sau khi chủ dự án đưa ba ảnh tham chiếu. Đừng hồi sinh luật cũ.
 
 **M13. Tách khối bằng đường tóc 1px + bo góc, không bằng bóng.**
+
+*Gu flat — phong cách khác đã chọn theo `P1` thì xem `P2` trong `references/styles.md`.*
 
 Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu chữ.
 
@@ -142,6 +153,8 @@ thể thì thêm đúng một token thứ hai, đặt tên theo vai trò, và gh
 nghi mã màu.
 
 **M15. Bóng CHỈ cho lớp nổi.**
+
+*Gu flat — phong cách khác đã chọn theo `P1` thì xem `P2` trong `references/styles.md`.*
 
 Modal, command palette, dropdown, popover, toast được đổ bóng vì chúng nằm **trên**
 trang. Mọi thứ nằm **trong** trang thì không.
@@ -189,6 +202,8 @@ badge trạng thái là ngoại lệ.
 **M20. Mặc định chỉ làm light mode.** Dark mode là việc gấp đôi và gấp đôi chỗ
 phải kiểm tương phản. Chỉ làm khi người dùng nói cần, và hỏi một câu lúc giao.
 
+*Gu flat — phong cách khác đã chọn theo `P1` thì xem `P2` trong `references/styles.md`.*
+
 **M21. Đảo theme thì giữ nguyên QUAN HỆ giữa các bề mặt, không chỉ đảo màu.**
 
 Thang bề mặt, từ chìm nhất lên nổi nhất:
@@ -213,6 +228,8 @@ pixel, gắt và rẻ. Đường mảnh dùng chính màu đó **hạ độ đ�
 `rgba` mờ, không phải màu đặc. Ở nền tối viền **đảo vai**: nền sáng còn tách được
 bằng chênh lệch nền, nền tối thì `#0f111a` với `#05060f` chênh nhau quá ít nên
 viền trở thành thứ chính để tách khối, và bóng gần như vô dụng.
+
+*Gu flat — phong cách khác đã chọn theo `P1` thì xem `P2` trong `references/styles.md`.*
 
 ---
 
@@ -241,6 +258,8 @@ copy, không gõ lại từ trí nhớ, không tự nghĩ mã hex. Đã có lầ
 **M29. Màn chỉ có đúng MỘT card giữa trang trống thì bỏ viền. Chìm quá thì dùng
 bóng rất mờ, không phải viền đậm hơn.**
 
+*Gu flat — phong cách khác đã chọn theo `P1` thì xem `P2` trong `references/styles.md`.*
+
 Đăng nhập, đăng ký, quên mật khẩu, màn onboarding một khối, trang 404. Đặc điểm
 chung: **không có khối thứ hai nào để mà tách khỏi.**
 
@@ -258,3 +277,51 @@ Thứ tự thử, dừng ngay khi đủ:
 đi ngược `M14` — viền đậm lên thì cái hộp hiện ra rõ hơn nội dung bên trong nó.
 
 Có từ hai card trở lên trên màn thì quay về `M13` như thường.
+
+---
+
+## Hai sắc đỏ
+
+**M30. Đỏ có hai sắc cho hai việc. Không dùng lẫn, không thêm sắc thứ ba.**
+
+| | Sắc | Việc | Khi nào hiện | Ở đâu |
+| --- | --- | --- | --- | --- |
+| **Lỗi** | `red` | *Đã có gì đó sai*, phải sửa mới đi tiếp được | Sau khi người dùng làm sai | Ô nhập, câu lỗi, banner lỗi đầu form |
+| **Nguy hiểm** | `rose` | *Bấm vào thì không lấy lại được* | **Chỉ lúc rê vào** (`I4`) | Xoá, đăng xuất, huỷ tài khoản, rời nhóm |
+
+**Vì sao tách.** Hai việc khác nhau về thời điểm và mức nặng:
+
+- **Lỗi** là chuyện **đã xảy ra**. Nó phải nhận ra ngay, không lẫn với gì — nên dùng `red`, sắc đỏ chuẩn mà ai nhìn cũng đọc ra "sai".
+- **Nguy hiểm** là **lời nhắc trước khi bấm**, hiện lên chỉ vì chuột đi ngang qua. Chưa có gì sai cả. Nếu nó đỏ y như lỗi thì mỗi lần rê chuột qua menu, người dùng thấy như vừa làm hỏng gì — nên dùng `rose`, ngả hồng hơn, mềm hơn một bậc. Cùng tinh thần `I4`: nút xoá không hét vào mặt người dùng.
+
+**Phép thử khi phân vân:** *người dùng đã làm sai gì chưa?* Rồi → `red`. Chưa,
+chỉ đang sắp bấm → `rose`.
+
+### Bậc dùng — đừng tự chế
+
+| Việc | Lỗi (`red`) | Nguy hiểm (`rose`) |
+| --- | --- | --- |
+| Chữ, icon | `text-red-500` | `hover:text-rose-500` |
+| Viền | `border-red-500` | — *(không có viền đỏ)* |
+| Nền mờ | `ring-red-500/10` quanh ô nhập | `hover:bg-rose-500/10` |
+| Banner | `bg-red-50` · `border-red-200` · chữ `red-700` / `red-600` | — *(không có banner)* |
+
+Ô "—" là **cố ý trống**: hành động nguy hiểm không bao giờ có viền đỏ hay banner
+đỏ. Thấy mình định viết `border-rose-*` là đang biến lời nhắc thành cảnh báo.
+
+**Không có sắc thứ ba.** Không `pink`, không `orange-red`, không đỏ tuỳ chế
+`#e53e3e` để **báo trạng thái**. Cần một kiểu "nhẹ hơn lỗi nhưng vẫn cần chú ý"
+thì đó là **hổ phách** (`M4`), không phải một sắc đỏ mới.
+
+**Phạm vi: `M30` chỉ áp cho màu mang NGHĨA.** Màu nhận diện — nền avatar chữ cái
+đầu, icon workspace — không báo gì cả, nên không thuộc luật này. Cùng lý do với
+ngoại lệ của `M12`: ở đó màu đóng vai ảnh, không đóng vai trạng thái. Nhưng để
+không ai phải phân vân, bộ màu avatar **không dùng `red` hay `rose`** — xem
+`references/components/avatar.md`.
+
+### Đổi thương hiệu
+
+Hai sắc này hiện viết thẳng tên màu Tailwind, chưa có token. Thương hiệu có đỏ
+riêng thì đổi **cả hai cột cùng lúc**, và giữ khoảng cách giữa chúng: lỗi đậm và
+chuẩn hơn, nguy hiểm mềm hơn. Đổi một cột mà quên cột kia thì hai việc lại trông
+như một.

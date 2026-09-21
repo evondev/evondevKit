@@ -31,8 +31,29 @@ những chỗ đó hợp lệ. Nhưng phải là một lựa chọn, không ph�
 **I3. Trong một nhóm lựa chọn chỉ một nút được là nút chính.** Ba nút đặc màu như
 nhau là chưa quyết định hộ người dùng.
 
-**I4. Nút "xoá" không phải nút đỏ đặc.** Lúc thường nó xám như nút phụ, chỉ đỏ
-lên khi rê vào. Nút xoá không nên hét vào mặt người dùng suốt ngày.
+**I4. Hành động nguy hiểm không đỏ đặc. Lúc thường trung tính, rê vào mới đỏ.**
+
+Áp cho xoá, **đăng xuất**, huỷ tài khoản, rời nhóm. Nút xoá không nên hét vào mặt
+người dùng suốt ngày.
+
+Khi rê vào thì đổi **cả hai**: chữ (kèm icon) sang đỏ, nền sang đỏ rất mờ.
+
+```html
+<button class="group text-foreground hover:bg-rose-500/10 hover:text-rose-500">
+  <i data-lucide="log-out" class="size-4 text-muted group-hover:text-rose-500"></i>
+  Đăng xuất
+</button>
+```
+
+"Trung tính" nghĩa là **trông y như các mục khác cùng chỗ** — trong menu thì chữ
+`--foreground` như mọi mục, trong hàng nút thì là nút phụ. Không có nghĩa là
+`text-muted`: mục đăng xuất mà nhạt hơn các mục khác thì đọc ra là đã bị khoá
+(`I8`).
+
+- **Nền đỏ ~10%**, không hơn. Đậm hơn thì nó thành một dải màu cảnh báo, không còn là trạng thái rê chuột.
+- **Icon đổi màu cùng chữ.** Icon lúc thường là `text-muted`, nên phải có **`group` ở hàng** và `group-hover:text-rose-500` ở icon. Thiếu `group` thì `group-hover` im lặng không chạy — chữ đỏ mà icon còn xám, và không có lỗi nào báo.
+- Chỉ mục nguy hiểm được đỏ. Các mục khác trong cùng menu vẫn hover về nền xám như `I10`.
+- Mục nguy hiểm trong menu thì **tách xuống cuối**, cách bằng một đường chia.
 
 **I5. Nút màu nhấn đang có thì KHÔNG đi quét đổi hàng loạt.** Chỉ đổi sang viền +
 icon khi đang được yêu cầu sửa UI/UX ở đúng khu đó, và ghi vào nhật ký. Quét hàng

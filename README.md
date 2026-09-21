@@ -19,6 +19,7 @@ skills/
         ├── system.md               D — đề nhiều hơn một màn
         ├── refactor.md             L — refactor codebase đã có
         ├── tailwind-v4-traps.md    W — bẫy Tailwind v4 khi có CSS cũ
+        ├── styles.md               P — phong cách: flat, nổi, glass, gradient, tối; tương phản
         ├── budgets.md              ngân sách, nhịp, thang cỡ chữ
         ├── brand-tokens.md         bảng màu, font, cách đổi thương hiệu
         ├── tokens.css              bộ token copy thẳng được
@@ -89,6 +90,21 @@ Skill **bám theo codebase của dự án**, không áp bộ công cụ của m�
 Skill chi phối **token, nhịp, bố cục, và phạm vi**. Nó không quy định bro lấy
 `<Button>` ở đâu.
 
+### Phong cách: mặc định flat, làm được cái khác khi được chọn
+
+Mặc định là **flat đường tóc**: nền xám nhạt, card trắng viền mảnh, không bóng.
+
+- Người dùng tự nêu phong cách ("kiểu glassmorphism") → làm theo luôn.
+- Audit thấy dự án đang dùng glass, gradient, nổi hay nền tối → **hỏi một câu**: flat, hay theo dự án.
+- Không có gì → flat, không hỏi.
+
+Luật được chia hai loại, ghi ở `P2`:
+
+- **Gu flat** (11 luật như không gradient, không bóng, không glass): phong cách khác được đè. Mỗi luật loại này có dòng *"Gu flat"* ngay tại chỗ.
+- **Nguyên tắc** (một nút chính, một màu nhấn, tương phản, 375px, toàn bộ luật chữ và tương tác): không phong cách nào đè được.
+
+Tức là skill **theo phong cách của dự án, nhưng không theo lỗi của dự án**.
+
 ---
 
 ## Một luật một chỗ
@@ -97,10 +113,10 @@ Skill chi phối **token, nhịp, bố cục, và phạm vi**. Nó không quy đ
 Mỗi luật sống ở đúng một file. Thấy hai chỗ cùng nói một luật thì một trong hai
 chỗ là sai.
 
-Chín nhóm, không nhóm nào trùng ký tự với nhóm nào:
+Mười nhóm, không nhóm nào trùng ký tự với nhóm nào:
 
 `S` phạm vi · `M` màu · `T` chữ · `F` hình khối · `I` trạng thái · `R` màn hẹp ·
-`D` nhiều màn · `L` refactor · `W` bẫy Tailwind
+`D` nhiều màn · `L` refactor · `W` bẫy Tailwind · `P` phong cách
 
 ---
 
