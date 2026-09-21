@@ -15,7 +15,7 @@ function getVariantClasses(variant: ButtonVariant): string {
   return cn(
     // MẶC ĐỊNH. Dựng nút mới thì dùng cái này.
     variant === "outline" &&
-      "border border-border-strong bg-surface text-foreground hover:bg-background focus-visible:bg-background",
+      "border border-border-control bg-surface text-foreground hover:bg-background focus-visible:bg-background",
     // Hành động chính DUY NHẤT của một khu, khi thật cần nổi.
     variant === "primary" &&
       "bg-primary text-primary-foreground hover:bg-primary-hover focus-visible:bg-primary-hover",
@@ -95,7 +95,7 @@ Vuông, cao **bằng đúng** nút chữ đứng cạnh nó, và luôn có `aria
 ```tsx
 <button
   aria-label="Lọc danh sách"
-  className="inline-flex size-10 cursor-pointer items-center justify-center rounded-xl border border-border-strong bg-surface text-muted outline-hidden hover:bg-background hover:text-foreground focus-visible:bg-background focus-visible:text-foreground"
+  className="inline-flex size-10 cursor-pointer items-center justify-center rounded-xl border border-border-control bg-surface text-muted outline-hidden hover:bg-background hover:text-foreground focus-visible:bg-background focus-visible:text-foreground"
 >
   <SlidersHorizontal className="size-4" aria-hidden />
 </button>

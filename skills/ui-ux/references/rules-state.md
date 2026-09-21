@@ -142,12 +142,19 @@ focus. Hết ring, mà vẫn thấy.
 | --- | --- |
 | Mục menu, nút viền, nút ghost | `focus-visible:outline-hidden focus-visible:bg-background` — y như hover |
 | Nút `primary` | `focus-visible:outline-hidden focus-visible:bg-primary-hover` |
-| Ô nhập, textarea | **Chỉ đổi màu viền**: `focus:border-primary`. Không ring, kể cả ring mờ |
+| Ô nhập, textarea, select, ô chọn dạng card | **Viền + ring mờ**: `focus:border-focus focus:ring-4 focus:ring-focus`. Ngoại lệ duy nhất có ring, xem dưới bảng |
 | Link chữ | `focus-visible:underline` |
 
 **`focus-visible`, không phải `focus`**, trừ ô nhập. Bấm chuột thì không hiện gì,
 chỉ khi dùng bàn phím mới hiện. Ô nhập thì dùng `focus` vì người dùng cần thấy
 mình đang gõ vào ô nào, dù vào bằng chuột hay bàn phím.
+
+**Vì sao ô điền được ring mà nút thì không.** Chủ dự án chốt 21/09/2026, đảo bản
+"ô chỉ đổi viền": viền đổi màu một mình thì trong form nhiều ô khó thấy ô nào
+đang gõ, nhất là select đang mở. Ring ở đây là `--ring-focus` (màu nhấn 10%) dày
+4px, **mờ tới mức đọc ra là vầng sáng quanh ô**, không phải vòng viền thứ hai. Nút,
+mục menu, tab vẫn không ring như bảng trên. Ô lỗi cùng độ dày, chỉ đổi sang đỏ:
+`border-red-500 ring-4 ring-red-500/10`.
 
 **`outline-hidden` (Tailwind v4) hay `outline-none` (v3)**, đừng dùng `outline: none`
 thuần hay `outline-none` của v4. Hai class kia làm outline **trong suốt** chứ không

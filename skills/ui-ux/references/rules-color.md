@@ -179,17 +179,21 @@ Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu
 | Tab ngang trên bảng / danh sách | tab đang chọn **nền trắng + viền `--border-strong`**, mục chưa chọn không nền không viền. Xem "Thanh tab" trong `components/small-controls.md` |
 | Ô nhập | viền — đây là chỗ viền đúng vai nhất, người ta phải nhìn ra ranh giới vùng gõ được |
 
-**M14. Hai token viền, chia theo vai trò. Không có cái thứ ba.**
+**M14. Ba token viền, chia theo vai trò. Không có cái thứ tư.**
 
 | Token | Cho | Vì sao |
 | --- | --- | --- |
 | `--border` | Viền card, khung dropdown, đường chia trong danh sách và menu | **Trang trí**: chỉ vạch ranh giới, nhạt được bao nhiêu thì nhạt |
-| `--border-strong` | **Viền ô nhập**, **viền nút outline**, viền card khi hover, **đường kẻ trong khung app** (kẻ dọc sidebar, kẻ chia nhóm, kẻ dưới header, khung profile chân sidebar) | **Chức năng**: ô nhập và nút outline cùng nền trắng với card, viền là thứ duy nhất báo "đây là chỗ gõ", "đây là chỗ bấm" (`I8`) |
+| `--border-strong` | Viền card khi hover, **đường kẻ trong khung app** (kẻ dọc sidebar, kẻ chia nhóm, kẻ dưới header, khung profile chân sidebar), tab đang chọn, badge đếm | **Khung**: đậm hơn trang trí một bậc, đủ vạch vùng nhưng không kẻ ô cả app |
+| `--border-control` | **Viền ô nhập, select, nút outline, icon button có viền, checkbox / radio chưa chọn, track công tắc lúc tắt** | **Chức năng**: viền là thứ duy nhất báo "đây là chỗ gõ", "đây là chỗ bấm" (`I8`). Phải **3:1** với nền (WCAG 1.4.11) |
 
 Trong mỗi nhóm thì mọi chỗ dùng chung đúng một token, để đường tóc không chỗ
-đậm chỗ nhạt. Muốn viền card nhạt đi thì hạ `--border`, ô nhập không nhạt theo.
+đậm chỗ nhạt. Muốn viền card nhạt đi thì hạ `--border`, ô nhập không nhạt theo. Muốn sidebar
+nhạt đi thì hạ `--border-strong`, ô nhập cũng không nhạt theo. **`--border-control`
+không hạ dưới 3:1.** Trước 21/09/2026 ô nhập dùng chung `--border-strong`
+(`#f2f2f2`, 1.1:1): radio chưa chọn gần như tàng hình trên card trắng.
 
-⚠️ **Đừng lấy `--border` cho ô nhập hay nút outline để "cho đồng bộ".** Hạ
+⚠️ **Đừng lấy `--border` hay `--border-strong` cho ô nhập hay nút outline để "cho đồng bộ".** Hạ
 `--border` cho card và dropdown nhẹ đi là ô nhập và nút tan luôn vào nền. Đã xảy
 ra thật (2026-09): `--border` hạ từ `#f3f3f4` xuống `#f7f7f8` cho khung dropdown,
 nút outline đang dùng chung token nên trông như đã bị khoá.
@@ -309,10 +313,12 @@ sách phải cùng thứ tự.
 
 Màu nhấn trong dark mode thường là gần trắng. Tô nền nút thì đẹp; đem làm viền ô
 nhập lúc focus, gạch chân, hay chỉ báo đang chọn thì thành sợi trắng đặc một
-pixel, gắt và rẻ. Đường mảnh dùng chính màu đó **hạ độ đục xuống khoảng 35%**.
+pixel, gắt và rẻ. Đường mảnh dùng chính màu đó **hạ độ đục xuống khoảng 42%**, vừa đủ 3:1 với nền
+(WCAG 1.4.11). Xuống 35% là còn 2.9:1, trượt.
 
 **M23. Dark mode là navy rất tối, không phải xám trung tính.** Viền dark mode là
-`rgba` mờ, không phải màu đặc. Ở nền tối viền **đảo vai**: nền sáng còn tách được
+`rgba` mờ, không phải màu đặc. Trừ `--border-control`: viền điều khiển phải 3:1
+ở mọi nền nên dùng màu đặc. Ở nền tối viền **đảo vai**: nền sáng còn tách được
 bằng chênh lệch nền, nền tối thì `#0f111a` với `#05060f` chênh nhau quá ít nên
 viền trở thành thứ chính để tách khối, và bóng gần như vô dụng.
 

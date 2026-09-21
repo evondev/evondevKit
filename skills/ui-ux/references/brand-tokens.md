@@ -60,7 +60,7 @@ không đọc được.
 Hai biến này tồn tại vì hai luật khác đòi:
 
 - Luật `I8` bắt nút phụ phải chênh đủ với nền cha, luật `I9` bắt hover phải nhìn thấy được. Mà `--border` còn nhạt hơn cả `--background`, hover bằng `--border` thì như không hover. Nên có `--background-hover` là một bậc xám thật.
-- `--ring-focus` là ring rất mờ theo màu nhấn, tách thành biến chứ không viết `primary/10` rải khắp nơi. **Ô nhập lúc focus KHÔNG dùng nó**: ô chỉ đổi màu viền sang `--border-focus` (`I13`, `components/input.md`).
+- `--ring-focus` là ring rất mờ theo màu nhấn, tách thành biến chứ không viết `primary/10` rải khắp nơi. Dùng cho **ô điền lúc focus** (input, textarea, select) và **ô chọn dạng card đang chọn**, đi cùng viền `--border-focus` (`I13`). Nút, menu, tab không dùng.
 
 Đổi `--primary` sang màu khác thì nhớ đổi `--ring-focus` theo, vì nó là chính
 màu đó ở độ mờ 10%.

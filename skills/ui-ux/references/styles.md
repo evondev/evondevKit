@@ -56,15 +56,18 @@ Mỗi luật gu flat có dòng *"Gu flat"* ngay tại chỗ. Thấy dòng đó m
 | Chữ lớn (từ 24px, hoặc từ 18.66px đậm) | **3 : 1** |
 | Icon mang nghĩa, viền nút không nền | **3 : 1** so với nền kề bên |
 
-⚠️ **Viền ô nhập của gu flat KHÔNG đạt 3 : 1**, và đó là đánh đổi có chủ ý.
-`--border-strong` trên nền trắng chỉ khoảng 1.2 : 1. WCAG khuyên 3 : 1 cho ranh giới
-của control, nhưng số đó cần viền xám đậm cỡ `#949494`, và đường tóc sẽ thành
-khung kẻ ô. Skill bù lại bằng ba thứ khác để người dùng nhận ra ô nhập: nhãn luôn
-hiện phía trên (`I26`), placeholder, và viền đậm lên khi focus.
+**Token mặc định đạt WCAG AA** (chủ dự án chốt 21/09/2026). Bản trước để viền ô
+nhập 1.1 : 1 và chữ phụ 3.8 : 1 như một đánh đổi thẩm mỹ; đã bỏ. Giờ:
 
-Dự án **phải đạt WCAG AA đầy đủ** (cơ quan nhà nước, y tế, ngân hàng) thì đổi
-`--border-strong` lên mức đạt 3 : 1. Đổi một dòng, chỉ ô nhập đậm lên, card
-không bị ảnh hưởng (`M14`).
+| Token | Nền sáng | Nền tối |
+| --- | --- | --- |
+| `--muted` (chữ phụ, placeholder) | 5.3 : 1 trên card, 4.8 : 1 trên nền trang | 6.1 : 1 |
+| `--border-control` (viền ô nhập, select, nút outline, checkbox) | 3.4 : 1 / 3.1 : 1 | 3.2 : 1 / 3.5 : 1 |
+| `--border-focus` | 16.8 : 1 | 3.6 : 1 |
+
+Viền **trang trí** (`--border`, `--border-strong`: card, đường chia, kẻ sidebar)
+không thuộc 1.4.11 vì chúng không phải điều khiển, nên vẫn nhạt được (`M14`).
+Đổi màu nhấn hay đổi token nào trong bảng trên thì đo lại, đừng hạ dưới ngưỡng.
 
 Flat hiếm khi trượt con số của chữ, vì chữ đậm nằm trên nền trắng đặc. Glass,
 gradient và tối thì **trượt đầu tiên**. Nên luật này được viết ở đây, cạnh các

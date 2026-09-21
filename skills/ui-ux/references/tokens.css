@@ -25,7 +25,8 @@
   --background: #f4f4f6;   /* nền trang, xám nhạt, không bao giờ trắng */
   --surface: #ffffff;      /* nền card, input, header */
   --foreground: #2c2c2c;   /* chữ chính */
-  --muted: #828282;        /* chữ phụ, label, placeholder, icon phụ */
+  --muted: #6b6b73;        /* chữ phụ, label, placeholder, icon phụ. 5.3:1 trên
+                              --surface, 4.8:1 trên --background (WCAG AA 4.5) */
   /* Đường tóc trang trí: viền card, viền khung dropdown, đường chia trong danh
      sách và trong menu. Nhạt đến mức chỉ đủ vạch ranh giới. Xem luật M13, M14. */
   --border: #f7f7f8;
@@ -34,6 +35,11 @@
      card khi hover. Đây là token
      viền thứ hai và cũng là token cuối, xem luật M14, M16. */
   --border-strong: #f2f2f2;
+  /* Viền ĐIỀU KHIỂN: ô nhập, select, nút outline, checkbox/radio chưa chọn,
+     track công tắc lúc tắt. Đạt 3:1 (WCAG 1.4.11): 3.4:1 trên --surface, 3.1:1
+     trên --background. Tách khỏi --border-strong để đường kẻ sidebar, tab,
+     badge vẫn nhạt. Chủ dự án chốt 21/09/2026. Luật M14, P3. */
+  --border-control: #8a8a91;
 
   /* Bậc hover cho nút phụ và cho dòng danh sách. Cần biến riêng vì --border
      và --background chênh nhau quá ít, hover bằng --border là gần như vô hình. */
@@ -58,8 +64,9 @@
   --shadow-segment-track: inset 0 0 0 1px rgb(0 0 0 / 0.05), inset 0 1px 2px rgb(0 0 0 / 0.04);
   --shadow-segment-thumb: 0 0 0 1px rgb(0 0 0 / 0.04), 0 1px 2px rgb(0 0 0 / 0.06), 0 2px 6px -2px rgb(0 0 0 / 0.08);
 
-  /* Ring rất mờ theo màu nhấn. KHÔNG dùng cho ô nhập lúc focus: ô chỉ đổi
-     viền sang --border-focus, luật I13. */
+  /* Ring rất mờ theo màu nhấn, dày 4px. Cho ô điền lúc focus (input, textarea,
+     select) và ô chọn dạng card đang chọn, đi cùng viền --border-focus. Nút,
+     menu, tab KHÔNG dùng. Luật I13. */
   --ring-focus: rgba(26, 29, 41, 0.1);
 
   /* Viền lúc focus. Ở nền sáng thì chính là màu nhấn. Ở nền tối thì KHÔNG
@@ -130,8 +137,8 @@
 
   /* Màu nhấn ở nền tối là gần trắng. Dùng làm NỀN thì đẹp, dùng làm ĐƯỜNG MẢNH
      thì thành sợi trắng đặc, cắt vào mắt. Viền focus lấy chính màu đó nhưng hạ
-     độ đục xuống, sáng hơn viền thường là đủ. Xem luật M22. */
-  --border-focus: rgba(233, 237, 245, 0.35);
+     độ đục xuống, vừa đủ 3:1 (WCAG). Xem luật M22. */
+  --border-focus: rgba(233, 237, 245, 0.42);  /* 3.6:1, WCAG 3:1 */
   --surface: #0f111a;
   --foreground: #e9edf5;
   --muted: #8b93a7;
@@ -139,6 +146,9 @@
      trở thành thứ chính để tách khối, còn bóng gần như vô dụng. Xem luật M23. */
   --border: rgba(160, 180, 220, 0.12);
   --border-strong: rgba(160, 180, 220, 0.2);
+  /* Đặc, không rgba: viền điều khiển phải 3:1 ở cả --surface lẫn --background.
+     3.2:1 trên --surface, 3.5:1 trên --background. */
+  --border-control: #5e6578;
 
   /* Màu mang nghĩa ở nền tối: chữ SÁNG lên (-400), nền là màu -500 phủ mờ.
      Nền -50 của bản sáng đem sang đây là ra khối trắng giữa màn tối.
