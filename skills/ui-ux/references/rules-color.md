@@ -49,7 +49,7 @@ Bảng màu của MỘT màn hình, không thêm:
 | Màu nhấn | Trạng thái "đã xong", và nút hành động chính khi thật cần nổi. **Không** cho badge số đếm |
 | Hổ phách | "Cần chú ý": quá hạn, nộp trễ, bỏ lỡ |
 | Đỏ lỗi — `red` | Lỗi thật mà người dùng phải xử lý: bài bị từ chối, lỗi form |
-| Đỏ nguy hiểm — `rose` | **Chỉ khi rê vào** hành động không lấy lại được: xoá, đăng xuất, huỷ tài khoản. Lúc thường không đỏ |
+| Đỏ nguy hiểm — `rose` | Hành động không lấy lại được: xoá, đăng xuất, huỷ tài khoản. Nút đứng riêng thì nền mờ + chữ đỏ luôn hiện; mục menu thì chỉ đỏ khi rê vào (`I4`) |
 
 Hai sắc đỏ là cố ý, không phải gõ nhầm — xem `M30`.
 
@@ -369,7 +369,7 @@ Có từ hai card trở lên trên màn thì quay về `M13` như thường.
 | | Sắc | Việc | Khi nào hiện | Ở đâu |
 | --- | --- | --- | --- | --- |
 | **Lỗi** | `red` | *Đã có gì đó sai*, phải sửa mới đi tiếp được | Sau khi người dùng làm sai | Ô nhập, câu lỗi, banner lỗi đầu form |
-| **Nguy hiểm** | `rose` | *Bấm vào thì không lấy lại được* | **Chỉ lúc rê vào** (`I4`) | Xoá, đăng xuất, huỷ tài khoản, rời nhóm |
+| **Nguy hiểm** | `rose` | *Bấm vào thì không lấy lại được* | Nút: luôn hiện, nền mờ. Mục menu: chỉ lúc rê vào (`I4`) | Xoá, đăng xuất, huỷ tài khoản, rời nhóm |
 
 **Vì sao tách.** Hai việc khác nhau về thời điểm và mức nặng:
 
@@ -383,9 +383,9 @@ chỉ đang sắp bấm → `rose`.
 
 | Việc | Lỗi (`red`) | Nguy hiểm (`rose`) |
 | --- | --- | --- |
-| Chữ, icon | `text-red-500` | `hover:text-rose-500` |
+| Chữ, icon | `text-red-500` | `text-rose-700` (nút luôn hiện, mục menu lúc rê vào) — `rose-500` trên nền mờ chỉ 3.2:1, trượt 4.5:1 |
 | Viền | `border-red-500` | — *(không có viền đỏ)* |
-| Nền mờ | `ring-red-500/10` quanh ô nhập | `hover:bg-rose-500/10` |
+| Nền mờ | `ring-red-500/10` quanh ô nhập | nút: `bg-rose-500/10`, rê vào `/15` · mục menu: `hover:bg-rose-500/10` |
 | Banner | `bg-red-50` · `border-red-200` · chữ `red-700` / `red-600` | — *(không có banner)* |
 
 Ô "—" là **cố ý trống**: hành động nguy hiểm không bao giờ có viền đỏ hay banner

@@ -125,7 +125,7 @@ Dùng thư viện của họ thì cách áp skill là **chỉnh token cho khớp
 định trái luật. Với shadcn thường là ba chỗ:
 
 - `Input` mặc định `bg-transparent` → đổi thành nền surface. Ô nhập trong suốt trên nền trang thì người dùng không thấy nó là ô nhập.
-- `Button` mặc định có nhiều variant và size → không xoá bớt của thư viện, chỉ **tự giới hạn mình** dùng ba dạng ở luật `I1`.
+- `Button` mặc định có nhiều variant và size → không xoá bớt của thư viện, chỉ **tự giới hạn mình** dùng bốn dạng ở luật `I1`.
 - Kiểm bóng: nhiều bộ cho card `shadow-sm` mặc định, mà luật `M15` chỉ cho bóng ở lớp nổi.
 
 ### Câu 3 — Muốn UI trông như thế nào?

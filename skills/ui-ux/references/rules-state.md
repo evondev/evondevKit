@@ -22,8 +22,9 @@ Dựng nút mới → nút viền, icon lucide **bên trái** chữ.
 | --- | --- |
 | Mặc định: thêm, sửa, mở, lọc, xem… | viền + icon trái + chữ |
 | Hành động chính **duy nhất** của một khu, thật cần nổi | nền màu nhấn |
+| Nút phụ cần rõ hơn ghost: nút rộng hết card, nút cạnh `primary` | nền `--secondary`, không viền |
 | Chỉ icon | nút cỡ icon, có `aria-label`, cao bằng nút chữ cạnh nó |
-| Xoá | xám như nút phụ lúc thường, chỉ đỏ lên khi rê vào |
+| Xoá (nút đứng riêng) | nền `rose-500/10` + chữ `rose-700` lúc nào cũng hiện, rê vào nền đậm lên `/15` |
 
 **I2. Chọn nền màu nhấn thì nói một câu lý do.** Nộp bài, thanh toán, tham gia —
 những chỗ đó hợp lệ. Nhưng phải là một lựa chọn, không phải mặc định.
@@ -31,16 +32,23 @@ những chỗ đó hợp lệ. Nhưng phải là một lựa chọn, không ph�
 **I3. Trong một nhóm lựa chọn chỉ một nút được là nút chính.** Ba nút đặc màu như
 nhau là chưa quyết định hộ người dùng.
 
-**I4. Hành động nguy hiểm không đỏ đặc. Lúc thường trung tính, rê vào mới đỏ.**
+**I4. Hành động nguy hiểm không đỏ đặc.**
 
-Áp cho xoá, **đăng xuất**, huỷ tài khoản, rời nhóm. Nút xoá không nên hét vào mặt
-người dùng suốt ngày.
+Áp cho xoá, **đăng xuất**, huỷ tài khoản, rời nhóm. Có hai dạng tuỳ chỗ đứng:
 
-Khi rê vào thì đổi **cả hai**: chữ (kèm icon) sang đỏ, nền sang đỏ rất mờ.
+| Chỗ | Lúc thường | Rê vào / Tab tới |
+| --- | --- | --- |
+| **Nút đứng riêng** — hàng nút, hộp xác nhận, khu nguy hiểm | nền `rose-500/10`, chữ + icon `rose-700` | nền `rose-500/15` |
+| **Mục trong menu** — dropdown, sidebar, đăng xuất | trung tính như mục khác | chữ + icon đỏ, nền `rose-500/10` |
+
+Nút thì nền mờ đỏ luôn hiện (chủ dự án chốt 21/09/2026), code ở
+`components/button.md`. Không bao giờ `bg-rose-500 text-white`, không viền đỏ.
+
+Phần dưới là cho **mục trong menu**. Khi rê vào thì đổi **cả hai**: chữ (kèm icon) sang đỏ, nền sang đỏ rất mờ.
 
 ```html
-<button class="group text-foreground hover:bg-rose-500/10 hover:text-rose-500">
-  <i data-lucide="log-out" class="size-4 text-muted group-hover:text-rose-500"></i>
+<button class="group text-foreground hover:bg-rose-500/10 hover:text-rose-700 dark:hover:text-rose-400">
+  <i data-lucide="log-out" class="size-4 text-muted group-hover:text-rose-700 dark:group-hover:text-rose-400"></i>
   Đăng xuất
 </button>
 ```
@@ -50,8 +58,8 @@ Khi rê vào thì đổi **cả hai**: chữ (kèm icon) sang đỏ, nền sang 
 `text-muted`: mục đăng xuất mà nhạt hơn các mục khác thì đọc ra là đã bị khoá
 (`I8`).
 
-- **Nền đỏ ~10%**, không hơn. Đậm hơn thì nó thành một dải màu cảnh báo, không còn là trạng thái rê chuột.
-- **Icon đổi màu cùng chữ.** Icon lúc thường là `text-muted`, nên phải có **`group` ở hàng** và `group-hover:text-rose-500` ở icon. Thiếu `group` thì `group-hover` im lặng không chạy — chữ đỏ mà icon còn xám, và không có lỗi nào báo.
+- **Nền đỏ ~10%**, không hơn (nút đứng riêng được `/15` lúc rê vào vì nó đã sẵn `/10`). Đậm hơn thì nó thành một dải màu cảnh báo, không còn là trạng thái rê chuột.
+- **Icon đổi màu cùng chữ.** Icon lúc thường là `text-muted`, nên phải có **`group` ở hàng** và `group-hover:text-rose-700` ở icon. Thiếu `group` thì `group-hover` im lặng không chạy — chữ đỏ mà icon còn xám, và không có lỗi nào báo.
 - Chỉ mục nguy hiểm được đỏ. Các mục khác trong cùng menu vẫn hover về nền xám như `I10`.
 - Mục nguy hiểm trong menu thì **tách xuống cuối**, cách bằng một đường chia.
 

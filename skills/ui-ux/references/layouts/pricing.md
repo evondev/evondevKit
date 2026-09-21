@@ -68,8 +68,8 @@ Không làm card cao hơn, to hơn, viền màu, vòng sáng, `scale-105` (`F20`
 Đề không có gói nào cần đẩy thì không đặt badge.
 
 Nút các gói khác: **nền `--secondary`**, không viền
-(`bg-secondary text-foreground hover:bg-secondary-hover`). Ngoại lệ của `I1`,
-chỉ cho bảng giá: nút rộng hết card mà chỉ có viền mảnh thì trông rỗng.
+— variant `secondary` ở `../components/button.md`. Nút rộng hết card mà chỉ có
+viền mảnh thì trông rỗng.
 
 ---
 

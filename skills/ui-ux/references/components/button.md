@@ -6,10 +6,10 @@
 
 ---
 
-## Ba dạng, hết
+## Bốn dạng, hết
 
 ```tsx
-type ButtonVariant = "outline" | "primary" | "ghost";
+type ButtonVariant = "outline" | "primary" | "secondary" | "ghost";
 
 function getVariantClasses(variant: ButtonVariant): string {
   return cn(
@@ -19,6 +19,9 @@ function getVariantClasses(variant: ButtonVariant): string {
     // Hành động chính DUY NHẤT của một khu, khi thật cần nổi.
     variant === "primary" &&
       "bg-primary text-primary-foreground hover:bg-primary-hover focus-visible:bg-primary-hover",
+    // Nút phụ cần nhỉnh hơn ghost mà không tranh chỗ nút chính. Không viền.
+    variant === "secondary" &&
+      "bg-secondary text-foreground hover:bg-secondary-hover focus-visible:bg-secondary-hover",
     // Hành động phụ nằm trong hàng, mờ đi lúc thường.
     variant === "ghost" &&
       "bg-transparent text-muted hover:bg-background hover:text-foreground focus-visible:bg-background focus-visible:text-foreground",
@@ -45,6 +48,8 @@ function getVariantClasses(variant: ButtonVariant): string {
 **Vì sao ổn**
 
 - **`outline` là mặc định**, không phải `primary`. Nút nền nhấn rải khắp nơi thì màu thương hiệu loang ra, tới lúc có một nút thật sự cần nổi thì nó không nổi được nữa (`I1`, `M2`).
+- **`secondary` (nền xám, không viền)** dùng khi nút phụ cần có mặt rõ hơn `ghost` nhưng viền mảnh trông rỗng: nút rộng hết card (các gói thường trong bảng giá, `layouts/pricing.md`), hoặc nút phụ đứng cạnh nút `primary` trong footer. Không thay `outline` làm mặc định (chủ dự án chốt 21/09/2026).
+- **`ghost` đứng đầu hàng, thẳng cột với chữ phía trên** thì thêm `-ml-4` bù đúng `px-4`. Nền trong suốt nên mắt thấy mép của chữ chứ không thấy mép nút, không bù thì cả hàng trông lệch vào 16px so với tiêu đề và nhãn bên dưới. Nền hover lấn ra lề trái là đúng ý. Nút có nền hoặc viền thì không bù.
 - Icon lucide **bên trái chữ**, `size-4`, `shrink-0` để nó không bị bóp khi nhãn dài. `aria-hidden` vì chữ đã nói rồi.
 - **Không `white-space: nowrap`.** Đo thật ở focus.camp: hộp 140px, nút nowrap rộng 192px, tràn 60px ra ngoài. `leading-tight` để hai dòng không dính nhau. Luật `T15`.
 - **Không `shadow`.** Nút nằm trong trang (`M15`).
@@ -57,14 +62,28 @@ function getVariantClasses(variant: ButtonVariant): string {
 
 ## Nút xoá
 
-Không phải một variant riêng. Nó là `ghost` cộng một màu chữ lúc hover:
+Nền đỏ mờ 10% và chữ đỏ, **lúc nào cũng vậy**, không đợi rê vào. Rê vào hoặc Tab
+tới thì nền đậm lên một bậc:
 
 ```tsx
-<Button variant="ghost" className="hover:text-rose-500">
+<Button
+  variant="ghost"
+  className="bg-rose-500/10 text-rose-700 hover:bg-rose-500/15 hover:text-rose-700 focus-visible:bg-rose-500/15 focus-visible:text-rose-700 dark:text-rose-400"
+>
+  <Trash2 className="size-4 shrink-0" aria-hidden />
+  Xoá
+</Button>
 ```
 
-Lúc thường nó xám như mọi hành động phụ, chỉ đỏ lên khi rê vào. Nút xoá không nên
-hét vào mặt người dùng suốt ngày (`I4`).
+- **Chữ `rose-700`, không `rose-500`.** Đo trên nền `rose-500/10` phủ trắng: `rose-500` chỉ 3.2:1, `rose-600` 4.1:1, đều trượt mức 4.5:1 của chữ 14px. `rose-700` được 5.5:1 mà vẫn đọc ra là đỏ. Nền tối thì ngược lại, chữ sáng lên `rose-400`.
+- **Nền mờ, không đỏ đặc.** Nhận ra ngay là nút nguy hiểm nhưng không hét như nút `bg-rose-500 text-white` (`I4`).
+- **Không viền đỏ** (`M30`). Nền mờ đã đủ tách nút khỏi nền trang.
+- Icon cùng màu chữ — không để icon `text-muted` riêng.
+- Bị khoá thì vẫn `opacity-50` như mọi nút.
+- Chỉ áp cho **nút đứng riêng**: hàng nút, hộp xác nhận, khu nguy hiểm trong cài đặt. **Mục trong menu** (dropdown, sidebar, đăng xuất) vẫn trung tính lúc thường, rê vào mới đỏ — xem `I4`.
+
+> Chủ dự án chốt 21/09/2026: nút xoá là nền danger 10% + chữ danger. Bản trước
+> (xám lúc thường, rê vào mới đỏ) đã bỏ cho nút; vẫn giữ cho mục menu.
 
 ---
 
@@ -89,6 +108,6 @@ Chênh chiều cao với ô nhập hay nút chữ bên cạnh dù chỉ một b�
 ## Cảnh báo
 
 Một bản `Button` ở project cũ đã phình lên **8 variant, 3 size** và một variant
-`glow` dùng ba lớp radial gradient. Đó là ví dụ ngược. Muốn thêm variant thứ tư
-thì phải trả lời được: nó khác ba cái kia ở chỗ nào, và vì sao ba cái kia không
+`glow` dùng ba lớp radial gradient. Đó là ví dụ ngược. Muốn thêm variant thứ năm
+thì phải trả lời được: nó khác bốn cái kia ở chỗ nào, và vì sao bốn cái kia không
 làm được việc đó.

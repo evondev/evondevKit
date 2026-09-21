@@ -22,7 +22,7 @@ Trước khi dựng màn đầu tiên, khai ra bảy nguyên tố dưới đây.
 
 | Nguyên tố | Phải chốt |
 | --- | --- |
-| Nút | ba dạng ở `I1`, cỡ, có icon hay không |
+| Nút | bốn dạng ở `I1`, cỡ, có icon hay không |
 | Badge trạng thái | hình dạng, nền hay chỉ chữ màu, cỡ chữ |
 | Ô nhập | chiều cao, viền, hành vi lúc focus |
 | Card | padding, bo góc, có viền hay không |
