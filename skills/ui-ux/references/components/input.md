@@ -6,20 +6,22 @@ Nguồn: `speak-now/src/components/input/input.tsx`
 const baseClasses = "outline-hidden transition-colors text-foreground placeholder-muted";
 
 const variantClasses = {
-  default: "w-full h-12 bg-surface dark:bg-white/4 border rounded-xl text-base px-4 md:text-sm",
+  // Viền và MÀU viền viết cùng một chỗ, đúng như nút outline: `border border-border-strong`.
+  default: "w-full h-12 bg-surface dark:bg-white/4 border border-border-strong rounded-xl text-base px-4 md:text-sm",
   ghost: "bg-transparent border-0 p-0",
 };
 
 const stateClasses = error
   ? "border-red-500 ring-2 ring-red-500/10"
-  : "border-border-strong dark:border-transparent focus:border-primary";
+  : "dark:border-transparent focus:border-focus";
 ```
 
 **Vì sao ổn**
 
 - Input luôn `bg-surface`, không bao giờ trong suốt. Ô nhập trong suốt trên nền trang thì người dùng không thấy nó là ô nhập. Đây là luật cứng, kể cả khi thư viện gốc mặc định `bg-transparent`.
-- **Focus chỉ đổi màu viền**, `focus:border-primary`, không ring (`I13`). Gõ chữ mà ô bị bọc thêm một vòng thì rối.
+- **Focus chỉ đổi màu viền**, `focus:border-focus`, không ring (`I13`), kể cả ring mờ `ring-focus/10`. Gõ chữ mà ô bị bọc thêm một vòng thì rối. Riêng trạng thái lỗi được giữ ring đỏ mờ.
 - **Viền dùng `--border-strong`, không phải `--border`.** Ô nhập cùng nền trắng với card, nên viền là thứ duy nhất báo "đây là chỗ gõ". Viền card và đường chia thì là trang trí, nhạt được; viền ô nhập thì không (`M14`).
+- **Viền ô nhập và viền nút outline phải là CÙNG một class**, `border-border-strong`. Đặt ô nhập cạnh nút mà viền ô mờ hơn là đã lấy nhầm `border-border`. Đã dính 21/09/2026: helper chung cho ô nhập và textarea viết `border-border`, ô trông nhạt hơn hẳn nút đứng bên. Dựng xong thì grep `border-border\b` trong file ô nhập, textarea, select: phải ra 0.
 - Trạng thái lỗi cũng theo đúng công thức đó, chỉ đổi màu: viền đỏ đặc, ring `red-500/10`.
 - Bo `rounded-xl`, cùng bậc với nút, nên input và nút đứng cạnh nhau bằng vai.
 - **`text-base` trên mobile rồi thu về `md:text-sm`** — luật `R8`, áp cho cả `textarea` và `select`.

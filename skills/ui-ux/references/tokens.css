@@ -52,7 +52,8 @@
      hơn --surface một chút. Xem luật I10. */
   --surface-hover: #f8f8fa;
 
-  /* Ring lúc focus. Rất mờ, chỉ đủ cảm thấy, đi kèm với viền đậm lên. */
+  /* Ring rất mờ theo màu nhấn. KHÔNG dùng cho ô nhập lúc focus: ô chỉ đổi
+     viền sang --border-focus, luật I13. */
   --ring-focus: rgba(26, 29, 41, 0.1);
 
   /* Viền lúc focus. Ở nền sáng thì chính là màu nhấn. Ở nền tối thì KHÔNG
