@@ -68,6 +68,11 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Rê chuột lên mục **đăng xuất / xoá**: chữ, icon VÀ nền cùng đỏ lên chưa (`I4`)? Icon còn xám là thiếu `group`.
 - [ ] Đỏ đang dùng đúng sắc chưa (`M30`)? Lỗi là `red`, hành động nguy hiểm lúc rê vào là `rose`. Không có viền hay banner `rose`.
 - [ ] Đường chia trong dropdown, card: có chạm hai mép khối không, hay thụt theo padding (`F25`)?
+- [ ] **Bo lồng nhau (`M19`)**: bo khung ngoài = bo phần tử trong + padding khung? Dropdown mặc định `rounded-2xl` + `p-2` + mục `rounded-lg`. Trong bằng ngoài là góc phình.
+- [ ] **Rê chuột chậm từ mép trái sang mép phải** của từng mục menu, link sidebar, dòng bấm được: con trỏ có giữ bàn tay suốt không? Đổi một lần là vùng bấm hụt (`I29`).
+- [ ] Tailwind v4: `<button>` có `cursor-pointer` chưa, hoặc base CSS đã trả lại chưa (`W7`)?
+- [ ] **Bấm Tab qua menu và các nút**: có vòng ring nào không? Không được có. Mục đang focus phải đổi nền **y như hover** (`I13`).
+- [ ] Vừa Tab vừa rê chuột trong menu: có **hai mục sáng cùng lúc** không? Chỉ được một (`data-[highlighted]`).
 - [ ] Rê chuột lên **nút chính**: có đổi màu không? Nút `primary` là chỗ hay quên hover nhất (`I9`).
 - [ ] **Bấm vào chữ nhãn**: ô có focus không (`for`/`htmlFor`)? Con trỏ có thành bàn tay không?
 - [ ] **Bấm vào khoảng trắng bên phải chữ nhãn**: ô KHÔNG được focus. Focus là thiếu `w-fit` (`I26`).

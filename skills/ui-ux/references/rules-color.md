@@ -142,11 +142,18 @@ Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu
 | Tab / mục sidebar đang chọn | nền xám, **không viền**; mục chưa chọn không nền |
 | Ô nhập | viền — đây là chỗ viền đúng vai nhất, người ta phải nhìn ra ranh giới vùng gõ được |
 
-**M14. Một token cho mọi đường tóc.**
+**M14. Hai token viền, chia theo vai trò. Không có cái thứ ba.**
 
-Thẻ, ô nhập, đường chia đều dùng chung một token viền. Một token duy nhất để
-đường tóc trong app không chỗ đậm chỗ nhạt. Cần đậm hơn một bậc cho một chỗ cụ
-thể thì thêm đúng một token thứ hai, đặt tên theo vai trò, và ghi lý do.
+| Token | Cho | Vì sao |
+| --- | --- | --- |
+| `--border` | Viền card, khung dropdown, đường chia trong danh sách và menu | **Trang trí**: chỉ vạch ranh giới, nhạt được bao nhiêu thì nhạt |
+| `--border-strong` | **Viền ô nhập**, viền card khi hover | **Chức năng**: ô nhập cùng nền trắng với card, viền là thứ duy nhất báo "đây là chỗ gõ" |
+
+Trong mỗi nhóm thì mọi chỗ dùng chung đúng một token, để đường tóc không chỗ
+đậm chỗ nhạt. Muốn viền card nhạt đi thì hạ `--border`, ô nhập không nhạt theo.
+
+⚠️ **Đừng lấy `--border` cho ô nhập để "cho đồng bộ".** Hạ `--border` cho card
+nhẹ đi là ô nhập tan luôn vào nền.
 
 ⚠️ Thiếu class màu viền thì Tailwind v4 để `border-color: currentColor` — nút chữ
 đen sẽ ra **viền gần đen**. Thấy viền đậm bất thường thì kiểm chỗ này trước khi
@@ -191,9 +198,48 @@ chuột vào là chúng **biến mất**.
 
 ## Bo góc lồng nhau
 
-**M19. Khung ngoài bo lớn hơn thứ bên trong.** Thẻ ~12px → nút trong thẻ ~8px →
-badge ~6px. Không trộn nút bo tròn hẳn với nút bo vuông trong cùng một nhóm;
-badge trạng thái là ngoại lệ.
+**M19. Bo lồng nhau: ngoài = trong + khoảng cách giữa hai mép.**
+
+```
+R_ngoài = r_trong + d        d = padding của khung ngoài + độ dày viền (nếu có)
+```
+
+**Vì sao:** hai góc chỉ trông song song, khe hở đều nhau suốt đường cong, khi
+chúng có **chung một tâm**. Công thức trên chính là điều kiện để hai tâm trùng
+nhau. Lệch khỏi nó thì khe hở ở góc khác khe hở ở cạnh:
+
+| Bán kính trong | Khe hở ở góc | Trông |
+| --- | --- | --- |
+| **Bằng** bán kính ngoài (12 trong 12) | **≈ 1.4 × d**, rộng hơn ở cạnh | Góc phình ra, như hai hình không khớp |
+| **= R − d** | **= d**, bằng đúng ở cạnh | Song song, gọn |
+| Nhỏ hơn nhiều, hoặc vuông | Hẹp hơn d, có thể về 0 | Góc trong bị ép sát, chọc vào đường cong ngoài |
+
+**Các cặp hay dùng, đều nằm trên thang Tailwind:**
+
+| Khung ngoài | Padding | Phần tử trong |
+| --- | --- | --- |
+| `rounded-xl` 12px | `p-1` 4px | `rounded-lg` 8px |
+| `rounded-2xl` 16px | `p-1` 4px | `rounded-xl` 12px |
+| `rounded-2xl` 16px | `p-2` 8px | `rounded-lg` 8px |
+
+Cả ba cặp chỉ dùng bậc có trong thang bốn bậc của `F1`. Công thức ra một số
+ngoài thang (ví dụ `p-1.5` ra 6px) thì **đổi padding cho khớp thang**, đừng đẻ
+thêm bậc bo góc.
+
+**Chỉ áp khi hai mép ở gần nhau** — khi `d` không lớn hơn `R`. Dropdown, menu,
+thanh tab dạng viên thuốc, ô nhập có nút bên trong: đều là ca này, và mắt so hai
+góc với nhau ngay.
+
+**Khoảng cách lớn thì bỏ công thức.** Card `rounded-2xl` 16px với `p-5` 20px chứa
+một nút: công thức ra `16 − 20 = −4`. Hai góc cách nhau quá xa để mắt so, nên dùng
+bo theo vai trò (`F1`): card 16px, nút và ô nhập 12px, control nhỏ 8px. Đừng ép
+công thức ra số âm hay 0.
+
+Có viền 1px thì `d` cộng thêm 1. Lệch 1px không ai thấy, nên cứ lấy bậc gần nhất
+trên thang.
+
+Không trộn nút bo tròn hẳn với nút bo vuông trong cùng một nhóm; badge trạng thái
+là ngoại lệ.
 
 ---
 

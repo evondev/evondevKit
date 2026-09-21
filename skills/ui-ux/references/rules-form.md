@@ -9,8 +9,16 @@ Nguồn duy nhất cho mọi luật về khối, lưới, khoảng cách. Con s�
 
 **F1. Bo góc gán theo vai trò, không gán theo cảm hứng.**
 
-`rounded-full` cho thứ tròn, bậc lớn nhất cho container, bậc giữa cho input và
-nút, bậc nhỏ cho control nhỏ và badge. Bốn bậc, hết. Chỉ bo thứ **có nền hoặc có
+Bốn bậc, hết:
+
+| Bậc | Giá trị | Cho |
+| --- | --- | --- |
+| Tròn | `rounded-full` | Avatar, chip, thứ tròn |
+| Lớn | `rounded-2xl` 16px | Card, khung dropdown, modal |
+| Giữa | `rounded-xl` 12px | Nút, ô nhập |
+| Nhỏ | `rounded-lg` 8px | Dòng danh sách, mục menu, control nhỏ |
+
+Dùng `rounded-md`, `rounded` hay số tuỳ chế là đẻ bậc thứ năm. Chỉ bo thứ **có nền hoặc có
 viền**; link chữ giữa dòng thì không bo.
 
 Bo lồng nhau giảm dần theo độ sâu — xem `M19`.
@@ -169,25 +177,33 @@ không như một vách ngăn.
 Đường chia là thứ **chia khối**, nên nó phải chạm hai mép khối. Hai cách, chọn
 theo cấu trúc:
 
+Chọn cách theo **nền hover của mục có thụt vào so với mép khung hay không**:
+
 ```html
-<!-- Cách 1: âm lề bằng đúng padding của cha -->
-<div class="p-1.5">
-  <button>…</button>
-  <hr class="-mx-1.5 my-1.5 border-border" />
-  <button>…</button>
+<!-- Cách 1 — menu, dropdown: mục hover thụt vào, cách mép khung một khe.
+     Khung PHẢI có padding ngang để giữ khe đó, nên đường chia âm lề bằng đúng padding. -->
+<div class="rounded-2xl p-2">
+  <button class="w-full rounded-lg px-3 py-2">…</button>
+  <hr class="-mx-2 my-2 border-border" />
+  <button class="w-full rounded-lg px-3 py-2">…</button>
 </div>
 
-<!-- Cách 2 (nên dùng): cha không padding ngang, padding nằm ở từng mục -->
+<!-- Cách 2 — danh sách trong card: dòng tràn hết bề ngang, không thụt.
+     Khung không padding ngang, padding nằm ở từng dòng. -->
 <div class="py-1.5">
-  <button class="px-3">…</button>
-  <hr class="my-1.5 border-border" />
-  <button class="px-3">…</button>
+  <a class="block px-4 py-3">…</a>
+  <hr class="border-border" />
+  <a class="block px-4 py-3">…</a>
 </div>
 ```
 
-**Cách 2 bền hơn.** Cách 1 phải giữ `-mx-*` khớp đúng `p-*` của cha — đổi padding
-cha mà quên đổi âm lề là đường chia lại hụt, hoặc tràn ra khỏi khung. Cách 2 không
-có hai con số nào phải khớp nhau.
+**Đừng dùng cách 2 cho menu.** Bỏ padding ngang của khung là nền hover chạm sát
+mép, mất khe hở, và bo góc của mục với bo góc của khung không còn đồng tâm
+(`M19`).
+
+**Cách 1 có hai con số phải khớp nhau**: `-mx-*` của đường chia bằng đúng `p-*`
+của khung. Đổi padding khung mà quên đổi âm lề là đường chia lại hụt, hoặc tràn
+ra khỏi khung. Ghi hai số đó cạnh nhau trong code để người sửa sau thấy.
 
 Cùng lý do, `divide-y` trên danh sách trong card cũng tràn hết bề ngang — xem
 `references/components/card.md`.

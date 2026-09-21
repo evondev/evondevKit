@@ -3,7 +3,7 @@
 Nguồn: `speak-now/src/components/input/input.tsx`
 
 ```tsx
-const baseClasses = "outline-none transition-all text-foreground placeholder-muted";
+const baseClasses = "outline-hidden transition-colors text-foreground placeholder-muted";
 
 const variantClasses = {
   default: "w-full h-12 bg-surface dark:bg-white/4 border rounded-xl text-base px-4 md:text-sm",
@@ -12,13 +12,14 @@ const variantClasses = {
 
 const stateClasses = error
   ? "border-red-500 ring-2 ring-red-500/10"
-  : "border-border dark:border-transparent focus:ring-2 focus:ring-primary/10 focus:border-primary";
+  : "border-border-strong dark:border-transparent focus:border-primary";
 ```
 
 **Vì sao ổn**
 
 - Input luôn `bg-surface`, không bao giờ trong suốt. Ô nhập trong suốt trên nền trang thì người dùng không thấy nó là ô nhập. Đây là luật cứng, kể cả khi thư viện gốc mặc định `bg-transparent`.
-- Ring khi focus mờ đến mức gần như chỉ cảm thấy: `ring-primary/10`. Kèm `focus:border-primary` để viền đậm lên. Hai thứ cộng lại đủ rõ mà không loè.
+- **Focus chỉ đổi màu viền**, `focus:border-primary`, không ring (`I13`). Gõ chữ mà ô bị bọc thêm một vòng thì rối.
+- **Viền dùng `--border-strong`, không phải `--border`.** Ô nhập cùng nền trắng với card, nên viền là thứ duy nhất báo "đây là chỗ gõ". Viền card và đường chia thì là trang trí, nhạt được; viền ô nhập thì không (`M14`).
 - Trạng thái lỗi cũng theo đúng công thức đó, chỉ đổi màu: viền đỏ đặc, ring `red-500/10`.
 - Bo `rounded-xl`, cùng bậc với nút, nên input và nút đứng cạnh nhau bằng vai.
 - **`text-base` trên mobile rồi thu về `md:text-sm`** — luật `R8`, áp cho cả `textarea` và `select`.
@@ -110,7 +111,7 @@ là gần trắng nên viền hoá thành sợi trắng đặc, gắt.
 Dùng `--border-focus` thay vì `--primary`:
 
 ```html
-<input class="... border border-border focus:border-focus focus:ring-2 focus:ring-focus" />
+<input class="... border border-border-strong focus:border-focus" />
 ```
 
 ```js

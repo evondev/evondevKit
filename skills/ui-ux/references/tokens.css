@@ -26,12 +26,12 @@
   --surface: #ffffff;      /* nền card, input, header */
   --foreground: #2c2c2c;   /* chữ chính */
   --muted: #828282;        /* chữ phụ, label, placeholder, icon phụ */
-  /* MỘT token cho mọi đường tóc: viền card, viền ô nhập, đường chia trong
-     danh sách. Một tên duy nhất để đường tóc trong app không chỗ đậm chỗ nhạt.
-     Xem luật M13 và M14. */
-  --border: #eff0f0;
-  /* Đậm hơn ĐÚNG một bậc. Chỉ dùng khi --border mờ quá so với nền ở một chỗ cụ
-     thể. Đây là token viền thứ hai và cũng là token cuối, xem luật M16. */
+  /* Đường tóc trang trí: viền card, viền khung dropdown, đường chia trong danh
+     sách và trong menu. Nhạt đến mức chỉ đủ vạch ranh giới. Xem luật M13, M14. */
+  --border: #f3f3f4;
+  /* Đậm hơn ĐÚNG một bậc. Cho viền Ô NHẬP (viền là thứ duy nhất báo "đây là chỗ
+     gõ", vì ô nhập cùng nền trắng với card) và viền card khi hover. Đây là token
+     viền thứ hai và cũng là token cuối, xem luật M14, M16. */
   --border-strong: #ececec;
 
   /* Bậc hover cho nút phụ và cho dòng danh sách. Cần biến riêng vì --border

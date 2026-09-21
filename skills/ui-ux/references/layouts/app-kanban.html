@@ -34,7 +34,7 @@
         --foreground: #2c2c2c;   /* chữ chính */
         --muted: #828282;        /* chữ phụ, label, placeholder, icon phụ */
         /* MỘT token cho mọi đường tóc: viền card, viền ô nhập, đường chia. */
-        --border: #eff0f0;
+        --border: #f3f3f4;
         --border-strong: #ececec;   /* đậm hơn đúng một bậc, dùng lúc hover */
 
         --background-hover: #e7e7ea;
@@ -100,7 +100,7 @@
 
         <button
           type="button"
-          class="inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+          class="inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:bg-primary-hover"
         >
           Thêm việc
         </button>
@@ -135,7 +135,7 @@
           <input
             type="search"
             placeholder="Tìm việc"
-            class="h-10 w-full rounded-xl border border-border bg-surface px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted focus:border-focus focus:ring-2 focus:ring-focus sm:text-sm"
+            class="h-10 w-full rounded-xl border border-border-strong bg-surface px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted focus:border-focus sm:text-sm"
           />
         </label>
       </div>

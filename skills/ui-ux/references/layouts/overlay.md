@@ -50,6 +50,35 @@ Bám mép trái của nút mở, rộng tối thiểu bằng nút. Mục nguy hi
 cách bằng một đường kẻ — hover của nó theo `I4`, đường kẻ tràn hết bề ngang theo
 `F25`. Không quá 8 mục, hơn thì thêm ô tìm.
 
+**Mỗi mục là một phần tử bấm được rộng hết hàng** (`I29`): `flex w-full` đặt trên
+chính `<button>` hay `<a>`, không đặt trên phần tử bọc ngoài. Dùng shadcn thì
+mục có link phải là `<DropdownMenuItem asChild>`.
+
+**Bo góc và khoảng cách, theo `M19`:**
+
+```html
+<div class="min-w-56 rounded-2xl border border-border bg-surface p-2 shadow-lg">
+  <button class="flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 text-sm outline-hidden hover:bg-background focus-visible:bg-background">…</button>
+  <hr class="-mx-2 my-2 border-border" />   <!-- -mx-2 khớp p-2 của khung, F25 -->
+  <button class="…">…</button>
+</div>
+```
+
+| Thứ | Giá trị | Vì sao |
+| --- | --- | --- |
+| Khung | `rounded-2xl` 16px | |
+| Padding khung | `p-2` 8px | Khe hở giữa nền hover và mép khung |
+| Nền hover của mục | `rounded-lg` 8px | **16 = 8 + 8**, hai góc đồng tâm |
+
+Dùng shadcn / Radix thì thay cả `hover:` lẫn `focus-visible:` bằng
+`data-[highlighted]:bg-background`, để chuột và phím mũi tên dùng chung **một**
+mục sáng (`I13`).
+
+Nền hover **thụt vào** cách mép khung, không tràn sát mép. Cái khe 8px đó cùng với
+góc đồng tâm là thứ làm menu trông mềm. Làm mục bo `rounded-xl` cho "tròn hơn"
+thì sai công thức: khe hở ở góc rộng ra ~9.7px trong khi ở cạnh là 8px, góc trông
+phình. Bo trong nhỏ quá thì ngược lại, góc bị ép sát.
+
 ## Phím tắt trong menu
 
 Mục nào có phím tắt thì hiện ở **mép phải**, `text-xs text-muted`, đừng để trong

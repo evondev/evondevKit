@@ -135,3 +135,38 @@ Và **không bao giờ thu lại**. Ép 16px ở màn hẹp để chặn:
 `!important` ở đây là cần thật: nó phải thắng được cả `style={{ fontSize }}` inline
 rải trong các composer và trình soạn thảo. Đây là một trong số rất ít chỗ
 `!important` có lý do chính đáng — và lý do đó phải được ghi ngay trên nó.
+
+## W7. Tailwind v4 cho `<button>` con trỏ mũi tên, không phải bàn tay
+
+v3 để `<button>` hiện bàn tay. **v4 đổi preflight về `cursor: default`**, theo
+đúng hành vi gốc của trình duyệt. `<a href>` thì vẫn là bàn tay.
+
+Nên trong **cùng một menu**, mục là `<a>` hiện bàn tay còn mục là `<button>`
+(ví dụ "Đăng xuất") hiện mũi tên. Người dùng rê chuột dọc menu thấy con trỏ đổi
+qua đổi lại, trong khi code trông không sai chỗ nào.
+
+Hai cách, chọn một cho cả dự án:
+
+```css
+/* Cách 1: trả lại hành vi v3 cho toàn app — một chỗ, không sót */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+}
+```
+
+```html
+<!-- Cách 2: ghi tường minh trên từng nút -->
+<button class="cursor-pointer">…</button>
+```
+
+**Cách 1 an toàn hơn khi refactor**, vì không phải đi sót từng nút. Cách 2 hợp
+khi dự án đã quen ghi `cursor-pointer` khắp nơi. Đừng trộn hai cách: nửa dự án dựa
+vào base, nửa ghi tay, thì lúc bỏ một trong hai sẽ không biết chỗ nào còn phụ
+thuộc.
+
+**Cách phát hiện:** trong `package.json` có `"tailwindcss": "^4`, và grep ra
+`<button` không kèm `cursor-pointer` mà trong CSS base cũng không có dòng
+`cursor: pointer` nào.

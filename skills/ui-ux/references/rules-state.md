@@ -96,24 +96,50 @@ màu.
 **I12. Chỉ đổi màu khi chuyển trạng thái.** Ngoại lệ duy nhất là card hover được
 `transition-all`.
 
-**I13. Focus ring xám trung tính, mảnh, chỉ hiện với `focus-visible`.**
+**I13. Không vòng ring khi focus. Focus bằng bàn phím trông GIỐNG HOVER.**
 
-Bấm chuột thì không thấy viền, dùng bàn phím mới thấy. Màu ring **không** phải
-màu nhấn.
+Vòng ring (dù là `outline` của trình duyệt hay `ring-*` dựng bằng `box-shadow`) làm
+menu và nút trông như đang lỗi. Nhưng bỏ trắng thì người dùng bàn phím không biết
+mình đang đứng ở đâu. Cách giải: **dùng lại đúng trạng thái hover** làm dấu hiệu
+focus. Hết ring, mà vẫn thấy.
 
-⚠️ Ô nhập là ca riêng: gõ chữ mà ô bị bọc một vòng dày thì rối. Với `input` /
-`textarea` thì **chỉ đổi màu viền**, không thêm ring ngoài — hoặc ring rất mờ
-(~10%), chọn một rồi dùng nhất quán cả app.
+| Phần tử | Focus bàn phím |
+| --- | --- |
+| Mục menu, nút viền, nút ghost | `focus-visible:outline-hidden focus-visible:bg-background` — y như hover |
+| Nút `primary` | `focus-visible:outline-hidden focus-visible:bg-primary-hover` |
+| Ô nhập, textarea | **Chỉ đổi màu viền**: `focus:border-primary`. Không ring, kể cả ring mờ |
+| Link chữ | `focus-visible:underline` |
 
-**I14. Bỏ hẳn dấu hiệu focus là một quyết định, không phải một mặc định.**
+**`focus-visible`, không phải `focus`**, trừ ô nhập. Bấm chuột thì không hiện gì,
+chỉ khi dùng bàn phím mới hiện. Ô nhập thì dùng `focus` vì người dùng cần thấy
+mình đang gõ vào ô nào, dù vào bằng chuột hay bàn phím.
 
-focus.camp đã bỏ vòng focus bàn phím (16/09/2026) và ghi rõ đánh đổi: người dùng
-bàn phím không còn thấy mình đang đứng ở nút nào. Nếu làm vậy thì:
+**`outline-hidden` (Tailwind v4) hay `outline-none` (v3)**, đừng dùng `outline: none`
+thuần hay `outline-none` của v4. Hai class kia làm outline **trong suốt** chứ không
+xoá hẳn, nên nó vẫn hiện ra ở chế độ tương phản cao của Windows. Đó là chỗ duy
+nhất người dùng thật sự cần nó mà không có nền hover để thay.
+
+**Menu: chỉ MỘT mục sáng tại một thời điểm.** Hover với focus mà là hai trạng
+thái riêng thì rê chuột vào mục này trong khi Tab đang đứng ở mục kia, hai mục
+cùng sáng, người dùng không biết bấm Enter sẽ mở cái nào. Dùng Radix / shadcn thì
+dùng **`data-[highlighted]`** thay cho cả `hover:` lẫn `focus:`:
+
+```tsx
+<DropdownMenuItem className="outline-hidden data-[highlighted]:bg-background">
+```
+
+`data-[highlighted]` đi theo cả chuột lẫn phím mũi tên, nên luôn chỉ có một mục
+sáng. Không dùng Radix thì khi chuột vào mục nào, gọi `.focus()` cho mục đó.
+
+**I14. Bỏ luôn cả dấu hiệu thay thế là một quyết định, không phải một mặc định.**
+
+Mặc định của skill là **không ring, nhưng có nền giống hover** (`I13`). Bỏ luôn cả
+nền, tức bấm Tab không thấy gì, thì người dùng bàn phím không còn biết mình đang
+đứng ở nút nào. focus.camp đã làm vậy (16/09/2026) và ghi rõ đánh đổi. Nếu làm
+thì:
 
 - Ghi lý do ngay tại chỗ, kèm câu **"đừng sửa lại khi thấy bấm Tab không có dấu hiệu gì"**.
 - Để rule ở **đúng một chỗ**, để muốn trả lại thì sửa một dòng.
-
-Mặc định của skill này vẫn là **có** dấu hiệu focus.
 
 **I15. Sidebar: mục đang chọn tô nền xám, không tô màu nhấn, không viền.** Mục
 chưa chọn thì không nền.
@@ -234,3 +260,60 @@ lần sau không gợi ý được.
 Khung gợi ý **che mất ô ngay dưới** — đó là hành vi bình thường của trình duyệt,
 nó tự đóng khi gõ hoặc khi rời ô. Đừng đẩy khoảng cách các trường ra xa để
 "tránh" nó.
+
+---
+
+## Vùng bấm
+
+**I29. Nền hover, vùng bấm và `cursor-pointer` phải nằm trên CÙNG MỘT phần tử,
+và phần tử đó rộng hết hàng.**
+
+Lỗi hay gặp nhất ở menu, sidebar và danh sách bấm được. Nền hover nằm ở phần tử
+bọc ngoài, rộng cả hàng, còn phần tử bấm được (`<a>`, `<button>`) lại là inline,
+chỉ ôm vừa khít chữ.
+
+Hệ quả: rê chuột ngang qua hàng thì con trỏ **nhấp nháy**, qua chữ là bàn tay, qua
+khoảng trống là mũi tên. Nền vẫn sáng cả hàng, nên người dùng tưởng bấm đâu cũng
+được. Bấm vào khoảng trống thì **không có gì xảy ra**, và họ nghĩ app bị đơ.
+
+```html
+<!-- Sai: hover ở <li>, vùng bấm chỉ bằng chữ -->
+<li class="rounded-lg px-3 py-2 hover:bg-background">
+  <a href="/ho-so">Hồ sơ của bạn</a>
+</li>
+
+<!-- Đúng: <li> trơn, mọi thứ dồn vào <a> -->
+<li>
+  <a href="/ho-so" class="flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 hover:bg-background">
+    <i data-lucide="user" class="size-4 text-muted"></i>
+    Hồ sơ của bạn
+  </a>
+</li>
+```
+
+**React với shadcn / Radix: bẫy `asChild`.** Đây là chỗ dính nhiều nhất trong
+dự án Next:
+
+```tsx
+// Sai: Item có hover và rộng cả hàng, nhưng điều hướng nằm ở <Link> inline bên trong.
+// Bấm vào khoảng trống của hàng thì menu đóng lại mà không đi đâu cả.
+<DropdownMenuItem>
+  <Link href="/ho-so">Hồ sơ của bạn</Link>
+</DropdownMenuItem>
+
+// Đúng: asChild để <Link> TRỞ THÀNH chính Item, thừa hưởng hover lẫn vùng bấm
+<DropdownMenuItem asChild>
+  <Link href="/ho-so" className="flex w-full cursor-pointer items-center gap-2.5">
+    Hồ sơ của bạn
+  </Link>
+</DropdownMenuItem>
+```
+
+**Cách kiểm, mất năm giây:** rê chuột từ mép trái sang mép phải của hàng, thật
+chậm. Con trỏ phải là bàn tay **suốt từ đầu tới cuối**. Đổi dù một lần là lỗi.
+
+Áp cho: mục menu, link sidebar, dòng danh sách bấm được, tab, và card mà cả khối
+bấm được. Padding của hàng đặt trên **phần tử bấm**, không đặt trên phần tử bọc,
+vì padding cũng là vùng bấm.
+
+`cursor-pointer` phải ghi tường minh trên `<button>` ở Tailwind v4 — xem `W7`.

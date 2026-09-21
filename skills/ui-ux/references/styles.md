@@ -52,9 +52,19 @@ Mỗi luật gu flat có dòng *"Gu flat"* ngay tại chỗ. Thấy dòng đó m
 | --- | --- |
 | Chữ thường | **4.5 : 1** so với nền ngay phía sau |
 | Chữ lớn (từ 24px, hoặc từ 18.66px đậm) | **3 : 1** |
-| Viền ô nhập, icon mang nghĩa, viền nút không nền | **3 : 1** so với nền kề bên |
+| Icon mang nghĩa, viền nút không nền | **3 : 1** so với nền kề bên |
 
-Flat hiếm khi trượt con số này, vì chữ đậm nằm trên nền trắng đặc. Glass,
+⚠️ **Viền ô nhập của gu flat KHÔNG đạt 3 : 1**, và đó là đánh đổi có chủ ý.
+`--border-strong` trên nền trắng chỉ khoảng 1.2 : 1. WCAG khuyên 3 : 1 cho ranh giới
+của control, nhưng số đó cần viền xám đậm cỡ `#949494`, và đường tóc sẽ thành
+khung kẻ ô. Skill bù lại bằng ba thứ khác để người dùng nhận ra ô nhập: nhãn luôn
+hiện phía trên (`I26`), placeholder, và viền đậm lên khi focus.
+
+Dự án **phải đạt WCAG AA đầy đủ** (cơ quan nhà nước, y tế, ngân hàng) thì đổi
+`--border-strong` lên mức đạt 3 : 1. Đổi một dòng, chỉ ô nhập đậm lên, card
+không bị ảnh hưởng (`M14`).
+
+Flat hiếm khi trượt con số của chữ, vì chữ đậm nằm trên nền trắng đặc. Glass,
 gradient và tối thì **trượt đầu tiên**. Nên luật này được viết ở đây, cạnh các
 phong cách làm nó trượt.
 

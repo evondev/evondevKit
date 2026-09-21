@@ -11,6 +11,7 @@ isActive && "bg-brand text-white"
 // IconButton: hành động phụ trong dòng hoặc header
 "inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md text-muted transition-colors"
 "hover:bg-background hover:text-foreground"
+"outline-hidden focus-visible:bg-background focus-visible:text-foreground"
 "disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted"
 ```
 

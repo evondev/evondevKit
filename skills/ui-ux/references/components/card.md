@@ -17,7 +17,7 @@
 **Vì sao ổn**
 
 - Card tách khỏi nền bằng **đường tóc 1px + bo góc**, không bằng bóng. Đây là luật `M13`, và nó là chỗ phiên bản trước của skill này đã chốt ngược.
-- Dùng đúng `--border`, cùng token với ô nhập và đường chia. Một token cho mọi đường tóc (`M14`), nên trong app không có chỗ đậm chỗ nhạt.
+- Dùng đúng `--border`, cùng token với đường chia và khung dropdown, nên trong app không có chỗ đậm chỗ nhạt. Ô nhập thì dùng `--border-strong`, đậm hơn một bậc (`M14`).
 - **Không `shadow-*`.** Bóng chỉ dành cho lớp nổi lên trên trang — modal, dropdown, popover (`M15`). Card nằm trong trang thì không.
 - Tiêu đề card là `text-base font-semibold`, đúng một bậc trên chữ bên trong (`T8`). Không `text-2xl`, không uppercase, không tracking rộng.
 - Header và body cách nhau `mb-4`, padding card `p-5`. Hai con số này lặp lại ở mọi card, không card nào tự chế.
