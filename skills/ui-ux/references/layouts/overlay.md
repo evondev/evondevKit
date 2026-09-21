@@ -57,9 +57,9 @@ mục có link phải là `<DropdownMenuItem asChild>`.
 **Bo góc và khoảng cách, theo `M19`:**
 
 ```html
-<div class="min-w-56 rounded-2xl border border-border bg-surface p-2 shadow-lg">
-  <button class="flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 text-sm outline-hidden hover:bg-background focus-visible:bg-background">…</button>
-  <hr class="-mx-2 my-2 border-border" />   <!-- -mx-2 khớp p-2 của khung, F25 -->
+<div class="min-w-56 rounded-2xl border border-border bg-surface p-1 shadow-lg">
+  <button class="flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm outline-hidden hover:bg-background focus-visible:bg-background">…</button>
+  <hr class="-mx-1 my-1 border-border" />   <!-- -mx-1 khớp p-1 của khung, F25 -->
   <button class="…">…</button>
 </div>
 ```
@@ -67,17 +67,21 @@ mục có link phải là `<DropdownMenuItem asChild>`.
 | Thứ | Giá trị | Vì sao |
 | --- | --- | --- |
 | Khung | `rounded-2xl` 16px | |
-| Padding khung | `p-2` 8px | Khe hở giữa nền hover và mép khung |
-| Nền hover của mục | `rounded-lg` 8px | **16 = 8 + 8**, hai góc đồng tâm |
+| Padding khung | `p-1` 4px | Khe hở giữa nền hover và mép khung |
+| Mục | `h-10` 40px | Cùng chiều cao link sidebar, nút, ô nhập. Mục 36px trông chật |
+| Nền hover của mục | `rounded-xl` 12px | **16 = 12 + 4**, hai góc đồng tâm. Mục cao 40px nên bo 12px (`F1`) |
 
 Dùng shadcn / Radix thì thay cả `hover:` lẫn `focus-visible:` bằng
 `data-[highlighted]:bg-background`, để chuột và phím mũi tên dùng chung **một**
 mục sáng (`I13`).
 
-Nền hover **thụt vào** cách mép khung, không tràn sát mép. Cái khe 8px đó cùng với
-góc đồng tâm là thứ làm menu trông mềm. Làm mục bo `rounded-xl` cho "tròn hơn"
-thì sai công thức: khe hở ở góc rộng ra ~9.7px trong khi ở cạnh là 8px, góc trông
-phình. Bo trong nhỏ quá thì ngược lại, góc bị ép sát.
+Nền hover **thụt vào** cách mép khung, không tràn sát mép. Cái khe đó cùng với
+góc đồng tâm là thứ làm menu trông mềm. **Bo mục và padding khung đi thành cặp**:
+mục `rounded-xl` thì khung `p-1`; giữ `p-2` cũ mà nâng mục lên `rounded-xl` là
+sai công thức, khe hở ở góc rộng ra trong khi ở cạnh vẫn 8px, góc trông phình.
+
+Menu gọn, mục cao dưới 40px (`py-1.5`, `text-xs`) thì hạ về cặp cũ: mục
+`rounded-lg`, khung `p-2`.
 
 ## Phím tắt trong menu
 
@@ -85,7 +89,7 @@ Mục nào có phím tắt thì hiện ở **mép phải**, `text-xs text-muted`
 ngoặc giữa dòng.
 
 ```html
-<button class="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm hover:bg-secondary">
+<button class="flex h-10 w-full items-center gap-2.5 rounded-xl px-3 text-sm hover:bg-background">
   <i data-lucide="user" class="h-4 w-4 shrink-0 text-muted"></i>
   <span class="min-w-0 flex-1 truncate text-left">Hồ sơ của bạn</span>
   <span class="shrink-0 text-xs text-muted">⌘1</span>

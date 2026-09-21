@@ -43,9 +43,9 @@ hơn nội dung. Dùng `flex-1 min-h-[14rem]` cho vùng vẽ để cột nở ra
 cao lên thì chênh lệch giữa các giá trị cũng đọc rõ hơn. Đừng đóng `h-56` rồi
 `mt-auto` đẩy xuống đáy.
 
-Giãn hết cỡ rồi mà vẫn dư nhiều thì đó là **tín hiệu để hỏi người dùng có muốn
-thêm gì vào chỗ đó không, hoặc để card ngắn lại**. Không tự nghĩ ra nội dung lấp
-vào, xem luật `S5` trong `../../SKILL.md`.
+Giãn hết cỡ rồi mà vẫn dư nhiều thì **cho card ngắn lại** (bỏ `row-span`), đừng
+tự nghĩ ra nội dung lấp vào. Lúc giao gợi ý một dòng chỗ đó có thể thêm gì, xem
+luật `S5` trong `../../SKILL.md`.
 
 **Biểu đồ cột**, dựng bằng div, không cần thư viện:
 

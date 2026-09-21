@@ -69,6 +69,9 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Đỏ đang dùng đúng sắc chưa (`M30`)? Lỗi là `red`, hành động nguy hiểm lúc rê vào là `rose`. Không có viền hay banner `rose`.
 - [ ] Đường chia trong dropdown, card: có chạm hai mép khối không, hay thụt theo padding (`F25`)?
 - [ ] **Bo lồng nhau (`M19`)**: bo khung ngoài = bo phần tử trong + padding khung? Dropdown mặc định `rounded-2xl` + `p-2` + mục `rounded-lg`. Trong bằng ngoài là góc phình.
+- [ ] **Sidebar**: nền trắng chứ không trùng nền trang; hover và mục đang chọn cùng nền mờ `--background`, không `--secondary`; hover vào thì icon và chữ cùng đậm lên; badge là pill trắng viền mảnh chữ xám hoặc số trơn, cả sidebar cùng một kiểu, không badge màu brand (`I15`); nhãn nhóm IN HOA, đường kẻ trong sidebar dùng `--border-strong` và chạy hết bề ngang (không bị padding cắt), nhiều nhóm thì thu gọn được; thanh cuộn tự ẩn (`I18`).
+- [ ] **Thu gọn sidebar**: thu về dải icon `w-16`, chỉ còn nhóm đầu không nhãn, các nhóm có nhãn ẩn hết; badge đè góc icon, cùng kiểu pill; bấm mở/thu thì icon, logo, avatar ĐỨNG YÊN (không `justify-center`, không đổi padding), chữ không gỡ khỏi DOM mà bị cắt dần và mờ đi; mỗi icon có tooltip; nút toggle không có vòng viền khi focus (`layouts/app.md`).
+- [ ] **Chân sidebar**: profile nằm trong một khung viền `--border-strong` (cùng màu các đường kẻ khác trong sidebar), cả khung là nút mở menu, có dấu ba chấm dọc ở mép phải; email nằm trong menu chứ không nằm trong khung (`layouts/app.md`).
 - [ ] **Rê chuột chậm từ mép trái sang mép phải** của từng mục menu, link sidebar, dòng bấm được: con trỏ có giữ bàn tay suốt không? Đổi một lần là vùng bấm hụt (`I29`).
 - [ ] Tailwind v4: `<button>` có `cursor-pointer` chưa, hoặc base CSS đã trả lại chưa (`W7`)?
 - [ ] **Bấm Tab qua menu và các nút**: có vòng ring nào không? Không được có. Mục đang focus phải đổi nền **y như hover** (`I13`).

@@ -46,7 +46,7 @@ Bảng màu của MỘT màn hình, không thêm:
 | Màu | Chỉ dùng cho |
 | --- | --- |
 | Xám trung tính | Mọi thứ còn lại: khung, chữ phụ, badge, icon, viền |
-| Màu nhấn | Trạng thái "đã xong", và nút hành động chính khi thật cần nổi |
+| Màu nhấn | Trạng thái "đã xong", và nút hành động chính khi thật cần nổi. **Không** cho badge số đếm |
 | Hổ phách | "Cần chú ý": quá hạn, nộp trễ, bỏ lỡ |
 | Đỏ lỗi — `red` | Lỗi thật mà người dùng phải xử lý: bài bị từ chối, lỗi form |
 | Đỏ nguy hiểm — `rose` | **Chỉ khi rê vào** hành động không lấy lại được: xoá, đăng xuất, huỷ tài khoản. Lúc thường không đỏ |
@@ -105,6 +105,10 @@ ruột.
 
 **M11. Chữ chỉ ba sắc độ.** Chữ chính, chữ phụ, và màu nằm trên nền nhấn.
 
+Ngoại lệ duy nhất: **mục điều hướng lúc chưa rê/chưa chọn** dùng
+`foreground/70`, để hover có chỗ "sáng lên" mà lúc thường vẫn đọc rõ. Dùng
+`--muted` ở đó thì tên mục mờ quá trên nền trắng (21/09/2026).
+
 ⚠️ Bẫy đã dính ở focus.camp: token tên `--text-muted` bị alias về `--text-normal`,
 tức "chữ phụ" và "chữ chính" cùng một màu đen. Đừng tin tên token — mở giá trị
 thật ra xem. Xem `refactor.md` luật L3.
@@ -139,7 +143,7 @@ Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu
 | Thẻ / khung | trắng, viền 1px xám rất nhạt, bo ~12px, **không bóng** |
 | Danh sách nhiều mục | MỘT khung, các dòng chia bằng `divide-y`. Dòng tiêu đề và dòng hành động cuối nằm TRONG khung |
 | Khối tóm tắt phụ | nền xám nhạt + viền, bo như thẻ |
-| Tab / mục sidebar đang chọn | nền xám, **không viền**; mục chưa chọn không nền |
+| Tab / mục sidebar đang chọn | nền xám, **không viền**; mục chưa chọn không nền. Sidebar nền trắng: hover và đang chọn cùng nền mờ `--background` |
 | Ô nhập | viền — đây là chỗ viền đúng vai nhất, người ta phải nhìn ra ranh giới vùng gõ được |
 
 **M14. Hai token viền, chia theo vai trò. Không có cái thứ ba.**
@@ -147,7 +151,7 @@ Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu
 | Token | Cho | Vì sao |
 | --- | --- | --- |
 | `--border` | Viền card, khung dropdown, đường chia trong danh sách và menu | **Trang trí**: chỉ vạch ranh giới, nhạt được bao nhiêu thì nhạt |
-| `--border-strong` | **Viền ô nhập**, **viền nút outline**, viền card khi hover | **Chức năng**: ô nhập và nút outline cùng nền trắng với card, viền là thứ duy nhất báo "đây là chỗ gõ", "đây là chỗ bấm" (`I8`) |
+| `--border-strong` | **Viền ô nhập**, **viền nút outline**, viền card khi hover, **đường kẻ trong khung app** (kẻ dọc sidebar, kẻ chia nhóm, kẻ dưới header, khung profile chân sidebar) | **Chức năng**: ô nhập và nút outline cùng nền trắng với card, viền là thứ duy nhất báo "đây là chỗ gõ", "đây là chỗ bấm" (`I8`) |
 
 Trong mỗi nhóm thì mọi chỗ dùng chung đúng một token, để đường tóc không chỗ
 đậm chỗ nhạt. Muốn viền card nhạt đi thì hạ `--border`, ô nhập không nhạt theo.

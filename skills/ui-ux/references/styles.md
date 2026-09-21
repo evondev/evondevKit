@@ -8,23 +8,25 @@ tầng 3. File này dạy cách **đọc** kết quả.
 
 ## Hai tầng
 
-**P1. Mặc định là flat. Phong cách khác chỉ khi người dùng chọn.**
+**P1. Mặc định là flat. Dự án đã có phong cách riêng thì theo dự án. Không hỏi.**
 
 Ba ca, chọn đúng một:
 
 | Ca | Làm gì |
 | --- | --- |
 | **Người dùng tự nêu phong cách** ("làm trang giá kiểu glassmorphism") | Làm theo phong cách đó, **không hỏi lại** |
-| **Audit thấy dự án có phong cách khác flat** (`P4`) | **Hỏi một câu** trước khi dựng (mẫu bên dưới) |
+| **Audit thấy dự án có phong cách khác flat** (`P4`) | **Theo phong cách dự án**, dựng luôn, báo một dòng lúc giao (mẫu bên dưới) |
 | **Dự án flat hoặc trống**, người dùng không nêu gì | Flat (`P6`). Không hỏi về phong cách |
 
-Mẫu câu hỏi, kèm hệ quả của từng lựa chọn để người dùng chọn có căn cứ:
+Vì sao theo dự án chứ không theo flat: một màn flat giữa app glass là màn lạc
+loài, người dùng thấy ngay. Nhất quán thắng gu.
 
-> Dự án đang dùng **glass** (thấy ở 7 file: card, modal, sidebar). Màn này làm:
-> - **Flat** theo mặc định của skill: gọn, dễ đọc, nhưng sẽ lệch so với phần còn lại của app.
-> - **Glass** như dự án: nhất quán với các màn khác.
+Mẫu dòng báo lúc giao:
 
-Chọn xong thì khỏi hỏi lại cho các màn sau trong cùng dự án.
+> Dự án đang dùng **glass** (thấy ở 7 file: card, modal, sidebar), màn này làm
+> glass cho khớp. Muốn flat theo mặc định của skill thì nói, mình đổi.
+
+Người dùng đã chọn thì giữ cho các màn sau trong cùng dự án.
 
 **Chọn phong cách nào thì cũng không theo lỗi của dự án.** Phong cách với lỗi là
 hai thứ khác nhau. Dự án làm trang giá ba cột, mỗi cột một nút một màu (tím,
@@ -78,32 +80,32 @@ phong cách làm nó trượt.
 
 ## Nhận diện
 
-**P4. Tự tìm phong cách của dự án, để biết có cần hỏi hay không. Một phong
+**P4. Tự tìm phong cách của dự án, để biết có theo hay không. Một phong
 cách chỉ là "của dự án" khi nó có mặt trên bề mặt chính.**
 
 Chạy lệnh tầng 3 ở `SKILL.md` câu 2, rồi đọc số:
 
 | Kết quả | Kết luận |
 | --- | --- |
-| Tín hiệu có ở **từ 3 file component trở lên**, trên card, modal, header, sidebar | Đó là phong cách của dự án → **hỏi** theo mẫu `P1` |
-| Chỉ 1–2 file | Ngoại lệ cục bộ: một banner, một trang quảng bá. **Không** tính là phong cách của dự án, không hỏi, làm flat |
-| Có token riêng cho nó (`--glass-bg`, `--gradient-*`, `--shadow-card`) | Tính là phong cách của dự án **dù đếm file ra ít**, vì có token là có chủ đích → **hỏi** |
-| **Tối**: layout gốc có nền tối | Tính là phong cách của dự án **chỉ với một file đó**, vì nền tối chỉ nằm ở gốc → **hỏi** |
-| Không tín hiệu nào đáng kể | Flat hoặc dự án trống → flat (`P6`), không hỏi |
+| Tín hiệu có ở **từ 3 file component trở lên**, trên card, modal, header, sidebar | Đó là phong cách của dự án → **theo**, báo theo mẫu `P1` |
+| Chỉ 1–2 file | Ngoại lệ cục bộ: một banner, một trang quảng bá. **Không** tính là phong cách của dự án, làm flat |
+| Có token riêng cho nó (`--glass-bg`, `--gradient-*`, `--shadow-card`) | Tính là phong cách của dự án **dù đếm file ra ít**, vì có token là có chủ đích → **theo** |
+| **Tối**: layout gốc có nền tối | Tính là phong cách của dự án **chỉ với một file đó**, vì nền tối chỉ nằm ở gốc → **theo** |
+| Không tín hiệu nào đáng kể | Flat hoặc dự án trống → flat (`P6`) |
 
-Đếm ra chỉ để **quyết định có hỏi hay không**. Không bao giờ tự đổi sang phong
-cách khác chỉ vì audit thấy nó.
+Đếm ra để **quyết định theo dự án hay flat**. Ngưỡng 3 file là để một banner lẻ
+không kéo cả màn sang phong cách khác.
 
 Người dùng gửi **ảnh tham chiếu** thì đó là ca "tự nêu phong cách" của `P1`: nhận
 diện bằng mắt theo dòng "Nhận ra từ ảnh" ở từng khối bên dưới, rồi làm theo luôn,
 không hỏi. Có ảnh thì ảnh thắng code.
 
-**P5. Phong cách chồng nhau thì áp cả hai khối. Codebase lẫn lộn thì nói ra
-trong câu hỏi.**
+**P5. Phong cách chồng nhau thì áp cả hai khối. Codebase lẫn lộn thì theo phần
+mới nhất.**
 
 - **Glass + tối** là cặp rất hay gặp. Áp cả `P8` lẫn `P10`.
 - **Nổi + gradient ở một điểm**: card nổi, chỉ gói đề xuất có gradient. Áp `P7`, còn `P9` chỉ áp cho đúng điểm đó.
-- **Codebase lẫn lộn** (trang cũ flat, trang mới glass): nói thẳng chuyện đó trong câu hỏi của `P1`, kèm khu nào đang dùng gì, rồi để người dùng chọn. Phần **mới nhất** của dự án thường là hướng họ đang đi tới, nên nói thêm một câu như vậy nếu thấy rõ.
+- **Codebase lẫn lộn** (trang cũ flat, trang mới glass): theo phần **mới nhất** (xem ngày sửa file trong git), vì đó thường là hướng dự án đang đi tới. Lúc giao nói rõ khu nào đang dùng gì và mình đã theo bên nào.
 
 ---
 
@@ -234,5 +236,5 @@ Gặp phong cách không khớp khối nào (brutalism, retro, skeuomorphism...)
 3. **Giữ nguyên toàn bộ cột "Nguyên tắc" của `P2`.** Phong cách lạ đến đâu cũng không đè được `I3`, `P3`, hay 375px.
 4. **Báo trong dòng `Audit:`** rằng đây là phong cách ngoài bảng, và mình đã đè những luật nào.
 
-Phong cách ngoài bảng mà người dùng **chưa chọn** thì vẫn theo `P1`: hỏi trước,
-mặc định flat.
+Phong cách ngoài bảng mà người dùng **chưa chọn** thì vẫn theo `P1`: dự án có
+thì theo dự án, không thì flat; báo lúc giao.

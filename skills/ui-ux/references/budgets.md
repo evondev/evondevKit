@@ -1,6 +1,6 @@
 # Ngân sách và nhịp
 
-Đếm được thì mới giữ được. Vượt số nào thì phải hỏi trước.
+Đếm được thì mới giữ được. Vượt số nào thì phải có lý do, và nói lý do đó lúc giao.
 
 Skill này chỉ lo **màn hình trong app** — dashboard, danh sách, bảng, form, cài
 đặt. Nhánh trang bán hàng đã gỡ khỏi skill (nằm ở `archive/` của repo).

@@ -7,16 +7,22 @@ Nguồn duy nhất cho mọi luật về khối, lưới, khoảng cách. Con s�
 
 ## Khối
 
-**F1. Bo góc gán theo vai trò, không gán theo cảm hứng.**
+**F1. Bo góc gán theo vai trò và CHIỀU CAO, không gán theo cảm hứng.**
 
 Bốn bậc, hết:
 
 | Bậc | Giá trị | Cho |
 | --- | --- | --- |
-| Tròn | `rounded-full` | Avatar, chip, thứ tròn |
+| Tròn | `rounded-full` | Avatar, chip, badge, thứ tròn |
 | Lớn | `rounded-2xl` 16px | Card, khung dropdown, modal |
-| Giữa | `rounded-xl` 12px | Nút, ô nhập |
-| Nhỏ | `rounded-lg` 8px | Dòng danh sách, mục menu, control nhỏ |
+| Giữa | `rounded-xl` 12px | **Mặc định.** Mọi phần tử **cao từ 40px trở lên**: nút, ô nhập, link sidebar, dòng danh sách có hover, mục menu cao 40px |
+| Nhỏ | `rounded-lg` 8px | **Chỉ** phần tử **cao dưới 40px** (36px trở xuống): nút nhỏ `h-9`, mục menu gọn, icon button `h-7`/`h-8`, ô vuông nhỏ |
+
+**Luật chiều cao: từ 40px trở lên thì tối thiểu 12px.** Nhìn chiều cao phần tử
+trước rồi mới chọn bậc, đừng chọn theo tên loại ("mục menu thì 8px"). Mục menu
+cao 40px mà bo 8px thì góc trông cứng, lạc tông với nút và ô nhập 12px đứng gần
+(chủ dự án chốt 21/09/2026). Dưới 40px thì 12px bắt đầu tròn quá so với chiều
+cao, nên hạ về 8px.
 
 Dùng `rounded-md`, `rounded` hay số tuỳ chế là đẻ bậc thứ năm. Chỉ bo thứ **có nền hoặc có
 viền**; link chữ giữa dòng thì không bo.

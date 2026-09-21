@@ -8,12 +8,15 @@ TS/TSX, 14.218 dòng CSS, 4,5 tháng tuổi, có tiền thật chạy qua.
 
 ---
 
-## Bốn câu phải hỏi trước khi gõ dòng đầu tiên
+## Bốn mặc định trước khi gõ dòng đầu tiên
 
-1. **Mục tiêu là "chụp lại hiện trạng" hay "đổi diện mạo"?** Hai việc khác hẳn nhau về rủi ro và về người phải duyệt.
-2. **Có được đổi giao diện trong lúc refactor không?** Nếu không, mọi bước phải giữ pixel — và đó là ràng buộc quyết định cách chọn token.
-3. **Ai duyệt "trông vẫn đúng"?** Không có người này thì bước đối chiếu vô nghĩa.
-4. **Tài liệu hiện có được phép sai tới đâu?** Ở focus.camp, `design-system.md` mô tả Discord chứ không mô tả sản phẩm — nhưng vẫn có một mục là kiến thức thật, xoá trắng là mất.
+Không hỏi. Lấy mặc định dưới đây, **nói lại cả bốn ở đầu lúc giao**. Đề nói khác
+thì theo đề.
+
+1. **Mục tiêu mặc định là "chụp lại hiện trạng", không "đổi diện mạo".** Đề có chữ "làm lại giao diện", "cho đẹp hơn", "theo gu" thì mới là đổi diện mạo. Hai việc khác hẳn nhau về rủi ro.
+2. **Mặc định giữ pixel.** Mọi bước refactor không được đổi giao diện; thấy chỗ trái luật skill thì ghi vào danh sách "đề xuất sửa" lúc giao, không tự sửa trong cùng đợt. Đây là ràng buộc quyết định cách chọn token.
+3. **Người duyệt "trông vẫn đúng" mặc định là người giao việc.** Lúc giao đưa danh sách màn cần họ mở ra đối chiếu, kèm ảnh trước/sau nếu chụp được.
+4. **Tài liệu hiện có: không xoá, chỉ đánh dấu chỗ sai.** Ở focus.camp, `design-system.md` mô tả Discord chứ không mô tả sản phẩm — nhưng vẫn có một mục là kiến thức thật, xoá trắng là mất.
 
 ---
 

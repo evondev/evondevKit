@@ -6,8 +6,9 @@ description: Gu UI/UX cho hệ thống dashboard — dashboard, danh sách, bả
 # UI/UX cho hệ thống dashboard
 
 > **Chưa đi hết mục 0 thì KHÔNG viết một dòng code nào trong lượt này.**
-> Mục 0 là bốn câu, tự trả lời được hết. Chỉ dừng lại hỏi người dùng ở ba ca:
-> đề có từ mơ hồ (`S10`), đề để hở phạm vi (`S5`), dự án có phong cách khác flat (câu 3).
+> Mục 0 là bốn câu, tự trả lời được hết. **Không dừng lại hỏi trước khi dựng.**
+> Skill là bộ tiêu chí để làm trước: chỗ nào đề chưa rõ thì lấy mặc định, dựng
+> xong rồi **báo lúc giao** mình đã chọn gì. Người dùng muốn khác thì họ nói sau.
 
 Skill này không dạy "thế nào là đẹp" bằng tính từ. Nó làm ba việc: **đi đúng thứ
 tự** trước khi dựng, **cấm** những thói quen làm giao diện lộ ngay ra là AI dựng,
@@ -27,10 +28,10 @@ về thứ tự các bước, và về người phải duyệt.
 
 | Trả lời | Đi đâu |
 | --- | --- |
-| **Đã có UI, muốn refactor / dọn lại** | Mở `references/refactor.md` và đi theo nhánh `L`. **Dừng mục 0 tại đây** — nhánh đó có bộ câu hỏi riêng, bắt đầu bằng "đo trước khi kết luận" |
+| **Đã có UI, muốn refactor / dọn lại** | Mở `references/refactor.md` và đi theo nhánh `L`. **Dừng mục 0 tại đây** — nhánh đó có bộ mặc định riêng, bắt đầu bằng "đo trước khi kết luận" |
 | **Dựng mới** | Đi tiếp câu 2 |
 
-Đề bài không nói rõ thì **nhìn vào thư mục** trước khi hỏi: có `app/`,
+Đề bài không nói rõ thì **nhìn vào thư mục** để tự quyết, không hỏi: có `app/`,
 `components/`, có file CSS nào trên 500 dòng không. Có là đang ở nhánh refactor,
 dù người dùng gọi nó là "làm lại giao diện".
 
@@ -93,13 +94,13 @@ grep -rhoE -- '--(glass|gradient|shadow|blur)[a-z0-9-]*' --include='*.css' . 2>/
 Lệnh **cố ý bỏ qua** file dialog, dropdown, toast... vì `M15` cho lớp nổi có
 bóng và blur. Không bỏ qua thì dự án flat nào dùng shadcn cũng bị đếm thành "nổi".
 
-Đọc số theo `P4` trong `references/styles.md`. **Mặc định luôn là flat.** Thấy
-phong cách khác thì **hỏi** ở câu 3, không tự đổi (`P1`).
+Đọc số theo `P4` trong `references/styles.md`. Dự án không có phong cách riêng
+thì flat. Có phong cách riêng thì **theo phong cách dự án**, báo lúc giao (`P1`).
 
 Dòng `Audit:` thêm phần phong cách:
 
 > Audit: Next + Tailwind v4, có shadcn. Đã có `Avatar`. **Phong cách: glass ở 7
-> file** (card, sidebar, header) — sẽ hỏi flat hay glass.
+> file** (card, sidebar, header) — màn này làm glass cho khớp.
 
 Rồi áp theo bảng này:
 
@@ -116,8 +117,9 @@ Rồi áp theo bảng này:
 bộ nhãn chứ không phải một dòng.
 
 **Có token sẵn thì dùng, không hỏi.** Chỉ khi grep ra rỗng mới lấy
-`references/tokens.css` và dựng luôn. Chỉ hỏi trước khi biết chắc đang làm cho
-khách đã có bộ nhận diện. **Không bao giờ hỏi số lượng font.**
+`references/tokens.css` và dựng luôn, kể cả khi khách có thể đã có bộ nhận diện:
+màu nhấn và font chỉ nằm ở một chỗ, lúc giao chỉ ra chỗ đó (`S15`) là họ tự thay.
+**Không bao giờ hỏi số lượng font.**
 
 Dùng thư viện của họ thì cách áp skill là **chỉnh token cho khớp**, cộng vài mặc
 định trái luật. Với shadcn thường là ba chỗ:
@@ -131,7 +133,7 @@ Dùng thư viện của họ thì cách áp skill là **chỉnh token cho khớp
 **Phong cách mặc định là flat**, theo `P1` trong `references/styles.md`:
 
 - **Người dùng tự nêu phong cách** ("kiểu glassmorphism", "gradient như Stripe") → làm theo, không hỏi lại. Mở `references/styles.md` lấy khối của phong cách đó.
-- **Audit tầng 3 thấy dự án có phong cách khác flat** → **hỏi một câu**: flat, hay theo phong cách của dự án. Kèm hệ quả của từng lựa chọn, mẫu ở `P1`. Hỏi xong mới dựng.
+- **Audit tầng 3 thấy dự án có phong cách khác flat** → **theo phong cách dự án**, dựng luôn. Lúc giao báo một dòng: đã theo phong cách gì, thấy ở đâu, muốn flat thì nói. Mẫu ở `P1`.
 - **Còn lại** → flat, không hỏi về phong cách.
 
 Chọn phong cách nào thì mở khối của nó trong `references/styles.md`: khối đó nói
@@ -235,10 +237,11 @@ Ví dụ: đề ghi "trang đăng nhập có ô email, ô mật khẩu, link qu�
 đăng nhập, nút đăng nhập bằng Google". Nội dung thế là chốt cứng, dựng luôn
 một cột giữa màn. Đừng hỏi lại có cần nút Google không.
 
-**S5. Đề để hở thì hỏi phạm vi trước khi dựng.**
+**S5. Đề để hở phạm vi thì dựng phạm vi mặc định, không hỏi.**
 
 - **Đề có liệt kê** ("trang đăng nhập gồm ô email, ô mật khẩu, nút…"): phạm vi đã chốt, dựng luôn.
-- **Đề để hở** ("dựng màn hình tổng quan"): chưa có danh sách nào để bám. Luật `S1` lúc này dễ hoá thành "làm ít nhất có thể", ra một màn mỏng dính. Phải hỏi thêm: **màn này gồm những khối nào**, đưa 2–3 phương án phạm vi, chọn xong thì dựng theo bố cục mặc định.
+- **Đề để hở** ("dựng màn hình tổng quan"): lấy **bộ khối mặc định** của loại màn đó trong file layout (màn tổng quan: bảng khối trong `references/layouts/app.md`), dựng **đủ** bộ đó. Đừng để `S1` hoá thành "làm ít nhất có thể" rồi ra một màn mỏng dính 3 khối (đã dính ở vòng test 11).
+- **Lúc giao, câu đầu tiên** liệt kê các khối đã dựng, và khối nào trong bảng đã bỏ ra. Muốn thêm bớt thì người dùng nói.
 
 **S6. Dựng mockup thì điền dữ liệu giả hợp lý, đừng để chỗ trống.** Một trang đầy
 `[cần điền]` không nhìn ra được thiết kế, nó thành cái biểu mẫu. Điền số nghe
@@ -255,28 +258,32 @@ giao diện trông ổn cho tới lúc gặp khách thật.
 **S9. Dùng thư viện component sẵn có của dự án.** Xem câu 2 ở mục 0. Người dùng
 nói rõ dùng thư viện nào thì **theo họ, đừng cãi**.
 
-**S10. Gặp từ mơ hồ trong đề thì hỏi trước khi dựng.**
+**S10. Gặp từ mơ hồ trong đề thì lấy nghĩa mặc định, và NÓI RA lúc giao.**
 
-| Từ | Hai cách hiểu |
-| --- | --- |
-| bảng | table dữ liệu, hay board kiểu kanban |
-| thẻ | card, hay tab |
-| danh sách | list dọc, hay dropdown |
-| khung | vùng bố cục, hay modal |
-| trang | một route, hay một tờ trong nhiều bước |
-| lịch | lịch tháng, hay dòng thời gian |
+| Từ | Nghĩa mặc định | Nghĩa kia, chỉ khi đề nói rõ |
+| --- | --- | --- |
+| bảng | **table dữ liệu** | board kiểu kanban ("kéo thả", "cột trạng thái", "board") |
+| thẻ | **card** | tab |
+| danh sách | **list dọc** | dropdown |
+| khung | **vùng bố cục** | modal ("bật lên", "popup") |
+| trang | **một route** | một tờ trong nhiều bước ("bước 2") |
+| lịch | **lịch tháng** | dòng thời gian ("timeline") |
 
-Hỏi một câu là xong. Đoán sai là dựng lại cả màn hình, và tệ hơn là người dùng
-tưởng đã test xong một thứ mà thật ra chưa. Chuyện này đã xảy ra thật: "bảng
-quản lý dự án" bị hiểu thành kanban board, cả vòng test coi như bỏ.
+**Câu đầu tiên lúc giao** nói thẳng cách hiểu: *"Mình hiểu **bảng** là table dữ
+liệu. Nếu ý bạn là board kanban thì nói, mình đổi."* Hiểu sai thì người dùng thấy
+ngay ở câu đầu, không phải tới lúc test mới lộ. Bài học gốc: "bảng quản lý dự án"
+từng bị hiểu thành kanban mà không ai nói ra, cả vòng test coi như bỏ (vòng 18).
+Lỗi lúc đó là **im lặng chọn nghĩa hiếm**, không phải chuyện không hỏi.
 
 **S11. Code mẫu trong `layouts/` chỉ mở SAU khi đã chốt loại màn hình.** Nó trả
 lời câu "dựng thế nào", không trả lời câu "đề bài muốn gì". Có sẵn một file
 kanban mẫu thì rất dễ đọc mọi thứ mơ hồ thành kanban.
 
-**S12. Người dùng đưa ảnh thì hỏi ảnh đó là gì.** Wireframe thì chỉ lấy bố cục,
-thay sạch màu và kiểu dáng. Design ref thì bám cả bảng màu. Đoán sai là dựng lại
-từ đầu.
+**S12. Người dùng đưa ảnh thì tự nhận ảnh đó là gì, không hỏi.**
+
+- **Mặc định là design ref**: bám bố cục, bảng màu, kiểu dáng.
+- **Là wireframe** khi đề gọi nó là wireframe / phác thảo / khung, hoặc ảnh chỉ có đen trắng xám, khối chữ nhật, chữ giả: chỉ lấy bố cục, màu và kiểu dáng theo skill.
+- Lúc giao nói một dòng: *"Mình dùng ảnh làm design ref (bám cả màu)"*, hoặc *"…làm wireframe (chỉ lấy bố cục)"*.
 
 **S13. Bố cục gồm cả vị trí, không chỉ danh sách phần tử.** Badge nằm giữa mép
 trên card thì để giữa. Ô icon đứng cạnh giá thì giữ đúng chỗ. Thứ tự các khối giữ
@@ -285,8 +292,11 @@ nguyên. Thay màu và kiểu dáng thì được, xê dịch vị trí thì kh�
 **S14. Icon trong wireframe cứ giữ, kể cả icon trang trí.** Xem luật `F17` về
 việc mỗi mục được phép một icon khác nhau.
 
-**S15. Lúc giao phải nói ba thứ**: chỗ đổi thương hiệu (dòng nào chứa màu nhấn,
-dòng nào chứa font), số liệu nào là giả, và có làm dark mode hay không.
+**S15. Lúc giao phải nói bốn thứ**: **các mặc định đã chọn thay người dùng**
+(cách hiểu từ mơ hồ `S10`, bộ khối `S5`, loại ảnh `S12`, phong cách `P1`, bố cục
+câu 4; mỗi thứ một dòng, kèm "muốn khác thì nói"), chỗ đổi thương hiệu (dòng nào
+chứa màu nhấn, dòng nào chứa font), số liệu nào là giả, và có làm dark mode hay
+không. Mặc định đặt **lên đầu**, vì đó là chỗ duy nhất có thể đã đoán sai.
 
 ---
 

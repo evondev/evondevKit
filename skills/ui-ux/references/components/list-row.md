@@ -3,7 +3,7 @@
 Nguồn: `new-tab-todo/src/features/reminders/components/reminder-item.tsx`
 
 ```tsx
-<li className="group flex items-center gap-3 rounded-lg px-1 py-2 hover:bg-background">
+<li className="group flex items-center gap-3 rounded-xl px-1 py-2 hover:bg-background">
   <IconButton ... />                          {/* hành động chính, luôn hiện */}
 
   <div className="min-w-0 flex-1">

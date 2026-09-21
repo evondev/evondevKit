@@ -142,7 +142,10 @@ thì:
 - Để rule ở **đúng một chỗ**, để muốn trả lại thì sửa một dòng.
 
 **I15. Sidebar: mục đang chọn tô nền xám, không tô màu nhấn, không viền.** Mục
-chưa chọn thì không nền.
+chưa chọn thì không nền. Sidebar nền trắng thì hover và đang chọn **cùng một nền
+mờ** `--background`; đang chọn thêm `font-medium`. Không `--secondary`, đậm quá. Hover hay đang chọn thì **icon và chữ cùng
+lên `--foreground`**; lúc thường cả hai `foreground/70`, không mờ tới `--muted`.
+Xem `layouts/app.md`.
 
 Ngoại lệ đã dính: khi mục đang chọn là **ảnh** (avatar ở thanh dưới mobile), tô
 màu đè lên ảnh thì không đọc ra là "đang chọn" — dùng vòng `box-shadow` quanh ảnh.
@@ -161,7 +164,52 @@ trong 312 dòng". Thiếu con số đó thì phân trang chỉ là mấy cái n�
 sách dài hơn 6 mục, hoặc mỗi phần trả lời dài quá 3 dòng. Dưới ngưỡng đó thì
 hiện hết.
 
-**I18. Scrollbar ẩn hẳn nhưng vẫn cuộn được.**
+**I18. Thanh cuộn tự ẩn: đứng yên thì không thấy, rê vào hoặc đang cuộn thì hiện.**
+
+Công thức lấy từ focus.camp (chốt 08/09/2026, sửa lỗi Chrome 18/09/2026), CSS
+nằm sẵn trong `tokens.css`, áp cho cả app:
+
+- Thanh **4px**, rãnh trong suốt, thumb bo tròn hẳn.
+- **Đứng yên: thumb trong suốt.** Rê chuột vào vùng cuộn: hiện mờ (16%). Đang cuộn: đậm hơn (28%). Rê thẳng vào thumb: 40%.
+- **Ẩn bằng màu trong suốt, không bằng `scrollbar-width: none`.** Bề rộng vẫn giữ chỗ, lúc thanh hiện ra nội dung không bị đẩy ngang 4px. Dùng `none` là mỗi lần cuộn cả khối giật một cái.
+- **Khối Firefox phải bọc `@supports not selector(::-webkit-scrollbar)`.** Từ Chrome 121, có `scrollbar-width` là Chrome bỏ hết `::-webkit-scrollbar` và vẽ thanh gốc to, chiếm chỗ.
+- Trạng thái "đang cuộn" cần một component nhỏ gắn `.is-scrolling` vào **đúng phần tử đang cuộn**, gỡ ra sau 700ms. Nghe `scroll` ở pha **capture** để bắt được cả vùng cuộn lồng nhau (sidebar, danh sách trong modal). Mount một lần ở gốc app:
+
+```tsx
+import { useEffect } from "react";
+
+// Gắn .is-scrolling vào đúng phần tử đang cuộn, gỡ ra 700ms sau khi dừng.
+// CSS trong tokens.css đọc class này để hiện thanh cuộn (luật I18).
+export default function ScrollbarAutohide() {
+  useEffect(() => {
+    const hideTimers = new WeakMap<Element, number>();
+
+    function handleScroll(event: Event) {
+      // Cuộn cả trang thì target là document, lấy phần tử gốc.
+      const scrollingElement =
+        event.target instanceof Element ? event.target : document.scrollingElement;
+      if (!scrollingElement) return;
+
+      scrollingElement.classList.add("is-scrolling");
+      window.clearTimeout(hideTimers.get(scrollingElement));
+      hideTimers.set(
+        scrollingElement,
+        window.setTimeout(() => scrollingElement.classList.remove("is-scrolling"), 700),
+      );
+    }
+
+    window.addEventListener("scroll", handleScroll, { capture: true, passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll, { capture: true });
+  }, []);
+
+  return null;
+}
+```
+
+`.scrollbar-clean` (ẩn hẳn, không bao giờ hiện) chỉ còn cho **hàng chip / tab
+cuộn ngang**. Vùng cuộn dọc thì để thanh tự ẩn lo, đừng gắn `scrollbar-clean`:
+ẩn hẳn thì người dùng chuột không có gì để kéo, cũng không biết còn bao nhiêu.
 
 **I19. Mọi trang có dữ liệu đều cần đủ ba trạng thái: đang tải, rỗng, lỗi.**
 

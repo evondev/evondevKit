@@ -33,7 +33,7 @@
      báo "đây là chỗ gõ / chỗ bấm", vì cả hai cùng nền trắng với card) và viền
      card khi hover. Đây là token
      viền thứ hai và cũng là token cuối, xem luật M14, M16. */
-  --border-strong: #ececec;
+  --border-strong: #f2f2f2;
 
   /* Bậc hover cho nút phụ và cho dòng danh sách. Cần biến riêng vì --border
      và --background chênh nhau quá ít, hover bằng --border là gần như vô hình. */
@@ -53,7 +53,8 @@
      dùng màu nhấn đặc, xem khối .dark bên dưới. */
   --border-focus: var(--primary);
 
-  --radius: 0.625rem;
+  /* Bo mặc định 12px = rounded-xl, cho mọi phần tử cao từ 40px. Luật F1. */
+  --radius: 0.75rem;
 }
 
 /* Dark mode là navy rất tối, không phải xám trung tính.
@@ -94,7 +95,38 @@
   --border-strong: rgba(160, 180, 220, 0.2);
 }
 
-/* Ẩn hẳn scrollbar nhưng vẫn cuộn được. */
+/* ===== THANH CUỘN TỰ ẨN, ÁP CHO CẢ APP. Luật I18. =====
+   Đứng yên thì trong suốt; rê chuột vào vùng cuộn thì hiện mờ; đang cuộn thì
+   đậm hơn (class .is-scrolling do component ScrollbarAutohide gắn vào ĐÚNG phần
+   tử đang cuộn). Ẩn bằng MÀU TRONG SUỐT chứ không bằng `scrollbar-width: none`:
+   bề rộng 4px vẫn giữ chỗ, nên lúc thanh hiện ra nội dung không bị đẩy ngang.
+   Màu lấy từ --foreground nên nền tối tự đảo, không cần khai lại.
+   Nguồn: focus.camp app/globals.css, chủ dự án chốt 08/09/2026. */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 9999px;
+  transition: background 180ms ease;
+}
+*:hover::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--foreground) 16%, transparent); }
+.is-scrolling::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--foreground) 28%, transparent); }
+::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--foreground) 40%, transparent); }
+
+/* Firefox. ⚠️ PHẢI nằm trong @supports: từ Chrome 121, phần tử có
+   scrollbar-width/scrollbar-color là Chrome BỎ QUA toàn bộ ::-webkit-scrollbar
+   và vẽ thanh "thin" gốc ~8-11px chiếm chỗ. Để trần thì bản 4px ở trên chỉ còn
+   chạy trên Safari (dính ở focus.camp 18/09/2026). */
+@supports not selector(::-webkit-scrollbar) {
+  * { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+  *:hover { scrollbar-color: color-mix(in srgb, var(--foreground) 18%, transparent) transparent; }
+  .is-scrolling { scrollbar-color: color-mix(in srgb, var(--foreground) 28%, transparent) transparent; }
+}
+/* ===================================================== */
+
+/* Ẩn HẲN, không bao giờ hiện: chỉ cho hàng chip / tab cuộn ngang, nơi thanh
+   cuộn dưới đáy hàng trông như lỗi. Vùng cuộn dọc (sidebar, danh sách, modal)
+   thì KHÔNG dùng, để thanh tự ẩn ở trên lo. */
 .scrollbar-clean {
   scrollbar-width: none;
 }
