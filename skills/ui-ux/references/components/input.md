@@ -6,22 +6,22 @@ Nguồn: `speak-now/src/components/input/input.tsx`
 const baseClasses = "outline-hidden transition-colors text-foreground placeholder-muted";
 
 const variantClasses = {
-  // Viền và MÀU viền viết cùng một chỗ, đúng như nút outline: `border border-border-control`.
-  default: "w-full h-12 bg-surface dark:bg-white/4 border border-border-control rounded-xl text-base px-4 md:text-sm",
+  // Viền và MÀU viền viết cùng một chỗ, đúng như nút outline: `border border-border-strong`.
+  default: "w-full h-12 bg-surface dark:bg-white/4 border border-border-strong rounded-xl text-base px-4 md:text-sm",
   ghost: "bg-transparent border-0 p-0",
 };
 
 const stateClasses = error
-  ? "border-red-500 ring-4 ring-red-500/10"
-  : "focus:border-focus focus:ring-4 focus:ring-focus";
+  ? "border-red-500 ring-2 ring-red-500/10"
+  : "dark:border-transparent focus:border-focus focus:ring-2 focus:ring-focus";
 ```
 
 **Vì sao ổn**
 
 - Input luôn `bg-surface`, không bao giờ trong suốt. Ô nhập trong suốt trên nền trang thì người dùng không thấy nó là ô nhập. Đây là luật cứng, kể cả khi thư viện gốc mặc định `bg-transparent`.
-- **Focus = viền `--border-focus` + ring mờ `--ring-focus` dày 4px** (`I13`, chủ dự án chốt 21/09/2026). Ring phải mờ tới mức là vầng sáng, không thành vòng viền thứ hai: đừng tăng độ đậm của `--ring-focus`. Ô lỗi cùng công thức, đổi sang đỏ. **Select, combobox dùng y hệt**, kể cả lúc đang mở (`components/choice-controls.md`).
-- **Viền dùng `--border-control`, không phải `--border` hay `--border-strong`.** Ô nhập cùng nền trắng với card, nên viền là thứ duy nhất báo "đây là chỗ gõ", và phải đạt **3:1** (WCAG 1.4.11). `--border-strong` chỉ 1.1:1, là đường kẻ khung app (`M14`). Nền tối cũng giữ viền, **không `dark:border-transparent`**: nền `white/4` một mình không đủ tách ô khỏi card.
-- **Viền ô nhập và viền nút outline phải là CÙNG một class**, `border-border-control`. Đặt ô nhập cạnh nút mà viền ô mờ hơn là đã lấy nhầm token. Dựng xong thì grep `border-border\b` và `border-border-strong` trong file ô nhập, textarea, select, nút: phải ra 0.
+- **Focus = viền `--border-focus` + ring mờ `--ring-focus` dày 2px (`ring-2`)** (`I13`, chủ dự án chốt 21/09/2026). Ring phải mờ tới mức là vầng sáng, không thành vòng viền thứ hai: đừng tăng độ đậm của `--ring-focus`. Ô lỗi cùng công thức, đổi sang đỏ. **Select, combobox dùng y hệt**, kể cả lúc đang mở (`components/choice-controls.md`).
+- **Viền dùng `--border-strong`, không phải `--border`.** Ô nhập cùng nền trắng với card, nên viền là thứ duy nhất báo "đây là chỗ gõ". Viền card và đường chia thì là trang trí, nhạt được; viền ô nhập thì không (`M14`). Viền này chỉ 1.1:1, chưa đạt WCAG 1.4.11: đánh đổi có chủ ý, xem `P3` trong `styles.md`.
+- **Viền ô nhập và viền nút outline phải là CÙNG một class**, `border-border-strong`. Đặt ô nhập cạnh nút mà viền ô mờ hơn là đã lấy nhầm `border-border`. Đã dính 21/09/2026: helper chung cho ô nhập và textarea viết `border-border`, ô trông nhạt hơn hẳn nút đứng bên. Dựng xong thì grep `border-border\b` trong file ô nhập, textarea, select: phải ra 0.
 - Trạng thái lỗi cũng theo đúng công thức đó, chỉ đổi màu: viền đỏ đặc `red-500`, ring `red-500/10`. **Câu lỗi thì `red-600`**, không `red-500`: viền chỉ cần 3:1 nhưng chữ 14px cần 4.5:1, `red-500` trên nền trắng chỉ 3.8:1. Không Tailwind thì `--error`, `--error-ring`, `--error-text` trong `tokens.css`.
 - Bo `rounded-xl`, cùng bậc với nút, nên input và nút đứng cạnh nhau bằng vai.
 - **`text-base` trên mobile rồi thu về `md:text-sm`** — luật `R8`, áp cho cả `textarea` và `select`.
@@ -113,12 +113,12 @@ là gần trắng nên viền hoá thành sợi trắng đặc, gắt.
 Dùng `--border-focus` thay vì `--primary`:
 
 ```html
-<input class="... border border-border-control focus:border-focus focus:ring-4 focus:ring-focus" />
+<input class="... border border-border-strong focus:border-focus focus:ring-2 focus:ring-focus" />
 ```
 
 ```js
 // tailwind.config
-borderColor: { focus: "var(--border-focus)", control: "var(--border-control)" },
+borderColor: { focus: "var(--border-focus)" },
 ringColor:   { focus: "var(--ring-focus)" },
 ```
 

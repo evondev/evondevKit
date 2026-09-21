@@ -56,18 +56,25 @@ Mỗi luật gu flat có dòng *"Gu flat"* ngay tại chỗ. Thấy dòng đó m
 | Chữ lớn (từ 24px, hoặc từ 18.66px đậm) | **3 : 1** |
 | Icon mang nghĩa, viền nút không nền | **3 : 1** so với nền kề bên |
 
-**Token mặc định đạt WCAG AA** (chủ dự án chốt 21/09/2026). Bản trước để viền ô
-nhập 1.1 : 1 và chữ phụ 3.8 : 1 như một đánh đổi thẩm mỹ; đã bỏ. Giờ:
+Token mặc định:
 
-| Token | Nền sáng | Nền tối |
-| --- | --- | --- |
-| `--muted` (chữ phụ, placeholder) | 5.3 : 1 trên card, 4.8 : 1 trên nền trang | 6.1 : 1 |
-| `--border-control` (viền ô nhập, select, nút outline, checkbox) | 3.4 : 1 / 3.1 : 1 | 3.2 : 1 / 3.5 : 1 |
-| `--border-focus` | 16.8 : 1 | 3.6 : 1 |
+| Token | Nền sáng | Nền tối | Đạt |
+| --- | --- | --- | --- |
+| `--muted` (chữ phụ, placeholder) | 5.3 : 1 trên card, 4.8 : 1 trên nền trang | 6.1 : 1 | ✅ 4.5 |
+| `--border-focus` | 16.8 : 1 | 3.6 : 1 | ✅ 3 |
+| **Viền ô nhập, select, nút outline, checkbox, radio** (`--border-strong`) | 1.1 : 1 | ~1.5 : 1 | ❌ 3 |
+| **Track công tắc lúc tắt** (`muted/40`) | ~1.6 : 1 | | ❌ 3 |
 
-Viền **trang trí** (`--border`, `--border-strong`: card, đường chia, kẻ sidebar)
-không thuộc 1.4.11 vì chúng không phải điều khiển, nên vẫn nhạt được (`M14`).
-Đổi màu nhấn hay đổi token nào trong bảng trên thì đo lại, đừng hạ dưới ngưỡng.
+⚠️ **Viền điều khiển KHÔNG đạt 3 : 1, và đó là đánh đổi có chủ ý.** Đạt thì cần viền
+xám cỡ `#8a8a91`; đã thử ngày 21/09/2026, chủ dự án thấy đậm và xấu, trả về. Skill
+bù bằng ba thứ khác để người dùng nhận ra ô nhập: nhãn luôn hiện phía trên
+(`I26`), placeholder, và viền + ring khi focus.
+
+Dự án **phải đạt WCAG AA đầy đủ** (cơ quan nhà nước, y tế, ngân hàng) thì thêm
+token riêng cho viền điều khiển (`--border-control: #8a8a91`, nền tối `#5e6578`)
+và đổi class của ô nhập, select, nút outline, checkbox, radio sang nó; track
+công tắc lúc tắt lên `muted/75`. **Đừng** đổi thẳng
+`--border-strong`: đường kẻ sidebar, tab, badge dùng chung token đó sẽ đậm theo.
 
 Flat hiếm khi trượt con số của chữ, vì chữ đậm nằm trên nền trắng đặc. Glass,
 gradient và tối thì **trượt đầu tiên**. Nên luật này được viết ở đây, cạnh các

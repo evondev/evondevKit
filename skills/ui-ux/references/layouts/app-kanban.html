@@ -36,7 +36,6 @@
         /* MỘT token cho mọi đường tóc: viền card, viền ô nhập, đường chia. */
         --border: #f7f7f8;
         --border-strong: #f2f2f2;   /* đậm hơn đúng một bậc, dùng lúc hover */
-        --border-control: #8a8a91;  /* viền ô nhập, 3:1 (WCAG 1.4.11) */
 
         --background-hover: #e7e7ea;
         --ring-focus: rgba(26, 29, 41, 0.1);
@@ -75,7 +74,6 @@
               muted: "var(--muted)",
               border: "var(--border)",
               "border-strong": "var(--border-strong)",
-              "border-control": "var(--border-control)",
               danger: "var(--danger)",
               done: "var(--done)",
             },
@@ -137,7 +135,7 @@
           <input
             type="search"
             placeholder="Tìm việc"
-            class="h-10 w-full rounded-xl border border-border-control bg-surface px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted focus:border-focus focus:ring-4 focus:ring-focus sm:text-sm"
+            class="h-10 w-full rounded-xl border border-border-strong bg-surface px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted focus:border-focus focus:ring-2 focus:ring-focus sm:text-sm"
           />
         </label>
       </div>

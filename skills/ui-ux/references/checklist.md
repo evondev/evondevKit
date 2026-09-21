@@ -50,7 +50,6 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 
 - [ ] Có `shadow-*` nào trên khối **nằm trong trang** không? Bóng chỉ cho modal/dropdown (`M15`), ngoại lệ trong trang chỉ có ô chọn của tab `segmented` và núm công tắc (`shadow-sm`).
 - [ ] Có token viền nào tự đẻ ra ngoài `--border`, `--border-strong`, `--border-focus` không?
-- [ ] Ô nhập, select, nút outline, checkbox / radio, track công tắc tắt: viền là **`--border-control`** (3:1) chưa? Lấy `--border-strong` là trượt WCAG 1.4.11, `--border-strong` chỉ cho đường kẻ khung app (`M14`).
 - [ ] Có chỗ nào mỗi mục một card không? Gom thành một khung chia đường kẻ (`F3`).
 - [ ] Dòng tiêu đề và nút "Xem tất cả" có nằm **trong** khung không?
 - [ ] Phần tử nổi bật có mang quá một dấu hiệu không (badge + viền + to hơn)?
@@ -77,8 +76,8 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] **Rê chuột chậm từ mép trái sang mép phải** của từng mục menu, link sidebar, dòng bấm được: con trỏ có giữ bàn tay suốt không? Đổi một lần là vùng bấm hụt (`I29`).
 - [ ] Tailwind v4: `<button>` có `cursor-pointer` chưa, hoặc base CSS đã trả lại chưa (`W7`)?
 - [ ] **Bấm Tab qua menu và các nút**: có vòng ring nào không? Không được có. Mục đang focus phải đổi nền **y như hover** (`I13`).
-- [ ] **Bấm Tab qua ô nhập, select**: có viền `--border-focus` **và** ring mờ `--ring-focus` 4px chưa? Select đang mở cũng giữ viền + ring (`I13`).
-- [ ] **Checkbox / radio / công tắc** (`components/choice-controls.md`): cỡ mặc định 20px (công tắc 24×44), không phải 16px? Ô chưa chọn viền `--border-control`, nhìn thấy được trên nền trắng? Card chọn: đang chọn có viền + ring? Khoá thì nhãn mờ theo? Nhóm radio có sẵn một lựa chọn và có `<legend>`?
+- [ ] **Bấm Tab qua ô nhập, select**: có viền `--border-focus` **và** ring mờ `--ring-focus` `ring-2` chưa? `ring-4` là quá dày (`F20`). Select đang mở cũng giữ viền + ring (`I13`).
+- [ ] **Checkbox / radio / công tắc** (`components/choice-controls.md`): cỡ mặc định 20px (công tắc 24×44), không phải 16px? Card chọn: đang chọn có viền + ring? Khoá thì nhãn mờ theo? Nhóm radio có sẵn một lựa chọn và có `<legend>`?
 - [ ] Vừa Tab vừa rê chuột trong menu: có **hai mục sáng cùng lúc** không? Chỉ được một (`data-[highlighted]`).
 - [ ] Rê chuột lên **nút chính**: có đổi màu không? Nút `primary` là chỗ hay quên hover nhất (`I9`).
 - [ ] **Bấm vào chữ nhãn**: ô có focus không (`for`/`htmlFor`)? Con trỏ có thành bàn tay không?
