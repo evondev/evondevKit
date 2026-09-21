@@ -338,7 +338,7 @@ thì một trong hai chỗ là sai.
 | Ô nhập, form field | `references/components/input.md` |
 | Dòng trong danh sách | `references/components/list-row.md` |
 | Danh sách rỗng, đang tải | `references/components/empty-state.md` |
-| Chip lọc, nút chỉ có icon | `references/components/small-controls.md` |
+| Chip lọc, nút chỉ có icon, thanh tab (4 variant) | `references/components/small-controls.md` |
 | Avatar, nhóm avatar chồng nhau | `references/components/avatar.md` |
 | Biểu đồ, số liệu, thanh tiến độ | `references/components/charts.md` |
 

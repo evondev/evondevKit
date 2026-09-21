@@ -52,6 +52,12 @@
      hơn --surface một chút. Xem luật I10. */
   --surface-hover: #f8f8fa;
 
+  /* Tab segmented dạng phím nổi: rãnh CHÌM (bóng trong), ô đang chọn NỔI (bóng
+     ngoài rất mờ + viền tóc). Ngoại lệ có tên của luật M15, chỉ dùng ở đây.
+     Xem "Thanh tab" trong components/small-controls.md. */
+  --shadow-segment-track: inset 0 0 0 1px rgb(0 0 0 / 0.05), inset 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-segment-thumb: 0 0 0 1px rgb(0 0 0 / 0.04), 0 1px 2px rgb(0 0 0 / 0.06), 0 2px 6px -2px rgb(0 0 0 / 0.08);
+
   /* Ring rất mờ theo màu nhấn. KHÔNG dùng cho ô nhập lúc focus: ô chỉ đổi
      viền sang --border-focus, luật I13. */
   --ring-focus: rgba(26, 29, 41, 0.1);
@@ -88,6 +94,9 @@
 
   --background-hover: #171a26;
   --surface-hover: #141722;  /* sáng hơn --surface một chút, luật I10 */
+  /* Bóng đen vô hình trên nền tối: ô nổi nhờ viền và vệt sáng mép trên. */
+  --shadow-segment-track: inset 0 0 0 1px var(--border), inset 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-segment-thumb: 0 0 0 1px var(--border-strong), inset 0 1px 0 rgb(255 255 255 / 0.06), 0 1px 2px rgb(0 0 0 / 0.5);
   --ring-focus: rgba(233, 237, 245, 0.12);
 
   /* Màu nhấn ở nền tối là gần trắng. Dùng làm NỀN thì đẹp, dùng làm ĐƯỜNG MẢNH

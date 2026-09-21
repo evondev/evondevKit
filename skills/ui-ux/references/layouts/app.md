@@ -355,7 +355,7 @@ Khi có dòng được chọn, hàng tab + tìm được THAY bằng:
 [Đã chọn 3 · Bỏ chọn]                                     [Xoá 3 dòng]
 ```
 
-- **Tab trạng thái** ở trên bảng theo "Thanh tab" trong `../components/small-controls.md`: tab đang chọn ô trắng viền mảnh, không chip đen đặc. "Bộ lọc" trong đề không chỉ là hàng tab: các trường khác (công ty, người phụ trách, khoảng ngày) vào nút **Lọc** mở popover.
+- **Tab trạng thái** ở trên bảng theo "Thanh tab" trong `../components/small-controls.md`: tab đang chọn ô nền nhạt `--surface-hover` viền mảnh, không chip đen đặc. "Bộ lọc" trong đề không chỉ là hàng tab: các trường khác (công ty, người phụ trách, khoảng ngày) vào nút **Lọc** mở popover.
 - **Hover dòng `hover:bg-surface-hover`**, không `hover:bg-background` (`I10`). Dòng chạm hai mép khung trắng mà tô màu nền trang là trông như thủng.
 - **Cột trạng thái là badge màu** theo `M7`, không chấm xám + chữ đen.
 - **Hành động dòng** theo `I11`: 1–2 cái thì icon button luôn hiện ở cột cuối; từ 3 cái hoặc có xoá thì một nút `MoreHorizontal` ra dropdown. Cột cuối hẹp `w-12`, căn phải, không tiêu đề (có `<span class="sr-only">Thao tác</span>`).

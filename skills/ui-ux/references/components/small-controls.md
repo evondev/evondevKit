@@ -63,7 +63,7 @@ bị bỏ qua khi cuộn tới cuối, nên chip cuối sẽ dính sát mép.
 
 ---
 
-## Thanh tab: chuyển góc nhìn trên bảng / danh sách
+## Thanh tab: bốn variant, chọn theo chỗ đứng
 
 Tab và chip trông na ná nhưng là hai thứ khác nhau:
 
@@ -71,42 +71,155 @@ Tab và chip trông na ná nhưng là hai thứ khác nhau:
 | --- | --- | --- |
 | Chọn | **Đúng một**, luôn có một cái đang chọn | Không, một, hoặc nhiều |
 | Ví dụ | Tất cả / Đang giao dịch / Tiềm năng / Ngừng | Nhãn, người phụ trách, khoảng giá |
-| Hình | Chữ trơn, tab đang chọn là **ô trắng viền mảnh** | Pill `rounded-full`, đang chọn tô đặc |
+| Hình | Theo variant bên dưới | Pill `rounded-full`, đang chọn tô đặc |
 
-Đang chọn trạng thái của bảng (mỗi lúc chỉ xem một nhóm) thì dùng **tab**, không
-dùng chip tô đen. Chip đen đặc `rounded-full` đứng đầu bảng thì kéo mắt mạnh hơn
-cả dữ liệu, và đọc ra như một nút bấm (đã dính 21/09/2026, bảng khách hàng).
+### Chọn variant
+
+| Variant | Hình | Đặt ở đâu |
+| --- | --- | --- |
+| `boxed` (mặc định) | Chữ trơn, tab đang chọn là **ô nền nhạt viền mảnh** | Trên bảng / danh sách, chuyển trạng thái: Tất cả / Chờ xử lý / Đã giao |
+| `underline` | Đường kẻ chạy hết hàng, **vạch 2px** dưới tab đang chọn | Chia nội dung trang chi tiết hoặc khối lớn: Tổng quan / Hoạt động / Tệp |
+| `solid` | Tab đang chọn là **pill tô màu nhấn**, chữ đảo màu | Điều hướng mục con trong trang cài đặt: Chung / Thành viên / Quyền |
+| `segmented` | **Rãnh chìm** nhạt, tab đang chọn là **ô trắng nổi** như phím bấm | 2–4 lựa chọn ngắn đổi cách xem: Ngày / Tuần / Tháng, Danh sách / Lưới |
+
+- **Một trang chỉ một variant cho mỗi vai.** Tab trạng thái trên bảng đã `boxed` thì mọi bảng trong app đều `boxed`.
+- **`solid` không dùng cho tab trạng thái trên bảng.** Pill tô đặc đứng đầu bảng thì kéo mắt mạnh hơn cả dữ liệu, và đọc ra như một nút bấm (đã dính 21/09/2026, bảng khách hàng). Nó hợp với menu cài đặt, nơi hàng tab CHÍNH LÀ điều hướng của trang.
+- `segmented` quá 4 lựa chọn, hoặc nhãn dài hơn hai chữ, thì đổi sang `boxed` hoặc `underline`.
+
+### Mặc định khi đề không nói: không icon, không số
+
+Tab dựng ra khi người dùng không nhắc gì là **chữ trơn**, không icon, không số đếm.
+Chỉ thêm khi:
+
+- **Icon:** người dùng yêu cầu, hoặc dự án đã có hàng tab dùng icon (theo cái đã có).
+- **Số đếm:** người dùng yêu cầu ("có số đếm từng tab"), hoặc dữ liệu thật trả về sẵn số. Không bịa số cho có.
+
+### Icon: khi có thì theo ba luật
+
+Icon trước chữ **không bắt buộc**, xem mặc định ở trên. Có thì:
+
+- **Có thì mọi tab trong hàng đều có**, không tab có tab không.
+- Icon `size-4 shrink-0`, lấy từ thư viện icon của dự án, **màu ăn theo chữ** (`currentColor`): tab chưa chọn icon xám cùng chữ, tab đang chọn icon đậm cùng chữ. Không tô icon màu riêng.
+- `segmented` chỉ có icon, không chữ, thì mỗi tab phải có `aria-label` và tooltip.
+
+### Chung cho mọi variant
 
 ```tsx
-<div role="tablist" className="scrollbar-clean flex items-center gap-1 overflow-x-auto">
-  {views.map((view) => (
-    <button
-      key={view.value}
-      role="tab"
-      aria-selected={view.value === activeView}
-      className={cn(
-        "inline-flex h-9 shrink-0 cursor-pointer items-center gap-2 rounded-lg border px-3 text-sm transition-colors",
-        "outline-hidden focus-visible:bg-background",
-        view.value === activeView && "border-border-strong bg-surface font-medium text-foreground",
-        view.value !== activeView && "border-transparent text-foreground/70 hover:bg-background hover:text-foreground",
-      )}
-    >
-      {view.icon && <view.icon className="size-4" />}
-      {view.label}
-      <span className="text-xs tabular-nums text-muted">{view.count}</span>
-    </button>
-  ))}
+<div role="tablist" aria-label="Lọc theo trạng thái" className={getTabListClasses(variant)}>
+  {views.map((view) => {
+    const isSelected = view.value === activeView;
+
+    return (
+      <Button
+        key={view.value}
+        variant="ghost"
+        role="tab"
+        aria-selected={isSelected}
+        tabIndex={isSelected ? 0 : -1}
+        onClick={() => onChange(view.value)}
+        className={getTabClasses(variant, isSelected)}
+      >
+        {view.icon && <view.icon className="size-4 shrink-0" />}
+        {view.label}
+        {view.count !== undefined && <span className="text-xs font-normal tabular-nums text-muted">{view.count}</span>}
+        {view.isNew && <span className={getNewBadgeClasses(isSelected)}>Mới</span>}
+      </Button>
+    );
+  })}
 </div>
 ```
 
-- **Mọi tab luôn có `border`**, tab chưa chọn là `border-transparent`. Không thì lúc bấm chuyển, tab đang chọn dày thêm 2px và cả hàng xô sang phải.
-- **Tab đang chọn: nền `--surface` + viền `--border-strong`.** Trên nền trang xám thì ô trắng tách ra; trên nền card trắng thì viền tách ra. Cùng một class, đúng cả hai chỗ.
-- Tab chưa chọn chữ `foreground/70`, hover lên `--foreground` + nền `--background` (cùng tinh thần mục sidebar, `M11`).
-- `h-9 rounded-lg`, cao dưới 40px nên bo 8px (`F1`). Đứng cạnh ô tìm `h-10` là lệch đúng một bậc, chấp nhận được.
+- **Mọi tab cùng `font-medium`**, kể cả tab chưa chọn. Đổi độ đậm lúc chọn làm chữ nở ra và cả hàng xô ngang.
+- Tab chưa chọn chữ `foreground/70`. Hover và focus bàn phím dùng **chung một nền `foreground/5`**, không ring (`I13`). Không dùng `--background` làm nền hover: tab hay nằm thẳng trên nền trang xám, tô `--background` ở đó thì rê vào không thấy gì.
+- Bàn phím theo WAI-ARIA: chỉ tab đang chọn nằm trong vòng Tab, mũi tên trái/phải chuyển và chọn luôn, Home/End về hai đầu.
 - Số đếm là số trơn `text-muted`, không pill, không màu. Không có số thì bỏ, đừng dựng số giả.
-- Icon trước chữ **không bắt buộc**. Có thì mọi tab đều có, không tab có tab không.
-- Từ 6 tab trở lên thì gom phần dư vào một tab "Thêm" mở dropdown, xem `R10`.
+- Hàng tab không bao giờ wrap, màn hẹp thì cuộn ngang trong khung `scrollbar-clean` (`R6`). Từ 6 tab trở lên thì gom phần dư vào tab "Thêm" mở dropdown (`R10`).
+
+### `boxed`: tab trạng thái trên bảng
+
+```ts
+// Khung cuộn: -mx-1 py-0.5 để nền hover của tab đầu/cuối không bị cắt. Hàng: gap-1 px-1.
+"h-9 rounded-lg border px-3"
+isSelected && "border-border-strong bg-surface-hover text-foreground"
+!isSelected && "border-transparent text-foreground/70 hover:bg-foreground/5 hover:text-foreground"
+```
+
+- **Mọi tab luôn có `border`**, tab chưa chọn là `border-transparent`. Không thì lúc bấm chuyển, tab đang chọn dày thêm 2px và cả hàng xô sang phải.
+- **Tab đang chọn: nền `--surface-hover` + viền `--border-strong`.** Trên card trắng thì nền nhạt tách ô ra; trên nền trang xám thì `--surface-hover` sáng hơn nền nên ô vẫn nổi thành ô sáng. Cùng một class, đúng cả hai chỗ.
+- **Không dùng `bg-surface` cho tab đang chọn.** Trên card trắng, nền trắng biến mất, chỉ còn viền `--border-strong` quá nhạt, nhìn như không có tab nào được chọn (đã dính 21/09/2026).
+- **Không đặt hàng `boxed` vào một khối xám riêng.** Nó nằm thẳng trên nền trang hoặc trên card. Bọc thêm khối xám là thành `segmented` hỏng: rãnh to, đậm, và ô trắng lọt thỏm.
+- **`h-9 rounded-lg`**, cao dưới 40px nên bo 8px (`F1`), không ngoại lệ. Đã thử 12px và bỏ (21/09/2026): tab 36px bo 12px là quá tròn so với chiều cao. Đứng cạnh ô tìm `h-10` là lệch đúng một bậc, chấp nhận được.
 - Bên phải cùng hàng: ô tìm, nút **Lọc** (mở popover cho các trường khác ngoài trạng thái), nút **Sắp xếp** nếu cần. Đều là nút viền `h-9` (`I1`).
+
+### `underline`: chia nội dung trang chi tiết
+
+```ts
+// Hàng: đường kẻ chạy hết bề ngang, vạch của tab đang chọn đè lên nó.
+"flex min-w-full gap-2 border-b border-border-strong px-2"
+// Tab: vạch là ::after nên không đẩy chiều cao.
+"relative h-10 rounded-xl px-2 after:absolute after:inset-x-2 after:-bottom-px after:h-0.5 after:rounded-full"
+isSelected && "text-foreground after:bg-foreground"
+!isSelected && "text-foreground/70 after:bg-transparent hover:text-foreground"
+```
+
+- Vạch màu `--foreground`, không màu nhấn có sắc: nhấn đã có ở nút chính của trang (`M3`).
+- Khung cuộn lùi `-mx-2` để chữ tab đầu thẳng cột với nội dung bên dưới.
+- Tab đang chọn không tô nền, không đổi nền lúc hover. Vạch là tín hiệu duy nhất.
+- Hàng tab nằm được cả trên card trắng lẫn trên dải header xám: đường kẻ `--border-strong` đủ nhìn ở cả hai.
+
+### `solid`: điều hướng mục cài đặt
+
+```ts
+"h-9 rounded-lg px-3"
+isSelected && "bg-primary text-primary-foreground hover:bg-primary"
+!isSelected && "text-foreground/70 hover:bg-foreground/5 hover:text-foreground"
+
+// Badge "Mới" cạnh nhãn: nhỏ, chữ hoa, đảo màu theo tab.
+function getNewBadgeClasses(isSelected: boolean) {
+  return cn(
+    "rounded px-1.5 py-px text-[10px] font-semibold uppercase tracking-wide",
+    isSelected && "bg-primary-foreground text-primary",
+    !isSelected && "bg-emerald-500/10 text-emerald-700",
+  );
+}
+```
+
+- Màu tô là `--primary` và `--primary-foreground`, không viết cứng `bg-black text-white`: ở nền tối màu nhấn đảo thành gần trắng.
+- **Chỉ một chỗ tô đặc trên màn.** Trang đã có nút chính tô `--primary` ngay cạnh thì cân nhắc `boxed`, hai khối tô đặc tranh nhau (`M2`).
+- Badge "Mới" là thông tin trạng thái nên dùng màu xanh báo trạng thái (`M4`), trên tab đang chọn thì đảo sang nền `--primary-foreground`. Mỗi hàng tối đa hai badge, nhiều hơn là mất tác dụng.
+
+### `segmented`: chuyển cách xem, dạng phím nổi
+
+Rãnh **chìm** vào mặt (bóng trong), ô đang chọn **nổi** lên (bóng ngoài rất mờ + viền tóc). Hai lớp bóng ngược chiều mới ra cảm giác 3D, chỉ ô nổi thôi thì trông như dán giấy.
+
+```ts
+// Rãnh: nền nhạt --background, KHÔNG dùng --secondary (đậm quá, ô trắng lọt thỏm).
+// Bo 12px, cách 4px, ô bên trong bo 8px: hai góc đồng tâm (M19).
+"inline-flex w-fit max-w-full gap-1 rounded-xl bg-background p-1 shadow-(--shadow-segment-track)"
+// Ô
+"h-8 rounded-lg px-3 transition-[color,background-color,box-shadow] duration-150"
+isSelected && "bg-surface text-foreground shadow-(--shadow-segment-thumb)"
+!isSelected && "text-foreground/60 hover:text-foreground"
+```
+
+Hai token bóng khai trong `tokens.css`, có bản nền tối riêng:
+
+```css
+:root {
+  --shadow-segment-track: inset 0 0 0 1px rgb(0 0 0 / 0.05), inset 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-segment-thumb: 0 0 0 1px rgb(0 0 0 / 0.04), 0 1px 2px rgb(0 0 0 / 0.06), 0 2px 6px -2px rgb(0 0 0 / 0.08);
+}
+.dark {
+  --shadow-segment-track: inset 0 0 0 1px var(--border), inset 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-segment-thumb: 0 0 0 1px var(--border-strong), inset 0 1px 0 rgb(255 255 255 / 0.06), 0 1px 2px rgb(0 0 0 / 0.5);
+}
+```
+
+- **Rãnh nhạt, không đậm.** `--background` trên card trắng là vừa đủ thấy rãnh; `--secondary` thì rãnh thành mảng xám nặng, kéo mắt hơn cả nội dung widget.
+- Ô chưa chọn **không có nền hover**, chỉ đổi màu chữ. Nền hover xám trong rãnh xám thì thành ba sắc xám chồng nhau.
+- Bóng ở đây là **ngoại lệ có tên của `M15`**: ô đang chọn là một phím vật lý, bóng nói "đang nhấn nó". Không nhân rộng sang `boxed`, `underline`, `solid`, hay khối khác trong trang.
+- Nền tối: bóng đen gần như vô hình (`M23`), nên ô nổi lên nhờ viền `--border-strong` và vệt sáng `inset` trên mép trên.
+- Rãnh đặt trên nền trang xám (không nằm trong card) thì đổi rãnh sang `bg-foreground/5`, để rãnh vẫn chìm hơn nền quanh nó.
 
 ---
 

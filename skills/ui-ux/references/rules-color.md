@@ -205,7 +205,9 @@ trang. Mọi thứ nằm **trong** trang thì không.
 Định thêm `shadow-*` cho khối nằm trong trang → thử viền trước, xem có đủ tách
 khối không. Gần như luôn là đủ.
 
-*Ngoại lệ: card đứng một mình giữa trang trống — xem `M29`.*
+*Ngoại lệ: card đứng một mình giữa trang trống — xem `M29`. Ô đang chọn của tab
+`segmented` (phím nổi trên rãnh chìm), dùng đúng hai token `--shadow-segment-*` —
+xem "Thanh tab" trong `components/small-controls.md`.*
 
 **M16. Không đẻ token viền mới từ màu nhấn.**
 

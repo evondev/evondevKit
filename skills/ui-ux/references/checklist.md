@@ -48,7 +48,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 
 ### Viền, bóng, khối
 
-- [ ] Có `shadow-*` nào trên khối **nằm trong trang** không? Bóng chỉ cho modal/dropdown (`M15`).
+- [ ] Có `shadow-*` nào trên khối **nằm trong trang** không? Bóng chỉ cho modal/dropdown (`M15`), ngoại lệ duy nhất trong trang là ô chọn của tab `segmented`.
 - [ ] Có token viền nào tự đẻ ra ngoài `--border`, `--border-strong`, `--border-focus` không?
 - [ ] Có chỗ nào mỗi mục một card không? Gom thành một khung chia đường kẻ (`F3`).
 - [ ] Dòng tiêu đề và nút "Xem tất cả" có nằm **trong** khung không?
