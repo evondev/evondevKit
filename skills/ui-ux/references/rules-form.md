@@ -43,7 +43,7 @@ Dòng tiêu đề của danh sách (icon + nhãn, số liệu bên phải) và d
 
 *Ngoại lệ: thẻ kanban*, vì nó là vật kéo thả được.
 
-**F4. Không bọc bảng vào card.** Bảng đã tự có khung bằng đường kẻ rồi.
+**F4. Không bọc bảng vào card.** Bảng đã tự có khung bằng đường kẻ rồi: chính bảng là một khung trắng viền mảnh, không lồng thêm card có padding bên ngoài.
 
 **F5. Không chia đều ba cột chỉ vì có ba mục.** Bố cục theo mức quan trọng.
 Widget quan trọng nhất chiếm nhiều cột hơn.

@@ -89,9 +89,33 @@ thì nó là thứ duy nhất trong trang trông như ảnh chụp. Luôn có
 `hover:bg-primary-hover` — token đã có sẵn trong `tokens.css`, không phải tự chế
 màu.
 
-**I10. Hover của một dòng là chìm xuống nền, không tô đậm lên, không phóng to.**
+**I10. Hover của một dòng là một lớp nền nhẹ, không tô đậm lên, không phóng to.
+Nền hover không bao giờ trùng màu nền trang.**
 
-**I11. Hành động phụ (sửa, xoá) mờ đi lúc thường, chỉ hiện khi rê vào dòng.**
+Chọn token theo **nền hover có chạm hai mép khung hay không**:
+
+| Dòng | Hover | Vì sao |
+| --- | --- | --- |
+| **Thụt vào**, có bo góc, cách mép khung một khe: mục menu, link sidebar, dòng danh sách trong widget | `hover:bg-background` | Nền xám nằm gọn trong khung trắng, mắt đọc ra một viên được ấn xuống |
+| **Tràn hết bề ngang**, chạm hai mép khung trắng: dòng bảng, danh sách chia `divide-y` sát mép | `hover:bg-surface-hover` | Tô `--background` thì dòng đó cùng màu với nền trang bên ngoài khung, trông như khung bị khoét thủng một dải (đã dính 21/09/2026, bảng khách hàng) |
+
+Dòng **đang chọn** (tick checkbox) của bảng cũng dùng `--surface-hover`, giữ
+nguyên khi rê vào. Dấu hiệu chính của "đã chọn" là checkbox, nền chỉ phụ hoạ.
+
+**I11. Hành động trên dòng: ít thì hiện thẳng, nhiều thì gom vào nút ba chấm.**
+
+| Số hành động của một dòng | Cách hiện |
+| --- | --- |
+| **1–2**, không có hành động nguy hiểm | Icon button `h-8` nằm thẳng trong dòng, cột cuối căn phải. Danh sách thì mờ lúc thường, hiện khi rê vào dòng. **Bảng thì luôn hiện**, chữ `text-muted`: bảng dài người ta dò theo cột, nút lúc có lúc không làm cột cuối nhảy |
+| **Từ 3 trở lên**, hoặc có xoá | **Một** nút `MoreHorizontal` luôn hiện ở cột cuối, bấm ra dropdown. Hành động hay dùng nhất (thường là sửa) được phép nằm ngoài thêm một nút, cạnh dấu ba chấm |
+
+Trong dropdown: mục thường ở trên, **xoá tách xuống cuối** sau một đường chia,
+hover đỏ `rose` (`I4`). Nút ba chấm có `aria-label="Thao tác"`, và **chặn nổi bọt**
+(`event.stopPropagation()`) khi cả dòng cũng bấm được để mở chi tiết — không thì
+bấm ba chấm là nhảy luôn sang trang chi tiết.
+
+Thiết bị không có chuột thì không có hover: nút ẩn-hiện-khi-rê phải kèm
+`[@media(hover:none)]:opacity-100`, không thì trên điện thoại không bao giờ thấy.
 
 **I12. Chỉ đổi màu khi chuyển trạng thái.** Ngoại lệ duy nhất là card hover được
 `transition-all`.

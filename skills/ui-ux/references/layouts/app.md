@@ -321,7 +321,7 @@ mấy gạch đầu dòng trên. File đó đã qua vòng tra tấn 375px, cuộ
 ```
 ┌─────────────────────────────────────┐
 │ Tiêu đề              [+ Thêm mới]   │
-│ (chip) (chip) (chip)      [tìm    ] │  <- chip tròn, chip đang chọn tô đặc
+│ tab  [tab]  tab           [tìm    ] │  <- chọn một: tab; chọn nhiều: chip
 ├─────────────────────────────────────┤
 │ ⬤ nội dung dòng      giá trị  ⋯ ⋯  │  <- hành động phụ ẩn, hiện khi hover
 │ ⬤ nội dung dòng      giá trị       │
@@ -331,6 +331,40 @@ mấy gạch đầu dòng trên. File đó đã qua vòng tra tấn 375px, cuộ
 
 Xem `../components/list-row.md` cho công thức từng dòng. Danh sách là **một khối
 chia đường kẻ**, không phải mỗi dòng một card.
+
+---
+
+## Bảng dữ liệu
+
+Bảng quản lý (khách hàng, đơn hàng, thành viên…) có tìm, lọc, phân trang, chọn
+nhiều dòng. Bộ mặc định, dựng đủ không hỏi:
+
+```
+Khách hàng                                       [+ Thêm khách hàng]
+[Tất cả 32] Đang giao dịch 18  Tiềm năng 9  Ngừng 5   [tìm…] [Lọc]
+┌──────────────────────────────────────────────────────────────────┐
+│ ☐  Khách hàng ↕     Công ty      Trạng thái      Doanh thu ↕   ⋯ │
+├──────────────────────────────────────────────────────────────────┤
+│ ☐  ⬤ Tên            Công ty      (● Đang GD)     184.500.000 ₫  ⋯ │
+│ ☐  ⬤ Tên            Công ty      (● Tiềm năng)             0 ₫  ⋯ │
+├──────────────────────────────────────────────────────────────────┤
+│ 1 tới 10 trong 32 khách hàng                        ‹ 1 2 3 4 ›  │
+└──────────────────────────────────────────────────────────────────┘
+
+Khi có dòng được chọn, hàng tab + tìm được THAY bằng:
+[Đã chọn 3 · Bỏ chọn]                                     [Xoá 3 dòng]
+```
+
+- **Tab trạng thái** ở trên bảng theo "Thanh tab" trong `../components/small-controls.md`: tab đang chọn ô trắng viền mảnh, không chip đen đặc. "Bộ lọc" trong đề không chỉ là hàng tab: các trường khác (công ty, người phụ trách, khoảng ngày) vào nút **Lọc** mở popover.
+- **Hover dòng `hover:bg-surface-hover`**, không `hover:bg-background` (`I10`). Dòng chạm hai mép khung trắng mà tô màu nền trang là trông như thủng.
+- **Cột trạng thái là badge màu** theo `M7`, không chấm xám + chữ đen.
+- **Hành động dòng** theo `I11`: 1–2 cái thì icon button luôn hiện ở cột cuối; từ 3 cái hoặc có xoá thì một nút `MoreHorizontal` ra dropdown. Cột cuối hẹp `w-12`, căn phải, không tiêu đề (có `<span class="sr-only">Thao tác</span>`).
+- **Chọn nhiều dòng:** checkbox đầu dòng, checkbox tiêu đề có ba trạng thái (không / một phần / tất cả trong trang). Có dòng được chọn thì **thanh hành động hàng loạt thay chỗ** hàng tab, cùng chiều cao để bảng không nhảy. Xoá hàng loạt luôn qua hộp xác nhận (`../layouts/overlay.md`), nói rõ số dòng.
+- **Mỗi ô một dòng.** Tên công ty dài thì `truncate` với `max-w` và `title` đầy đủ, không cho xuống ba dòng: một dòng cao gấp ba làm cả bảng mất nhịp. Ô hai tầng (tên + email) là ngoại lệ duy nhất, và mọi dòng đều hai tầng như nhau.
+- **Giá trị trống thống nhất một kiểu**: `—` màu `text-muted`. Không chỗ "Chưa có", chỗ "Khách lẻ", chỗ để trống.
+- **Số căn phải, `tabular-nums`**, tiêu đề cột số cũng căn phải. Cột số, ngày có sắp xếp thì tiêu đề là nút có icon mũi tên.
+- **Dòng tiêu đề bảng** `text-xs font-medium text-muted`, nền `--surface`, chia với thân bằng `--border`.
+- Phân trang có tổng số và vị trí đang xem (`I16`). Màn hẹp thì bảng cuộn ngang trong khung (`R9`).
 
 ---
 

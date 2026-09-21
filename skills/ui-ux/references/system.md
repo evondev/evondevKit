@@ -50,11 +50,12 @@ hình dạng thì người dùng phải học hai lần.
 STATUS = {
   todo:  { nhãn: "Chưa làm",  màu: xám },
   doing: { nhãn: "Đang làm",  màu: hổ phách },
-  done:  { nhãn: "Xong",      màu: màu nhấn },
+  done:  { nhãn: "Xong",      màu: xanh lá },
 }
 ```
 
-Màu vẫn theo `M4`: đây là trạng thái thật, nên được dùng màu.
+Màu vẫn theo `M4`: đây là trạng thái thật, nên được dùng màu. Bốn tông và hình
+badge lấy đúng bảng trong `M7`.
 
 ---
 

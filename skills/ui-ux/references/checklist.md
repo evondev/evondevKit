@@ -54,6 +54,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Dòng tiêu đề và nút "Xem tất cả" có nằm **trong** khung không?
 - [ ] Phần tử nổi bật có mang quá một dấu hiệu không (badge + viền + to hơn)?
 - [ ] Bảng có bị bọc vào card không?
+- [ ] **Bảng**: rê chuột lên một dòng, nền hover có trùng màu nền trang không? Phải `--surface-hover` (`I10`). Cột trạng thái là badge màu (`M7`)? Từ 3 hành động hoặc có xoá thì đã gom vào nút ba chấm chưa (`I11`)? Tab trạng thái là ô trắng viền mảnh, không chip đen?
 - [ ] Bo góc có nằm trong bốn bậc không, và có bo nhầm link chữ không nền không?
 
 ### Nút và trạng thái

@@ -46,6 +46,12 @@
      chuỗi, ô rỗng. Đừng dùng --background cho chúng, vì hàng hover cũng về
      --background thì con tan vào nền. Xem luật M18. */
 
+  /* Hover và dòng đang chọn của BẢNG / danh sách tràn hết bề ngang khung trắng.
+     Không dùng --background ở đây: dòng chạm hai mép khung mà tô đúng màu nền
+     trang thì trông như khung bị khoét một lỗ (đã dính 21/09/2026). Chỉ nhỉnh
+     hơn --surface một chút. Xem luật I10. */
+  --surface-hover: #f8f8fa;
+
   /* Ring lúc focus. Rất mờ, chỉ đủ cảm thấy, đi kèm với viền đậm lên. */
   --ring-focus: rgba(26, 29, 41, 0.1);
 
@@ -80,6 +86,7 @@
   --secondary-hover: #12151f;
 
   --background-hover: #171a26;
+  --surface-hover: #141722;  /* sáng hơn --surface một chút, luật I10 */
   --ring-focus: rgba(233, 237, 245, 0.12);
 
   /* Màu nhấn ở nền tối là gần trắng. Dùng làm NỀN thì đẹp, dùng làm ĐƯỜNG MẢNH

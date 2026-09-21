@@ -67,7 +67,36 @@ chữ phụ xám; giữa các khu vực thoáng, trong từng thẻ gọn.
 **M6. Một tín hiệu cho một ý.** Nhãn cộng ô màu đã nói "lưu ý" thì không thêm
 badge "Lưu ý" nữa. Cùng tinh thần với `F6`: phần tử nổi bật chỉ cần một dấu hiệu.
 
-**M7. Nhãn trạng thái nhỏ thì chữ màu, không nền.** Không pill màu cho mọi nhãn.
+**M7. Trạng thái đứng riêng một ô thì là badge màu. Nằm lẫn trong câu thì chữ màu.**
+
+Cột trạng thái trong bảng, góc thẻ kanban, đầu trang chi tiết: **badge pill nền
+nhạt, chấm tròn + chữ cùng tông**. Liếc dọc một cột 20 dòng thì mắt bắt màu nhanh
+hơn bắt chữ; chấm xám + chữ đen thì cả cột trông như nhau (đã dính 21/09/2026,
+bảng khách hàng: "Đang giao dịch" với "Ngừng giao dịch" chỉ khác nhau ở độ mờ
+của một chấm 4px).
+
+```html
+<span class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">
+  <span class="size-1.5 rounded-full bg-current"></span>Đang giao dịch
+</span>
+```
+
+Bốn tông, không thêm. Trạng thái nào vào tông nào theo **nghĩa**, không theo sở thích:
+
+| Tông | Nền / chữ | Nghĩa | Ví dụ |
+| --- | --- | --- | --- |
+| Xám | `bg-zinc-100 text-zinc-600` | Chờ, nháp, chưa bắt đầu, trung lập | Tiềm năng, Nháp, Chờ duyệt |
+| Xanh lá | `bg-emerald-50 text-emerald-700` | Đang ổn, đang chạy, đã xong | Đang giao dịch, Hoạt động, Đã thanh toán |
+| Hổ phách | `bg-amber-50 text-amber-700` | Cần chú ý | Quá hạn, Sắp hết hạn, Tạm dừng |
+| Đỏ | `bg-red-50 text-red-700` | Đã dừng, thất bại, bị từ chối | Ngừng giao dịch, Đã huỷ, Lỗi |
+
+- Xanh lá là màu **cố định**, không lấy màu nhấn. Màu nhấn mặc định gần đen, badge đen đặc giữa bảng trông như nút bấm.
+- Chữ `-700`, không `-500`: chữ nhỏ trên nền nhạt cần đậm để đạt tương phản (`P3`).
+- Không viền. Nền nhạt đã đủ tách, thêm viền là hai dấu hiệu (`M6`).
+- Cả app một bảng ánh xạ, xem `D2` trong `system.md`.
+
+Nhãn **nằm trong dòng chữ phụ** ("Hằng tuần · quá hạn 2 ngày") thì vẫn là chữ màu,
+không nền. Pill chen giữa câu làm dòng chữ gồ lên.
 
 ---
 
@@ -143,7 +172,8 @@ Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu
 | Thẻ / khung | trắng, viền 1px xám rất nhạt, bo ~12px, **không bóng** |
 | Danh sách nhiều mục | MỘT khung, các dòng chia bằng `divide-y`. Dòng tiêu đề và dòng hành động cuối nằm TRONG khung |
 | Khối tóm tắt phụ | nền xám nhạt + viền, bo như thẻ |
-| Tab / mục sidebar đang chọn | nền xám, **không viền**; mục chưa chọn không nền. Sidebar nền trắng: hover và đang chọn cùng nền mờ `--background` |
+| Mục sidebar đang chọn | nền xám, **không viền**; mục chưa chọn không nền. Sidebar nền trắng: hover và đang chọn cùng nền mờ `--background` |
+| Tab ngang trên bảng / danh sách | tab đang chọn **nền trắng + viền `--border-strong`**, mục chưa chọn không nền không viền. Xem "Thanh tab" trong `components/small-controls.md` |
 | Ô nhập | viền — đây là chỗ viền đúng vai nhất, người ta phải nhìn ra ranh giới vùng gõ được |
 
 **M14. Hai token viền, chia theo vai trò. Không có cái thứ ba.**
@@ -194,7 +224,7 @@ lại. Cần đường bao quanh avatar, quanh ô vuông cỡ chuẩn thì dùng
 
 **M18. Phần tử con trong hàng có hover không được trùng token với nền hover của hàng.**
 
-Hàng hover chìm về nền trang (luật `I10`). Nếu ô vuông trạng thái, checkbox hay
+Hàng hover đổi nền (luật `I10`: `--background` hoặc `--surface-hover`). Nếu ô vuông trạng thái, checkbox hay
 avatar bên trong cũng dùng đúng token đó làm nền, hoặc chỉ có viền nhạt, thì rê
 chuột vào là chúng **biến mất**.
 

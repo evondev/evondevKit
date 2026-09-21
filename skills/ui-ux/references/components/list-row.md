@@ -30,7 +30,7 @@ Nguồn: `new-tab-todo/src/features/reminders/components/reminder-item.tsx`
 
 **Vì sao ổn**
 
-- Hover là **chìm xuống nền** (`hover:bg-background`), tức dòng tối nhẹ đi chứ không sáng lên, không viền, không nhấc bóng. Cảm giác như con trỏ ấn xuống mặt giấy.
+- Hover là **chìm xuống nền** (`hover:bg-background`) — được vì dòng này thụt vào, có bo góc. Dòng tràn hết bề ngang khung (bảng) thì dùng `--surface-hover`, xem `I10`, tức dòng tối nhẹ đi chứ không sáng lên, không viền, không nhấc bóng. Cảm giác như con trỏ ấn xuống mặt giấy.
 - Ba tầng ưu tiên rõ rệt trong một dòng: hành động chính luôn hiện bên trái, nội dung ở giữa, hành động phụ ẩn bên phải. Không phải mọi nút đều đòi được nhìn thấy cùng lúc.
 - Nút phụ ẩn bằng `opacity-0` kèm `pointer-events-none`. Thiếu vế thứ hai thì nút vô hình vẫn ăn cú bấm.
 - `min-w-0` xuất hiện ở cả hai tầng bọc ngoài `truncate`. Thiếu nó thì flex item không chịu co, tiêu đề dài đẩy vỡ dòng. Đây là lỗi hay gặp nhất trong danh sách.

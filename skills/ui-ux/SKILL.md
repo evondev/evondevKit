@@ -342,6 +342,13 @@ thì một trong hai chỗ là sai.
 | Avatar, nhóm avatar chồng nhau | `references/components/avatar.md` |
 | Biểu đồ, số liệu, thanh tiến độ | `references/components/charts.md` |
 
+**Dựng một trang là RÁP, không phải vẽ lại.** Trên trang có phần tử nào nằm
+trong bảng trên thì mở đúng file đó và chép công thức, kể cả khi nó chỉ là một
+nút nhỏ ở góc. Không tự nặn biến thể "cho hợp trang này": cùng một badge mà bảng
+một kiểu, drawer một kiểu là hai app ghép lại (`D1`, `D2`). Trang cần một phần
+tử chưa có file thì dựng theo luật chung, lúc giao nói một dòng *"X chưa có mẫu
+đã duyệt"*.
+
 **Code mẫu đã duyệt** (chỉ mở sau khi chốt loại màn hình, luật `S11`):
 `references/layouts/app-kanban.html`
 

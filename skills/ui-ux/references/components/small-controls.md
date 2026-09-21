@@ -63,6 +63,53 @@ bị bỏ qua khi cuộn tới cuối, nên chip cuối sẽ dính sát mép.
 
 ---
 
+## Thanh tab: chuyển góc nhìn trên bảng / danh sách
+
+Tab và chip trông na ná nhưng là hai thứ khác nhau:
+
+| | Tab | Chip lọc |
+| --- | --- | --- |
+| Chọn | **Đúng một**, luôn có một cái đang chọn | Không, một, hoặc nhiều |
+| Ví dụ | Tất cả / Đang giao dịch / Tiềm năng / Ngừng | Nhãn, người phụ trách, khoảng giá |
+| Hình | Chữ trơn, tab đang chọn là **ô trắng viền mảnh** | Pill `rounded-full`, đang chọn tô đặc |
+
+Đang chọn trạng thái của bảng (mỗi lúc chỉ xem một nhóm) thì dùng **tab**, không
+dùng chip tô đen. Chip đen đặc `rounded-full` đứng đầu bảng thì kéo mắt mạnh hơn
+cả dữ liệu, và đọc ra như một nút bấm (đã dính 21/09/2026, bảng khách hàng).
+
+```tsx
+<div role="tablist" className="scrollbar-clean flex items-center gap-1 overflow-x-auto">
+  {views.map((view) => (
+    <button
+      key={view.value}
+      role="tab"
+      aria-selected={view.value === activeView}
+      className={cn(
+        "inline-flex h-9 shrink-0 cursor-pointer items-center gap-2 rounded-lg border px-3 text-sm transition-colors",
+        "outline-hidden focus-visible:bg-background",
+        view.value === activeView && "border-border-strong bg-surface font-medium text-foreground",
+        view.value !== activeView && "border-transparent text-foreground/70 hover:bg-background hover:text-foreground",
+      )}
+    >
+      {view.icon && <view.icon className="size-4" />}
+      {view.label}
+      <span className="text-xs tabular-nums text-muted">{view.count}</span>
+    </button>
+  ))}
+</div>
+```
+
+- **Mọi tab luôn có `border`**, tab chưa chọn là `border-transparent`. Không thì lúc bấm chuyển, tab đang chọn dày thêm 2px và cả hàng xô sang phải.
+- **Tab đang chọn: nền `--surface` + viền `--border-strong`.** Trên nền trang xám thì ô trắng tách ra; trên nền card trắng thì viền tách ra. Cùng một class, đúng cả hai chỗ.
+- Tab chưa chọn chữ `foreground/70`, hover lên `--foreground` + nền `--background` (cùng tinh thần mục sidebar, `M11`).
+- `h-9 rounded-lg`, cao dưới 40px nên bo 8px (`F1`). Đứng cạnh ô tìm `h-10` là lệch đúng một bậc, chấp nhận được.
+- Số đếm là số trơn `text-muted`, không pill, không màu. Không có số thì bỏ, đừng dựng số giả.
+- Icon trước chữ **không bắt buộc**. Có thì mọi tab đều có, không tab có tab không.
+- Từ 6 tab trở lên thì gom phần dư vào một tab "Thêm" mở dropdown, xem `R10`.
+- Bên phải cùng hàng: ô tìm, nút **Lọc** (mở popover cho các trường khác ngoài trạng thái), nút **Sắp xếp** nếu cần. Đều là nút viền `h-9` (`I1`).
+
+---
+
 ## Badge số đếm
 
 Số việc chưa đọc, số mục trong nhóm, số thành viên. Xuất hiện ở sidebar, ở tab,
