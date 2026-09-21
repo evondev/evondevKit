@@ -3,9 +3,9 @@
 Nguồn: `new-tab-todo/src/components/chip/chip.tsx`, `.../icon-button/icon-button.tsx`
 
 ```tsx
-// Chip: bộ lọc, tag chọn được
-"inline-flex cursor-pointer items-center rounded-full px-3 py-1 text-xs font-medium transition-colors"
-isActive && "bg-brand text-white"
+// Chip: bộ lọc, tag chọn được. Luôn kèm aria-pressed={isActive}
+"inline-flex max-w-48 cursor-pointer items-center rounded-full px-3 py-1 text-xs font-medium transition-colors"
+isActive && "bg-primary text-primary-foreground"
 !isActive && "bg-background text-muted hover:text-foreground"
 
 // IconButton: hành động phụ trong dòng hoặc header
@@ -35,6 +35,9 @@ chính.
 **Vì sao ổn**
 
 - Chip đang chọn thì tô nền brand đặc, không chọn thì gần như tàng hình trên nền xám. Không viền, không nền nhạt màu brand. Một bộ lọc mười chip mà chip nào cũng có viền thì đọc như hàng rào.
+- Nền chip đang chọn là **`bg-primary text-primary-foreground`**, đúng token, không `bg-[#…]`, không `text-white`. Dùng token thì nền tối tự đảo (`--primary` thành gần trắng, chữ thành gần đen); gõ cứng thì sang nền tối thành chữ trắng trên nền trắng. Cũng đừng lấy nhầm `--primary-hover`: chip đang chọn trông nhạt hơn nút chính ngay cạnh.
+- **Nhãn dài thì cắt, không để chip phình.** Chip `max-w-48`, chữ bọc trong `<span class="truncate">`, và `title` mang đủ tên để rê vào vẫn đọc được. Một chip "Hội chợ Triển lãm Quốc tế 2026" rộng gấp bốn chip "VIP" là cả hàng lệch, mắt dồn hết vào cái dài nhất.
+- **Chip lọc là nút bật/tắt, phải có `aria-pressed={isActive}`.** Trạng thái chọn hiện chỉ bằng màu nền, trình đọc màn hình không thấy màu, nên thiếu `aria-pressed` thì chip nào cũng đọc ra "nút" như nhau. Chip chọn một (kiểu tab) thì dùng `role="radio"` + `aria-checked` trong `role="radiogroup"`, không dùng `aria-pressed`.
 - Chip là `rounded-full`, nút là `rounded-xl` (cao dưới 40px thì `rounded-lg`, `F1`). Khác hình để mắt biết ngay cái nào chọn được nhiều cái nào là hành động.
 - IconButton vuông `h-7 w-7`, chữ `text-muted` lúc thường, chỉ đen lên khi hover. Icon phụ không được đen bằng nội dung.
 - Trạng thái disabled phải tắt luôn cả hover (`disabled:hover:bg-transparent`). Thiếu dòng đó thì nút chết vẫn sáng lên khi rê vào, người dùng bấm hoài không hiểu sao.
@@ -50,8 +53,11 @@ kế.
 
 ```html
 <div class="scrollbar-clean -mx-1 flex items-center gap-2 overflow-x-auto px-1 py-0.5">
-  <button type="button" class="shrink-0 rounded-full bg-primary px-3 py-1 text-xs font-medium text-white">Tất cả</button>
-  <button type="button" class="shrink-0 rounded-full bg-background px-3 py-1 text-xs font-medium text-muted hover:bg-background-hover hover:text-foreground">Quá hạn</button>
+  <button type="button" aria-pressed="true" class="shrink-0 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">Tất cả</button>
+  <button type="button" aria-pressed="false" class="shrink-0 rounded-full bg-background px-3 py-1 text-xs font-medium text-muted hover:bg-background-hover hover:text-foreground">Quá hạn</button>
+  <button type="button" aria-pressed="false" title="Hội chợ Triển lãm Quốc tế 2026" class="max-w-48 shrink-0 rounded-full bg-background px-3 py-1 text-xs font-medium text-muted hover:bg-background-hover hover:text-foreground">
+    <span class="block truncate">Hội chợ Triển lãm Quốc tế 2026</span>
+  </button>
 </div>
 ```
 

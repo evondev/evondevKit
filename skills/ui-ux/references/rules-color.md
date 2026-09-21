@@ -83,12 +83,15 @@ của một chấm 4px).
 
 Bốn tông, không thêm. Trạng thái nào vào tông nào theo **nghĩa**, không theo sở thích:
 
-| Tông | Nền / chữ | Nghĩa | Ví dụ |
-| --- | --- | --- | --- |
-| Xám | `bg-zinc-100 text-zinc-600` | Chờ, nháp, chưa bắt đầu, trung lập | Tiềm năng, Nháp, Chờ duyệt |
-| Xanh lá | `bg-emerald-50 text-emerald-700` | Đang ổn, đang chạy, đã xong | Đang giao dịch, Hoạt động, Đã thanh toán |
-| Hổ phách | `bg-amber-50 text-amber-700` | Cần chú ý | Quá hạn, Sắp hết hạn, Tạm dừng |
-| Đỏ | `bg-red-50 text-red-700` | Đã dừng, thất bại, bị từ chối | Ngừng giao dịch, Đã huỷ, Lỗi |
+| Tông | Nền / chữ | Token (không Tailwind) | Nghĩa | Ví dụ |
+| --- | --- | --- | --- | --- |
+| Xám | `bg-zinc-100 text-zinc-600` | `--neutral-bg` / `--neutral` | Chờ, nháp, chưa bắt đầu, trung lập | Tiềm năng, Nháp, Chờ duyệt |
+| Xanh lá | `bg-emerald-50 text-emerald-700` | `--success-bg` / `--success` | Đang ổn, đang chạy, đã xong | Đang giao dịch, Hoạt động, Đã thanh toán |
+| Hổ phách | `bg-amber-50 text-amber-700` | `--warning-bg` / `--warning` | Cần chú ý | Quá hạn, Sắp hết hạn, Tạm dừng |
+| Đỏ | `bg-red-50 text-red-700` | `--error-bg` / `--error-strong` | Đã dừng, thất bại, bị từ chối | Ngừng giao dịch, Đã huỷ, Lỗi |
+
+Nền tối: class Tailwind thì thêm `dark:` (nền `-500/15`, chữ `-400`), token thì
+khối `.dark` trong `tokens.css` đã đổi sẵn.
 
 - Xanh lá là màu **cố định**, không lấy màu nhấn. Màu nhấn mặc định gần đen, badge đen đặc giữa bảng trông như nút bấm.
 - Chữ `-700`, không `-500`: chữ nhỏ trên nền nhạt cần đậm để đạt tương phản (`P3`).
@@ -383,12 +386,15 @@ chỉ đang sắp bấm → `rose`.
 
 ### Bậc dùng — đừng tự chế
 
+Mỗi ô ghi class Tailwind, token CSS trong ngoặc. Hai cách ra cùng một màu
+(`tokens.css`), dự án không có Tailwind thì dùng token.
+
 | Việc | Lỗi (`red`) | Nguy hiểm (`rose`) |
 | --- | --- | --- |
-| Chữ, icon | `text-red-500` | `text-rose-700` (nút luôn hiện, mục menu lúc rê vào) — `rose-500` trên nền mờ chỉ 3.2:1, trượt 4.5:1 |
-| Viền | `border-red-500` | — *(không có viền đỏ)* |
-| Nền mờ | `ring-red-500/10` quanh ô nhập | nút: `bg-rose-500/10`, rê vào `/15` · mục menu: `hover:bg-rose-500/10` |
-| Banner | `bg-red-50` · `border-red-200` · chữ `red-700` / `red-600` | — *(không có banner)* |
+| Chữ, icon | câu lỗi dưới ô: `text-red-600` (`--error-text`) — `red-500` trên nền trắng chỉ 3.8:1, trượt 4.5:1 | `text-rose-700` (`--danger`) (nút luôn hiện, mục menu lúc rê vào) — `rose-500` trên nền mờ chỉ 3.2:1 |
+| Viền | `border-red-500` (`--error`) | — *(không có viền đỏ)* |
+| Nền mờ | `ring-red-500/10` (`--error-ring`) quanh ô nhập | nút: `bg-rose-500/10` (`--danger-bg`), rê vào `/15` (`--danger-bg-hover`) · mục menu: `hover:bg-rose-500/10` |
+| Banner | `bg-red-50` (`--error-bg`) · `border-red-200` (`--error-border`) · chữ `red-700` (`--error-strong`) | — *(không có banner)* |
 
 Ô "—" là **cố ý trống**: hành động nguy hiểm không bao giờ có viền đỏ hay banner
 đỏ. Thấy mình định viết `border-rose-*` là đang biến lời nhắc thành cảnh báo.
@@ -405,7 +411,9 @@ không ai phải phân vân, bộ màu avatar **không dùng `red` hay `rose`** 
 
 ### Đổi thương hiệu
 
-Hai sắc này hiện viết thẳng tên màu Tailwind, chưa có token. Thương hiệu có đỏ
-riêng thì đổi **cả hai cột cùng lúc**, và giữ khoảng cách giữa chúng: lỗi đậm và
-chuẩn hơn, nguy hiểm mềm hơn. Đổi một cột mà quên cột kia thì hai việc lại trông
-như một.
+Thương hiệu có đỏ riêng thì sửa khối `--danger*` / `--error*` trong `tokens.css`,
+và đổi **cả hai nhóm cùng lúc**, giữ khoảng cách giữa chúng: lỗi đậm và chuẩn
+hơn, nguy hiểm mềm hơn. Đổi một nhóm mà quên nhóm kia thì hai việc lại trông như
+một. Dự án dùng class Tailwind thì phải map lại trong `@theme` hoặc thay class,
+sửa token thôi không đổi được `text-rose-700` (xem `tailwind-v4-traps.md`).
+Đổi xong đo lại tương phản: chữ trên nền phải từ 4.5:1.

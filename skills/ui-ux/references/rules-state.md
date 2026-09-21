@@ -59,6 +59,9 @@ Phần dưới là cho **mục trong menu**. Khi rê vào thì đổi **cả hai
 (`I8`).
 
 - **Nền đỏ ~10%**, không hơn (nút đứng riêng được `/15` lúc rê vào vì nó đã sẵn `/10`). Đậm hơn thì nó thành một dải màu cảnh báo, không còn là trạng thái rê chuột.
+- **Chữ `rose-700`, không `rose-500`** — mục menu cũng vậy, không riêng gì nút. Chữ `rose-500` trên nền `rose-500/10` chỉ 3.2:1, trượt mức 4.5:1 của chữ 14px; mắt thấy hồng tươi, đẹp, nhưng khó đọc. Nền tối thì `rose-400`.
+- **Không dùng Tailwind** thì cùng công thức bằng token: rê vào nền `var(--danger-bg)`, chữ và icon `var(--danger)` (`tokens.css`, nền tối tự đổi).
+- **Phím mũi tên cũng phải đỏ lên.** Dùng shadcn / Radix thì mục sáng lên bằng `data-[highlighted]`, không phải `hover:` — viết mỗi `hover:` thì đi bằng phím, mục xoá vẫn xám. Thay cả ba chỗ: `data-[highlighted]:bg-rose-500/10 data-[highlighted]:text-rose-700` ở hàng, `group-data-[highlighted]:text-rose-700` ở icon (`I13`).
 - **Icon đổi màu cùng chữ.** Icon lúc thường là `text-muted`, nên phải có **`group` ở hàng** và `group-hover:text-rose-700` ở icon. Thiếu `group` thì `group-hover` im lặng không chạy — chữ đỏ mà icon còn xám, và không có lỗi nào báo.
 - Chỉ mục nguy hiểm được đỏ. Các mục khác trong cùng menu vẫn hover về nền xám như `I10`.
 - Mục nguy hiểm trong menu thì **tách xuống cuối**, cách bằng một đường chia.

@@ -75,7 +75,8 @@ tới thì nền đậm lên một bậc:
 </Button>
 ```
 
-- **Chữ `rose-700`, không `rose-500`.** Đo trên nền `rose-500/10` phủ trắng: `rose-500` chỉ 3.2:1, `rose-600` 4.1:1, đều trượt mức 4.5:1 của chữ 14px. `rose-700` được 5.5:1 mà vẫn đọc ra là đỏ. Nền tối thì ngược lại, chữ sáng lên `rose-400`.
+- **Chữ `rose-700`, không `rose-500`.** Đo trên nền `rose-500/10` phủ trắng: `rose-500` chỉ 3.2:1, `rose-600` 3.9:1, đều trượt mức 4.5:1 của chữ 14px. `rose-700` được 5.2:1 mà vẫn đọc ra là đỏ. Nền tối thì ngược lại, chữ sáng lên `rose-400`.
+- **Không dùng Tailwind** thì: nền `var(--danger-bg)`, rê vào `var(--danger-bg-hover)`, chữ + icon `var(--danger)`. Khối `.dark` trong `tokens.css` đã đổi sẵn sang `rose-400`.
 - **Nền mờ, không đỏ đặc.** Nhận ra ngay là nút nguy hiểm nhưng không hét như nút `bg-rose-500 text-white` (`I4`).
 - **Không viền đỏ** (`M30`). Nền mờ đã đủ tách nút khỏi nền trang.
 - Icon cùng màu chữ — không để icon `text-muted` riêng.

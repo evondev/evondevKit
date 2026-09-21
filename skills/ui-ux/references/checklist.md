@@ -66,7 +66,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] **Rê chuột lên một hàng: có phần tử con nào biến mất không?** (`M18`)
 - [ ] Rê chuột lên hàng: nền hover có ôm sát chữ không? Phải có padding đủ bốn phía.
 - [ ] Màn chỉ có MỘT card giữa trang trống? Vậy card phải **không viền** (`M29`), và không bao giờ có cả viền lẫn bóng.
-- [ ] **Nút xoá** đứng riêng: nền `rose-500/10` + chữ `rose-700` ngay lúc thường, không viền, không đỏ đặc (`I4`)? **Mục** đăng xuất / xoá trong menu: rê vào thì chữ, icon VÀ nền cùng đỏ lên chưa? Icon còn xám là thiếu `group`.
+- [ ] **Nút xoá** đứng riêng: nền `rose-500/10` + chữ `rose-700` ngay lúc thường, không viền, không đỏ đặc (`I4`)? **Mục** đăng xuất / xoá trong menu: rê vào thì chữ, icon VÀ nền cùng đỏ lên chưa? Icon còn xám là thiếu `group`. Chữ đỏ là `rose-700` chưa, hay đang `rose-500` hồng tươi (3.2:1, trượt tương phản)? Radix thì đi bằng phím mũi tên cũng đỏ (`data-[highlighted]`)?
 - [ ] Đỏ đang dùng đúng sắc chưa (`M30`)? Lỗi là `red`, hành động nguy hiểm lúc rê vào là `rose`. Không có viền hay banner `rose`.
 - [ ] Đường chia trong dropdown, card: có chạm hai mép khối không, hay thụt theo padding (`F25`)?
 - [ ] **Bo lồng nhau (`M19`)**: bo khung ngoài = bo phần tử trong + padding khung? Dropdown mặc định `rounded-2xl` + `p-2` + mục `rounded-lg`. Trong bằng ngoài là góc phình.
@@ -142,6 +142,7 @@ Kiểm thêm ở 375px:
 - [ ] Bảng có bị bóp cột không? Phải cuộn ngang trong khung, có `min-w`.
 - [ ] Card ở mobile còn `p-8` không? Phải `p-4`, tối đa `p-5`.
 - [ ] Chip lọc có đứng cùng hàng với ô nhập và chênh chiều cao quá một bậc không?
+- [ ] Chip lọc: đang chọn là `bg-primary text-primary-foreground` (không gõ cứng màu)? Nhãn dài đã `max-w-48` + `truncate` + `title` chưa? Có `aria-pressed` chưa?
 - [ ] Nhìn lại một lượt: có chỗ nào **chật dồn cục** không? Chật là chưa xong.
 
 Nếu có dark mode:

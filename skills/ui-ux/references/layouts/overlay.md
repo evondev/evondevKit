@@ -60,9 +60,17 @@ mục có link phải là `<DropdownMenuItem asChild>`.
 <div class="min-w-56 rounded-2xl border border-border bg-surface p-1 shadow-lg">
   <button class="flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm outline-hidden hover:bg-background focus-visible:bg-background">…</button>
   <hr class="-mx-1 my-1 border-border" />   <!-- -mx-1 khớp p-1 của khung, F25 -->
-  <button class="…">…</button>
+  <!-- Mục nguy hiểm: lúc thường y như mục khác, rê vào mới đỏ (I4) -->
+  <button class="group flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm text-foreground outline-hidden hover:bg-rose-500/10 hover:text-rose-700 focus-visible:bg-rose-500/10 focus-visible:text-rose-700 dark:hover:text-rose-400 dark:focus-visible:text-rose-400">
+    <i data-lucide="trash-2" class="size-4 shrink-0 text-muted group-hover:text-rose-700 group-focus-visible:text-rose-700 dark:group-hover:text-rose-400 dark:group-focus-visible:text-rose-400"></i>
+    Xoá
+  </button>
 </div>
 ```
+
+Mục xoá: chữ **`rose-700`**, không `rose-500` (3.2:1 trên nền `rose-500/10`,
+trượt 4.5:1). Lúc chưa rê thì chữ `--foreground`, icon `text-muted` như mọi mục,
+đỏ sẵn là sai `I4`.
 
 | Thứ | Giá trị | Vì sao |
 | --- | --- | --- |

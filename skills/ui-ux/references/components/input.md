@@ -22,7 +22,7 @@ const stateClasses = error
 - **Focus chỉ đổi màu viền**, `focus:border-focus`, không ring (`I13`), kể cả ring mờ `ring-focus/10`. Gõ chữ mà ô bị bọc thêm một vòng thì rối. Riêng trạng thái lỗi được giữ ring đỏ mờ.
 - **Viền dùng `--border-strong`, không phải `--border`.** Ô nhập cùng nền trắng với card, nên viền là thứ duy nhất báo "đây là chỗ gõ". Viền card và đường chia thì là trang trí, nhạt được; viền ô nhập thì không (`M14`).
 - **Viền ô nhập và viền nút outline phải là CÙNG một class**, `border-border-strong`. Đặt ô nhập cạnh nút mà viền ô mờ hơn là đã lấy nhầm `border-border`. Đã dính 21/09/2026: helper chung cho ô nhập và textarea viết `border-border`, ô trông nhạt hơn hẳn nút đứng bên. Dựng xong thì grep `border-border\b` trong file ô nhập, textarea, select: phải ra 0.
-- Trạng thái lỗi cũng theo đúng công thức đó, chỉ đổi màu: viền đỏ đặc, ring `red-500/10`.
+- Trạng thái lỗi cũng theo đúng công thức đó, chỉ đổi màu: viền đỏ đặc `red-500`, ring `red-500/10`. **Câu lỗi thì `red-600`**, không `red-500`: viền chỉ cần 3:1 nhưng chữ 14px cần 4.5:1, `red-500` trên nền trắng chỉ 3.8:1. Không Tailwind thì `--error`, `--error-ring`, `--error-text` trong `tokens.css`.
 - Bo `rounded-xl`, cùng bậc với nút, nên input và nút đứng cạnh nhau bằng vai.
 - **`text-base` trên mobile rồi thu về `md:text-sm`** — luật `R8`, áp cho cả `textarea` và `select`.
 - **`h-12` ở mọi bề rộng màn.** Ô nhập không thu nhỏ theo màn, và nút trong cùng form cũng phải giữ `h-12` theo nó (`budgets.md`). Hạ nút mà giữ ô là lệch ngay.
@@ -40,7 +40,7 @@ Nhãn, ô, câu lỗi. Ba phần, và nhãn phải gắn vào ô theo `I26`:
     {label}
   </label>
   <input id={id} placeholder="Nhập email của bạn" className={...} />
-  {error ? <p className="text-sm text-red-500">{error}</p> : null}
+  {error ? <p className="text-sm text-red-600 dark:text-red-400">{error}</p> : null}
 </div>
 ```
 

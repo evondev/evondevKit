@@ -66,6 +66,35 @@
      dùng màu nhấn đặc, xem khối .dark bên dưới. */
   --border-focus: var(--primary);
 
+  /* ===== MÀU MANG NGHĨA: nguy hiểm, lỗi, trạng thái. Luật M7, M30, I4. =====
+     Có Tailwind thì cứ viết class (`text-rose-700`...), mã ở đây là CHÍNH các
+     class đó của Tailwind v4 đổi ra hex, nên hai cách cho ra cùng một màu.
+     Không có Tailwind thì dùng var(--danger)... Bảng đối chiếu class ↔ token ở
+     rules-color.md, mục "Không dùng Tailwind". Không thêm sắc thứ ba (M30). */
+
+  /* Nguy hiểm — xoá, đăng xuất: lời nhắc TRƯỚC khi bấm. Không viền, không banner. */
+  --danger: #c70036;                       /* rose-700: chữ + icon. 5.2:1 trên --danger-bg */
+  --danger-bg: rgb(255 32 86 / 0.1);       /* rose-500/10 */
+  --danger-bg-hover: rgb(255 32 86 / 0.15);/* rose-500/15, chỉ cho nút đứng riêng */
+
+  /* Lỗi — chuyện ĐÃ xảy ra: ô nhập sai, câu lỗi, banner, badge "Đã huỷ". */
+  --error: #fb2c36;                        /* red-500: viền ô nhập. KHÔNG cho chữ, 3.8:1 */
+  --error-ring: rgb(251 44 54 / 0.1);      /* red-500/10 quanh ô nhập */
+  --error-text: #e7000b;                   /* red-600: câu lỗi dưới ô, trên nền trắng 4.8:1 */
+  --error-bg: #fef2f2;                     /* red-50: nền banner, nền badge đỏ */
+  --error-border: #ffc9c9;                 /* red-200: viền banner */
+  --error-strong: #c10007;                 /* red-700: chữ trên --error-bg, 5.9:1 */
+
+  /* Badge trạng thái (M7): nền nhạt + chữ -700 cùng sắc. Tông đỏ lấy cặp
+     --error-bg / --error-strong ở trên. */
+  --success-bg: #ecfdf5;                   /* emerald-50 */
+  --success: #007a55;                      /* emerald-700, 5.1:1 */
+  --warning-bg: #fffbeb;                   /* amber-50 */
+  --warning: #bb4d00;                      /* amber-700, 4.9:1 */
+  --neutral-bg: #f4f4f5;                   /* zinc-100: chờ, nháp, trung lập */
+  --neutral: #52525c;                      /* zinc-600, 7.0:1 */
+  /* ======================================================================= */
+
   /* Bo mặc định 12px = rounded-xl, cho mọi phần tử cao từ 40px. Luật F1. */
   --radius: 0.75rem;
 }
@@ -110,6 +139,27 @@
      trở thành thứ chính để tách khối, còn bóng gần như vô dụng. Xem luật M23. */
   --border: rgba(160, 180, 220, 0.12);
   --border-strong: rgba(160, 180, 220, 0.2);
+
+  /* Màu mang nghĩa ở nền tối: chữ SÁNG lên (-400), nền là màu -500 phủ mờ.
+     Nền -50 của bản sáng đem sang đây là ra khối trắng giữa màn tối.
+     Tương phản đo trên --surface. */
+  --danger: #ff637e;                       /* rose-400, 6.2:1 */
+  --danger-bg: rgb(255 32 86 / 0.1);
+  --danger-bg-hover: rgb(255 32 86 / 0.15);
+
+  --error: #fb2c36;
+  --error-ring: rgb(251 44 54 / 0.15);
+  --error-text: #ff6467;                   /* red-400, 6.5:1 */
+  --error-bg: rgb(251 44 54 / 0.1);
+  --error-border: rgb(251 44 54 / 0.3);
+  --error-strong: #ff6467;                 /* red-400, 6.0:1 trên --error-bg */
+
+  --success-bg: rgb(0 188 125 / 0.15);
+  --success: #00d492;                      /* emerald-400, 7.8:1 */
+  --warning-bg: rgb(254 154 0 / 0.15);
+  --warning: #ffb900;                      /* amber-400, 8.5:1 */
+  --neutral-bg: rgb(113 113 123 / 0.15);
+  --neutral: #9f9fa9;                      /* zinc-400, 6.2:1 */
 }
 
 /* ===== THANH CUỘN TỰ ẨN, ÁP CHO CẢ APP. Luật I18. =====

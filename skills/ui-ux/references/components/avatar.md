@@ -66,6 +66,27 @@ const tone = getAvatarTone(user.id);
 </span>
 ```
 
+**Không dùng Tailwind** thì thay class bằng mã dưới đây. Đây chính là các class
+trên của Tailwind v4 đổi ra hex, nên hai kiểu dự án ra cùng một màu. Màu avatar là
+màu nhận diện, không mang nghĩa, nên không vào `tokens.css`: đặt thẳng trong mảng.
+
+| Sắc | Nền `-50` | Chữ `-700` | Viền `-200` | Tương phản chữ/nền |
+| --- | --- | --- | --- | --- |
+| emerald | `#ecfdf5` | `#007a55` | `#a4f4cf` | 5.1:1 |
+| sky | `#f0f9ff` | `#0069a8` | `#b8e6fe` | 5.5:1 |
+| indigo | `#eef2ff` | `#432dd7` | `#c6d2ff` | 7.2:1 |
+| pink | `#fdf2f8` | `#c6005c` | `#fccee8` | 5.4:1 |
+| amber | `#fffbeb` | `#bb4d00` | `#fee685` | 4.9:1 |
+| violet | `#f5f3ff` | `#7008e7` | `#ddd6ff` | 6.7:1 |
+
+```ts
+const avatarTones: AvatarTone[] = [
+  { background: "#ecfdf5", text: "#007a55", ring: "#a4f4cf" },
+  // ... năm sắc còn lại theo bảng, giữ đúng thứ tự để cùng id ra cùng màu
+];
+// style={{ background: tone.background, color: tone.text, boxShadow: `0 0 0 1px ${tone.ring}` }}
+```
+
 **Vì sao ổn**
 
 - **Màu lấy theo `id` hoặc email, không theo tên.** Hai người trùng tên vẫn khác màu, và đổi tên hiển thị thì màu không nhảy. Lấy ngẫu nhiên lúc render thì mỗi lần tải lại là một màu khác — người dùng nhận ra nhau bằng màu, màu nhảy là mất.
