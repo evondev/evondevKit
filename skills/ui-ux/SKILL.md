@@ -57,6 +57,8 @@ chưa), và **phong cách** (dự án đang flat, glass, gradient hay tối).
 ls package.json 2>/dev/null || echo "KHÔNG CÓ package.json — xem dòng cuối bảng"
 cat package.json 2>/dev/null | grep -E '"(tailwindcss|@radix-ui|@mui|antd|@chakra|bootstrap)"'
 ls components/ui src/components/ui 2>/dev/null          # dấu hiệu shadcn
+# thư viện chuyên dụng: biểu đồ, lịch/ngày, bảng, danh sách ảo
+cat package.json 2>/dev/null | grep -E '"(recharts|chart\.js|react-chartjs-2|echarts[a-z-]*|@tremor/react|@nivo/[a-z]+|victory|react-apexcharts|react-day-picker|react-datepicker|@mantine/dates|@fullcalendar/[a-z]+|react-big-calendar|date-fns|dayjs|@tanstack/react-table|@tanstack/react-virtual|react-window|react-virtuoso|ag-grid-react)"'
 grep -rn "@theme\|--primary\|--brand\|font-family" \
   app/globals.css src/index.css tailwind.config.* 2>/dev/null | head
 
@@ -116,6 +118,7 @@ Rồi áp theo bảng này:
 | **Tailwind** (mặc định của skill) | Dùng utility bình thường. Tailwind v4 thì đọc `references/tailwind-v4-traps.md` trước khi đụng `@theme` |
 | **Không có Tailwind** | **Theo quy ước của họ** — CSS Module, styled-components, SCSS, gì cũng được. Skill này chi phối *token, nhịp, bố cục, phạm vi*, không chi phối cách bro viết style. Luật trong skill ghi class Tailwind; **màu thì dịch sang biến trong `references/tokens.css`**, đừng tự chọn mã: `text-rose-700` → `var(--danger)`, badge `bg-emerald-50 text-emerald-700` → `--success-bg` / `--success`. Bảng đối chiếu ở `M7`, `M30`; màu avatar ở `components/avatar.md` |
 | **shadcn / Radix / MUI / Ant / bộ nội bộ** | **Dùng component của họ.** Viết lại một cái `Button` trong project đã có shadcn là làm hỏng tính nhất quán, không phải làm đẹp thêm |
+| **Thư viện chuyên dụng** (biểu đồ, lịch, bảng, danh sách ảo) | **Có thì dùng đúng nó**, chỉnh cho ra hình của skill (tắt thứ nó bật sẵn, màu lấy token). **Chưa có thì không tự cài**: dựng như bình thường theo mẫu trong `references/components/`, và **chỉ đề xuất khi có nhu cầu tự dựng sẽ tốn** (dữ liệu lớn, phóng to, thời gian thực, nhiều loại biểu đồ). Chọn theo tiêu chí: nhẹ, giải quyết đúng nhu cầu, tô được bằng token, còn bảo trì, hợp hệ sinh thái sẵn có. Đề xuất một dòng kèm lý do; cài hay không là người dùng quyết (`N10`). Bảng cấu hình cho biểu đồ ở `components/charts.md` |
 | **Chưa có component nào** | Gợi ý code từ `references/components/`. Nói rõ đây là gợi ý để họ đặt vào đâu thì đặt |
 | **Không có `package.json`** | HTML/CSS thuần, hoặc WordPress, PHP, Rails, Django. Mẫu trong `references/components/` viết bằng `.tsx` — **dịch sang thẻ HTML + class rồi mới đưa**, đừng dán JSX vào dự án không có React. `references/tokens.css` thì dán thẳng được, nó là CSS thuần |
 
@@ -353,7 +356,7 @@ thì một trong hai chỗ là sai.
 | Thanh thông báo trong trang (thông tin, cần chú ý, lỗi) | `references/components/banner.md` |
 | Chip lọc, nút chỉ có icon, thanh tab (4 variant), phân trang | `references/components/small-controls.md` |
 | Avatar, nhóm avatar chồng nhau | `references/components/avatar.md` |
-| Biểu đồ, số liệu, thanh tiến độ | `references/components/charts.md` |
+| Biểu đồ cột, biểu đồ đường, số liệu, thanh tiến độ | `references/components/charts.md` |
 
 **Dựng một trang là RÁP, không phải vẽ lại.** Trên trang có phần tử nào nằm
 trong bảng trên thì mở đúng file đó và chép công thức, kể cả khi nó chỉ là một

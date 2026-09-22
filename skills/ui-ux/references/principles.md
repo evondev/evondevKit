@@ -27,6 +27,10 @@ khung chờ sai hình (`I19`); thanh cuộn chiếm chỗ lúc hiện (`I18`); �
 chữ tab lúc chọn; câu lỗi OTP chèn vào đẩy nút Xác nhận tụt khỏi con trỏ (dòng
 lỗi giữ chỗ sẵn khi nó nằm giữa ô và nút bấm).
 
+**Giữ chỗ là để khớp với phần tử bên cạnh**, không phải để giữ hình. Không có
+gì bên cạnh (màn hẹp xếp một cột, cả hàng cùng thiếu) thì bỏ chỗ giữ, để không
+thành khoảng trắng vô nghĩa (đã dính: sparkline tháng đầu giữ chỗ ở mobile).
+
 *Phép thử:* bật lần lượt từng trạng thái, nhìn **phần tử bên cạnh**, không nhìn
 phần tử vừa đổi. Có cái nào xê dịch dù 1px không?
 
@@ -73,7 +77,8 @@ lấy từ **một** bảng (`M7`, `D2`, `M30`): xám chờ, xanh lá xong, hổ
 đứng một mình: luôn có chữ hoặc icon nói cùng ý, vì người mù màu và trình đọc màn
 hình không thấy màu.
 
-Đã dính: màu tăng giảm suy từ dấu con số (chi phí tăng mà xanh); thanh tiến độ
+Đã dính: màu tăng giảm suy từ dấu con số (chi phí tăng mà xanh); chuỗi xám
+nhạt nhất của biểu đồ gần như trắng, may còn số trên đầu cột; thanh tiến độ
 đổi màu mà không có dòng chữ; chỉ có đoạn đỏ trên thanh bước ở màn hẹp mà không
 nói bước nào sai.
 
@@ -90,7 +95,8 @@ cũng một lưới.
 
 Đã dính: hai đầu khoảng ngày khác sắc; vòng bước lỗi khác khuôn vòng bước xong;
 "Tải báo cáo" mượn nhầm khuôn "Xem tất cả" (nút theo loại hành động, không theo
-chỗ đứng); `₫` chỗ này `đ` chỗ kia; `12,4 / 20` cạnh `4/6`; khối nhãn và
+chỗ đứng); `₫` chỗ này `đ` chỗ kia; `12,4 / 20` cạnh `4/6`; thang xám của cột nhóm khác thang xám của donut; `2,8 %` ở số chính cạnh `27,3%` ở dòng
+so sánh; khối nhãn và
 giá trị viết trạng thái, nhãn phân loại, tiền thành chữ trơn thay vì dùng badge,
 pill, `đ` đã có sẵn. **Một giá trị có khuôn riêng thì ở đâu cũng dùng khuôn đó**,
 kể cả khi nó nằm trong một component khác.
@@ -168,6 +174,13 @@ Mọi thứ có hệ quả dữ liệu là quyết định của người dùng:
 nào bị khoá, ngưỡng đổi màu, đóng rồi có hiện lại không. Skill để prop hoặc
 handler rỗng, và chỉ quyết **mỗi lựa chọn đó trông ra sao**. Chi tiết ở phần
 phạm vi đầu `SKILL.md`.
+
+Công cụ cũng vậy: thư viện nào, bộ component nào là của dự án. **Kiểm trước
+khi dựng** thứ hay có thư viện riêng (biểu đồ, lịch, bảng, danh sách ảo): có thì
+dùng đúng cái đó, chỉnh cho khớp hình (tắt thứ nó bật mặc định, màu lấy từ
+token), không tự vẽ lại bên cạnh. Chưa có thì không tự cài: dựng bình thường,
+và chỉ đề xuất thư viện khi có nhu cầu thật mà tự dựng sẽ tốn. Chọn theo tiêu
+chí (nhẹ, giải quyết đúng việc, hợp hệ sinh thái), không theo tên quen.
 
 *Phép thử:* đoạn code vừa viết có gọi API, đặt ngưỡng, lưu trạng thái, hay hẹn
 giờ mà đề không yêu cầu không?

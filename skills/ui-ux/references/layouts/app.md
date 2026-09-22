@@ -365,6 +365,11 @@ chia đường kẻ**, không phải mỗi dòng một card.
 
 ## Bảng dữ liệu
 
+> **Kiểm thư viện trước.** Dự án có `@tanstack/react-table`, `ag-grid`, danh
+> sách ảo (`@tanstack/react-virtual`, `react-window`, `react-virtuoso`) thì dùng
+> nó cho phần sắp xếp, chọn dòng, cuộn ảo; skill chỉ lo hình. Chưa có thì dựng
+> theo mục này, lúc giao đề xuất một dòng nếu bảng cần cuộn nhiều nghìn dòng.
+
 Bảng quản lý (khách hàng, đơn hàng, thành viên…) có tìm, lọc, phân trang, chọn
 nhiều dòng. Bộ mặc định, dựng đủ không hỏi:
 

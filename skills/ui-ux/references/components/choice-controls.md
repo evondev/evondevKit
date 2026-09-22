@@ -224,6 +224,12 @@ bấm ra một popover có các cột cuộn.
 
 ## Ô chọn ngày
 
+> **Kiểm thư viện trước** (bảng thư viện chuyên dụng trong `SKILL.md`). Dự án có
+> `react-day-picker` (shadcn `Calendar`), `@mantine/dates`, `react-datepicker`…
+> thì dùng nó, chỉnh cho ra hình dưới đây. Chưa có thì dựng theo mục này; chỉ
+> đề xuất thư viện khi cần thứ tự dựng sẽ tốn (nhiều múi giờ, lịch âm, nhiều
+> ngôn ngữ).
+
 Nút mở y như ô nhập (`h-11 md:h-10`, icon `calendar` bên phải, placeholder
 "Chọn ngày"), bấm ra popover lịch tháng.
 
