@@ -57,7 +57,7 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
 - Lúc giao, bản dựng phải có dòng _"X chưa có mẫu đã duyệt, mình mượn khuôn của Y"_. Thiếu dòng đó là skill chưa đọc `principles.md`.
 
 - ✅ **Stepper dọc** — "Dựng cho tôi thanh các bước dạng dọc bên trái form đăng ký doanh nghiệp năm bước."
-- [ ] **Dòng thời gian** — "Dựng cho tôi dòng thời gian hoạt động của một đơn hàng: tạo đơn, xác nhận, đóng gói, giao hàng, có một bước giao thất bại."
+- ✅ **Dòng thời gian** — "Dựng cho tôi dòng thời gian hoạt động của một đơn hàng: tạo đơn, xác nhận, đóng gói, giao hàng, có một bước giao thất bại."
 - [ ] **Cây thư mục** — "Dựng cho tôi cây thư mục tài liệu, mở đóng được từng nhánh, có thư mục rỗng và tên file rất dài."
 - [ ] **Bình luận lồng nhau** — "Dựng cho tôi khu bình luận có trả lời lồng nhau, có bình luận đã xoá và bình luận đang gửi."
 - [ ] **Ô nhập nhiều tag** — "Dựng cho tôi ô nhập email người nhận, gõ xong Enter thành một tag, có email sai định dạng."

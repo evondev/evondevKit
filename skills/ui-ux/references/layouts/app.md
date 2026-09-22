@@ -300,7 +300,7 @@ Khách hàng từ 3/2024, 18 đơn hàng, doanh thu 1.284.500.000 đ
   <div className="min-w-0 flex-1">
     <nav aria-label="Đường dẫn">{/* text-sm text-muted, link hover:text-foreground, ChevronRight size-4 */}</nav>
     <h1 className="mt-1 text-xl font-semibold text-balance">{title}</h1>
-    <p className="mt-1 max-w-2xl text-sm text-pretty text-muted">{description}</p>
+    <p className="mt-1 max-w-[55ch] text-sm text-pretty text-muted">{description}</p>
   </div>
   <div className="flex shrink-0 gap-2">{actions}</div>
 </header>
@@ -311,7 +311,7 @@ Khách hàng từ 3/2024, 18 đơn hàng, doanh thu 1.284.500.000 đ
 - **Tên trang `text-xl`**, trang chi tiết của một bản ghi (khách hàng, đơn, dự án) thì `text-lg` theo `T9`. Không `text-2xl`, `text-3xl`: đó là cỡ hero (`budgets.md`). `text-balance` để tên dài xuống dòng đều.
 - **Khối chữ `min-w-0 flex-1`.** Thiếu `flex-1` thì khối co theo dòng dài nhất (thường là đường dẫn), mô tả bị ép xuống dòng ở nửa khung dù bên phải còn trống (đã dính 22/09/2026, sửa `max-w` không ăn vì bề rộng đã bị flex bóp trước).
 - **Tên trang `font-semibold`, không `tracking-tight`** ở cỡ `lg`/`xl`. Tên trang là chữ đậm nhất vùng nội dung; nhạt hơn tiêu đề khối bên dưới là đảo thứ bậc.
-- **Mô tả `max-w-2xl text-pretty`**: đủ rộng để một câu ngắn nằm một dòng, không cắt đôi cụm "doanh thu / 1.284.500.000 đ", vẫn dưới 75 ký tự mỗi dòng ở câu dài (`T11`).
+- **Mô tả `max-w-[55ch] text-pretty`**: đủ rộng để một câu ngắn nằm một dòng, câu dài vẫn dưới 75 ký tự mỗi dòng (`T11`). Bản cũ `max-w-2xl` ghi là dưới 75 nhưng ở `text-sm` thực tế ~99 ký tự.
 - **Nút bên phải, bám mép trên** (`sm:items-start`), `shrink-0`. Tối đa một nút `primary` (hành động chính của trang), còn lại nút viền có icon (`I1`). Từ nút thứ ba thì gom vào nút `MoreHorizontal`.
 - **Màn hẹp**: nút xuống dưới chữ, căn trái, giữ trên một hàng, không để hai nút trên một nút dưới (`../responsive.md`).
 - Không có mô tả, không có nút thì đầu trang chỉ còn tên, không chừa chỗ trống.

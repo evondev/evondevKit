@@ -105,7 +105,8 @@ chỗ đứng); `₫` chỗ này `đ` chỗ kia; `12,4 / 20` cạnh `4/6`; thang
 so sánh; khối nhãn và
 giá trị viết trạng thái, nhãn phân loại, tiền thành chữ trơn thay vì dùng badge,
 pill, `đ` đã có sẵn. **Một giá trị có khuôn riêng thì ở đâu cũng dùng khuôn đó**,
-kể cả khi nó nằm trong một component khác.
+kể cả khi nó nằm trong một component khác. **Mượn khuôn là mượn cả class**, không chỉ
+mượn dáng (cỡ chữ, độ dày đường nối, cách căn dòng đầu với vòng).
 
 *Phép thử:* với từng phần tử mới, trong skill đã có thứ nào **cùng vai** chưa?
 Có thì class có giống không?
@@ -201,8 +202,8 @@ Stepper dọc, dòng thời gian, cây thư mục, bình luận lồng nhau… k
 trong `components/` thì:
 
 1. **Tìm thứ gần nhất đã có mẫu và mượn khuôn** (`N5`). Stepper dọc mượn vòng,
-   đường nối và bốn trạng thái của thanh các bước (`layouts/form.md`); dòng thời
-   gian mượn dòng danh sách (`components/list-row.md`); cây thư mục mượn link
+   đường nối và bốn trạng thái của thanh các bước (`layouts/form.md`); bình luận
+   lồng nhau mượn dòng danh sách (`components/list-row.md`); cây thư mục mượn link
    sidebar có menu con (`layouts/app.md`).
    **Chỉ mượn từ file trong skill**, không mượn từ bản dựng chưa duyệt trong dự án
    (đã dính: dòng thời gian ghi mượn "thanh các bước dọc", thứ cũng đang là đề

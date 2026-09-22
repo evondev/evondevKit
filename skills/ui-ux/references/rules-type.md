@@ -96,6 +96,13 @@ mọi màn. Mọi mô tả được xuống dòng đều `text-pretty`.
 Kiểm ở đúng bề rộng thật, nhất là 375px: chữ đơn côi chỉ lộ ở một vài bề rộng.
 
 **T11. Không để dòng chữ dài quá 75 ký tự.** Mọi khối văn bản có `max-width`.
+Card rộng hết khung cũng tính.
+
+**Chữ Việt: `max-w-[55ch]` ≈ 75 ký tự**, ở mọi cỡ chữ. `ch` là bề rộng số "0" (~9,5px ở
+14px), còn ký tự Việt trung bình chỉ ~6,8px, nên `max-w-prose` (65ch) chứa ~90 ký tự và
+`max-w-2xl` ở `text-sm` chứa ~99. Dùng `ch` chứ không dùng `max-w-lg`: nó co giãn theo cỡ
+chữ, và không dính bẫy thang `--container-*` bị ghi đè (`tailwind-v4-traps.md`). Đã dính:
+mô tả việc trong dòng thời gian chạy ~90 ký tự một dòng dù đã `max-w-prose`.
 
 **T12. Chữ dài luôn căn trái.** Không căn giữa mọi thứ.
 
@@ -133,8 +140,14 @@ dính nhau) + `overflow-wrap: anywhere` (ngắt cả URL và mã dài) + `max-wi
 
 **T16. Số xếp cột dùng `tabular-nums`.** Bảng số liệu, cột tiền, cột phần trăm —
 thiếu nó thì các chữ số rộng khác nhau và cột nhảy lung tung khi dữ liệu đổi.
+Giờ, ngày xếp dọc một mép (cột giờ bên phải dòng thời gian, lịch sử) cũng là cột số.
+**Font phải có `tnum` thì class mới có tác dụng.** Kiểm bằng cách đo "1" và "4": rộng khác
+nhau là font không áp (đã dính: Be Vietnam Pro bản Google Fonts, "1" 4,6px, "4" 8,5px).
+Cột căn phải lệch mép trái vài px thì chấp nhận; bảng tiền, bảng số thì báo người dùng
+một dòng lúc giao, đổi font là việc của họ (`N10`).
 
-**T17. Mã và định danh dùng `font-mono`.** Mã đơn hàng, mã giảm giá, ID. Nó nói
+**T17. Mã và định danh dùng `font-mono`.** Mã đơn hàng, mã vận đơn, mã giảm giá, ID,
+kể cả khi nằm giữa một câu mô tả. Nó nói
 "đây là thứ để copy chính xác", không phải chữ để đọc.
 
 ---
