@@ -108,6 +108,27 @@ Con số phần trăm ghi ở đầu dòng, không đặt bên trong thanh.
 </div>
 ```
 
+### Dòng so sánh và đơn vị tiền
+
+```html
+<div class="min-w-0 p-5">
+  <p class="text-xs font-medium text-muted">Doanh thu tháng này</p>
+  <p class="mt-1 text-xl font-bold sm:text-2xl tracking-tight tabular-nums text-foreground">
+    1.284.500.000<span class="ml-1 font-semibold text-muted">đ</span>
+  </p>
+  <p class="mt-1 flex items-center gap-1 text-xs text-muted">
+    <i data-lucide="trending-up" class="size-3.5 text-emerald-700"></i>
+    <span class="font-medium tabular-nums text-emerald-700">12,4%</span> so với tháng trước
+  </p>
+</div>
+```
+
+- **Đơn vị tiền dùng chữ `đ` thường, không dùng ký hiệu `₫`.** Chữ `₫` có sẵn một vạch dưới trong chính mặt chữ, CSS không bỏ được: ở cỡ lớn trông như link, thu nhỏ thì thành một vệt gạch lí nhí (đã dính 22/09/2026, thử cả hai). `đ` **cùng cỡ với số**, `font-semibold`, chỉ đổi sang `text-muted` và cách `ml-1`: màu mờ đã đủ tách đơn vị khỏi giá trị. Dự án đã quen dùng `₫` thì theo dự án.
+- **Số quá 9 chữ số trong ô hẹp**: gợi ý (người dùng quyết) rút gọn `1,28 tỷ đ`, số đầy đủ để trong `title`. Ô số liệu để đọc xu hướng, không để đối soát từng đồng.
+- **Dòng so sánh**: icon `trending-up` / `trending-down` `size-3.5` + phần trăm `font-medium` có màu + phần còn lại `text-muted`. Chỉ icon và con số mang màu, không tô cả câu.
+- **Màu theo tốt/xấu, không theo lên/xuống.** Doanh thu tăng là xanh, nhưng chi phí hay số đơn huỷ tăng là đỏ. Để một prop kiểu `tone="positive" | "negative" | "neutral"` cho người dùng quyết, đừng suy màu từ dấu của con số. Xanh `emerald-700`, đỏ `red-700`: chữ `text-xs` cần 4.5:1, `emerald-600` và `red-500` không đạt.
+- **Không đổi**: icon `minus`, chữ `text-muted`, không màu. **Không có kỳ trước**: một câu `text-muted` ("Chưa có số kỳ trước để so"). Hai ca này vẫn **giữ đúng một dòng**, để các ô trong hàng cao bằng nhau. Ngưỡng coi là "không đổi" do người dùng quyết.
+
 Biểu đồ cột nhiều mốc ở màn hẹp thì cho cả cụm cuộn ngang **trong khung riêng**
 bằng `overflow-x-auto` cộng một bề rộng tối thiểu cho cụm, đừng để nó đẩy cả
 trang. Xem luật `R1` trong `../responsive.md`.
