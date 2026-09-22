@@ -36,7 +36,7 @@ function getVariantClasses(variant: ButtonVariant): string {
     "max-w-full text-center leading-tight [overflow-wrap:anywhere]",
     // Focus bàn phím trông giống hover, không ring (I13)
     "focus-visible:outline-hidden",
-    "disabled:cursor-not-allowed disabled:opacity-50",
+    "disabled:cursor-not-allowed disabled:not-aria-busy:opacity-50",
     getVariantClasses(variant),
   )}
 >
@@ -44,6 +44,19 @@ function getVariantClasses(variant: ButtonVariant): string {
   {children}
 </button>
 ```
+
+**Đang xử lý (loading)**
+
+```tsx
+<Button variant="primary" disabled={isSending} aria-busy={isSending}>
+  {isSending ? <LoaderCircle className="size-4 shrink-0 animate-spin motion-reduce:animate-none" aria-hidden /> : <Send className="size-4 shrink-0" aria-hidden />}
+  Gửi lời mời
+</Button>
+```
+
+- Spinner **thế chỗ icon**, cùng `size-4`, chữ giữ nguyên. Nút không đổi bề rộng, hàng nút không xô.
+- Không đổi chữ sang "Đang gửi…": chữ dài ngắn khác nhau là nút co giãn. Đổi thì phải giữ `min-w` bằng bản cũ.
+- `disabled` khi đang xử lý nhưng **không mờ `opacity-50`** như nút khoá thường: vì vậy class gốc ghi `disabled:not-aria-busy:opacity-50` (Tailwind v4), nút đang xử lý vẫn đậm, chỉ spinner nói đang chạy. Mờ đi thì đọc ra là "bấm không được vì sai gì đó".
 
 **Vì sao ổn**
 
@@ -55,6 +68,7 @@ function getVariantClasses(variant: ButtonVariant): string {
 - **Không `shadow`.** Nút nằm trong trang (`M15`).
 - Chỉ `transition-colors`. Nút không phóng to, không nhấc lên, không đổ bóng thêm khi hover (`F22`).
 - **Không ring khi focus.** Bàn phím Tab tới thì nút đổi nền y như lúc hover, bấm chuột thì không hiện gì (`focus-visible`). `outline-hidden` giữ outline trong suốt để chế độ tương phản cao của Windows vẫn thấy (`I13`).
+- **Nút trong form hoặc footer modal** thêm `h-11 md:h-10` để cao đúng bằng ô nhập (`budgets.md`). Nút thường để `py-2.5` tự lo.
 - Không có prop `size`. Cần nút khác cỡ thì truyền `className` — đỡ đẻ ra ma trận variant nhân size (`I6`).
 - Logic class nằm trong `getVariantClasses()` ngoài JSX, không nhét ternary vào giữa markup.
 

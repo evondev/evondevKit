@@ -35,18 +35,21 @@ Skill này chỉ lo **màn hình trong app** — dashboard, danh sách, bảng, 
 | Padding section | `py-4` |
 | Chiều cao dòng danh sách | 12–16px chiều dọc |
 | Chiều cao nút | `py-2.5` |
-| **Nút trong form** | **`h-12`, bằng đúng ô nhập, ở MỌI breakpoint** |
+| **Ô nhập, select, nút trong form** | **`h-11 md:h-10`** (44px màn hẹp, 40px từ `md`), ô và nút đổi cùng nhau. Form đăng nhập/đăng ký đứng riêng giữa trang được lên `h-12` |
 | Nút "xem tất cả", "đọc thêm" | `h-10`, ngang `px-3` tới `px-4`, căn phải |
 | Viền card | đường tóc 1px, một token duy nhất |
 | Bóng card | **không có** |
 
-**Nút trong form phải cao bằng ô nhập, và cả hai phải đổi cùng nhau.** Ô nhập giữ
-`h-12` ở mọi bề rộng màn (`R8`), nên nút trong form cũng giữ `h-12` — **không**
-hạ về `h-10` ở mobile như `R4` nói cho nút thường.
+**Nút trong form phải cao bằng ô nhập, và cả hai phải đổi cùng nhau.** Cùng
+`h-11 md:h-10`: đổi một cái mà giữ cái kia là lỗi thấy ngay, nút 40px nằm dưới ô
+48px trông như hai thứ của hai bộ khác nhau (đã dính ở vòng test form đăng nhập).
 
-Hạ một cái mà giữ cái kia là lỗi thấy ngay: nút đăng nhập 40px nằm dưới ô nhập
-48px trông như hai thứ của hai bộ khác nhau. Đây là lỗi đã dính ở vòng test form
-đăng nhập, và lý do là `R4` bị áp máy móc cho nút submit.
+**Vì sao 40px, không phải 48px** (đảo 22/09/2026). Bản cũ cho ô và nút form
+`h-12` ở mọi bề rộng, suy từ `R8`. Nhưng `R8` nói về **cỡ chữ** 16px, không nói
+chiều cao: chữ 16px nằm trong ô 40px vẫn thoáng. 48px trong dashboard thì thô,
+lệch một bậc so với link sidebar, mục menu, mục dropdown (đều `h-10`), và 2 ô + 1
+hàng nút đã ăn gần hết một modal. Màn hẹp lên 44px cho vừa ngón tay. Chỉ form
+đăng nhập/đăng ký đứng một mình giữa trang mới được `h-12`: cả màn chỉ có form đó.
 
 Áp cho mọi nút nằm trong luồng form — đăng nhập, đăng ký, đổi mật khẩu, nút
 `Lưu` / `Huỷ` cuối form. Không áp cho nút trong header hay trong dòng danh sách.

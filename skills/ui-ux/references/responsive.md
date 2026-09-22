@@ -19,8 +19,8 @@ Triệu chứng dễ nhận nhất: cuộn sang ngang thì thấy **một mảng
 - **Lưới có số cột lẻ thì đi thẳng từ 1 lên số cột đó**, bỏ qua bậc giữa: `grid-cols-1 lg:grid-cols-3`, đừng chèn `sm:grid-cols-2` vì 3 mục chia 2 cột sẽ thành 2 trên 1 dưới.
 - **Số cột chẵn thì wrap thoải mái**, 4 mục chia 2 cột ra 2 hàng đều nhau, không ai lẻ loi.
 
-**R4. Nhịp ở mobile: card `p-4`, tối đa `p-5`.** Đừng mang `p-8` của màn rộng xuống màn hẹp, 32px lề mỗi bên trên màn 375px là ăn mất một phần năm bề ngang. Nút ở mobile hạ về `h-10` — **trừ nút nằm trong form**, cái đó phải giữ chiều cao
-bằng ô nhập, xem `references/budgets.md`.
+**R4. Nhịp ở mobile: card `p-4`, tối đa `p-5`.** Đừng mang `p-8` của màn rộng xuống màn hẹp, 32px lề mỗi bên trên màn 375px là ăn mất một phần năm bề ngang. Nút ở mobile hạ về `h-10` — **trừ nút nằm trong form**, cái đó đi cùng chiều cao
+ô nhập (`h-11` ở màn hẹp), xem `references/budgets.md`.
 
 **R5. Chật là hỏng, không phải là đã responsive.** Thu nhỏ mà nội dung dồn cục, chữ vỡ ba bốn dòng, ảnh méo thì đó là chưa xử, không phải là xong. Cách xử, theo thứ tự nên thử:
 
@@ -58,8 +58,8 @@ tự thu lại. Người dùng đang điền form bỗng thấy trang nhảy m�
 ```
 
 Đây là **ngoại lệ của `R7`**: chữ chỉ để đọc trong card thì hạ về `text-sm` ở
-mobile, chữ gõ được thì không. Cùng lý do, ô nhập giữ `h-12` ở mọi bề rộng thay
-vì thu nhỏ theo màn.
+mobile, chữ gõ được thì không. Luật này nói **cỡ chữ**, không nói chiều cao: ô
+vẫn `h-11 md:h-10`, xem `budgets.md`.
 
 **R9. Bảng ở màn hẹp thì cuộn ngang, đừng bóp cột.** Đây là lỗi hay gặp nhất với bảng: để nguyên `<table>` co lại theo bề rộng màn, kết quả là mỗi ô chỉ còn vài chục pixel, chữ vỡ ba bốn dòng, cột nọ dính cột kia, đọc không ra gì.
 

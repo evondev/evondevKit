@@ -66,6 +66,15 @@ dưới đây, báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`.
 Header và footer đứng yên, chỉ thân cuộn. Modal cao quá 80% màn thì đổi sang
 panel trượt hoặc trang riêng.
 
+**Modal có form** (mời thành viên, đổi tên, thêm nhanh):
+
+- **Đường chia header/footer chỉ có khi thân thật sự cuộn.** Form hai ba ô không cuộn thì bỏ cả hai đường, dùng khoảng trắng (`gap-6`). Ba khối chia kẻ cho một form ngắn là nặng hơn nội dung.
+- **Mô tả dưới tiêu đề chạy tới sát cột nút ✕**: chỉ header chừa `pr-10` cho nút đóng, đừng đặt `max-w` hẹp cho câu mô tả. Thêm `text-pretty` để không rớt một chữ xuống dòng cuối (đã dính 22/09/2026: "…để tham gia / nhóm.").
+- Có ô nhập nên **bấm ra ngoài không đóng** (`I20`); đóng bằng ✕, Huỷ, Esc. Mở ra thì tiêu điểm vào ô đầu tiên.
+- Nút chính ở footer là `primary` (một hành động duy nhất của modal, `I2`), **có icon trái** theo `I1` (mời thì `send` hoặc `user-plus`). Nút Huỷ `secondary`. Cả hai `h-11 md:h-10`, cao bằng ô nhập.
+- **Trạng thái đang gửi**: spinner (`loader-circle animate-spin`) **thay đúng chỗ icon**, chữ giữ nguyên, nút `disabled` + `aria-busy`. Nút không có icon mà chèn spinner vào là nút rộng ra, đẩy Huỷ sang trái (đã dính 22/09/2026). Xem `../components/button.md`.
+- Câu lỗi dưới ô nói **cách sửa kèm ví dụ đúng**: "Email chưa đúng định dạng, ví dụ ten@congty.vn".
+
 ## Panel trượt
 
 Trượt từ phải, rộng cố định `w-[28rem]`, dùng khi nội dung dài hoặc người dùng

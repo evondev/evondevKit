@@ -7,7 +7,7 @@ const baseClasses = "outline-hidden transition-colors text-foreground placeholde
 
 const variantClasses = {
   // Viền và MÀU viền viết cùng một chỗ, đúng như nút outline: `border border-border-strong`.
-  default: "w-full h-12 bg-surface dark:bg-white/4 border border-border-strong rounded-xl text-base px-4 md:text-sm",
+  default: "w-full h-11 md:h-10 bg-surface dark:bg-white/4 border border-border-strong rounded-xl text-base px-4 md:text-sm",
   ghost: "bg-transparent border-0 p-0",
 };
 
@@ -25,7 +25,7 @@ const stateClasses = error
 - Trạng thái lỗi cũng theo đúng công thức đó, chỉ đổi màu: viền đỏ đặc `red-500`, ring `red-500/10`. **Câu lỗi thì `red-600`**, không `red-500`: viền chỉ cần 3:1 nhưng chữ 14px cần 4.5:1, `red-500` trên nền trắng chỉ 3.8:1. Không Tailwind thì `--error`, `--error-ring`, `--error-text` trong `tokens.css`.
 - Bo `rounded-xl`, cùng bậc với nút, nên input và nút đứng cạnh nhau bằng vai.
 - **`text-base` trên mobile rồi thu về `md:text-sm`** — luật `R8`, áp cho cả `textarea` và `select`.
-- **`h-12` ở mọi bề rộng màn.** Ô nhập không thu nhỏ theo màn, và nút trong cùng form cũng phải giữ `h-12` theo nó (`budgets.md`). Hạ nút mà giữ ô là lệch ngay.
+- **`h-11 md:h-10`**: 40px trên desktop, bằng link sidebar và mục menu; 44px ở màn hẹp cho vừa ngón tay. Nút trong cùng form đổi theo y hệt (`budgets.md`). Form đăng nhập/đăng ký đứng riêng được lên `h-12`. Không dùng `h-12` làm mặc định trong app: thô, và lệch bậc với mọi thứ khác (đảo 22/09/2026).
 
 ---
 

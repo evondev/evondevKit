@@ -15,7 +15,7 @@ Chủ dự án chốt 21/09/2026. Mọi con số dưới là **mặc định**: 
 | Checkbox | `size-5` 20px, bo `rounded-md` 6px, tick `size-3.5` | `size-4` 16px, bo `rounded` 4px, tick `size-3` | Trong bảng, trong menu, dòng `text-xs` |
 | Radio | `size-5` 20px | `size-4` 16px | Như trên |
 | Công tắc | track `h-6 w-11` (24×44), núm `size-5`, chạy `translate-x-5` | track `h-5 w-9` (20×36), núm `size-4`, chạy `translate-x-4` | Dòng dày, card nhỏ |
-| Select | `h-12`, y như ô nhập | theo ô nhập của dự án | |
+| Select | `h-11 md:h-10`, y như ô nhập | theo ô nhập của dự án | |
 
 Công thức công tắc: `rộng track = 2 × núm + 4px` (đệm `p-0.5` hai bên), khoảng
 chạy = cỡ núm. Đổi cỡ thì giữ công thức đó, núm không chạm mép track.
@@ -169,7 +169,7 @@ mở cũng giữ viền + ring như đang focus, vì người dùng vẫn đang 
 
 ```html
 <button type="button" role="combobox" aria-haspopup="listbox" aria-expanded="false"
-  class="group flex h-12 w-full cursor-pointer items-center justify-between gap-2 rounded-xl border border-border-strong bg-surface px-4 text-left text-base outline-hidden transition-colors md:text-sm focus:border-focus focus:ring-2 focus:ring-focus aria-expanded:border-focus aria-expanded:ring-2 aria-expanded:ring-focus">
+  class="group flex h-11 w-full md:h-10 cursor-pointer items-center justify-between gap-2 rounded-xl border border-border-strong bg-surface px-4 text-left text-base outline-hidden transition-colors md:text-sm focus:border-focus focus:ring-2 focus:ring-focus aria-expanded:border-focus aria-expanded:ring-2 aria-expanded:ring-focus">
   <span class="truncate">An Giang</span>
   <i data-lucide="chevron-down" class="size-4 shrink-0 text-muted transition-transform group-aria-expanded:rotate-180"></i>
 </button>
@@ -184,6 +184,7 @@ mở cũng giữ viền + ring như đang focus, vì người dùng vẫn đang 
 
 - Rộng **bằng nút mở** (Radix: `w-(--radix-select-trigger-width)`), cách nút `mt-2`.
 - Cao tối đa `max-h-72`, cuộn bên trong. Mở ra thì cuộn sẵn tới mục đang chọn.
+- **Mục có mô tả** (vai trò, gói, quyền): hai tầng, tên `text-sm font-medium` + một câu `text-sm text-muted` nói **quyền làm được gì**, mục cao theo nội dung (`py-2.5`), không ép `h-10`. Ô đã đóng chỉ hiện tên, không hiện mô tả. Chọn quyền mà không có câu này thì người mời phải đoán "Thành viên" khác "Chỉ xem" chỗ nào.
 - **Mục đang chọn**: chữ `font-medium` + icon `check` `size-4` căn phải. Nền xám `bg-background` là của **mục đang sáng** (chuột hoặc phím mũi tên, `data-[highlighted]`), không phải của mục đang chọn; mở ra thì mục đang chọn sáng trước.
 - Trên 8 mục: **ô tìm ở đầu danh sách**, icon `search` trái, placeholder "Tìm tỉnh, thành phố", đường chia bên dưới tràn hai mép (`F25`). Gợi ý (người dùng quyết): gõ là lọc ngay, không bấm Enter; lọc ở máy hay gọi server thì để handler rỗng. Không ra kết quả thì một dòng `text-muted` căn giữa: *Không tìm thấy "xyz"*.
 - Dưới 8 mục, không cần tìm, và app chạy nhiều trên điện thoại thì `<select>` gốc là đủ: `appearance-none` + icon `chevron-down` đặt `absolute` bên phải, `pr-10`. Điện thoại mở bánh xe chọn gốc, dễ bấm hơn mọi danh sách tự dựng.

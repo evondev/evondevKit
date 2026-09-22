@@ -53,6 +53,7 @@ một dòng** cho họ biết mình đã chọn gì.
 | **Ghi nhớ đăng nhập** | **Không** | Nó đổi thời hạn phiên ở **backend**, không phải chỉ là cái checkbox. Vẽ ra mà backend không làm gì là lừa người dùng — sai nhiều hơn là thiếu |
 | **Đăng nhập mạng xã hội** | **Không** | Phải có backend và nhà cung cấp cụ thể mới có nghĩa, mà cái đó thì không đoán được |
 | **Kiểu placeholder** | **Câu hướng dẫn** (`T25`) | Xem `T25` cho ca ngoại lệ |
+| **Chiều cao ô và nút** | **`h-12`** | Ngoại lệ duy nhất của `h-11 md:h-10` (`budgets.md`): form đứng một mình giữa trang, cả màn chỉ có nó, ô to hơn một bậc là hợp. Form trong app, modal, cài đặt thì không |
 
 **Dòng báo, đặt chung với dòng báo bố cục lúc giao:**
 
