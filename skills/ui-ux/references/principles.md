@@ -31,6 +31,10 @@ lỗi giữ chỗ sẵn khi nó nằm giữa ô và nút bấm).
 gì bên cạnh (màn hẹp xếp một cột, cả hàng cùng thiếu) thì bỏ chỗ giữ, để không
 thành khoảng trắng vô nghĩa (đã dính: sparkline tháng đầu giữ chỗ ở mobile).
 
+**Sang hẳn màn khác thì không tính** (đổi bước form, đổi trang): cả màn đã thay,
+không còn gì "bên cạnh" để giữ. Đừng `truncate` chữ cần đọc chỉ để giữ chiều cao
+qua các màn (đã dính: tên bước ở thanh thu gọn bị cắt "…").
+
 *Phép thử:* bật lần lượt từng trạng thái, nhìn **phần tử bên cạnh**, không nhìn
 phần tử vừa đổi. Có cái nào xê dịch dù 1px không?
 
@@ -46,7 +50,9 @@ khác nghĩa thì phải khác hình rõ ràng.
 Đã dính: xong mà thanh vẫn đen đầy như đang chạy (xong là emerald); trang đang
 chọn trông như ô input; nút phụ trông như bị khoá (`I8`); hôm nay và ngày đang
 chọn lẫn nhau (chữ đậm + chấm, khác nền đặc); một trang và 0 dòng vẫn hiện đủ
-control chết; bước lỗi không có hình riêng.
+control chết; bước lỗi không có hình riêng; thanh bước thu gọn tô đậm cả đoạn đang
+làm nên "đang ở bước cuối" giống "đã xong hết", sửa thành để xám thì "Bước 2 / 3"
+lại đọc như thanh thiếu (đang làm là tầng thứ ba, nửa đậm).
 
 *Phép thử:* che chữ đi, chỉ nhìn hình. Còn nói được đây là trạng thái nào không?
 
@@ -140,10 +146,12 @@ chọn (`components/choice-controls.md`).
 
 Trang không cuộn ngang (`R1`, `T13`). Lớp nổi không che chính ô mở ra nó. Thứ
 dùng để xác nhận (tên đối tượng sắp xoá) không `truncate`. Mô tả xuống dòng, chỉ
-tiêu đề một dòng mới cắt, cắt thì có `title` (`T14`). Không có chữ bị xén nửa.
+tiêu đề một dòng mới cắt, cắt thì có `title` (`T14`). **Mô tả được xuống dòng thì
+luôn `text-pretty`** (`T10`), nhất là trong cột hẹp: không để trơ một chữ ở dòng cuối. Không có chữ bị xén nửa.
 
 Đã dính: lịch khoảng ngày lật lên che ô của nó; số trong bánh xe bị cắt nửa ở mép;
-nửa trên popover trống trơn vì chèn đệm. Link "Đổi email" bị bẻ đôi ở cuối dòng. **Link ngắn nằm
+nửa trên popover trống trơn vì chèn đệm. Mô tả bước ở thanh các bước dọc rớt "thoại", "hệ",
+"doanh" xuống một mình (cột ~200px, thiếu `text-pretty`). Link "Đổi email" bị bẻ đôi ở cuối dòng. **Link ngắn nằm
 trong câu không bị bẻ giữa chừng**: `whitespace-nowrap` để nó xuống dòng nguyên
 cụm. Nhãn nút thì ngược lại, được xuống dòng (`T15`).
 
@@ -196,6 +204,9 @@ trong `components/` thì:
    đường nối và bốn trạng thái của thanh các bước (`layouts/form.md`); dòng thời
    gian mượn dòng danh sách (`components/list-row.md`); cây thư mục mượn link
    sidebar có menu con (`layouts/app.md`).
+   **Chỉ mượn từ file trong skill**, không mượn từ bản dựng chưa duyệt trong dự án
+   (đã dính: dòng thời gian ghi mượn "thanh các bước dọc", thứ cũng đang là đề
+   bậc 1b). Khuôn lấy từ file thì dự án sau vẫn có, và lỗi không nhân đôi.
 2. **Liệt kê trạng thái và ca biên** (`N2`), mỗi cái một ví dụ tĩnh.
 3. **Chạy mười phép thử** ở trên trước khi báo xong.
 4. Lúc giao nói một dòng: *"X chưa có mẫu đã duyệt, mình mượn khuôn của Y"*.

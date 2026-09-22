@@ -89,6 +89,10 @@ Cách xử, theo thứ tự:
 3. `&nbsp;` giữa hai chữ cuối — chỉ khi hai cách trên không đủ.
 4. Rút gọn câu. Thường đây mới là cách đúng nhất.
 
+Không chỉ tiêu đề: **mô tả hai ba dòng trong cột hẹp** (bước dọc, sidebar, card nhỏ,
+mô tả dưới tiêu đề modal) dính nhiều nhất, vì cột cố định nên dòng nào hụt là hụt ở
+mọi màn. Mọi mô tả được xuống dòng đều `text-pretty`.
+
 Kiểm ở đúng bề rộng thật, nhất là 375px: chữ đơn côi chỉ lộ ở một vài bề rộng.
 
 **T11. Không để dòng chữ dài quá 75 ký tự.** Mọi khối văn bản có `max-width`.
