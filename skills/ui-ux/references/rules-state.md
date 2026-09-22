@@ -274,7 +274,6 @@ tức là phải cố ý.
 
 - `e.target === e.currentTarget` **không phải cách vá**: nó chỉ chặn click bị bubble từ bên trong, còn click thẳng vào backdrop — đúng cái tay lỡ bấm — vẫn đóng. Xoá cả prop `onClick` đi.
 - Gỡ dismiss thì **phải chắc còn đường đóng khác**. Dính thật ở focus.camp: hai bottom sheet lấy backdrop làm lối ra DUY NHẤT, gỡ xong là khoá luôn người dùng trong sheet.
-- **Form nhiều bước thì khoá THEO BƯỚC**, không khoá cả modal. Bước chưa gõ gì thì cho đóng; bước đang gõ dở thì khoá. Màn gõ mã OTP là thứ phải khoá: bấm nhầm là mất mã, xin lại phải đợi hết 60 giây.
 
 **I21. Vẫn giữ dismiss cho thứ chỉ để đọc hoặc chọn.** Lightbox ảnh, xem chi
 tiết đơn, roster, dropdown, menu, panel thông báo, drawer mobile. Đóng nhầm mấy
@@ -296,9 +295,9 @@ nút đã mở, khoá cuộn nền, và aria đúng chuẩn — tự dựng thì
 **I24. Panel thông báo mở tại chỗ, không điều hướng sang trang khác.** Điều hướng
 đi mất luôn ngữ cảnh chỉ để liếc một cái thông báo.
 
-**I25. Hành động "đánh dấu đã đọc" phải theo đúng phạm vi đang xem.** Đang lọc
-còn 2 dòng mà bấm lại xoá sạch thông báo của phạm vi người dùng **không nhìn
-thấy** là mất dữ liệu thầm lặng.
+**I25. Đã bỏ (22/09/2026).** Luật cũ nói "đánh dấu đã đọc" chỉ áp cho phạm vi
+đang lọc. Đó là logic dữ liệu, không phải giao diện, người dùng tự quyết (xem
+phạm vi ở `../SKILL.md`). Giữ số để các chỗ dẫn `I26` trở đi không lệch.
 
 ---
 

@@ -185,7 +185,7 @@ mở cũng giữ viền + ring như đang focus, vì người dùng vẫn đang 
 - Rộng **bằng nút mở** (Radix: `w-(--radix-select-trigger-width)`), cách nút `mt-2`.
 - Cao tối đa `max-h-72`, cuộn bên trong. Mở ra thì cuộn sẵn tới mục đang chọn.
 - **Mục đang chọn**: chữ `font-medium` + icon `check` `size-4` căn phải. Nền xám `bg-background` là của **mục đang sáng** (chuột hoặc phím mũi tên, `data-[highlighted]`), không phải của mục đang chọn; mở ra thì mục đang chọn sáng trước.
-- Trên 8 mục: **ô tìm ở đầu danh sách**, icon `search` trái, placeholder "Tìm tỉnh, thành phố", đường chia bên dưới tràn hai mép (`F25`). Gõ là lọc ngay, không bấm Enter. Không ra kết quả thì một dòng `text-muted` căn giữa: *Không tìm thấy "xyz"*.
+- Trên 8 mục: **ô tìm ở đầu danh sách**, icon `search` trái, placeholder "Tìm tỉnh, thành phố", đường chia bên dưới tràn hai mép (`F25`). Gợi ý (người dùng quyết): gõ là lọc ngay, không bấm Enter; lọc ở máy hay gọi server thì để handler rỗng. Không ra kết quả thì một dòng `text-muted` căn giữa: *Không tìm thấy "xyz"*.
 - Dưới 8 mục, không cần tìm, và app chạy nhiều trên điện thoại thì `<select>` gốc là đủ: `appearance-none` + icon `chevron-down` đặt `absolute` bên phải, `pr-10`. Điện thoại mở bánh xe chọn gốc, dễ bấm hơn mọi danh sách tự dựng.
 
 ---

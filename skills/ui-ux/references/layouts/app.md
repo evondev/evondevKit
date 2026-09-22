@@ -92,7 +92,6 @@ Xem mục **Khung app có sidebar** bên dưới cho công thức đầy đủ.
   - **Mở/đóng có animation trượt**, không chớp giật: `grid` với `grid-rows-[1fr]` ↔ `grid-rows-[0fr]`, con bọc `overflow-hidden min-h-0`, `transition-[grid-template-rows] duration-200 ease-out`. Chevron xoay cùng `duration-200`. Không đo chiều cao bằng JS. Thêm `motion-reduce:transition-none`. Nhóm đang đóng gắn `inert` để Tab không lọt vào link đã ẩn.
   - Nhóm đầu không nhãn (Tổng quan, Hộp thư) thì luôn mở, không thu gọn.
   - Mặc định **mở hết**. Nhóm chứa trang đang xem thì **không được đóng lúc tải trang**, nếu không người ta không thấy mình đang ở đâu.
-  - Nhớ trạng thái đóng/mở trong `localStorage` (bọc `try/catch`), để lần sau vào không phải đóng lại.
 - **Thanh cuộn của sidebar tự ẩn** theo `I18`: đứng yên không thấy, rê vào hoặc đang cuộn mới hiện, 4px. Thanh cuộn xám đứng yên chạy dọc sidebar trắng là thứ nặng nhất trên cột, nặng hơn cả chữ (đã dính 21/09/2026).
 - **Số đếm căn phải**, là **pill trắng viền mảnh chữ xám**, hoặc số trơn `text-muted`. **Cả sidebar chọn đúng một kiểu**, không mục pill mục trơn. **Không badge màu brand**, xem `../components/small-controls.md`.
 
@@ -203,7 +202,7 @@ người dùng yêu cầu.
   - Chữ, tên workspace, badge cạnh chữ, nhãn nhóm thêm `transition-opacity duration-150`, thu thì `opacity-0`. Mờ đi cùng lúc bị cắt thì không thấy nửa chữ lơ lửng ở mép.
   - **Badge có HAI bản, chuyển bằng opacity**: bản cạnh chữ (`ml-auto`) mờ đi, bản đè góc icon (`absolute`) hiện lên. Đừng di chuyển một badge từ chỗ này sang chỗ kia, nó sẽ bay chéo qua sidebar.
   - **Nhóm có nhãn mờ đi tại chỗ** (`opacity-0` + `inert`), không gỡ ra. Gỡ ra thì chiều cao nav đổi, thanh cuộn nhảy.
-- **Nhớ trạng thái** trong `localStorage` (bọc `try/catch`). Phím tắt `⌘\` / `Ctrl+\`, ghi phím tắt trong tooltip của nút toggle.
+- Có nhớ trạng thái thu/mở hay không, có phím tắt hay không là việc của người dùng. Nếu đề có phím tắt thì ghi nó trong tooltip của nút toggle.
 - **Nút toggle ở đầu header vùng nội dung**, icon `PanelLeftClose` khi đang mở, `PanelLeftOpen` khi đang thu. Nút ghost `size-10 rounded-xl`, có `aria-label` và `aria-expanded`. **Không vòng viền khi focus** (`I13`): `outline-hidden focus-visible:bg-background`. Viền xám dày quanh nút sau khi bấm là focus ring của trình duyệt lọt ra, không phải thiết kế (đã dính 21/09/2026).
 
 ```tsx
@@ -348,7 +347,7 @@ Khách hàng                                       [+ Thêm khách hàng]
 │ ☐  ⬤ Tên            Công ty      (● Đang GD)     184.500.000 ₫  ⋯ │
 │ ☐  ⬤ Tên            Công ty      (● Tiềm năng)             0 ₫  ⋯ │
 ├──────────────────────────────────────────────────────────────────┤
-│ 1 tới 10 trong 32 khách hàng                        ‹ 1 2 3 4 ›  │
+│ 1 tới 10 trong 32 khách hàng        Mỗi trang [10▾]  ‹ 1 2 3 4 › │
 └──────────────────────────────────────────────────────────────────┘
 
 Khi có dòng được chọn, hàng tab + tìm được THAY bằng:
@@ -364,7 +363,7 @@ Khi có dòng được chọn, hàng tab + tìm được THAY bằng:
 - **Giá trị trống thống nhất một kiểu**: `—` màu `text-muted`. Không chỗ "Chưa có", chỗ "Khách lẻ", chỗ để trống.
 - **Số căn phải, `tabular-nums`**, tiêu đề cột số cũng căn phải. Cột số, ngày có sắp xếp thì tiêu đề là nút có icon mũi tên.
 - **Dòng tiêu đề bảng** `text-xs font-medium text-muted`, nền `--surface`, chia với thân bằng `--border`.
-- Phân trang có tổng số và vị trí đang xem (`I16`). Màn hẹp thì bảng cuộn ngang trong khung (`R9`).
+- Phân trang có tổng số và vị trí đang xem (`I16`), dựng theo "Phân trang" trong `../components/small-controls.md`: một trang thì ẩn nav, không có dòng thì ẩn cả footer. Màn hẹp thì bảng cuộn ngang trong khung (`R9`).
 
 ---
 
@@ -404,6 +403,6 @@ Vùng nguy hiểm
 - Nhãn trái, điều khiển phải, cùng một hàng.
 - Không viết chữ giải thích dưới mọi dòng. Chỉ giải thích thứ thật sự khó đoán.
 - Vùng nguy hiểm tách xuống cuối cùng.
-- **Không có nút "Lưu thay đổi" tổng.** Trang cài đặt tự lưu ngay khi bật toggle hoặc rời khỏi ô nhập, mỗi dòng hiện dấu đã lưu thoáng qua rồi tắt. Vừa có nút Lưu vừa có toggle tự lưu là hai mô hình lẫn nhau, người dùng không biết bật xong có phải bấm Lưu không. Thật sự cần nút Lưu thì toggle cũng phải chờ bấm Lưu, và nút phải mờ đi khi chưa có gì đổi.
+- **Mặc định dựng kiểu không có nút "Lưu thay đổi" tổng**: mỗi dòng chừa chỗ cho một dấu "Đã lưu" nhỏ cạnh điều khiển. Lưu lúc nào, gọi gì là việc của người dùng, skill chỉ để handler rỗng (`onChange`). **Không trộn hai kiểu trên một trang**: vừa có nút Lưu vừa có toggle không cần Lưu thì người dùng không biết bật xong có phải bấm Lưu không. Đề muốn có nút Lưu thì mọi điều khiển đều chờ nút đó, và dựng thêm trạng thái nút khoá khi chưa có gì đổi.
 
 **B. Tab dọc bên trái** (từ 15 tuỳ chọn trở lên, hoặc trên 4 nhóm)

@@ -206,7 +206,7 @@ Email này đã có người dùng     <- chữ đỏ, text-xs, ngay dưới ô
 - Viền `red-500` đặc, ring `red-500/10` rất mờ. Không tô nền đỏ cả ô.
 - Câu lỗi nói **cách sửa**, không nói "không hợp lệ". "Email này đã có người dùng" chứ không phải "Email không hợp lệ".
 - **Câu lỗi không được trùng chữ với placeholder hay nhãn.** Trùng là dấu hiệu nó không mang thêm thông tin nào — xem mục dưới.
-- Chỉ hiện lỗi sau khi người ta rời khỏi ô hoặc bấm gửi, không hiện ngay khi vừa gõ ký tự đầu.
+- Gợi ý thời điểm (người dùng quyết): hiện lỗi sau khi rời ô hoặc bấm gửi, đừng hiện ngay ký tự đầu tiên. Skill chỉ lo lỗi **trông ra sao**, dựng nó như một trạng thái tĩnh của ô.
 - **Form dài hơn một màn thì phải có banner tóm tắt lỗi ở đầu**, liệt kê từng lỗi kèm link nhảy tới đúng trường đó. Banner **không thay thế** lỗi hiện tại chỗ, phải có cả hai. Form ngắn gọn trong một màn thì không cần banner, vì mắt thấy hết rồi.
 
 ```html

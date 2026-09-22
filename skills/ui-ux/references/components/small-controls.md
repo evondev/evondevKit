@@ -252,3 +252,41 @@ chỉ để số trơn.
 - Chỉ tô màu khi con số là **cảnh báo thật**, kiểu số việc quá hạn: chữ hổ phách, vẫn không nền đặc.
 - `tabular-nums` để các hàng thẳng cột nhau.
 - Số lớn thì rút gọn: `99+`, đừng để `1.284` phá bề rộng sidebar.
+
+---
+
+## Phân trang
+
+Nằm ở đáy khung bảng hoặc danh sách, cách thân bảng bằng `border-t`. Một hàng,
+hai cụm: **số đếm bên trái, mọi control bên phải**.
+
+```
+1 tới 10 trong 1.284 đơn hàng          Mỗi trang [10 ▾]   ‹ 1 2 3 4 5 … 129 ›
+```
+
+```tsx
+<div className="flex items-center justify-between gap-4 border-t px-4 py-3">
+  <p className="text-sm tabular-nums text-muted">1 tới 10 trong 1.284 đơn hàng</p>
+  <div className="flex shrink-0 items-center gap-4">
+    {/* "Mỗi trang" + select h-9 */}
+    <nav aria-label="Phân trang" className="flex items-center gap-1">{/* ‹ trang › */}</nav>
+  </div>
+</div>
+```
+
+```ts
+// Nút số trang: vuông h-9, luôn có border để lúc chuyển trang không xô hàng
+"inline-flex h-9 min-w-9 items-center justify-center rounded-lg border px-2 text-sm font-medium tabular-nums"
+isCurrent && "border-border-strong bg-surface-hover text-foreground"   // + aria-current="page"
+!isCurrent && "border-transparent text-foreground/70 hover:bg-foreground/5 hover:text-foreground"
+// Mũi tên ‹ ›: IconButton h-9 w-9, có aria-label "Trang trước" / "Trang sau"
+```
+
+- **Không bao giờ wrap, không nhảy chỗ.** Nav luôn ở cụm phải, cùng hàng với số đếm, bất kể có bao nhiêu trang. Chật thì **bớt số trang trước**: bỏ `2 3 4 5`, chỉ còn `‹ 1 … 12 … 129 ›`. Màn hẹp dưới `sm` thì chỉ còn `‹ 12 / 129 ›`. Không đẩy nav xuống dòng hai (đã dính 22/09/2026: ví dụ nhiều trang thì nav rớt xuống căn trái, ví dụ ít trang lại nằm phải).
+- **Trang đang chọn giống tab `boxed`**: nền `--surface-hover` + viền `--border-strong`. **Không dùng nền trắng + viền**: đứng cạnh select `10 ▾` thì nó trông y như ô input, người dùng tưởng là ô gõ số trang để nhảy.
+- **Select "Mỗi trang" nằm trong cụm phải, sát nav**, không đứng ngay sau số đếm. Số đếm dài ra theo trang ("1 tới 10" rồi "1.271 tới 1.280"), đặt select sau nó là select xê dịch mỗi lần chuyển trang.
+- **Cửa sổ trang luôn đủ 7 ô** (tính cả `…`) khi tổng số trang lớn hơn 7: giữ trang đầu, trang cuối, trang đang xem và một trang mỗi bên, **ở gần hai đầu thì lấp thêm số cho đủ 7**: trang 1 là `1 2 3 4 5 … 129`, trang 12 là `1 … 11 12 13 … 129`, trang 129 là `1 … 125 126 127 128 129`. Số ô cố định thì nav rộng cố định, chuyển trang không kéo select xê dịch. Chỉ bớt dưới 7 ô khi khung chật. `…` là chữ `text-muted`, không bấm được.
+- **Mũi tên ở trang đầu/cuối thì `disabled`**, giữ chỗ, không ẩn, để nav không co giãn.
+- **Chỉ vừa một trang: ẩn nav.** Chỉ còn số đếm ("7 thành viên"). Select "Mỗi trang" chỉ giữ khi tổng số lớn hơn lựa chọn nhỏ nhất, không thì ẩn luôn. Hai mũi tên khoá cộng một ô `1` là nhiễu.
+- **Không có dòng nào: ẩn cả footer.** Empty state của bảng đã nói hết, đừng để "0 khách hàng" cùng bốn control chết bên dưới.
+- Số dùng dấu chấm hàng nghìn (`1.284`) và `tabular-nums`. Chuỗi đếm theo `I16`: "51 tới 75 trong 312 đơn hàng".

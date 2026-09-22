@@ -95,6 +95,8 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Modal đã gỡ dismiss thì **còn đường đóng khác** chưa?
 - [ ] Có đủ ba trạng thái chưa: đang tải, rỗng, lỗi? Khung chờ có **đúng hình** nội dung không?
 - [ ] Danh sách quá 25 dòng đã có phân trang chưa, và có hiện tổng số không?
+- [ ] Phân trang: nav có nằm phải cùng hàng ở mọi số trang không? Trang đang chọn có trông như ô input không? Một trang thì đã ẩn nav, 0 dòng thì đã ẩn footer chưa?
+- [ ] Toast: rộng theo chữ chưa? Hành động là nút có hover, dồn phải cùng ✕ chưa? Câu dài đã tách hai tầng thay vì vỡ ba dòng chưa? (`layouts/overlay.md`)
 
 ### Chữ
 

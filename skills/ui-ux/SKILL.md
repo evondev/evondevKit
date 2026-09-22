@@ -17,6 +17,13 @@ và **ràng buộc bằng con số** để phần còn lại tự sạch.
 Phạm vi: **màn hình trong app**. Dashboard, danh sách, bảng, form, cài đặt,
 modal. Không lo trang bán hàng, trừ bảng giá (`references/layouts/pricing.md`).
 
+Skill lo **giao diện**: bố cục, style, và **mỗi trạng thái trông ra sao** (đang
+chọn, khoá, rỗng, đang tải, lỗi, một trang, không dòng nào). **Không tự viết
+logic xử lý**: bấm trang thì gọi gì, đổi số dòng thì nhảy về đâu, lưu vào URL
+hay không, gọi API nào. Chỗ đó để prop hoặc handler rỗng (`onPageChange`,
+`onConfirm`) cho người dùng tự nối. Cần xem nhiều trạng thái thì dựng **mỗi
+trạng thái một ví dụ tĩnh** cạnh nhau, không dựng bản bấm được để xem.
+
 ---
 
 ## 0. Bốn câu hỏi, đúng thứ tự này
@@ -339,7 +346,7 @@ thì một trong hai chỗ là sai.
 | Checkbox, radio, công tắc, select, lựa chọn dạng card | `references/components/choice-controls.md` |
 | Dòng trong danh sách | `references/components/list-row.md` |
 | Danh sách rỗng, đang tải | `references/components/empty-state.md` |
-| Chip lọc, nút chỉ có icon, thanh tab (4 variant) | `references/components/small-controls.md` |
+| Chip lọc, nút chỉ có icon, thanh tab (4 variant), phân trang | `references/components/small-controls.md` |
 | Avatar, nhóm avatar chồng nhau | `references/components/avatar.md` |
 | Biểu đồ, số liệu, thanh tiến độ | `references/components/charts.md` |
 

@@ -65,8 +65,8 @@ badge lấy đúng bảng trong `M7`.
   riêng là hai chỗ để lệch nhau.
 - **Xoá luôn là hộp xác nhận**, không phải bấm phát xoá luôn. Xem
   `layouts/overlay.md`.
-- Hộp xác nhận cho hành động **không hoàn tác được** thì bắt gõ lại một cụm từ,
-  và lúc đó không cho bấm ra ngoài để đóng (`I20`).
+- Hộp xác nhận bắt **gõ lại một cụm từ** chỉ dựng khi đề yêu cầu (quyết định sản
+  phẩm, không phải mặc định). Khi có ô gõ đó thì không cho bấm ra ngoài để đóng (`I20`).
 
 ---
 
