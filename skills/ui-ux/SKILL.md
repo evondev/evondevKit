@@ -204,7 +204,7 @@ chặn được đúng lỗi bố cục bịa mà luật cũ nhắm tới.
 | Loại màn hình | Mở |
 | --- | --- |
 | Dashboard, danh sách, bảng, danh sách rỗng, cài đặt, đầu trang (đường dẫn + tên + nút) | `references/layouts/app.md` |
-| Đăng nhập, đăng ký, form nhiều trường, trạng thái lỗi | `references/layouts/form.md` |
+| Đăng nhập, đăng ký, form nhiều trường, form nhiều bước (thanh các bước), trạng thái lỗi | `references/layouts/form.md` |
 | Modal, panel trượt, dropdown, toast | `references/layouts/overlay.md` |
 | Bảng giá, trang chọn gói | `references/layouts/pricing.md` |
 | **Nhiều hơn một màn trong cùng một đề** | `references/system.md` — chốt hợp đồng nguyên tố trước, rồi dựng cả bộ theo bố cục mặc định |

@@ -192,6 +192,27 @@ Nút hành động nằm cuối, căn phải, primary bên phải cùng.
 Thanh bước ở trên, mỗi bước một màn, nút "Quay lại" và "Tiếp" ở đáy. Không dùng
 nhiều bước cho form ngắn, nó chỉ làm chậm.
 
+**Thanh các bước:**
+
+```
+(✓)━━━━━━━━━━━━(2)──────────────( 3 )
+Thông tin công ty  **Người liên hệ**  Xác nhận
+Tên, mã số thuế…   Họ tên, email…     Kiểm tra lại rồi gửi
+```
+
+| Trạng thái | Vòng `size-8 rounded-full` | Nhãn | Đường nối phía sau |
+| --- | --- | --- | --- |
+| Đã xong | nền `primary`, icon `check` `size-4` `primary-foreground` | `text-foreground` | `h-0.5 bg-primary` |
+| Đang làm | `border-2 border-foreground`, số `font-semibold` | `font-semibold text-foreground` | `h-0.5 bg-border` |
+| Chưa tới | nền `bg-background`, số `text-muted` | `text-muted` | `h-0.5 bg-border` |
+| Có lỗi | nền `bg-red-600`, chữ `!` `text-sm font-bold text-white` (ký tự, không icon) | `text-red-700`, mô tả thay bằng câu lỗi `text-red-600` | như trạng thái của nó |
+
+- **Vòng lỗi là vòng đặc đỏ với dấu `!`, không phải vòng viền đỏ bọc icon `circle-alert`.** Icon đó tự có một vòng tròn, đặt vào vòng viền thành hai vòng lồng nhau, nhìn rối và nhỏ xíu (đã dính 22/09/2026). Vòng đặc cùng khuôn với bước đã xong (đặc + ký hiệu), chỉ đổi màu và ký hiệu.
+- Dựng bằng `<ol>`, bước đang làm có `aria-current="step"`. Mô tả dưới nhãn `text-sm text-muted`, cho xuống dòng, không `truncate` ở màn rộng.
+- **Bước đã xong bấm được để quay lại** (vòng + nhãn là một nút, `cursor-pointer`, hover nhãn gạch chân). Bước chưa tới không bấm được. Có cho nhảy cóc tới bước chưa tới hay không là logic, người dùng quyết.
+- **Màn hẹp dưới `sm` thu gọn**, không cố nhét ba cột: một dòng "Bước 2 / 3 · Người liên hệ" `text-sm font-medium` + một thanh mảnh `h-1` chia đoạn theo số bước, đoạn đã qua `bg-primary`. Mô tả ẩn. Không wrap thành hai hàng (`R6`). Có bước lỗi thì đoạn của bước đó đỏ, và **thêm một dòng `text-xs text-red-600` dưới thanh nói bước nào sai** ("Bước 1 còn thiếu mã số thuế"), bấm được để quay lại. Chỉ có đoạn đỏ mà không có chữ thì màn hẹp không biết sai ở đâu.
+- Không quá 5 bước. Hơn nữa là form đang cần gộp bước lại.
+
 ---
 
 ## Trạng thái lỗi
