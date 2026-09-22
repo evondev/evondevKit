@@ -40,8 +40,8 @@ Tới bậc 2, bậc 3 thì chỉ **ráp** từ các file đó, không vẽ lạ
 - ✅ **Alert** — "Dựng cho tôi thanh thông báo trong trang: thông tin, cảnh báo sắp hết hạn gói, và lỗi."
 - ✅ **Progress bar** — "Dựng cho tôi thanh tiến độ: dung lượng đã dùng, tiến độ tải file, và tiến độ checklist."
 - ✅ **Stepper** — "Dựng cho tôi thanh các bước cho form ba bước, có bước đã xong, đang làm, chưa tới."
-- [ ] **OTP input** — "Dựng cho tôi ô nhập mã OTP sáu số, dán cả mã vào được."
-- [ ] **Description list** — "Dựng cho tôi khối thông tin dạng nhãn và giá trị cho trang chi tiết khách hàng."
+- ✅ **OTP input** — "Dựng cho tôi ô nhập mã OTP sáu số, dán cả mã vào được."
+- ✅ **Description list** — "Dựng cho tôi khối thông tin dạng nhãn và giá trị cho trang chi tiết khách hàng."
 - [ ] **Chart** — "Dựng cho tôi bộ biểu đồ: đường doanh thu theo tháng, cột so sánh theo nhóm, donut tỉ lệ, và sparkline nhỏ trong card số liệu."
 
 ## Bậc 1b — UI chưa có mẫu (thử nguyên tắc)
@@ -54,7 +54,7 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
 
 - Hỏng vì **nguyên tắc chưa đủ rõ hoặc chưa đủ chung** → sửa `principles.md`, đây là kết quả giá trị nhất của bậc này.
 - Hỏng vì chi tiết riêng của component đó → lúc đó mới viết file component.
-- Lúc giao, bản dựng phải có dòng *"X chưa có mẫu đã duyệt, mình mượn khuôn của Y"*. Thiếu dòng đó là skill chưa đọc `principles.md`.
+- Lúc giao, bản dựng phải có dòng _"X chưa có mẫu đã duyệt, mình mượn khuôn của Y"_. Thiếu dòng đó là skill chưa đọc `principles.md`.
 
 - [ ] **Stepper dọc** — "Dựng cho tôi thanh các bước dạng dọc bên trái form đăng ký doanh nghiệp năm bước."
 - [ ] **Dòng thời gian** — "Dựng cho tôi dòng thời gian hoạt động của một đơn hàng: tạo đơn, xác nhận, đóng gói, giao hàng, có một bước giao thất bại."

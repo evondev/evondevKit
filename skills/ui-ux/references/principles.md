@@ -16,7 +16,8 @@ dựng. Trả lời "không" là đang vi phạm, dù chưa có luật cụ th�
 
 Người dùng bấm, rê chuột, chuyển trang, dữ liệu về: mọi thứ **xung quanh** chỗ vừa
 đổi phải đứng yên. Hai cách giữ: chừa sẵn chỗ cho trạng thái lớn nhất, hoặc đổi
-bằng màu và opacity thay vì thêm bớt phần tử.
+bằng màu và opacity thay vì thêm bớt phần tử. Số tự đổi (đồng hồ đếm ngược, phần trăm,
+bộ đếm) luôn `tabular-nums`.
 
 Đã dính: tab thêm viền lúc chọn làm cả hàng xô (tab luôn có `border`); nav phân
 trang đổi số ô theo trang (luôn 7 ô); select "Mỗi trang" trôi theo chuỗi đếm;
@@ -87,7 +88,10 @@ cũng một lưới.
 
 Đã dính: hai đầu khoảng ngày khác sắc; vòng bước lỗi khác khuôn vòng bước xong;
 "Tải báo cáo" mượn nhầm khuôn "Xem tất cả" (nút theo loại hành động, không theo
-chỗ đứng); `₫` chỗ này `đ` chỗ kia; `12,4 / 20` cạnh `4/6`.
+chỗ đứng); `₫` chỗ này `đ` chỗ kia; `12,4 / 20` cạnh `4/6`; khối nhãn và
+giá trị viết trạng thái, nhãn phân loại, tiền thành chữ trơn thay vì dùng badge,
+pill, `đ` đã có sẵn. **Một giá trị có khuôn riêng thì ở đâu cũng dùng khuôn đó**,
+kể cả khi nó nằm trong một component khác.
 
 *Phép thử:* với từng phần tử mới, trong skill đã có thứ nào **cùng vai** chưa?
 Có thì class có giống không?
@@ -104,7 +108,8 @@ sang chỗ khác thì là nút hoặc link, không phải câu chữ trơn.
 Đã dính: toast lỗi vỡ ba dòng; lỗi tải chỉ một câu không lý do; "Chọn ngày hết
 hạn" làm câu lỗi (đọc như hướng dẫn); "ví dụ 31/12/2026" cho ô không gõ được;
 "Đổi trong Cài đặt" không bấm được; dòng dưới lịch vẫn "Chọn ngày bắt đầu" khi
-đã chọn xong.
+đã chọn xong. Màn OTP không có "Đổi email": gõ nhầm email là kẹt, không có
+đường lùi. **Mỗi bước phải có lối ra khi người dùng đi nhầm.**
 
 *Phép thử:* người dùng đọc xong câu này, họ biết phải làm gì tiếp không?
 
@@ -130,7 +135,9 @@ dùng để xác nhận (tên đối tượng sắp xoá) không `truncate`. Mô
 tiêu đề một dòng mới cắt, cắt thì có `title` (`T14`). Không có chữ bị xén nửa.
 
 Đã dính: lịch khoảng ngày lật lên che ô của nó; số trong bánh xe bị cắt nửa ở mép;
-nửa trên popover trống trơn vì chèn đệm.
+nửa trên popover trống trơn vì chèn đệm. Link "Đổi email" bị bẻ đôi ở cuối dòng. **Link ngắn nằm
+trong câu không bị bẻ giữa chừng**: `whitespace-nowrap` để nó xuống dòng nguyên
+cụm. Nhãn nút thì ngược lại, được xuống dòng (`T15`).
 
 *Phép thử:* ở 375px và với dữ liệu dài nhất, thứ người dùng cần đọc để bấm có
 còn đọc được hết không?

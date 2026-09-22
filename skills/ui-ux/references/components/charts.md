@@ -135,6 +135,7 @@ nhãn trái + số phải, thanh ở giữa, một dòng phụ `text-xs text-mut
 </div>
 ```
 
+- **Đừng format tiền bằng `Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })`**: nó tự sinh ra `₫`. Format số bằng `Intl.NumberFormat('vi-VN')` rồi tự gắn `đ` (22/09/2026: sửa luật rồi mà bản dựng vẫn ra `₫`, nghi do hàm format tiền kiểu này). Grep `currency: 'VND'` trước khi đổ lỗi cho chỗ khác.
 - **Đơn vị tiền dùng chữ `đ` thường, không dùng ký hiệu `₫`.** Chữ `₫` có sẵn một vạch dưới trong chính mặt chữ, CSS không bỏ được: ở cỡ lớn trông như link, thu nhỏ thì thành một vệt gạch lí nhí (đã dính 22/09/2026, thử cả hai). `đ` **cùng cỡ với số**, `font-semibold`, chỉ đổi sang `text-muted` và cách `ml-1`: màu mờ đã đủ tách đơn vị khỏi giá trị. Dự án đã quen dùng `₫` thì theo dự án.
 - **Số quá 9 chữ số trong ô hẹp**: gợi ý (người dùng quyết) rút gọn `1,28 tỷ đ`, số đầy đủ để trong `title`. Ô số liệu để đọc xu hướng, không để đối soát từng đồng.
 - **Dòng so sánh**: icon `trending-up` / `trending-down` `size-3.5` + phần trăm `font-medium` có màu + phần còn lại `text-muted`. Chỉ icon và con số mang màu, không tô cả câu.

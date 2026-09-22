@@ -16,8 +16,9 @@ cả trang: chữ mảnh hơn, sạch hơn, bớt cái vẻ nặng nề của fo
 **T2. Một họ chữ cho cả app.** Phân vai bằng weight và cỡ, không bằng font thứ
 hai: tiêu đề `700` kèm `tracking-tight`, body `400`, nhãn phụ `500`.
 
-`tracking-tight` **chỉ từ `text-2xl` trở lên.** Tiêu đề `lg`/`xl` (tên trang,
-tiêu đề khối) giữ khoảng chữ mặc định: tiếng Việt dấu chồng hai tầng, khép chữ
+`tracking-tight` **cho chữ có dấu chỉ từ `text-3xl` trở lên** (nâng từ `2xl` ngày
+22/09/2026: tiêu đề `2xl` "Xác thực email" vẫn đọc ra "thựcemail"). Con số không
+dấu, như số liệu `text-2xl` trong card số liệu, thì khép được. Tiêu đề `lg`/`xl`/`2xl` giữ khoảng chữ mặc định: tiếng Việt dấu chồng hai tầng, khép chữ
 lại ở cỡ này là dấu chạm nhau và khoảng trắng giữa từ hẹp đi, "Công ty" đọc
 thành "Côngty" (đã dính 22/09/2026).
 
@@ -137,6 +138,11 @@ thiếu nó thì các chữ số rộng khác nhau và cột nhảy lung tung kh
 ## Copy
 
 **T18. Không dấu gạch dài trong copy tiếng Việt.** Lộ ngay là AI viết.
+
+Luật này nói về **câu văn**. Ô không có giá trị trong bảng hay khối nhãn và giá
+trị thì hiện `—` màu `text-muted`: đó là ký hiệu "trống", không phải dấu câu, và
+dùng một ký hiệu cho mọi ô trống của app (đã dính 22/09/2026: né `T18` nên viết
+"Chưa có", "Chưa gắn nhãn", mỗi ô một câu).
 
 **T19. Không emoji trong tiêu đề, câu chào, hay làm icon.** Icon theo `F15`.
 

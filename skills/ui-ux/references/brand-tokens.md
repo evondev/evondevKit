@@ -16,7 +16,7 @@ Gần đen không bao giờ chửi nhau với brand nào, và trông cố ý ch�
 chưa chọn xong.
 
 Font: **Inter** cho toàn bộ, cả heading lẫn body. Một font, phân vai
-bằng weight: heading `700`, body `400`, nhãn phụ `500`. `tracking-tight` chỉ từ `text-2xl` trở lên (`T2`).
+bằng weight: heading `700`, body `400`, nhãn phụ `500`. `tracking-tight` cho chữ có dấu chỉ từ `text-3xl` trở lên (`T2`).
 
 Một font là lựa chọn cố ý, không phải cắt gọt cho nhanh. Ghép hai font mà chọn
 sai cặp thì tệ hơn hẳn dùng một font tử tế, và phần lớn cặp đều sai. Bỏ font đi

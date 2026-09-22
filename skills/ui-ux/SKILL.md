@@ -343,8 +343,10 @@ thì một trong hai chỗ là sai.
 | Cần dựng | Mở |
 | --- | --- |
 | Card, widget, panel | `references/components/card.md` |
+| Khối nhãn và giá trị của trang chi tiết | `references/components/description-list.md` |
 | Nút | `references/components/button.md` |
 | Ô nhập, form field | `references/components/input.md` |
+| Ô nhập mã OTP | `references/components/otp-input.md` |
 | Checkbox, radio, công tắc, select, ô chọn giờ, ô chọn ngày, khoảng ngày, ngày giờ, lựa chọn dạng card | `references/components/choice-controls.md` |
 | Dòng trong danh sách | `references/components/list-row.md` |
 | Danh sách rỗng, đang tải (chữ hoặc khung chờ), lỗi tải | `references/components/empty-state.md` |
