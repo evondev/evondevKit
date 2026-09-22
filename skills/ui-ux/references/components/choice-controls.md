@@ -191,6 +191,36 @@ mở cũng giữ viền + ring như đang focus, vì người dùng vẫn đang 
 
 ---
 
+## Ô chọn giờ
+
+Nút mở y như select (`h-11 md:h-10`, icon `clock` bên phải, giá trị `tabular-nums`),
+bấm ra một popover có các cột cuộn.
+
+```
+┌──────────────────────────────┐
+│   Giờ      Phút     Giây     │   <- nhãn cột text-xs, cột đang đứng: text-foreground
+│   06        28       58      │
+│   07        29       59      │
+│ ┌──────────────────────────┐ │
+│ │ 08        30       00    │ │   <- MỘT dải nền chạy ngang cả ba cột
+│ └──────────────────────────┘ │
+│   09        31       01      │
+│   10        32       02      │
+└──────────────────────────────┘
+```
+
+- **Giá trị đang chọn là MỘT dải ngang xuyên ba cột**, nền `bg-background` bo `rounded-xl`, số trong dải `font-semibold text-foreground`. Không tô từng ô bằng khối `primary` đặc: ba khối đen trong một popover nhỏ là thứ nặng nhất màn hình, và mắt đọc ra ba lựa chọn rời chứ không đọc ra một mốc "08:30:00" (đã dính 22/09/2026). Cùng tinh thần select: đang chọn là chữ đậm, không phải nền màu nhấn.
+- **Mọi cột đều cuộn vòng, kể cả cột giây**, không có đầu cuối. Phía trên `00` là `23` (cột giờ) hay `59` (cột phút, giây), phía dưới `59` là lại `00`, như mặt đồng hồ. Nhờ vậy số đang chọn của mọi cột luôn nằm giữa, cùng một hàng, và vùng cuộn lúc nào cũng đầy số. **Không chèn đệm trống trên dưới** để đẩy `00` xuống giữa: nửa trên popover trống trơn, trông như chưa tải xong (đã dính 22/09/2026, luật cũ của skill bảo thêm đệm).
+- **Dải chọn đứng yên ở giữa là cố ý** (kiểu bánh xe): số nằm trong dải là số được chọn. Nhưng **không chỉ cuộn mới chọn được**. Đủ ba đường: **bấm vào một số** thì số đó trượt vào dải và được chọn (`cursor-pointer`, hover chữ lên `text-foreground`); cuộn chuột hoặc kéo; phím mũi tên. Chỉ cho cuộn thì trên desktop rất khổ: bàn di chuột cuộn một phát trượt qua năm sáu số.
+- Gợi ý (người dùng quyết): cho **gõ thẳng vào ô** theo từng đoạn `HH`, `mm` như `<input type="time">`. Người quen bàn phím gõ `0830` nhanh hơn mọi bánh xe, popover chỉ là đường phụ.
+- **Chưa chọn thì ô vẫn hiện placeholder** ("Chọn giờ gửi"). Mở popover thì bánh xe dừng sẵn ở một mốc gợi ý (giờ hiện tại làm tròn, hay mốc người dùng truyền vào, họ quyết), nhưng giá trị chỉ ghi vào ô khi người dùng cuộn, bấm, hoặc Enter. Mở ra mà ô tự điền `00:00:00` là đang chọn hộ.
+- **Không số nào bị cắt nửa**: cao vùng cuộn đúng một số lẻ ô (5 ô `h-10` = `h-50`), `scroll-snap-type: y mandatory` + `snap-center` mỗi ô. Mép trên dưới làm mờ dần bằng `mask-image` (`linear-gradient` trong suốt ở hai đầu) để báo "còn nữa", thay cho chữ bị xén ngang.
+- **Cột đang đứng (bàn phím)**: nhãn cột lên `text-foreground`, các cột khác `text-muted`. Không vòng viền quanh ô (`I13`).
+- **Mặc định chỉ giờ và phút** (`HH:mm`). Cột giây chỉ thêm khi đề cần tới giây, người dùng quyết.
+- Màn cảm ứng: gợi ý (người dùng quyết) dùng `<input type="time">` gốc, điện thoại mở bánh xe chọn giờ sẵn, dễ bấm hơn cột tự dựng. Cùng lý do với select dưới 8 mục.
+- **Kiểu khác, chỉ dựng khi đề yêu cầu: cột danh sách** (kiểu Ant Design). Không có dải chung; mỗi cột tô nền `bg-background` cho đúng ô đang chọn, chữ `font-semibold`; ô đang chọn cuộn lên hàng đầu cột; cột không cuộn vòng, cuối cột có đệm để `59` lên được hàng đầu. Hợp desktop dày thông tin, nhưng mất cái lợi đọc giờ thành một hàng. Mặc định vẫn là bánh xe ở trên.
+- Lỗi và khoá theo đúng ô nhập: lỗi viền `red-500` + ring đỏ mờ + câu lỗi dưới ô nói mốc cần so ("phải sau giờ bắt đầu 08:30"); khoá theo bảng dưới.
+
 ## Đủ trạng thái chưa
 
 | Trạng thái | Checkbox / radio | Công tắc | Select |
@@ -205,3 +235,5 @@ mở cũng giữ viền + ring như đang focus, vì người dùng vẫn đang 
 
 Khoá thì mờ cả nhãn đi cùng ô (`peer-disabled:` hoặc `has-disabled:` trên
 `<label>`). Ô mờ mà nhãn vẫn đen thì người dùng bấm vào nhãn, không có gì xảy ra.
+
+**Khoá thì nói vì sao, ngay dưới ô**, bằng dòng gợi ý `text-xs text-muted`: "Liên hệ quản trị viên để đổi giờ chốt sổ". Ô mờ mà không một lời thì người dùng tưởng app lỗi, và không biết đi đâu để đổi.

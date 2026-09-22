@@ -343,7 +343,7 @@ thì một trong hai chỗ là sai.
 | Card, widget, panel | `references/components/card.md` |
 | Nút | `references/components/button.md` |
 | Ô nhập, form field | `references/components/input.md` |
-| Checkbox, radio, công tắc, select, lựa chọn dạng card | `references/components/choice-controls.md` |
+| Checkbox, radio, công tắc, select, ô chọn giờ, lựa chọn dạng card | `references/components/choice-controls.md` |
 | Dòng trong danh sách | `references/components/list-row.md` |
 | Danh sách rỗng, đang tải (chữ hoặc khung chờ), lỗi tải | `references/components/empty-state.md` |
 | Chip lọc, nút chỉ có icon, thanh tab (4 variant), phân trang | `references/components/small-controls.md` |
