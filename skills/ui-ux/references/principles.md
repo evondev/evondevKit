@@ -24,7 +24,8 @@ trang đổi số ô theo trang (luôn 7 ô); select "Mỗi trang" trôi theo ch
 spinner chèn vào nút làm nút phình (spinner thay chỗ icon); cột % lệch vì nút
 cuối hàng rộng hẹp khác nhau (cột hành động `w-20`); lịch 5 hay 6 hàng (luôn 6);
 khung chờ sai hình (`I19`); thanh cuộn chiếm chỗ lúc hiện (`I18`); đổi độ đậm
-chữ tab lúc chọn.
+chữ tab lúc chọn; câu lỗi OTP chèn vào đẩy nút Xác nhận tụt khỏi con trỏ (dòng
+lỗi giữ chỗ sẵn khi nó nằm giữa ô và nút bấm).
 
 *Phép thử:* bật lần lượt từng trạng thái, nhìn **phần tử bên cạnh**, không nhìn
 phần tử vừa đổi. Có cái nào xê dịch dù 1px không?
@@ -56,7 +57,8 @@ lần. Thứ bậc đi bằng cỡ chữ, độ đậm, vị trí trước; màu
 Đã dính: ba khối đen trong ô chọn giờ (một dải nhạt); icon thùng rác ở đầu hộp
 và ở nút (nút chỉ chữ); banner tô màu cả mô tả (chỉ icon và tiêu đề); câu lỗi
 ghi "rồi thử lại" cạnh nút Thử lại; "Xem tất cả" muốn tô đen ở mọi card (`I1`,
-`I3`); tên trang nhạt hơn tiêu đề khối bên dưới.
+`I3`); tên trang nhạt hơn tiêu đề khối bên dưới; màn OTP hết hạn có cả "Gửi mã
+mới" trong câu lỗi lẫn "Gửi lại mã" bên dưới (hai nút một việc: giữ một).
 
 *Phép thử:* đếm số chỗ tô đặc hoặc có màu trên màn. Mỗi chỗ trả lời được "nó nói
 điều gì mà chỗ khác chưa nói" không?
