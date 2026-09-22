@@ -13,7 +13,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] **Đã báo dòng "Audit: …" chưa?** Không có dòng đó là chưa audit, dù có grep hay không.
 - [ ] Đã grep `package.json` và `components/ui` chưa — họ dùng Tailwind? shadcn? Hay bộ khác?
 - [ ] **Thứ sắp dựng đã có trong codebase chưa?** Grep tên nó (`Avatar`, `Dropdown`, `Modal`…). Có rồi thì dùng, đừng dựng cái thứ hai.
-- [ ] **Đã chạy audit tầng 3 (phong cách) chưa?** Dự án có phong cách khác flat mà chưa hỏi là sai; người dùng chưa chọn mà tự đổi sang glass cũng sai (`P1`).
+- [ ] **Đã chạy audit tầng 3 (phong cách) chưa?** Dự án có phong cách khác flat thì theo dự án, không hỏi, báo một dòng lúc giao; dự án flat mà tự đổi sang glass là sai (`P1`).
 - [ ] Phong cách đã chọn không phải flat: đã mở đúng khối của nó trong `styles.md` và kiểm hết mục **Bẫy** chưa?
 - [ ] **Tương phản (`P3`)**: chữ thường ≥ 4.5 : 1, đo ở **chỗ tệ nhất** — đầu nhạt của gradient, vùng sáng nhất phía sau kính. Chữ phụ `/50` là thứ trượt trước.
 - [ ] Theo phong cách của dự án nhưng **không theo lỗi** của dự án: vẫn chỉ một nút chính (`I3`), vẫn một màu nhấn (`M3`).
@@ -21,7 +21,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Đã grep token sẵn có chưa (`--primary`, `--brand`, `font-family`)? Có thì dùng, đừng hỏi.
 - [ ] **Copy sắp viết bằng tiếng gì** — đã grep i18n và nhãn hiện có chưa (`T24`)?
 - [ ] Đề bài có từ nào mơ hồ không (bảng, thẻ, danh sách, khung, trang, lịch)?
-- [ ] Đề để hở mà đã hỏi phạm vi chưa, hay tự quyết rồi làm mỏng dính?
+- [ ] Đề để hở: đã dựng **đủ bộ khối mặc định** trong file layout chưa, hay làm mỏng dính (`S5`)? Không hỏi phạm vi.
 - [ ] Không có wireframe thì đã dựng **bố cục mặc định** trong file layout chưa, hay tự bịa? Đã báo một dòng "muốn kiểu khác thì nói" chưa?
 - [ ] Đề nhiều hơn một màn? Đã chốt **hợp đồng nguyên tố** (`system.md` `D1`) chưa?
 - [ ] Người dùng nói "chưa biết muốn UI thế nào" → đã dựng hướng A và báo còn B, C chưa?
@@ -29,6 +29,8 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 ---
 
 ## Cổng 2 — dựng xong, trước khi báo
+
+- [ ] **Mười phép thử `N1`–`N10`** (`principles.md`) đã chạy chưa? Thứ không có dòng riêng trong checklist này thì bám chúng.
 
 ### Phạm vi
 
@@ -54,7 +56,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Dòng tiêu đề và nút "Xem tất cả" có nằm **trong** khung không?
 - [ ] Phần tử nổi bật có mang quá một dấu hiệu không (badge + viền + to hơn)?
 - [ ] Bảng có bị bọc vào card không?
-- [ ] **Bảng**: rê chuột lên một dòng, nền hover có trùng màu nền trang không? Phải `--surface-hover` (`I10`). Cột trạng thái là badge màu (`M7`)? Từ 3 hành động hoặc có xoá thì đã gom vào nút ba chấm chưa (`I11`)? Tab trạng thái là ô trắng viền mảnh, không chip đen?
+- [ ] **Bảng**: rê chuột lên một dòng, nền hover có trùng màu nền trang không? Phải `--surface-hover` (`I10`). Cột trạng thái là badge màu (`M7`)? Từ 3 hành động hoặc có xoá thì đã gom vào nút ba chấm chưa (`I11`)? Tab trạng thái là ô nền `--surface-hover` viền mảnh, không chip đen?
 - [ ] Bo góc có nằm trong bốn bậc không, và có bo nhầm link chữ không nền không?
 
 ### Nút và trạng thái
@@ -69,7 +71,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] **Nút xoá** đứng riêng: nền `rose-500/10` + chữ `rose-700` ngay lúc thường, không viền, không đỏ đặc (`I4`)? **Mục** đăng xuất / xoá trong menu: rê vào thì chữ, icon VÀ nền cùng đỏ lên chưa? Icon còn xám là thiếu `group`. Chữ đỏ là `rose-700` chưa, hay đang `rose-500` hồng tươi (3.2:1, trượt tương phản)? Radix thì đi bằng phím mũi tên cũng đỏ (`data-[highlighted]`)?
 - [ ] Đỏ đang dùng đúng sắc chưa (`M30`)? Lỗi là `red`, hành động nguy hiểm lúc rê vào là `rose`. Không có viền hay banner `rose`.
 - [ ] Đường chia trong dropdown, card: có chạm hai mép khối không, hay thụt theo padding (`F25`)?
-- [ ] **Bo lồng nhau (`M19`)**: bo khung ngoài = bo phần tử trong + padding khung? Dropdown mặc định `rounded-2xl` + `p-2` + mục `rounded-lg`. Trong bằng ngoài là góc phình.
+- [ ] **Bo lồng nhau (`M19`)**: bo khung ngoài = bo phần tử trong + padding khung? Dropdown mặc định `rounded-2xl` + `p-1` + mục `rounded-xl` (`layouts/overlay.md`). Trong bằng ngoài là góc phình.
 - [ ] **Sidebar**: nền trắng chứ không trùng nền trang; hover và mục đang chọn cùng nền mờ `--background`, không `--secondary`; hover vào thì icon và chữ cùng đậm lên; badge là pill trắng viền mảnh chữ xám hoặc số trơn, cả sidebar cùng một kiểu, không badge màu brand (`I15`); nhãn nhóm IN HOA, đường kẻ trong sidebar dùng `--border-strong` và chạy hết bề ngang (không bị padding cắt), nhiều nhóm thì thu gọn được; thanh cuộn tự ẩn (`I18`).
 - [ ] **Thu gọn sidebar**: thu về dải icon `w-16`, chỉ còn nhóm đầu không nhãn, các nhóm có nhãn ẩn hết; badge đè góc icon, cùng kiểu pill; bấm mở/thu thì icon, logo, avatar ĐỨNG YÊN (không `justify-center`, không đổi padding), chữ không gỡ khỏi DOM mà bị cắt dần và mờ đi; mỗi icon có tooltip; nút toggle không có vòng viền khi focus (`layouts/app.md`).
 - [ ] **Chân sidebar**: profile nằm trong một khung viền `--border-strong` (cùng màu các đường kẻ khác trong sidebar), cả khung là nút mở menu, có dấu ba chấm dọc ở mép phải; email nằm trong menu chứ không nằm trong khung (`layouts/app.md`).

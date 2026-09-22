@@ -180,10 +180,10 @@ isSelected && "text-foreground after:bg-foreground"
 isSelected && "bg-primary text-primary-foreground hover:bg-primary"
 !isSelected && "text-foreground/70 hover:bg-foreground/5 hover:text-foreground"
 
-// Badge "Mới" cạnh nhãn: nhỏ, chữ hoa, đảo màu theo tab.
+// Badge "Mới" cạnh nhãn: pill như mọi badge, đảo màu theo tab.
 function getNewBadgeClasses(isSelected: boolean) {
   return cn(
-    "rounded px-1.5 py-px text-[10px] font-semibold uppercase tracking-wide",
+    "rounded-full px-2 py-0.5 text-xs font-medium",
     isSelected && "bg-primary-foreground text-primary",
     !isSelected && "bg-emerald-500/10 text-emerald-700",
   );
@@ -193,6 +193,7 @@ function getNewBadgeClasses(isSelected: boolean) {
 - Màu tô là `--primary` và `--primary-foreground`, không viết cứng `bg-black text-white`: ở nền tối màu nhấn đảo thành gần trắng.
 - **Chỉ một chỗ tô đặc trên màn.** Trang đã có nút chính tô `--primary` ngay cạnh thì cân nhắc `boxed`, hai khối tô đặc tranh nhau (`M2`).
 - Badge "Mới" là thông tin trạng thái nên dùng màu xanh báo trạng thái (`M4`), trên tab đang chọn thì đảo sang nền `--primary-foreground`. Mỗi hàng tối đa hai badge, nhiều hơn là mất tác dụng.
+- Pill `rounded-full text-xs`, chữ thường "Mới", không in hoa, không `text-[10px]` (đổi 22/09/2026): chữ hoa 10px thì dấu tiếng Việt dính nhau, và `rounded` 4px là bậc bo thứ năm (`F1`).
 
 ### `segmented`: chuyển cách xem, dạng phím nổi
 

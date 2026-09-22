@@ -19,7 +19,7 @@ Skill này chỉ lo **màn hình trong app** — dashboard, danh sách, bảng, 
 | Token viền | 2 | một cho đường tóc, tối đa một bậc đậm hơn. Cộng `--border-focus`. Xem `M16` |
 | Tầng lồng khối | 2 | |
 | Độ dài dòng chữ | 75 ký tự | |
-| Dạng nút | 3 | viền+icon (mặc định), nền nhấn (hành động chính), chỉ-icon |
+| Dạng nút | 4 | `outline` viền+icon (mặc định), `primary` nền nhấn, `secondary` nền xám, `ghost`. Cộng nút chỉ-icon. Xem `I1`, `components/button.md` |
 | Bậc spacing | thang 4/8/12/16/20/24/32/40 | Không dùng số lẻ ngoài thang |
 
 ---
@@ -85,10 +85,10 @@ Tám tên, và tám tên đó là **hết**. Không inline pixel ngoài thang (`
 | Token | Dùng cho |
 | --- | --- |
 | `xs` | nhãn, dấu thời gian |
-| `sm` | chú thích, chữ phụ |
-| `base` | **mặc định của app** |
+| `sm` | **mặc định của app** (`T6`): chữ nội dung, dòng danh sách, mô tả |
+| `base` | tên thẻ, tiêu đề card |
 | `md` | nút, tiêu đề cấp 4 |
-| `lg` | tiêu đề khối, tên thẻ, **tiêu đề trang chi tiết** |
+| `lg` | tiêu đề khối (nhóm nhiều card), **tiêu đề trang chi tiết** |
 | `xl` | **tên của một trang**, ở mọi khổ màn |
 | `2xl` | chỉ cho hero của trang trình diễn |
 | `3xl` | hero |

@@ -83,10 +83,10 @@ const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
 ---
 
-## Icon trái trong ô — tuỳ chọn, phải hỏi
+## Icon trái trong ô — tuỳ chọn, mặc định không có
 
-**Không tự thêm.** Đây là câu hỏi ở mục 0 của `SKILL.md`, không phải mặc định.
-Người dùng đồng ý rồi thì:
+**Không tự thêm, cũng không hỏi trước.** Dựng ô trơn rồi báo một dòng lúc giao
+(`SKILL.md` câu 3). Người dùng muốn có icon thì:
 
 ```tsx
 <div className="relative">

@@ -88,7 +88,7 @@ vẫn `h-11 md:h-10`, xem `budgets.md`.
 
 ---
 
-## R8. Ở mobile thì hạ bậc, đừng bê nguyên nhịp desktop xuống
+## Bảng hạ bậc ở mobile, đừng bê nguyên nhịp desktop xuống
 
 | | Mobile (dưới `sm`) | Từ `sm` trở lên |
 | --- | --- | --- |

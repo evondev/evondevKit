@@ -318,6 +318,7 @@ thì một trong hai chỗ là sai.
 | Nhóm | File | Dùng cho |
 | --- | --- | --- |
 | **S** | `SKILL.md` mục 1 | Phạm vi: được làm gì, không được tự thêm gì |
+| **N** | `references/principles.md` | **Mười nguyên tắc đứng sau mọi luật khác**, mỗi cái một phép thử. Chỗ nào không có spec thì bám nó |
 | **M** | `references/rules-color.md` | Màu, viền, bóng, dark mode, token |
 | **T** | `references/rules-type.md` | Chữ, font, xuống dòng, cắt chữ, copy |
 | **F** | `references/rules-form.md` | Khối, lưới, bo góc, khoảng thở, icon, hiệu ứng |
@@ -332,6 +333,7 @@ thì một trong hai chỗ là sai.
 
 | Cần | Mở |
 | --- | --- |
+| Nguyên tắc chung, phép thử cho UI chưa có mẫu | `references/principles.md` |
 | Ngân sách, nhịp, thang cỡ chữ | `references/budgets.md` |
 | Bảng màu, font, cách đổi thương hiệu | `references/brand-tokens.md` + `references/tokens.css` |
 | Kiểm trước khi báo xong | `references/checklist.md` |
@@ -355,15 +357,16 @@ thì một trong hai chỗ là sai.
 trong bảng trên thì mở đúng file đó và chép công thức, kể cả khi nó chỉ là một
 nút nhỏ ở góc. Không tự nặn biến thể "cho hợp trang này": cùng một badge mà bảng
 một kiểu, drawer một kiểu là hai app ghép lại (`D1`, `D2`). Trang cần một phần
-tử chưa có file thì dựng theo luật chung, lúc giao nói một dòng *"X chưa có mẫu
-đã duyệt"*.
+tử chưa có file thì mượn khuôn thứ gần nhất và chạy mười phép thử trong
+`references/principles.md`, lúc giao nói một dòng *"X chưa có mẫu đã duyệt, mình
+mượn khuôn của Y"*.
 
 **Code mẫu đã duyệt** (chỉ mở sau khi chốt loại màn hình, luật `S11`):
 `references/layouts/app-kanban.html`
 
 ---
 
-## 3. Năm thứ không được quên
+## 3. Sáu thứ không được quên
 
 Rút gọn từ `references/checklist.md`. Chạy hết checklist đầy đủ trước khi báo xong.
 
@@ -372,6 +375,7 @@ Rút gọn từ `references/checklist.md`. Chạy hết checklist đầy đủ t
 - [ ] Đã dựng đúng **bố cục mặc định** trong file layout chưa, hay tự bịa. Lúc giao đã báo một dòng "muốn kiểu khác thì nói" chưa.
 - [ ] Có section nào tự thêm ngoài đề bài không.
 - [ ] **Kiểm ở 375px. Trang cuộn ngang là hỏng.** Cuộn hết sang phải, phần tử cuối phải còn lề.
+- [ ] Đã chạy **mười phép thử** trong `references/principles.md` chưa, nhất là với thứ chưa có mẫu.
 
 ---
 

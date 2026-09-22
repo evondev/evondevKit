@@ -24,7 +24,9 @@ cao 40px mà bo 8px thì góc trông cứng, lạc tông với nút và ô nhậ
 (chủ dự án chốt 21/09/2026). Dưới 40px thì 12px bắt đầu tròn quá so với chiều
 cao, nên hạ về 8px.
 
-Dùng `rounded-md`, `rounded` hay số tuỳ chế là đẻ bậc thứ năm. Chỉ bo thứ **có nền hoặc có
+Dùng `rounded-md`, `rounded` hay số tuỳ chế là đẻ bậc thứ năm. *Ngoại lệ có tên:
+ô checkbox, 20px bo `rounded-md`, 16px bo `rounded` (`components/choice-controls.md`):
+ô vuông nhỏ hơn 24px mà bo 8px thì thành gần tròn, lẫn với radio.* Chỉ bo thứ **có nền hoặc có
 viền**; link chữ giữa dòng thì không bo.
 
 Bo lồng nhau giảm dần theo độ sâu — xem `M19`.

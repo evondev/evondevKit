@@ -46,7 +46,8 @@ Bảng màu của MỘT màn hình, không thêm:
 | Màu | Chỉ dùng cho |
 | --- | --- |
 | Xám trung tính | Mọi thứ còn lại: khung, chữ phụ, badge, icon, viền |
-| Màu nhấn | Trạng thái "đã xong", và nút hành động chính khi thật cần nổi. **Không** cho badge số đếm |
+| Màu nhấn | Nút hành động chính khi thật cần nổi, mục đang chọn, link. **Không** cho badge số đếm, **không** cho trạng thái |
+| Xanh lá | "Đang ổn", "đã xong": badge, thanh tiến độ xong (`M7`). Cố định, không lấy màu nhấn |
 | Hổ phách | "Cần chú ý": quá hạn, nộp trễ, bỏ lỡ |
 | Đỏ lỗi — `red` | Lỗi thật mà người dùng phải xử lý: bài bị từ chối, lỗi form |
 | Đỏ nguy hiểm — `rose` | Hành động không lấy lại được: xoá, đăng xuất, huỷ tài khoản. Nút đứng riêng thì nền mờ + chữ đỏ luôn hiện; mục menu thì chỉ đỏ khi rê vào (`I4`) |
@@ -176,7 +177,7 @@ Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu
 | Danh sách nhiều mục | MỘT khung, các dòng chia bằng `divide-y`. Dòng tiêu đề và dòng hành động cuối nằm TRONG khung |
 | Khối tóm tắt phụ | nền xám nhạt + viền, bo như thẻ |
 | Mục sidebar đang chọn | nền xám, **không viền**; mục chưa chọn không nền. Sidebar nền trắng: hover và đang chọn cùng nền mờ `--background` |
-| Tab ngang trên bảng / danh sách | tab đang chọn **nền trắng + viền `--border-strong`**, mục chưa chọn không nền không viền. Xem "Thanh tab" trong `components/small-controls.md` |
+| Tab ngang trên bảng / danh sách | tab đang chọn **nền `--surface-hover` + viền `--border-strong`** (không nền trắng: trên card trắng nó biến mất), mục chưa chọn `border-transparent`. Xem "Thanh tab" trong `components/small-controls.md` |
 | Ô nhập | viền — đây là chỗ viền đúng vai nhất, người ta phải nhìn ra ranh giới vùng gõ được |
 
 **M14. Hai token viền, chia theo vai trò. Không có cái thứ ba.**
