@@ -346,6 +346,7 @@ thì một trong hai chỗ là sai.
 | Checkbox, radio, công tắc, select, ô chọn giờ, ô chọn ngày, khoảng ngày, ngày giờ, lựa chọn dạng card | `references/components/choice-controls.md` |
 | Dòng trong danh sách | `references/components/list-row.md` |
 | Danh sách rỗng, đang tải (chữ hoặc khung chờ), lỗi tải | `references/components/empty-state.md` |
+| Thanh thông báo trong trang (thông tin, cần chú ý, lỗi) | `references/components/banner.md` |
 | Chip lọc, nút chỉ có icon, thanh tab (4 variant), phân trang | `references/components/small-controls.md` |
 | Avatar, nhóm avatar chồng nhau | `references/components/avatar.md` |
 | Biểu đồ, số liệu, thanh tiến độ | `references/components/charts.md` |

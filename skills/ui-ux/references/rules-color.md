@@ -402,7 +402,7 @@ Mỗi ô ghi class Tailwind, token CSS trong ngoặc. Hai cách ra cùng một m
 | Chữ, icon | câu lỗi dưới ô: `text-red-600` (`--error-text`) — `red-500` trên nền trắng chỉ 3.8:1, trượt 4.5:1 | `text-rose-700` (`--danger`) (nút luôn hiện, mục menu lúc rê vào) — `rose-500` trên nền mờ chỉ 3.2:1 |
 | Viền | `border-red-500` (`--error`) | — *(không có viền đỏ)* |
 | Nền mờ | `ring-red-500/10` (`--error-ring`) quanh ô nhập | nút: `bg-rose-500/10` (`--danger-bg`), rê vào `/15` (`--danger-bg-hover`) · mục menu: `hover:bg-rose-500/10` |
-| Banner | `bg-red-50` (`--error-bg`) · `border-red-200` (`--error-border`) · chữ `red-700` (`--error-strong`) | — *(không có banner)* |
+| Banner | `bg-red-50` (`--error-bg`) · `border-red-200` (`--error-border`) · tiêu đề `red-700` (`--error-strong`), mô tả `text-foreground/80` (`components/banner.md`) | — *(không có banner)* |
 
 Ô "—" là **cố ý trống**: hành động nguy hiểm không bao giờ có viền đỏ hay banner
 đỏ. Thấy mình định viết `border-rose-*` là đang biến lời nhắc thành cảnh báo.
