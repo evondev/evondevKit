@@ -213,6 +213,7 @@ bấm ra một popover có các cột cuộn.
 - **Mọi cột đều cuộn vòng, kể cả cột giây**, không có đầu cuối. Phía trên `00` là `23` (cột giờ) hay `59` (cột phút, giây), phía dưới `59` là lại `00`, như mặt đồng hồ. Nhờ vậy số đang chọn của mọi cột luôn nằm giữa, cùng một hàng, và vùng cuộn lúc nào cũng đầy số. **Không chèn đệm trống trên dưới** để đẩy `00` xuống giữa: nửa trên popover trống trơn, trông như chưa tải xong (đã dính 22/09/2026, luật cũ của skill bảo thêm đệm).
 - **Dải chọn đứng yên ở giữa là cố ý** (kiểu bánh xe): số nằm trong dải là số được chọn. Nhưng **không chỉ cuộn mới chọn được**. Đủ ba đường: **bấm vào một số** thì số đó trượt vào dải và được chọn (`cursor-pointer`, hover chữ lên `text-foreground`); cuộn chuột hoặc kéo; phím mũi tên. Chỉ cho cuộn thì trên desktop rất khổ: bàn di chuột cuộn một phát trượt qua năm sáu số.
 - Gợi ý (người dùng quyết): cho **gõ thẳng vào ô** theo từng đoạn `HH`, `mm` như `<input type="time">`. Người quen bàn phím gõ `0830` nhanh hơn mọi bánh xe, popover chỉ là đường phụ.
+- **Cuộn vòng phải cuộn liền tay được.** Cách dựng: lặp danh sách nhiều vòng (khoảng 10 vòng: 240 ô giờ, 600 ô phút, vẫn nhẹ), mở ra đứng ở vòng giữa, và **chỉ kéo về vòng giữa khi đã dừng cuộn** (`scrollend`, hoặc 150ms không có sự kiện `scroll`), đổi `scrollTop` đúng một bội số chiều dài vòng nên mắt không thấy nhảy. Đừng chỉ lặp 3 vòng rồi kéo về giữa lúc đang cuộn: đổi `scrollTop` giữa đà cuộn là trình duyệt cắt đà, cuộn tới một điểm thì khựng lại, phải thả tay cuộn lại (đã dính 22/09/2026). Đây là lỗi của cách dựng component, skill lo, không đẩy cho người dùng.
 - **Chưa chọn thì ô vẫn hiện placeholder** ("Chọn giờ gửi"). Mở popover thì bánh xe dừng sẵn ở một mốc gợi ý (giờ hiện tại làm tròn, hay mốc người dùng truyền vào, họ quyết), nhưng giá trị chỉ ghi vào ô khi người dùng cuộn, bấm, hoặc Enter. Mở ra mà ô tự điền `00:00:00` là đang chọn hộ.
 - **Không số nào bị cắt nửa**: cao vùng cuộn đúng một số lẻ ô (5 ô `h-10` = `h-50`), `scroll-snap-type: y mandatory` + `snap-center` mỗi ô. Mép trên dưới làm mờ dần bằng `mask-image` (`linear-gradient` trong suốt ở hai đầu) để báo "còn nữa", thay cho chữ bị xén ngang.
 - **Cột đang đứng (bàn phím)**: nhãn cột lên `text-foreground`, các cột khác `text-muted`. Không vòng viền quanh ô (`I13`).
@@ -247,11 +248,73 @@ Bấm năm    ──►   lưới 12 năm (2020–2031), ‹ › nhảy 12 năm
 - **Đổi tháng, năm không bắt người dùng bấm mũi tên từng tháng.** Tiêu đề "Tháng 9, 2026" là một nút (`chevron-down` nhỏ bên cạnh): bấm vào ra **lưới 12 tháng**, bấm năm ra **lưới 12 năm**. Chọn xong thì lùi về lưới ngày của tháng đó. Muốn tới tháng 3 năm sau là hai cú bấm, không phải sáu cú mũi tên (đã dính 22/09/2026: chỉ có ‹ ›, đi xa là mỏi tay).
 - Lưới tháng và năm **cùng khung, cùng cỡ** với lưới ngày: popover không co giãn khi chuyển tầng. Ô `h-10 rounded-xl`, tháng/năm đang chọn và hiện tại theo cùng quy ước với ô ngày bên dưới.
 - **Ngày đang chọn**: nền `primary`, chữ `primary-foreground`. Ngoại lệ có tên của "đang chọn không tô màu nhấn" ở select: ô ngày chỉ là một con số, chữ đậm thôi không đủ tách khỏi 41 số bên cạnh, và cả lịch chỉ có đúng một ô đặc. **Hôm nay**: `font-semibold` + chấm `size-1` dưới số, không nền. Hover: `bg-background`. Hôm nay cũng là ngày đang chọn thì giữ cả hai: ô nền `primary`, chấm đổi sang màu `primary-foreground` để vẫn thấy.
+- **Lưới ngày `gap-y-1`, không khe ngang**, cho mọi lịch (một ngày, khoảng ngày, ngày giờ) dùng chung một lưới. Khe dọc tách từng tuần; khe ngang thì để dải khoảng ngày chạy liền.
 - **Luôn 6 hàng**, kể cả tháng chỉ cần 5: chuyển tháng thì popover không nhảy cao thấp. Ngày của tháng trước/sau `text-muted`.
 - Tuần bắt đầu **thứ Hai** (`T2 … CN`), không tô màu riêng cho cuối tuần.
 - Gợi ý (người dùng quyết): cho **gõ thẳng vào ô** theo `dd/mm/yyyy`. Ngày xa (ngày sinh, hạn hợp đồng năm sau) gõ `15/03/1990` nhanh hơn mọi lưới. Khi cho gõ thì câu lỗi mới được kèm ví dụ định dạng; không cho gõ thì đừng ghi "ví dụ 31/12/2026", người dùng không có chỗ nào để gõ.
 - Câu lỗi nói **chuyện gì sai**, không lặp lời placeholder: "Chưa chọn ngày hết hạn", "Ngày hết hạn phải sau hôm nay". Không phải "Chọn ngày hết hạn".
 - Kiểu khác, chỉ dựng khi đề yêu cầu: **hai select tháng và năm** thay cho tiêu đề (hợp ô ngày sinh, năm lùi vài chục năm). Mặc định vẫn là tiêu đề bấm được ở trên.
+
+**Ngày bị khoá** (quá khứ, ngày nghỉ, ngoài hạn mức): **ngày nào bị khoá là
+logic, người dùng quyết** (truyền vào qua prop kiểu `disabledDays`, `minDate`).
+Skill chỉ lo nó trông ra sao: `text-muted opacity-50`, `cursor-not-allowed`,
+không hover, không vào dải khoảng. Khác ngày của tháng bên cạnh (chỉ
+`text-muted`, vẫn bấm được) đúng một nấc mờ. Khoảng có sẵn nào đè lên ngày bị
+khoá thì mục đó cũng khoá theo.
+
+### Khoảng ngày
+
+**Kế thừa hết luật của ô chọn ngày ở trên** (tiêu đề bấm ra lưới tháng/năm, luôn
+6 hàng, hôm nay chữ đậm + chấm, tuần từ thứ Hai, câu lỗi). Phần dưới chỉ là
+cái thêm vào.
+
+```
+┌──────────────┬──────────────────────────────┬──────────────────────────────┐
+│ [7 ngày qua] │ [Tháng 9, 2026 ▾]         ‹  │                    ›         │
+│  30 ngày qua │ …                            │ Tháng 10, 2026               │
+│  Tháng này   │ 14 15 (16)▓17▓18▓19▓20▓      │ …                            │
+│              │ ▓21▓(22) 23 …                │                              │
+│              │ 7 ngày · 16/09 – 22/09/2026  │                              │
+└──────────────┴──────────────────────────────┴──────────────────────────────┘
+```
+
+- **Hai tháng cạnh nhau từ `md`**, một tháng ở màn hẹp. **Hai tháng thì bỏ ngày của tháng khác** (ô trống), không thì 30, 31 hiện hai lần ở hai lưới. Popover cao theo tháng nhiều hàng hơn. Mở ra thì **tháng chứa ngày cuối nằm bên phải**, để khoảng vừa chọn luôn thấy trọn. Khoảng vắt qua cuối tháng là ca thường gặp nhất, một tháng thì phải bấm ‹ › giữa chừng lúc đang chọn. ‹ ở mép trái tháng đầu, › ở mép phải tháng sau; tiêu đề tháng đầu bấm được như ô một ngày.
+- **Ngày đầu và ngày cuối**: nền `primary` y như ngày đang chọn, hai ô **cùng đúng một class** `bg-primary text-primary-foreground`, không `bg-primary/90` hay màu hover cho một đầu. Hai đầu lệch sắc là mắt đọc ra hai loại ngày khác nhau. Rê chuột lên một đầu thì nó sang `primary-hover`, nhạt hơn một chút: đúng, nhưng lúc chụp ảnh duyệt thì bỏ chuột ra ngoài popover kẻo tưởng hai đầu khác màu. Hôm nay rơi vào đó thì chấm đổi màu `primary-foreground`.
+- **Dải giữa**: nền `bg-background`, chạy liền giữa hai đầu. Dải **lót sau nửa ô** của ngày đầu (nửa phải) và ngày cuối (nửa trái), để góc bo của ô đặc nằm trên dải, không lộ khe hở ở bốn góc. Dải chạm hết hàng tuần thì **bo đầu hàng** (`rounded-l-xl` ở thứ Hai, `rounded-r-xl` ở Chủ nhật), không cắt vuông.
+- **Dải liền theo chiều ngang, có khe theo chiều dọc.** Trong một tuần các ô không cách nhau, dải đọc ra là một khoảng liền; chèn khe ngang thì dải vỡ thành từng viên rời. Nhưng giữa các hàng tuần thêm `gap-y-1`: không có khe thì dải của tuần này dính sát dải tuần sau, thành một khối bậc thang, không còn thấy từng tuần.
+- **Giữa hai lần bấm**: dải nhạt chạy theo con trỏ từ ngày đầu tới ngày đang rê, để thấy trước khoảng sẽ chọn.
+- **Dòng dưới lịch nói bước đang làm**, đổi theo trạng thái: chưa bấm gì "Chọn ngày bắt đầu", đã bấm một ngày "Chọn ngày kết thúc", đủ hai đầu thì tóm tắt khoảng "7 ngày · 16/09 – 22/09/2026". Chọn xong mà vẫn ghi "Chọn ngày bắt đầu" là nói sai trạng thái (đã dính 22/09/2026).
+- **Khoảng có sẵn bên trái**: cột `w-40`, mỗi mục `h-10 rounded-xl`, đang trùng khoảng nào thì mục đó nền `bg-background` + `font-medium`; mục chưa chọn chữ `text-foreground/70`, không mờ tới `text-muted` (trông như bị khoá, `I8`). Danh sách khoảng nào là do người dùng quyết. Màn hẹp thì cột này lên thành một hàng chip cuộn ngang trên lịch.
+- Ô hiển thị `16/09/2026 – 22/09/2026`, gạch nối là `–` có dấu cách hai bên.
+- Popover hai tháng rộng hơn ô: tràn mép phải màn thì **dịch ngang** vào trong (dịch ngang không che ô, được phép), không bóp lưới.
+
+**Popover không bao giờ che chính ô mở ra nó** (áp cho mọi popover: select,
+ô chọn giờ, ô chọn ngày). Dưới không đủ chỗ thì lật lên trên ô, vẫn chừa ô
+nhìn thấy được; lên trên cũng không đủ thì để trang cuộn, đừng dịch popover đè
+lên ô (đã dính 22/09/2026: lịch khoảng ngày cao, lật lên che mất ô của chính
+nó). Radix: `side="bottom"` + `avoidCollisions`, không bật `sticky="always"`.
+
+### Ngày và giờ chung một ô
+
+**Kế thừa lịch của ô chọn ngày và bánh xe của ô chọn giờ.** Phần thêm:
+
+```
+┌───────────────────────────────┬──────────────┐
+│ [Tháng 9, 2026 ▾]       ‹  ›  │  Giờ   Phút  │
+│ lưới ngày                     │   22    04   │
+│                               │ ▓ 23 ▓▓ 05 ▓ │
+│                               │   00    06   │
+├───────────────────────────────┴──────────────┤
+│ 23/09/2026 23:05                     [Xong]  │
+└──────────────────────────────────────────────┘
+```
+
+- **Lịch bên trái, bánh xe bên phải** từ `sm`, ngăn bằng `border-l`. Màn hẹp thì bánh xe xuống dưới lịch.
+- **Bánh xe cao bằng vùng lịch**, dải chọn ở giữa chiều cao đó. Bánh xe ngắn hơn lịch thì dưới nó trống một khoảng, cột bên phải trông như chưa dựng xong.
+- **Có nút Xong, nên giá trị chỉ ghi vào ô khi bấm Xong** (hoặc Enter). Trong lúc chọn, ô giữ nguyên giá trị cũ hoặc placeholder; mốc đang chọn hiện ở **dòng tóm tắt** bên trái footer (`text-sm text-muted tabular-nums`). Esc hay bấm ra ngoài là bỏ, ô không đổi. Đừng vừa có Xong vừa ghi vào ô ngay từng lần đổi: hai mô hình lẫn nhau, người dùng không biết Esc có hoàn lại không.
+- **Xong** là nút `primary` duy nhất của popover, căn phải footer. Footer `border-t`, `px-4 py-3`.
+- Icon trong ô là `calendar-clock` (lucide), không phải `calendar`: nhìn ô là biết có cả giờ.
+- Ô hiển thị `23/09/2026 23:05`, ngày và giờ cách một dấu cách, `tabular-nums`. Có giây thì ô và khung rộng thêm cho cột giây.
 
 ## Đủ trạng thái chưa
 
