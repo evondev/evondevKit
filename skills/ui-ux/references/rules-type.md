@@ -16,6 +16,11 @@ cả trang: chữ mảnh hơn, sạch hơn, bớt cái vẻ nặng nề của fo
 **T2. Một họ chữ cho cả app.** Phân vai bằng weight và cỡ, không bằng font thứ
 hai: tiêu đề `700` kèm `tracking-tight`, body `400`, nhãn phụ `500`.
 
+`tracking-tight` **chỉ từ `text-2xl` trở lên.** Tiêu đề `lg`/`xl` (tên trang,
+tiêu đề khối) giữ khoảng chữ mặc định: tiếng Việt dấu chồng hai tầng, khép chữ
+lại ở cỡ này là dấu chạm nhau và khoảng trắng giữa từ hẹp đi, "Công ty" đọc
+thành "Côngty" (đã dính 22/09/2026).
+
 Font thứ hai chỉ được dùng cho **tiêu đề của trang trình diễn** (trang giới
 thiệu, bảng giá, trang pháp lý) và phải nói được nó khác font body ở chỗ nào.
 Trong trang làm việc của app thì không.
