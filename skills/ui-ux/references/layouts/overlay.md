@@ -8,20 +8,47 @@ dưới đây, báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`.
 ## Hộp xác nhận
 
 ```
-        ┌───────────────────────┐
-        │ ⬤  icon tròn          │
-        │ Xoá đơn hàng?         │
-        │ Đơn ABC sẽ bị xoá     │
-        │ vĩnh viễn.            │
-        │                       │
-        │        [Huỷ] [XOÁ]    │
-        └───────────────────────┘
+┌──────────────────────────────────┐
+│ (🗑)  Xoá dự án?                 │   <- icon cùng hàng tiêu đề
+│       **Website bán hàng 2026**  │   <- tên đối tượng nổi lên
+│       cùng 48 công việc sẽ bị    │
+│       xoá vĩnh viễn.             │
+│                                  │
+│               [Huỷ] [Xoá dự án]  │
+└──────────────────────────────────┘
 ```
 
-- Rộng `max-w-sm`, căn giữa màn, nền phủ đen mờ phía sau.
+```html
+<div role="alertdialog" aria-labelledby="confirm-title" aria-describedby="confirm-desc" class="w-full max-w-md rounded-2xl bg-surface p-6 shadow-xl">
+  <div class="flex gap-4">
+    <!-- -mt-1.5: tâm icon 40px thẳng tâm dòng tiêu đề text-lg (28px) -->
+    <div class="-mt-1.5 flex size-10 shrink-0 items-center justify-center rounded-full bg-rose-500/10">
+      <i data-lucide="trash-2" class="size-5 text-rose-700"></i>
+    </div>
+    <div class="min-w-0">
+      <h2 id="confirm-title" class="text-lg font-semibold">Xoá dự án?</h2>
+      <p id="confirm-desc" class="mt-1 text-sm text-muted">
+        <span class="font-medium text-foreground">Website bán hàng 2026</span>
+        cùng 48 công việc bên trong sẽ bị xoá vĩnh viễn, không khôi phục được.
+      </p>
+    </div>
+  </div>
+  <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+    <!-- Huỷ: nút phụ nền --secondary. Xoá: nền rose mờ theo I4. Cả hai chỉ có chữ. -->
+  </div>
+</div>
+```
+
+- Rộng `max-w-md`, căn giữa màn, nền phủ đen mờ phía sau.
 - Tiêu đề là **câu hỏi**, thân là hậu quả cụ thể có tên đối tượng.
-- Nút phá huỷ nằm bên phải cùng và là nút duy nhất mang màu cảnh báo.
+- **Tên đối tượng `font-medium text-foreground`**, phần còn lại của câu `text-muted`. Đó là thứ người dùng cần liếc thấy để biết đang xoá đúng cái. Để cả câu cùng màu xám thì tên chìm vào câu (đã dính 22/09/2026). Tên dài thì cho xuống dòng, **không `truncate`**: xác nhận mà không đọc được hết tên thì không xác nhận được gì.
+- **Icon tròn `size-10` nằm cùng hàng với tiêu đề**, bên trái, `-mt-1.5` để tâm icon thẳng tâm dòng tiêu đề. Đặt icon thành một hàng riêng phía trên thì hộp cao thêm ~60px mà không thêm thông tin.
+- **Tiêu đề `text-lg font-semibold`, luôn đậm hơn tên đối tượng** (`font-medium`). Tiêu đề thiếu `font-semibold` thì tên dài hai dòng lấn át câu hỏi, mắt đọc tên trước (đã dính 22/09/2026).
+- **Nút trong hộp xác nhận chỉ có chữ, không icon.** Đây là ngoại lệ có tên của `I1`: icon thùng rác đã đứng ở đầu hộp, gắn thêm vào nút là hai tín hiệu cho một ý (`M6`). Chữ trên nút lặp lại động từ và đối tượng: "Xoá dự án", không chỉ "Xoá" hay "Đồng ý".
+- Nút phá huỷ nằm bên phải cùng và là nút duy nhất mang màu cảnh báo. Huỷ là nút phụ nền `--secondary`, và là nơi tiêu điểm rơi vào khi mở, để Enter không xoá nhầm.
+- Màn hẹp dưới `sm`: hai nút xếp dọc, rộng hết, nút xoá ở trên (`flex-col-reverse`).
 - Không dùng modal cho thứ chỉ để thông báo. Cái đó là toast.
+- Duyệt thì dựng hộp ở trạng thái mở sẵn, không cần danh sách bấm được hay bộ đếm "đã xoá mấy dự án".
 
 ## Modal có nội dung
 

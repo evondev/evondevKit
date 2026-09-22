@@ -285,7 +285,16 @@ isCurrent && "border-border-strong bg-surface-hover text-foreground"   // + aria
 - **Không bao giờ wrap, không nhảy chỗ.** Nav luôn ở cụm phải, cùng hàng với số đếm, bất kể có bao nhiêu trang. Chật thì **bớt số trang trước**: bỏ `2 3 4 5`, chỉ còn `‹ 1 … 12 … 129 ›`. Màn hẹp dưới `sm` thì chỉ còn `‹ 12 / 129 ›`. Không đẩy nav xuống dòng hai (đã dính 22/09/2026: ví dụ nhiều trang thì nav rớt xuống căn trái, ví dụ ít trang lại nằm phải).
 - **Trang đang chọn giống tab `boxed`**: nền `--surface-hover` + viền `--border-strong`. **Không dùng nền trắng + viền**: đứng cạnh select `10 ▾` thì nó trông y như ô input, người dùng tưởng là ô gõ số trang để nhảy.
 - **Select "Mỗi trang" nằm trong cụm phải, sát nav**, không đứng ngay sau số đếm. Số đếm dài ra theo trang ("1 tới 10" rồi "1.271 tới 1.280"), đặt select sau nó là select xê dịch mỗi lần chuyển trang.
-- **Cửa sổ trang luôn đủ 7 ô** (tính cả `…`) khi tổng số trang lớn hơn 7: giữ trang đầu, trang cuối, trang đang xem và một trang mỗi bên, **ở gần hai đầu thì lấp thêm số cho đủ 7**: trang 1 là `1 2 3 4 5 … 129`, trang 12 là `1 … 11 12 13 … 129`, trang 129 là `1 … 125 126 127 128 129`. Số ô cố định thì nav rộng cố định, chuyển trang không kéo select xê dịch. Chỉ bớt dưới 7 ô khi khung chật. `…` là chữ `text-muted`, không bấm được.
+- **Cửa sổ trang luôn đủ 7 ô** (tính cả `…`) khi tổng số trang lớn hơn 7. Ở gần hai đầu thì lấp thêm số cho đủ 7:
+
+  | Đang xem | Hiện |
+  | --- | --- |
+  | Trang 1 | `1 2 3 4 5 … 129` |
+  | Trang 12 | `1 … 11 12 13 … 129` |
+  | Trang 129 | `1 … 125 126 127 128 129` |
+
+  Số ô cố định thì nav rộng cố định, chuyển trang không kéo select xê dịch. `…` là chữ `text-muted`, không bấm được.
+- **Số ô chọn theo bề rộng khung, một lần cho cả bảng**, không chọn riêng từng trang. Desktop đủ chỗ là 7. Chỉ khi đo thấy tràn mới hạ **cả bộ** xuống 5 (`1 2 3 … 129`, `1 … 12 … 129`, `1 … 127 128 129`), rồi mới tới dạng `‹ 12 / 129 ›`. Khung còn trống mà hiện 5 ô là sai (đã dính 22/09/2026).
 - **Mũi tên ở trang đầu/cuối thì `disabled`**, giữ chỗ, không ẩn, để nav không co giãn.
 - **Chỉ vừa một trang: ẩn nav.** Chỉ còn số đếm ("7 thành viên"). Select "Mỗi trang" chỉ giữ khi tổng số lớn hơn lựa chọn nhỏ nhất, không thì ẩn luôn. Hai mũi tên khoá cộng một ô `1` là nhiễu.
 - **Không có dòng nào: ẩn cả footer.** Empty state của bảng đã nói hết, đừng để "0 khách hàng" cùng bốn control chết bên dưới.
