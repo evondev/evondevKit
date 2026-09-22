@@ -221,6 +221,38 @@ bấm ra một popover có các cột cuộn.
 - **Kiểu khác, chỉ dựng khi đề yêu cầu: cột danh sách** (kiểu Ant Design). Không có dải chung; mỗi cột tô nền `bg-background` cho đúng ô đang chọn, chữ `font-semibold`; ô đang chọn cuộn lên hàng đầu cột; cột không cuộn vòng, cuối cột có đệm để `59` lên được hàng đầu. Hợp desktop dày thông tin, nhưng mất cái lợi đọc giờ thành một hàng. Mặc định vẫn là bánh xe ở trên.
 - Lỗi và khoá theo đúng ô nhập: lỗi viền `red-500` + ring đỏ mờ + câu lỗi dưới ô nói mốc cần so ("phải sau giờ bắt đầu 08:30"); khoá theo bảng dưới.
 
+## Ô chọn ngày
+
+Nút mở y như ô nhập (`h-11 md:h-10`, icon `calendar` bên phải, placeholder
+"Chọn ngày"), bấm ra popover lịch tháng.
+
+```
+┌────────────────────────────┐
+│ [Tháng 9, 2026 ▾]    ‹  ›  │   <- tiêu đề là NÚT: bấm để đổi tháng/năm
+│ T2 T3 T4 T5 T6 T7 CN       │
+│ 31  1  2  3  4  5  6       │   <- ngày tháng khác: text-muted
+│  …                         │
+│ 21 [22] 23 …               │   <- hôm nay: font-semibold + chấm dưới
+└────────────────────────────┘
+
+Bấm tiêu đề ──►  ┌────────────────────────────┐
+                 │ [2026 ▾]             ‹  ›  │   <- ‹ › đổi năm
+                 │ Th1  Th2  Th3  Th4         │
+                 │ Th5  Th6  Th7  Th8         │   <- lưới 12 tháng
+                 │ Th9  Th10 Th11 Th12        │
+                 └────────────────────────────┘
+Bấm năm    ──►   lưới 12 năm (2020–2031), ‹ › nhảy 12 năm
+```
+
+- **Đổi tháng, năm không bắt người dùng bấm mũi tên từng tháng.** Tiêu đề "Tháng 9, 2026" là một nút (`chevron-down` nhỏ bên cạnh): bấm vào ra **lưới 12 tháng**, bấm năm ra **lưới 12 năm**. Chọn xong thì lùi về lưới ngày của tháng đó. Muốn tới tháng 3 năm sau là hai cú bấm, không phải sáu cú mũi tên (đã dính 22/09/2026: chỉ có ‹ ›, đi xa là mỏi tay).
+- Lưới tháng và năm **cùng khung, cùng cỡ** với lưới ngày: popover không co giãn khi chuyển tầng. Ô `h-10 rounded-xl`, tháng/năm đang chọn và hiện tại theo cùng quy ước với ô ngày bên dưới.
+- **Ngày đang chọn**: nền `primary`, chữ `primary-foreground`. Ngoại lệ có tên của "đang chọn không tô màu nhấn" ở select: ô ngày chỉ là một con số, chữ đậm thôi không đủ tách khỏi 41 số bên cạnh, và cả lịch chỉ có đúng một ô đặc. **Hôm nay**: `font-semibold` + chấm `size-1` dưới số, không nền. Hover: `bg-background`. Hôm nay cũng là ngày đang chọn thì giữ cả hai: ô nền `primary`, chấm đổi sang màu `primary-foreground` để vẫn thấy.
+- **Luôn 6 hàng**, kể cả tháng chỉ cần 5: chuyển tháng thì popover không nhảy cao thấp. Ngày của tháng trước/sau `text-muted`.
+- Tuần bắt đầu **thứ Hai** (`T2 … CN`), không tô màu riêng cho cuối tuần.
+- Gợi ý (người dùng quyết): cho **gõ thẳng vào ô** theo `dd/mm/yyyy`. Ngày xa (ngày sinh, hạn hợp đồng năm sau) gõ `15/03/1990` nhanh hơn mọi lưới. Khi cho gõ thì câu lỗi mới được kèm ví dụ định dạng; không cho gõ thì đừng ghi "ví dụ 31/12/2026", người dùng không có chỗ nào để gõ.
+- Câu lỗi nói **chuyện gì sai**, không lặp lời placeholder: "Chưa chọn ngày hết hạn", "Ngày hết hạn phải sau hôm nay". Không phải "Chọn ngày hết hạn".
+- Kiểu khác, chỉ dựng khi đề yêu cầu: **hai select tháng và năm** thay cho tiêu đề (hợp ô ngày sinh, năm lùi vài chục năm). Mặc định vẫn là tiêu đề bấm được ở trên.
+
 ## Đủ trạng thái chưa
 
 | Trạng thái | Checkbox / radio | Công tắc | Select |
