@@ -111,8 +111,18 @@ Chọn token theo **nền hover có chạm hai mép khung hay không**:
 | **Thụt vào**, có bo góc, cách mép khung một khe: mục menu, link sidebar, dòng danh sách trong widget | `hover:bg-background` | Nền xám nằm gọn trong khung trắng, mắt đọc ra một viên được ấn xuống |
 | **Tràn hết bề ngang**, chạm hai mép khung trắng: dòng bảng, danh sách chia `divide-y` sát mép | `hover:bg-surface-hover` | Tô `--background` thì dòng đó cùng màu với nền trang bên ngoài khung, trông như khung bị khoét thủng một dải (đã dính 21/09/2026, bảng khách hàng) |
 
-Dòng **đang chọn** (tick checkbox) của bảng cũng dùng `--surface-hover`, giữ
-nguyên khi rê vào. Dấu hiệu chính của "đã chọn" là checkbox, nền chỉ phụ hoạ.
+Dòng **đang chọn** (tick checkbox) của bảng dùng **cùng nền mờ với hover**, `--surface-hover`.
+Dấu hiệu của "đã chọn" là **checkbox đã tick**, không phải nền. Rê vào dòng đã chọn thì
+giữ nguyên. Nút ⋯ trong dòng rê vào có nền trùng tông hover cũng được, không cần tách.
+
+Chủ dự án chốt 23/09/2026 sau khi thử hết các cách tách nền, và cả ba đều bỏ:
+- **`--secondary`**: rõ, nhưng tick cả trang thành mười dải xám đậm, trái gu mờ.
+- **`--background`**: đúng bằng màu nền trang bên ngoài khung, dòng đã chọn trông như
+  khung bị khoét một dải — y hệt lỗi hover 21/09/2026, chỉ là đổi sang dòng đã chọn.
+- **Vạch dọc đậm ở mép trái**: chọn tất cả thì mười vạch nối thành một cột đen (`N3`).
+
+Muốn hai trạng thái tách nhau thì tách bằng checkbox, không bằng thêm một bậc xám. Vạch
+trái để dành cho **một** mục đang mở trong cột điều hướng (sidebar, cây thư mục).
 
 **I11. Hành động trên dòng: ít thì hiện thẳng, nhiều thì gom vào nút ba chấm.**
 

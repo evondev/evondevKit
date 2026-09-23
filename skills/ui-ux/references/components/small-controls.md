@@ -6,7 +6,7 @@ Nguồn: `new-tab-todo/src/components/chip/chip.tsx`, `.../icon-button/icon-butt
 // Chip: bộ lọc, tag chọn được. Luôn kèm aria-pressed={isActive}
 "inline-flex max-w-48 cursor-pointer items-center rounded-full px-3 py-1 text-xs font-medium transition-colors"
 isActive && "bg-primary text-primary-foreground"
-!isActive && "bg-background text-muted hover:text-foreground"
+!isActive && "bg-foreground/5 text-foreground/70 hover:bg-foreground/10 hover:text-foreground"
 
 // IconButton: hành động phụ trong dòng hoặc header
 "inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg text-muted transition-colors"
@@ -34,7 +34,7 @@ chính.
 
 **Vì sao ổn**
 
-- Chip đang chọn thì tô nền brand đặc, không chọn thì gần như tàng hình trên nền xám. Không viền, không nền nhạt màu brand. Một bộ lọc mười chip mà chip nào cũng có viền thì đọc như hàng rào.
+- **Chip chưa chọn là viên mờ `bg-foreground/5`, chữ `foreground/70`**; rê vào `foreground/10`, chọn rồi tô `bg-primary`. Lớp phủ theo màu chữ nên **mờ như nhau trên cả nền trang xám lẫn card trắng**, không phải chọn token theo nền. Đã thử và bỏ, cùng ngày 23/09/2026: (1) `bg-background` sẵn — trên card trắng thành bảy viên xám rõ, hàng lọc chưa ai dùng nặng thứ nhì màn; trên nền trang thì trùng màu nền nên rê vào không thấy gì; (2) bỏ hẳn nền, chỉ chữ `text-muted` — hàng chip đọc ra như **một hàng tab thứ hai** nằm ngay dưới hàng tab, và `--muted` trên `#f4f4f6` chỉ 3,5:1. Chip phải còn dáng viên thì mới khác tab. Không viền: mười chip mà chip nào cũng có viền thì đọc như hàng rào.
 - Nền chip đang chọn là **`bg-primary text-primary-foreground`**, đúng token, không `bg-[#…]`, không `text-white`. Dùng token thì nền tối tự đảo (`--primary` thành gần trắng, chữ thành gần đen); gõ cứng thì sang nền tối thành chữ trắng trên nền trắng. Cũng đừng lấy nhầm `--primary-hover`: chip đang chọn trông nhạt hơn nút chính ngay cạnh.
 - **Nhãn dài thì cắt, không để chip phình.** Chip `max-w-48`, chữ bọc trong `<span class="truncate">`, và `title` mang đủ tên để rê vào vẫn đọc được. Một chip "Hội chợ Triển lãm Quốc tế 2026" rộng gấp bốn chip "VIP" là cả hàng lệch, mắt dồn hết vào cái dài nhất.
 - **Chip lọc là nút bật/tắt, phải có `aria-pressed={isActive}`.** Trạng thái chọn hiện chỉ bằng màu nền, trình đọc màn hình không thấy màu, nên thiếu `aria-pressed` thì chip nào cũng đọc ra "nút" như nhau. Chip chọn một (kiểu tab) thì dùng `role="radio"` + `aria-checked` trong `role="radiogroup"`, không dùng `aria-pressed`.
@@ -54,8 +54,8 @@ kế.
 ```html
 <div class="scrollbar-clean -mx-1 flex items-center gap-2 overflow-x-auto px-1 py-0.5">
   <button type="button" aria-pressed="true" class="shrink-0 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">Tất cả</button>
-  <button type="button" aria-pressed="false" class="shrink-0 rounded-full bg-background px-3 py-1 text-xs font-medium text-muted hover:bg-background-hover hover:text-foreground">Quá hạn</button>
-  <button type="button" aria-pressed="false" title="Hội chợ Triển lãm Quốc tế 2026" class="max-w-48 shrink-0 rounded-full bg-background px-3 py-1 text-xs font-medium text-muted hover:bg-background-hover hover:text-foreground">
+  <button type="button" aria-pressed="false" class="shrink-0 rounded-full bg-foreground/5 px-3 py-1 text-xs font-medium text-foreground/70 hover:bg-foreground/10 hover:text-foreground">Quá hạn</button>
+  <button type="button" aria-pressed="false" title="Hội chợ Triển lãm Quốc tế 2026" class="max-w-48 shrink-0 rounded-full bg-foreground/5 px-3 py-1 text-xs font-medium text-foreground/70 hover:bg-foreground/10 hover:text-foreground">
     <span class="block truncate">Hội chợ Triển lãm Quốc tế 2026</span>
   </button>
 </div>
@@ -88,6 +88,7 @@ Tab và chip trông na ná nhưng là hai thứ khác nhau:
 | `solid` | Tab đang chọn là **pill tô màu nhấn**, chữ đảo màu | Điều hướng mục con trong trang cài đặt: Chung / Thành viên / Quyền |
 | `segmented` | **Rãnh chìm** nhạt, tab đang chọn là **ô trắng nổi** như phím bấm | 2–4 lựa chọn ngắn đổi cách xem: Ngày / Tuần / Tháng, Danh sách / Lưới |
 
+- **Ngay dưới hàng tab còn một hàng chip lọc thì tab dùng `underline`, không `boxed`.** Chip là viên xám bo tròn; tab `boxed` đang chọn cũng là viên xám bo góc. Hai hàng viên xám chồng nhau thì tab đang chọn đọc ra như một cái chip nữa, không ai thấy đó là trạng thái đang xem (đã dính 23/09/2026, bảng khách hàng). Vạch dưới 2px là ngôn ngữ khác hẳn viên, hai hàng tách nhau ngay (`N5`).
 - **Một trang chỉ một variant cho mỗi vai.** Tab trạng thái trên bảng đã `boxed` thì mọi bảng trong app đều `boxed`.
 - **`solid` không dùng cho tab trạng thái trên bảng.** Pill tô đặc đứng đầu bảng thì kéo mắt mạnh hơn cả dữ liệu, và đọc ra như một nút bấm (đã dính 21/09/2026, bảng khách hàng). Nó hợp với menu cài đặt, nơi hàng tab CHÍNH LÀ điều hướng của trang.
 - `segmented` quá 4 lựa chọn, hoặc nhãn dài hơn hai chữ, thì đổi sang `boxed` hoặc `underline`.
@@ -146,13 +147,14 @@ Icon trước chữ **không bắt buộc**, xem mặc định ở trên. Có th
 ```ts
 // Khung cuộn: -mx-1 py-0.5 để nền hover của tab đầu/cuối không bị cắt. Hàng: gap-1 px-1.
 "h-9 rounded-lg border px-3"
-isSelected && "border-border-strong bg-surface-hover text-foreground"
+isSelected && "border-transparent bg-secondary text-foreground"
 !isSelected && "border-transparent text-foreground/70 hover:bg-foreground/5 hover:text-foreground"
 ```
 
 - **Mọi tab luôn có `border`**, tab chưa chọn là `border-transparent`. Không thì lúc bấm chuyển, tab đang chọn dày thêm 2px và cả hàng xô sang phải.
-- **Tab đang chọn: nền `--surface-hover` + viền `--border-strong`.** Trên card trắng thì nền nhạt tách ô ra; trên nền trang xám thì `--surface-hover` sáng hơn nền nên ô vẫn nổi thành ô sáng. Cùng một class, đúng cả hai chỗ.
-- **Không dùng `bg-surface` cho tab đang chọn.** Trên card trắng, nền trắng biến mất, chỉ còn viền `--border-strong` quá nhạt, nhìn như không có tab nào được chọn (đã dính 21/09/2026).
+- **Tab đang chọn: nền `--secondary`, chữ `--foreground`, viền trong suốt.** Đây là bậc xám duy nhất chìm đủ rõ trên **cả** card trắng lẫn nền trang `#f4f4f6`.
+- **Không dùng `bg-surface` (trắng) và cũng không dùng `bg-surface-hover`.** Hai bậc đó chỉ chênh nền trắng 1-3%, cộng viền `--border-strong` (1,1:1) thì liếc vào không thấy tab nào đang chọn (đã dính 21/09/2026 với `bg-surface`, và 23/09/2026 với `bg-surface-hover` — chủ dự án nhìn bảng khách hàng và nói "tab active khá mờ").
+- **Ô đang chọn phải chênh với nền NẰM DƯỚI nó**, không phải chênh với mấy tab anh em. Cùng một class mà đổi chỗ đặt (card trắng ↔ nền trang xám) là đổi luôn độ rõ, nên chọn bậc xám nào cũng phải thử ở cả hai nền (`N2`).
 - **Không đặt hàng `boxed` vào một khối xám riêng.** Nó nằm thẳng trên nền trang hoặc trên card. Bọc thêm khối xám là thành `segmented` hỏng: rãnh to, đậm, và ô trắng lọt thỏm.
 - **`h-9 rounded-lg`**, cao dưới 40px nên bo 8px (`F1`), không ngoại lệ. Đã thử 12px và bỏ (21/09/2026): tab 36px bo 12px là quá tròn so với chiều cao. Đứng cạnh ô tìm `h-10` là lệch đúng một bậc, chấp nhận được.
 - Bên phải cùng hàng: ô tìm, nút **Lọc** (mở popover cho các trường khác ngoài trạng thái), nút **Sắp xếp** nếu cần. Đều là nút viền `h-9` (`I1`).
@@ -161,13 +163,15 @@ isSelected && "border-border-strong bg-surface-hover text-foreground"
 
 ```ts
 // Hàng: đường kẻ chạy hết bề ngang, vạch của tab đang chọn đè lên nó.
-"flex min-w-full gap-2 border-b border-border-strong px-2"
+"flex min-w-full gap-2 border-b border-foreground/10 px-2"
 // Tab: vạch là ::after nên không đẩy chiều cao.
 "relative h-10 rounded-xl px-2 after:absolute after:inset-x-2 after:-bottom-px after:h-0.5 after:rounded-full"
 isSelected && "text-foreground after:bg-foreground"
 !isSelected && "text-foreground/70 after:bg-transparent hover:text-foreground"
 ```
 
+- **Hàng tab nằm chung hàng với ô tìm và nút (toolbar trên bảng) thì bỏ đường kẻ hết hàng, chỉ giữ vạch 2px dưới tab đang chọn.** Đường kẻ chạy nửa hàng rồi cụt ở mép ô tìm trông dở dang, và vì khung cuộn lùi `-mx-2` nên đầu trái của nó còn thò ra ngoài mép card bên dưới 8px (đã dính 23/09/2026). Đường kẻ hết hàng chỉ dùng khi hàng tab đứng riêng một hàng, như trang chi tiết.
+- **Đường kẻ hết hàng `border-foreground/10`, không `--border-strong`.** `--border-strong` (#f2f2f2) trên card trắng là 1,1:1, coi như không có: hàng tab và hàng chip bên dưới dính thành một khối control, không có ranh giới (đã dính 23/09/2026).
 - Vạch màu `--foreground`, không màu nhấn có sắc: nhấn đã có ở nút chính của trang (`M3`).
 - Khung cuộn lùi `-mx-2` để chữ tab đầu thẳng cột với nội dung bên dưới.
 - Tab đang chọn không tô nền, không đổi nền lúc hover. Vạch là tín hiệu duy nhất.

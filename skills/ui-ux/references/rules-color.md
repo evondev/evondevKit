@@ -91,6 +91,11 @@ Bốn tông, không thêm. Trạng thái nào vào tông nào theo **nghĩa**, k
 | Hổ phách | `bg-amber-50 text-amber-700` | `--warning-bg` / `--warning` | Cần chú ý | Quá hạn, Sắp hết hạn, Tạm dừng |
 | Đỏ | `bg-red-50 text-red-700` | `--error-bg` / `--error-strong` | Đã dừng, thất bại, bị từ chối | Ngừng giao dịch, Đã huỷ, Lỗi |
 
+**Mọi badge có thêm `ring-1 ring-inset ring-black/5`** (nền tối `ring-white/10`). Nền badge
+nhạt tới mức chỉ chênh vài phần trăm với nền dưới nó: `zinc-100` (#f4f4f5) đặt lên dòng
+bảng đã chọn hay nền trang (#f4f4f6) là mất hẳn khung, "Tiềm năng" chỉ còn chấm với chữ
+(đã dính 23/09/2026). Vòng trong 5% giữ khung ở mọi nền mà không nặng thêm.
+
 Nền tối: class Tailwind thì thêm `dark:` (nền `-500/15`, chữ `-400`), token thì
 khối `.dark` trong `tokens.css` đã đổi sẵn.
 

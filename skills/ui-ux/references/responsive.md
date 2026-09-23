@@ -78,6 +78,12 @@ vẫn `h-11 md:h-10`, xem `budgets.md`.
 
 Đây là ngoại lệ hợp lệ của R1, cùng loại với R6: cuộn trong khung chứ không phải cả trang.
 
+**Ở desktop, phải cuộn ngang là dấu hiệu thừa cột, không phải lỗi bề ngang.** Thử theo
+thứ tự: gộp cột (email xuống dưới tên trong cùng một ô), bỏ cột phụ, hoặc đẩy nó sang
+drawer chi tiết. Đếm cột trước khi dựng: bảng trong khung app còn ~970px ở 1280px khi
+sidebar mở, quá 6 cột là bắt đầu chật (đã dính 23/09/2026: bảng khách hàng 7 cột, rộng
+1140px trong khung 970px).
+
 **R10. Tab hoặc chip quá nhiều ở màn hẹp thì rút chữ, không rút được thì gom vào dropdown.** Thứ tự nên thử:
 
 1. **Rút chữ, nếu vẫn còn nghĩa.** "Đến hạn hôm nay" thành "Hôm nay". Mất nghĩa thì đừng rút.

@@ -389,9 +389,13 @@ Khi có dòng được chọn, hàng tab + tìm được THAY bằng:
 [Đã chọn 3 · Bỏ chọn]                                     [Xoá 3 dòng]
 ```
 
-- **Tab trạng thái** ở trên bảng theo "Thanh tab" trong `../components/small-controls.md`: tab đang chọn ô nền nhạt `--surface-hover` viền mảnh, không chip đen đặc. "Bộ lọc" trong đề không chỉ là hàng tab: các trường khác (công ty, người phụ trách, khoảng ngày) vào nút **Lọc** mở popover.
+- **Tab trạng thái** ở trên bảng theo "Thanh tab" trong `../components/small-controls.md` — mở file đó lấy variant và class, đừng chép lại ở đây. Bảng này thường có thêm hàng chip lọc ngay dưới hàng tab, và khi đó tab dùng `underline`. "Bộ lọc" trong đề không chỉ là hàng tab: các trường khác (công ty, người phụ trách, khoảng ngày) vào nút **Lọc** mở popover.
 - **Hover dòng `hover:bg-surface-hover`**, không `hover:bg-background` (`I10`). Dòng chạm hai mép khung trắng mà tô màu nền trang là trông như thủng.
 - **Cột trạng thái là badge màu** theo `M7`, không chấm xám + chữ đen.
+- **Nút gỡ lọc ghi "Xoá lọc", không ghi "Bỏ chọn".** Khi đang chọn dòng, thanh trên cùng đã có "Bỏ chọn" (bỏ tick dòng); cuối hàng chip mà cũng "Bỏ chọn" thì một màn có hai nút cùng chữ khác việc (`N6`, đã dính 23/09/2026).
+- **Cột chữ tự co giãn, đừng khoá `max-w` khi bảng còn dư chỗ.** Cột tên và cột công ty để co theo bảng, `truncate` chỉ bật khi thật sự hết chỗ. Khoá cứng thì ra cảnh tên bị cắt "Tôn Nữ Thị Phương Thảo N…" trong khi giữa bảng còn một mảng trắng (đã dính 23/09/2026).
+- **Đếm cột trước khi dựng**: khung còn ~970px ở 1280px khi sidebar mở, quá 6 cột là phải bỏ bớt chứ không cho cuộn ngang ở desktop (`R9`).
+- **Cột tiền là đúng ca cần `tabular-nums`** (`T16`). Font không có bảng `tnum` thì class chỉ là chữ chết, các mốc nghìn không thẳng cột: báo người dùng một dòng lúc giao, đổi font là việc của họ (`N10`).
 - **Hành động dòng** theo `I11`: 1–2 cái thì icon button luôn hiện ở cột cuối; từ 3 cái hoặc có xoá thì một nút `MoreHorizontal` ra dropdown. Cột cuối hẹp `w-12`, căn phải, không tiêu đề (có `<span class="sr-only">Thao tác</span>`).
 - **Chọn nhiều dòng:** checkbox đầu dòng, checkbox tiêu đề có ba trạng thái (không / một phần / tất cả trong trang). Có dòng được chọn thì **thanh hành động hàng loạt thay chỗ** hàng tab, cùng chiều cao để bảng không nhảy. Xoá hàng loạt luôn qua hộp xác nhận (`../layouts/overlay.md`), nói rõ số dòng.
 - **Mỗi ô một dòng.** Tên công ty dài thì `truncate` với `max-w` và `title` đầy đủ, không cho xuống ba dòng: một dòng cao gấp ba làm cả bảng mất nhịp. Ô hai tầng (tên + email) là ngoại lệ duy nhất, và mọi dòng đều hai tầng như nhau.

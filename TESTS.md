@@ -65,7 +65,7 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
 
 ## Bậc 2 — Khối ghép
 
-- [ ] **Data table** — "Dựng cho tôi bảng khách hàng có tìm kiếm, bộ lọc, phân trang và chọn nhiều dòng để xoá hàng loạt."
+- ✅ **Data table** — "Dựng cho tôi bảng khách hàng có tìm kiếm, bộ lọc, phân trang và chọn nhiều dòng để xoá hàng loạt."
       Cần có: button, input, status badge, tabs, dropdown menu, checkbox, pagination, confirm dialog, empty / loading / error state.
 - [ ] **Form validation** — "Dựng cho tôi form tạo công việc mới, có hiện lỗi khi nhập sai."
       Cần có: input, select, date picker, button, alert, toast.

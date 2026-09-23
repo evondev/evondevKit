@@ -90,6 +90,11 @@ cách bằng một đường kẻ — hover của nó theo `I4`, đường kẻ 
 chính `<button>` hay `<a>`, không đặt trên phần tử bọc ngoài. Dùng shadcn thì
 mục có link phải là `<DropdownMenuItem asChild>`.
 
+**Gần mép thì lật, không tràn ra ngoài.** Menu mở từ dòng cuối bảng mà vẫn đổ xuống thì
+nó trùm qua hàng phân trang và lòi khỏi card (đã dính 23/09/2026). Không đủ chỗ bên dưới
+thì lật lên trên nút, sát mép phải thì canh phải. Dùng thư viện popover có sẵn của dự án
+thì bật `collisionPadding`, tự dựng thì đo `getBoundingClientRect` trước khi mở.
+
 **Bo góc và khoảng cách, theo `M19`:**
 
 ```html
