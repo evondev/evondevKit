@@ -126,6 +126,11 @@ hạn" làm câu lỗi (đọc như hướng dẫn); "ví dụ 31/12/2026" cho �
 đã chọn xong. Màn OTP không có "Đổi email": gõ nhầm email là kẹt, không có
 đường lùi. **Mỗi bước phải có lối ra khi người dùng đi nhầm.**
 
+**Câu lỗi không được bịa ra một luật mà hệ thống không hề kiểm.** Nó dạy sai người
+dùng, và mâu thuẫn ngay với dữ liệu đang hiện trên màn (đã dính 23/09/2026: ô nhập
+nhiều tag ghi "cần có dấu @ và đuôi .com" trong khi các email hợp lệ ngay trên đó là
+`@saoviet.vn`). Viết đúng cái đang kiểm: "cần có dấu @ và tên miền".
+
 *Phép thử:* người dùng đọc xong câu này, họ biết phải làm gì tiếp không?
 
 ---
