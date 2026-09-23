@@ -25,7 +25,7 @@ lại ngày 23/09/2026.
 | Loại nút | Dùng |
 | --- | --- |
 | Mặc định | viền + chữ; thêm icon trái khi glyph gọi đúng tên hành động (thêm, lọc, tải xuống, xuất) |
-| Nút gửi form, nút trong modal | chỉ chữ: động từ + đối tượng ("Tạo công việc", "Gửi lời mời") |
+| Nút gửi form, nút ở footer modal và panel | chỉ chữ: động từ + đối tượng ("Tạo công việc", "Xác nhận đơn", "In hoá đơn"). Cả footer một kiểu: một nút có icon một nút không là lệch |
 | Hành động chính **duy nhất** của một khu, thật cần nổi | nền màu nhấn |
 | Nút phụ cần rõ hơn ghost: nút rộng hết card, nút cạnh `primary` | nền `--secondary`, không viền |
 | Chỉ icon | nút cỡ icon, có `aria-label`, cao bằng nút chữ cạnh nó |

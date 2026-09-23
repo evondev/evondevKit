@@ -83,6 +83,7 @@ cần nhìn thấy danh sách phía sau. Không dùng panel cho một câu xác 
 - **Lớp phủ sau panel mờ: `bg-black/15`.** Panel tồn tại để người dùng **vẫn thấy danh sách phía sau**; lớp phủ đặc che kín danh sách là mất đúng lý do dùng panel (đã dính 23/09/2026: lớp phủ xám đục, nền trang biến thành một mảng xám chết). Modal thì `bg-black/30`, vì modal cần tách hẳn người dùng khỏi trang.
 - **Ba tầng: header, thân cuộn, footer.** Header `px-6 pt-5 pb-4 border-b` gồm tiêu đề, dòng trạng thái + thời gian, nút ⋯ và ✕ cùng hàng tiêu đề. Thân `flex-1 overflow-y-auto px-6 py-6`: **luôn có `pt` riêng**, không để tiêu đề mục đầu dính sát đường kẻ header. Footer `border-t px-6 py-4`, nút căn phải, luôn đứng đáy dù thân ngắn.
 - Nhãn và giá trị trong panel theo `components/description-list.md`, cột nhãn `7rem`.
+- **Nút ở footer giữ kiểu theo vai, không theo số lượng.** Đơn đã huỷ mất nút chính, footer chỉ còn "In hoá đơn": nó **vẫn `secondary`** như lúc đứng cạnh nút chính. Không đẩy lên `primary` (đơn đã huỷ không còn hành động chính, tô đen là giả làm việc quan trọng) và không đổi sang `outline` (cùng một nút mà mỗi đơn một kiểu, `N5`). Nút footer chỉ có chữ (`I1`).
 - Chuyển động theo mục "Chuyển động" cuối file: panel trượt từ mép phải vào.
 
 ## Dropdown
