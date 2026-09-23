@@ -61,14 +61,15 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 
 ### Nút và trạng thái
 
-- [ ] Nút mặc định có phải **viền + icon** không, hay đang là nền nhấn? (`I1`)
+- [ ] Nút mặc định có phải **nút viền** không, hay đang là nền nhấn? Icon chỉ ở nút mà glyph gọi đúng hành động; nút form và nút trong modal chỉ có chữ (`I1`)
 - [ ] Trong một nhóm có đúng một nút nền nhấn không?
 - [ ] Nút phụ có trông như đã bị khoá không? Chữ và nền có đủ chênh không?
-- [ ] "Xem tất cả" / "Đọc thêm" có đang là link chữ không? Phải là nút, căn phải, không icon mũi tên.
+- [ ] "Xem tất cả" / "Đọc thêm" có đang là nút nền xám hay link chữ trơn không? Phải là nút `ghost` `h-8`, căn phải, không icon mũi tên (`I7`).
 - [ ] **Rê chuột lên một hàng: có phần tử con nào biến mất không?** (`M18`)
 - [ ] Rê chuột lên hàng: nền hover có ôm sát chữ không? Phải có padding đủ bốn phía.
 - [ ] Màn chỉ có MỘT card giữa trang trống? Vậy card phải **không viền** (`M29`), và không bao giờ có cả viền lẫn bóng.
-- [ ] **Nút xoá** đứng riêng: nền `rose-500/10` + chữ `rose-700` ngay lúc thường, không viền, không đỏ đặc (`I4`)? **Mục** đăng xuất / xoá trong menu: rê vào thì chữ, icon VÀ nền cùng đỏ lên chưa? Icon còn xám là thiếu `group`. Chữ đỏ là `rose-700` chưa, hay đang `rose-500` hồng tươi (3.2:1, trượt tương phản)? Radix thì đi bằng phím mũi tên cũng đỏ (`data-[highlighted]`)?
+- [ ] **Đăng xuất** là mục trung tính cuối menu, không đỏ (`I4`)?
+- [ ] **Nút xoá** đứng riêng: nền `rose-500/10` + chữ `rose-700` ngay lúc thường, không viền, không đỏ đặc (`I4`)? **Mục** xoá trong menu: rê vào thì chữ, icon VÀ nền cùng đỏ lên chưa? Icon còn xám là thiếu `group`. Chữ đỏ là `rose-700` chưa, hay đang `rose-500` hồng tươi (3.2:1, trượt tương phản)? Radix thì đi bằng phím mũi tên cũng đỏ (`data-[highlighted]`)?
 - [ ] Đỏ đang dùng đúng sắc chưa (`M30`)? Lỗi là `red`, hành động nguy hiểm lúc rê vào là `rose`. Không có viền hay banner `rose`.
 - [ ] Đường chia trong dropdown, card: có chạm hai mép khối không, hay thụt theo padding (`F25`)?
 - [ ] **Bo lồng nhau (`M19`)**: bo khung ngoài = bo phần tử trong + padding khung? Dropdown mặc định `rounded-2xl` + `p-1` + mục `rounded-xl` (`layouts/overlay.md`). Trong bằng ngoài là góc phình.
@@ -77,7 +78,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] **Chân sidebar**: profile nằm trong một khung viền `--border-strong` (cùng màu các đường kẻ khác trong sidebar), cả khung là nút mở menu, có dấu ba chấm dọc ở mép phải; email nằm trong menu chứ không nằm trong khung (`layouts/app.md`).
 - [ ] **Rê chuột chậm từ mép trái sang mép phải** của từng mục menu, link sidebar, dòng bấm được: con trỏ có giữ bàn tay suốt không? Đổi một lần là vùng bấm hụt (`I29`).
 - [ ] Tailwind v4: `<button>` có `cursor-pointer` chưa, hoặc base CSS đã trả lại chưa (`W7`)?
-- [ ] **Bấm Tab qua menu và các nút**: có vòng ring nào không? Không được có. Mục đang focus phải đổi nền **y như hover** (`I13`).
+- [ ] **Bấm Tab qua các nút, tab, checkbox**: có vòng mờ `ring-foreground/50` cách 2px không? Bấm chuột thì không được hiện. **Trong menu** thì mục đang focus đổi nền như hover, không vòng (`I13`).
 - [ ] **Bấm Tab qua ô nhập, select**: có viền `--border-focus` **và** ring mờ `--ring-focus` `ring-2` chưa? `ring-4` là quá dày (`F20`). Select đang mở cũng giữ viền + ring (`I13`).
 - [ ] **Checkbox / radio / công tắc** (`components/choice-controls.md`): cỡ mặc định 20px (công tắc 24×44), không phải 16px? Card chọn: đang chọn có viền + ring? Khoá thì nhãn mờ theo? Nhóm radio có sẵn một lựa chọn và có `<legend>`?
 - [ ] Vừa Tab vừa rê chuột trong menu: có **hai mục sáng cùng lúc** không? Chỉ được một (`data-[highlighted]`).
@@ -85,7 +86,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] **Bấm vào chữ nhãn**: ô có focus không (`for`/`htmlFor`)? Con trỏ có thành bàn tay không?
 - [ ] **Bấm vào khoảng trắng bên phải chữ nhãn**: ô KHÔNG được focus. Focus là thiếu `w-fit` (`I26`).
 - [ ] Form có ô mật khẩu: có nút hiện/ẩn chưa, và nó có `type="button"` không (`I27`)?
-- [ ] Mọi ô trong form đều có placeholder, hoặc đều không có — không được chỗ có chỗ không (`T25`).
+- [ ] Có placeholder nào chỉ chép lại nhãn ("Nhập email của bạn") không? Có thì bỏ (`T25`).
 - [ ] Đọc từng câu lỗi: có câu nào **trùng chữ** với placeholder hay nhãn của chính ô đó không? Trùng là bỏ.
 - [ ] Chữ đỏ dưới ô có thật sự là lỗi không, hay là **gợi ý bị tô đỏ**? Gợi ý thì xám và hiện sẵn.
 - [ ] **Màn xác thực: đã báo một dòng** về "quên mật khẩu" / ghi nhớ đăng nhập / mạng xã hội chưa? Dựng theo mặc định thì được, dựng xong im lặng thì không.

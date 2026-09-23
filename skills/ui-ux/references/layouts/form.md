@@ -52,7 +52,7 @@ một dòng** cho họ biết mình đã chọn gì.
 | **"Quên mật khẩu?"** | **Có** | Thiếu nó thì người quên mật khẩu không còn đường nào vào. Đây là phần tử duy nhất mà thiếu là hỏng chức năng, không phải hỏng thẩm mỹ |
 | **Ghi nhớ đăng nhập** | **Không** | Nó đổi thời hạn phiên ở **backend**, không phải chỉ là cái checkbox. Vẽ ra mà backend không làm gì là lừa người dùng — sai nhiều hơn là thiếu |
 | **Đăng nhập mạng xã hội** | **Không** | Phải có backend và nhà cung cấp cụ thể mới có nghĩa, mà cái đó thì không đoán được |
-| **Kiểu placeholder** | **Câu hướng dẫn** (`T25`) | Xem `T25` cho ca ngoại lệ |
+| **Placeholder** | **Không có** (`T25`) | Email, mật khẩu: nhãn đã đủ, placeholder chỉ chép lại nhãn |
 | **Chiều cao ô và nút** | **`h-12`** | Ngoại lệ duy nhất của `h-11 md:h-10` (`budgets.md`): form đứng một mình giữa trang, cả màn chỉ có nó, ô to hơn một bậc là hợp. Form trong app, modal, cài đặt thì không |
 
 **Dòng báo, đặt chung với dòng báo bố cục lúc giao:**
@@ -187,7 +187,7 @@ Thông tin cá nhân
 
 Nút hành động nằm cuối, căn phải, primary bên phải cùng.
 
-**C. Nhiều bước** (khi có trên 15 trường hoặc các bước phụ thuộc nhau)
+**C. Nhiều bước** (khi **các bước phụ thuộc nhau** hoặc là luồng làm một lần: onboarding, thanh toán, đăng ký hồ sơ. Form dài mà các phần độc lập thì dùng kiểu B có mục, như trang cài đặt của Stripe, GitHub — số trường nhiều không phải lý do chia bước)
 
 Thanh bước ở trên, mỗi bước một màn, nút "Quay lại" và "Tiếp" ở đáy. Không dùng
 nhiều bước cho form ngắn, nó chỉ làm chậm.
@@ -221,7 +221,7 @@ Lỗi hiện **dưới ô nhập**, không hiện trong placeholder, không hi�
 
 ```
 nhãn
-[ô nhập                    ]   <- viền đỏ đặc, ring đỏ rất mờ
+[ô nhập                    ]   <- viền đỏ đặc; quầng đỏ mờ chỉ khi đang focus
 Email này đã có người dùng     <- chữ đỏ, text-xs, ngay dưới ô
 ```
 
@@ -229,7 +229,11 @@ Email này đã có người dùng     <- chữ đỏ, text-xs, ngay dưới ô
 - Câu lỗi nói **cách sửa**, không nói "không hợp lệ". "Email này đã có người dùng" chứ không phải "Email không hợp lệ".
 - **Câu lỗi không được trùng chữ với placeholder hay nhãn.** Trùng là dấu hiệu nó không mang thêm thông tin nào — xem mục dưới.
 - Gợi ý thời điểm (người dùng quyết): hiện lỗi sau khi rời ô hoặc bấm gửi, đừng hiện ngay ký tự đầu tiên. Skill chỉ lo lỗi **trông ra sao**, dựng nó như một trạng thái tĩnh của ô.
-- **Form dài hơn một màn thì phải có banner tóm tắt lỗi ở đầu**, liệt kê từng lỗi kèm link nhảy tới đúng trường đó. Banner **không thay thế** lỗi hiện tại chỗ, phải có cả hai. Form ngắn gọn trong một màn thì không cần banner, vì mắt thấy hết rồi.
+- **Sửa xong một ô thì câu lỗi mất, nhưng chỗ của nó ở lại** tới lần bấm gửi sau (`min-h-5` trên dòng dưới ô). Rút câu lỗi đi ngay thì mọi ô bên dưới nhảy lên 20px đúng lúc người dùng đang đưa chuột xuống ô kế tiếp (`N1`, đã dính 23/09/2026 ở form tạo công việc). Ô nào có sẵn dòng gợi ý thì không cần: gợi ý quay về đúng chỗ câu lỗi vừa rời.
+- **Mặc định: chỉ lỗi tại chỗ, không banner tóm tắt.** Bấm gửi mà có lỗi thì cuộn tới và **focus ô lỗi đầu tiên**; mỗi ô sai viền đỏ + một câu dưới ô. Đây là cách của Linear, Stripe, GitHub. Banner liệt kê lỗi trên một form thường chỉ đọc lại đúng mấy câu đã nằm dưới từng ô: hai tín hiệu cho một ý (`N3`), và cả màn đỏ rực (đã dính 23/09/2026: form tạo công việc 6 trường, banner 4 dòng lặp y 4 câu lỗi; chủ dự án: "thực tế có ai làm mục đỏ ở trên đâu"). Luật cũ "form dài hơn một màn thì có banner" sai, vì ở 375px form nào cũng dài hơn một màn.
+- **Banner chỉ dùng cho hai ca:**
+  1. **Lỗi không gắn với ô nào**: mất mạng, hết phiên, không có quyền, trùng dữ liệu phía máy chủ. Banner một dòng nói chuyện gì và làm gì tiếp, không liệt kê.
+  2. **Form rất dài, chia nhiều mục có tiêu đề** (từ khoảng 12 trường, hoặc phải cuộn qua nhiều mục): lỗi ở mục cuối không thể thấy khi đang đứng ở đầu. Lúc đó banner liệt kê từng lỗi kèm link nhảy tới đúng ô, và **vẫn giữ** lỗi tại chỗ.
 
 ```html
 <div role="alert" class="mb-6 rounded-xl border border-red-200 bg-red-50 p-4">
@@ -276,4 +280,4 @@ nhất ở form, và nhìn ảnh chụp rất khó nhận ra vì "trông vẫn �
 
 Dòng cuối là ca riêng: nói rõ sai cái nào **là lỗ hổng bảo mật** — người ngoài dò
 được email nào có tài khoản. Nên ở đúng ca này thì mơ hồ là cố ý, và câu lỗi đặt
-ở banner đầu form chứ không dưới một ô cụ thể.
+ở chỗ câu lỗi trên nút Đăng nhập (xem khung wireframe đăng nhập ở đầu file) chứ không dưới một ô cụ thể.

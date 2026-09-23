@@ -32,7 +32,7 @@ luôn bọc ô trong `<label>`.
 nhập (`M14`), để cả form một độ đậm viền. Rê vào thì viền đậm lên
 `hover:border-foreground`.
 
-Viền này chỉ 1.1:1 với nền trắng, chưa đạt WCAG 1.4.11. Đã thử `--muted` (5.3:1)
+Viền này chỉ ~1.27:1 với nền trắng, chưa đạt WCAG 1.4.11 (nhích từ 1.1:1 ngày 23/09/2026, radio chưa chọn gần như vô hình). Đã thử `--muted` (5.3:1)
 ngày 21/09/2026, chủ dự án thấy **đậm và xấu**, trả về. Đánh đổi có chủ ý như viền
 ô nhập, xem `P3` trong `styles.md`. Bù lại: radio luôn đi kèm nhãn, nhóm radio
 luôn có sẵn một lựa chọn đã tô đặc, nên người dùng vẫn đọc ra đây là nhóm lựa
@@ -70,7 +70,7 @@ phải, xem cuối file.
 ```html
 <label class="inline-flex w-fit cursor-pointer items-center gap-3 text-sm">
   <span class="relative inline-flex shrink-0">
-    <input type="checkbox" class="peer size-5 cursor-pointer appearance-none rounded-md border-[1.5px] border-border-strong bg-surface outline-hidden transition-colors hover:border-foreground checked:border-primary checked:bg-primary indeterminate:border-primary indeterminate:bg-primary focus-visible:ring-2 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-50" />
+    <input type="checkbox" class="peer size-5 cursor-pointer appearance-none rounded-md border-[1.5px] border-border-strong bg-surface outline-hidden transition-colors hover:border-foreground checked:border-primary checked:bg-primary indeterminate:border-primary indeterminate:bg-primary focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:cursor-not-allowed disabled:opacity-50" />
     <i data-lucide="check" class="pointer-events-none absolute inset-0 m-auto size-3.5 stroke-[3] text-primary-foreground opacity-0 peer-checked:opacity-100"></i>
     <i data-lucide="minus" class="pointer-events-none absolute inset-0 m-auto size-3.5 stroke-[3] text-primary-foreground opacity-0 peer-indeterminate:opacity-100"></i>
   </span>
@@ -88,10 +88,10 @@ phải, xem cuối file.
 
 ```html
 <!-- filled: viền dày 6px màu nhấn, lõi trắng 8px chính là chấm -->
-<input type="radio" name="shipping" class="size-5 cursor-pointer appearance-none rounded-full border-[1.5px] border-border-strong bg-surface outline-hidden transition-[border-color,border-width] hover:border-foreground checked:border-[6px] checked:border-primary focus-visible:ring-2 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-50" />
+<input type="radio" name="shipping" class="size-5 cursor-pointer appearance-none rounded-full border-[1.5px] border-border-strong bg-surface outline-hidden transition-[border-color,border-width] hover:border-foreground checked:border-[6px] checked:border-primary focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:cursor-not-allowed disabled:opacity-50" />
 
 <!-- outline: nền chỉ tô phần lõi (bg-clip-content), padding 3px là khe trắng -->
-<input type="radio" name="shipping" class="size-5 cursor-pointer appearance-none rounded-full border-[1.5px] border-border-strong bg-clip-content p-[3px] outline-hidden hover:border-foreground checked:border-2 checked:border-primary checked:bg-primary focus-visible:ring-2 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-50" />
+<input type="radio" name="shipping" class="size-5 cursor-pointer appearance-none rounded-full border-[1.5px] border-border-strong bg-clip-content p-[3px] outline-hidden hover:border-foreground checked:border-2 checked:border-primary checked:bg-primary focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:cursor-not-allowed disabled:opacity-50" />
 ```
 
 Cả hai không cần phần tử phụ, không cần icon. Cỡ nhỏ `size-4`: `filled` dùng
@@ -137,7 +137,7 @@ Công tắc = **có hiệu lực ngay**, không chờ nút Lưu (`layouts/app.md
 
 ```html
 <button type="button" role="switch" aria-checked="false" aria-labelledby="notify-label"
-  class="group inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full bg-muted/40 p-0.5 outline-hidden transition-colors hover:bg-muted/60 aria-checked:bg-primary aria-checked:hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-50">
+  class="group inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full bg-muted/40 p-0.5 outline-hidden transition-colors hover:bg-muted/60 aria-checked:bg-primary aria-checked:hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:cursor-not-allowed disabled:opacity-50">
   <span class="size-5 rounded-full bg-surface shadow-sm transition-transform group-aria-checked:translate-x-5 group-aria-checked:bg-primary-foreground motion-reduce:transition-none"></span>
 </button>
 ```
@@ -177,7 +177,7 @@ mở cũng giữ viền + ring như đang focus, vì người dùng vẫn đang 
 
 - Chưa chọn thì chữ là placeholder `text-muted`, viết theo `T25`: "Chọn tỉnh, thành phố".
 - Radix / shadcn: thay `aria-expanded:` bằng `data-[state=open]:`.
-- Lỗi: y như ô nhập, `border-red-500 ring-2 ring-red-500/10`.
+- Lỗi: y như ô nhập, `border-red-500`, quầng `ring-red-500/10` chỉ khi đang focus.
 
 **Danh sách mở ra** theo khung dropdown ở `layouts/overlay.md` (`rounded-2xl`,
 `p-1`, mục `h-10 rounded-xl`, portal ra `body` theo `I22`):

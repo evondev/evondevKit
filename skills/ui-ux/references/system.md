@@ -63,8 +63,11 @@ badge lấy đúng bảng trong `M7`.
 
 - **Tạo và sửa dùng CÙNG một form.** Chỉ khác tiêu đề và chữ trên nút. Hai form
   riêng là hai chỗ để lệch nhau.
-- **Xoá luôn là hộp xác nhận**, không phải bấm phát xoá luôn. Xem
-  `layouts/overlay.md`.
+- **Xoá mà khôi phục được** (thùng rác, xoá mềm) thì **xoá ngay + toast "Hoàn tác"**, như
+  Gmail, Notion, Linear: hộp xác nhận cho mọi thùng rác dạy người ta bấm "Đồng ý" không
+  đọc. **Hộp xác nhận** chỉ khi không lấy lại được, hoặc xoá nhiều dòng một lúc. Khôi
+  phục được hay không là logic, người dùng quyết (`N10`); đề không nói thì hỏi một dòng
+  lúc giao. Xem `layouts/overlay.md`.
 - Hộp xác nhận bắt **gõ lại một cụm từ** chỉ dựng khi đề yêu cầu (quyết định sản
   phẩm, không phải mặc định). Khi có ô gõ đó thì không cho bấm ra ngoài để đóng (`I20`).
 

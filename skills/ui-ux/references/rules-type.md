@@ -14,7 +14,9 @@ cả trang: chữ mảnh hơn, sạch hơn, bớt cái vẻ nặng nề của fo
 ```
 
 **T2. Một họ chữ cho cả app.** Phân vai bằng weight và cỡ, không bằng font thứ
-hai: tiêu đề `700` kèm `tracking-tight`, body `400`, nhãn phụ `500`.
+hai: tiêu đề `600`, body `400`, nhãn phụ `500`. `700` chỉ cho tên trang của trang
+trình diễn (giới thiệu, bảng giá). Linear, Vercel, GitHub dùng 600 cho tiêu đề app;
+700 nặng hơn gu mờ của dự án (hạ ngày 23/09/2026).
 
 `tracking-tight` **cho chữ có dấu chỉ từ `text-3xl` trở lên** (nâng từ `2xl` ngày
 22/09/2026: tiêu đề `2xl` "Xác thực email" vẫn đọc ra "thựcemail"). Con số không
@@ -59,7 +61,7 @@ Tiêu đề card `text-base font-semibold` thì mục bên trong tối đa `text
 nhau là mắt không đọc ra đâu là nhãn của khối, đâu là nội dung, và cả khối trông
 phẳng lì.
 
-Cùng nguyên tắc cho độ đậm: tiêu đề khối `600`–`700`, mục bên trong tối đa `500`.
+Cùng nguyên tắc cho độ đậm: tiêu đề khối `600`, mục bên trong tối đa `500`.
 
 Thứ bậc đầy đủ của một trang app: **tên trang > tiêu đề khối > tên thẻ**.
 
@@ -208,34 +210,21 @@ khi tìm ra mâu thuẫn:
 **Trộn hai thứ tiếng trong một màn nặng hơn chọn nhầm tiếng.** "Mật khẩu" đứng
 cạnh "Sign in" đọc ra là làm dở dang. Chọn nhầm tiếng thì ít ra còn nhất quán.
 
-**T25. Placeholder là câu hướng dẫn, không phải ví dụ giả.**
+**T25. Placeholder chỉ có khi nó nói thêm điều nhãn chưa nói.**
 
-| Tiếng | Email | Mật khẩu |
-| --- | --- | --- |
-| Việt | Nhập email của bạn | Nhập mật khẩu của bạn |
-| Anh | Enter your email address | Enter your password |
+**Mặc định không có placeholder.** "Nhập email của bạn" nằm dưới nhãn "Email" là chép
+lại nhãn, một ý nói hai lần (`T20`, `N3`). Stripe, GitHub, Linear để trống.
 
-Ví dụ giả kiểu `ten@congty.com` bị đọc nhầm thành **chữ đã gõ sẵn**. Người dùng
-phải nhìn lần thứ hai mới biết ô đang trống, và trên mobile thì gần như luôn
-nhầm.
+Có placeholder trong hai ca:
 
-**Cả form phải thống nhất.** Đã cho ô email placeholder thì ô mật khẩu cũng phải
-có. Một ô có một ô không thì ô trống trông như đang lỗi — lỗi này đã dính ở vòng
-test form đăng nhập.
-
-Placeholder **không thay được nhãn.** Gõ vào là placeholder biến mất, lúc đó
-người dùng không còn gì để biết ô này là ô gì.
-
-**Ngoại lệ: ô mà ĐỊNH DẠNG không hiển nhiên.** Lúc đó ví dụ mới có giá trị, vì
-thứ người dùng thiếu là khuôn chứ không phải việc phải làm.
-
-| Ô | Placeholder |
+| Ca | Placeholder |
 | --- | --- |
-| Email, họ tên, mật khẩu | Câu hướng dẫn — định dạng ai cũng biết |
-| Điện thoại, ngày tháng, mã số thuế, biển số, mã giảm giá | Ví dụ đúng khuôn: `0901 234 567`, `31/12/2026` |
+| Gợi ý **nội dung** mà nhãn chưa nói | Tiêu đề → "Viết ngắn gọn việc cần làm"; Mô tả → "Ghi yêu cầu và thế nào là xong việc" |
+| **Định dạng** không hiển nhiên: điện thoại, ngày, mã số thuế, biển số | Ví dụ đúng khuôn: `0901 234 567`, `31/12/2026` |
 
-Phép thử: **người dùng có thể gõ sai khuôn không?** Không thể sai thì đừng đưa ví
-dụ, chỉ tổ làm họ nhìn hai lần.
+- **Không dùng ví dụ giả cho ô định dạng ai cũng biết** (email, họ tên, mật khẩu): `ten@congty.com` bị đọc nhầm thành chữ đã gõ sẵn, nhất là trên mobile.
+- **Ô có ô không trong cùng form là bình thường.** Luật cũ "cả form phải thống nhất" (22/09/2026) kéo theo câu chép nhãn vào mọi ô, bỏ ngày 23/09/2026.
+- Placeholder **không thay được nhãn**: gõ vào là nó biến mất.
 
 **T26. Ô mật khẩu KHÔNG dùng dấu chấm tròn làm placeholder.**
 

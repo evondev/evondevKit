@@ -22,7 +22,7 @@ Nguồn: `new-tab-todo/src/features/reminders/components/reminder-item.tsx`
 
   <div className="flex items-center gap-0.5">
     <IconButton                                {/* hành động phụ, ẩn */}
-      className="pointer-events-none opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100"
+      className="pointer-events-none opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100 [@media(hover:none)]:pointer-events-auto [@media(hover:none)]:opacity-100"
     />
   </div>
 </li>
@@ -32,7 +32,7 @@ Nguồn: `new-tab-todo/src/features/reminders/components/reminder-item.tsx`
 
 - Hover là **chìm xuống nền** (`hover:bg-background`) — được vì dòng này thụt vào, có bo góc. Dòng tràn hết bề ngang khung (bảng) thì dùng `--surface-hover`, xem `I10`, tức dòng tối nhẹ đi chứ không sáng lên, không viền, không nhấc bóng. Cảm giác như con trỏ ấn xuống mặt giấy.
 - Ba tầng ưu tiên rõ rệt trong một dòng: hành động chính luôn hiện bên trái, nội dung ở giữa, hành động phụ ẩn bên phải. Không phải mọi nút đều đòi được nhìn thấy cùng lúc.
-- Nút phụ ẩn bằng `opacity-0` kèm `pointer-events-none`. Thiếu vế thứ hai thì nút vô hình vẫn ăn cú bấm.
+- Nút phụ ẩn bằng `opacity-0` kèm `pointer-events-none`. Thiếu vế thứ hai thì nút vô hình vẫn ăn cú bấm. **Mở lại bằng ba đường**: rê vào (`group-hover`), Tab tới (`group-focus-within`, không có thì Tab rơi vào một nút vô hình), và máy không có chuột (`[@media(hover:none)]`, kèm cả `pointer-events-auto`, không thì nút hiện ra mà chạm không ăn). Có xoá thì theo `I11`: luôn hiện.
 - `min-w-0` xuất hiện ở cả hai tầng bọc ngoài `truncate`. Thiếu nó thì flex item không chịu co, tiêu đề dài đẩy vỡ dòng. Đây là lỗi hay gặp nhất trong danh sách.
 - Màu chỉ dùng để báo hạn, ba mức: **quá hạn** chữ hổ phách `text-amber-700` kèm số ngày ("quá hạn 2 ngày"), **hôm nay** chữ `text-foreground font-medium` không màu, **còn xa** `text-muted`. Quá hạn là "cần chú ý" theo `M7`, không phải đỏ: đỏ là lỗi người dùng phải sửa mới đi tiếp (`M30`). Hôm nay không phải cảnh báo nên không màu, và nhờ vậy không trùng hổ phách với quá hạn (đổi 22/09/2026, bản cũ tô đỏ quá hạn, hổ phách hôm nay). Ngoài ba chỗ đó cả dòng là đen trắng xám.
 - Dòng phụ là `text-xs text-muted`, ngăn cách bằng dấu `·` chứ không phải gạch dài hay dấu gạch ngang.

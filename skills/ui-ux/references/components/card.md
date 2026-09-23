@@ -72,11 +72,10 @@ mới. **Luôn căn phải, cùng hàng với tiêu đề.**
 
 | Hành động | Nút |
 | --- | --- |
-| Dẫn sang màn khác: "Xem tất cả", "Đọc thêm" | nút phụ `secondary`, **không icon** (`I7`) |
+| Dẫn sang màn khác: "Xem tất cả", "Đọc thêm" | nút `ghost` `h-8`, **không icon** (`I7`) |
 | Làm một việc: tải, xuất, thêm, lọc | nút viền `outline` **có icon trái** (`I1`): `download`, `plus`, `filter` |
 
-Đã dính 22/09/2026: "Tải báo cáo" dựng y như "Xem tất cả" (nền xám không icon), đọc ra là link sang trang khác chứ không phải nút tải.
+Đã dính 22/09/2026: "Tải báo cáo" dựng y như "Xem tất cả" (không icon), đọc ra là link sang trang khác chứ không phải nút tải.
 
-Đừng biến "Xem tất cả" thành một dòng chữ màu ở cuối khối. Đó là hành động dẫn
-sang màn khác, nên nó phải trông bấm được: nút phụ, `h-10`, `px-3` tới `px-4`,
-không icon mũi tên. Xem luật `I7`.
+Đừng biến "Xem tất cả" thành một dòng chữ màu ở cuối khối. Nó vẫn là nút, chỉ là
+nút `ghost` nhẹ: `h-8`, `px-3`, không icon mũi tên. Xem luật `I7`.

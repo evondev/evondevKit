@@ -32,8 +32,10 @@ là không có điểm neo**:
 > Nổi bằng **một điểm màu nhỏ**, không tô cả khối. Giữ thẻ trắng, đặt icon trong
 > một **ô vuông nhạt 28px** kèm nhãn cùng màu.
 
-**M3. Đúng một màu nhấn cho cả app.** Nút chính, link, trạng thái đang chọn dùng
-chung nó. Màu thứ hai phải xin phép.
+**M3. Đúng một màu nhấn cho cả app.** Nút chính, link, control đang bật (checkbox,
+switch, chip lọc đã chọn) dùng chung nó. Mục **điều hướng** đang chọn (sidebar, tab,
+trang hiện tại) thì dùng nền xám hoặc vạch `--foreground`, không màu nhấn (bảng
+công thức phần tử bên dưới, `small-controls.md`). Màu thứ hai phải xin phép.
 
 ---
 
@@ -50,7 +52,7 @@ Bảng màu của MỘT màn hình, không thêm:
 | Xanh lá | "Đang ổn", "đã xong": badge, thanh tiến độ xong (`M7`). Cố định, không lấy màu nhấn |
 | Hổ phách | "Cần chú ý": quá hạn, nộp trễ, bỏ lỡ |
 | Đỏ lỗi — `red` | Lỗi thật mà người dùng phải xử lý: bài bị từ chối, lỗi form |
-| Đỏ nguy hiểm — `rose` | Hành động không lấy lại được: xoá, đăng xuất, huỷ tài khoản. Nút đứng riêng thì nền mờ + chữ đỏ luôn hiện; mục menu thì chỉ đỏ khi rê vào (`I4`) |
+| Đỏ nguy hiểm — `rose` | Hành động không lấy lại được: xoá, huỷ tài khoản, rời nhóm. **Không** cho đăng xuất. Nút đứng riêng thì nền mờ + chữ đỏ luôn hiện; mục menu thì chỉ đỏ khi rê vào (`I4`) |
 
 Hai sắc đỏ là cố ý, không phải gõ nhầm — xem `M30`.
 
@@ -101,7 +103,7 @@ khối `.dark` trong `tokens.css` đã đổi sẵn.
 
 - Xanh lá là màu **cố định**, không lấy màu nhấn. Màu nhấn mặc định gần đen, badge đen đặc giữa bảng trông như nút bấm.
 - Chữ `-700`, không `-500`: chữ nhỏ trên nền nhạt cần đậm để đạt tương phản (`P3`).
-- Không viền. Nền nhạt đã đủ tách, thêm viền là hai dấu hiệu (`M6`).
+- Không `border`. Vòng trong `ring-black/5` ở trên là khung giữ badge không tan vào nền, không tính là tín hiệu thứ hai (`M6`).
 - Cả app một bảng ánh xạ, xem `D2` trong `system.md`.
 
 Nhãn **nằm trong dòng chữ phụ** ("Hằng tuần · quá hạn 2 ngày") thì vẫn là chữ màu,
@@ -387,8 +389,8 @@ Có từ hai card trở lên trên màn thì quay về `M13` như thường.
 
 | | Sắc | Việc | Khi nào hiện | Ở đâu |
 | --- | --- | --- | --- | --- |
-| **Lỗi** | `red` | *Đã có gì đó sai*, phải sửa mới đi tiếp được | Sau khi người dùng làm sai | Ô nhập, câu lỗi, banner lỗi đầu form |
-| **Nguy hiểm** | `rose` | *Bấm vào thì không lấy lại được* | Nút: luôn hiện, nền mờ. Mục menu: chỉ lúc rê vào (`I4`) | Xoá, đăng xuất, huỷ tài khoản, rời nhóm |
+| **Lỗi** | `red` | *Đã có gì đó sai*, phải sửa mới đi tiếp được | Sau khi người dùng làm sai | Ô nhập, câu lỗi, banner lỗi máy chủ |
+| **Nguy hiểm** | `rose` | *Bấm vào thì không lấy lại được* | Nút: luôn hiện, nền mờ. Mục menu: chỉ lúc rê vào (`I4`) | Xoá, huỷ tài khoản, rời nhóm (đăng xuất là mục trung tính) |
 
 **Vì sao tách.** Hai việc khác nhau về thời điểm và mức nặng:
 
@@ -407,7 +409,7 @@ Mỗi ô ghi class Tailwind, token CSS trong ngoặc. Hai cách ra cùng một m
 | --- | --- | --- |
 | Chữ, icon | câu lỗi dưới ô: `text-red-600` (`--error-text`) — `red-500` trên nền trắng chỉ 3.8:1, trượt 4.5:1 | `text-rose-700` (`--danger`) (nút luôn hiện, mục menu lúc rê vào) — `rose-500` trên nền mờ chỉ 3.2:1 |
 | Viền | `border-red-500` (`--error`) | — *(không có viền đỏ)* |
-| Nền mờ | `ring-red-500/10` (`--error-ring`) quanh ô nhập | nút: `bg-rose-500/10` (`--danger-bg`), rê vào `/15` (`--danger-bg-hover`) · mục menu: `hover:bg-rose-500/10` |
+| Nền mờ | `ring-red-500/10` (`--error-ring`) quanh ô nhập lỗi **đang focus** | nút: `bg-rose-500/10` (`--danger-bg`), rê vào `/15` (`--danger-bg-hover`) · mục menu: `hover:bg-rose-500/10` |
 | Banner | `bg-red-50` (`--error-bg`) · `border-red-200` (`--error-border`) · tiêu đề `red-700` (`--error-strong`), mô tả `text-foreground/80` (`components/banner.md`) | — *(không có banner)* |
 
 Ô "—" là **cố ý trống**: hành động nguy hiểm không bao giờ có viền đỏ hay banner

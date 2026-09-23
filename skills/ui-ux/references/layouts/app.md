@@ -84,7 +84,7 @@ Xem mục **Khung app có sidebar** bên dưới cho công thức đầy đủ.
 - **Nhãn nhóm IN HOA, chữ XÁM**: `text-xs font-medium uppercase tracking-wide text-muted`, hover mới lên `text-foreground`. IN HOA đã đủ tách nhãn khỏi link, nên nhãn phải **nhạt hơn** mục con, không đậm hơn: nhãn đen `--foreground` cộng IN HOA thì nặng nhất cột, lấn cả mục đang chọn (đã dính 21/09/2026). Viết thường thì nhãn nhóm trông y như một mục nav nhạt màu, mắt không tách được đâu là tiêu đề, đâu là link (đã dính 21/09/2026). Chữ trong dữ liệu vẫn viết thường ("Công việc"), IN HOA bằng CSS, để screen reader không đánh vần từng chữ.
 - **Đường chia giữa các nhóm**: `border-t border-border-strong` trên mỗi nhóm trừ nhóm đầu. Chỉ khoảng trắng thì không đủ khi sidebar dài và cuộn: mắt không còn thấy khoảng hở giữa nhóm cũ và nhóm mới.
 - **Mọi đường kẻ trong sidebar dùng `--border-strong`**: kẻ dọc tách nội dung, kẻ dưới đầu sidebar, kẻ chia nhóm, kẻ trên chân sidebar, **và viền khung profile**. Trên nền trắng, `--border` (`#f7f7f8`) gần như tàng hình, đường chia mất tác dụng (đã dính 21/09/2026). Cả sidebar một màu viền, không chỗ rõ chỗ mờ.
-- **Đường kẻ chạy HẾT bề ngang sidebar, mép chạm mép.** Không để padding của vùng nav cắt cụt hai đầu đường. Cách làm: vùng nav chỉ có padding dọc (`py-3`), padding ngang đặt trên **từng nhóm** (`px-3`), đường kẻ nằm trên phần tử nhóm nên tự dài hết. Đừng vá bằng `-mx-3`: đổi padding một chỗ là đường lệch.
+- **Đường kẻ chạy HẾT bề ngang sidebar, mép chạm mép.** Không để padding của vùng nav cắt cụt hai đầu đường. Cách làm: vùng nav chỉ có padding dọc (`py-3`), padding ngang đặt trên **từng nhóm** (`px-3`), đường kẻ nằm trên phần tử nhóm nên tự dài hết. Đừng vá bằng `-mx-3`: đổi padding một chỗ là đường lệch. **Vùng nav cuộn được thì thanh cuộn không được giữ chỗ** (`scrollbar-gutter: auto`, thanh cuộn tự ẩn theo `I18`): giữ gutter 4px là mọi đường kẻ nhóm cụt cách mép phải 4px, trong khi đường dưới tên workspace và đường trên Cài đặt (nằm ngoài vùng cuộn) vẫn chạy hết (đã dính 23/09/2026, lộ ra khi viền đậm lên `#e4e4e7`).
 - **Sidebar nhiều link thì nhóm thu gọn được.** Từ **3 nhóm có nhãn trở lên**, hoặc tổng số mục đủ để sidebar phải cuộn: nhãn nhóm thành một **nút rộng hết hàng** (`I29`), chevron ở mép phải (`ChevronDown` `size-4`, xoay `-rotate-90` khi đóng), có `aria-expanded`. Hover nhãn là nền `--background` như mục nav.
   - **Nút nhãn cùng khuôn với mục con**: cùng `h-10 px-3`, cùng `rounded-xl`. Đặt chiều cao bằng `h-10` chứ không bằng `py`, vì chữ `text-xs` của nhãn thấp hơn chữ `text-sm` của link, dùng `py` là nút nhãn lùn hơn hàng con. Mép trái chữ nhãn thẳng mép icon con, chevron thẳng mép phải badge.
   - **Mục con không thụt vào, không đường dọc.** Nhóm ở đây là *phân khu*, các mục con ngang hàng nhau và đã có icon riêng. Thụt vào cộng đường dọc là ngôn ngữ của **cây lồng nhau**, và nó ăn mất 16-20px của cột vốn đã hẹp, chữ dài bị cắt sớm hơn.
@@ -200,17 +200,17 @@ người dùng yêu cầu.
 - **Chuyển động: chỉ bề rộng chạy, bố cục bên trong không đổi.** `<aside>` `overflow-hidden`, `transition-[width] duration-200 ease-out motion-reduce:transition-none`, `w-64` ↔ `w-16`.
   - **Chữ luôn nằm trong DOM**, `whitespace-nowrap`, bị mép sidebar **cắt dần** khi thu và **lộ dần** khi mở, như kéo rèm. Không `hidden`, không render có điều kiện: gỡ chữ ra rồi gắn lại là nó bật "phựt" một cái, và bố cục tính lại làm icon xê dịch.
   - Chữ, tên workspace, badge cạnh chữ, nhãn nhóm thêm `transition-opacity duration-150`, thu thì `opacity-0`. Mờ đi cùng lúc bị cắt thì không thấy nửa chữ lơ lửng ở mép.
-  - **Badge có HAI bản, chuyển bằng opacity**: bản cạnh chữ (`ml-auto`) mờ đi, bản đè góc icon (`absolute`) hiện lên. Đừng di chuyển một badge từ chỗ này sang chỗ kia, nó sẽ bay chéo qua sidebar.
+  - **Badge có HAI bản, chuyển bằng opacity**: bản cạnh chữ (`ml-auto`) mờ đi, bản đè góc icon (`absolute`) hiện lên. Đừng di chuyển một badge từ chỗ này sang chỗ kia, nó sẽ bay chéo qua sidebar. **Cả hai bản `aria-hidden`**, số đọc cho trình đọc màn hình nằm trong một `<span className="sr-only">, 20 chưa đọc</span>` duy nhất: `opacity-0` không gỡ chữ khỏi cây truy cập, để nguyên thì nó đọc "Hộp thư 99+ 99+"; lúc thu, `aria-label` của link cũng phải kèm số.
   - **Nhóm có nhãn mờ đi tại chỗ** (`opacity-0` + `inert`), không gỡ ra. Gỡ ra thì chiều cao nav đổi, thanh cuộn nhảy.
 - Có nhớ trạng thái thu/mở hay không, có phím tắt hay không là việc của người dùng. Nếu đề có phím tắt thì ghi nó trong tooltip của nút toggle.
-- **Nút toggle ở đầu header vùng nội dung**, icon `PanelLeftClose` khi đang mở, `PanelLeftOpen` khi đang thu. Nút ghost `size-10 rounded-xl`, có `aria-label` và `aria-expanded`. **Không vòng viền khi focus** (`I13`): `outline-hidden focus-visible:bg-background`. Viền xám dày quanh nút sau khi bấm là focus ring của trình duyệt lọt ra, không phải thiết kế (đã dính 21/09/2026).
+- **Nút toggle ở đầu header vùng nội dung**, icon `PanelLeftClose` khi đang mở, `PanelLeftOpen` khi đang thu. Nút ghost `size-10 rounded-xl`, có `aria-label` và `aria-expanded`. Focus theo `I13`: `outline-hidden` + vòng mờ `focus-visible`. Viền xám dày hiện ra **ngay sau khi bấm chuột** là outline mặc định của trình duyệt lọt ra (dùng `focus` thay vì `focus-visible`), không phải thiết kế (đã dính 21/09/2026).
 
 ```tsx
 // MỘT link cho cả hai trạng thái. Không justify-center, không đổi padding:
 // icon đứng yên, chỉ chữ bị mép sidebar cắt dần.
 <Link
   to={item.href}
-  aria-label={isCollapsed ? item.label : undefined}
+  aria-label={isCollapsed ? getSidebarLinkLabel(item) : undefined} // "Hộp thư, 20 chưa đọc"
   className="relative flex h-10 w-full items-center gap-2.5 rounded-xl px-3 text-sm whitespace-nowrap text-foreground/70 hover:bg-background hover:text-foreground"
 >
   <item.icon className="size-4 shrink-0" aria-hidden />
@@ -221,11 +221,11 @@ người dùng yêu cầu.
   {hasCount && (
     <>
       {/* Bản cạnh chữ, lúc mở. */}
-      <span className={cn("shrink-0 rounded-full border border-border-strong bg-surface px-2 py-px text-xs font-medium tabular-nums text-muted transition-opacity duration-150", isCollapsed && "opacity-0")}>
+      <span aria-hidden className={cn("shrink-0 rounded-full border border-border-strong bg-surface px-2 py-px text-xs font-medium tabular-nums text-muted transition-opacity duration-150", isCollapsed && "opacity-0")}>
         {formatSidebarCount(item.count)}
       </span>
       {/* Bản đè góc icon, lúc thu. left-5 = px-3 + gần hết icon. */}
-      <span className={cn("absolute left-5 top-1 flex h-4 min-w-4 items-center justify-center rounded-full border border-border-strong bg-surface px-1 text-[10px] font-medium leading-none tabular-nums text-muted ring-2 ring-surface transition-opacity duration-150", !isCollapsed && "opacity-0")}>
+      <span aria-hidden className={cn("absolute left-5 top-1 flex h-4 min-w-4 items-center justify-center rounded-full border border-border-strong bg-surface px-1 text-[10px] font-medium leading-none tabular-nums text-muted ring-2 ring-surface transition-opacity duration-150", !isCollapsed && "opacity-0")}>
         {formatSidebarCount(item.count)}
       </span>
     </>
@@ -308,6 +308,7 @@ Khách hàng từ 3/2024, 18 đơn hàng, doanh thu 1.284.500.000 đ
 
 - **Đường dẫn chỉ ghi các cấp cha, không ghi trang đang đứng.** Tên trang nằm ngay dưới, ghi lại là lặp ("Cài đặt › Thành viên" rồi "Thành viên"). Ghi một chữ khác tên trang còn tệ hơn: "Khách hàng › Hồ sơ" trên đầu "Công ty TNHH Minh Phát", người đọc không biết mình đang ở đâu (đã dính 22/09/2026). Mỗi mục cha là link. Mục dài thì `max-w-48 truncate` kèm `title`.
 - **Đường dẫn đặt ở MỘT chỗ.** App đã có đường dẫn trên thanh header `h-16` thì đầu trang không lặp lại, chỉ còn tên, mô tả, nút.
+- **Một trang đúng một `<h1>`, và đó là tên trang trong page header.** Thanh trên cùng của khung app (tên mục đang mở, breadcrumb) dùng `<p>` hoặc `<span>`, không `<h1>`: hai `<h1>` thì trình đọc màn hình không biết trang này tên gì (đã dính 23/09/2026: "Việc của tôi" trên header và "Tạo công việc mới" cùng là `<h1>`).
 - **Tên trang `text-xl`**, trang chi tiết của một bản ghi (khách hàng, đơn, dự án) thì `text-lg` theo `T9`. Không `text-2xl`, `text-3xl`: đó là cỡ hero (`budgets.md`). `text-balance` để tên dài xuống dòng đều.
 - **Khối chữ `min-w-0 flex-1`.** Thiếu `flex-1` thì khối co theo dòng dài nhất (thường là đường dẫn), mô tả bị ép xuống dòng ở nửa khung dù bên phải còn trống (đã dính 22/09/2026, sửa `max-w` không ăn vì bề rộng đã bị flex bóp trước).
 - **Tên trang `font-semibold`, không `tracking-tight`** ở cỡ `lg`/`xl`. Tên trang là chữ đậm nhất vùng nội dung; nhạt hơn tiêu đề khối bên dưới là đảo thứ bậc.
@@ -394,11 +395,11 @@ Khi có dòng được chọn, hàng tab + tìm được THAY bằng:
 - **Cột trạng thái là badge màu** theo `M7`, không chấm xám + chữ đen.
 - **Nút gỡ lọc ghi "Xoá lọc", không ghi "Bỏ chọn".** Khi đang chọn dòng, thanh trên cùng đã có "Bỏ chọn" (bỏ tick dòng); cuối hàng chip mà cũng "Bỏ chọn" thì một màn có hai nút cùng chữ khác việc (`N6`, đã dính 23/09/2026).
 - **Cột chữ tự co giãn, đừng khoá `max-w` khi bảng còn dư chỗ.** Cột tên và cột công ty để co theo bảng, `truncate` chỉ bật khi thật sự hết chỗ. Khoá cứng thì ra cảnh tên bị cắt "Tôn Nữ Thị Phương Thảo N…" trong khi giữa bảng còn một mảng trắng (đã dính 23/09/2026).
-- **Đếm cột trước khi dựng**: khung còn ~970px ở 1280px khi sidebar mở, quá 6 cột là phải bỏ bớt chứ không cho cuộn ngang ở desktop (`R9`).
+- **Đếm cột trước khi dựng**: khung còn ~970px ở 1280px khi sidebar mở, quá ~6 cột là bắt đầu chật. Thử theo thứ tự: gộp cột (email xuống dưới tên), ẩn cột ít dùng sau nút "Hiển thị cột", rồi mới cho cuộn ngang trong khung với cột đầu ghim `sticky left-0` (`R9`). Stripe, Polaris vẫn có bảng 7–9 cột cuộn ngang, cuộn không sai; sai là cuộn khi chưa thử gộp.
 - **Cột tiền là đúng ca cần `tabular-nums`** (`T16`). Font không có bảng `tnum` thì class chỉ là chữ chết, các mốc nghìn không thẳng cột: báo người dùng một dòng lúc giao, đổi font là việc của họ (`N10`).
 - **Hành động dòng** theo `I11`: 1–2 cái thì icon button luôn hiện ở cột cuối; từ 3 cái hoặc có xoá thì một nút `MoreHorizontal` ra dropdown. Cột cuối hẹp `w-12`, căn phải, không tiêu đề (có `<span class="sr-only">Thao tác</span>`).
 - **Chọn nhiều dòng:** checkbox đầu dòng, checkbox tiêu đề có ba trạng thái (không / một phần / tất cả trong trang). Có dòng được chọn thì **thanh hành động hàng loạt thay chỗ** hàng tab, cùng chiều cao để bảng không nhảy. Xoá hàng loạt luôn qua hộp xác nhận (`../layouts/overlay.md`), nói rõ số dòng.
-- **Mỗi ô một dòng.** Tên công ty dài thì `truncate` với `max-w` và `title` đầy đủ, không cho xuống ba dòng: một dòng cao gấp ba làm cả bảng mất nhịp. Ô hai tầng (tên + email) là ngoại lệ duy nhất, và mọi dòng đều hai tầng như nhau.
+- **Mỗi ô một dòng.** Tên công ty dài thì `truncate` (`min-w-0`) và `title` đầy đủ, bề rộng do bảng chia chứ không khoá `max-w`, không cho xuống ba dòng: một dòng cao gấp ba làm cả bảng mất nhịp. Ô hai tầng (tên + email) là ngoại lệ duy nhất, và mọi dòng đều hai tầng như nhau.
 - **Giá trị trống thống nhất một kiểu**: `—` màu `text-muted`. Không chỗ "Chưa có", chỗ "Khách lẻ", chỗ để trống.
 - **Số căn phải, `tabular-nums`**, tiêu đề cột số cũng căn phải. Cột số, ngày có sắp xếp thì tiêu đề là nút có icon mũi tên.
 - **Dòng tiêu đề bảng** `text-xs font-medium text-muted`, nền `--surface`, chia với thân bằng `--border`.
@@ -442,6 +443,6 @@ Vùng nguy hiểm
 - Nhãn trái, điều khiển phải, cùng một hàng.
 - Không viết chữ giải thích dưới mọi dòng. Chỉ giải thích thứ thật sự khó đoán.
 - Vùng nguy hiểm tách xuống cuối cùng.
-- **Mặc định dựng kiểu không có nút "Lưu thay đổi" tổng**: mỗi dòng chừa chỗ cho một dấu "Đã lưu" nhỏ cạnh điều khiển. Lưu lúc nào, gọi gì là việc của người dùng, skill chỉ để handler rỗng (`onChange`). **Không trộn hai kiểu trên một trang**: vừa có nút Lưu vừa có toggle không cần Lưu thì người dùng không biết bật xong có phải bấm Lưu không. Đề muốn có nút Lưu thì mọi điều khiển đều chờ nút đó, và dựng thêm trạng thái nút khoá khi chưa có gì đổi.
+- **Mặc định dựng kiểu không có nút "Lưu thay đổi" tổng**: mỗi dòng chừa chỗ cho một dấu "Đã lưu" nhỏ cạnh điều khiển. Lưu lúc nào, gọi gì là việc của người dùng, skill chỉ để handler rỗng (`onChange`). **Toggle, select áp ngay; ô chữ thì lưu khi rời ô, hoặc có nút Lưu riêng của đúng khối đó** (như Vercel, GitHub: mỗi card cài đặt có ô chữ thì có nút Lưu ở chân card). Cái cần tránh là **một nút Lưu tổng cho cả trang** trong khi có toggle tự áp: người dùng không biết bật xong có phải bấm Lưu không. Nút Lưu của khối khoá khi chưa có gì đổi.
 
 **B. Tab dọc bên trái** (từ 15 tuỳ chọn trở lên, hoặc trên 4 nhóm)

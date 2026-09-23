@@ -16,7 +16,7 @@ Gần đen không bao giờ chửi nhau với brand nào, và trông cố ý ch�
 chưa chọn xong.
 
 Font: **Inter** cho toàn bộ, cả heading lẫn body. Một font, phân vai
-bằng weight: heading `700`, body `400`, nhãn phụ `500`. `tracking-tight` cho chữ có dấu chỉ từ `text-3xl` trở lên (`T2`).
+bằng weight: heading `600`, body `400`, nhãn phụ `500` (`T2`). `tracking-tight` cho chữ có dấu chỉ từ `text-3xl` trở lên (`T2`).
 
 Một font là lựa chọn cố ý, không phải cắt gọt cho nhanh. Ghép hai font mà chọn
 sai cặp thì tệ hơn hẳn dùng một font tử tế, và phần lớn cặp đều sai. Bỏ font đi
@@ -32,8 +32,11 @@ Cách nạp thì tuỳ bối cảnh:
 - **File HTML đơn lẻ, prototype, bản demo để chấm**: `@import` thẳng Google Fonts. Dòng dùng luôn:
 
 ```html
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 ```
+
+`700` chỉ để cho con số lớn (card số liệu, giá) và tên trang của trang trình diễn. Không
+nạp `800`: không luật nào dùng.
 
 ---
 

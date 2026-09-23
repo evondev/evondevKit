@@ -2,7 +2,8 @@
 
 > ⚠️ Bản trước của file này dạy ba variant `primary` / `ghost` / `danger` và
 > "nút mặc định không icon". **Cả hai đã đảo** — xem luật `I1`. Chủ dự án chốt
-> 13/09/2026: nút mặc định là **viền + icon lucide bên trái chữ**.
+> 13/09/2026: nút mặc định là **nút viền**. Icon lucide bên trái chữ chỉ khi glyph gọi đúng
+> hành động; nút form và nút trong modal chỉ có chữ (nới ngày 23/09/2026, xem `I1`).
 
 ---
 
@@ -15,16 +16,16 @@ function getVariantClasses(variant: ButtonVariant): string {
   return cn(
     // MẶC ĐỊNH. Dựng nút mới thì dùng cái này.
     variant === "outline" &&
-      "border border-border-strong bg-surface text-foreground hover:bg-background focus-visible:bg-background",
+      "border border-border-strong bg-surface text-foreground hover:bg-background",
     // Hành động chính DUY NHẤT của một khu, khi thật cần nổi.
     variant === "primary" &&
-      "bg-primary text-primary-foreground hover:bg-primary-hover focus-visible:bg-primary-hover",
+      "bg-primary text-primary-foreground hover:bg-primary-hover",
     // Nút phụ cần nhỉnh hơn ghost mà không tranh chỗ nút chính. Không viền.
     variant === "secondary" &&
-      "bg-secondary text-foreground hover:bg-secondary-hover focus-visible:bg-secondary-hover",
+      "bg-secondary text-foreground hover:bg-secondary-hover",
     // Hành động phụ nằm trong hàng, mờ đi lúc thường.
     variant === "ghost" &&
-      "bg-transparent text-muted hover:bg-background hover:text-foreground focus-visible:bg-background focus-visible:text-foreground",
+      "bg-transparent text-muted hover:bg-background hover:text-foreground",
   );
 }
 
@@ -34,8 +35,8 @@ function getVariantClasses(variant: ButtonVariant): string {
     "px-4 py-2.5 text-sm font-medium transition-colors",
     // Nhãn tiếng Việt dài thì cho xuống dòng, đừng để tràn. Luật T15.
     "max-w-full text-center leading-tight [overflow-wrap:anywhere]",
-    // Focus bàn phím trông giống hover, không ring (I13)
-    "focus-visible:outline-hidden",
+    // Focus bàn phím: vòng mờ, chỉ hiện khi Tab tới, bấm chuột không thấy (I13)
+    "outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface",
     "disabled:cursor-not-allowed disabled:not-aria-busy:opacity-50",
     getVariantClasses(variant),
   )}
@@ -54,7 +55,7 @@ function getVariantClasses(variant: ButtonVariant): string {
 </Button>
 ```
 
-- Spinner **thế chỗ icon**, cùng `size-4`, chữ giữ nguyên. Nút không đổi bề rộng, hàng nút không xô.
+- Spinner **thế chỗ icon**, cùng `size-4`, chữ giữ nguyên. Nút không đổi bề rộng, hàng nút không xô. **Nút chỉ chữ** (không icon để thế chỗ): nút `relative`, chữ thêm `invisible` để vẫn giữ bề rộng, spinner `absolute inset-0 m-auto` nằm giữa.
 - Không đổi chữ sang "Đang gửi…": chữ dài ngắn khác nhau là nút co giãn. Đổi thì phải giữ `min-w` bằng bản cũ.
 - `disabled` khi đang xử lý nhưng **không mờ `opacity-50`** như nút khoá thường: vì vậy class gốc ghi `disabled:not-aria-busy:opacity-50` (Tailwind v4), nút đang xử lý vẫn đậm, chỉ spinner nói đang chạy. Mờ đi thì đọc ra là "bấm không được vì sai gì đó".
 
@@ -67,7 +68,7 @@ function getVariantClasses(variant: ButtonVariant): string {
 - **Không `white-space: nowrap`.** Đo thật ở focus.camp: hộp 140px, nút nowrap rộng 192px, tràn 60px ra ngoài. `leading-tight` để hai dòng không dính nhau. Luật `T15`.
 - **Không `shadow`.** Nút nằm trong trang (`M15`).
 - Chỉ `transition-colors`. Nút không phóng to, không nhấc lên, không đổ bóng thêm khi hover (`F22`).
-- **Không ring khi focus.** Bàn phím Tab tới thì nút đổi nền y như lúc hover, bấm chuột thì không hiện gì (`focus-visible`). `outline-hidden` giữ outline trong suốt để chế độ tương phản cao của Windows vẫn thấy (`I13`).
+- **Focus bàn phím là vòng `ring-foreground/50` cách nút 2px**, chỉ hiện khi Tab tới (`focus-visible`), bấm chuột không bao giờ thấy. Mức thấp nhất đạt 3:1 (`I13`). Bản cũ "focus y như hover" gần như không thấy trên nút `primary` (1,28:1).
 - **Nút trong form hoặc footer modal** thêm `h-11 md:h-10` để cao đúng bằng ô nhập (`budgets.md`). Nút thường để `py-2.5` tự lo.
 - Không có prop `size`. Cần nút khác cỡ thì truyền `className` — đỡ đẻ ra ma trận variant nhân size (`I6`).
 - Logic class nằm trong `getVariantClasses()` ngoài JSX, không nhét ternary vào giữa markup.
@@ -82,7 +83,7 @@ tới thì nền đậm lên một bậc:
 ```tsx
 <Button
   variant="ghost"
-  className="bg-rose-500/10 text-rose-700 hover:bg-rose-500/15 hover:text-rose-700 focus-visible:bg-rose-500/15 focus-visible:text-rose-700 dark:text-rose-400"
+  className="bg-rose-500/10 text-rose-700 hover:bg-rose-500/15 hover:text-rose-700 dark:text-rose-400"
 >
   <Trash2 className="size-4 shrink-0" aria-hidden />
   Xoá
@@ -95,7 +96,7 @@ tới thì nền đậm lên một bậc:
 - **Không viền đỏ** (`M30`). Nền mờ đã đủ tách nút khỏi nền trang.
 - Icon cùng màu chữ — không để icon `text-muted` riêng.
 - Bị khoá thì vẫn `opacity-50` như mọi nút.
-- Chỉ áp cho **nút đứng riêng**: hàng nút, hộp xác nhận, khu nguy hiểm trong cài đặt. **Mục trong menu** (dropdown, sidebar, đăng xuất) vẫn trung tính lúc thường, rê vào mới đỏ — xem `I4`.
+- Chỉ áp cho **nút đứng riêng**: hàng nút, hộp xác nhận, khu nguy hiểm trong cài đặt. **Mục trong menu** (dropdown, sidebar) vẫn trung tính lúc thường, rê vào mới đỏ — xem `I4`.
 
 > Chủ dự án chốt 21/09/2026: nút xoá là nền danger 10% + chữ danger. Bản trước
 > (xám lúc thường, rê vào mới đỏ) đã bỏ cho nút; vẫn giữ cho mục menu.
@@ -109,7 +110,7 @@ Vuông, cao **bằng đúng** nút chữ đứng cạnh nó, và luôn có `aria
 ```tsx
 <button
   aria-label="Lọc danh sách"
-  className="inline-flex size-10 cursor-pointer items-center justify-center rounded-xl border border-border-strong bg-surface text-muted outline-hidden hover:bg-background hover:text-foreground focus-visible:bg-background focus-visible:text-foreground"
+  className="inline-flex size-10 cursor-pointer items-center justify-center rounded-xl border border-border-strong bg-surface text-muted outline-hidden hover:bg-background hover:text-foreground"
 >
   <SlidersHorizontal className="size-4" aria-hidden />
 </button>

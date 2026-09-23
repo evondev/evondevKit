@@ -47,7 +47,7 @@ Cách khác cũng được: chèn phần tử đệm cuối hàng, `<div class="
 
 ---
 
-**R7. Chữ trong card ở mobile: tiêu đề `text-sm`, mô tả `text-sm`.** Card ở màn hẹp đã hẹp sẵn, `text-base` làm tiêu đề vỡ ba bốn dòng và mô tả đẩy card dài lê thê. Tới `sm` trở lên mới cho lên `text-base`.
+**R7. Chữ trong card ở mobile: tiêu đề giữ cỡ, mô tả `text-sm`.** Tiêu đề card `text-base font-semibold` **ở mọi breakpoint** (`D8`), luôn lớn hơn chữ bên trong một bậc (`T8`); dài thì `text-balance`, không hạ cỡ. Mô tả `text-sm` để card không dài lê thê. Bản cũ hạ tiêu đề xuống `text-sm` ở mobile, bằng cỡ mô tả, trái cả `T8` lẫn `D8`.
 
 **R8. Chữ GÕ ĐƯỢC không bao giờ xuống dưới 16px ở mobile.** `input`, `textarea`,
 `select` — dưới 16px thì iOS **tự phóng to cả trang** khi chạm vào ô, và không
@@ -101,7 +101,7 @@ sidebar mở, quá 6 cột là bắt đầu chật (đã dính 23/09/2026: bản
 | Padding trang | `p-4` | `sm:p-6` |
 | Padding card | `p-4`, tối đa `p-5` | xem `budgets.md` |
 | Chiều cao nút | `h-10` | xem `budgets.md` |
-| Tiêu đề trong card | `text-sm` | `text-base` |
+| Tiêu đề trong card | `text-base` | `text-base` (không đổi theo breakpoint, `D8`) |
 | Mô tả trong card | `text-sm` | `text-sm` hoặc `text-base` tuỳ loại trang |
 | Ngày tháng, nhãn phụ | `text-xs`, luôn nhỏ hơn tiêu đề một bậc | như trên |
 | Ô nhập, textarea, select | **`text-base`, không hạ.** Dưới 16px thì iOS tự zoom | `md:text-sm` |

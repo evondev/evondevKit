@@ -11,7 +11,7 @@ isActive && "bg-primary text-primary-foreground"
 // IconButton: hành động phụ trong dòng hoặc header
 "inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg text-muted transition-colors"
 "hover:bg-background hover:text-foreground"
-"outline-hidden focus-visible:bg-background focus-visible:text-foreground"
+"outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
 "disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted"
 ```
 
@@ -137,7 +137,7 @@ Icon trước chữ **không bắt buộc**, xem mặc định ở trên. Có th
 ```
 
 - **Mọi tab cùng `font-medium`**, kể cả tab chưa chọn. Đổi độ đậm lúc chọn làm chữ nở ra và cả hàng xô ngang.
-- Tab chưa chọn chữ `foreground/70`. Hover và focus bàn phím dùng **chung một nền `foreground/5`**, không ring (`I13`). Không dùng `--background` làm nền hover: tab hay nằm thẳng trên nền trang xám, tô `--background` ở đó thì rê vào không thấy gì.
+- Tab chưa chọn chữ `foreground/70`. Hover dùng nền `foreground/5`; focus bàn phím là vòng mờ như mọi nút (`I13`). Không dùng `--background` làm nền hover: tab hay nằm thẳng trên nền trang xám, tô `--background` ở đó thì rê vào không thấy gì.
 - Bàn phím theo WAI-ARIA: chỉ tab đang chọn nằm trong vòng Tab, mũi tên trái/phải chuyển và chọn luôn, Home/End về hai đầu.
 - Số đếm là số trơn `text-muted`, không pill, không màu. Không có số thì bỏ, đừng dựng số giả.
 - Hàng tab không bao giờ wrap, màn hẹp thì cuộn ngang trong khung `scrollbar-clean` (`R6`). Từ 6 tab trở lên thì gom phần dư vào tab "Thêm" mở dropdown (`R10`).
@@ -153,7 +153,7 @@ isSelected && "border-transparent bg-secondary text-foreground"
 
 - **Mọi tab luôn có `border`**, tab chưa chọn là `border-transparent`. Không thì lúc bấm chuyển, tab đang chọn dày thêm 2px và cả hàng xô sang phải.
 - **Tab đang chọn: nền `--secondary`, chữ `--foreground`, viền trong suốt.** Đây là bậc xám duy nhất chìm đủ rõ trên **cả** card trắng lẫn nền trang `#f4f4f6`.
-- **Không dùng `bg-surface` (trắng) và cũng không dùng `bg-surface-hover`.** Hai bậc đó chỉ chênh nền trắng 1-3%, cộng viền `--border-strong` (1,1:1) thì liếc vào không thấy tab nào đang chọn (đã dính 21/09/2026 với `bg-surface`, và 23/09/2026 với `bg-surface-hover` — chủ dự án nhìn bảng khách hàng và nói "tab active khá mờ").
+- **Không dùng `bg-surface` (trắng) và cũng không dùng `bg-surface-hover`.** Hai bậc đó chỉ chênh nền trắng 1-3% thì liếc vào không thấy tab nào đang chọn (đã dính 21/09/2026 với `bg-surface`, và 23/09/2026 với `bg-surface-hover` — chủ dự án nhìn bảng khách hàng và nói "tab active khá mờ").
 - **Ô đang chọn phải chênh với nền NẰM DƯỚI nó**, không phải chênh với mấy tab anh em. Cùng một class mà đổi chỗ đặt (card trắng ↔ nền trang xám) là đổi luôn độ rõ, nên chọn bậc xám nào cũng phải thử ở cả hai nền (`N2`).
 - **Không đặt hàng `boxed` vào một khối xám riêng.** Nó nằm thẳng trên nền trang hoặc trên card. Bọc thêm khối xám là thành `segmented` hỏng: rãnh to, đậm, và ô trắng lọt thỏm.
 - **`h-9 rounded-lg`**, cao dưới 40px nên bo 8px (`F1`), không ngoại lệ. Đã thử 12px và bỏ (21/09/2026): tab 36px bo 12px là quá tròn so với chiều cao. Đứng cạnh ô tìm `h-10` là lệch đúng một bậc, chấp nhận được.
@@ -163,7 +163,7 @@ isSelected && "border-transparent bg-secondary text-foreground"
 
 ```ts
 // Hàng: đường kẻ chạy hết bề ngang, vạch của tab đang chọn đè lên nó.
-"flex min-w-full gap-2 border-b border-foreground/10 px-2"
+"flex min-w-full gap-2 border-b border-border-strong px-2"
 // Tab: vạch là ::after nên không đẩy chiều cao.
 "relative h-10 rounded-xl px-2 after:absolute after:inset-x-2 after:-bottom-px after:h-0.5 after:rounded-full"
 isSelected && "text-foreground after:bg-foreground"
@@ -171,7 +171,6 @@ isSelected && "text-foreground after:bg-foreground"
 ```
 
 - **Hàng tab nằm chung hàng với ô tìm và nút (toolbar trên bảng) thì bỏ đường kẻ hết hàng, chỉ giữ vạch 2px dưới tab đang chọn.** Đường kẻ chạy nửa hàng rồi cụt ở mép ô tìm trông dở dang, và vì khung cuộn lùi `-mx-2` nên đầu trái của nó còn thò ra ngoài mép card bên dưới 8px (đã dính 23/09/2026). Đường kẻ hết hàng chỉ dùng khi hàng tab đứng riêng một hàng, như trang chi tiết.
-- **Đường kẻ hết hàng `border-foreground/10`, không `--border-strong`.** `--border-strong` (#f2f2f2) trên card trắng là 1,1:1, coi như không có: hàng tab và hàng chip bên dưới dính thành một khối control, không có ranh giới (đã dính 23/09/2026).
 - Vạch màu `--foreground`, không màu nhấn có sắc: nhấn đã có ở nút chính của trang (`M3`).
 - Khung cuộn lùi `-mx-2` để chữ tab đầu thẳng cột với nội dung bên dưới.
 - Tab đang chọn không tô nền, không đổi nền lúc hover. Vạch là tín hiệu duy nhất.
@@ -282,13 +281,13 @@ hai cụm: **số đếm bên trái, mọi control bên phải**.
 ```ts
 // Nút số trang: vuông h-9, luôn có border để lúc chuyển trang không xô hàng
 "inline-flex h-9 min-w-9 items-center justify-center rounded-lg border px-2 text-sm font-medium tabular-nums"
-isCurrent && "border-border-strong bg-surface-hover text-foreground"   // + aria-current="page"
+isCurrent && "border-transparent bg-secondary text-foreground"   // + aria-current="page"
 !isCurrent && "border-transparent text-foreground/70 hover:bg-foreground/5 hover:text-foreground"
 // Mũi tên ‹ ›: IconButton h-9 w-9, có aria-label "Trang trước" / "Trang sau"
 ```
 
 - **Không bao giờ wrap, không nhảy chỗ.** Nav luôn ở cụm phải, cùng hàng với số đếm, bất kể có bao nhiêu trang. Chật thì **bớt số trang trước**: bỏ `2 3 4 5`, chỉ còn `‹ 1 … 12 … 129 ›`. Màn hẹp dưới `sm` thì chỉ còn `‹ 12 / 129 ›`. Không đẩy nav xuống dòng hai (đã dính 22/09/2026: ví dụ nhiều trang thì nav rớt xuống căn trái, ví dụ ít trang lại nằm phải).
-- **Trang đang chọn giống tab `boxed`**: nền `--surface-hover` + viền `--border-strong`. **Không dùng nền trắng + viền**: đứng cạnh select `10 ▾` thì nó trông y như ô input, người dùng tưởng là ô gõ số trang để nhảy.
+- **Trang đang chọn chép đúng class tab `boxed` đang chọn**: nền `--secondary`, viền trong suốt. **Không dùng nền trắng + viền**: đứng cạnh select `10 ▾` thì nó trông y như ô input, người dùng tưởng là ô gõ số trang để nhảy.
 - **Select "Mỗi trang" nằm trong cụm phải, sát nav**, không đứng ngay sau số đếm. Số đếm dài ra theo trang ("1 tới 10" rồi "1.271 tới 1.280"), đặt select sau nó là select xê dịch mỗi lần chuyển trang.
 - **Cửa sổ trang luôn đủ 7 ô** (tính cả `…`) khi tổng số trang lớn hơn 7. Ở gần hai đầu thì lấp thêm số cho đủ 7:
 

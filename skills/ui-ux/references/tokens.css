@@ -6,7 +6,8 @@
 :root {
   /* ===== FONT, KHAI MỘT LẦN, DÙNG CHUNG CHO CẢ SÁNG LẪN TỐI =====
      Một font cho cả app. Phân vai bằng weight, không bằng font thứ hai:
-     heading 700 + tracking-tight, body 400, nhãn phụ 500. */
+     heading 600, body 400, nhãn phụ 500. tracking-tight chỉ cho chữ có dấu từ
+     text-3xl trở lên, xem T2 trong rules-type.md. */
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   /* ============================================================== */
 
@@ -33,9 +34,10 @@
   /* Đậm hơn ĐÚNG một bậc. Cho viền Ô NHẬP và NÚT OUTLINE (viền là thứ duy nhất
      báo "đây là chỗ gõ / chỗ bấm", vì cả hai cùng nền trắng với card), đường kẻ
      khung app và viền card khi hover. Đây là token viền thứ hai và cũng là token
-     cuối, xem luật M14, M16. Chỉ 1.1:1 với nền trắng: đánh đổi thẩm mỹ có chủ ý,
+     cuối, xem luật M14, M16. ~1.27:1 với nền trắng: đánh đổi thẩm mỹ có chủ ý,
      xem P3 trong styles.md. */
-  --border-strong: #f2f2f2;
+  --border-strong: #e4e4e7;   /* nhích từ #f2f2f2 (1.1:1) ngày 23/09/2026: chủ dự án thấy
+                                 viền ô nhập, select, textarea, radio quá mờ. */
 
   /* Bậc hover cho nút phụ và cho dòng danh sách. Cần biến riêng vì --border
      và --background chênh nhau quá ít, hover bằng --border là gần như vô hình. */
@@ -72,10 +74,10 @@
   /* ===== MÀU MANG NGHĨA: nguy hiểm, lỗi, trạng thái. Luật M7, M30, I4. =====
      Có Tailwind thì cứ viết class (`text-rose-700`...), mã ở đây là CHÍNH các
      class đó của Tailwind v4 đổi ra hex, nên hai cách cho ra cùng một màu.
-     Không có Tailwind thì dùng var(--danger)... Bảng đối chiếu class ↔ token ở
-     rules-color.md, mục "Không dùng Tailwind". Không thêm sắc thứ ba (M30). */
+     Không có Tailwind thì dùng var(--danger)... Bảng đối chiếu class ↔ token nằm
+     ngay trong bảng M7 và M30 của rules-color.md. Không thêm sắc thứ ba (M30). */
 
-  /* Nguy hiểm — xoá, đăng xuất: lời nhắc TRƯỚC khi bấm. Không viền, không banner. */
+  /* Nguy hiểm — xoá, huỷ tài khoản (không phải đăng xuất): lời nhắc TRƯỚC khi bấm. Không viền, không banner. */
   --danger: #c70036;                       /* rose-700: chữ + icon. 5.2:1 trên --danger-bg */
   --danger-bg: rgb(255 32 86 / 0.1);       /* rose-500/10 */
   --danger-bg-hover: rgb(255 32 86 / 0.15);/* rose-500/15, chỉ cho nút đứng riêng */
@@ -121,8 +123,9 @@
   --background: #05060f;
   /* Nút phụ vẫn phải CHÌM hơn card, y như ở nền sáng. Lấy chính nền trang.
      Sáng hơn card là đảo ngược quan hệ, xem luật M21. */
-  --secondary: #05060f;
-  --secondary-hover: #12151f;
+  --secondary: #1c202d;   /* KHÔNG trùng --background: trùng thì tab boxed đang chọn và nút
+                              secondary đặt trên nền trang tối biến mất (sửa 23/09/2026) */
+  --secondary-hover: #252a39;
 
   --background-hover: #171a26;
   --surface-hover: #141722;  /* sáng hơn --surface một chút, luật I10 */

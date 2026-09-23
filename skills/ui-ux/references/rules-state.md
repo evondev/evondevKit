@@ -10,9 +10,13 @@ Nguồn duy nhất cho nút, hover, focus, danh sách, modal. Con số ở `budg
 > `danger`, không outline" và "nút mặc định không icon". **Cả hai đã bỏ.** Chủ dự
 > án chốt ngược lại ở focus.camp ngày 13/09/2026. Đừng hồi sinh luật cũ.
 
-**I1. Nút mặc định là viền + icon, không phải nền màu nhấn.**
+**I1. Nút mặc định là nút viền, không phải nền màu nhấn. Icon trái chỉ khi nó nói đúng hành động.**
 
-Dựng nút mới → nút viền, icon lucide **bên trái** chữ.
+Dựng nút mới → nút viền. Gắn icon lucide **bên trái** chữ khi có một glyph gọi đúng tên
+hành động: thêm (`plus`), lọc, tải xuống, xuất, sao chép, chia sẻ. Nút form và nút
+trong modal (Lưu, Huỷ, Gửi, Tạo công việc) **chỉ có chữ**: tiêu đề đã nói việc gì, icon
+chỉ lặp lại (Linear, GitHub, Stripe, Polaris). Bản 13/09/2026 bắt mọi nút có icon, nới
+lại ngày 23/09/2026.
 
 *Vì sao:* nguyên lời chủ dự án — *"không nên để brand bị nhiều màu quá trong dự
 án"*. Nút nền nhấn rải khắp nơi thì màu thương hiệu loang ra, tới lúc có một nút
@@ -20,7 +24,8 @@ Dựng nút mới → nút viền, icon lucide **bên trái** chữ.
 
 | Loại nút | Dùng |
 | --- | --- |
-| Mặc định: thêm, sửa, mở, lọc, xem… | viền + icon trái + chữ |
+| Mặc định | viền + chữ; thêm icon trái khi glyph gọi đúng tên hành động (thêm, lọc, tải xuống, xuất) |
+| Nút gửi form, nút trong modal | chỉ chữ: động từ + đối tượng ("Tạo công việc", "Gửi lời mời") |
 | Hành động chính **duy nhất** của một khu, thật cần nổi | nền màu nhấn |
 | Nút phụ cần rõ hơn ghost: nút rộng hết card, nút cạnh `primary` | nền `--secondary`, không viền |
 | Chỉ icon | nút cỡ icon, có `aria-label`, cao bằng nút chữ cạnh nó |
@@ -35,12 +40,15 @@ nhau là chưa quyết định hộ người dùng.
 
 **I4. Hành động nguy hiểm không đỏ đặc.**
 
-Áp cho xoá, **đăng xuất**, huỷ tài khoản, rời nhóm. Có hai dạng tuỳ chỗ đứng:
+Áp cho hành động **mất dữ liệu hoặc mất quyền truy cập**: xoá, huỷ tài khoản, rời nhóm.
+**Đăng xuất không thuộc nhóm này**: không mất gì, đăng nhập lại là xong, nên nó là mục
+trung tính, đặt cuối menu sau một đường chia (GitHub, Linear, Vercel, Notion đều vậy;
+bỏ khỏi I4 ngày 23/09/2026). Có hai dạng tuỳ chỗ đứng:
 
 | Chỗ | Lúc thường | Rê vào / Tab tới |
 | --- | --- | --- |
 | **Nút đứng riêng** — hàng nút, hộp xác nhận, khu nguy hiểm | nền `rose-500/10`, chữ + icon `rose-700` | nền `rose-500/15` |
-| **Mục trong menu** — dropdown, sidebar, đăng xuất | trung tính như mục khác | chữ + icon đỏ, nền `rose-500/10` |
+| **Mục trong menu** — dropdown, sidebar | trung tính như mục khác | chữ + icon đỏ, nền `rose-500/10` |
 
 Nút thì nền mờ đỏ luôn hiện (chủ dự án chốt 21/09/2026), code ở
 `components/button.md`. Không bao giờ `bg-rose-500 text-white`, không viền đỏ.
@@ -49,14 +57,14 @@ Phần dưới là cho **mục trong menu**. Khi rê vào thì đổi **cả hai
 
 ```html
 <button class="group text-foreground hover:bg-rose-500/10 hover:text-rose-700 dark:hover:text-rose-400">
-  <i data-lucide="log-out" class="size-4 text-muted group-hover:text-rose-700 dark:group-hover:text-rose-400"></i>
-  Đăng xuất
+  <i data-lucide="trash-2" class="size-4 text-muted group-hover:text-rose-700 dark:group-hover:text-rose-400"></i>
+  Xoá dự án
 </button>
 ```
 
 "Trung tính" nghĩa là **trông y như các mục khác cùng chỗ** — trong menu thì chữ
 `--foreground` như mọi mục, trong hàng nút thì là nút phụ. Không có nghĩa là
-`text-muted`: mục đăng xuất mà nhạt hơn các mục khác thì đọc ra là đã bị khoá
+`text-muted`: mục xoá mà nhạt hơn các mục khác thì đọc ra là đã bị khoá
 (`I8`).
 
 - **Nền đỏ ~10%**, không hơn (nút đứng riêng được `/15` lúc rê vào vì nó đã sẵn `/10`). Đậm hơn thì nó thành một dải màu cảnh báo, không còn là trạng thái rê chuột.
@@ -75,11 +83,13 @@ loạt là một PR không ai duyệt nổi.
 `className`. Một bản `Button` ở project cũ của bro đã phình lên 8 variant, 3 size
 và một variant `glow` dùng ba lớp radial gradient — đó là ví dụ ngược.
 
-**I7. "Xem tất cả", "Đọc thêm" là nút, không phải link chữ.**
+**I7. "Xem tất cả", "Đọc thêm" là nút `ghost`, không phải nút nền xám.**
 
-Đây là hành động dẫn sang một màn khác, nên nó phải trông bấm được.
+Nó dẫn sang màn khác và là hành động phụ của khối: phải trông bấm được, nhưng không
+được nặng ngang tiêu đề. Stripe, GitHub, Polaris đều để nó nhẹ ở góc header.
 
-- Dùng **nút phụ**, không viền phát sáng, không icon mũi tên.
+- Dùng **nút `ghost` `h-8`**: chữ `text-foreground/70`, rê vào mới có nền và chữ đậm lên. Không icon mũi tên. Bản cũ dùng `secondary` nền xám cao 40px ở đầu mọi card, card nào cũng có một khối xám kéo mắt (bỏ 23/09/2026).
+- Không phải link chữ màu trơn: vẫn là nút, có vùng bấm và nền khi rê vào.
 - **Căn phải.** Khối có header thì đặt ở header bên phải, cùng hàng với tiêu đề. Danh sách phải đọc hết mới bấm thì đặt cuối khối, vẫn căn phải, vẫn **trong khung** (xem `F3`).
 
 **I8. Nút phụ không được trông như đã bị khoá.** Chữ nhạt trên nền nhạt thì người
@@ -142,30 +152,31 @@ Thiết bị không có chuột thì không có hover: nút ẩn-hiện-khi-rê 
 **I12. Chỉ đổi màu khi chuyển trạng thái.** Ngoại lệ duy nhất là card hover được
 `transition-all`.
 
-**I13. Không vòng ring khi focus. Focus bằng bàn phím trông GIỐNG HOVER.**
+**I13. Focus bàn phím là một vòng mờ, chỉ hiện khi dùng bàn phím.**
 
-Vòng ring (dù là `outline` của trình duyệt hay `ring-*` dựng bằng `box-shadow`) làm
-menu và nút trông như đang lỗi. Nhưng bỏ trắng thì người dùng bàn phím không biết
-mình đang đứng ở đâu. Cách giải: **dùng lại đúng trạng thái hover** làm dấu hiệu
-focus. Hết ring, mà vẫn thấy.
+`focus-visible` **không bao giờ hiện khi bấm chuột**, chỉ khi Tab tới. Vì vậy vòng
+focus không làm giao diện nặng lên với người dùng chuột, mà người dùng bàn phím
+thì thấy rõ mình đang đứng ở đâu. Linear, GitHub, Vercel, Polaris đều làm vậy.
 
 | Phần tử | Focus bàn phím |
 | --- | --- |
-| Mục menu, nút viền, nút ghost | `focus-visible:outline-hidden focus-visible:bg-background` — y như hover |
-| Nút `primary` | `focus-visible:outline-hidden focus-visible:bg-primary-hover` |
-| Ô nhập, textarea, select, ô chọn dạng card | **Viền + ring mờ**: `focus:border-focus focus:ring-2 focus:ring-focus`. Ngoại lệ duy nhất có ring, xem dưới bảng |
-| Link chữ | `focus-visible:underline` |
+| Nút (mọi dạng), link sidebar, tab, chip, checkbox, radio, công tắc, tay cầm thanh trượt | `outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface` |
+| Mục trong menu, dropdown, listbox, lệnh trong command palette | **tô nền như hover** (`data-[highlighted]:bg-background`): phím mũi tên dời đúng một chỗ sáng, vòng ring ở đây thừa |
+| Ô nhập, textarea, select, ô chọn dạng card | viền + ring mờ: `focus:border-focus focus:ring-2 focus:ring-focus`, xem dưới bảng |
+| Link chữ | `focus-visible:underline` + vòng như nút |
 
-**`focus-visible`, không phải `focus`**, trừ ô nhập. Bấm chuột thì không hiện gì,
-chỉ khi dùng bàn phím mới hiện. Ô nhập thì dùng `focus` vì người dùng cần thấy
-mình đang gõ vào ô nào, dù vào bằng chuột hay bàn phím.
+- **`ring-foreground/50` là mức thấp nhất đạt 3:1 trên nền trắng** (WCAG 1.4.11). `/40` là 2,3:1, trượt. Nền tối dùng `ring-white/50`.
+- **`ring-offset-2`** tách vòng khỏi mép nút một khe 2px, để vòng không dính vào viền nút thành một viền dày.
+- Đã thử và bỏ (21–23/09/2026): **focus y như hover**. Nền `--background` trên nút trắng chỉ 1,1:1, nút `primary` đổi sang `primary-hover` chỉ 1,28:1, checkbox và radio chỉ có ring 10%: Tab qua cả form gần như không thấy mình ở đâu. Ba lượt rà skill độc lập cùng chỉ ra lỗi này.
+
+**`focus-visible`, không phải `focus`**, trừ ô nhập. Ô nhập dùng `focus` vì người dùng
+cần thấy mình đang gõ vào ô nào, dù vào bằng chuột hay bàn phím.
 
 **Vì sao ô điền được ring mà nút thì không.** Chủ dự án chốt 21/09/2026, đảo bản
 "ô chỉ đổi viền": viền đổi màu một mình thì trong form nhiều ô khó thấy ô nào
 đang gõ, nhất là select đang mở. Ring ở đây là `--ring-focus` (màu nhấn 10%) dày
-2px (`ring-2`, không `ring-4`: `F20`), **mờ tới mức đọc ra là vầng sáng quanh ô**, không phải vòng viền thứ hai. Nút,
-mục menu, tab vẫn không ring như bảng trên. Ô lỗi cùng độ dày, chỉ đổi sang đỏ:
-`border-red-500 ring-2 ring-red-500/10`.
+2px (`ring-2`, không `ring-4`: `F20`), **mờ tới mức đọc ra là vầng sáng quanh ô**, không phải vòng viền thứ hai. Ô lỗi lúc thường chỉ viền đỏ `border-red-500` + câu lỗi, **không quầng**; quầng đỏ
+`ring-2 ring-red-500/10` chỉ hiện khi ô lỗi đang focus (xem `input.md`).
 
 **`outline-hidden` (Tailwind v4) hay `outline-none` (v3)**, đừng dùng `outline: none`
 thuần hay `outline-none` của v4. Hai class kia làm outline **trong suốt** chứ không
@@ -186,8 +197,8 @@ sáng. Không dùng Radix thì khi chuột vào mục nào, gọi `.focus()` cho
 
 **I14. Bỏ luôn cả dấu hiệu thay thế là một quyết định, không phải một mặc định.**
 
-Mặc định của skill là **không ring, nhưng có nền giống hover** (`I13`). Bỏ luôn cả
-nền, tức bấm Tab không thấy gì, thì người dùng bàn phím không còn biết mình đang
+Mặc định của skill là **vòng mờ chỉ hiện khi dùng bàn phím** (`I13`). Bỏ luôn cả
+vòng đó, tức bấm Tab không thấy gì, thì người dùng bàn phím không còn biết mình đang
 đứng ở nút nào. focus.camp đã làm vậy (16/09/2026) và ghi rõ đánh đổi. Nếu làm
 thì:
 
@@ -210,8 +221,9 @@ màu đè lên ảnh thì không đọc ra là "đang chọn" — dùng vòng `b
 **I16. Dữ liệu nhiều thì phân trang, đừng đổ hết ra.**
 
 Danh sách hay bảng quá khoảng 25 dòng thì thêm phân trang, hoặc nút tải thêm.
-Kèm theo phân trang thì luôn hiện **tổng số** và **đang xem tới đâu**: "51 tới 75
-trong 312 dòng". Thiếu con số đó thì phân trang chỉ là mấy cái nút vô nghĩa.
+Nguồn dữ liệu trả về tổng thì hiện **tổng số** và **đang xem tới đâu**: "51 tới 75
+trong 312 dòng". Không có tổng (API phân trang bằng con trỏ, như Stripe, Linear) thì
+chỉ "‹ Trước / Sau ›" hoặc "Tải thêm", **không bịa tổng** (`N7`, `N10`).
 
 **I17. Ngưỡng giấu nội dung sau một cú bấm:** chỉ dùng accordion hay tab khi danh
 sách dài hơn 6 mục, hoặc mỗi phần trả lời dài quá 3 dòng. Dưới ngưỡng đó thì

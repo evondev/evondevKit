@@ -54,7 +54,7 @@ Mỗi luật gu flat có dòng *"Gu flat"* ngay tại chỗ. Thấy dòng đó m
 | --- | --- |
 | Chữ thường | **4.5 : 1** so với nền ngay phía sau |
 | Chữ lớn (từ 24px, hoặc từ 18.66px đậm) | **3 : 1** |
-| Icon mang nghĩa, viền nút không nền | **3 : 1** so với nền kề bên |
+| Icon mang nghĩa; viền **ô nhập, checkbox, radio chưa chọn** | **3 : 1** so với nền kề bên. Nút có nhãn chữ **không** cần viền đạt 3:1 (WCAG 1.4.11: chữ đã nhận diện được nút) |
 
 Token mặc định:
 
@@ -62,17 +62,19 @@ Token mặc định:
 | --- | --- | --- | --- |
 | `--muted` (chữ phụ, placeholder) | 5.3 : 1 trên card, 4.8 : 1 trên nền trang | 6.1 : 1 | ✅ 4.5 |
 | `--border-focus` | 16.8 : 1 | 3.6 : 1 | ✅ 3 |
-| **Viền ô nhập, select, nút outline, checkbox, radio** (`--border-strong`) | 1.1 : 1 | ~1.5 : 1 | ❌ 3 |
+| **Viền ô nhập, select, nút outline, checkbox, radio** (`--border-strong`) | ~1.27 : 1 | ~1.5 : 1 | ❌ 3 |
 | **Track công tắc lúc tắt** (`muted/40`) | ~1.6 : 1 | | ❌ 3 |
 
 ⚠️ **Viền điều khiển KHÔNG đạt 3 : 1, và đó là đánh đổi có chủ ý.** Đạt thì cần viền
-xám cỡ `#8a8a91`; đã thử ngày 21/09/2026, chủ dự án thấy đậm và xấu, trả về. Skill
+xám cỡ `#8a8a91`; đã thử ngày 21/09/2026, chủ dự án thấy đậm và xấu, trả về. Mức cũ
+`#f2f2f2` (1.1:1) thì lại mờ quá, radio chưa chọn gần như vô hình; 23/09/2026 nhích lên
+`#e4e4e7`. Hai mốc này là hai đầu gu của dự án: đừng đậm hơn `#e4e4e7` nếu chưa hỏi. Skill
 bù bằng ba thứ khác để người dùng nhận ra ô nhập: nhãn luôn hiện phía trên
 (`I26`), placeholder, và viền + ring khi focus.
 
 Dự án **phải đạt WCAG AA đầy đủ** (cơ quan nhà nước, y tế, ngân hàng) thì thêm
 token riêng cho viền điều khiển (`--border-control: #8a8a91`, nền tối `#5e6578`)
-và đổi class của ô nhập, select, nút outline, checkbox, radio sang nó; track
+và đổi class của ô nhập, select, checkbox, radio sang nó (nút outline thì không cần); track
 công tắc lúc tắt lên `muted/75`. **Đừng** đổi thẳng
 `--border-strong`: đường kẻ sidebar, tab, badge dùng chung token đó sẽ đậm theo.
 

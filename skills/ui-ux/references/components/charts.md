@@ -28,8 +28,8 @@ trong bảng chú giải donut); màu nhạt không bao giờ là thứ duy nh�
 (`N4`). Chấm chú giải dùng đúng class của cột.
 
 **Màu chỉ được đổi sắc khi nó mang nghĩa trạng thái**, và phải trùng đúng bảng
-trạng thái của app: đỏ là quá hạn hoặc hỏng, amber là cần chú ý, emerald là
-xong. Cột "quá hạn" tô đỏ thì được. Cột "tháng 3" tô đỏ thì không.
+trạng thái của app: đỏ là hỏng hoặc thất bại, amber là quá hạn hoặc cần chú ý,
+emerald là xong. Cột "quá hạn" tô amber thì được (`M7`, `list-row.md`). Cột "tháng 3" tô đỏ thì không.
 
 **Ô số liệu thì con số để nguyên màu chữ chính.** Đừng tô "Đang làm" xanh,
 "Quá hạn" đỏ, "Hoàn thành" xanh lá. Bốn màu trong một hàng là dấu hiệu chưa

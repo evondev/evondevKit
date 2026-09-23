@@ -71,13 +71,13 @@ panel trượt hoặc trang riêng.
 - **Đường chia header/footer chỉ có khi thân thật sự cuộn.** Form hai ba ô không cuộn thì bỏ cả hai đường, dùng khoảng trắng (`gap-6`). Ba khối chia kẻ cho một form ngắn là nặng hơn nội dung.
 - **Mô tả dưới tiêu đề chạy tới sát cột nút ✕**: chỉ header chừa `pr-10` cho nút đóng, đừng đặt `max-w` hẹp cho câu mô tả. Thêm `text-pretty` để không rớt một chữ xuống dòng cuối (đã dính 22/09/2026: "…để tham gia / nhóm.").
 - Có ô nhập nên **bấm ra ngoài không đóng** (`I20`); đóng bằng ✕, Huỷ, Esc. Mở ra thì tiêu điểm vào ô đầu tiên.
-- Nút chính ở footer là `primary` (một hành động duy nhất của modal, `I2`), **có icon trái** theo `I1` (mời thì `send` hoặc `user-plus`). Nút Huỷ `secondary`. Cả hai `h-11 md:h-10`, cao bằng ô nhập.
-- **Trạng thái đang gửi**: spinner (`loader-circle animate-spin`) **thay đúng chỗ icon**, chữ giữ nguyên, nút `disabled` + `aria-busy`. Nút không có icon mà chèn spinner vào là nút rộng ra, đẩy Huỷ sang trái (đã dính 22/09/2026). Xem `../components/button.md`.
-- Câu lỗi dưới ô nói **cách sửa kèm ví dụ đúng**: "Email chưa đúng định dạng, ví dụ ten@congty.vn".
+- Nút chính ở footer là `primary` (một hành động duy nhất của modal, `I2`), **chỉ có chữ** theo `I1`: "Gửi lời mời", không icon. Nút Huỷ `secondary`. Cả hai `h-11 md:h-10`, cao bằng ô nhập.
+- **Trạng thái đang gửi**: nút chỉ chữ thì **spinner đè lên giữa nút, chữ `invisible`** (vẫn chiếm chỗ), nút `disabled` + `aria-busy`. Chèn spinner cạnh chữ là nút rộng ra, đẩy Huỷ sang trái (đã dính 22/09/2026). Xem `../components/button.md`.
+- Câu lỗi dưới ô nói **cách sửa**, theo bảng "Ô trống thì viết gì" trong `form.md` (một nguồn): "Email phải có dấu @".
 
 ## Panel trượt
 
-Trượt từ phải, rộng cố định `w-[28rem]`, dùng khi nội dung dài hoặc người dùng
+Trượt từ phải, `w-full sm:w-[28rem]` (dưới `sm` phủ hết bề ngang, 448px rộng hơn điện thoại 375px), dùng khi nội dung dài hoặc người dùng
 cần nhìn thấy danh sách phía sau. Không dùng panel cho một câu xác nhận.
 
 ## Dropdown
@@ -155,6 +155,15 @@ bấm không ăn, mất lòng tin ngay.
 
 Góc trên phải hoặc đáy giữa, chọn một chỗ rồi dùng suốt.
 
+**Vùng đọc cho trình đọc màn hình là cái khung chứa toast, có sẵn từ lúc tải trang**
+(`<section aria-live="polite">`, như Sonner), không phải từng toast. Gắn `role="status"`
+lên chính toast vừa chèn vào thì nhiều trình đọc màn hình không đọc. Dự án có Sonner
+hay toast của shadcn thì dùng nó, nó lo sẵn.
+
+**Màn hẹp dưới `sm` thì toast lên đỉnh màn, giữa.** Đáy màn là chỗ của nút chính của
+form; toast bật ra ở đáy đúng lúc vừa bấm nút là che mất nửa nút đó trong 4 giây (đã dính
+23/09/2026, form tạo công việc ở 375px).
+
 ```
 [✓] Đã sao chép liên kết                                  <- xong việc: một dòng, co theo chữ
 
@@ -170,7 +179,7 @@ Góc trên phải hoặc đáy giữa, chọn một chỗ rồi dùng suốt.
   <p class="min-w-0 flex-1 text-sm">Đã xoá đơn #2041</p>
   <div class="flex shrink-0 items-center gap-1">
     <!-- Hành động: nút thật, không phải chữ đậm trơn -->
-    <button type="button" class="h-8 cursor-pointer rounded-lg px-3 text-sm font-medium hover:bg-background focus-visible:bg-background outline-hidden">Hoàn tác</button>
+    <button type="button" class="h-8 cursor-pointer rounded-lg px-3 text-sm font-medium hover:bg-background outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface">Hoàn tác</button>
   </div>
 </div>
 ```

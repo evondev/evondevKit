@@ -12,7 +12,7 @@ const variantClasses = {
 };
 
 const stateClasses = error
-  ? "border-red-500 ring-2 ring-red-500/10"
+  ? "border-red-500 focus:ring-2 focus:ring-red-500/10"   // lúc thường chỉ viền đỏ, quầng chỉ khi đang gõ
   : "dark:border-transparent focus:border-focus focus:ring-2 focus:ring-focus";
 ```
 
@@ -20,9 +20,9 @@ const stateClasses = error
 
 - Input luôn `bg-surface`, không bao giờ trong suốt. Ô nhập trong suốt trên nền trang thì người dùng không thấy nó là ô nhập. Đây là luật cứng, kể cả khi thư viện gốc mặc định `bg-transparent`.
 - **Focus = viền `--border-focus` + ring mờ `--ring-focus` dày 2px (`ring-2`)** (`I13`, chủ dự án chốt 21/09/2026). Ring phải mờ tới mức là vầng sáng, không thành vòng viền thứ hai: đừng tăng độ đậm của `--ring-focus`. Ô lỗi cùng công thức, đổi sang đỏ. **Select, combobox dùng y hệt**, kể cả lúc đang mở (`components/choice-controls.md`).
-- **Viền dùng `--border-strong`, không phải `--border`.** Ô nhập cùng nền trắng với card, nên viền là thứ duy nhất báo "đây là chỗ gõ". Viền card và đường chia thì là trang trí, nhạt được; viền ô nhập thì không (`M14`). Viền này chỉ 1.1:1, chưa đạt WCAG 1.4.11: đánh đổi có chủ ý, xem `P3` trong `styles.md`.
+- **Viền dùng `--border-strong`, không phải `--border`.** Ô nhập cùng nền trắng với card, nên viền là thứ duy nhất báo "đây là chỗ gõ". Viền card và đường chia thì là trang trí, nhạt được; viền ô nhập thì không (`M14`). Viền này chỉ ~1.27:1, chưa đạt WCAG 1.4.11: đánh đổi có chủ ý, xem `P3` trong `styles.md`.
 - **Viền ô nhập và viền nút outline phải là CÙNG một class**, `border-border-strong`. Đặt ô nhập cạnh nút mà viền ô mờ hơn là đã lấy nhầm `border-border`. Đã dính 21/09/2026: helper chung cho ô nhập và textarea viết `border-border`, ô trông nhạt hơn hẳn nút đứng bên. Dựng xong thì grep `border-border\b` trong file ô nhập, textarea, select: phải ra 0.
-- Trạng thái lỗi cũng theo đúng công thức đó, chỉ đổi màu: viền đỏ đặc `red-500`, ring `red-500/10`. **Câu lỗi thì `red-600`**, không `red-500`: viền chỉ cần 3:1 nhưng chữ 14px cần 4.5:1, `red-500` trên nền trắng chỉ 3.8:1. Không Tailwind thì `--error`, `--error-ring`, `--error-text` trong `tokens.css`.
+- Trạng thái lỗi cũng theo đúng công thức đó, chỉ đổi màu: viền đỏ đặc `red-500`, **quầng `red-500/10` chỉ khi ô đang focus**. Quầng cả lúc nghỉ thì mỗi ô lỗi mang ba tín hiệu đỏ (viền, quầng, câu), form có bốn ô lỗi là đỏ loang cả màn (sửa 23/09/2026, như Stripe, GitHub). **Câu lỗi thì `red-600`**, không `red-500`: viền chỉ cần 3:1 nhưng chữ 14px cần 4.5:1, `red-500` trên nền trắng chỉ 3.8:1. Không Tailwind thì `--error`, `--error-ring`, `--error-text` trong `tokens.css`.
 - Bo `rounded-xl`, cùng bậc với nút, nên input và nút đứng cạnh nhau bằng vai.
 - **`text-base` trên mobile rồi thu về `md:text-sm`** — luật `R8`, áp cho cả `textarea` và `select`.
 - **`h-11 md:h-10`**: 40px trên desktop, bằng link sidebar và mục menu; 44px ở màn hẹp cho vừa ngón tay. Nút trong cùng form đổi theo y hệt (`budgets.md`). Form đăng nhập/đăng ký đứng riêng được lên `h-12`. Không dùng `h-12` làm mặc định trong app: thô, và lệch bậc với mọi thứ khác (đảo 22/09/2026).
@@ -39,7 +39,7 @@ Nhãn, ô, câu lỗi. Ba phần, và nhãn phải gắn vào ô theo `I26`:
   <label htmlFor={id} className="w-fit cursor-pointer text-sm font-medium">
     {label}
   </label>
-  <input id={id} placeholder="Nhập email của bạn" className={...} />
+  <input id={id} className={...} />
   {error ? <p className="text-sm text-red-600 dark:text-red-400">{error}</p> : null}
 </div>
 ```
@@ -47,8 +47,8 @@ Nhãn, ô, câu lỗi. Ba phần, và nhãn phải gắn vào ô theo `I26`:
 `id` phải là duy nhất trong trang. Hai field cùng `id` thì bấm nhãn nào cũng
 focus về ô đầu tiên. Dựng nhiều field thì dùng `useId()`.
 
-Placeholder viết theo `T25` — câu hướng dẫn, không phải ví dụ giả, và đúng ngôn
-ngữ đã chốt ở `T24`.
+Placeholder theo `T25`: mặc định không có, chỉ thêm khi nó nói điều nhãn chưa nói. Đúng
+ngôn ngữ đã chốt ở `T24`.
 
 ---
 
@@ -63,7 +63,6 @@ const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   <input
     id={id}
     type={isPasswordVisible ? "text" : "password"}
-    placeholder="Nhập mật khẩu của bạn"
     className="... w-full pr-11"
   />
   <button

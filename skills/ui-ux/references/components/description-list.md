@@ -13,7 +13,7 @@ Nằm trong card (`card.md`), mỗi hàng một cặp nhãn và giá trị, theo
   <div class="grid gap-1 sm:grid-cols-[10rem_minmax(0,1fr)] sm:items-baseline sm:gap-6">
     <dt class="text-muted">Trạng thái</dt>
     <dd><!-- badge M7, KHÔNG phải chữ trơn "Đang giao dịch" -->
-      <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">
+      <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-black/5">
         <span class="size-1.5 rounded-full bg-current"></span>Đang giao dịch
       </span>
     </dd>

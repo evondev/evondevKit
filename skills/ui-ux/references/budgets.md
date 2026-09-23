@@ -19,8 +19,8 @@ Skill này chỉ lo **màn hình trong app** — dashboard, danh sách, bảng, 
 | Token viền | 2 | một cho đường tóc, tối đa một bậc đậm hơn. Cộng `--border-focus`. Xem `M16` |
 | Tầng lồng khối | 2 | |
 | Độ dài dòng chữ | 75 ký tự | |
-| Dạng nút | 4 | `outline` viền+icon (mặc định), `primary` nền nhấn, `secondary` nền xám, `ghost`. Cộng nút chỉ-icon. Xem `I1`, `components/button.md` |
-| Bậc spacing | thang 4/8/12/16/20/24/32/40 | Không dùng số lẻ ngoài thang |
+| Dạng nút | 5 | `outline` (mặc định; icon trái khi glyph gọi đúng hành động), `primary` nền nhấn, `secondary` nền xám, `ghost`, và nút nguy hiểm nền `rose` mờ (`I4`). Cộng nút chỉ-icon. Xem `I1`, `components/button.md` |
+| Bậc spacing | thang 4/8/12/16/20/24/32/40 cho khoảng cách giữa các khối | Bên trong control (nút, badge, danh sách dày) được dùng nửa bậc 2/6/10 (`py-0.5`, `gap-1.5`, `py-2.5`, `space-y-0.5`). Ngoài hai thang này thì không |
 
 ---
 
@@ -36,7 +36,7 @@ Skill này chỉ lo **màn hình trong app** — dashboard, danh sách, bảng, 
 | Chiều cao dòng danh sách | 12–16px chiều dọc |
 | Chiều cao nút | `py-2.5` |
 | **Ô nhập, select, nút trong form** | **`h-11 md:h-10`** (44px màn hẹp, 40px từ `md`), ô và nút đổi cùng nhau. Form đăng nhập/đăng ký đứng riêng giữa trang được lên `h-12` |
-| Nút "xem tất cả", "đọc thêm" | `h-10`, ngang `px-3` tới `px-4`, căn phải |
+| Nút "xem tất cả", "đọc thêm" | `ghost` `h-8`, `px-3`, căn phải (`I7`) |
 | Viền card | đường tóc 1px, một token duy nhất |
 | Bóng card | **không có** |
 
@@ -87,7 +87,7 @@ Tám tên, và tám tên đó là **hết**. Không inline pixel ngoài thang (`
 | `xs` | nhãn, dấu thời gian |
 | `sm` | **mặc định của app** (`T6`): chữ nội dung, dòng danh sách, mô tả |
 | `base` | tên thẻ, tiêu đề card |
-| `md` | nút, tiêu đề cấp 4 |
+| `sm` + `font-medium` | nút (`button.md`). Tailwind không có `text-md` |
 | `lg` | tiêu đề khối (nhóm nhiều card), **tiêu đề trang chi tiết** |
 | `xl` | **tên của một trang**, ở mọi khổ màn |
 | `2xl` | chỉ cho hero của trang trình diễn |

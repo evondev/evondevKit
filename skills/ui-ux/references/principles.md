@@ -54,6 +54,10 @@ control chết; bước lỗi không có hình riêng; thanh bước thu gọn t
 làm nên "đang ở bước cuối" giống "đã xong hết", sửa thành để xám thì "Bước 2 / 3"
 lại đọc như thanh thiếu (đang làm là tầng thứ ba, nửa đậm).
 
+Ngoại lệ có tên: dòng bảng **đã chọn** và dòng **đang rê chuột** cùng một nền mờ, vì
+hai trạng thái đã tách bằng checkbox đã tick (chủ dự án chốt 23/09/2026, `I10`). Hình
+khác nhau không nhất thiết phải là nền khác nhau.
+
 *Phép thử:* che chữ đi, chỉ nhìn hình. Còn nói được đây là trạng thái nào không?
 
 ---
