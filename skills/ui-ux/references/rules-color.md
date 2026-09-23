@@ -52,7 +52,7 @@ Bảng màu của MỘT màn hình, không thêm:
 | Xanh lá | "Đang ổn", "đã xong": badge, thanh tiến độ xong (`M7`). Cố định, không lấy màu nhấn |
 | Hổ phách | "Cần chú ý": quá hạn, nộp trễ, bỏ lỡ |
 | Đỏ lỗi — `red` | Lỗi thật mà người dùng phải xử lý: bài bị từ chối, lỗi form |
-| Đỏ nguy hiểm — `rose` | Hành động không lấy lại được: xoá, huỷ tài khoản, rời nhóm. **Không** cho đăng xuất. Nút đứng riêng thì nền mờ + chữ đỏ luôn hiện; mục menu thì chỉ đỏ khi rê vào (`I4`) |
+| Đỏ nguy hiểm — `rose` | Hành động không lấy lại được: xoá, huỷ tài khoản, rời nhóm, và mục đăng xuất trong menu. Nút đứng riêng thì nền mờ + chữ đỏ luôn hiện; mục menu thì chỉ đỏ khi rê vào (`I4`) |
 
 Hai sắc đỏ là cố ý, không phải gõ nhầm — xem `M30`.
 
@@ -89,7 +89,7 @@ Bốn tông, không thêm. Trạng thái nào vào tông nào theo **nghĩa**, k
 | Tông | Nền / chữ | Token (không Tailwind) | Nghĩa | Ví dụ |
 | --- | --- | --- | --- | --- |
 | Xám | `bg-zinc-100 text-zinc-600` | `--neutral-bg` / `--neutral` | Chờ, nháp, chưa bắt đầu, trung lập | Tiềm năng, Nháp, Chờ duyệt |
-| Xanh lá | `bg-emerald-50 text-emerald-700` | `--success-bg` / `--success` | Đang ổn, đang chạy, đã xong | Đang giao dịch, Hoạt động, Đã thanh toán |
+| Xanh lá | `bg-emerald-50 text-emerald-700` | `--success-bg` / `--success` | Đang ổn, đang chạy, đã xong | Đang giao dịch, Hoạt động, Đã thanh toán, Đã giao |
 | Hổ phách | `bg-amber-50 text-amber-700` | `--warning-bg` / `--warning` | Cần chú ý | Quá hạn, Sắp hết hạn, Tạm dừng |
 | Đỏ | `bg-red-50 text-red-700` | `--error-bg` / `--error-strong` | Đã dừng, thất bại, bị từ chối | Ngừng giao dịch, Đã huỷ, Lỗi |
 
@@ -97,6 +97,12 @@ Bốn tông, không thêm. Trạng thái nào vào tông nào theo **nghĩa**, k
 nhạt tới mức chỉ chênh vài phần trăm với nền dưới nó: `zinc-100` (#f4f4f5) đặt lên dòng
 bảng đã chọn hay nền trang (#f4f4f6) là mất hẳn khung, "Tiềm năng" chỉ còn chấm với chữ
 (đã dính 23/09/2026). Vòng trong 5% giữ khung ở mọi nền mà không nặng thêm.
+
+**Một luồng có cả bước "đang" lẫn bước "xong" thì xanh dành cho "xong".** Đơn hàng:
+Chờ xử lý → **hổ phách** (người bán phải làm gì đó), Đang giao → **xám** (đang chạy nhưng
+không ai phải làm gì), Đã giao → **xanh**, Đã huỷ → **đỏ**. Để "Đang giao" cũng xanh thì
+hai trạng thái khác nghĩa trùng màu (`N2`). "Đang giao dịch" của khách hàng vẫn xanh vì
+luồng đó không có bước "xong".
 
 Nền tối: class Tailwind thì thêm `dark:` (nền `-500/15`, chữ `-400`), token thì
 khối `.dark` trong `tokens.css` đã đổi sẵn.
@@ -390,7 +396,7 @@ Có từ hai card trở lên trên màn thì quay về `M13` như thường.
 | | Sắc | Việc | Khi nào hiện | Ở đâu |
 | --- | --- | --- | --- | --- |
 | **Lỗi** | `red` | *Đã có gì đó sai*, phải sửa mới đi tiếp được | Sau khi người dùng làm sai | Ô nhập, câu lỗi, banner lỗi máy chủ |
-| **Nguy hiểm** | `rose` | *Bấm vào thì không lấy lại được* | Nút: luôn hiện, nền mờ. Mục menu: chỉ lúc rê vào (`I4`) | Xoá, huỷ tài khoản, rời nhóm (đăng xuất là mục trung tính) |
+| **Nguy hiểm** | `rose` | *Bấm vào thì không lấy lại được* | Nút: luôn hiện, nền mờ. Mục menu: chỉ lúc rê vào (`I4`) | Xoá, huỷ tài khoản, rời nhóm, đăng xuất (mục menu) |
 
 **Vì sao tách.** Hai việc khác nhau về thời điểm và mức nặng:
 

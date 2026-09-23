@@ -76,14 +76,14 @@ Xem mục **Khung app có sidebar** bên dưới cho công thức đầy đủ.
 └──────────────┴──────────────────────────────────────┘
 ```
 
-- **Sidebar nền trắng `--surface`**, tách vùng nội dung bằng **một đường kẻ dọc** `border-r border-border-strong`. **Đừng để sidebar trong suốt** ăn theo `--background` của trang: sidebar xám trùng nền trang thì cả màn thành một mảng xám, không còn ranh giới nào (đã dính 21/09/2026).
+- **Sidebar nền trắng `--surface`, KHÔNG `border-r`** khi vùng nội dung là nền trang xám `--background`: trắng cạnh xám đã là ranh giới, thêm đường kẻ là hai tín hiệu cho một ý (`N3`; bỏ 23/09/2026, chủ dự án). Chỉ kẻ `border-r border-border-strong` khi vùng nội dung cũng trắng. **Đừng để sidebar trong suốt** ăn theo `--background` của trang: sidebar xám trùng nền trang thì cả màn thành một mảng xám, không còn ranh giới nào (đã dính 21/09/2026).
 - **Rộng `w-60` tới `w-64`**, cố định, `shrink-0`.
 - **Hover và đang chọn CÙNG một nền mờ** `--background` (bậc xám nhạt nhất). Mục đang chọn phân biệt bằng chữ `font-medium` và việc nền **đứng yên**, không bằng nền đậm hơn. Đừng dùng `--secondary` cho mục đang chọn: trên sidebar trắng nó đậm quá, thành một mảng xám nặng (đã dính 21/09/2026). **Không tô màu nhấn**, không viền.
 - **Mỗi link cao 40px** (`h-10`, `px-3`), bo `rounded-xl` 12px theo luật bo-theo-chiều-cao `F1`. Link 36px trông chật, nền hover lọt thỏm; 40px thì hàng thoáng và bấm trúng dễ hơn.
 - **Icon và chữ đi cùng nhau.** Lúc thường cả hai `text-foreground/70`: dịu hơn chữ chính nhưng **không mờ tới `--muted`**, xám `--muted` trên nền trắng là đọc không ra tên mục. Hover hay đang chọn thì **cả icon lẫn chữ** lên `text-foreground`. Đặt màu trên phần tử `<a>`, icon dùng `currentColor`, đừng gán màu riêng cho icon, nếu không hover chỉ sáng mỗi chữ.
 - **Nhãn nhóm IN HOA, chữ XÁM**: `text-xs font-medium uppercase tracking-wide text-muted`, hover mới lên `text-foreground`. IN HOA đã đủ tách nhãn khỏi link, nên nhãn phải **nhạt hơn** mục con, không đậm hơn: nhãn đen `--foreground` cộng IN HOA thì nặng nhất cột, lấn cả mục đang chọn (đã dính 21/09/2026). Viết thường thì nhãn nhóm trông y như một mục nav nhạt màu, mắt không tách được đâu là tiêu đề, đâu là link (đã dính 21/09/2026). Chữ trong dữ liệu vẫn viết thường ("Công việc"), IN HOA bằng CSS, để screen reader không đánh vần từng chữ.
-- **Đường chia giữa các nhóm**: `border-t border-border-strong` trên mỗi nhóm trừ nhóm đầu. Chỉ khoảng trắng thì không đủ khi sidebar dài và cuộn: mắt không còn thấy khoảng hở giữa nhóm cũ và nhóm mới.
-- **Mọi đường kẻ trong sidebar dùng `--border-strong`**: kẻ dọc tách nội dung, kẻ dưới đầu sidebar, kẻ chia nhóm, kẻ trên chân sidebar, **và viền khung profile**. Trên nền trắng, `--border` (`#f7f7f8`) gần như tàng hình, đường chia mất tác dụng (đã dính 21/09/2026). Cả sidebar một màu viền, không chỗ rõ chỗ mờ.
+- **Giữa các nhóm KHÔNG kẻ đường chia**, tách bằng khoảng trắng `mt-4` và nhãn nhóm. Nhãn IN HOA xám + chevron đã đủ báo "nhóm mới bắt đầu" kể cả khi sidebar cuộn; thêm đường kẻ là ba tín hiệu cho một ý (`N3`). Linear, Notion, Vercel, GitHub đều không kẻ. Bản cũ kẻ `border-t` trên mỗi nhóm, tới khi token viền đậm lên `#e4e4e7` thì ba đường kẻ chạy ngang cột thành thứ nặng nhất sidebar (bỏ 23/09/2026, chủ dự án: "đường line hơi đậm").
+- **Sidebar chỉ còn một đường kẻ `--border-strong`**: dưới đầu sidebar (tên workspace). Trên nền trắng, `--border` (`#f7f7f8`) gần như tàng hình, đường chia mất tác dụng (đã dính 21/09/2026). Cả sidebar một màu viền, không chỗ rõ chỗ mờ.
 - **Đường kẻ chạy HẾT bề ngang sidebar, mép chạm mép.** Không để padding của vùng nav cắt cụt hai đầu đường. Cách làm: vùng nav chỉ có padding dọc (`py-3`), padding ngang đặt trên **từng nhóm** (`px-3`), đường kẻ nằm trên phần tử nhóm nên tự dài hết. Đừng vá bằng `-mx-3`: đổi padding một chỗ là đường lệch. **Vùng nav cuộn được thì thanh cuộn không được giữ chỗ** (`scrollbar-gutter: auto`, thanh cuộn tự ẩn theo `I18`): giữ gutter 4px là mọi đường kẻ nhóm cụt cách mép phải 4px, trong khi đường dưới tên workspace và đường trên Cài đặt (nằm ngoài vùng cuộn) vẫn chạy hết (đã dính 23/09/2026, lộ ra khi viền đậm lên `#e4e4e7`).
 - **Sidebar nhiều link thì nhóm thu gọn được.** Từ **3 nhóm có nhãn trở lên**, hoặc tổng số mục đủ để sidebar phải cuộn: nhãn nhóm thành một **nút rộng hết hàng** (`I29`), chevron ở mép phải (`ChevronDown` `size-4`, xoay `-rotate-90` khi đóng), có `aria-expanded`. Hover nhãn là nền `--background` như mục nav.
   - **Nút nhãn cùng khuôn với mục con**: cùng `h-10 px-3`, cùng `rounded-xl`. Đặt chiều cao bằng `h-10` chứ không bằng `py`, vì chữ `text-xs` của nhãn thấp hơn chữ `text-sm` của link, dùng `py` là nút nhãn lùn hơn hàng con. Mép trái chữ nhãn thẳng mép icon con, chevron thẳng mép phải badge.
@@ -93,7 +93,7 @@ Xem mục **Khung app có sidebar** bên dưới cho công thức đầy đủ.
   - Nhóm đầu không nhãn (Tổng quan, Hộp thư) thì luôn mở, không thu gọn.
   - Mặc định **mở hết**. Nhóm chứa trang đang xem thì **không được đóng lúc tải trang**, nếu không người ta không thấy mình đang ở đâu.
 - **Thanh cuộn của sidebar tự ẩn** theo `I18`: đứng yên không thấy, rê vào hoặc đang cuộn mới hiện, 4px. Thanh cuộn xám đứng yên chạy dọc sidebar trắng là thứ nặng nhất trên cột, nặng hơn cả chữ (đã dính 21/09/2026).
-- **Số đếm căn phải**, là **pill trắng viền mảnh chữ xám**, hoặc số trơn `text-muted`. **Cả sidebar chọn đúng một kiểu**, không mục pill mục trơn. **Không badge màu brand**, xem `../components/small-controls.md`.
+- **Số đếm căn phải, là số trơn** `text-xs tabular-nums text-muted`, không pill, không viền. Năm pill viền cạnh nhau trên một cột là năm khung nhỏ kéo mắt (bỏ pill ngày 23/09/2026; Linear, Vercel dùng số trơn). Mục đang chọn thì số lên `text-foreground` cùng chữ. **Không badge màu brand**, xem `../components/small-controls.md`.
 
 ```tsx
 <Link
@@ -166,24 +166,28 @@ Mở                                 Thu gọn
 │ ◐ Evondev Studio │               │  ◐   │
 ├──────────────────┤               ├──────┤
 │ ⌂ Tổng quan      │               │  ⌂   │
-│ ✉ Hộp thư    99+ │               │  ✉⁹⁹⁺│  <- badge đè góc icon
+│ ✉ Hộp thư    99+ │               │  ✉•  │  <- chấm chỉ cho số "cần xử lý"
 │ ▦ Lịch           │               │  ▦   │
-├──────────────────┤               │      │  <- các nhóm có nhãn: ẨN
-│ CÔNG VIỆC      › │               │      │
-│ KINH DOANH     › │               │      │
-├──────────────────┤               ├──────┤
+│                  │               │      │
+│ CÔNG VIỆC      ⌄ │               │      │  <- nhãn mờ đi TẠI CHỖ, để lại khoảng trống
+│ ▣ Dự án        4 │               │  ▣   │  <- nhóm đang mở: icon vẫn hiện, đứng yên
+│ ☰ Việc của tôi 12│               │  ☰   │
+│                  │               │      │
+│ KINH DOANH     › │               │      │  <- nhóm đang đóng: vẫn đóng
+│                  │               │      │
 │ ⚙ Cài đặt        │               │  ⚙   │
-│ [◐ Tên người   ⋮]│               │  ◐   │  <- chỉ avatar, vẫn mở menu
+│ ◐ Tên người    ⇕ │               │  ◐   │  <- chỉ avatar, vẫn mở menu
 └──────────────────┘               └──────┘
 ```
 
 Mặc định là **thu về dải icon**, không ẩn hẳn. Ẩn hẳn (bề rộng về 0) chỉ làm khi
 người dùng yêu cầu.
 
-- **Dải icon chỉ hiện nhóm đầu**, tức nhóm không nhãn (Tổng quan, Hộp thư, Lịch). **Mọi nhóm có nhãn đều ẩn**, kể cả nhóm đang mở. Bung hết icon của mọi nhóm thì thành một cột mười mấy icon không chữ, không ai phân biệt được Khách hàng với Thành viên, và nó bỏ qua luôn trạng thái đóng/mở nhóm người dùng vừa chọn (đã dính 21/09/2026). Muốn vào các nhóm đó thì mở sidebar ra.
-  - Hệ quả cho việc xếp dữ liệu: **nhóm đầu là những mục dùng hằng ngày**, 3–5 mục, vì đó là thứ duy nhất còn lại khi thu gọn.
-  - Trang đang xem nằm trong nhóm bị ẩn thì dải icon không có mục nào đang chọn. Chấp nhận, tiêu đề trang ở header đã nói người ta đang ở đâu.
-- **Chân sidebar giữ lại**: Cài đặt thành icon, khung profile thành **chỉ avatar**, bấm vẫn mở menu tài khoản như cũ.
+- **Mục nào đang hiện lúc mở thì lúc thu vẫn hiện, thành icon.** Nhóm đang mở giữ nguyên icon các mục con; nhóm đang đóng thì vẫn đóng. Như chế độ `collapsible="icon"` của sidebar shadcn, Jira, Vercel. Bản cũ chỉ giữ nhóm đầu (3 icon) còn mọi nhóm có nhãn đều ẩn: mở thấy 13 mục, thu còn 3, người dùng tưởng mất mục, và trang đang xem nằm trong nhóm bị ẩn thì dải icon không có mục nào đang chọn (bỏ 23/09/2026, chủ dự án).
+  - **Chỉ nhãn nhóm và chevron mờ đi tại chỗ** (`opacity-0` + `inert`), hàng nhãn vẫn giữ chiều cao. Khoảng trống nhãn để lại chính là chỗ tách nhóm trong dải icon, và mọi icon **đứng yên đúng vị trí** lúc thu và lúc mở (luật icon đứng yên bên dưới). Gỡ hàng nhãn ra thì icon bên dưới nhảy lên.
+  - **Chấm ở góc icon chỉ cho số "cần xử lý"** (chưa đọc, chờ duyệt, quá hạn). Số đếm tổng như "Dự án 4", "Thành viên 18" lúc thu thì bỏ, không chấm: mười chấm trên một cột là mười tín hiệu vô nghĩa. Số vẫn nằm trong tooltip.
+- **Chân sidebar giữ lại**: Cài đặt thành icon, hàng profile thành **chỉ avatar**, bấm vẫn mở menu tài khoản như cũ.
+  - **Lúc thu, rê vào avatar không tô nền ô vuông**, mà hiện vòng quanh chính avatar: `ring-2 ring-foreground/10` (menu đang mở thì giữ vòng). Avatar là hình tròn có nền màu riêng; tô thêm một ô xám bo góc quanh nó là tròn trong vuông, hai nền nhạt lồng nhau, trông như một cục mờ (đã dính 23/09/2026). Cùng lý do với ngoại lệ ảnh ở `I15`. Lúc mở thì hàng có chữ, tô nền cả hàng như link là đúng.
 - **Mỗi icon có tooltip** là tên mục, hiện bên phải. Link giữ `aria-label` bằng tên mục vì chữ đã ẩn.
 - **Dải rộng `w-16` (64px)**. Link vẫn là link cũ, `h-10 w-full px-3 rounded-xl`, chỉ bị bề rộng sidebar bóp lại còn 40px, thành ô vuông. Hover và đang chọn như link thường.
 - **Icon đứng YÊN một chỗ ở cả hai trạng thái. Không bao giờ `justify-center`.** Thu gọn mà căn giữa, mở ra lại căn trái, thì lúc bấm mở icon và logo nhảy từ giữa sang trái rồi chữ mới bật ra, cả sidebar như "bung từ giữa", khựng (đã dính 21/09/2026). Cách làm: mọi thứ **căn trái**, và padding tính sao cho tâm icon rơi đúng **32px** (giữa dải 64px) ngay khi căn trái:
@@ -192,16 +196,16 @@ người dùng yêu cầu.
   | --- | --- | --- |
   | Icon link `size-4` | nav `px-3` 12 + link `px-3` 12 + nửa icon 8 | 32 |
   | Logo `size-8` ở đầu sidebar | header `px-4` 16 + nửa logo 16 | 32 |
-  | Avatar `size-8` trong khung profile | chân `px-3` 12 + viền 1 + `p-[3px]` 3 + nửa avatar 16 | 32 |
+  | Avatar `size-8` trong hàng profile | chân `px-3` 12 + hàng `px-1` 4 + nửa avatar 16 | 32 |
 
-  Khung profile vì thế cao đúng 40px (32 + 2×3 + 2×1), khớp luật 40px/12px. Lúc mở và lúc thu dùng **cùng** các padding này, không đổi padding theo trạng thái.
-- **Badge đè lên góc trên phải của icon**, không nằm cạnh: `absolute left-5 top-1` (neo theo icon, không neo theo mép link), cùng kiểu pill trắng viền `--border-strong` với badge lúc mở (một kiểu cho cả sidebar), thu nhỏ `h-4 min-w-4 px-1 text-[10px] leading-none`. Thêm `ring-2 ring-surface` để pill tách khỏi nét icon bên dưới. Vẫn rút gọn `99+`.
-- **Đường kẻ chia nhóm và kẻ dưới đầu sidebar vẫn chạy hết bề ngang dải.**
+  Hàng profile **cao `h-10` như link**, không `h-12`: thu gọn về dải 40px thì `h-12` thành ô 40×48 đứng dọc, lệch khỏi mọi ô icon vuông 40×40 bên trên. Lúc mở và lúc thu dùng **cùng** các padding này, không đổi padding theo trạng thái.
+- **Lúc thu, số đếm "cần xử lý" thành một chấm** (số đếm tổng thì bỏ, xem trên) `size-1.5 rounded-full bg-foreground/50` ở góc trên phải icon (`absolute left-6 top-2`, neo theo icon). Số trơn cỡ nhỏ đè góc icon thì không đọc được; số thật nằm trong tooltip ("Hộp thư · 99+") và trong `aria-label` của link.
+- **Đường kẻ dưới đầu sidebar vẫn chạy hết bề ngang dải.**
 - **Chuyển động: chỉ bề rộng chạy, bố cục bên trong không đổi.** `<aside>` `overflow-hidden`, `transition-[width] duration-200 ease-out motion-reduce:transition-none`, `w-64` ↔ `w-16`.
   - **Chữ luôn nằm trong DOM**, `whitespace-nowrap`, bị mép sidebar **cắt dần** khi thu và **lộ dần** khi mở, như kéo rèm. Không `hidden`, không render có điều kiện: gỡ chữ ra rồi gắn lại là nó bật "phựt" một cái, và bố cục tính lại làm icon xê dịch.
   - Chữ, tên workspace, badge cạnh chữ, nhãn nhóm thêm `transition-opacity duration-150`, thu thì `opacity-0`. Mờ đi cùng lúc bị cắt thì không thấy nửa chữ lơ lửng ở mép.
-  - **Badge có HAI bản, chuyển bằng opacity**: bản cạnh chữ (`ml-auto`) mờ đi, bản đè góc icon (`absolute`) hiện lên. Đừng di chuyển một badge từ chỗ này sang chỗ kia, nó sẽ bay chéo qua sidebar. **Cả hai bản `aria-hidden`**, số đọc cho trình đọc màn hình nằm trong một `<span className="sr-only">, 20 chưa đọc</span>` duy nhất: `opacity-0` không gỡ chữ khỏi cây truy cập, để nguyên thì nó đọc "Hộp thư 99+ 99+"; lúc thu, `aria-label` của link cũng phải kèm số.
-  - **Nhóm có nhãn mờ đi tại chỗ** (`opacity-0` + `inert`), không gỡ ra. Gỡ ra thì chiều cao nav đổi, thanh cuộn nhảy.
+  - **Số đếm có HAI bản, chuyển bằng opacity**: số trơn cạnh chữ (`ml-auto`) mờ đi, chấm đè góc icon (`absolute`) hiện lên. Đừng di chuyển một badge từ chỗ này sang chỗ kia, nó sẽ bay chéo qua sidebar. **Cả hai bản `aria-hidden`**, số đọc cho trình đọc màn hình nằm trong một `<span className="sr-only">, 20 chưa đọc</span>` duy nhất: `opacity-0` không gỡ chữ khỏi cây truy cập, để nguyên thì nó đọc "Hộp thư 99+ 99+"; lúc thu, `aria-label` của link cũng phải kèm số.
+  - **Nhãn nhóm mờ đi tại chỗ** (`opacity-0` + `inert` trên nút nhãn), không gỡ ra. Gỡ ra thì chiều cao nav đổi, icon và thanh cuộn nhảy.
 - Có nhớ trạng thái thu/mở hay không, có phím tắt hay không là việc của người dùng. Nếu đề có phím tắt thì ghi nó trong tooltip của nút toggle.
 - **Nút toggle ở đầu header vùng nội dung**, icon `PanelLeftClose` khi đang mở, `PanelLeftOpen` khi đang thu. Nút ghost `size-10 rounded-xl`, có `aria-label` và `aria-expanded`. Focus theo `I13`: `outline-hidden` + vòng mờ `focus-visible`. Viền xám dày hiện ra **ngay sau khi bấm chuột** là outline mặc định của trình duyệt lọt ra (dùng `focus` thay vì `focus-visible`), không phải thiết kế (đã dính 21/09/2026).
 
@@ -220,14 +224,14 @@ người dùng yêu cầu.
 
   {hasCount && (
     <>
-      {/* Bản cạnh chữ, lúc mở. */}
-      <span aria-hidden className={cn("shrink-0 rounded-full border border-border-strong bg-surface px-2 py-px text-xs font-medium tabular-nums text-muted transition-opacity duration-150", isCollapsed && "opacity-0")}>
+      {/* Lúc mở: số trơn. */}
+      <span aria-hidden className={cn("shrink-0 text-xs tabular-nums text-muted transition-opacity duration-150", isCollapsed && "opacity-0")}>
         {formatSidebarCount(item.count)}
       </span>
-      {/* Bản đè góc icon, lúc thu. left-5 = px-3 + gần hết icon. */}
-      <span aria-hidden className={cn("absolute left-5 top-1 flex h-4 min-w-4 items-center justify-center rounded-full border border-border-strong bg-surface px-1 text-[10px] font-medium leading-none tabular-nums text-muted ring-2 ring-surface transition-opacity duration-150", !isCollapsed && "opacity-0")}>
-        {formatSidebarCount(item.count)}
-      </span>
+      {/* Lúc thu: một chấm ở góc icon, CHỈ cho số cần xử lý (chưa đọc, chờ duyệt). Số trong tooltip và aria-label. */}
+      {item.isActionable && (
+        <span aria-hidden className={cn("absolute left-6 top-2 size-1.5 rounded-full bg-foreground/50 transition-opacity duration-150", !isCollapsed && "opacity-0")} />
+      )}
     </>
   )}
 </Link>
@@ -238,16 +242,16 @@ người dùng yêu cầu.
 ```
 │ ⚙ Cài đặt                │  <- mục nav thường, cùng style các mục trên
 │ ╭──────────────────────╮ │
-│ │ ◐  Trần Nguyễn A…  ⋮ │ │  <- MỘT khung, cả khối là nút, bấm ra menu
+│ │ ◐  Trần Nguyễn A…  ⇕ │ │  <- một hàng không viền, cả hàng là nút, bấm ra menu
 │ ╰──────────────────────╯ │
 ```
 
-- **Profile nằm trong một khung**: `h-10 rounded-xl border border-border-strong bg-surface`, padding `p-[3px] pr-3`: avatar `size-8` vừa khít chiều cao 40px, và tâm avatar thẳng tâm icon khi sidebar thu gọn (xem bảng ở mục Thu gọn sidebar). **Viền `--border-strong`, cùng màu mọi đường kẻ khác trong sidebar.** Từng để `--border` cho khớp viền dropdown, nhưng đặt cạnh các đường kẻ `--border-strong` thì khung profile là chỗ duy nhất mờ, trông lệch (đã dính 21/09/2026). Đừng để avatar, tên, email trôi tự do trên nền sidebar (đã dính 21/09/2026: trông như chữ rơi ra khỏi layout, không ai biết đó là chỗ bấm được).
-- **Cả khung là một `<button>`**, là trigger của dropdown/popover (`I29`). Hover `bg-background`. Đừng làm riêng nút ba chấm nhỏ ở góc: bấm vào tên mà không có gì xảy ra là người ta tưởng app bị đơ.
-- **Dấu ba chấm dọc** `EllipsisVertical` `size-4 text-muted` ở mép phải, `ml-auto`. Đó là dấu hiệu duy nhất cho biết "bấm vào đây ra menu".
-- **Trong khung chỉ có avatar + tên**, `truncate`. Email không nằm trong khung: hai dòng bị cắt `…` cạnh nhau thì đọc không ra dòng nào. Email đưa lên **đầu menu**, ở đó có đủ chỗ.
-- Avatar `size-8`, `rounded-lg` hoặc tròn, theo `../components/avatar.md`.
-- **Menu mở lên trên** (`side="top"`, `align="start"`), rộng bằng khung hoặc hơn, portal ra `body` (`I22`). Mục trong menu **cao 40px, bo 12px**, khung `rounded-2xl p-1`, y như link sidebar ngay bên dưới, xem `overlay.md`. Trong menu: email ở đầu (`text-xs text-muted`), rồi Hồ sơ, Giao diện, Cài đặt; **Đăng xuất ở cuối**, cách bằng đường chia, chỉ đỏ `rose` khi rê vào (`M4`).
+- **Profile là một hàng bấm được, không khung viền**: `h-10 w-full rounded-xl px-1 hover:bg-background`, như `NavUser` của sidebar shadcn. Avatar `size-8` (theo `avatar.md` nhưng **bỏ viền của avatar**), tên `text-sm font-medium truncate`, icon **`ChevronsUpDown`** `size-4 text-muted` ở mép phải. Bản cũ (21/09) bọc khung viền `--border-strong` quanh avatar vốn đã có viền: hai đường viền lồng nhau, avatar dính sát mép khung vì `p-[3px]`, tên bị cắt sớm. Token viền đậm lên thì khung thành cục nặng nhất đáy sidebar (bỏ 23/09/2026, chủ dự án: "footer profile bị xấu").
+- **Dấu hiệu bấm được là icon `ChevronsUpDown` + nền khi rê**, không phải khung. Lỗi 21/09/2026 (avatar và tên trôi tự do, không ai biết bấm được) là do **không có icon nào**; có icon mở menu thì hết.
+- **Tâm avatar thẳng tâm icon các link** khi sidebar thu gọn: hàng `px-1` + avatar `size-8` ra tâm 20px, đúng bằng link `px-3` + icon `size-4`.
+- **Cả hàng là một `<button>`**, là trigger của dropdown/popover (`I29`). Đừng làm riêng nút nhỏ ở góc: bấm vào tên mà không có gì xảy ra là người ta tưởng app bị đơ.
+- **Trong hàng chỉ có avatar + tên**, `truncate`. Email đưa lên **đầu menu** và **không cắt**: `[overflow-wrap:anywhere]`, dài thì xuống hai dòng. Email là thứ để biết mình đang ở tài khoản nào (`N8`); cắt "tran.nguyen.anh.tuan.khang@evond…" là mất đúng phần tên miền cần đọc (đã dính 23/09/2026).
+- **Menu mở lên trên** (`side="top"`, `align="start"`), **rộng đúng bằng hàng profile** (`w-(--radix-dropdown-menu-trigger-width)`), không lòi qua mép sidebar sang vùng nội dung, portal ra `body` (`I22`). Mục trong menu **cao 40px, bo 12px**, khung `rounded-2xl p-1`, xem `overlay.md`. Trong menu: email ở đầu (`text-xs text-muted`), rồi Hồ sơ, Giao diện, Cài đặt; **Đăng xuất ở cuối**, cách bằng đường chia, lúc thường trung tính, **rê vào thì đỏ** `rose` (`I4`).
 - **Cài đặt ở trên khung là mục nav thường**, cùng style với các mục ở đầu sidebar (`foreground/70`, hover mờ). Đừng cho nó xám `--muted` hay tách riêng bằng đường kẻ.
 
 ```tsx
@@ -255,18 +259,18 @@ người dùng yêu cầu.
   <DropdownMenuTrigger asChild>
     <Button
       variant="ghost"
-      className="flex h-10 w-full cursor-pointer items-center gap-2.5 overflow-hidden whitespace-nowrap rounded-xl border border-border-strong bg-surface p-[3px] pr-3 text-left hover:bg-background"
+      className="flex h-10 w-full cursor-pointer items-center gap-2.5 overflow-hidden whitespace-nowrap rounded-xl px-1 text-left hover:bg-background"
     >
       <Avatar name={user.name} src={user.avatarUrl} className="size-8" />
       <span className="min-w-0 flex-1 truncate text-sm font-medium text-foreground">
         {user.name}
       </span>
-      <EllipsisVertical className="size-4 shrink-0 text-muted" />
+      <ChevronsUpDown className="size-4 shrink-0 text-muted" />
     </Button>
   </DropdownMenuTrigger>
-  <DropdownMenuContent side="top" align="start" className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-2xl p-1">
+  <DropdownMenuContent side="top" align="start" className="w-(--radix-dropdown-menu-trigger-width) rounded-2xl p-1">
     {/* Mỗi DropdownMenuItem: h-10 rounded-xl px-3, như link sidebar. */}
-    <DropdownMenuLabel className="truncate text-xs font-normal text-muted">{user.email}</DropdownMenuLabel>
+    <DropdownMenuLabel className="text-xs font-normal text-muted [overflow-wrap:anywhere]">{user.email}</DropdownMenuLabel>
     <DropdownMenuSeparator />
     {/* Hồ sơ, Giao diện, Cài đặt… */}
     <DropdownMenuSeparator />

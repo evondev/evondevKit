@@ -39,6 +39,7 @@ Nằm trong card (`card.md`), mỗi hàng một cặp nhãn và giá trị, theo
 - **`<dl>` / `<dt>` / `<dd>`**, không dựng bằng `<div>`: trình đọc màn hình đọc ra đúng cặp nhãn và giá trị.
 - **`sm:items-baseline`** để chữ nhãn thẳng dòng chữ trong badge hay pill: badge có `py-1` nên cao hơn dòng chữ thường, căn đỉnh thì nhãn lệch lên vài px so với chữ trong badge.
 - **Cột nhãn rộng cố định** (`10rem`) để mọi giá trị thẳng một mép. Nhãn dài hơn cột thì cho xuống dòng trong cột, không nới cột theo nhãn dài nhất.
+- **Trong panel trượt hay cột hẹp (dưới ~480px) thì cột nhãn `7rem`**, không `10rem`. Panel 448px trừ lề chỉ còn ~400px: nhãn `10rem` chiếm gần nửa, nhãn dài nhất ("Số điện thoại") chỉ cần ~100px, còn giá trị bị ép xuống 3–4 dòng (đã dính 23/09/2026, địa chỉ giao trong panel xem nhanh đơn hàng).
 - **Màn hẹp dưới `sm` thì xếp chồng**: nhãn trên, giá trị ngay dưới (`gap-1`), giữa các cặp `space-y-3`. Khe trong cặp nhỏ hơn khe giữa các cặp thì mắt mới gom đúng nhãn với giá trị của nó. Hai cột ở 375px thì giá trị còn chưa tới 200px, email dài vỡ vụn.
 - **Giá trị `font-medium text-foreground`, nhãn `text-muted`** (`T23`). Giá trị dài xuống dòng, bám mép trên cùng nhãn (`items-start`), không `truncate`: đây là chỗ để đọc đủ.
 - **`[overflow-wrap:anywhere]` cho giá trị**: email, URL, mã dài không có dấu cách nên không tự xuống dòng, sẽ đẩy tràn card ở màn hẹp.

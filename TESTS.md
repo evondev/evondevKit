@@ -69,7 +69,7 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
       Cần có: button, input, status badge, tabs, dropdown menu, checkbox, pagination, confirm dialog, empty / loading / error state.
 - ✅ **Form validation** — "Dựng cho tôi form tạo công việc mới, có hiện lỗi khi nhập sai."
       Cần có: input, select, date picker, button, alert, toast.
-- [ ] **Drawer** — "Dựng cho tôi panel bên phải xem nhanh chi tiết một đơn hàng."
+- ✅ **Drawer** — "Dựng cho tôi panel bên phải xem nhanh chi tiết một đơn hàng."
       Cần có: status badge, button, dropdown menu, description list.
 - [ ] **Command palette** — "Dựng cho tôi command palette mở bằng ⌘K."
       Cần có: input.

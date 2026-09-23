@@ -40,10 +40,10 @@ nhau là chưa quyết định hộ người dùng.
 
 **I4. Hành động nguy hiểm không đỏ đặc.**
 
-Áp cho hành động **mất dữ liệu hoặc mất quyền truy cập**: xoá, huỷ tài khoản, rời nhóm.
-**Đăng xuất không thuộc nhóm này**: không mất gì, đăng nhập lại là xong, nên nó là mục
-trung tính, đặt cuối menu sau một đường chia (GitHub, Linear, Vercel, Notion đều vậy;
-bỏ khỏi I4 ngày 23/09/2026). Có hai dạng tuỳ chỗ đứng:
+Áp cho xoá, huỷ tài khoản, rời nhóm, **và đăng xuất**. Đăng xuất không mất dữ liệu,
+GitHub, Linear để nó trung tính; nhưng **chủ dự án chốt giữ đỏ khi rê vào** (23/09/2026,
+sau khi thử bản trung tính: "đăng xuất mất danger"). Đăng xuất chỉ nằm trong menu, nên
+nó chỉ đỏ lúc rê, không bao giờ đỏ sẵn. Có hai dạng tuỳ chỗ đứng:
 
 | Chỗ | Lúc thường | Rê vào / Tab tới |
 | --- | --- | --- |
@@ -149,8 +149,9 @@ bấm ba chấm là nhảy luôn sang trang chi tiết.
 Thiết bị không có chuột thì không có hover: nút ẩn-hiện-khi-rê phải kèm
 `[@media(hover:none)]:opacity-100`, không thì trên điện thoại không bao giờ thấy.
 
-**I12. Chỉ đổi màu khi chuyển trạng thái.** Ngoại lệ duy nhất là card hover được
-`transition-all`.
+**I12. Hover, focus, chọn thì chỉ đổi màu.** Ngoại lệ: card hover được
+`transition-all`. Khối nổi **mở và đóng** (modal, dropdown, panel, toast) thì có chuyển
+động vào ra riêng, số ở mục "Chuyển động" cuối `layouts/overlay.md`.
 
 **I13. Focus bàn phím là một vòng mờ, chỉ hiện khi dùng bàn phím.**
 

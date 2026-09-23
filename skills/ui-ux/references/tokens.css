@@ -34,10 +34,10 @@
   /* Đậm hơn ĐÚNG một bậc. Cho viền Ô NHẬP và NÚT OUTLINE (viền là thứ duy nhất
      báo "đây là chỗ gõ / chỗ bấm", vì cả hai cùng nền trắng với card), đường kẻ
      khung app và viền card khi hover. Đây là token viền thứ hai và cũng là token
-     cuối, xem luật M14, M16. ~1.27:1 với nền trắng: đánh đổi thẩm mỹ có chủ ý,
+     cuối, xem luật M14, M16. ~1.2:1 với nền trắng: đánh đổi thẩm mỹ có chủ ý,
      xem P3 trong styles.md. */
-  --border-strong: #e4e4e7;   /* nhích từ #f2f2f2 (1.1:1) ngày 23/09/2026: chủ dự án thấy
-                                 viền ô nhập, select, textarea, radio quá mờ. */
+  --border-strong: #eaeaea;   /* 23/09/2026: #f2f2f2 (1.1:1) mờ quá, radio gần như vô hình;
+                                 #e4e4e7 (1.27:1) thì đường kẻ sidebar đậm. Chốt ở giữa. */
 
   /* Bậc hover cho nút phụ và cho dòng danh sách. Cần biến riêng vì --border
      và --background chênh nhau quá ít, hover bằng --border là gần như vô hình. */
@@ -77,7 +77,7 @@
      Không có Tailwind thì dùng var(--danger)... Bảng đối chiếu class ↔ token nằm
      ngay trong bảng M7 và M30 của rules-color.md. Không thêm sắc thứ ba (M30). */
 
-  /* Nguy hiểm — xoá, huỷ tài khoản (không phải đăng xuất): lời nhắc TRƯỚC khi bấm. Không viền, không banner. */
+  /* Nguy hiểm — xoá, huỷ tài khoản, đăng xuất: lời nhắc TRƯỚC khi bấm. Không viền, không banner. */
   --danger: #c70036;                       /* rose-700: chữ + icon. 5.2:1 trên --danger-bg */
   --danger-bg: rgb(255 32 86 / 0.1);       /* rose-500/10 */
   --danger-bg-hover: rgb(255 32 86 / 0.15);/* rose-500/15, chỉ cho nút đứng riêng */

@@ -80,6 +80,11 @@ panel trượt hoặc trang riêng.
 Trượt từ phải, `w-full sm:w-[28rem]` (dưới `sm` phủ hết bề ngang, 448px rộng hơn điện thoại 375px), dùng khi nội dung dài hoặc người dùng
 cần nhìn thấy danh sách phía sau. Không dùng panel cho một câu xác nhận.
 
+- **Lớp phủ sau panel mờ: `bg-black/15`.** Panel tồn tại để người dùng **vẫn thấy danh sách phía sau**; lớp phủ đặc che kín danh sách là mất đúng lý do dùng panel (đã dính 23/09/2026: lớp phủ xám đục, nền trang biến thành một mảng xám chết). Modal thì `bg-black/30`, vì modal cần tách hẳn người dùng khỏi trang.
+- **Ba tầng: header, thân cuộn, footer.** Header `px-6 pt-5 pb-4 border-b` gồm tiêu đề, dòng trạng thái + thời gian, nút ⋯ và ✕ cùng hàng tiêu đề. Thân `flex-1 overflow-y-auto px-6 py-6`: **luôn có `pt` riêng**, không để tiêu đề mục đầu dính sát đường kẻ header. Footer `border-t px-6 py-4`, nút căn phải, luôn đứng đáy dù thân ngắn.
+- Nhãn và giá trị trong panel theo `components/description-list.md`, cột nhãn `7rem`.
+- Chuyển động theo mục "Chuyển động" cuối file: panel trượt từ mép phải vào.
+
 ## Dropdown
 
 Bám mép trái của nút mở, rộng tối thiểu bằng nút. Mục nguy hiểm tách xuống cuối,
@@ -196,3 +201,43 @@ form; toast bật ra ở đáy đúng lúc vừa bấm nút là che mất nửa 
 - Nhiều toast cùng lúc thì xếp chồng cột, `gap-2`, cái mới nhất gần mép màn nhất. Tối đa 3 cái.
 - Gợi ý thời gian (người dùng quyết): tự tắt sau khoảng 4 giây, có Hoàn tác thì lâu hơn và dừng đếm khi rê chuột vào. Hoàn tác, Thử lại gọi gì là handler rỗng (`onUndo`, `onRetry`).
 - Duyệt toast thì bày **từng loại một bản tĩnh** cạnh nhau, không dựng nút bấm giả lỗi (phạm vi ở `../../SKILL.md`).
+
+---
+
+## Chuyển động
+
+Mọi khối nổi **có chuyển động vào và ra**, không bật "phựt" ra. Chuyển động phải nói
+được **nó đến từ đâu**: dropdown mọc ra từ nút, panel trượt vào từ mép, toast trồi lên
+từ mép màn. Một nguồn cho cả app: modal, dropdown, select, date picker, panel, toast đều
+lấy số ở bảng này.
+
+| Khối | Vào | Ra |
+| --- | --- | --- |
+| **Modal, hộp xác nhận** | `opacity 0→1` + `scale-95→100`, gốc ở tâm, **150ms `ease-out`** | ngược lại, **100ms `ease-in`** |
+| **Lớp phủ** (sau modal, panel) | `opacity 0→1`, **cùng thời gian và đường cong với khối nó đi kèm** (sau modal 150ms, sau panel 500ms) | cùng thời gian với khối lúc ra |
+| **Panel trượt** | **chỉ** `translate-x-full → 0`, không `scale`, không `opacity` trên panel. **500ms** `cubic-bezier(0.32,0.72,0,1)` (đường cong sheet của iOS, `vaul`) | `0 → translate-x-full`, **350ms** cùng đường cong |
+| **Dropdown, popover, select, date picker** | `opacity` + `scale-95→100` + **dịch 4px từ phía nút**: mở xuống thì từ trên xuống (`-translate-y-1 → 0`), lật lên thì từ dưới lên (`translate-y-1 → 0`). Gốc biến hình ở mép gần nút. 150ms `ease-out` | `opacity` + `scale-95`, 100ms `ease-in`, không dịch |
+| **Toast** | trồi từ mép gần nhất: toast ở đáy thì `translate-y-2 → 0` (dưới lên), toast ở đỉnh (màn hẹp) thì `-translate-y-2 → 0`; kèm `opacity`. 200ms `ease-out` | `opacity` + trượt tiếp 8px theo hướng ra, 150ms |
+| **Tooltip** | chỉ `opacity`, trễ 300–500ms mới hiện, 100ms | 100ms |
+| **Sidebar thu gọn, nhóm mở đóng** | theo `app.md`: `transition-[width]` và `grid-rows`, 200ms | như vào |
+
+- **Ra nhanh hơn vào.** Vào `ease-out` (nhanh đầu, chậm cuối, như đồ vật đặt xuống), ra `ease-in` và ngắn hơn: người đã bấm đóng thì không muốn chờ.
+- **Bẫy đã dính khi dựng panel (23/09/2026)** — panel "chạy từ trong ra, cách lề một khoảng rồi giật mạnh vào lề", tooltip nhấp nháy, cả chuyển động giật cục:
+  - **Panel dính `zoom-in-95` chép từ modal.** Phóng 95% quanh tâm thì mép phải panel bắt đầu cách lề màn ~11px, chạy xong mới nhảy vào lề. Panel chỉ `translate`, **không bao giờ `scale`**: nó đến từ mép, không mọc từ tâm.
+  - **Radix (Dialog, Sheet) chỉ chờ `@keyframes`, không chờ `transition`.** Presence của Radix đọc `animation-name` để biết khi nào gỡ phần tử; viết bằng `transition` thì lúc mở phần tử gắn vào đã ở vị trí cuối (không chạy), lúc đóng bị gỡ ngay (giật mất). Với Radix dùng `data-[state=open]:animate-in data-[state=open]:slide-in-from-right data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right` (`tw-animate-css`, mặc định dịch 100%). Không Radix thì dùng `transition-transform` nhưng giữ phần tử trong DOM suốt lúc đóng.
+  - **Hai cơ chế chạy cùng lúc**: `transition-all` trên panel cộng thêm keyframe của `animate-in` là hai chuyển động giành nhau, ra cảnh giật. Chọn một.
+  - **Tiêu điểm nhảy vào nút icon có tooltip** ngay lúc mở: Radix tự focus phần tử bấm được đầu tiên (nút ⋯), tooltip của Radix mở ngay khi focus, không chờ trễ, nên nó nhấp nháy và chạy theo panel. Mở panel thì **đưa tiêu điểm vào chính khung panel hoặc tiêu đề** (`tabIndex={-1}`, `onOpenAutoFocus={(e) => { e.preventDefault(); panelRef.current?.focus() }}`); có ô nhập thì vào ô nhập đầu tiên. Không bao giờ vào nút icon.
+  - **`backdrop-blur` trên lớp phủ** bắt trình duyệt làm mờ cả trang mỗi khung hình, chuyển động rớt khung. Lớp phủ chỉ là màu đen trong suốt.
+  - **Animate `right`, `left`, `width` của panel** thay vì `transform` là tính lại bố cục mỗi khung hình. Chỉ `translate`; thêm `will-change-transform` nếu vẫn rớt khung.
+- **Không nảy, không lố.** Không `spring` vượt đích, không `scale` dưới 95%, dropdown không dịch quá 8px. Đồ vật trong app làm việc thì đặt xuống, không nhảy ra.
+- **Chỉ `transform` và `opacity`.** Không animate `height`, `top`, `left`, `width` (trừ sidebar thu gọn, đã có lý do riêng ở `app.md`): làm trang giật và tính lại bố cục mỗi khung hình.
+- **Gốc biến hình đúng mép**: dropdown mở từ nút bên phải thì `origin-top-right`. Dùng Radix thì lấy sẵn `origin-(--radix-dropdown-menu-content-transform-origin)` (popover, select có biến tương tự), nó tự đổi khi menu lật.
+- **Cách viết**: có Radix/shadcn thì dùng `data-[state=open]:animate-in data-[state=closed]:animate-out fade-in-0 zoom-in-95 slide-in-from-top-1` của `tw-animate-css` (Tailwind v4; v3 là `tailwindcss-animate`). Tự dựng thì `transition` + thuộc tính `data-state`, lúc vào dùng `@starting-style`, lúc ra giữ phần tử trong DOM tới khi chạy xong (`transition-behavior: allow-discrete` hoặc chờ `transitionend`).
+- **`motion-reduce:`** tắt `scale` và `translate`, chỉ giữ `opacity` (hoặc tắt hẳn): người bật giảm chuyển động bị chóng mặt vì chuyển động chứ không vì mờ dần.
+- Không chuyển động khi **tải trang**: không cho cả trang hay từng card mờ dần vào.
+
+- **Panel 500/350ms là số chủ dự án chốt** (23/09/2026) sau khi xem video ba bản: 300/200ms thì vụt qua như giật, `linear` 500ms thì cứng và chậm. Đường cong này chạy nhanh ở đầu rồi đậu êm, nên 500ms không thấy chậm. Đừng rút ngắn cho "nhanh hơn".
+- **Sửa chuyển động thì duyệt bằng video, không bằng số đo**: quay tốc độ thật và bản chậm 4 lần (DevTools, Animations, 25%). Giật, lố, nhảy lề chỉ lộ ra trong bản chậm.
+
+Đã thêm 23/09/2026 theo yêu cầu chủ dự án: trước đó các khối nổi bật ra không chuyển động.
+

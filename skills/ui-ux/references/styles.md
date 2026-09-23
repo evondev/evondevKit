@@ -62,13 +62,13 @@ Token mặc định:
 | --- | --- | --- | --- |
 | `--muted` (chữ phụ, placeholder) | 5.3 : 1 trên card, 4.8 : 1 trên nền trang | 6.1 : 1 | ✅ 4.5 |
 | `--border-focus` | 16.8 : 1 | 3.6 : 1 | ✅ 3 |
-| **Viền ô nhập, select, nút outline, checkbox, radio** (`--border-strong`) | ~1.27 : 1 | ~1.5 : 1 | ❌ 3 |
+| **Viền ô nhập, select, nút outline, checkbox, radio** (`--border-strong`) | ~1.2 : 1 | ~1.5 : 1 | ❌ 3 |
 | **Track công tắc lúc tắt** (`muted/40`) | ~1.6 : 1 | | ❌ 3 |
 
 ⚠️ **Viền điều khiển KHÔNG đạt 3 : 1, và đó là đánh đổi có chủ ý.** Đạt thì cần viền
 xám cỡ `#8a8a91`; đã thử ngày 21/09/2026, chủ dự án thấy đậm và xấu, trả về. Mức cũ
-`#f2f2f2` (1.1:1) thì lại mờ quá, radio chưa chọn gần như vô hình; 23/09/2026 nhích lên
-`#e4e4e7`. Hai mốc này là hai đầu gu của dự án: đừng đậm hơn `#e4e4e7` nếu chưa hỏi. Skill
+`#f2f2f2` (1.1:1) thì lại mờ quá, radio chưa chọn gần như vô hình; `#e4e4e7` (1.27:1) thì
+đường kẻ sidebar đậm. Chốt `#eaeaea` (~1.2:1) ngày 23/09/2026. Đừng đổi mà không hỏi. Skill
 bù bằng ba thứ khác để người dùng nhận ra ô nhập: nhãn luôn hiện phía trên
 (`I26`), placeholder, và viền + ring khi focus.
 

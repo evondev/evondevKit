@@ -68,12 +68,12 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] **Rê chuột lên một hàng: có phần tử con nào biến mất không?** (`M18`)
 - [ ] Rê chuột lên hàng: nền hover có ôm sát chữ không? Phải có padding đủ bốn phía.
 - [ ] Màn chỉ có MỘT card giữa trang trống? Vậy card phải **không viền** (`M29`), và không bao giờ có cả viền lẫn bóng.
-- [ ] **Đăng xuất** là mục trung tính cuối menu, không đỏ (`I4`)?
+- [ ] **Đăng xuất** ở cuối menu sau đường chia, lúc thường trung tính, **rê vào thì đỏ** như mục xoá (`I4`)?
 - [ ] **Nút xoá** đứng riêng: nền `rose-500/10` + chữ `rose-700` ngay lúc thường, không viền, không đỏ đặc (`I4`)? **Mục** xoá trong menu: rê vào thì chữ, icon VÀ nền cùng đỏ lên chưa? Icon còn xám là thiếu `group`. Chữ đỏ là `rose-700` chưa, hay đang `rose-500` hồng tươi (3.2:1, trượt tương phản)? Radix thì đi bằng phím mũi tên cũng đỏ (`data-[highlighted]`)?
 - [ ] Đỏ đang dùng đúng sắc chưa (`M30`)? Lỗi là `red`, hành động nguy hiểm lúc rê vào là `rose`. Không có viền hay banner `rose`.
 - [ ] Đường chia trong dropdown, card: có chạm hai mép khối không, hay thụt theo padding (`F25`)?
 - [ ] **Bo lồng nhau (`M19`)**: bo khung ngoài = bo phần tử trong + padding khung? Dropdown mặc định `rounded-2xl` + `p-1` + mục `rounded-xl` (`layouts/overlay.md`). Trong bằng ngoài là góc phình.
-- [ ] **Sidebar**: nền trắng chứ không trùng nền trang; hover và mục đang chọn cùng nền mờ `--background`, không `--secondary`; hover vào thì icon và chữ cùng đậm lên; badge là pill trắng viền mảnh chữ xám hoặc số trơn, cả sidebar cùng một kiểu, không badge màu brand (`I15`); nhãn nhóm IN HOA, đường kẻ trong sidebar dùng `--border-strong` và chạy hết bề ngang (không bị padding cắt), nhiều nhóm thì thu gọn được; thanh cuộn tự ẩn (`I18`).
+- [ ] **Sidebar**: nền trắng chứ không trùng nền trang; hover và mục đang chọn cùng nền mờ `--background`, không `--secondary`; hover vào thì icon và chữ cùng đậm lên; số đếm là số trơn `text-muted`, không pill, không badge màu brand (`I15`); nhãn nhóm IN HOA, giữa các nhóm không kẻ đường chia (chỉ khoảng trắng + nhãn), profile là hàng không viền có icon `ChevronsUpDown`, nhiều nhóm thì thu gọn được; thanh cuộn tự ẩn (`I18`).
 - [ ] **Thu gọn sidebar**: thu về dải icon `w-16`, chỉ còn nhóm đầu không nhãn, các nhóm có nhãn ẩn hết; badge đè góc icon, cùng kiểu pill; bấm mở/thu thì icon, logo, avatar ĐỨNG YÊN (không `justify-center`, không đổi padding), chữ không gỡ khỏi DOM mà bị cắt dần và mờ đi; mỗi icon có tooltip; nút toggle không có vòng viền khi focus (`layouts/app.md`).
 - [ ] **Chân sidebar**: profile nằm trong một khung viền `--border-strong` (cùng màu các đường kẻ khác trong sidebar), cả khung là nút mở menu, có dấu ba chấm dọc ở mép phải; email nằm trong menu chứ không nằm trong khung (`layouts/app.md`).
 - [ ] **Rê chuột chậm từ mép trái sang mép phải** của từng mục menu, link sidebar, dòng bấm được: con trỏ có giữ bàn tay suốt không? Đổi một lần là vùng bấm hụt (`I29`).
