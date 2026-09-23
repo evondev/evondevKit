@@ -156,6 +156,12 @@ nhau là font không áp (đã dính: Be Vietnam Pro bản Google Fonts, "1" 4,6
 Cột căn phải lệch mép trái vài px thì chấp nhận; bảng tiền, bảng số thì báo người dùng
 một dòng lúc giao, đổi font là việc của họ (`N10`).
 
+**T16b. Thời gian tương đối luôn kèm giờ tuyệt đối.** "5 giờ trước", "28 phút trước"
+dễ đọc nhưng không dùng để đối chiếu được. Bọc trong `<time datetime>` và cho `title`
+là giờ đầy đủ ("14:32 · 22/09/2026"), để rê chuột là biết chính xác. Nhật ký hệ thống,
+dòng thời gian đơn hàng, nhật ký thao tác thì hiện thẳng giờ tuyệt đối, không tương đối:
+ở đó người ta đang đối chiếu mốc thời gian chứ không lướt.
+
 **T17. Mã và định danh dùng `font-mono`.** Mã đơn hàng, mã vận đơn, mã giảm giá, ID,
 kể cả khi nằm giữa một câu mô tả. Nó nói
 "đây là thứ để copy chính xác", không phải chữ để đọc.
