@@ -355,6 +355,7 @@ thì một trong hai chỗ là sai.
 | Dòng thời gian, lịch sử hoạt động | `references/components/timeline.md` |
 | Cây thư mục, cây lồng nhau mở đóng được | `references/components/tree.md` |
 | Khu bình luận, trả lời lồng nhau | `references/components/comment-thread.md` |
+| Thanh trượt chọn khoảng số, khoảng giá | `references/components/range-slider.md` |
 | Danh sách rỗng, đang tải (chữ hoặc khung chờ), lỗi tải | `references/components/empty-state.md` |
 | Thanh thông báo trong trang (thông tin, cần chú ý, lỗi) | `references/components/banner.md` |
 | Chip lọc, nút chỉ có icon, thanh tab (4 variant), phân trang | `references/components/small-controls.md` |

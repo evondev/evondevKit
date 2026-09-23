@@ -26,6 +26,7 @@ Bản đúng là **một dòng chữ mờ**:
 - **Không thêm `opacity-70`.** `--muted` đã sát ngưỡng (5.3:1), mờ thêm 70% là tụt xuống ~2.9:1, trượt 4.5:1 của chữ 14px. Chữ đã mờ bằng màu thì đừng mờ thêm bằng opacity (sửa 22/09/2026).
 - `py-6` cho khối trống một chiều cao vừa phải, để card không xẹp xuống rồi bung lên khi dữ liệu về.
 - Câu chữ mô tả đúng bối cảnh đang lọc ("ở mục này"), không phải câu chung chung "Không có dữ liệu".
+- **Lọc ra 0 kết quả là trạng thái rỗng, không phải lỗi.** Không viền đỏ ô lọc, không câu đỏ: người dùng chưa nhập sai gì, khoảng lọc vẫn hợp lệ (`M30`: `red` chỉ dành cho cái phải sửa mới đi tiếp được). Vẫn là một dòng chữ mờ, đặt ở **chỗ đáng lẽ có kết quả**, và nói luôn cách nới lọc: "Không có sản phẩm nào từ 47.500.000 đ. Hạ giá Từ xuống để xem thêm." (đã dính 23/09/2026: thanh trượt khoảng giá tô đỏ cả hai ô).
 - Trạng thái đang tải: **dữ liệu đọc từ máy** (localStorage, state sẵn có) thì cùng công thức, chỉ khác chữ, không skeleton, không spinner. **Dữ liệu qua mạng** thì dùng khung chờ đúng hình, xem mục dưới.
 
 Chỉ dựng empty state có hình và CTA khi đó là màn hình chính của cả app và người
