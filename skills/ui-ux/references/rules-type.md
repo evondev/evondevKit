@@ -123,6 +123,16 @@ lưới nở theo, cả trang tràn ngang.
 Chữ trong danh sách dày dùng `truncate` kèm `min-w-0`. Nhưng dòng mô tả thì cho
 xuống dòng, đừng cắt — mô tả bị cắt thì mất luôn lý do nó tồn tại.
 
+**Tên file cắt giữa, giữ đuôi**: "Bao-cao-doanh-thu….xlsx", vì đuôi file nói loại
+file. Dấu `…` **dính liền** phần giữ lại, không chừa khoảng trắng trước đuôi (đã dính
+23/09/2026: "Báo cáo doan… .xlsx" cạnh "Báo cáo tổng kết năm….pdf", hai kiểu trong
+cùng một cây).
+
+**Chỉ hiện đủ tên khi tên thật sự bị cắt.** So chiều rộng thật rồi mới gắn `title`;
+gắn sẵn cho mọi hàng thì hàng ngắn cũng bật bong bóng, thành nhiễu (đã dính 23/09/2026:
+cây thư mục hiện tooltip "Khách hàng doanh nghiệp" dù tên còn nguyên). Bong bóng đó
+cũng không được che hàng kế bên (`N8`).
+
 **T15. Nhãn nút không được `white-space: nowrap`.**
 
 Nhãn tiếng Việt của nút khá dài ("Gia hạn / Đổi gói", "Tham gia cộng đồng"). Với
