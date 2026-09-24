@@ -32,6 +32,9 @@ Bản đúng là **một dòng chữ mờ**:
 Chỉ dựng empty state có hình và CTA khi đó là màn hình chính của cả app và người
 dùng lần đầu vào chưa có gì để làm. Trong một widget hay một tab thì không.
 
+**Người dùng là người mở đầu** (khung chat mới) thì không dùng câu báo rỗng: đưa 2–3
+việc bấm được ngay, vẫn không hình không tiêu đề (`N6`, `chat.md`).
+
 ---
 
 ## Cột rỗng khác danh sách rỗng

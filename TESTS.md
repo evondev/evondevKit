@@ -67,7 +67,7 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
 - ✅ **Ô nhập nhiều tag** — "Dựng cho tôi ô nhập email người nhận, gõ xong Enter thành một tag, có email sai định dạng."
 - ✅ **Thanh trượt khoảng giá** — "Dựng cho tôi thanh trượt chọn khoảng giá từ 0 tới 50 triệu, có ô nhập số hai đầu."
 - ✅ **Dropdown đa cấp** — "Dựng cho tôi menu tài khoản mở từ avatar trên header, có mục Chuyển tài khoản mở ra menu con danh sách tài khoản."
-- [ ] **Chat UI** — "Dựng cho tôi khung chat với trợ lý AI: tin nhắn hai phía, câu trả lời đang chạy ra, bước dùng công cụ thu gọn được, gợi ý câu hỏi tiếp và ô soạn tin."
+- ✅ **Chat UI** — "Dựng cho tôi khung chat với trợ lý AI: tin nhắn hai phía, câu trả lời đang chạy ra, bước dùng công cụ thu gọn được, gợi ý câu hỏi tiếp và ô soạn tin."
 
 ## Bậc 2 — Khối ghép
 

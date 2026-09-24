@@ -359,6 +359,7 @@ thì một trong hai chỗ là sai.
 | Dòng thời gian, lịch sử hoạt động | `references/components/timeline.md` |
 | Cây thư mục, cây lồng nhau mở đóng được | `references/components/tree.md` |
 | Khu bình luận, trả lời lồng nhau | `references/components/comment-thread.md` |
+| Khung chat với trợ lý AI: tin nhắn hai phía, bước dùng công cụ, gợi ý hỏi tiếp, ô soạn tin | `references/components/chat.md` |
 | Thanh trượt chọn khoảng số, khoảng giá | `references/components/range-slider.md` |
 | Ô nhập nhiều tag (email người nhận, nhãn) | `references/components/tag-input.md` |
 | Danh sách rỗng, đang tải (chữ hoặc khung chờ), lỗi tải | `references/components/empty-state.md` |

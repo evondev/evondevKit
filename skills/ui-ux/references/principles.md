@@ -87,6 +87,14 @@ avatar ra menu, đầu menu lại một avatar 40px to hơn chính nút vừa b�
 mà chân sidebar vẫn còn hàng profile mở cùng menu đó (hai lối vào một chỗ); màn hẹp xổ
 danh sách tài khoản ngay dưới đầu menu, tài khoản đang dùng hiện hai lần liền nhau.
 
+**Đã nói bằng vị trí thì không nói thêm bằng hình. Một việc đang chạy, một spinner.**
+Đã dính 24/09/2026, khung chat: bong bóng căn phải đã nói "ai đang nói" mà mỗi câu trả
+lời vẫn có một vòng robot; mở danh sách công cụ ra thấy spinner ở cả hàng đầu lẫn hàng
+bước; một công cụ lỗi mà câu trả lời đã giải thích vẫn có "1 lỗi" đỏ, icon đỏ, dòng mô
+tả, bốn lần một ý (`components/chat.md`). Cùng màn đó, tên bước công cụ nặng ngang câu
+trả lời: **quá trình luôn nhẹ hơn kết quả**, và không nói trước kết quả (mô tả bước
+"tổng 409.000.000 đ" ngay trên câu trả lời mở đầu bằng đúng con số đó).
+
 *Phép thử:* đếm số chỗ tô đặc hoặc có màu trên màn. Mỗi chỗ trả lời được "nó nói
 điều gì mà chỗ khác chưa nói" không?
 
@@ -141,12 +149,19 @@ sang chỗ khác thì là nút hoặc link, không phải câu chữ trơn.
 hạn" làm câu lỗi (đọc như hướng dẫn); "ví dụ 31/12/2026" cho ô không gõ được;
 "Đổi trong Cài đặt" không bấm được; dòng dưới lịch vẫn "Chọn ngày bắt đầu" khi
 đã chọn xong. Màn OTP không có "Đổi email": gõ nhầm email là kẹt, không có
-đường lùi. **Mỗi bước phải có lối ra khi người dùng đi nhầm.**
+đường lùi. **Mỗi bước phải có lối ra khi người dùng đi nhầm.** Tự tay dừng cũng là
+đi nhầm được: câu trả lời bị dừng mà không có Tạo lại thì phải gõ lại cả câu hỏi
+(đã dính 24/09/2026, `components/chat.md`).
 
 **Câu lỗi không được bịa ra một luật mà hệ thống không hề kiểm.** Nó dạy sai người
 dùng, và mâu thuẫn ngay với dữ liệu đang hiện trên màn (đã dính 23/09/2026: ô nhập
 nhiều tag ghi "cần có dấu @ và đuôi .com" trong khi các email hợp lệ ngay trên đó là
 `@saoviet.vn`). Viết đúng cái đang kiểm: "cần có dấu @ và tên miền".
+
+**Rỗng mà người dùng là người phải mở đầu thì trạng thái rỗng là việc bấm được ngay**,
+không phải câu báo "chưa có". Đã dính 24/09/2026: khung chat mới chỉ có "Chưa có tin
+nhắn nào" giữa màn (thay bằng 2–3 gợi ý mở đầu, `components/chat.md`). Danh sách do hệ
+thống đổ về (đơn hàng, thông báo) thì vẫn một dòng chữ mờ (`components/empty-state.md`).
 
 *Phép thử:* người dùng đọc xong câu này, họ biết phải làm gì tiếp không?
 
@@ -233,7 +248,8 @@ trong `components/` thì:
 1. **Tìm thứ gần nhất đã có mẫu và mượn khuôn** (`N5`). Stepper dọc mượn vòng,
    đường nối và bốn trạng thái của thanh các bước (`layouts/form.md`); bình luận
    lồng nhau mượn dòng danh sách (`components/list-row.md`); cây thư mục mượn link
-   sidebar có menu con (`layouts/app.md`).
+   sidebar có menu con (`layouts/app.md`); khung chat mượn cây thư mục, nút viền và
+   "Lỗi tải" (`components/chat.md`).
    **Chỉ mượn từ file trong skill**, không mượn từ bản dựng chưa duyệt trong dự án
    (đã dính: dòng thời gian ghi mượn "thanh các bước dọc", thứ cũng đang là đề
    bậc 1b). Khuôn lấy từ file thì dự án sau vẫn có, và lỗi không nhân đôi.
