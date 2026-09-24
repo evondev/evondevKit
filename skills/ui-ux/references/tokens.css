@@ -174,16 +174,23 @@
    tử đang cuộn). Ẩn bằng MÀU TRONG SUỐT chứ không bằng `scrollbar-width: none`:
    bề rộng 4px vẫn giữ chỗ, nên lúc thanh hiện ra nội dung không bị đẩy ngang.
    Màu lấy từ --foreground nên nền tối tự đảo, không cần khai lại.
-   Nguồn: focus.camp app/globals.css, chủ dự án chốt 08/09/2026. */
+   Nguồn: focus.camp app/globals.css, chủ dự án chốt 08/09/2026.
+
+   ⚠️ Màu thumb đi qua BIẾN --scrollbar-thumb đặt trên chính khung cuộn, không
+   viết `*:hover::-webkit-scrollbar-thumb`. Chrome không vẽ lại thumb khi selector
+   :hover nằm trước pseudo thanh cuộn: rê vào không hiện, phải cuộn mới hiện (đã
+   dính 24/09/2026, đo lại bằng Chrome thật). Đổi biến trên phần tử thì Chrome vẽ
+   lại ngay. `* { --scrollbar-thumb: transparent }` đặt lại trên TỪNG phần tử, để
+   khung cha đang được rê không truyền biến xuống khung cuộn con bên cạnh.
+   KHÔNG thêm `transition` vào rule `*` này: CSS nằm ngoài @layer thắng mọi
+   utility của Tailwind v4, một dòng `* { transition }` là xoá hết `transition-*`
+   trong app. Thanh cuộn hiện tức thì là đủ. */
+* { --scrollbar-thumb: transparent; }
+*:hover { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 16%, transparent); }
+.is-scrolling { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 28%, transparent); }
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: transparent;
-  border-radius: 9999px;
-  transition: background 180ms ease;
-}
-*:hover::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--foreground) 16%, transparent); }
-.is-scrolling::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--foreground) 28%, transparent); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 9999px; }
 ::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--foreground) 40%, transparent); }
 
 /* Firefox. ⚠️ PHẢI nằm trong @supports: từ Chrome 121, phần tử có

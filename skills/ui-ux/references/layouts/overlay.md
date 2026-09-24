@@ -1,6 +1,6 @@
 # Bố cục khối nổi
 
-Modal, panel trượt, dropdown, toast. Không có wireframe thì dựng đúng khuôn
+Modal, panel trượt, dropdown, command palette, toast. Không có wireframe thì dựng đúng khuôn
 dưới đây, báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`.
 
 ---
@@ -138,6 +138,16 @@ sai công thức, khe hở ở góc rộng ra trong khi ở cạnh vẫn 8px, g�
 Menu gọn, mục cao dưới 40px (`py-1.5`, `text-xs`) thì hạ về cặp cũ: mục
 `rounded-lg`, khung `p-2`.
 
+**Khe 4px là cho khối hẹp, đừng nâng lên 8px.** Dropdown, select, popover dạng
+danh sách rộng 224–320px: khe `p-1` là chuẩn chung (Radix, shadcn, Linear, Notion,
+menu macOS 5px). Nâng lên `p-2` thì mỗi bên mất thêm 4px bề ngang cho chữ, và nền
+sáng trông như lơ lửng giữa khung. **Khối rộng từ ~480px (command palette) thì
+khe `p-2`**: ở bề ngang đó khe 4px làm nền sáng thành một thanh chạy gần hết khung,
+góc nền sáng gần chạm góc khung (đã dính 24/09/2026). Xem "Command palette" bên dưới.
+
+**Dropdown dài phải cuộn** thì `max-h-76` và chớp thanh cuộn lúc mở, như select
+(`I18`): mục cuối bị cắt ngang là tín hiệu duy nhất lúc đứng yên.
+
 ## Phím tắt trong menu
 
 Mục nào có phím tắt thì hiện ở **mép phải**, `text-xs text-muted`, đừng để trong
@@ -156,6 +166,57 @@ quanh từng phím làm menu trông rối, và đây đúng chỗ M3d nói cần
 
 Chỉ hiện phím tắt cho mục **thật sự có phím tắt**. Bịa ra cho đẹp thì người dùng
 bấm không ăn, mất lòng tin ngay.
+
+## Command palette
+
+```
+┌────────────────────────────────────────┐
+│ 🔍 Tìm trang                           │  <- ô tìm h-14 px-5, không viền
+├────────────────────────────────────────┤  <- đường chia tràn hai mép (F25)
+│ ▓▓ 🏠 Tổng quan ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ │  <- mục đầu sáng sẵn, khe 8px tới mép
+│    📥 Hộp thư                          │
+│                                        │
+│    CÔNG VIỆC                           │  <- nhãn gần nhóm của nó
+│    📁 Dự án                            │
+│    📄 Tài liệu                         │
+│    👥 Khách hàng                       │
+│    📝 Hợp đồng                         │  <- mục cuối lộ nửa, mép dưới cắt ngang
+└────────────────────────────────────────┘
+```
+
+```html
+<!-- Ghim từ trên, không căn giữa dọc -->
+<div role="dialog" aria-label="Tìm trang" class="fixed inset-x-4 top-4 mx-auto w-auto max-w-xl overflow-hidden rounded-2xl bg-surface shadow-xl sm:top-[15vh]">
+  <div class="flex h-14 items-center gap-3 border-b border-border px-5">
+    <i data-lucide="search" class="size-4 shrink-0 text-muted"></i>
+    <input class="min-w-0 flex-1 bg-transparent text-base outline-hidden placeholder:text-muted md:text-sm" placeholder="Tìm trang" />
+  </div>
+  <!-- pr-1 + gutter stable: khe phải = 4px + thanh 4px = 8px, bằng khe trái, dù có cuộn hay không -->
+  <div role="listbox" class="max-h-[min(22rem,60vh)] overflow-y-auto p-2 pr-1 [scrollbar-gutter:stable] [&::-webkit-scrollbar-track]:mt-2 [&::-webkit-scrollbar-track]:mb-4">
+    <button role="option" class="flex h-10 w-full cursor-pointer items-center gap-3 rounded-lg px-3 text-sm outline-hidden data-[selected=true]:bg-background">
+      <i data-lucide="house" class="size-4 shrink-0 text-muted"></i>
+      <span class="min-w-0 flex-1 truncate text-left">Tổng quan</span>
+    </button>
+    <!-- Nhãn nhóm: trên rộng, dưới hẹp. Nhóm đầu tiên có nhãn thì pt-2. -->
+    <div class="px-3 pt-5 pb-1 text-xs font-medium uppercase tracking-wide text-muted">Công việc</div>
+    …
+  </div>
+</div>
+```
+
+- **Ghim từ trên (`sm:top-[15vh]`), không căn giữa dọc.** Gõ để lọc thì danh sách co lại; khung căn giữa thì ô tìm nhảy lên xuống theo từng phím gõ, ngay dưới con trỏ (`N1`). Ghim từ trên thì ô tìm đứng yên, chỉ đáy khung co. Linear, Raycast, GitHub đều ghim.
+- **Khe `p-2`, mục `rounded-lg`**: khung 16 = 8 + 8 (`M19`). Palette rộng 576px, khe `p-1` của dropdown ở bề ngang này thì nền sáng thành một thanh gần hết khung (lý do ở "Dropdown" bên trên). Mục `h-10`, icon `size-4 text-muted`, chữ `text-sm`.
+- **Icon ô tìm thẳng cột icon mục**: ô tìm `px-5` = khe `p-2` + mục `px-3`. Đổi một bên thì đổi cả hai.
+- **Nhãn nhóm gần nhóm của nó**: `pt-5 pb-1`. **Đo từ chữ tới chữ, không từ mép hàng**: mục `h-10` đã có sẵn 10px khoảng thở trên và dưới chữ, nên `pt-4 pb-1.5` nhìn bằng mắt chỉ còn 26px trên, 16px dưới, nhãn vẫn lơ lửng giữa hai nhóm (đã dính 2 lần 24/09/2026). `pt-5 pb-1` ra 30px trên, 14px dưới, khoảng gấp đôi, mắt gắn nhãn với nhóm bên dưới. Kiểu chữ như nhãn nhóm sidebar (`app.md`): IN HOA bằng CSS, xám. Không kẻ đường giữa các nhóm.
+- **Chiều cao theo `I18`**: đo ở trạng thái chưa gõ, xê `max-h` từng bậc 4px tới khi mục cuối lộ khoảng một nửa. Mở palette thì chớp thanh cuộn một lần (`flashScrollbar`).
+- **Khe hai bên bằng nhau dù có cuộn hay không**: thanh cuộn 4px chiếm chỗ bên phải, nên khung danh sách `p-2` thì khe phải thành 12px, khe trái 8px, lệch 4px mỗi khi danh sách dài (đã dính 24/09/2026, đo lại bằng Chrome). Sửa bằng `pr-1` + `[scrollbar-gutter:stable]`: luôn giữ chỗ 4px cho thanh, nên lọc còn một kết quả thì khe vẫn y như lúc cuộn.
+- **Rãnh thanh cuộn lùi `mt-2 mb-4`** (`[&::-webkit-scrollbar-track]:mt-2 [&::-webkit-scrollbar-track]:mb-4`). Đầu trên nằm dưới đường kẻ thẳng của ô tìm, lùi 8px để thanh không dính đường kẻ. Đầu dưới chạm góc bo 16px, **lùi bằng bán kính góc bo**: đầu tròn của thanh 4px sát mép chỉ nằm trọn trong góc bo khi cách đáy từ 14px (16 − 2). `my-2` cũ để đuôi bị vát mép phải khoảng 2px, thấy rõ khi phóng to 4 lần (đã dính 24/09/2026, dự án test đo ra và sửa trước skill).
+- **Mục sáng là một**: mở ra thì mục đầu sáng sẵn, Enter chạy nó; chuột và phím mũi tên dời cùng một chỗ sáng (`I13`). cmdk dùng `data-[selected=true]:`, Radix dùng `data-[highlighted]:`. Phím mũi tên đi tới mục khuất thì cuộn nó vào tầm nhìn (`block: "nearest"`).
+- **Lọc không phân biệt dấu** ("tai" ra "Tài liệu"). **Chỉ khớp theo tên mục và từ khoá riêng của mục** (từ đồng nghĩa, tên tiếng Anh), không khớp theo tên nhóm: gõ "tai" mà cả nhóm TÀI KHOẢN hiện ra thì "Cài đặt", "Hồ sơ của bạn" nằm trong kết quả không rõ vì sao (đã dính 24/09/2026). Khớp đầu từ xếp trước. Nhóm không còn mục nào thì ẩn luôn nhãn.
+- **Tên dài `truncate` kèm `title`** (`T14`).
+- **Không có kết quả**: một dòng `py-10 text-center text-sm text-muted`, "Không có trang nào khớp. Thử gõ ngắn hơn." **Không nhắc lại từ khoá**: nó nằm ngay ô tìm phía trên (`N3`), và từ khoá dài bị cắt giữa chữ thành "của phò…" (đã dính 24/09/2026).
+- **Esc đóng, bấm ra ngoài cũng đóng.** Ngoại lệ có tên của `I20`: ô duy nhất là ô tìm, đóng lỡ tay không mất gì.
+- Chuyển động như modal (bảng "Chuyển động"). Không dựng hàng gợi ý phím (↑↓ ↵ Esc) ở đáy khi chưa được yêu cầu.
 
 ## Toast
 

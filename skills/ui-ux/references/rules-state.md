@@ -238,6 +238,7 @@ nằm sẵn trong `tokens.css`, áp cho cả app:
 - Thanh **4px**, rãnh trong suốt, thumb bo tròn hẳn.
 - **Đứng yên: thumb trong suốt.** Rê chuột vào vùng cuộn: hiện mờ (16%). Đang cuộn: đậm hơn (28%). Rê thẳng vào thumb: 40%.
 - **Ẩn bằng màu trong suốt, không bằng `scrollbar-width: none`.** Bề rộng vẫn giữ chỗ, lúc thanh hiện ra nội dung không bị đẩy ngang 4px. Dùng `none` là mỗi lần cuộn cả khối giật một cái.
+- **Màu thumb đi qua biến `--scrollbar-thumb` đặt trên khung cuộn**, không viết `*:hover::-webkit-scrollbar-thumb`. Chrome không vẽ lại thumb theo selector đó: rê vào không hiện gì, phải cuộn mới hiện, nên thanh "tự ẩn" thành "ẩn tới lúc đã cuộn" (đã dính 24/09/2026 ở command palette, đo lại bằng Chrome thật). `*:hover { --scrollbar-thumb: … }` thì Chrome vẽ lại ngay. Dự án đang dùng bản cũ thì thay cả khối bằng khối trong `tokens.css`.
 - **Khối Firefox phải bọc `@supports not selector(::-webkit-scrollbar)`.** Từ Chrome 121, có `scrollbar-width` là Chrome bỏ hết `::-webkit-scrollbar` và vẽ thanh gốc to, chiếm chỗ.
 - Trạng thái "đang cuộn" cần một component nhỏ gắn `.is-scrolling` vào **đúng phần tử đang cuộn**, gỡ ra sau 700ms. Nghe `scroll` ở pha **capture** để bắt được cả vùng cuộn lồng nhau (sidebar, danh sách trong modal). Mount một lần ở gốc app:
 
@@ -276,6 +277,27 @@ export default function ScrollbarAutohide() {
 `.scrollbar-clean` (ẩn hẳn, không bao giờ hiện) chỉ còn cho **hàng chip / tab
 cuộn ngang**. Vùng cuộn dọc thì để thanh tự ẩn lo, đừng gắn `scrollbar-clean`:
 ẩn hẳn thì người dùng chuột không có gì để kéo, cũng không biết còn bao nhiêu.
+
+**Thanh ẩn thì mép cắt phải báo "còn nữa".** Thanh tự ẩn chỉ hiện khi chuột đã
+nằm trong vùng cuộn; người vừa mở command palette bằng ⌘K, tay còn trên bàn
+phím, không thấy gì cả. Tín hiệu lúc đứng yên là **mục cuối bị mép dưới cắt
+ngang, lộ khoảng một nửa** (macOS, Linear, Raycast đều dựa vào đây, không ai để
+thanh cuộn đứng sẵn):
+
+- **Chọn `max-h` sao cho mép dưới cắt giữa một mục, không cắt sát ranh giới hai mục.** Cắt còn thiếu vài px thì trông như danh sách hết ở đó (đã dính 24/09/2026: palette cắt mục "Hợp đồng" lộ gần trọn, không ai biết còn mục bên dưới). Công thức cho khung `p-1`, mục `h-10`: `max-h` = 40 × số mục trọn + 4 + 20 → **`max-h-76`** (304px, lộ 7 mục rưỡi) cho select, dropdown dài. Danh sách có nhãn nhóm thì đo ở trạng thái mặc định rồi xê `max-h` từng bậc 4px tới khi mục cuối lộ giữa 1/3 và 2/3.
+- **Lớp nổi có danh sách cuộn (command palette, select, dropdown dài) chớp thanh cuộn một lần lúc mở**, như macOS: nếu `scrollHeight > clientHeight` thì gắn `.is-scrolling` vào vùng danh sách, gỡ ra sau ~1 giây. Chỉ lớp nổi; sidebar và trang thì không chớp.
+- **Vùng cuộn nằm trong khung bo góc (lớp nổi, card) thì rãnh lùi theo đầu nó chạm**: đầu nào chạm góc bo thì lùi **bằng bán kính góc bo** (khung `rounded-2xl` → `mb-4`, cả hai đầu chạm thì `my-4`), vì đầu tròn của thanh 4px sát mép chỉ nằm trọn trong góc khi cách mép từ R − 2px; đầu nào nằm dưới đường kẻ thẳng thì `mt-2`. Viết bằng `[&::-webkit-scrollbar-track]:mb-4`. Khe phải trừ đi 4px của thanh (`pr-1` thay cho `p-2`, kèm `[scrollbar-gutter:stable]`). Lùi thiếu thì cuộn tới cuối, đuôi thanh bị góc bo cắt vát (`my-2` vẫn thiếu 2px ở khung bo 16px, đã dính 24/09/2026); không trừ khe thì khe phải rộng hơn khe trái 4px (đo bằng Chrome 24/09/2026). Xem mẫu ở mục Command palette trong `layouts/overlay.md`.
+- **Không phủ dải mờ ở đáy** để báo còn nữa: thêm một lớp gradient là thêm tín hiệu cho việc mục bị cắt nửa đã nói (`N3`), và dải mờ đè lên chữ của mục cuối.
+
+```ts
+// Chớp thanh cuộn một lần khi lớp nổi mở (luật I18). Gọi trong effect lúc open.
+export function flashScrollbar(scrollElement: HTMLElement | null) {
+  if (!scrollElement || scrollElement.scrollHeight <= scrollElement.clientHeight) return;
+
+  scrollElement.classList.add("is-scrolling");
+  window.setTimeout(() => scrollElement.classList.remove("is-scrolling"), 1000);
+}
+```
 
 **I19. Mọi trang có dữ liệu đều cần đủ ba trạng thái: đang tải, rỗng, lỗi.**
 

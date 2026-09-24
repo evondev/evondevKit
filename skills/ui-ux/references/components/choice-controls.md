@@ -183,10 +183,10 @@ mở cũng giữ viền + ring như đang focus, vì người dùng vẫn đang 
 `p-1`, mục `h-10 rounded-xl`, portal ra `body` theo `I22`):
 
 - Rộng **bằng nút mở** (Radix: `w-(--radix-select-trigger-width)`), cách nút `mt-2`.
-- Cao tối đa `max-h-72`, cuộn bên trong. Mở ra thì cuộn sẵn tới mục đang chọn.
+- Cao tối đa **`max-h-76`** (304px), cuộn bên trong: lộ 7 mục rưỡi, mục thứ 8 bị cắt ngang để báo còn nữa (`I18`). `max-h-72` cũ cắt đúng sát ranh giới mục thứ 8 (chỉ lộ 4px), nhìn như danh sách hết ở mục 7. Mở ra thì cuộn sẵn tới mục đang chọn và chớp thanh cuộn một lần (`flashScrollbar`, `I18`). Danh sách chiếm cả khung `rounded-2xl` nên cả hai đầu rãnh chạm góc bo: `[&::-webkit-scrollbar-track]:my-4`, khe `p-1 pr-0 [scrollbar-gutter:stable]` (`I18`).
 - **Mục có mô tả** (vai trò, gói, quyền): hai tầng, tên `text-sm font-medium` + một câu `text-sm text-muted` nói **quyền làm được gì**, mục cao theo nội dung (`py-2.5`), không ép `h-10`. Ô đã đóng chỉ hiện tên, không hiện mô tả. Chọn quyền mà không có câu này thì người mời phải đoán "Thành viên" khác "Chỉ xem" chỗ nào.
 - **Mục đang chọn**: chữ `font-medium` + icon `check` `size-4` căn phải. Nền xám `bg-background` là của **mục đang sáng** (chuột hoặc phím mũi tên, `data-[highlighted]`), không phải của mục đang chọn; mở ra thì mục đang chọn sáng trước.
-- Trên 8 mục: **ô tìm ở đầu danh sách**, icon `search` trái, placeholder "Tìm tỉnh, thành phố", đường chia bên dưới tràn hai mép (`F25`). Gợi ý (người dùng quyết): gõ là lọc ngay, không bấm Enter; lọc ở máy hay gọi server thì để handler rỗng. Không ra kết quả thì một dòng `text-muted` căn giữa: *Không tìm thấy "xyz"*.
+- Trên 8 mục: **ô tìm ở đầu danh sách**, icon `search` trái, placeholder "Tìm tỉnh, thành phố", đường chia bên dưới tràn hai mép (`F25`). Gợi ý (người dùng quyết): gõ là lọc ngay, không bấm Enter; lọc ở máy hay gọi server thì để handler rỗng. Không ra kết quả thì một dòng `text-muted` căn giữa: *Không tìm thấy tỉnh, thành phố nào*. **Không nhắc lại từ khoá**: nó nằm ngay ô tìm phía trên (`N3`), và từ khoá dài bị cắt giữa chữ thành "của phò…" (đã dính 24/09/2026 ở command palette).
 - Dưới 8 mục, không cần tìm, và app chạy nhiều trên điện thoại thì `<select>` gốc là đủ: `appearance-none` + icon `chevron-down` đặt `absolute` bên phải, `pr-10`. Điện thoại mở bánh xe chọn gốc, dễ bấm hơn mọi danh sách tự dựng.
 
 ---

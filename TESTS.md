@@ -71,7 +71,7 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
       Cần có: input, select, date picker, button, alert, toast.
 - ✅ **Drawer** — "Dựng cho tôi panel bên phải xem nhanh chi tiết một đơn hàng."
       Cần có: status badge, button, dropdown menu, description list.
-- [ ] **Command palette** — "Dựng cho tôi command palette mở bằng ⌘K."
+- ✅ **Command palette** — "Dựng cho tôi command palette mở bằng ⌘K."
       Cần có: input.
 - [ ] **Notification panel** — "Dựng cho tôi panel thông báo mở từ chuông trên header."
       Cần có: avatar, tabs, empty state.
