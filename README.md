@@ -94,6 +94,24 @@ hoặc nhắc thẳng "dùng skill ui-ux". Codex đổi thư mục skill thì kh
 tự mở đúng file trong bảng "Mở doc nào khi nào"; mô hình khác có thể bỏ bước
 audit hoặc không mở file component. Chạy thử vài đề đã ✅ rồi so ảnh trước khi tin.
 
+### Ra bản mới
+
+Người đã cài chỉ nhận bản mới khi `version` trong `.claude-plugin/plugin.json`
+tăng. Push mà không tăng thì họ vẫn chạy bản cũ trong cache.
+
+| Thay đổi | Tăng | Ví dụ |
+| --- | --- | --- |
+| Sửa luật, thêm component, sửa lỗi | patch: `0.1.0 → 0.1.1` | thêm drawer, sửa dropdown |
+| Mốc lớn: nhánh mới, đổi cấu trúc skill | minor: `0.1.x → 0.2.0` | làm trang |
+
+1. Commit bình thường, không đụng `version`. Phần đang làm dở chưa tới tay người dùng.
+2. Một loạt thay đổi đã ổn (chạy lại vài đề ✅ trong `TESTS.md` không vỡ) thì tăng
+   `version` trong một commit riêng rồi push.
+3. Người dùng lấy bản mới bằng `/plugin marketplace update evondevkit`.
+
+Test ở máy đọc thẳng `~/dev/evondevKit` nên không bị cache, không cần tăng
+`version` để thấy thay đổi của mình.
+
 ---
 
 ## Skill này làm gì

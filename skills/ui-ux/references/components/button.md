@@ -65,7 +65,7 @@ function getVariantClasses(variant: ButtonVariant): string {
 
 - **`outline` là mặc định**, không phải `primary`. Nút nền nhấn rải khắp nơi thì màu thương hiệu loang ra, tới lúc có một nút thật sự cần nổi thì nó không nổi được nữa (`I1`, `M2`).
 - **`secondary` (nền xám, không viền)** dùng khi nút phụ cần có mặt rõ hơn `ghost` nhưng viền mảnh trông rỗng: nút rộng hết card (các gói thường trong bảng giá, `layouts/pricing.md`), hoặc nút phụ đứng cạnh nút `primary` trong footer. Không thay `outline` làm mặc định (chủ dự án chốt 21/09/2026).
-- **`ghost` đứng đầu hàng, thẳng cột với chữ phía trên** thì thêm `-ml-4` bù đúng `px-4`. Nền trong suốt nên mắt thấy mép của chữ chứ không thấy mép nút, không bù thì cả hàng trông lệch vào 16px so với tiêu đề và nhãn bên dưới. Nền hover lấn ra lề trái là đúng ý. Nút có nền hoặc viền thì không bù.
+- **`ghost` đứng đầu hàng, thẳng cột với chữ phía trên** thì thêm `-ml-4` bù đúng `px-4`. Nền trong suốt nên mắt thấy mép của chữ chứ không thấy mép nút, không bù thì cả hàng trông lệch vào 16px so với tiêu đề và nhãn bên dưới. Nền hover lấn ra lề trái là đúng ý. Nút có nền hoặc viền thì không bù. **Cuối hàng bên phải cũng vậy**, bù bằng `-mr` đúng `px` của nút (`h-8` là `-mr-3`): chữ "Đánh dấu đã đọc" ở header panel thông báo thẳng cột với chấm chưa đọc bên dưới, lúc rê vào nền xám sát mép panel hơn tiêu đề bên trái là đúng ý, không phải lệch.
 - Icon lucide **bên trái chữ**, `size-4`, `shrink-0` để nó không bị bóp khi nhãn dài. `aria-hidden` vì chữ đã nói rồi.
 - **Không `white-space: nowrap`.** Đo thật ở focus.camp: hộp 140px, nút nowrap rộng 192px, tràn 60px ra ngoài. `leading-tight` để hai dòng không dính nhau. Luật `T15`.
 - **Không `shadow`.** Nút nằm trong trang (`M15`).
