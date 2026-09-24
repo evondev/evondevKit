@@ -24,8 +24,10 @@ function getVariantClasses(variant: ButtonVariant): string {
     variant === "secondary" &&
       "bg-secondary text-foreground hover:bg-secondary-hover",
     // Hành động phụ nằm trong hàng, mờ đi lúc thường.
+    // Hover foreground/5, KHÔNG bg-background: ghost hay đứng thẳng trên nền trang
+    // xám (header, toolbar), tô --background ở đó thì rê vào không thấy gì.
     variant === "ghost" &&
-      "bg-transparent text-muted hover:bg-background hover:text-foreground",
+      "bg-transparent text-muted hover:bg-foreground/5 hover:text-foreground",
   );
 }
 

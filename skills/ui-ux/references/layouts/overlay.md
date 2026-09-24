@@ -1,6 +1,6 @@
 # Bố cục khối nổi
 
-Modal, panel trượt, dropdown, command palette, toast. Không có wireframe thì dựng đúng khuôn
+Modal, panel trượt, dropdown, command palette, panel thông báo, toast. Không có wireframe thì dựng đúng khuôn
 dưới đây, báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`.
 
 ---
@@ -217,6 +217,39 @@ bấm không ăn, mất lòng tin ngay.
 - **Không có kết quả**: một dòng `py-10 text-center text-sm text-muted`, "Không có trang nào khớp. Thử gõ ngắn hơn." **Không nhắc lại từ khoá**: nó nằm ngay ô tìm phía trên (`N3`), và từ khoá dài bị cắt giữa chữ thành "của phò…" (đã dính 24/09/2026).
 - **Esc đóng, bấm ra ngoài cũng đóng.** Ngoại lệ có tên của `I20`: ô duy nhất là ô tìm, đóng lỡ tay không mất gì.
 - Chuyển động như modal (bảng "Chuyển động"). Không dựng hàng gợi ý phím (↑↓ ↵ Esc) ở đáy khi chưa được yêu cầu.
+
+## Panel thông báo
+
+Mở tại chỗ từ nút chuông trên header (`I24`), đóng bằng bấm ra ngoài hay Esc (`I21`).
+
+```
+            [🔔•]                      <- nút chuông: lúc mở có nền như hover
+┌─────────────────────────────────┐    <- mép trên cách đường kẻ header 8px
+│ Thông báo      Đánh dấu đã đọc  │    <- hành động duy nhất, ghost h-8
+│ [Tất cả] Chưa đọc  Nhắc đến bạn │
+├─────────────────────────────────┤
+│ (L) **Lan Anh** đã nhắc đến   • │    <- chưa đọc: chữ đậm màu, chấm phải
+│     bạn trong **Website…**      │    <- tiêu đề tối đa 2 dòng
+│     Anh xem lại giúp em…        │
+│     3 giờ trước                 │
+│ (H) Hoàng Minh Đức đã giao…     │    <- đã đọc: tiêu đề foreground/70
+└─────────────────────────────────┘
+```
+
+- **Khung**: popover `w-96 max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-surface shadow-lg`, neo mép phải nút chuông, portal ra `body` (`I22`).
+- **Mép trên không đứng sát đường kẻ header.** Panel neo theo nút với khoảng cách mặc định thì mép trên thường rơi cách đường kẻ header vài px, đường kẻ chọc vào góc bo của panel như hai thứ suýt khớp (đã dính 24/09/2026: lệch 3px). Chỉnh khoảng cách (`sideOffset`) cho mép trên panel nằm **dưới đường kẻ 8px**. Luật chung cho mọi khối nổi mở từ header.
+- **Header: tiêu đề bên trái, "Đánh dấu đã đọc" bên phải**, nút `ghost h-8`, chỉ chữ (`I1`). Mọi panel thông báo thật đều có nút này (GitHub, Linear, Vercel, Slack); thiếu nó thì muốn dọn bốn chấm người dùng phải bấm vào bốn thông báo (đã dính 24/09/2026). Không còn gì chưa đọc thì ẩn nút. Đánh dấu cả danh sách hay chỉ tab đang xem là logic của dự án, handler để rỗng (`I25`). Không thêm icon bánh răng hay nút ⋯ khi chưa được yêu cầu.
+- **Tab `boxed`** như tab trạng thái trên bảng (`components/small-controls.md`): chữ trơn, không số đếm (chấm trên chuông đã báo có chưa đọc).
+- **Chiều cao danh sách = chiều cao của tab Tất cả**, chặn trên `max-h-[min(28rem,calc(100dvh-13rem))]`, cuộn trong khung theo `I18` (đầu dưới rãnh chạm góc bo: `mb-4`). Tab Tất cả chứa mọi thứ nên luôn cao nhất; panel mở ở tab đó, đo chiều cao danh sách một lần rồi đặt làm `min-height` cho các tab còn lại: bấm sang tab rỗng hay tab ít mục thì mép dưới đứng yên (`N1`). Không có thông báo nào thì panel gọn theo câu rỗng (`py-10`). Chiều cao đo ở tab Tất cả là chiều cao **đã hạ cho mục cuối lộ nửa** (`getPeekListHeight`, `I18`): thông báo cao thấp khác nhau nên không chốt được một con số.
+  Đã thử hai cách và bỏ (24/09/2026): `min-h-72` thì sang tab rỗng vẫn sụp 448 → 288px; **cao cố định** thì hết sụp, nhưng lúc chưa có thông báo nào panel là một khối trắng 563px với một dòng chữ xám giữa lòng, trông như tải chưa xong.
+- **Mỗi thông báo là một link rộng hết hàng** (`I29`): `flex gap-3 rounded-lg px-3 py-3 hover:bg-background`, khung danh sách `p-2` (`M19`: 16 = 8 + 8). Mục nhiều dòng nên khe 8px như command palette, không 4px như menu. Bấm thì mở đối tượng và đánh dấu đã đọc, handler rỗng.
+- **Dòng tiêu đề**: tên người và tên đối tượng `font-medium`, động từ thường ("**Lan Anh** đã nhắc đến bạn trong **Website bán hàng 2026**"). **Tối đa 2 dòng** (`line-clamp-2` + `title`): tên hợp đồng dài làm tiêu đề ba dòng, cộng hai dòng trích thì một thông báo cao bằng ba cái khác, panel mất tác dụng liếc (đã dính 24/09/2026). Câu trích `text-sm text-muted line-clamp-2`, thời gian `text-xs text-muted`.
+- **Chưa đọc và đã đọc liếc là phân biệt được** (`N2`): chưa đọc thì chấm `size-2 rounded-full bg-foreground` bên phải (**không `bg-primary`**, xem ngay dưới), thẳng tâm dòng đầu; đã đọc thì không chấm **và tiêu đề `text-foreground/70`**. Chỉ có chấm thì trong danh sách lẫn lộn, hai mục trông y hệt nhau trừ một chấm 8px ở tận mép phải, nơi mắt đọc tới cuối cùng (đã dính 24/09/2026, tab Nhắc đến bạn). Không tô nền cho mục chưa đọc: mười mục chưa đọc thành mười dải xám.
+- **Chấm chưa đọc, tên người, tên đối tượng không đổi theo màu thương hiệu.** Dự án brand xanh lá thì chấm vẫn `--foreground` (đen, nền tối thì trắng), tên vẫn `--foreground font-medium`. Màu nhấn để dành cho nút chính của màn (`M3`): mười thông báo chưa đọc là mười chấm xanh rải dọc panel, đúng cái đã bỏ ở badge sidebar (`I15`). Tên tô màu nhấn thì đọc ra là link, trong khi cả hàng mới là chỗ bấm. Chấm cũng không đỏ: đỏ dành cho lỗi (`M30`).
+- **Avatar `size-8`** theo `components/avatar.md`, thẳng dòng đầu tiêu đề, không căn giữa cả mục.
+- **Rỗng**: một dòng `text-sm text-muted` theo `components/empty-state.md`. Tab Chưa đọc rỗng: "Bạn đã đọc hết thông báo". Chưa có gì: "Chưa có thông báo nào".
+- **Nút chuông**: icon `BellDot` của lucide khi có chưa đọc, **tô đặc chấm bằng `[&_circle]:fill-current`**, `Bell` khi không. `BellDot` gốc vẽ chấm bằng nét viền, không tô: ở `size-5` nó chỉ là một vòng tròn rỗng 6px, trông như chữ o lạc vào icon (đã dính 24/09/2026). Chuông đã khoét sẵn khe quanh chấm, đừng tự đè thêm chấm `absolute`. `aria-label` kèm số: "Thông báo, 4 chưa đọc". **Lúc panel mở, nút có nền như hover** (`aria-expanded:bg-foreground/5`), để biết panel mọc ra từ đâu.
+- Chuyển động như dropdown (bảng "Chuyển động").
 
 ## Toast
 

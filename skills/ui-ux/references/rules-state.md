@@ -285,6 +285,26 @@ ngang, lộ khoảng một nửa** (macOS, Linear, Raycast đều dựa vào đ�
 thanh cuộn đứng sẵn):
 
 - **Chọn `max-h` sao cho mép dưới cắt giữa một mục, không cắt sát ranh giới hai mục.** Cắt còn thiếu vài px thì trông như danh sách hết ở đó (đã dính 24/09/2026: palette cắt mục "Hợp đồng" lộ gần trọn, không ai biết còn mục bên dưới). Công thức cho khung `p-1`, mục `h-10`: `max-h` = 40 × số mục trọn + 4 + 20 → **`max-h-76`** (304px, lộ 7 mục rưỡi) cho select, dropdown dài. Danh sách có nhãn nhóm thì đo ở trạng thái mặc định rồi xê `max-h` từng bậc 4px tới khi mục cuối lộ giữa 1/3 và 2/3.
+- **Mục cao thấp khác nhau** (thông báo, bình luận, kết quả tìm có mô tả) thì không chốt được một con số `max-h`. Tính bằng JS lúc mở: trong giới hạn cao tối đa, tìm mục thấp nhất mà **điểm giữa** của nó còn lọt, rồi hạ chiều cao danh sách xuống đúng điểm giữa đó. Dữ liệu dài ngắn hay màn cao thấp thế nào cũng cắt giữa một mục (dự án test làm trước skill, 24/09/2026):
+
+```ts
+// Chiều cao để mục cuối lộ đúng một nửa (luật I18). Mỗi mục gắn data-peek-item.
+export function getPeekListHeight(listElement: HTMLElement, maxHeight: number): number {
+  if (listElement.scrollHeight <= maxHeight) return listElement.scrollHeight;
+
+  const listTop = listElement.getBoundingClientRect().top - listElement.scrollTop;
+  let peekHeight = maxHeight;
+
+  for (const item of listElement.querySelectorAll<HTMLElement>("[data-peek-item]")) {
+    const itemRect = item.getBoundingClientRect();
+    const itemMiddle = itemRect.top - listTop + itemRect.height / 2;
+    if (itemMiddle > maxHeight) break;
+    peekHeight = itemMiddle;
+  }
+
+  return peekHeight;
+}
+```
 - **Lớp nổi có danh sách cuộn (command palette, select, dropdown dài) chớp thanh cuộn một lần lúc mở**, như macOS: nếu `scrollHeight > clientHeight` thì gắn `.is-scrolling` vào vùng danh sách, gỡ ra sau ~1 giây. Chỉ lớp nổi; sidebar và trang thì không chớp.
 - **Vùng cuộn nằm trong khung bo góc (lớp nổi, card) thì rãnh lùi theo đầu nó chạm**: đầu nào chạm góc bo thì lùi **bằng bán kính góc bo** (khung `rounded-2xl` → `mb-4`, cả hai đầu chạm thì `my-4`), vì đầu tròn của thanh 4px sát mép chỉ nằm trọn trong góc khi cách mép từ R − 2px; đầu nào nằm dưới đường kẻ thẳng thì `mt-2`. Viết bằng `[&::-webkit-scrollbar-track]:mb-4`. Khe phải trừ đi 4px của thanh (`pr-1` thay cho `p-2`, kèm `[scrollbar-gutter:stable]`). Lùi thiếu thì cuộn tới cuối, đuôi thanh bị góc bo cắt vát (`my-2` vẫn thiếu 2px ở khung bo 16px, đã dính 24/09/2026); không trừ khe thì khe phải rộng hơn khe trái 4px (đo bằng Chrome 24/09/2026). Xem mẫu ở mục Command palette trong `layouts/overlay.md`.
 - **Không phủ dải mờ ở đáy** để báo còn nữa: thêm một lớp gradient là thêm tín hiệu cho việc mục bị cắt nửa đã nói (`N3`), và dải mờ đè lên chữ của mục cuối.
