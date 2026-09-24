@@ -50,7 +50,7 @@ khác nghĩa thì phải khác hình rõ ràng.
 Đã dính: xong mà thanh vẫn đen đầy như đang chạy (xong là emerald); trang đang
 chọn trông như ô input; nút phụ trông như bị khoá (`I8`); hôm nay và ngày đang
 chọn lẫn nhau (chữ đậm + chấm, khác nền đặc); một trang và 0 dòng vẫn hiện đủ
-control chết; bước lỗi không có hình riêng; thanh bước thu gọn tô đậm cả đoạn đang
+control chết; bước lỗi không có hình riêng; tệp bị từ chối vì quá cỡ vẫn có rãnh thanh tiến độ rỗng, đọc như "đang chờ chạy"; khung tải tệp bị khoá cùng nền với lúc đang kéo tệp vào; thanh bước thu gọn tô đậm cả đoạn đang
 làm nên "đang ở bước cuối" giống "đã xong hết", sửa thành để xám thì "Bước 2 / 3"
 lại đọc như thanh thiếu (đang làm là tầng thứ ba, nửa đậm).
 
@@ -72,7 +72,8 @@ lần. Thứ bậc đi bằng cỡ chữ, độ đậm, vị trí trước; màu
 và ở nút (nút chỉ chữ); banner tô màu cả mô tả (chỉ icon và tiêu đề); câu lỗi
 ghi "rồi thử lại" cạnh nút Thử lại; "Xem tất cả" muốn tô đen ở mọi card (`I1`,
 `I3`); tên trang nhạt hơn tiêu đề khối bên dưới; màn OTP hết hạn có cả "Gửi mã
-mới" trong câu lỗi lẫn "Gửi lại mã" bên dưới (hai nút một việc: giữ một).
+mới" trong câu lỗi lẫn "Gửi lại mã" bên dưới (hai nút một việc: giữ một); tệp tải xong có
+thanh xanh lá đầy + `100%` + "Đã tải xong" (ba tín hiệu một ý: bỏ thanh và số, giữ chữ).
 
 *Phép thử:* đếm số chỗ tô đặc hoặc có màu trên màn. Mỗi chỗ trả lời được "nó nói
 điều gì mà chỗ khác chưa nói" không?

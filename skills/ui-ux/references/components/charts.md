@@ -167,17 +167,17 @@ trượt khỏi cột.
 Rãnh nền dùng `--background`, không dùng `--border`. Thanh `h-2`, bo `full`.
 Con số phần trăm ghi ở đầu dòng, không đặt bên trong thanh.
 
-**Thanh tiến độ đứng riêng** (dung lượng, tải file, checklist): hàng trên là
+**Thanh tiến độ đứng riêng** (dung lượng, checklist): hàng trên là
 nhãn trái + số phải, thanh ở giữa, một dòng phụ `text-xs text-muted` bên dưới.
 
 - `role="progressbar"` + `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, `aria-label` bằng đúng nhãn. Trình đọc màn hình không thấy độ dài thanh.
-- **Màu theo trạng thái, đúng bảng trạng thái của app**: đang chạy `bg-primary`; **xong** `bg-emerald-600` (tải xong, checklist đủ); cần chú ý `bg-amber-500`; hỏng hay đầy `bg-red-500`. Ngưỡng đổi màu (vd. dung lượng từ 80%) là của người dùng, truyền qua prop `tone`. Dòng phụ đổi màu theo (`amber-700`, `red-600`) và nói bằng chữ, vì màu thanh một mình không đủ.
-- **Xong mà thanh vẫn đen đầy** thì trông y hệt "đang chạy tới 99%". Xong là emerald, dòng phụ ghi "Đã tải xong · 2,4 MB" (đã dính 22/09/2026).
-- **Tải file đang chạy có nút huỷ** (`IconButton` ✕ cuối hàng, `aria-label="Huỷ tải"`). **Tải hỏng**: thanh đỏ dừng ở chỗ đang tải, dòng phụ nói lý do, và **có nút "Thử lại"** (nút viền `outline` `h-8 px-3` cuối hàng, chữ `text-foreground`). Không dùng `ghost`: ghost chữ `text-muted`, nút Thử lại trông như đang bị khoá (`I8`, đã dính 22/09/2026). Báo hỏng mà không cho làm gì là bắt người dùng xoá đi chọn lại. Bấm vào gọi gì là handler rỗng.
+- **Màu theo trạng thái, đúng bảng trạng thái của app**: đang chạy `bg-primary`; **xong** `bg-emerald-600` (checklist đủ); cần chú ý `bg-amber-500`; hỏng hay đầy `bg-red-500`. Ngưỡng đổi màu (vd. dung lượng từ 80%) là của người dùng, truyền qua prop `tone`. Dòng phụ đổi màu theo (`amber-700`, `red-600`) và nói bằng chữ, vì màu thanh một mình không đủ.
+- **Xong mà thanh vẫn đen đầy** thì trông y hệt "đang chạy tới 99%". Thanh đứng riêng (dung lượng, checklist) xong là emerald (đã dính 22/09/2026).
+- **Tải tệp** (một hay nhiều tệp) không dùng khuôn này: theo `file-upload.md`. **Hai độ dày là cố ý, đừng gộp**: thanh ở đây (`h-2`) là **con số chính** của khối, người ta đọc nó để so; thanh tải tệp (`h-1`) chỉ là **trạng thái tạm** của một dòng mà nội dung chính là tên tệp, xong là biến mất. Demo "tiến độ tải file" trong bộ progress bar cũng dựng theo khuôn tải tệp. Thanh mảnh `h-1`, chỉ tệp đang tải mới có thanh; xong và hỏng thì bỏ thanh, bỏ số %, chỉ còn một dòng chữ; Thử lại là nút chữ sau lý do.
 - **Không có gì để đếm** (checklist 0 việc): không ghi `0/0`, ô số để trống, thanh rỗng, dòng phụ "Chưa có việc nào". `0/0` đọc như lỗi chia cho 0.
 - **Một kiểu viết số cho cả app**: `12,4 / 20 GB` và `4 / 6 việc`, gạch chéo có dấu cách hai bên. Chỗ có cách chỗ không là lệch (đã dính 22/09/2026). Số `tabular-nums`.
-- **Cột hành động cuối hàng rộng cố định** (`w-20`, căn phải) ở mọi hàng, kể cả hàng đã xong không có nút. Nút ✕ hẹp, nút Thử lại rộng, hàng xong không nút: để cột co theo nút thì số phần trăm mỗi hàng đứng một chỗ, cột số lệch (đã dính 22/09/2026).
-- Tên file dài `truncate` kèm `title`, số phần trăm `shrink-0` không bao giờ bị đẩy xuống dòng.
+
+⚠️ **Luật cũ đã bỏ (24/09/2026), đừng hồi sinh:** tải hỏng giữ thanh đỏ dừng giữa chừng kèm số %, nút viền "Thử lại" cuối hàng, cột hành động `w-20`; tải xong giữ thanh xanh lá đầy + `100%`. Lên danh sách nhiều tệp thì thành một dàn sọc đen đỏ xanh, và tệp hỏng không còn ✕ để bỏ. Khuôn mới ở `file-upload.md`.
 
 **Biểu đồ đường** (xu hướng theo tháng, theo ngày):
 

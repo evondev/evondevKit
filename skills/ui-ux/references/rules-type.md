@@ -125,8 +125,11 @@ lưới nở theo, cả trang tràn ngang.
 Chữ trong danh sách dày dùng `truncate` kèm `min-w-0`. Nhưng dòng mô tả thì cho
 xuống dòng, đừng cắt — mô tả bị cắt thì mất luôn lý do nó tồn tại.
 
-**Tên file cắt giữa, giữ đuôi**: "Bao-cao-doanh-thu….xlsx", vì đuôi file nói loại
-file. Dấu `…` **dính liền** phần giữ lại, không chừa khoảng trắng trước đuôi (đã dính
+**Tên file cắt giữa, giữ đuôi**: "Bao-cao-doanh…thu-quy-3.xlsx", vì đuôi file nói loại
+file. **Phần giữ lại là vài ký tự cuối của tên (khoảng 8) cộng đuôi**, không chỉ mỗi đuôi:
+cắt sát dấu chấm thì `…` dính `.xlsx` thành bốn chấm "doanh-thu….xlsx", đọc như lỗi
+gõ (đã dính 24/09/2026), và mất luôn phần cuối tên, thường là chỗ phân biệt các bản
+("…quy-3", "…ban-cuoi"). Finder, Dropbox cắt kiểu này. Dấu `…` **dính liền** phần giữ lại, không chừa khoảng trắng trước đuôi (đã dính
 23/09/2026: "Báo cáo doan… .xlsx" cạnh "Báo cáo tổng kết năm….pdf", hai kiểu trong
 cùng một cây).
 

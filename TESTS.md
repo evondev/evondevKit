@@ -75,7 +75,7 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
       Cần có: input.
 - ✅ **Notification panel** — "Dựng cho tôi panel thông báo mở từ chuông trên header."
       Cần có: avatar, tabs, empty state.
-- [ ] **File upload** — "Dựng cho tôi khu tải tài liệu lên cho một dự án."
+- ✅ **File upload** — "Dựng cho tôi khu tải tài liệu lên cho một dự án."
       Cần có: button, progress bar, toast.
 
 ## Bậc 3 — Trang

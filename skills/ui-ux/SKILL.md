@@ -362,6 +362,7 @@ thì một trong hai chỗ là sai.
 | Chip lọc, nút chỉ có icon, thanh tab (4 variant), phân trang | `references/components/small-controls.md` |
 | Avatar, nhóm avatar chồng nhau | `references/components/avatar.md` |
 | Biểu đồ cột, biểu đồ đường, số liệu, thanh tiến độ | `references/components/charts.md` |
+| Khung kéo thả tệp, danh sách tệp đang tải lên | `references/components/file-upload.md` |
 
 **Dựng một trang là RÁP, không phải vẽ lại.** Trên trang có phần tử nào nằm
 trong bảng trên thì mở đúng file đó và chép công thức, kể cả khi nó chỉ là một
