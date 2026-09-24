@@ -12,12 +12,12 @@
   /* ============================================================== */
 
   /* ===== MÀU NHẤN, CHỖ 1 TRONG 2: NỀN SÁNG ===== */
-  --primary: #1a1d29;          /* mặc định gần đen. Màu riêng thì thay vào đây */
-  --primary-hover: #2c3040;    /* nhạt hơn --primary một bậc */
+  --primary: #181818;          /* mặc định gần đen. Màu riêng thì thay vào đây */
+  --primary-hover: #2e2e2e;    /* nhạt hơn --primary một bậc */
   --primary-foreground: #ffffff;  /* màu chữ ĐỨNG TRÊN nền nhấn. Bắt buộc phải
                                      có, vì ở nền tối màu nhấn thành gần trắng,
                                      lúc đó viết cứng `text-white` là mất chữ. */
-  --primary-light: #1a1d290d;  /* CHỈ dùng khi --primary có sắc.
+  --primary-light: #1818180d;  /* CHỈ dùng khi --primary có sắc.
                                   Màu nhấn trung tính như mặc định thì biến này
                                   ra xám bẩn gần như vô hình, badge phải dùng
                                   --background làm nền và --foreground làm chữ. */
@@ -65,7 +65,7 @@
   /* Ring rất mờ theo màu nhấn, dày 2px (ring-2). Cho ô điền lúc focus (input, textarea,
      select) và ô chọn dạng card đang chọn, đi cùng viền --border-focus. Nút,
      menu, tab KHÔNG dùng. Luật I13. */
-  --ring-focus: rgba(26, 29, 41, 0.1);
+  --ring-focus: rgba(24, 24, 24, 0.1);
 
   /* Viền lúc focus. Ở nền sáng thì chính là màu nhấn. Ở nền tối thì KHÔNG
      dùng màu nhấn đặc, xem khối .dark bên dưới. */

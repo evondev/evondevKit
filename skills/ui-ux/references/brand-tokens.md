@@ -10,7 +10,7 @@ trong các khối có comment đánh dấu:
 Màu gần đen thì bản cho nền tối là gần trắng. Màu có sắc thì lấy bản sáng hơn
 chính nó khoảng hai bậc, đừng dùng nguyên màu của nền sáng.
 
-Màu nhấn mặc định là `#1a1d29`, gần đen. Cố ý chọn trung tính vì skill này dựng
+Màu nhấn mặc định là `#181818`, gần đen. Cố ý chọn trung tính vì skill này dựng
 UI cho nhiều người khác nhau, đóng sẵn màu của một thương hiệu vào là đóng nhầm.
 Gần đen không bao giờ chửi nhau với brand nào, và trông cố ý chứ không trông như
 chưa chọn xong.
@@ -78,7 +78,7 @@ thành gần trắng, và `text-white` trở thành trắng trên trắng, mất
 Luôn dùng token cho **màu chữ đứng trên nền nhấn**:
 
 ```css
-:root  { --primary: #1a1d29; --primary-foreground: #ffffff; }
+:root  { --primary: #181818; --primary-foreground: #ffffff; }
 .dark  { --primary: #e9edf5; --primary-foreground: #05060f; }
 ```
 
