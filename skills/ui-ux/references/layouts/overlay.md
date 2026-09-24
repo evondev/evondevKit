@@ -101,6 +101,18 @@ nó trùm qua hàng phân trang và lòi khỏi card (đã dính 23/09/2026). Kh
 thì lật lên trên nút, sát mép phải thì canh phải. Dùng thư viện popover có sẵn của dự án
 thì bật `collisionPadding`, tự dựng thì đo `getBoundingClientRect` trước khi mở.
 
+**Tự dựng: có đủ bề rộng rồi mới đo chiều cao, và menu đổi cỡ thì đo lại.** Menu
+mở lên (`top = đỉnh nút − chiều cao menu`) mà rộng theo nút đọc từ state thì lần mở
+đầu state còn `width: 0`. Menu rộng 0 nên chữ xuống dòng từng từ, cao hàng trăm px,
+`top` âm bị kẹp về mép trên màn. Render lại thì bề rộng đúng nhưng `top` không tính lại:
+menu tài khoản chân sidebar trôi lên tận đầu sidebar, đè lên nav, cách nút mở cả màn
+(đã dính 24/09/2026). Chỉ bị **lần mở đầu sau khi tải trang, hoặc sau khi thu/mở
+sidebar** (bề rộng cũ còn trong state), nên trông như lỗi "lúc có lúc không". Cách làm:
+gán bề rộng thẳng vào DOM từ `triggerRect.width` **trước khi** đọc `offsetHeight`, hoặc
+đo lại bằng `ResizeObserver` trên menu. Kiểm tra: tải lại trang, bấm mở ngay lần đầu;
+thu rồi mở sidebar, bấm mở lại. Menu phải nằm sát nút cả hai lần. Radix, Floating UI
+đã lo việc này, lỗi chỉ có ở menu tự dựng.
+
 **Bo góc và khoảng cách, theo `M19`:**
 
 ```html
