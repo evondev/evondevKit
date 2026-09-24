@@ -252,7 +252,8 @@ người dùng yêu cầu.
 - **Dấu hiệu bấm được là icon `ChevronsUpDown` + nền khi rê**, không phải khung. Lỗi 21/09/2026 (avatar và tên trôi tự do, không ai biết bấm được) là do **không có icon nào**; có icon mở menu thì hết.
 - **Tâm avatar thẳng tâm icon các link** khi sidebar thu gọn: hàng `px-1` + avatar `size-8` ra tâm 20px, đúng bằng link `px-3` + icon `size-4`.
 - **Cả hàng là một `<button>`**, là trigger của dropdown/popover (`I29`). Đừng làm riêng nút nhỏ ở góc: bấm vào tên mà không có gì xảy ra là người ta tưởng app bị đơ.
-- **Trong hàng chỉ có avatar + tên**, `truncate`. Email đưa lên **đầu menu** và **không cắt**: `[overflow-wrap:anywhere]`, dài thì xuống hai dòng. Email là thứ để biết mình đang ở tài khoản nào (`N8`); cắt "tran.nguyen.anh.tuan.khang@evond…" là mất đúng phần tên miền cần đọc (đã dính 23/09/2026).
+- **Trong hàng chỉ có avatar + tên**, `truncate`. Email đưa lên **đầu menu**, một dòng, **cắt phần trước `@`, giữ nguyên tên miền** theo "Cắt email" ở `overlay.md`. Email là thứ để biết mình đang ở tài khoản nào (`N8`); cắt ở cuối "tran.nguyen.anh.tuan.khang@evond…" là mất đúng phần tên miền cần đọc (đã dính 23/09/2026). Bản sửa đầu tiên cho xuống dòng (`[overflow-wrap:anywhere]`): trình duyệt bẻ giữa tên miền "…@ev / ondev…", và dòng thứ hai trông như một mục riêng (bỏ 24/09/2026).
+- **Tài khoản chỉ có một lối vào**: app có avatar trên header thì không có hàng profile ở đây, và ngược lại (`overlay.md`, "Menu tài khoản").
 - **Menu mở lên trên** (`side="top"`, `align="start"`), **rộng đúng bằng hàng profile** (`w-(--radix-dropdown-menu-trigger-width)`), không lòi qua mép sidebar sang vùng nội dung, portal ra `body` (`I22`). Mục trong menu **cao 40px, bo 12px**, khung `rounded-2xl p-1`, xem `overlay.md`. Trong menu: email ở đầu (`text-xs text-muted`), rồi Hồ sơ, Giao diện, Cài đặt; **Đăng xuất ở cuối**, cách bằng đường chia, lúc thường trung tính, **rê vào thì đỏ** `rose` (`I4`).
 - **Cài đặt ở trên khung là mục nav thường**, cùng style với các mục ở đầu sidebar (`foreground/70`, hover mờ). Đừng cho nó xám `--muted` hay tách riêng bằng đường kẻ.
 
@@ -272,7 +273,8 @@ người dùng yêu cầu.
   </DropdownMenuTrigger>
   <DropdownMenuContent side="top" align="start" className="w-(--radix-dropdown-menu-trigger-width) rounded-2xl p-1">
     {/* Mỗi DropdownMenuItem: h-10 rounded-xl px-3, như link sidebar. */}
-    <DropdownMenuLabel className="text-xs font-normal text-muted [overflow-wrap:anywhere]">{user.email}</DropdownMenuLabel>
+    {/* Email một dòng, cắt phần trước @, giữ tên miền: khuôn "Cắt email" ở overlay.md. */}
+    <DropdownMenuLabel className="px-3 py-2 font-normal"><AccountEmail email={user.email} /></DropdownMenuLabel>
     <DropdownMenuSeparator />
     {/* Hồ sơ, Giao diện, Cài đặt… */}
     <DropdownMenuSeparator />

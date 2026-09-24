@@ -196,6 +196,65 @@ góc nền sáng gần chạm góc khung (đã dính 24/09/2026). Xem "Command p
 **Dropdown dài phải cuộn** thì `max-h-76` và chớp thanh cuộn lúc mở, như select
 (`I18`): mục cuối bị cắt ngang là tín hiệu duy nhất lúc đứng yên.
 
+### Menu con (dropdown đa cấp)
+
+Mục cha: icon + chữ + `ChevronRight` `size-4 text-muted` ở mép phải. Menu con **cùng
+khung** với menu cha (`rounded-2xl p-1`, viền, `shadow-lg`, mục `h-10 rounded-xl`).
+
+**Màn đủ chỗ cho hai khung cạnh nhau: bay ra cạnh menu cha.**
+
+- Cách mép menu cha 4px. **Hàng đầu thẳng hàng mục cha** (kéo khung lên đúng viền + `p-1`). Thiếu chỗ bên dưới thì đẩy lên cho đáy cách mép màn 8px, không lật.
+- Bên phải hết chỗ thì bay sang trái (avatar góc phải header). Mũi tên mở / lùi đổi chiều theo phía bay.
+- Rê vào mục cha chờ ~100ms mới mở (lướt ngang qua không bật). Rời đi chờ ~250ms mới đóng, để đi chéo sang menu con không tắt giữa chừng. Radix có sẵn cả hai.
+- Menu con đang mở thì **mục cha giữ nền sáng**, để biết menu con thuộc mục nào khi con trỏ đã sang bên kia.
+- Phím: `→` mở và sáng mục đầu, `←` / `Esc` đóng và trả tiêu điểm về mục cha, `↑↓` đi trong menu con.
+
+**Màn hẹp (hai khung không đứng cạnh nhau được): đổi tại chỗ, không xổ ra trong menu cha.**
+Bấm mục cha thì **cả nội dung menu thay bằng menu con**, hàng đầu là nút lùi
+`‹ Chuyển tài khoản` (`ChevronLeft` + tên mục cha, `h-10`, cùng khuôn mục), rồi một
+đường chia. Bề rộng giữ nguyên, chiều cao theo nội dung mới. Tiêu điểm sang mục đầu,
+`←` / `Esc` lùi về menu cha và sáng lại mục cha. YouTube, Facebook làm menu tài khoản
+đúng kiểu này.
+
+Đừng xổ danh sách ngay dưới mục cha (chevron xoay xuống như nhóm sidebar). Đã dính
+24/09/2026, menu tài khoản ở 375px: menu cao gần 600px, bốn tài khoản xổ ra thẳng
+mép với các mục thường nên không đọc ra là con của mục nào, và tài khoản đang dùng
+hiện **hai lần liền nhau** (đầu menu, rồi hàng đầu danh sách).
+
+**Hàng trong menu con không cao hơn mục thường quá một bậc.** Mục một dòng `h-10`;
+hàng hai dòng (tên + dòng phụ) `h-12`, avatar `size-8`. Mỗi trường **một dòng**,
+không trường nào xuống dòng. Đã dính 24/09/2026: email xuống dòng trước `@` làm mỗi
+hàng tài khoản ba dòng, cao ~68px, menu con nặng hơn hẳn menu cha. Chữ dài thì cắt
+theo "Cắt email" bên dưới, không bẻ dòng.
+
+### Menu tài khoản
+
+Mở từ avatar trên header, hoặc từ hàng profile chân sidebar (`app.md`).
+
+- **Tài khoản chỉ có một lối vào.** Đề bảo đặt avatar trên header mà chân sidebar đã có hàng profile thì chuyển hẳn lên header, bỏ hàng profile, báo một dòng lúc giao. Hai chỗ mở cùng một menu là một ý nói hai lần (`N3`); Vercel, GitHub, Linear, Supabase đều chỉ có một.
+- **Đầu menu mở từ avatar: tên + email, không avatar.** Avatar vừa bấm nằm ngay bên trên; lặp lại một avatar 40px ở đầu menu thì nó thành thứ nặng nhất menu (đã dính 24/09/2026). Tên `text-sm font-medium truncate`, email `text-xs text-muted` một dòng, khối `px-3 py-2`. Mở từ chân sidebar thì chỉ email, vì tên đã ở hàng profile.
+- Thứ tự: đầu menu, đường chia, Hồ sơ / Trợ giúp…, **Chuyển tài khoản** (chỉ khi có từ 2 tài khoản), đường chia, Đăng xuất (`I4`).
+- **Hàng tài khoản trong menu con**: avatar `size-8` (màu theo `avatar.md`), tên `text-sm font-medium truncate`, email một dòng, và ô `size-4` luôn giữ chỗ ở mép phải cho dấu `Check` của tài khoản đang dùng. Chỉ dấu tick, không tô nền, không chữ đậm thêm. Hàng `role="menuitemradio"`. Bấm tài khoản đang dùng thì chỉ đóng menu.
+- Menu con rộng `w-72`. Menu cha từ avatar header cũng `w-72` cho hai khung cân nhau.
+
+**Cắt email: cắt phần trước `@`, giữ nguyên tên miền.** Hai tài khoản của một người
+thường cùng phần trước `@`, chỉ khác tên miền, nên cắt ở cuối
+(`tran.nguyen.anh.tuan.khang@ev…`) là mất đúng phần để phân biệt. Xuống dòng thì
+giữ được chữ nhưng hàng cao gấp rưỡi. Tách hai `span`, phần trước `@` co lại, gói
+thành một component (vd `AccountEmail`) dùng chung:
+
+```tsx
+<span className="flex min-w-0 text-xs text-muted" title={email}>
+  <span className="min-w-0 truncate">{localPart}</span>
+  {/* shrink-0: tên miền không co. max-w-full: tên miền dài hơn cả hàng (hiếm) thì nó cắt, không tràn. */}
+  <span className="max-w-full shrink-0 truncate">{domainPart}</span>
+</span>
+```
+
+Ra `tran.ngu…@evondev-studio.com` cạnh `tran.nguyen.an…@gmail.com`: mỗi hàng một
+dòng, vẫn phân biệt được. Email đầy đủ ở `title`. Dùng khuôn này ở mọi chỗ hiện
+email trong menu: đầu menu, hàng tài khoản, đầu menu chân sidebar.
+
 ## Phím tắt trong menu
 
 Mục nào có phím tắt thì hiện ở **mép phải**, `text-xs text-muted`, đừng để trong

@@ -82,6 +82,11 @@ bỏ đuôi); khách mới thì "Chưa có kỳ trước" bốn lần; `/2026` �
 đó, số liệu `text-3xl` to hơn tên khách: thứ nặng nhất phải là thứ trả lời "đang xem
 cái gì".
 
+**Thứ vừa bấm để mở cũng là một lần nói.** Đã dính 24/09/2026, menu tài khoản: bấm
+avatar ra menu, đầu menu lại một avatar 40px to hơn chính nút vừa bấm; header có avatar
+mà chân sidebar vẫn còn hàng profile mở cùng menu đó (hai lối vào một chỗ); màn hẹp xổ
+danh sách tài khoản ngay dưới đầu menu, tài khoản đang dùng hiện hai lần liền nhau.
+
 *Phép thử:* đếm số chỗ tô đặc hoặc có màu trên màn. Mỗi chỗ trả lời được "nó nói
 điều gì mà chỗ khác chưa nói" không?
 
@@ -172,6 +177,13 @@ nửa trên popover trống trơn vì chèn đệm. Mô tả bước ở thanh c
 "doanh" xuống một mình (cột ~200px, thiếu `text-pretty`). Link "Đổi email" bị bẻ đôi ở cuối dòng. **Link ngắn nằm
 trong câu không bị bẻ giữa chừng**: `whitespace-nowrap` để nó xuống dòng nguyên
 cụm. Nhãn nút thì ngược lại, được xuống dòng (`T15`).
+
+**Phải cắt thì cắt phần giống nhau, giữ phần phân biệt.** Cắt ở cuối không phải cách
+duy nhất, và xuống dòng không phải cách thay duy nhất. Email giữ tên miền, cắt phần
+trước `@` (`layouts/overlay.md`, "Cắt email"); tên tệp giữ đuôi `.pdf`. Đã dính
+24/09/2026, chuyển tài khoản: sợ cắt mất tên miền nên cho email xuống dòng, mỗi hàng
+thành ba dòng, danh sách con nặng hơn menu cha. Trong menu, hàng chọn, ô hẹp: mỗi
+trường một dòng.
 
 *Phép thử:* ở 375px và với dữ liệu dài nhất, thứ người dùng cần đọc để bấm có
 còn đọc được hết không?
