@@ -74,6 +74,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Đường chia trong dropdown, card: có chạm hai mép khối không, hay thụt theo padding (`F25`)?
 - [ ] **Bo lồng nhau (`M19`)**: bo khung ngoài = bo phần tử trong + padding khung? Dropdown mặc định `rounded-2xl` + `p-1` + mục `rounded-xl` (`layouts/overlay.md`). Command palette rộng thì `p-2` + mục `rounded-lg`. Trong bằng ngoài là góc phình.
 - [ ] **Panel thông báo**: có nút "Đánh dấu đã đọc" ở header không? Mục đã đọc có nhạt hơn mục chưa đọc (không chỉ thiếu chấm) không? Bấm sang tab rỗng thì panel có sụp chiều cao không? Tiêu đề dài có bị cắt ở 2 dòng không? Mép trên panel có cách đường kẻ header 8px, hay đường kẻ chọc vào góc bo (`layouts/overlay.md`)?
+- [ ] **Panel xem bản ghi có tab** (khách hàng, dự án): cuộn thân thì chỉ hàng tên + ✕ đứng yên, tab dính đỉnh, còn trạng thái và hàng nút cuộn đi chưa? Tên có phải chữ nặng nhất panel, hay số liệu to hơn tên? Ô số liệu là **một khung 2×2** số `text-lg`, hay bốn card rời số `text-3xl`? Kỳ so sánh ghi một lần hay lặp ở từng ô? Khách chưa có đơn nào thì còn lưới số 0 không? Tab tới hàng tab: vòng mờ, hay nền xám (`layouts/overlay.md`, `components/charts.md`, `components/small-controls.md`)?
 - [ ] **Vùng cuộn trong lớp nổi** (select, dropdown dài, command palette): chưa rê chuột, mép dưới có cắt ngang một mục (lộ khoảng nửa) không? Cắt sát ranh giới hai mục là trông như đã hết. Rê chuột vào (không cuộn) thì thanh cuộn có hiện không? Chỉ hiện khi cuộn là đang dùng CSS thanh cuộn cũ (`I18`).
 - [ ] **Sidebar**: nền trắng chứ không trùng nền trang; hover và mục đang chọn cùng nền mờ `--background`, không `--secondary`; hover vào thì icon và chữ cùng đậm lên; số đếm là số trơn `text-muted`, không pill, không badge màu brand (`I15`); nhãn nhóm IN HOA, giữa các nhóm không kẻ đường chia (chỉ khoảng trắng + nhãn), profile là hàng không viền có icon `ChevronsUpDown`, nhiều nhóm thì thu gọn được; thanh cuộn tự ẩn (`I18`).
 - [ ] **Thu gọn sidebar**: thu về dải icon `w-16`; **mục nào đang hiện lúc mở thì lúc thu vẫn hiện**, nhóm đang đóng vẫn đóng; nhãn nhóm chỉ `opacity-0` + `inert`, giữ chiều cao hàng; chấm góc icon chỉ cho số cần xử lý, cùng độ đậm với số lúc mở; mục đang chọn vẫn sáng và được cuộn vào tầm nhìn; lúc thu ẩn thanh cuộn (vẫn cuộn được); bấm mở/thu thì icon, logo, avatar ĐỨNG YÊN (không `justify-center`, không đổi padding), chữ không gỡ khỏi DOM mà bị cắt dần và mờ đi; mỗi icon có tooltip kèm số đếm; focus theo `I13` (`layouts/app.md`).
@@ -121,6 +122,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Có dấu gạch dài trong copy tiếng Việt không?
 - [ ] Nút đăng nhập bằng Google hay Apple đã có logo gốc chưa?
 - [ ] Có tự gán mỗi mục một icon khác nhau, hay ba mục ba icon giống hệt nhau?
+- [ ] **Có câu nào giống hệt nhau ở mọi ô, mọi hàng không** ("so với 2025" bốn ô, "Chưa có kỳ trước" bốn ô, `/2026` ở mọi mốc giờ)? Kéo ra ghi một lần, hoặc bỏ (`N3`, `T16b`).
 
 ### Grep một lượt
 

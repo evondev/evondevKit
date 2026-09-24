@@ -200,7 +200,22 @@ nhãn trái + số phải, thanh ở giữa, một dòng phụ `text-xs text-mut
 
 Đây là chỗ vỡ nhiều nhất, và chỉ lộ ra khi thu cửa sổ xuống 375px.
 
-- **Mobile là một cột.** `grid-cols-1 sm:grid-cols-2 lg:grid-cols-4`. Hai cột ở 375px thì mỗi ô còn hơn trăm pixel, `1.284.500` ở `text-2xl` không vừa.
+- **Mobile là một cột.** `grid-cols-1 sm:grid-cols-2 lg:grid-cols-4`. Hai cột ở 375px thì mỗi ô còn hơn trăm pixel, `1.284.500` ở `text-2xl` không vừa. Ngoại lệ: ô trong panel trượt, xem mục dưới.
+- **Trong panel trượt hay cột hẹp: lưới 2×2 cố định, một khung, số nhỏ hơn tên.** Panel 448px không phải trang tổng quan: số ở đây là thông tin phụ của một bản ghi, không phải nhân vật chính. Bốn card rời `rounded-2xl p-5` với số `text-3xl` là thứ nặng nhất panel, nặng hơn cả tên khách (đã dính 24/09/2026; Stripe, HubSpot để số của khách ở cỡ chữ thường). Dựng một khung, kẻ chia bằng khe 1px, số `text-lg font-semibold`, không bao giờ lớn hơn cỡ tên ở header panel. Dòng so sánh chỉ còn icon + số (kỳ ghi một lần, xem "Dòng so sánh") nên 2 cột ở 375px vẫn vừa, không phải xếp thành bốn ô dọc dài.
+
+```html
+<p class="mb-2 text-xs text-muted">12 tháng gần nhất, so với 12 tháng trước</p>
+<div class="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border">
+  <div class="min-w-0 bg-surface p-4">
+    <p class="text-xs font-medium text-muted">Doanh thu</p>
+    <p class="mt-1 text-lg font-semibold tabular-nums text-foreground">184,5<span class="ml-1 text-muted">tr đ</span></p>
+    <p class="mt-0.5 flex items-center gap-1 text-xs font-medium tabular-nums text-emerald-700">
+      <i data-lucide="trending-up" class="size-3.5"></i>12,4%
+    </p>
+  </div>
+  <!-- 3 ô còn lại cùng khuôn -->
+</div>
+```
 - **Mỗi ô phải có `min-w-0`.** Grid item mặc định không chịu co nhỏ hơn nội dung, thiếu dòng này là cả trang tràn ngang.
 - **Cỡ số giảm một bậc ở mobile**: `text-xl sm:text-2xl`.
 - **Dùng `tabular-nums`** cho mọi con số. Chữ số đều bề ngang thì các ô thẳng cột nhau, và số không nhảy khi đổi giá trị.
@@ -209,7 +224,7 @@ nhãn trái + số phải, thanh ở giữa, một dòng phụ `text-xs text-mut
 <div class="grid grid-cols-1 divide-border rounded-2xl border border-border bg-surface sm:grid-cols-2 sm:divide-x lg:grid-cols-4">
   <div class="min-w-0 p-5">
     <p class="text-xs font-medium text-muted">Đang làm</p>
-    <p class="mt-1 text-xl font-bold tracking-tight tabular-nums text-foreground sm:text-2xl">1.284.500</p>
+    <p class="mt-1 text-xl font-semibold tracking-tight tabular-nums text-foreground sm:text-2xl">1.284.500</p>
     <p class="mt-1 text-xs text-muted">Trải trên 4 dự án</p>
   </div>
 </div>
@@ -220,7 +235,7 @@ nhãn trái + số phải, thanh ở giữa, một dòng phụ `text-xs text-mut
 ```html
 <div class="min-w-0 p-5">
   <p class="text-xs font-medium text-muted">Doanh thu tháng này</p>
-  <p class="mt-1 text-xl font-bold sm:text-2xl tracking-tight tabular-nums text-foreground">
+  <p class="mt-1 text-xl font-semibold sm:text-2xl tracking-tight tabular-nums text-foreground">
     1.284.500.000<span class="ml-1 font-semibold text-muted">đ</span>
   </p>
   <p class="mt-1 flex items-center gap-1 text-xs text-muted">
@@ -235,7 +250,14 @@ nhãn trái + số phải, thanh ở giữa, một dòng phụ `text-xs text-mut
 - **Số quá 9 chữ số trong ô hẹp**: gợi ý (người dùng quyết) rút gọn `1,28 tỷ đ`, số đầy đủ để trong `title`. Ô số liệu để đọc xu hướng, không để đối soát từng đồng.
 - **Dòng so sánh**: icon `trending-up` / `trending-down` `size-3.5` + phần trăm `font-medium` có màu + phần còn lại `text-muted`. Chỉ icon và con số mang màu, không tô cả câu.
 - **Màu theo tốt/xấu, không theo lên/xuống.** Doanh thu tăng là xanh, nhưng chi phí hay số đơn huỷ tăng là đỏ. Để một prop kiểu `tone="positive" | "negative" | "neutral"` cho người dùng quyết, đừng suy màu từ dấu của con số. Xanh `emerald-700`, đỏ `red-700`: chữ `text-xs` cần 4.5:1, `emerald-600` và `red-500` không đạt.
-- **Không đổi**: icon `minus`, chữ `text-muted`, không màu. **Không có kỳ trước**: một câu `text-muted` ngắn ("Chưa có kỳ trước"). Hai ca này vẫn **giữ đúng một dòng**, để các ô trong hàng cao bằng nhau. Ngưỡng coi là "không đổi" do người dùng quyết.
+- **Không đổi**: icon `minus`, chữ `text-muted`, không màu. **Một ô không có kỳ trước** (các ô khác có): một câu `text-muted` ngắn ("Chưa có kỳ trước"). Hai ca này vẫn **giữ đúng một dòng**, để các ô trong hàng cao bằng nhau. Ngưỡng coi là "không đổi" do người dùng quyết.
+- **Kỳ so sánh ghi MỘT lần cho cả hàng, không lặp ở từng ô.** Bốn ô cùng đuôi "so với 2025" là một ý nói bốn lần (`N3`), và chính cái đuôi đó làm ô hẹp vỡ dòng. Ghi kỳ một lần ở tiêu đề mục hoặc dòng `text-xs text-muted` trên hàng ô ("12 tháng gần nhất, so với 12 tháng trước"), mỗi ô chỉ còn icon + số ("↗ 12,4%", "↗ 0,6 điểm"). Nhãn ô cũng bỏ kỳ: "Doanh thu", không "Doanh thu 12 tháng" khi ô bên cạnh là "Số đơn" trơn, vì đọc ra hai ô hai kỳ khác nhau. **Kỳ so phải cùng loại với kỳ đo**: đo 12 tháng gần nhất thì so với 12 tháng trước đó, không so với "năm 2025" (đã dính 24/09/2026, panel khách hàng: "Doanh thu 12 tháng … so với 2025" ở cả bốn ô).
+- **Cả hàng không có kỳ trước thì cũng nói một lần**, ở đúng chỗ ghi kỳ ("Khách mới, chưa có kỳ trước để so"), các ô bỏ hẳn dòng so sánh. Bốn ô cùng dòng "Chưa có kỳ trước" là cùng lỗi lặp ở trên.
+- **Cả hàng rỗng (khách chưa có đơn nào) thì không dựng lưới số 0.** Bốn ô "0 đ", "0 đơn", "—", "—" là bốn khung chỉ để nói một ý "chưa có gì". Thay cả hàng bằng một khung gọn cùng viền, một câu `text-sm text-muted` nói vì sao và bao giờ có: "Chưa có đơn nào. Số liệu hiện sau đơn đầu tiên" (`components/empty-state.md`, `N6`). Có nút tạo đơn ở chỗ khác trên màn thì không lặp nút ở đây (Stripe, khách mới: "No payments yet", không có lưới số 0).
+- **`—` chỉ khi không tính được** (mẫu số bằng 0: chưa có đơn nào thì chưa có tỷ lệ hoàn). Có 3 đơn, không đơn nào hoàn thì là `0%`, không phải `—`: `—` ở đó đọc ra "thiếu dữ liệu" trong khi số đã rõ (đã dính 24/09/2026).
+- **Ô không có giá trị thì `—` `text-muted font-normal`**, cùng ký hiệu với ô trống trong bảng (`T18`). `—` tô `text-foreground font-semibold` ở `text-2xl` thành một vạch đen dày, đọc như con số chứ không như "trống" (đã dính 24/09/2026).
+- **Nhãn đã nói đơn vị thì số không lặp đơn vị.** Nhãn "Số đơn" thì số là `24`, không `24 đơn`; nhãn "Khách hàng" thì `1.204`, không `1.204 khách`. Đơn vị chữ chỉ gắn khi nhãn chưa nói (nhãn "Đơn hàng" có thể `24 đơn`, nhưng thường thừa).
+- **Số rút gọn thì hậu tố đi cùng đơn vị, cùng một span mờ**: `184,5` rồi `tr đ` `text-muted`, không để `tr` đen mà `đ` xám (đọc thành "184,5 tr" là số, "đ" là đơn vị, trong khi "tr" cũng là đơn vị). Chữ rút gọn: `nghìn`, `tr`, `tỷ`.
 - **Dòng so sánh luôn một dòng, `text-xs`**, kể cả ca có số. Đừng để icon và phần trăm ở dòng trên, "so với tháng trước" rớt xuống dòng dưới: đọc thành hai ý rời, và ô cao thêm một dòng (đã dính 22/09/2026). Ô hẹp không đủ chỗ thì rút đuôi câu ("so với T8", "so với kỳ trước"), không xuống dòng. Câu ca không có kỳ trước cũng vậy: "Chưa có số kỳ trước để so" vỡ thành hai dòng, chữ "so" nằm một mình, nên dùng "Chưa có kỳ trước".
 - **`%` dính vào số, không cách**: `2,8%`, `12,4%`, cùng một kiểu ở số chính lẫn dòng so sánh (`N5`). Khác `đ` và `đơn`: đơn vị là chữ thì cách `ml-1`, ký hiệu `%` thì không. Số chính có `%` thì `%` `text-muted` như `đ`.
 - **Chỉ số đã là tỷ lệ thì so bằng điểm phần trăm, không bằng phần trăm của phần trăm.** Tỷ lệ huỷ từ 2,2% lên 2,8% ghi "↗ 0,6 điểm", không ghi "↗ 27,3%": 27,3% đọc như tỷ lệ huỷ tăng vọt thêm 27 điểm. Cách tính là logic người dùng; skill chỉ để chỗ và nhãn "điểm".

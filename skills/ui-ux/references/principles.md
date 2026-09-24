@@ -75,6 +75,13 @@ ghi "rồi thử lại" cạnh nút Thử lại; "Xem tất cả" muốn tô đe
 mới" trong câu lỗi lẫn "Gửi lại mã" bên dưới (hai nút một việc: giữ một); tệp tải xong có
 thanh xanh lá đầy + `100%` + "Đã tải xong" (ba tín hiệu một ý: bỏ thanh và số, giữ chữ).
 
+**Cùng một câu ở mọi ô, mọi hàng cũng là một ý nói nhiều lần**: kéo ra ghi một lần
+ở đầu nhóm. Đã dính 24/09/2026, panel khách hàng: "so với 2025" ở cả bốn ô số liệu
+(chính cái đuôi đó làm ô hẹp vỡ dòng, và bản dựng chữa bằng cách xếp một cột thay vì
+bỏ đuôi); khách mới thì "Chưa có kỳ trước" bốn lần; `/2026` ở mọi mốc giờ. Cùng panel
+đó, số liệu `text-3xl` to hơn tên khách: thứ nặng nhất phải là thứ trả lời "đang xem
+cái gì".
+
 *Phép thử:* đếm số chỗ tô đặc hoặc có màu trên màn. Mỗi chỗ trả lời được "nó nói
 điều gì mà chỗ khác chưa nói" không?
 

@@ -86,6 +86,13 @@ cần nhìn thấy danh sách phía sau. Không dùng panel cho một câu xác 
 - **Nút ở footer giữ kiểu theo vai, không theo số lượng.** Đơn đã huỷ mất nút chính, footer chỉ còn "In hoá đơn": nó **vẫn `secondary`** như lúc đứng cạnh nút chính. Không đẩy lên `primary` (đơn đã huỷ không còn hành động chính, tô đen là giả làm việc quan trọng) và không đổi sang `outline` (cùng một nút mà mỗi đơn một kiểu, `N5`). Nút footer chỉ có chữ (`I1`).
 - Chuyển động theo mục "Chuyển động" cuối file: panel trượt từ mép phải vào.
 
+**Panel xem bản ghi có tab** (khách hàng, dự án, ticket: tên, trạng thái, nút thao tác nhanh, hàng tab):
+
+- **Phần cố định chỉ là hàng tên**: avatar, tên, nút ⋯ và ✕. Trạng thái, dòng phụ (công ty), hàng nút thao tác nhanh nằm đầu thân cuộn và **cuộn đi**; hàng tab `sticky top-0 z-10 bg-surface` trong thân cuộn, đường kẻ dưới tab tràn hai mép panel (`-mx-6 px-6`). Giữ cố định cả khối thì với tên hai dòng và tên công ty dài, phần đứng yên cao ~240px: laptop 800px mất gần một phần ba, điện thoại mất gần nửa, vùng đọc tab Tin nhắn còn một mẩu (đã dính 24/09/2026). Cuộn xuống thì còn lại tên + ✕ + tab, đủ biết đang xem ai và đang ở tab nào.
+- **Tên là chữ nặng nhất panel** (`text-lg font-semibold`). Số liệu, tiêu đề mục, không thứ gì trong thân to hơn tên. Ô số liệu trong panel theo mục "Trong panel trượt hay cột hẹp" ở `../components/charts.md`: một khung 2×2, số `text-lg`, không phải bốn card rời số `text-3xl` (đã dính 24/09/2026: bốn card số to nhất panel, tên khách đứng hàng hai).
+- **Đổi tab thì hàng tab đứng yên dưới con trỏ** (`N1`): đang dính đỉnh thì cuộn về ngay dưới hàng tab, không về 0; chưa dính thì giữ nguyên chỗ cuộn. Về 0 lúc đang dính là hàng tab tụt xuống dưới khối trạng thái, trượt khỏi chỗ vừa bấm. Muốn vậy thì nội dung tab `min-h` bằng vùng cuộn trừ hàng tab, để tab ngắn (tin nhắn trống) không kéo hàng tab xuống. Trang phía sau đứng yên. Mũi tên trái/phải chuyển tab (`../components/small-controls.md`). (Sửa 24/09/2026: bản trước ghi "cuộn về đầu", bản dựng làm khác và đúng hơn.)
+- Danh sách trong tab (tin nhắn, tệp, hoạt động) ghi giờ theo `T16b`: năm hiện tại thì bỏ năm.
+
 ## Dropdown
 
 Bám mép trái của nút mở, rộng tối thiểu bằng nút. Mục nguy hiểm tách xuống cuối,

@@ -83,7 +83,7 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
       Cần có: avatar, tabs, empty state.
 - ✅ **File upload** — "Dựng cho tôi khu tải tài liệu lên cho một dự án."
       Cần có: button, progress bar, toast.
-- [ ] **Drawer phức tạp** — "Dựng cho tôi panel bên phải xem chi tiết một khách hàng: nút thao tác nhanh, các tab Chi tiết / Tin nhắn / Tệp / Hoạt động, và vài card số liệu."
+- ✅ **Drawer phức tạp** — "Dựng cho tôi panel bên phải xem chi tiết một khách hàng: nút thao tác nhanh, các tab Chi tiết / Tin nhắn / Tệp / Hoạt động, và vài card số liệu."
       Cần có: drawer, tabs, description list, card, button, avatar.
 - [ ] **Modal phức tạp** — "Dựng cho tôi modal xem chi tiết đơn hàng: mã đơn có nút sao chép, trạng thái, danh sách sản phẩm, thanh toán, và nút sang đơn trước / đơn sau."
       Cần có: modal, status badge, list row, card, button, tooltip.

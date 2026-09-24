@@ -256,6 +256,10 @@ một cột giữa màn. Đừng hỏi lại có cần nút Google không.
 **S6. Dựng mockup thì điền dữ liệu giả hợp lý, đừng để chỗ trống.** Một trang đầy
 `[cần điền]` không nhìn ra được thiết kế, nó thành cái biểu mẫu. Điền số nghe
 được, rồi **báo một dòng lúc giao**: số liệu trong bản này là giả.
+**Các khối của cùng một bản ghi phải khớp nhau**: tab Hoạt động có một đơn đã huỷ
+thì ô số liệu không ghi 3 đơn, 12,3 tr đ (đã dính 24/09/2026). Số giả lệch nhau giữa hai
+tab làm người duyệt tưởng giao diện tính sai. Sửa dữ liệu giả cho khớp (lùi ngày tạo, thêm đơn vào lịch sử)
+là việc của bản dựng, tự làm, không hỏi: nó không đụng logic hay dữ liệu thật.
 
 **S7. Chỉ để `[cần điền]`** khi bản dựng đi thẳng ra người dùng thật, và chỉ cho
 thứ có hậu quả pháp lý hoặc tài chính: giá bán, mức hoàn tiền, cam kết uptime,

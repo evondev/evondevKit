@@ -168,6 +168,7 @@ thì thấy rõ mình đang đứng ở đâu. Linear, GitHub, Vercel, Polaris �
 
 - **`ring-foreground/50` là mức thấp nhất đạt 3:1 trên nền trắng** (WCAG 1.4.11). `/40` là 2,3:1, trượt. Nền tối dùng `ring-white/50`.
 - **`ring-offset-2`** tách vòng khỏi mép nút một khe 2px, để vòng không dính vào viền nút thành một viền dày.
+- **Đổi sang vòng thì dọn luôn chỗ ghi đè cũ**, không hỏi: grep `focus-visible:bg-`, `focus:bg-`, `focus-visible:ring-0` trên nút, tab, chip và bỏ, vì còn sót là vừa vòng vừa nền, hai tín hiệu một ý (`N3`). Chỉ giữ nền lúc focus ở chỗ đi bằng mũi tên theo bảng trên: mục menu, listbox, ô lịch (đã dính 24/09/2026: sửa `Button` xong còn bảy chỗ tự đè nền).
 - Đã thử và bỏ (21–23/09/2026): **focus y như hover**. Nền `--background` trên nút trắng chỉ 1,1:1, nút `primary` đổi sang `primary-hover` chỉ 1,28:1, checkbox và radio chỉ có ring 10%: Tab qua cả form gần như không thấy mình ở đâu. Ba lượt rà skill độc lập cùng chỉ ra lỗi này.
 
 **`focus-visible`, không phải `focus`**, trừ ô nhập. Ô nhập dùng `focus` vì người dùng

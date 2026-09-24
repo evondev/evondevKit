@@ -167,6 +167,12 @@ là giờ đầy đủ ("14:32 · 22/09/2026"), để rê chuột là biết ch�
 dòng thời gian đơn hàng, nhật ký thao tác thì hiện thẳng giờ tuyệt đối, không tương đối:
 ở đó người ta đang đối chiếu mốc thời gian chứ không lướt.
 
+**Trong danh sách, mốc thuộc năm hiện tại thì bỏ năm**: `08:30 · 16/09`, không
+`08:30 · 16/09/2026`. Mười hàng cùng đuôi `/2026` là một ý nhắc mười lần, và cột giờ rộng
+thêm gần một nửa (đã dính 24/09/2026: tab Tin nhắn, Tệp, Hoạt động của panel khách hàng).
+Khác năm thì ghi đủ `16/09/2025`; `title` và `datetime` luôn đủ. **Bẫy:** `Intl.DateTimeFormat('vi-VN', { day: '2-digit', month: '2-digit' })` bỏ năm thì ra `23-09` gạch ngang, không phải `23/09`; tự ghép ngày và tháng bằng `/`. GitHub, Linear cùng làm
+vậy. Một mốc đứng riêng làm trường dữ liệu ("Ngày tạo" trong khối nhãn và giá trị) thì giữ đủ năm.
+
 **T17. Mã và định danh dùng `font-mono`.** Mã đơn hàng, mã vận đơn, mã giảm giá, ID,
 kể cả khi nằm giữa một câu mô tả. Nó nói
 "đây là thứ để copy chính xác", không phải chữ để đọc.
