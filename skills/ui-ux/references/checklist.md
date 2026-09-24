@@ -58,6 +58,8 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Phần tử nổi bật có mang quá một dấu hiệu không (badge + viền + to hơn)?
 - [ ] Bảng có bị bọc vào card không?
 - [ ] **Bảng**: rê chuột lên một dòng, nền hover có trùng màu nền trang không? Phải `--surface-hover` (`I10`). Cột trạng thái là badge màu (`M7`)? Từ 3 hành động hoặc có xoá thì đã gom vào nút ba chấm chưa (`I11`)? Tab trạng thái là ô nền `--surface-hover` viền mảnh, không chip đen?
+- [ ] **Bảng nhóm theo trạng thái**: liếc hàng nhóm có tách được nhóm nào với nhóm nào không, hay ba nhóm cùng pill xám? Hàng nhóm và đầu cột kanban cùng icon + tên + số (`M7`, `D2`)? Trong nhóm có xếp theo một khoá, tiêu đề cột đang sắp có mũi tên? Tên người có bị cắt mất tên gọi trong khi cột tiêu đề còn dư? Cột ngắn nào bị bóp còn một chữ (thiếu `whitespace-nowrap`)? Thu nhóm có bọc `<tr>` trong `<div>` trượt không? Rê lên ô sửa tại chỗ của dòng đang rê: ô có nổi lên không, hay nền ô trùng nền dòng? Ô trống mọi cột cùng `—`? Lịch mở từ ô hạn chót có "Xoá hạn" không, hay đặt rồi là hết đường gỡ? "Xoá hạn" là hàng rộng hết bề ngang kiểu mục menu, căn trái, không đỏ, hay một nút nhỏ lẻ loi? Khung chờ có hàng nhóm? View kanban có bị ghi "Bảng" không (`layouts/app.md`)?
+- [ ] **Cột kanban rỗng**: là viền đứt không nền, hay một mảng xám đặc nặng hơn thẻ (`components/empty-state.md`)?
 - [ ] Bo góc có nằm trong bốn bậc không, và có bo nhầm link chữ không nền không?
 
 ### Nút và trạng thái

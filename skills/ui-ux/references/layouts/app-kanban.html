@@ -24,9 +24,9 @@
         /* ========================================== */
 
         /* ===== MÀU NHẤN, NỀN SÁNG ===== */
-        --primary: #1a1d29;          /* mặc định gần đen. Màu riêng thì thay vào đây */
+        --primary: #181818;          /* mặc định gần đen. Màu riêng thì thay vào đây */
         --primary-foreground: #ffffff;
-        --primary-hover: #2c3040;    /* nhạt hơn --primary một bậc */
+        --primary-hover: #2e2e2e;    /* nhạt hơn --primary một bậc */
         /* ============================== */
 
         --background: #f4f4f6;   /* nền trang, xám nhạt, không bao giờ trắng */
@@ -38,10 +38,10 @@
         --border-strong: #eaeaea;   /* đậm hơn đúng một bậc, dùng lúc hover */
 
         --background-hover: #e7e7ea;
-        --ring-focus: rgba(26, 29, 41, 0.1);
+        --ring-focus: rgba(24, 24, 24, 0.1);
         --border-focus: var(--primary);
 
-        --danger: #e11d48;       /* chỉ dùng để báo quá hạn */
+        --overdue: #b45309;      /* amber-700, chỉ dùng để báo quá hạn (list-row.md) */
         --done: #059669;         /* chỉ dùng để báo đã xong */
       }
       /* ===== HẾT KHỐI ĐỔI THƯƠNG HIỆU ===== */
@@ -74,7 +74,7 @@
               muted: "var(--muted)",
               border: "var(--border)",
               "border-strong": "var(--border-strong)",
-              danger: "var(--danger)",
+              overdue: "var(--overdue)",
               done: "var(--done)",
             },
             ringColor: {
@@ -144,6 +144,7 @@
         <div class="flex items-start gap-4 px-3 pb-2 sm:px-5">
           <section class="w-[280px] min-w-0 shrink-0">
             <header class="mb-3 flex items-center gap-2 px-1">
+              <i data-lucide="circle" class="size-4 shrink-0 text-zinc-500"></i>
               <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Cần làm</h2>
               <span class="text-xs font-medium text-muted">4</span>
             </header>
@@ -163,7 +164,7 @@
                 <p class="line-clamp-2 text-sm font-medium text-foreground">
                   Chuẩn bị số liệu doanh thu tháng 7 cho buổi họp
                 </p>
-                <p class="mt-2 text-xs"><span class="text-muted">Báo cáo · </span><span class="font-medium text-danger">Quá hạn 2 ngày</span></p>
+                <p class="mt-2 text-xs"><span class="text-muted">Báo cáo · </span><span class="font-medium text-overdue">Quá hạn 2 ngày</span></p>
               </li>
               <li
                 class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
@@ -186,6 +187,7 @@
 
           <section class="w-[280px] min-w-0 shrink-0">
             <header class="mb-3 flex items-center gap-2 px-1">
+              <i data-lucide="circle-dot" class="size-4 shrink-0 text-zinc-500"></i>
               <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Đang làm</h2>
               <span class="text-xs font-medium text-muted">3</span>
             </header>
@@ -213,13 +215,14 @@
                 <p class="line-clamp-2 text-sm font-medium text-foreground">
                   Trả lời 18 phản hồi còn tồn trong hộp thư hỗ trợ
                 </p>
-                <p class="mt-2 text-xs"><span class="text-muted">Hỗ trợ · </span><span class="font-medium text-danger">Hạn hôm nay</span></p>
+                <p class="mt-2 text-xs"><span class="text-muted">Hỗ trợ · </span><span class="font-medium text-foreground">Hôm nay</span></p>
               </li>
             </ul>
           </section>
 
           <section class="w-[280px] min-w-0 shrink-0">
             <header class="mb-3 flex items-center gap-2 px-1">
+              <i data-lucide="circle-ellipsis" class="size-4 shrink-0 text-amber-600"></i>
               <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Chờ duyệt</h2>
               <span class="text-xs font-medium text-muted">2</span>
             </header>
@@ -246,6 +249,7 @@
 
           <section class="w-[280px] min-w-0 shrink-0">
             <header class="mb-3 flex items-center gap-2 px-1">
+              <i data-lucide="circle-check" class="size-4 shrink-0 text-done"></i>
               <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Xong</h2>
               <span class="text-xs font-medium text-muted">3</span>
             </header>
@@ -254,35 +258,26 @@
               <li
                 class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
               >
-                <div class="flex items-start gap-2">
-                  <i data-lucide="check" class="mt-0.5 h-4 w-4 shrink-0 text-done"></i>
-                  <p class="line-clamp-2 min-w-0 text-sm font-medium text-foreground">
-                    Chốt bản thiết kế trang chủ với khách
-                  </p>
-                </div>
-                <p class="mt-2 pl-6 text-xs text-muted">Website · xong 18/08</p>
+                <p class="line-clamp-2 text-sm font-medium text-foreground">
+                  Chốt bản thiết kế trang chủ với khách
+                </p>
+                <p class="mt-2 text-xs text-muted">Website · xong 18/08</p>
               </li>
               <li
                 class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
               >
-                <div class="flex items-start gap-2">
-                  <i data-lucide="check" class="mt-0.5 h-4 w-4 shrink-0 text-done"></i>
-                  <p class="line-clamp-2 min-w-0 text-sm font-medium text-foreground">
-                    Sao lưu cơ sở dữ liệu quý 2
-                  </p>
-                </div>
-                <p class="mt-2 pl-6 text-xs text-muted">Hạ tầng · xong 17/08</p>
+                <p class="line-clamp-2 text-sm font-medium text-foreground">
+                  Sao lưu cơ sở dữ liệu quý 2
+                </p>
+                <p class="mt-2 text-xs text-muted">Hạ tầng · xong 17/08</p>
               </li>
               <li
                 class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
               >
-                <div class="flex items-start gap-2">
-                  <i data-lucide="check" class="mt-0.5 h-4 w-4 shrink-0 text-done"></i>
-                  <p class="line-clamp-2 min-w-0 text-sm font-medium text-foreground">
-                    Gửi hoá đơn tháng 7 cho 12 khách hàng
-                  </p>
-                </div>
-                <p class="mt-2 pl-6 text-xs text-muted">Kế toán · xong 15/08</p>
+                <p class="line-clamp-2 text-sm font-medium text-foreground">
+                  Gửi hoá đơn tháng 7 cho 12 khách hàng
+                </p>
+                <p class="mt-2 text-xs text-muted">Kế toán · xong 15/08</p>
               </li>
             </ul>
           </section>

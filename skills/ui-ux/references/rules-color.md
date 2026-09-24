@@ -88,7 +88,7 @@ Bốn tông, không thêm. Trạng thái nào vào tông nào theo **nghĩa**, k
 
 | Tông | Nền / chữ | Token (không Tailwind) | Nghĩa | Ví dụ |
 | --- | --- | --- | --- | --- |
-| Xám | `bg-zinc-100 text-zinc-600` | `--neutral-bg` / `--neutral` | Chờ, nháp, chưa bắt đầu, trung lập | Tiềm năng, Nháp, Chờ duyệt |
+| Xám | `bg-zinc-100 text-zinc-600` | `--neutral-bg` / `--neutral` | Chờ, nháp, chưa bắt đầu, trung lập | Tiềm năng, Nháp, Cần làm |
 | Xanh lá | `bg-emerald-50 text-emerald-700` | `--success-bg` / `--success` | Đang ổn, đang chạy, đã xong | Đang giao dịch, Hoạt động, Đã thanh toán, Đã giao |
 | Hổ phách | `bg-amber-50 text-amber-700` | `--warning-bg` / `--warning` | Cần chú ý | Quá hạn, Sắp hết hạn, Tạm dừng |
 | Đỏ | `bg-red-50 text-red-700` | `--error-bg` / `--error-strong` | Đã dừng, thất bại, bị từ chối | Ngừng giao dịch, Đã huỷ, Lỗi |
@@ -103,6 +103,22 @@ Chờ xử lý → **hổ phách** (người bán phải làm gì đó), Đang g
 không ai phải làm gì), Đã giao → **xanh**, Đã huỷ → **đỏ**. Để "Đang giao" cũng xanh thì
 hai trạng thái khác nghĩa trùng màu (`N2`). "Đang giao dịch" của khách hàng vẫn xanh vì
 luồng đó không có bước "xong".
+
+**Luồng có từ hai trạng thái cùng tông thì chấm đổi thành icon, mỗi trạng thái một hình.**
+Bốn tông không đủ cho luồng công việc: theo đoạn trên thì Cần làm và Đang làm cùng xám, và
+bảng nhóm theo trạng thái ra ba nhóm xám một nhóm xanh, liếc không tách được nhóm nào với
+nhóm nào (đã dính 24/09/2026, bảng công việc). Linear, Jira tách bằng **hình**, không thêm màu:
+
+| Trạng thái | Tông | Icon lucide | Vì sao |
+| --- | --- | --- | --- |
+| Cần làm | xám | `circle` | vòng rỗng: chưa bắt đầu |
+| Đang làm | xám | `circle-dot` | có lõi: đang có người làm, không ai khác phải làm gì |
+| Chờ duyệt | hổ phách | `circle-ellipsis` | người duyệt phải làm gì đó, cùng lý với "Chờ xử lý" |
+| Xong | xanh lá | `circle-check` | |
+| Đã huỷ | đỏ | `circle-x` | |
+
+Icon `size-3.5` trong badge (thay chấm), `size-4` ở đầu nhóm và đầu cột kanban, màu
+`-600` cùng tông (`text-zinc-500` cho xám). Một bảng này dùng cho mọi bề mặt (`D2`).
 
 Nền tối: class Tailwind thì thêm `dark:` (nền `-500/15`, chữ `-400`), token thì
 khối `.dark` trong `tokens.css` đã đổi sẵn.

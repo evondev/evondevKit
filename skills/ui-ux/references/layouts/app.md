@@ -330,9 +330,9 @@ Khách hàng từ 3/2024, 18 đơn hàng, doanh thu 1.284.500.000 đ
 ## Bảng kanban
 
 ```
-Cần làm      4    Đang làm     3    Chờ duyệt    2    Xong        3
+○ Cần làm  4      ◉ Đang làm  3     ⋯ Chờ duyệt  2    ✓ Xong      3
 ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
-│ tiêu đề việc │  │ tiêu đề việc │  │ tiêu đề việc │  │ ✓ tiêu đề    │
+│ tiêu đề việc │  │ tiêu đề việc │  │ tiêu đề việc │  │ tiêu đề việc │
 │ dự án · hạn  │  │ dự án · hạn  │  │ dự án · hạn  │  │ dự án · xong │
 └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘
 ┌──────────────┐  ┌──────────────┐
@@ -340,7 +340,8 @@ Cần làm      4    Đang làm     3    Chờ duyệt    2    Xong        3
 └──────────────┘  └──────────────┘
 ```
 
-- **Cột không tô màu riêng.** Tên cột cộng số đếm là đủ. Bốn cột bốn màu là dấu hiệu chưa quyết định được cái nào quan trọng, và nó phá luật một màu nhấn.
+- **Cột không tô màu riêng.** Đầu cột là icon trạng thái + tên + số đếm, icon và màu icon lấy đúng bảng trạng thái ở `M7` (`circle`, `circle-dot`, `circle-ellipsis`, `circle-check`), cùng hình với hàng nhóm của view danh sách (`D2`). Màu chỉ ở icon `size-4`; nền cột, viền cột, chữ tên cột không màu. Bốn cột bốn nền màu là dấu hiệu chưa quyết định được cái nào quan trọng, và nó phá luật một màu nhấn.
+- **Thẻ ở cột Xong không thêm ✓ trước tiêu đề.** Đầu cột đã có `circle-check`, ✓ trên từng thẻ là nói một ý hai lần (`M6`), lại đẩy tiêu đề lệch cột so với thẻ các cột khác (bỏ 24/09/2026). Cột Xong khác ở dòng phụ: "xong 18/09" thay cho hạn chót.
 - **Thẻ là card thật**, đây là ngoại lệ hợp lệ của luật `F3`: thẻ kanban là vật kéo thả được, không phải một dòng trong danh sách.
 - **Thẻ `p-4`, gap giữa thẻ `gap-3`, gap giữa cột `gap-4`.** Xem `budgets.md`. Đừng hạ xuống `p-3`, chật.
 - **Tiêu đề việc không `truncate`**, cho xuống tối đa hai dòng rồi mới cắt. Thẻ hẹp mà cắt một dòng thì đọc không ra việc gì.
@@ -412,6 +413,37 @@ Khi có dòng được chọn, hàng tab + tìm được THAY bằng:
 - **Số căn phải, `tabular-nums`**, tiêu đề cột số cũng căn phải. Cột số, ngày có sắp xếp thì tiêu đề là nút có icon mũi tên.
 - **Dòng tiêu đề bảng** `text-xs font-medium text-muted`, nền `--surface`, chia với thân bằng `--border`.
 - Phân trang có tổng số và vị trí đang xem (`I16`), dựng theo "Phân trang" trong `../components/small-controls.md`: một trang thì ẩn nav, không có dòng thì ẩn cả footer. Màn hẹp thì bảng cuộn ngang trong khung (`R9`).
+
+
+### Bảng nhóm theo trạng thái (danh sách công việc)
+
+```
+[Danh sách] Kanban
+┌──────────────────────────────────────────────────────────────────────┐
+│ Công việc                     Ưu tiên    Người phụ trách   Hạn chót ↑ │
+├──────────────────────────────────────────────────────────────────────┤
+│ ⌄ ○ Cần làm  5                                                        │  <- hàng nhóm: nút rộng hết hàng
+├──────────────────────────────────────────────────────────────────────┤
+│ Tiêu đề việc                  ! Khẩn cấp  ⬤ Trần Nguyễn Anh Tuấn  Quá hạn 3 ngày ⋯ │
+│ Dự án                                                                 │
+│ Tiêu đề việc                  ▂▄ Cao      ⬤ Đỗ Khánh Linh   Hôm nay  ⋯ │
+│ Tiêu đề việc                  ▂ Thấp      —                 —        ⋯ │
+├──────────────────────────────────────────────────────────────────────┤
+│ › ◉ Đang làm  4                                                       │  <- đang thu
+│ ⌄ ⋯ Chờ duyệt  0                                                      │
+│   Chưa có việc nào ở nhóm này                                         │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+- **Hàng nhóm là icon trạng thái + tên + số, không pill** (`D2`, `M7`). Ba nhóm pill xám một nhóm pill xanh thì liếc không biết mình đang ở nhóm nào (đã dính 24/09/2026). Tên `text-sm font-medium`, số `text-muted`. Cả hàng là một `<button aria-expanded>` rộng hết hàng (`I29`), chevron `size-4` đầu hàng, xoay `-rotate-90` khi thu.
+- **Trong nhóm phải xếp theo một khoá, và khoá đó hiện ở tiêu đề cột.** Mặc định hạn chót tăng dần: quá hạn lên đầu, hôm nay, rồi ngày xa, không có hạn xuống cuối. Nhóm Xong xếp ngày xong giảm dần. Tiêu đề cột đang sắp có mũi tên (`arrow-up` `size-3.5`). Để thứ tự dữ liệu mẫu thì ra "Hôm nay" nằm dưới "28/09" và dưới một việc không hạn, người đọc tưởng bảng xếp theo thứ gì đó mà dò không ra (đã dính 24/09/2026).
+- **Mọi cột ngắn co theo nội dung dài nhất, cột tiêu đề nhận phần dư.** Ưu tiên, người phụ trách, hạn chót, cột ⋯: `<th class="w-px">` và ô `whitespace-nowrap`; ô tiêu đề `w-full`. Chỉ `w-px` mà quên `nowrap` ở một cột thì cột đó bị bóp tới chữ đầu tiên ("Trung", "Trần N…", đã dính 24/09/2026 ở cột ưu tiên). Tên tiếng Việt cắt đuôi là mất **tên gọi**, phần duy nhất phân biệt người này với người kia: "Trần Nguyễn Anh Tuấ…", "Nguyễn Thị Phương T…" trong khi cột công việc bên trái dư cả nửa bảng (`N8`, đã dính 24/09/2026). Chỉ cắt khi cả bảng hết chỗ, lúc đó rút cột tiêu đề trước: tiêu đề `min-w-0` + `truncate` (hoặc `line-clamp-1`) bên trong ô, không để tràn đè sang cột bên.
+- **Thu nhóm trong `<table>`: mỗi nhóm một `<tbody>`, thu thì ẩn `<tr>`, không khối trượt.** Hàng nhóm là `<tr>` đầu `<tbody>`, trong đó `<th scope="rowgroup" colSpan={số cột}>` chứa nút `aria-expanded`; thu thì các `<tr>` dòng việc `hidden`. Khối trượt `grid-rows` của sidebar (`I29`, mục thu nhóm sidebar ở trên) **không** dùng được trong bảng: `<div>` bọc quanh `<tr>` là HTML sai, trình duyệt đẩy nó ra khỏi bảng hoặc tính lại bề rộng cột theo khối đó, cột giữa bị bóp và tên việc dài tràn đè sang cột bên (đã dính 24/09/2026). Bảng không trượt chiều cao; muốn có chuyển động thì chỉ xoay chevron.
+- **Ô trống một kiểu `—` ở mọi cột, kể cả hạn chót.** Người phụ trách trống ghi `—` mà hạn chót trống ghi "Đặt hạn" là hai kiểu trống trên một hàng; "Đặt hạn" xám còn trông như một giá trị. Ô sửa được tại chỗ thì cả ô là nút mở date picker / chọn người: lúc thường `—`, rê vào hoặc Tab tới thì nền `bg-foreground/5 rounded-lg` và đổi thành icon `calendar-plus` + "Đặt hạn". **Không `bg-surface-hover`**: đó cũng là nền của cả dòng lúc rê, ô nằm trên dòng đang rê thì nền ô trùng nền dòng, không nổi lên (bên dựng bắt được 24/09/2026). `foreground/5` chồng lên nền nào cũng đậm hơn một bậc. Ô có giá trị ("Hôm nay", "28/09") cùng công thức; lúc lịch đang mở giữ nền này (`aria-expanded:bg-foreground/5`). Nút ô `-mx-2 px-2` để chữ vẫn thẳng cột với tiêu đề cột. Máy không có chuột thì `—` vẫn bấm được. Lịch mở từ ô theo mục "mở từ một ô trong bảng" trong `../components/choice-controls.md`: bấm ngày là lưu, có "Xoá hạn" khi ô đang có hạn.
+- **Nhóm rỗng** mở ra là một dòng `text-sm text-muted` "Chưa có việc nào ở nhóm này", thụt thẳng cột tiêu đề (`../components/empty-state.md`). Cả bảng rỗng thì giữ hàng tiêu đề cột, một dòng chữ mờ căn giữa.
+- **Khung chờ có cả hàng nhóm.** Dòng đầu của bảng thật là hàng nhóm; khung chờ bắt đầu thẳng bằng dòng việc thì lúc dữ liệu về cả bảng tụt xuống một hàng (`I19`). Khung chờ: một hàng nhóm (chevron + thanh `w-24`), rồi các dòng việc.
+- **Tên view: "Danh sách" / "Kanban", không "Bảng".** Theo `S10` "bảng" là table, mà view danh sách ở đây chính là table: ghi "Bảng" cho view kanban là một chữ hai nghĩa trên cùng một màn. Chuyển view là `segmented` trong "Thanh tab" (`../components/small-controls.md`), mỗi view kèm icon `list` / `square-kanban` được.
+- Hành động dòng, hover, badge ưu tiên, màu hạn chót theo các mục trên và `../components/list-row.md`. Menu dòng đang mở thì dòng giữ nền hover.
 
 ---
 

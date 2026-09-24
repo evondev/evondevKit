@@ -48,14 +48,22 @@ hình dạng thì người dùng phải học hai lần.
 
 ```
 STATUS = {
-  todo:  { nhãn: "Chưa làm",  màu: xám },
-  doing: { nhãn: "Đang làm",  màu: hổ phách },
-  done:  { nhãn: "Xong",      màu: xanh lá },
+  todo:   { nhãn: "Cần làm",   màu: xám,      icon: "circle" },
+  doing:  { nhãn: "Đang làm",  màu: xám,      icon: "circle-dot" },
+  review: { nhãn: "Chờ duyệt", màu: hổ phách, icon: "circle-ellipsis" },
+  done:   { nhãn: "Xong",      màu: xanh lá,  icon: "circle-check" },
 }
 ```
 
 Màu vẫn theo `M4`: đây là trạng thái thật, nên được dùng màu. Bốn tông và hình
-badge lấy đúng bảng trong `M7`.
+badge lấy đúng bảng trong `M7`; "Đang làm" xám chứ không hổ phách, vì hổ phách là
+"cần chú ý" và xanh để dành cho "xong" (bản cũ ghi hổ phách, lệch `M7`). Hai trạng
+thái cùng tông thì tách bằng icon, bảng icon cũng ở `M7`.
+
+**Trạng thái làm tiêu đề thì cùng một hình ở mọi view.** Hàng nhóm của bảng và đầu
+cột kanban là **icon + tên + số đếm**, không pill; trạng thái làm giá trị một ô thì
+mới là pill. Bảng nhóm dùng pill còn kanban chỉ chữ trơn là cùng một trạng thái hai
+hình (đã dính 24/09/2026).
 
 ---
 
