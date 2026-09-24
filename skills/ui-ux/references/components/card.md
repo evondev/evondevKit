@@ -3,8 +3,8 @@
 ```tsx
 <section className="flex flex-col rounded-2xl border border-border bg-surface p-5">
   <header className="mb-4 flex items-start justify-between gap-3">
-    {/* min-h-10 = cao bằng nút action: một dòng thì tiêu đề nằm giữa nút, nhiều dòng thì nút bám góc trên */}
-    <div className="flex min-h-10 min-w-0 items-center gap-2">
+    {/* min-h-10 = cao bằng nút action, CHỈ khi có action: một dòng thì tiêu đề nằm giữa nút, nhiều dòng thì nút bám góc trên */}
+    <div className={cn("flex min-w-0 items-center gap-2", action && "min-h-10")}>
       {icon}
       <h2 className="text-base font-semibold text-balance text-foreground">{title}</h2>
     </div>
@@ -24,6 +24,7 @@
 - Header và body cách nhau `mb-4`, padding card `p-5`. Hai con số này lặp lại ở mọi card, không card nào tự chế.
 - Chỗ đặt hành động là một slot `action` ở góc phải header, nên nút thêm hay nút lọc không bao giờ trôi xuống giữa nội dung.
 - **Header `items-start`, không `items-center`.** Tiêu đề dài xuống hai dòng thì nút vẫn bám góc trên phải, không trôi xuống giữa. Khối tiêu đề `min-h-10` bằng chiều cao nút nên lúc chỉ một dòng, chữ vẫn nằm giữa nút. Tiêu đề `min-w-0 text-balance` để xuống dòng đều, nút `shrink-0` để không bị bóp.
+- **`min-h-10` chỉ khi header có nút.** Card chỉ có tiêu đề mà vẫn giữ `min-h-10` thì dòng chữ 24px nằm giữa khung 40px, dư 8px trên 8px dưới: chữ tiêu đề cách mép trên ~32px trong khi nội dung cuối cách mép dưới ~20px, và tiêu đề cách nội dung của nó cũng ~32px. Tiêu đề lơ lửng giữa mép card và nội dung, không bám vào khối nó đặt tên, card hẫng đầu (đã dính 24/09/2026, card Sản phẩm và Thanh toán trong modal chi tiết đơn). Ngoại lệ: các card đứng cùng một hàng lưới mà chỉ vài cái có nút thì cả hàng giữ `min-h-10`, để tiêu đề thẳng hàng nhau.
 
 ---
 

@@ -75,6 +75,35 @@ panel trượt hoặc trang riêng.
 - **Trạng thái đang gửi**: nút chỉ chữ thì **spinner đè lên giữa nút, chữ `invisible`** (vẫn chiếm chỗ), nút `disabled` + `aria-busy`. Chèn spinner cạnh chữ là nút rộng ra, đẩy Huỷ sang trái (đã dính 22/09/2026). Xem `../components/button.md`.
 - Câu lỗi dưới ô nói **cách sửa**, theo bảng "Ô trống thì viết gì" trong `form.md` (một nguồn): "Email phải có dấu @".
 
+**Modal xem bản ghi có nút trước / sau** (chi tiết đơn hàng, hoá đơn, phiếu nhập):
+
+```
+┌──────────────────────────────────────────┐
+│ Đơn #10248 [⧉]              ‹  ›  │  ✕   │  <- header trắng, đứng yên
+│ (● Chờ xử lý)  Đặt lúc 14:32 · 22/09/2026 │
+├──────────────────────────────────────────┤
+│ ┌ Sản phẩm ─────────────────────────────┐ │  <- thân bg-background, card trắng
+│ │ Áo sơ mi linen tay dài     900.000 đ  │ │
+│ │ Màu be · Size M        2 × 450.000 đ  │ │
+│ └───────────────────────────────────────┘ │
+│ ┌ Thanh toán ───────────────────────────┐ │
+│ │ Tạm tính · 3 sản phẩm    2.500.000 đ  │ │
+│ │ Tổng cộng                2.450.000 đ  │ │
+│ └───────────────────────────────────────┘ │
+└──────────────────────────────────────────┘
+```
+
+- **Neo đỉnh, không căn giữa dọc**: khung ngoài `items-start`, modal cách đỉnh một khoảng cố định (`mt-16 sm:mt-[8vh]`). Mỗi bản ghi cao một khác (một sản phẩm, hay bốn sản phẩm tên dài ba dòng); căn giữa thì mỗi lần bấm Đơn sau cả header trượt lên xuống, nút ‹ › chạy khỏi con trỏ, bấm liền hai lần là trúng nền (`N1`). Bản dựng 24/09/2026 neo đỉnh, đổi đơn thì header đứng yên dù modal cao 600px hay 820px.
+- **Chiều cao theo dữ liệu nên luôn có trần**: `max-h-[calc(100dvh-8vh-1rem)]`, header đứng yên, chỉ thân cuộn. Câu "cao quá 80% màn thì đổi sang panel" ở trên là lúc chọn khuôn; một đơn có 20 sản phẩm thì thân cuộn, không đổi khuôn giữa chừng.
+- **Header hai dòng**: dòng một là tiêu đề `text-lg font-semibold` "Đơn #10248", **chỉ phần mã `font-mono`** (`T17`), chữ "Đơn" giữ font thường; nút `copy` là icon button ngay sau mã. Cụm phải `‹ › │ ✕`: ‹ › là icon button ghost có tooltip "Đơn trước", "Đơn sau"; vạch đứng `h-5 w-px bg-border` tách ✕ ra vì đóng khác loại với đi tiếp. Dòng hai là badge trạng thái đơn và mốc đặt đủ năm (mốc đứng riêng, `T16b`).
+- **Tới đầu hoặc cuối danh sách thì nút đó `disabled`**, mờ nhưng vẫn chiếm chỗ, không ẩn (`N1`: ẩn thì › trượt sang chỗ của ‹). Tiêu điểm đang nằm trên nút vừa thành `disabled` thì **chuyển sang nút còn lại**, không để rơi về `body`; người dùng bàn phím vẫn đứng trong cụm điều hướng.
+- **Thân `bg-background p-6`, mỗi khối một card trắng** (`card.md`), cách nhau `gap-4`. Header trắng, thân xám là đủ tách, không kẻ thêm đường dưới header. Card chỉ có tiêu đề thì **không `min-h-10`** (xem `card.md`).
+- **Hàng sản phẩm**: trái là tên `font-medium` và phân loại `text-sm text-muted` ("Màu be · Size M"); phải là thành tiền `font-medium tabular-nums` và "2 × 450.000 đ" `text-sm text-muted`. Tên dài xuống dòng, không `truncate` (`N8`); cột tiền `shrink-0 text-right` bám đỉnh hàng. Không có phân loại thì bỏ hẳn dòng phụ, không ghi `—`. Đường kẻ giữa các hàng theo `F25`.
+- **Khối thanh toán là biên lai**: nhãn trái, số tiền **bám mép phải** (`justify-between`), không dùng cột nhãn `7rem` của `description-list.md`: tiền phải thẳng một mép phải để cộng trừ bằng mắt. "Tạm tính · 24 sản phẩm" đếm theo **số lượng**, không theo số dòng. Giảm giá ghi kèm mã `font-mono` và số âm. Tổng cộng có đường kẻ trên, `text-lg font-semibold`, là con số nặng nhất khối. Phương thức và trạng thái thanh toán (badge) nằm sau một đường kẻ nữa; hàng có badge thì `items-baseline` để nhãn thẳng dòng chữ trong badge.
+- **Số liệu giữa các khối phải khớp** (`S6`): tạm tính bằng tổng thành tiền, tổng cộng bằng tạm tính cộng phí trừ giảm giá, trạng thái thanh toán hợp với trạng thái đơn (đơn huỷ đã trả thì "Đã hoàn tiền", thanh toán khi nhận hàng đang giao thì "Chưa thanh toán").
+- Mở modal thì tiêu điểm vào khung hoặc tiêu đề, **không vào nút ‹ đầu tiên** (tooltip bật ngay lúc mở, xem bẫy ở mục "Chuyển động").
+- Đề không nói tới thao tác trên đơn (xác nhận, huỷ, in) thì không dựng footer; báo một dòng lúc giao. Có thì footer theo khuôn footer của panel trượt: nút giữ kiểu theo vai, không theo số lượng.
+
 ## Panel trượt
 
 Trượt từ phải, `w-full sm:w-[28rem]` (dưới `sm` phủ hết bề ngang, 448px rộng hơn điện thoại 375px), dùng khi nội dung dài hoặc người dùng
