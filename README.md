@@ -64,6 +64,36 @@ từ `"./"` sang đường dẫn thư mục của nó.
 
 > đọc `~/dev/evondevKit/skills/ui-ux/SKILL.md` rồi dựng lại màn danh sách theo đúng đó
 
+### Cài cho Codex, Antigravity
+
+Skill theo định dạng Agent Skills (thư mục có `SKILL.md` + `references/`), nên
+agent khác đọc được. Chỉ phần plugin (`.claude-plugin/`, `/plugin install`, lệnh
+`/evon:ui-ux`) là riêng Claude Code. Tool khác thì chép (hoặc symlink) thư mục
+`skills/ui-ux` vào chỗ tool đó tìm skill:
+
+| Tool | Theo dự án | Dùng chung mọi dự án |
+| --- | --- | --- |
+| Codex | `.agents/skills/ui-ux/` hoặc `.codex/skills/ui-ux/` | `~/.codex/skills/ui-ux/` |
+| Antigravity | `.agents/skills/ui-ux/` | xem [docs Antigravity](https://antigravity.google/docs/skills/) |
+
+`.agents/skills/` trong dự án được **cả Codex lẫn Antigravity** đọc, một bản dùng
+cho hai tool:
+
+```bash
+# trong thư mục dự án
+mkdir -p .agents/skills
+cp -R ~/dev/evondevKit/skills/ui-ux .agents/skills/
+# hoặc symlink để sửa skill ở evondevKit là dự án thấy ngay:
+# ln -s ~/dev/evondevKit/skills/ui-ux .agents/skills/ui-ux
+```
+
+Bên đó không có lệnh `/evon:ui-ux`: agent tự bật skill khi đề khớp `description`,
+hoặc nhắc thẳng "dùng skill ui-ux". Codex đổi thư mục skill thì khởi động lại.
+
+⚠️ Mọi vòng test trong `TESTS.md` mới chạy trên Claude. Skill dựa vào việc agent
+tự mở đúng file trong bảng "Mở doc nào khi nào"; mô hình khác có thể bỏ bước
+audit hoặc không mở file component. Chạy thử vài đề đã ✅ rồi so ảnh trước khi tin.
+
 ---
 
 ## Skill này làm gì

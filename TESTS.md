@@ -16,6 +16,10 @@ dựng lại từ đầu và mỗi trang một kiểu:
 
 Tới bậc 2, bậc 3 thì chỉ **ráp** từ các file đó, không vẽ lại.
 
+**Đề có ảnh tham khảo** (Dribbble, sản phẩm khác) thì chỉ mượn **bố cục và cách tổ
+chức**, hình thức vẫn theo skill. Gửi ảnh kèm câu "ảnh này chỉ là wireframe", để skill
+đọc theo `S12` nhánh wireframe, không bám màu và bóng của ảnh.
+
 ## Bậc 1 — Component riêng lẻ
 
 - ✅ **Button** — "Dựng cho tôi bộ nút: nút chính, nút viền, nút chỉ icon, nút xoá, đủ trạng thái hover, focus, đang tải, bị khoá."
@@ -62,6 +66,8 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
 - ✅ **Bình luận lồng nhau** — "Dựng cho tôi khu bình luận có trả lời lồng nhau, có bình luận đã xoá và bình luận đang gửi."
 - ✅ **Ô nhập nhiều tag** — "Dựng cho tôi ô nhập email người nhận, gõ xong Enter thành một tag, có email sai định dạng."
 - ✅ **Thanh trượt khoảng giá** — "Dựng cho tôi thanh trượt chọn khoảng giá từ 0 tới 50 triệu, có ô nhập số hai đầu."
+- [ ] **Dropdown đa cấp** — "Dựng cho tôi menu tài khoản mở từ avatar trên header, có mục Chuyển tài khoản mở ra menu con danh sách tài khoản."
+- [ ] **Chat UI** — "Dựng cho tôi khung chat với trợ lý AI: tin nhắn hai phía, câu trả lời đang chạy ra, bước dùng công cụ thu gọn được, gợi ý câu hỏi tiếp và ô soạn tin."
 
 ## Bậc 2 — Khối ghép
 
@@ -77,6 +83,12 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
       Cần có: avatar, tabs, empty state.
 - ✅ **File upload** — "Dựng cho tôi khu tải tài liệu lên cho một dự án."
       Cần có: button, progress bar, toast.
+- [ ] **Drawer phức tạp** — "Dựng cho tôi panel bên phải xem chi tiết một khách hàng: nút thao tác nhanh, các tab Chi tiết / Tin nhắn / Tệp / Hoạt động, và vài card số liệu."
+      Cần có: drawer, tabs, description list, card, button, avatar.
+- [ ] **Modal phức tạp** — "Dựng cho tôi modal xem chi tiết đơn hàng: mã đơn có nút sao chép, trạng thái, danh sách sản phẩm, thanh toán, và nút sang đơn trước / đơn sau."
+      Cần có: modal, status badge, list row, card, button, tooltip.
+- [ ] **Bảng phức tạp** — "Dựng cho tôi danh sách công việc nhóm theo trạng thái, mỗi nhóm thu gọn được, có cột ưu tiên, người phụ trách, hạn chót, và chuyển giữa các view."
+      Cần có: data table, tabs, status badge, avatar, dropdown menu, date picker.
 
 ## Bậc 3 — Trang
 
