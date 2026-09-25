@@ -90,6 +90,17 @@ theo `T25`.
 Một dòng, không phải một bảng câu hỏi. Người dùng **không nhắc gì** thì coi như
 đồng ý, dựng theo mặc định, đi tiếp.
 
+**Chưa nối backend thì gửi hợp lệ vẫn phải đi tiếp.** Bấm "Đăng ký" với form đúng mà
+không có gì xảy ra thì người duyệt tưởng nút hỏng (đã dính 25/09/2026). Giả lập: nút
+quay spinner ~1 giây, rồi sang bước kế tiếp nếu đã dựng (đăng ký → nhập OTP, quên mật
+khẩu → nhập mã, mật khẩu mới → màn xong). Hàm gọi API vẫn để trống, có comment chỗ nối.
+
+**Bước sau hiện đúng thứ người dùng vừa gõ.** Gõ `an@congty.vn` ở trang đăng ký thì trang
+OTP ghi "Mã … vừa được gửi tới an@congty.vn", không phải email mẫu của trang OTP (đã dính
+25/09/2026: sang OTP hiện "nguyen.hoang.bao…@congty-…", người duyệt tưởng mã gửi nhầm địa
+chỉ). Chuyền qua state của router; email mẫu chỉ dùng khi mở thẳng trang OTP bằng link, và
+ở trang `/states`. Cùng luật `S6`: dữ liệu giả của một luồng phải khớp nhau giữa các bước.
+
 **Họ nói muốn thêm thì thêm ngay, đừng hỏi lại.** "Thêm remember me" là đủ rõ —
 dựng luôn, không hỏi "bro muốn tích sẵn không, đặt ở đâu". Mặc định phần dưới
 đã trả lời hết mấy câu đó rồi.
@@ -174,6 +185,21 @@ Số lượng quyết định bố cục:
 | --- | --- |
 | 1–2 | Xếp dọc, full width, có chữ: `Đăng nhập bằng Google`. Nút viền (`variant="outline"`), logo gốc trái chữ, cao bằng ô nhập |
 | **3 trở lên** | **A** bên dưới. Báo một dòng lúc giao: muốn xếp dọc đủ chữ thì nói |
+
+**Đường chia "hoặc"** giữa nút chính và nút mạng xã hội:
+
+```html
+<div class="my-6 flex items-center gap-3">
+  <span class="h-px flex-1 bg-border-strong"></span>
+  <span class="text-xs text-muted">hoặc</span>
+  <span class="h-px flex-1 bg-border-strong"></span>
+</div>
+```
+
+Kẻ bằng **`--border-strong`**, không `--border`. `--border` (`#f7f7f8`) là đường tóc giữa các
+hàng danh sách, nơi có chữ hai bên đỡ mắt; đứng một mình trên card trắng thì nó chỉ
+1.06 : 1, hai vạch biến mất, còn trơ chữ "hoặc" lơ lửng giữa hai nút (đã dính 25/09/2026,
+trang đăng ký ở 375px).
 
 Xếp dọc 3–4 nút full width thì phần mạng xã hội **dài hơn cả form thật**, và
 người dùng phải cuộn qua một dãy nút giống hệt nhau mới thấy ô email. Thứ chính

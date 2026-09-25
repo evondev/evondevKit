@@ -397,6 +397,7 @@ Ba thứ đi liền nhau, thiếu một cái là lỗi:
 là phải xoá hết gõ lại, và đó là lý do rời form phổ biến nhất ở màn đăng nhập.
 
 - Nút **chỉ có icon**, `absolute` trong ô, căn phải. Icon `Eye` / `EyeOff` theo `F15`.
+- **Nút `size-10`, `right-1` căn giữa dọc** (`top-1/2 -translate-y-1/2`), icon `size-4` giữa nút. Icon đứng đúng chỗ cũ, chỉ vùng bấm to ra; vừa khít `pr-11` (4 + 40 = 44px). Nút ôm sát icon (`p-1`, 24px) thì trên điện thoại bấm trượt vào ô, bàn phím bật lên thay vì hiện mật khẩu (đã dính 25/09/2026). Focus bàn phím là vòng như mọi nút (`I13`).
 - **`type="button"`.** Quên thì nó mặc định là `submit` — bấm xem mật khẩu hoá ra gửi form.
 - `aria-label` đổi theo trạng thái: "Hiện mật khẩu" / "Ẩn mật khẩu". Không phải một nhãn cố định.
 - Chừa chỗ cho nút bằng padding phải trên chính ô (`pr-11`), đừng để chữ gõ dài chui xuống dưới icon.

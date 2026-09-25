@@ -53,9 +53,9 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 2 | Công việc: bảng nhóm, kanban, tạo mới | `/dashboard/tasks`, `/tasks/new`, `/tasks/states` | |
 | 3 | Khách hàng: danh sách, xem nhanh, chi tiết | `/dashboard/customers`, `/customers/quick-view`, `/customers/c-030`, `/customers/khong-co`, `/customers/states` | |
 | 4 | Đơn hàng: chi tiết, xem nhanh | `/dashboard/orders/detail`, `/orders/quick-view` | |
-| 5 | Thành viên và phân quyền | `/dashboard/members` | 25/09/2026 (hai lượt) |
+| 5 | Thành viên và phân quyền | `/dashboard/members` | 25/09/2026 (bốn lượt) |
 | 6 | Hồ sơ cá nhân | `/dashboard/profile`, `/profile/states` | |
-| 7 | Đăng nhập, đăng ký, quên mật khẩu, OTP | `/login`, `/register`, `/forgot-password`, `/forgot-password/verify`, `/forgot-password/new-password`, `/forgot-password/states`, `/verify-otp`, `/verify-otp/states` | 25/09/2026 (hai lượt) |
+| 7 | Đăng nhập, đăng ký, quên mật khẩu, OTP | `/login`, `/register`, `/forgot-password`, `/forgot-password/verify`, `/forgot-password/new-password`, `/forgot-password/states`, `/verify-otp`, `/verify-otp/states` | 25/09/2026 (bốn lượt) |
 | 8 | Bảng giá | `/pricing`, `/pricing/joined` | |
 | 9 | Form đăng ký doanh nghiệp | `/business-registration` | |
 | 10 | Trợ lý AI | `/dashboard/assistant`, `/assistant/states` | |
