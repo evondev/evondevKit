@@ -22,7 +22,7 @@ chọn), rồi báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`.
         │ (chỗ câu lỗi)   │
         │ [   NÚT       ] │
         │ ─── hoặc ───    │
-        │ [ nút OAuth   ] │
+        │ [ nút Google  ] │
         │ chưa có tk? Tạo │
         └─────────────────┘
 ```
@@ -95,7 +95,7 @@ khi sai. Và "gõ sai mật khẩu" chính là lúc link này cần rõ nhất, 
 đụng.
 
 **Vì sao không để dưới nút submit** — ở đó nó lẫn vào khu "hoặc / đăng nhập bằng
-tài khoản bên thứ ba / chưa có tài khoản?", thành một link tình cờ nằm giữa một đống link.
+Google / chưa có tài khoản?", thành một link tình cờ nằm giữa một đống link.
 
 Ba thông số:
 
@@ -117,7 +117,7 @@ Số lượng quyết định bố cục:
 
 | Số nút | Bố cục |
 | --- | --- |
-| 1–2 | Xếp dọc, full width, có chữ: `Đăng nhập bằng [nhà cung cấp]` |
+| 1–2 | Xếp dọc, full width, có chữ: `Đăng nhập bằng Google` |
 | **3 trở lên** | **A** bên dưới. Báo một dòng lúc giao: muốn xếp dọc đủ chữ thì nói |
 
 Xếp dọc 3–4 nút full width thì phần mạng xã hội **dài hơn cả form thật**, và

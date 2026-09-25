@@ -126,7 +126,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Có emoji nào trong tiêu đề, câu chào, hay đang đóng vai icon không?
 - [ ] Có chữ hướng dẫn thừa không ("Bấm để lưu", chữ "Có" cạnh dấu tick)?
 - [ ] Có dấu gạch dài trong copy tiếng Việt không?
-- [ ] Nút đăng nhập bằng tài khoản bên thứ ba đã có logo gốc của nhà cung cấp chưa?
+- [ ] Nút đăng nhập bằng Google hay Apple đã có logo gốc chưa?
 - [ ] Có tự gán mỗi mục một icon khác nhau, hay ba mục ba icon giống hệt nhau?
 - [ ] **Có câu nào giống hệt nhau ở mọi ô, mọi hàng không** ("so với 2025" bốn ô, "Chưa có kỳ trước" bốn ô, `/2026` ở mọi mốc giờ)? Kéo ra ghi một lần, hoặc bỏ (`N3`, `T16b`).
 

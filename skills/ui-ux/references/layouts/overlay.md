@@ -251,7 +251,7 @@ thành một component (vd `AccountEmail`) dùng chung:
 </span>
 ```
 
-Ra `tran.ngu…@minhphat-studio.vn` cạnh `tran.nguyen.an…@gmail.com`: mỗi hàng một
+Ra `tran.ngu…@evondev-studio.com` cạnh `tran.nguyen.an…@gmail.com`: mỗi hàng một
 dòng, vẫn phân biệt được. Email đầy đủ ở `title`. Dùng khuôn này ở mọi chỗ hiện
 email trong menu: đầu menu, hàng tài khoản, đầu menu chân sidebar.
 

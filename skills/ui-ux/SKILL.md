@@ -244,8 +244,8 @@ biến nó thành một bảng câu hỏi.
 thì giữ nguyên đúng danh sách đó, và bày ra theo bố cục mặc định (câu 4).
 
 Ví dụ: đề ghi "trang đăng nhập có ô email, ô mật khẩu, link quên mật khẩu, nút
-đăng nhập, nút đăng nhập bằng tài khoản bên thứ ba". Nội dung thế là chốt cứng, dựng luôn
-một cột giữa màn. Đừng hỏi lại có cần nút đó không.
+đăng nhập, nút đăng nhập bằng Google". Nội dung thế là chốt cứng, dựng luôn
+một cột giữa màn. Đừng hỏi lại có cần nút Google không.
 
 **S5. Đề để hở phạm vi thì dựng phạm vi mặc định, không hỏi.**
 

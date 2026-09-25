@@ -1,6 +1,6 @@
 # evondevKit
 
-Bộ skill cho Claude Code. Hiện có một plugin: **`evon`**, chứa skill
+Bộ skill Claude Code của evondev. Hiện có một plugin: **`evon`**, chứa skill
 **`ui-ux`** — gu UI/UX cho hệ thống dashboard.
 
 ```

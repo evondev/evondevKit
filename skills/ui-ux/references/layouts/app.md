@@ -167,7 +167,7 @@ Nhóm thu gọn được: nút nhãn cùng khuôn mục con, trượt bằng `gr
 ```
 Mở                                 Thu gọn
 ┌──────────────────┐               ┌──────┐
-│ ◐ Tên workspace  │               │  ◐   │
+│ ◐ Evondev Studio │               │  ◐   │
 ├──────────────────┤               ├──────┤
 │ ⌂ Tổng quan      │               │  ⌂   │
 │ ✉ Hộp thư    99+ │               │  ✉•  │  <- chấm chỉ cho số "cần xử lý"

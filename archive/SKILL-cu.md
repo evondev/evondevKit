@@ -62,9 +62,9 @@ xuất "hay là thêm phần này". Câu hỏi duy nhất được phép đặt 
 đó ra sao**.
 
 Ví dụ, người dùng ghi "trang login có ô email, ô mật khẩu, link quên mật khẩu,
-nút đăng nhập, nút đăng nhập bằng tài khoản bên thứ ba". Nội dung thế là xong, chốt cứng. Việc
+nút đăng nhập, nút đăng nhập bằng Google". Nội dung thế là xong, chốt cứng. Việc
 còn lại chỉ là chọn giữa một cột giữa màn hay hai cột có ảnh bên phải. Đưa hai
-khung đó ra, đừng hỏi lại có cần nút đó không.
+khung đó ra, đừng hỏi lại có cần nút Google không.
 
 Nội dung càng rõ thì câu hỏi bố cục càng ngắn, nhưng vẫn phải hỏi. Danh sách
 phần tử không quyết định được thứ tự, tỉ lệ và mức quan trọng.
@@ -167,7 +167,7 @@ Người dùng nói rõ dùng thư viện nào thì **theo họ**, đừng cãi.
 **Nội dung**
 
 **C21.** Không emoji làm icon, và không emoji trong tiêu đề hay câu chào. Icon lấy từ `lucide-react`.
-**C22. Ngoại lệ của C21 và C25: logo thương hiệu bên thứ ba.** Nút đăng nhập bằng tài khoản bên thứ ba phải có đúng logo của nhà cung cấp, giữ nguyên màu gốc, dán SVG thẳng vào. Lucide không có, và đây là dấu hiệu nhận diện mang chức năng.
+**C22. Ngoại lệ của C21 và C25: logo thương hiệu bên thứ ba.** Nút đăng nhập bằng Google, Apple, GitHub phải có đúng logo của họ, giữ nguyên màu gốc, dán SVG thẳng vào. Lucide không có, và đây là dấu hiệu nhận diện mang chức năng.
 **C23.** Không badge kiểu "✨ AI-powered", "🚀 Fast", "New!".
 **C24.** Không chữ hướng dẫn thừa. Nút đã ghi "Lưu" thì đừng thêm dòng "Bấm để lưu". Không viết chữ lặp lại thứ icon đã nói: có dấu tick rồi thì bỏ chữ "Có" bên cạnh.
 **C25.** Không nhồi icon vào nút. Nút mặc định chỉ có chữ.
