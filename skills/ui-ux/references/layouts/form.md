@@ -92,7 +92,7 @@ Một dòng, không phải một bảng câu hỏi. Người dùng **không nh�
 
 **Chưa nối backend thì gửi hợp lệ vẫn phải đi tiếp.** Bấm "Đăng ký" với form đúng mà
 không có gì xảy ra thì người duyệt tưởng nút hỏng (đã dính 25/09/2026). Giả lập: nút
-quay spinner ~1 giây, rồi sang bước kế tiếp nếu đã dựng (đăng nhập → trang đầu của app, đăng ký → nhập OTP, quên mật
+quay spinner ~1 giây, rồi sang bước kế tiếp nếu đã dựng (đăng nhập → trang đầu của app, đăng ký → nhập OTP → trang đầu của app, quên mật
 khẩu → nhập mã, mật khẩu mới → màn xong). Hàm gọi API vẫn để trống, có comment chỗ nối.
 
 **Bước sau hiện đúng thứ người dùng vừa gõ.** Gõ `an@congty.vn` ở trang đăng ký thì trang

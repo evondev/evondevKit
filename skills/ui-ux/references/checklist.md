@@ -106,6 +106,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Màn đăng nhập, đăng ký có đủ logo sản phẩm, nút Google, placeholder chưa? Đăng ký có đang thừa ô "Nhập lại mật khẩu" không? (`layouts/form.md`)
 - [ ] Luồng quên mật khẩu: bước nhập mã có đang xác nhận email có tài khoản không? Phiên hết hạn có còn để ô mật khẩu và nút Lưu dưới khối lỗi không? (`layouts/form.md`)
 - [ ] Màn OTP: bấm Xác nhận khi chưa đủ sáu số có ra câu lỗi không, hay im lặng?
+- [ ] Màn OTP: "Đổi email" có về form với dữ liệu điền sẵn không? Bấm "Gửi lại mã" có câu "Đã gửi mã mới" (`role="status"`) không? Sai mã, hết hạn có xoá sáu ô và đưa con trỏ về ô đầu không?
 - [ ] Đường chia "hoặc" kẻ bằng `--border-strong` chưa (`--border` tan trên card trắng)? Nút mắt `size-10` chưa? Form đúng mà bấm gửi có đi tiếp không, hay im lặng? Bước sau có hiện đúng email vừa gõ không?
 - [ ] Mọi màn trong luồng xác thực mở ra con trỏ đã nằm ở ô đầu chưa? Form đặt mật khẩu mới có ô `username` ẩn chưa (`I28`)?
 - [ ] "Quên mật khẩu?" có nằm cùng hàng với nhãn không? Dưới ô nhập là **tranh chỗ với câu lỗi**.
