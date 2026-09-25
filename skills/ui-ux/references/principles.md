@@ -253,6 +253,10 @@ trong `components/` thì:
    **Chỉ mượn từ file trong skill**, không mượn từ bản dựng chưa duyệt trong dự án
    (đã dính: dòng thời gian ghi mượn "thanh các bước dọc", thứ cũng đang là đề
    bậc 1b). Khuôn lấy từ file thì dự án sau vẫn có, và lỗi không nhân đôi.
+   **Mượn khuôn, không mượn nội dung.** Khung mới làm việc khác thì chọn lại nội dung
+   theo việc của nó: trang chi tiết mượn hàng tên, ô số của panel xem nhanh, nhưng bộ
+   tab phải có bản ghi con chính (đã dính 25/09/2026: trang khách chép nguyên tab
+   Tin nhắn / Tệp / Hoạt động của panel, 24 đơn không có chỗ xem, `layouts/app.md`).
 2. **Liệt kê trạng thái và ca biên** (`N2`), mỗi cái một ví dụ tĩnh.
 3. **Chạy mười phép thử** ở trên trước khi báo xong.
 4. Lúc giao nói một dòng: *"X chưa có mẫu đã duyệt, mình mượn khuôn của Y"*.

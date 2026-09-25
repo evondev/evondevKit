@@ -99,7 +99,7 @@ Tab dựng ra khi người dùng không nhắc gì là **chữ trơn**, không i
 Chỉ thêm khi:
 
 - **Icon:** người dùng yêu cầu, hoặc dự án đã có hàng tab dùng icon (theo cái đã có).
-- **Số đếm:** người dùng yêu cầu ("có số đếm từng tab"), hoặc dữ liệu thật trả về sẵn số. Không bịa số cho có.
+- **Số đếm:** người dùng yêu cầu ("có số đếm từng tab"), hoặc dữ liệu thật trả về sẵn số. Không bịa số cho có. Ca hay gặp: tab bản ghi con ở trang chi tiết ("Đơn hàng 24", "Tệp 4"); tab dòng chảy (Tin nhắn, Hoạt động) vẫn chữ trơn (`layouts/app.md`).
 
 ### Icon: khi có thì theo ba luật
 
