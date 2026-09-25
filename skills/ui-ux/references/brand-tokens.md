@@ -22,8 +22,8 @@ Một font là lựa chọn cố ý, không phải cắt gọt cho nhanh. Ghép 
 sai cặp thì tệ hơn hẳn dùng một font tử tế, và phần lớn cặp đều sai. Bỏ font đi
 rồi rơi về `system-ui` thì vẫn là hỏng, nên font luôn phải được nạp thật.
 
-Trước khi chốt bất kỳ font thay thế nào, **kiểm tra dấu tiếng Việt trước mọi
-tiêu chí khác**: rất nhiều font đẹp bị gãy ở "ữ", "ợ", "ằ" hoặc dấu chồng lên
+App có copy tiếng Việt thì trước khi chốt bất kỳ font thay thế nào, **kiểm tra
+dấu tiếng Việt trước mọi tiêu chí khác** (`T5`, `T28`): rất nhiều font đẹp bị gãy ở "ữ", "ợ", "ằ" hoặc dấu chồng lên
 nhau. Inter có bộ tiếng Việt đầy đủ.
 
 Cách nạp thì tuỳ bối cảnh:

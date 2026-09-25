@@ -19,7 +19,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Theo phong cách của dự án nhưng **không theo lỗi** của dự án: vẫn chỉ một nút chính (`I3`), vẫn một màu nhấn (`M3`).
 - [ ] **Không có `package.json`?** Vậy sắp đưa code gì ra — `.tsx` hay HTML thuần? Đưa JSX cho dự án không React là hỏng.
 - [ ] Đã grep token sẵn có chưa (`--primary`, `--brand`, `font-family`)? Có thì dùng, đừng hỏi.
-- [ ] **Copy sắp viết bằng tiếng gì** — đã grep i18n và nhãn hiện có chưa (`T24`)?
+- [ ] **Copy sắp viết bằng tiếng gì** — đã grep i18n và nhãn hiện có chưa (`T24`)? Người dùng đang viết tiếng gì, để trả lời bằng tiếng đó (`T27`)?
 - [ ] Đề bài có từ nào mơ hồ không (bảng, thẻ, danh sách, khung, trang, lịch)?
 - [ ] Đề để hở: đã dựng **đủ bộ khối mặc định** trong file layout chưa, hay làm mỏng dính (`S5`)? Không hỏi phạm vi.
 - [ ] Không có wireframe thì đã dựng **bố cục mặc định** trong file layout chưa, hay tự bịa? Đã báo một dòng "muốn kiểu khác thì nói" chưa?
@@ -126,7 +126,9 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 
 - [ ] Có emoji nào trong tiêu đề, câu chào, hay đang đóng vai icon không?
 - [ ] Có chữ hướng dẫn thừa không ("Bấm để lưu", chữ "Có" cạnh dấu tick)?
-- [ ] Có dấu gạch dài trong copy tiếng Việt không?
+- [ ] Có dấu gạch dài trong câu văn không, ở bất kỳ thứ tiếng nào (`T18`)?
+- [ ] Copy tiếng Anh: đã sentence case chưa, số nhiều chia đúng chưa, tiền, số, ngày đã theo locale chưa, có nhãn nào dịch từng chữ từ tiếng Việt không (`T27`, `T28`, `T29`)?
+- [ ] Câu giao có cùng tiếng với người dùng không, có câu mẫu tiếng Việt nào lọt vào câu trả lời tiếng Anh không (`T27`)?
 - [ ] Nút đăng nhập bằng Google hay Apple đã có logo gốc chưa?
 - [ ] Có tự gán mỗi mục một icon khác nhau, hay ba mục ba icon giống hệt nhau?
 - [ ] **Có câu nào giống hệt nhau ở mọi ô, mọi hàng không** ("so với 2025" bốn ô, "Chưa có kỳ trước" bốn ô, `/2026` ở mọi mốc giờ)? Kéo ra ghi một lần, hoặc bỏ (`N3`, `T16b`).

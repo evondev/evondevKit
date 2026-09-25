@@ -12,7 +12,7 @@ skills/
     ├── SKILL.md          bộ định tuyến: 4 câu hỏi vào việc, luật phạm vi, bảng mở doc
     └── references/
         ├── rules-color.md          M — màu, viền, bóng, dark mode, token
-        ├── rules-type.md           T — chữ, font, xuống dòng, cắt chữ, copy
+        ├── rules-type.md           T — chữ, font, xuống dòng, cắt chữ, copy, tiếng Anh
         ├── rules-form.md           F — khối, lưới, bo góc, khoảng thở, icon
         ├── rules-state.md          I — nút, hover, focus, danh sách, modal
         ├── responsive.md           R — màn hẹp, ngưỡng 375px

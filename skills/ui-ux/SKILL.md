@@ -124,7 +124,7 @@ Rồi áp theo bảng này:
 
 **Ngôn ngữ của copy cũng tự tìm ở bước này** — grep i18n và nhãn hiện có, luật
 `T24`. Chốt trước khi viết cái nhãn đầu tiên, vì đoán sai thì phải sửa lại toàn
-bộ nhãn chứ không phải một dòng.
+bộ nhãn chứ không phải một dòng. Copy không phải tiếng Việt thì mở `T28`, `T29`.
 
 **Có token sẵn thì dùng, không hỏi.** Chỉ khi grep ra rỗng mới lấy
 `references/tokens.css` và dựng luôn, kể cả khi khách có thể đã có bộ nhận diện:
@@ -311,6 +311,8 @@ việc mỗi mục được phép một icon khác nhau.
 câu 4; mỗi thứ một dòng, kèm "muốn khác thì nói"), chỗ đổi thương hiệu (dòng nào
 chứa màu nhấn, dòng nào chứa font), số liệu nào là giả, và có làm dark mode hay
 không. Mặc định đặt **lên đầu**, vì đó là chỗ duy nhất có thể đã đoán sai.
+Nói bằng tiếng người dùng đang viết, kể cả khi skill và nhãn trên UI là tiếng
+Việt (`T27`).
 
 ---
 
@@ -327,7 +329,7 @@ thì một trong hai chỗ là sai.
 | **S** | `SKILL.md` mục 1 | Phạm vi: được làm gì, không được tự thêm gì |
 | **N** | `references/principles.md` | **Mười nguyên tắc đứng sau mọi luật khác**, mỗi cái một phép thử. Chỗ nào không có spec thì bám nó |
 | **M** | `references/rules-color.md` | Màu, viền, bóng, dark mode, token |
-| **T** | `references/rules-type.md` | Chữ, font, xuống dòng, cắt chữ, copy |
+| **T** | `references/rules-type.md` | Chữ, font, xuống dòng, cắt chữ, copy, ngôn ngữ trả lời và copy tiếng Anh |
 | **F** | `references/rules-form.md` | Khối, lưới, bo góc, khoảng thở, icon, hiệu ứng |
 | **I** | `references/rules-state.md` | Nút, hover, focus, danh sách, modal |
 | **R** | `references/responsive.md` | **Mọi luật về màn hẹp, ngưỡng kiểm 375px** |

@@ -256,7 +256,7 @@ Bấm năm    ──►   lưới 12 năm (2020–2031), ‹ › nhảy 12 năm
 - **Ngày đang chọn**: nền `primary`, chữ `primary-foreground`. Ngoại lệ có tên của "đang chọn không tô màu nhấn" ở select: ô ngày chỉ là một con số, chữ đậm thôi không đủ tách khỏi 41 số bên cạnh, và cả lịch chỉ có đúng một ô đặc. **Hôm nay**: `font-semibold` + chấm `size-1` dưới số, không nền. Hover: `bg-background`. Hôm nay cũng là ngày đang chọn thì giữ cả hai: ô nền `primary`, chấm đổi sang màu `primary-foreground` để vẫn thấy.
 - **Lưới ngày `gap-y-1`, không khe ngang**, cho mọi lịch (một ngày, khoảng ngày, ngày giờ) dùng chung một lưới. Khe dọc tách từng tuần; khe ngang thì để dải khoảng ngày chạy liền.
 - **Luôn 6 hàng**, kể cả tháng chỉ cần 5: chuyển tháng thì popover không nhảy cao thấp. Ngày của tháng trước/sau `text-muted`.
-- Tuần bắt đầu **thứ Hai** (`T2 … CN`), không tô màu riêng cho cuối tuần.
+- Tuần bắt đầu **thứ Hai** (`T2 … CN`), không tô màu riêng cho cuối tuần. Copy tiếng Anh thì ngày đầu tuần theo locale (`T28`).
 - Gợi ý (người dùng quyết): cho **gõ thẳng vào ô** theo `dd/mm/yyyy`. Ngày xa (ngày sinh, hạn hợp đồng năm sau) gõ `15/03/1990` nhanh hơn mọi lưới. Khi cho gõ thì câu lỗi mới được kèm ví dụ định dạng; không cho gõ thì đừng ghi "ví dụ 31/12/2026", người dùng không có chỗ nào để gõ.
 - Câu lỗi nói **chuyện gì sai**, không lặp lời placeholder: "Chưa chọn ngày hết hạn", "Ngày hết hạn phải sau hôm nay". Không phải "Chọn ngày hết hạn".
 - **Mở từ một ô trong bảng (sửa tại chỗ, như hạn chót của công việc)** thì khác ô trong form ở ba chỗ:

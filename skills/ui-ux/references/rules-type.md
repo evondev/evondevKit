@@ -22,7 +22,7 @@ trình diễn (giới thiệu, bảng giá). Các app lớn dùng 600 cho tiêu 
 22/09/2026: tiêu đề `2xl` "Xác thực email" vẫn đọc ra "thựcemail"). Con số không
 dấu, như số liệu `text-2xl` trong card số liệu, thì khép được. Tiêu đề `lg`/`xl`/`2xl` giữ khoảng chữ mặc định: tiếng Việt dấu chồng hai tầng, khép chữ
 lại ở cỡ này là dấu chạm nhau và khoảng trắng giữa từ hẹp đi, "Công ty" đọc
-thành "Côngty" (đã dính 22/09/2026).
+thành "Côngty" (đã dính 22/09/2026). Copy không dấu thì ngưỡng khác (`T28`).
 
 Font thứ hai chỉ được dùng cho **tiêu đề của trang trình diễn** (trang giới
 thiệu, bảng giá, trang pháp lý) và phải nói được nó khác font body ở chỗ nào.
@@ -43,7 +43,8 @@ biết font đã nạp những face nào.
 
 **T5. Kiểm dấu tiếng Việt trước khi chốt font.** Font phải có subset
 `vietnamese`. Dấu nặng và dấu ngã chồng lên nhau là lỗi chỉ lộ ra ở chữ thật,
-không lộ ra ở "Lorem ipsum". Xem `brand-tokens.md`.
+không lộ ra ở "Lorem ipsum". Xem `brand-tokens.md`. App không có copy tiếng Việt
+thì bỏ qua luật này (`T28`).
 
 ---
 
@@ -170,7 +171,8 @@ dòng thời gian đơn hàng, nhật ký thao tác thì hiện thẳng giờ tu
 **Trong danh sách, mốc thuộc năm hiện tại thì bỏ năm**: `08:30 · 16/09`, không
 `08:30 · 16/09/2026`. Mười hàng cùng đuôi `/2026` là một ý nhắc mười lần, và cột giờ rộng
 thêm gần một nửa (đã dính 24/09/2026: tab Tin nhắn, Tệp, Hoạt động của panel khách hàng).
-Khác năm thì ghi đủ `16/09/2025`; `title` và `datetime` luôn đủ. **Bẫy:** `Intl.DateTimeFormat('vi-VN', { day: '2-digit', month: '2-digit' })` bỏ năm thì ra `23-09` gạch ngang, không phải `23/09`; tự ghép ngày và tháng bằng `/`. Các app lớn cùng làm
+Khác năm thì ghi đủ `16/09/2025`; `title` và `datetime` luôn đủ. Copy tiếng Anh
+thì tháng viết chữ (`T28`). **Bẫy:** `Intl.DateTimeFormat('vi-VN', { day: '2-digit', month: '2-digit' })` bỏ năm thì ra `23-09` gạch ngang, không phải `23/09`; tự ghép ngày và tháng bằng `/`. Các app lớn cùng làm
 vậy. Một mốc đứng riêng làm trường dữ liệu ("Ngày tạo" trong khối nhãn và giá trị) thì giữ đủ năm.
 
 **T17. Mã và định danh dùng `font-mono`.** Mã đơn hàng, mã vận đơn, mã giảm giá, ID,
@@ -181,7 +183,7 @@ kể cả khi nằm giữa một câu mô tả. Nó nói
 
 ## Copy
 
-**T18. Không dấu gạch dài trong copy tiếng Việt.** Lộ ngay là AI viết.
+**T18. Không dấu gạch dài trong câu văn, ở mọi thứ tiếng.** Lộ ngay là AI viết (`T28`).
 
 Luật này nói về **câu văn**. Ô không có giá trị trong bảng hay khối nhãn và giá
 trị thì hiện `—` màu `text-muted`: đó là ký hiệu "trống", không phải dấu câu, và
@@ -255,3 +257,66 @@ Mật khẩu
 
 Gợi ý này hiện **sẵn từ đầu**, không đợi gõ sai mới hiện. Nói trước một câu rẻ
 hơn bắt người ta gõ xong rồi báo sai.
+
+---
+
+## Tiếng trả lời và copy không phải tiếng Việt
+
+**T27. Nói với người dùng bằng tiếng họ đang viết. Chữ trên UI theo `T24`.**
+Đây là hai thứ tiếng khác nhau, chốt riêng:
+
+| Thứ | Theo |
+| --- | --- |
+| Lời phân tích, câu hỏi, câu báo lúc giao (`S15`) | Tiếng người dùng đang viết trong lượt này |
+| Comment trong code | Tiếng của comment sẵn có trong dự án; dự án trống thì theo người dùng |
+| Nhãn, placeholder, thông báo lỗi, dữ liệu mẫu trên UI | `T24` |
+
+Người dùng viết tiếng Anh mà dự án đang có nhãn tiếng Việt thì trả lời bằng
+tiếng Anh, nhãn vẫn tiếng Việt. Không hỏi.
+
+**Câu mẫu trong skill là khuôn ý, không phải câu để chép.** Skill viết bằng
+tiếng Việt nên các câu giao đều là tiếng Việt: *"X chưa có mẫu đã duyệt, mình
+mượn khuôn của Y"*, *"muốn khác thì nói"*. Người dùng viết tiếng Anh thì dịch ý:
+*"X has no approved pattern yet, so I borrowed the Y pattern"*, *"say if you want
+it different"*. Một câu tiếng Việt lọt vào câu trả lời tiếng Anh thì đọc ra là
+skill làm dở.
+
+Nhãn ví dụ trong skill cũng vậy: đó là ý, không phải chữ. Copy tiếng Anh dùng
+nhãn mà các app tiếng Anh đều dùng, không dịch từng chữ (cùng lý do với "Ghi nhớ
+đăng nhập" không phải "Nhớ tôi" ở `layouts/form.md`):
+
+| Trong skill | Copy tiếng Anh |
+| --- | --- |
+| Xoá lọc · Xoá tìm kiếm | Clear filters · Clear search |
+| Xem tất cả 12 đơn | View all 12 orders |
+| Trạng thái: Tất cả · 32 | Status: All · 32 |
+| Ghi nhớ đăng nhập · Quên mật khẩu? | Remember me · Forgot password? |
+| Đăng nhập bằng Google | Continue with Google |
+| Huỷ · Hoàn tác · Đã lưu | Cancel · Undo · Saved |
+| Sao chép · Đã sao chép | Copy · Copied |
+
+**T28. Một số luật chỉ đúng với chữ tiếng Việt.** Copy không phải tiếng Việt thì
+đổi theo bảng dưới. Mọi luật khác trong skill áp cho mọi thứ tiếng.
+
+| Luật | Copy tiếng Việt | Copy tiếng Anh |
+| --- | --- | --- |
+| Khép chữ `tracking-tight` (`T2`) | Từ `text-3xl` | Từ `text-2xl`: không có dấu chồng hai tầng |
+| Kiểm dấu font (`T5`) | Bắt buộc subset `vietnamese` | Bỏ qua, trừ khi app có cả bản tiếng Việt |
+| Tiền (`components/charts.md`) | `đ` thường sau số, số format bằng `Intl.NumberFormat('vi-VN')` | `Intl.NumberFormat(locale, { style: 'currency', currency })`: `$1,280.00`, ký hiệu và vị trí theo locale |
+| Dấu thập phân, dấu nghìn | `12,4%` · `1.280` | `12.4%` · `1,280` |
+| Mốc giờ trong danh sách (`T16b`) | `08:30 · 16/09` | Tháng viết chữ bằng `Intl.DateTimeFormat`: `Sep 16, 8:30 AM`. Không dùng `09/16`: Mỹ và Anh đọc ngược nhau |
+| Chữ cái avatar (`components/avatar.md`) | Một chữ | Hai chữ, đầu tên và đầu họ: `Jane Doe` → `JD`. App tiếng Anh đều làm vậy |
+| Ngày đầu tuần trong lịch (`components/choice-controls.md`) | Thứ Hai, `T2 … CN` | Theo locale: `en-US` Chủ nhật, `en-GB` thứ Hai |
+| Số nhiều | Tiếng Việt không chia | Phải chia: `1 member` · `2 members`. Dùng `Intl.PluralRules` hoặc hàm i18n, không ghép chuỗi cứng |
+
+`T15` (nhãn nút được xuống dòng) và `T18` (không gạch dài trong câu văn) **áp cho
+mọi thứ tiếng**. Nhãn tiếng Đức còn dài hơn tiếng Việt, và gạch dài trong câu
+tiếng Anh cũng là dấu hiệu AI viết dễ nhận ra nhất.
+
+**T29. Copy tiếng Anh viết sentence case.** Nút, nhãn, tiêu đề, tab, mục menu:
+chỉ viết hoa chữ đầu và tên riêng. "Create project", "Billing settings", không
+"Create New Project". Dự án đang dùng Title Case (đếm nhãn như ở `T24`) thì theo
+dự án.
+
+- **Một việc một cặp từ, suốt app.** "Sign in / Sign out" hoặc "Log in / Log out", không trộn. `Delete` là xoá hẳn, `Remove` là gỡ khỏi một nhóm: hai việc khác nhau thì hai từ khác nhau.
+- **Không "Please", không dấu chấm than** trong thông báo thường. "Project deleted", không "Your project has been deleted successfully!".

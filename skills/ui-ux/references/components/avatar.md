@@ -109,6 +109,9 @@ phần phân biệt.
 
 Dự án đã quen hai chữ (đang dùng khắp nơi) thì theo dự án, đừng đổi.
 
+App tiếng Anh thì ngược lại: hai chữ, đầu tên và đầu họ (`Jane Doe` → `JD`). Tên
+tiếng Anh tên gọi đứng trước, họ đứng cuối, nên hai chữ luôn tách đúng (`T28`).
+
 ---
 
 ## Chồng lên nhau
