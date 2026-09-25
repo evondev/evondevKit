@@ -105,10 +105,10 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
 - [ ] **Tổng quan** — "Dựng cho tôi màn hình tổng quan cho app quản lý dự án."
 - [ ] **Kanban** — "Dựng cho tôi bảng kanban quản lý công việc, kéo thả giữa các cột trạng thái."
 - [ ] **Bảng giá** — "Dựng cho tôi trang bảng giá."
-- [ ] **Đăng nhập** — "Dựng cho tôi trang đăng nhập."
-- [ ] **Đăng ký** — "Dựng cho tôi trang đăng ký tài khoản."
-- [ ] **Quên / đặt lại mật khẩu** — "Dựng cho tôi luồng quên mật khẩu."
-- [ ] **Nhập mã OTP** — "Dựng cho tôi màn nhập mã OTP gửi qua email."
+- ✅ **Đăng nhập** — "Dựng cho tôi trang đăng nhập."
+- ✅ **Đăng ký** — "Dựng cho tôi trang đăng ký tài khoản."
+- ✅ **Quên / đặt lại mật khẩu** — "Dựng cho tôi luồng quên mật khẩu."
+- ✅ **Nhập mã OTP** — "Dựng cho tôi màn nhập mã OTP gửi qua email."
 
 ### Ưu tiên 3
 
