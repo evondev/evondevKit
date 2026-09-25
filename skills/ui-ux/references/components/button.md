@@ -53,7 +53,8 @@ function getVariantClasses(variant: ButtonVariant): string {
 **Đang xử lý (loading)**
 
 ```tsx
-<Button variant="primary" disabled={isSending} aria-busy={isSending}>
+<Button variant="primary" aria-disabled={isSending || undefined} aria-busy={isSending || undefined}
+  onClick={(event) => { if (isSending) event.preventDefault(); }}>
   {isSending ? <LoaderCircle className="size-4 shrink-0 animate-spin motion-reduce:animate-none" aria-hidden /> : <Send className="size-4 shrink-0" aria-hidden />}
   Gửi lời mời
 </Button>
@@ -61,7 +62,8 @@ function getVariantClasses(variant: ButtonVariant): string {
 
 - Spinner **thế chỗ icon**, cùng `size-4`, chữ giữ nguyên. Nút không đổi bề rộng, hàng nút không xô. **Nút chỉ chữ** (không icon để thế chỗ): nút `relative`, chữ thêm `invisible` để vẫn giữ bề rộng, spinner `absolute inset-0 m-auto` nằm giữa.
 - Không đổi chữ sang "Đang gửi…": chữ dài ngắn khác nhau là nút co giãn. Đổi thì phải giữ `min-w` bằng bản cũ.
-- `disabled` khi đang xử lý nhưng **không mờ `opacity-50`** như nút khoá thường: vì vậy class gốc ghi `disabled:not-aria-busy:opacity-50` (Tailwind v4), nút đang xử lý vẫn đậm, chỉ spinner nói đang chạy. Mờ đi thì đọc ra là "bấm không được vì sai gì đó".
+- **Đang xử lý thì chặn bấm bằng `aria-disabled` + `preventDefault` trong `onClick`, KHÔNG đặt `disabled`.** Nút `disabled` bị trình duyệt tước tiêu điểm: người dùng bàn phím bấm Enter xong rơi về `<body>`, lúc xong việc phải Tab lại từ đầu trang (đã dính 24/09/2026 ở nút "Xem hoạt động cũ hơn", và 25/09/2026 ở trang đăng ký khi skill còn ghi `disabled`). Chặn ở `onClick` là chặn luôn Enter trong ô nhập, vì submit ngầm của form cũng đi qua cú click của nút submit. Nên cài một lần trong component `Button` (prop `isLoading`), đừng viết lại ở từng trang.
+- Nút đang xử lý **không mờ** như nút khoá thường, chỉ spinner nói đang chạy, con trỏ `cursor-progress`. Mờ đi thì đọc ra là "bấm không được vì sai gì đó". Class gốc vẫn giữ `disabled:not-aria-busy:opacity-50` cho dự án nào lỡ đặt `disabled` lúc đang xử lý.
 
 **Vì sao ổn**
 
