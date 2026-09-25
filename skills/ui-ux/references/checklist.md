@@ -47,6 +47,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Grep mã hex. Chỉ được có trong khối đổi thương hiệu ở đầu file.
 - [ ] Mọi mã hex có đúng 6 hoặc 8 ký tự sau `#` không? Lệch là CSS chết âm thầm.
 - [ ] Khối thương hiệu có khớp **từng ký tự** với `tokens.css` không?
+- [ ] Có chữ `text-muted` nào nằm trên nền xám đậm hơn nền trang không (`--secondary`, lớp phủ `foreground/5`–`/8`, `--background-hover`)? Có thì đổi sang `text-foreground/70` (`styles.md`).
 
 ### Viền, bóng, khối
 
@@ -98,10 +99,14 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] **Bấm vào chữ nhãn**: ô có focus không (`for`/`htmlFor`)? Con trỏ có thành bàn tay không?
 - [ ] **Bấm vào khoảng trắng bên phải chữ nhãn**: ô KHÔNG được focus. Focus là thiếu `w-fit` (`I26`).
 - [ ] Form có ô mật khẩu: có nút hiện/ẩn chưa, và nó có `type="button"` không (`I27`)?
-- [ ] Có placeholder nào chỉ chép lại nhãn ("Nhập email của bạn") không? Có thì bỏ (`T25`).
+- [ ] Có placeholder nào chỉ chép lại nhãn ("Nhập email của bạn") không? Có thì bỏ (`T25`), trừ màn đăng nhập, đăng ký đứng một mình.
 - [ ] Đọc từng câu lỗi: có câu nào **trùng chữ** với placeholder hay nhãn của chính ô đó không? Trùng là bỏ.
 - [ ] Chữ đỏ dưới ô có thật sự là lỗi không, hay là **gợi ý bị tô đỏ**? Gợi ý thì xám và hiện sẵn.
 - [ ] **Màn xác thực: đã báo một dòng** về "quên mật khẩu" / ghi nhớ đăng nhập / mạng xã hội chưa? Dựng theo mặc định thì được, dựng xong im lặng thì không.
+- [ ] Màn đăng nhập, đăng ký có đủ logo sản phẩm, nút Google, placeholder chưa? Đăng ký có đang thừa ô "Nhập lại mật khẩu" không? (`layouts/form.md`)
+- [ ] Luồng quên mật khẩu: bước nhập mã có đang xác nhận email có tài khoản không? Phiên hết hạn có còn để ô mật khẩu và nút Lưu dưới khối lỗi không? (`layouts/form.md`)
+- [ ] Màn OTP: bấm Xác nhận khi chưa đủ sáu số có ra câu lỗi không, hay im lặng?
+- [ ] Mọi màn trong luồng xác thực mở ra con trỏ đã nằm ở ô đầu chưa? Form đặt mật khẩu mới có ô `username` ẩn chưa (`I28`)?
 - [ ] "Quên mật khẩu?" có nằm cùng hàng với nhãn không? Dưới ô nhập là **tranh chỗ với câu lỗi**.
 - [ ] "Quên mật khẩu?" có bị làm mờ không? Mờ là đọc ra disabled (`I8`).
 - [ ] Nút, ô sửa tại chỗ trong dòng bảng: rê vào có tách khỏi nền dòng đang rê không (`bg-foreground/8`, không `/5`, `I10`)? Cột có nút mũi tên (vai trò, trạng thái) thì các mũi tên có thẳng một cột không (nút rộng bằng nhãn dài nhất)?

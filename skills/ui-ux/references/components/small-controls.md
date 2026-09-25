@@ -139,7 +139,7 @@ Icon trước chữ **không bắt buộc**, xem mặc định ở trên. Có th
 - **Mọi tab cùng `font-medium`**, kể cả tab chưa chọn. Đổi độ đậm lúc chọn làm chữ nở ra và cả hàng xô ngang.
 - Tab chưa chọn chữ `foreground/70`. Hover dùng nền `foreground/5` (riêng `underline` thì chỉ đậm chữ, không nền, xem dưới); focus bàn phím là vòng mờ như mọi nút (`I13`), **không bao giờ là nền xám**. Không dùng `--background` làm nền hover: tab hay nằm thẳng trên nền trang xám, tô `--background` ở đó thì rê vào không thấy gì.
 - Bàn phím theo WAI-ARIA: chỉ tab đang chọn nằm trong vòng Tab, mũi tên trái/phải chuyển và chọn luôn, Home/End về hai đầu.
-- Số đếm là số trơn `text-muted`, không pill, không màu. Không có số thì bỏ, đừng dựng số giả.
+- Số đếm là số trơn `text-foreground/70`, không pill, không màu. **Không `text-muted`**: tab `boxed` đang chọn có nền `--secondary`, `--muted` trên đó chỉ 4.04 : 1 (`styles.md`). Trên tab đang chọn (chữ `--foreground`) số vẫn nhạt hơn nhãn một bậc; trên tab chưa chọn thì số và nhãn cùng màu, vậy là đủ. Không có số thì bỏ, đừng dựng số giả.
 - Hàng tab không bao giờ wrap, màn hẹp thì cuộn ngang trong khung `scrollbar-clean` (`R6`). Từ 6 tab trở lên thì gom phần dư vào tab "Thêm" mở dropdown (`R10`).
 
 ### `boxed`: tab trạng thái trên bảng

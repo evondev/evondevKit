@@ -32,7 +32,7 @@ luôn bọc ô trong `<label>`.
 nhập (`M14`), để cả form một độ đậm viền. Rê vào thì viền đậm lên
 `hover:border-foreground`.
 
-Viền này chỉ ~1.2:1 với nền trắng, chưa đạt WCAG 1.4.11 (nhích từ 1.1:1 ngày 23/09/2026, radio chưa chọn gần như vô hình). Đã thử `--muted` (5.3:1)
+Viền này chỉ ~1.2:1 với nền trắng, chưa đạt WCAG 1.4.11 (nhích từ 1.1:1 ngày 23/09/2026, radio chưa chọn gần như vô hình). Đã thử `--muted` (4.95:1)
 ngày 21/09/2026, chủ dự án thấy **đậm và xấu**, trả về. Đánh đổi có chủ ý như viền
 ô nhập, xem `P3` trong `styles.md`. Bù lại: radio luôn đi kèm nhãn, nhóm radio
 luôn có sẵn một lựa chọn đã tô đặc, nên người dùng vẫn đọc ra đây là nhóm lựa

@@ -56,9 +56,19 @@ Nằm trong card (`card.md`), mỗi hàng một cặp nhãn và giá trị, theo
 
       if (atIndex < 0) return <span className="wrap-anywhere">{email}</span>;
 
+      const localSegments = email.slice(0, atIndex + 1).split(".");
+
       return (
         <span className="wrap-anywhere">
-          <span className="inline-block max-w-full">{email.slice(0, atIndex + 1)}</span>
+          <span className="inline-block max-w-full">
+            {localSegments.map((segment, index) => (
+              <Fragment key={index}>
+                {index > 0 && <wbr />}
+                {index > 0 && "."}
+                {segment}
+              </Fragment>
+            ))}
+          </span>
           <span className="inline-block max-w-full">{email.slice(atIndex + 1)}</span>
         </span>
       );
@@ -66,6 +76,7 @@ Nằm trong card (`card.md`), mỗi hàng một cặp nhãn và giá trị, theo
     ```
 
     Dùng chung một component này cho mọi chỗ in email, kể cả hàng giá trị ở trên.
+  - **Phần trước `@` dài hơn cả dòng thì xuống dòng trước dấu chấm** (`<wbr>` trước mỗi `.`, như trên). Không có nó thì `wrap-anywhere` bẻ ở ký tự vừa hết chỗ, và hay rơi đúng trước `@`: một dòng chỉ có mỗi "@" (đã dính 25/09/2026, màn OTP ở 1280px, "…toan.tong.hop" / "@" / "congty-…"). Có `<wbr>` thì ra "…toan.tong" / ".hop@" / "congty-…". Không dính `@` vào ký tự cuối bằng `nowrap`: ra "…tong.ho" / "p@", vẫn vỡ giữa chữ.
 - **Giá trị trống là `—` `text-muted`**, một ký hiệu cho mọi ô trống, giống ô trống trong bảng (`layouts/app.md`, `T18`). Không viết "Chưa có", "Chưa gắn nhãn", mỗi dòng một câu.
 - **Giá trị có khuôn riêng thì dùng đúng component của nó**, không viết chữ trơn: trạng thái là badge màu (`M7`), nhãn phân loại là pill (`M8`, `list-row.md`), tiền dùng `đ` không `₫` (`charts.md`), số `tabular-nums`, mã và ID `font-mono` (`T17`).
 - **Email là link `mailto:`, số điện thoại là link `tel:`**, chữ vẫn `text-foreground`, rê vào gạch chân. Kèm icon button `copy` `h-7` hiện khi rê vào hàng, luôn hiện trên màn chạm (`I11`); bấm thì icon đổi `check` 1,5 giây, không toast. Mặc định ở trang chi tiết và panel xem bản ghi; ở form xác nhận, màn chỉ đọc lại thông tin vừa nhập thì để chữ trơn. **Không lặp các việc này vào menu ⋯** ("Gọi điện", "Sao chép email"): việc gắn với một giá trị thì nằm cạnh giá trị đó (`layouts/app.md`, "Trang chi tiết bản ghi").

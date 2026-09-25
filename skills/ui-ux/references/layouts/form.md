@@ -13,7 +13,7 @@ chọn), rồi báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`.
         ┌─────────────────┐
         │ logo            │
         │ Tiêu đề         │
-        │ câu dẫn 1 dòng  │
+        │ (câu dẫn)       │
         │                 │
         │ nhãn            │
         │ [ô nhập       ] │
@@ -29,6 +29,14 @@ chọn), rồi báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`.
 
 Khối rộng `max-w-md`. **Không viền** — đây là card đứng một mình, xem `M29`.
 Không căn giữa chữ trong form, chỉ căn giữa cả khối.
+
+- **Logo sản phẩm luôn có**, đặt trên tiêu đề, dùng đúng dấu hiệu đang nằm ở sidebar
+  (dự án có component logo thì import, chưa có thì ô vuông chữ cái đầu tên sản phẩm).
+  Màn xác thực là chỗ duy nhất người dùng chưa vào app; thiếu logo thì trang đọc như
+  form quản trị không biết của ai, và người dùng không chắc mình đang đăng nhập đúng
+  chỗ. Logo ở đây là cấu trúc, không phải "thêm logo" mà `S3` cấm.
+- **Câu dẫn chỉ khi có điều để nói** (vd "Dùng thử 14 ngày, không cần thẻ" khi đề cho
+  biết). Không bịa câu chào kiểu "Chào mừng bạn quay lại!" cho đủ khuôn.
 
 **B. Hai cột, form trái ảnh phải** (hợp khi muốn chèn lời chứng thực hoặc ảnh sản phẩm)
 
@@ -51,14 +59,33 @@ một dòng** cho họ biết mình đã chọn gì.
 | --- | --- | --- |
 | **"Quên mật khẩu?"** | **Có** | Thiếu nó thì người quên mật khẩu không còn đường nào vào. Đây là phần tử duy nhất mà thiếu là hỏng chức năng, không phải hỏng thẩm mỹ |
 | **Ghi nhớ đăng nhập** | **Không** | Nó đổi thời hạn phiên ở **backend**, không phải chỉ là cái checkbox. Vẽ ra mà backend không làm gì là lừa người dùng — sai nhiều hơn là thiếu |
-| **Đăng nhập mạng xã hội** | **Không** | Phải có backend và nhà cung cấp cụ thể mới có nghĩa, mà cái đó thì không đoán được |
-| **Placeholder** | **Không có** (`T25`) | Email, mật khẩu: nhãn đã đủ, placeholder chỉ chép lại nhãn |
+| **Đăng nhập mạng xã hội** | **Có, một nút Google** ("Đăng nhập bằng Google" / "Đăng ký bằng Google") | Gần như mọi app có màn đăng nhập đều có nút này, người dùng tìm nó trước cả ô email. Thiếu là trang trông như bản dựng dở (đã dính 25/09/2026). Handler để rỗng, báo lúc giao là cần nối nhà cung cấp. Sản phẩm cho lập trình viên thì thêm GitHub. Cả đăng nhập lẫn đăng ký đều có, và cùng bộ nhà cung cấp |
+| **Placeholder** | **Có**, ngoại lệ của `T25` | Màn đứng một mình, cả trang chỉ có vài ô: ô trống trơn trông như chưa dựng xong (đã dính 25/09/2026). Chữ ở mục dưới |
+| **Con trỏ lúc mở màn** | **Nằm sẵn ở ô đầu** (`autoFocus`) | Cả màn chỉ có một việc là gõ. Áp cho **mọi** màn trong luồng: đăng nhập, đăng ký, từng bước quên mật khẩu, OTP. Bước này có bước kia không thì sang bước mới người dùng phải chạm lại vào ô (đã dính 25/09/2026: nhập email và OTP có, đăng nhập, đăng ký, đặt mật khẩu mới không) |
+| **"Nhập lại mật khẩu"** | **Không** | Ô mật khẩu đã có nút mắt để xem lại. Hầu hết app đã bỏ ô gõ lại; thêm nó là thêm một ô cho mỗi người đăng ký để phòng lỗi mà nút mắt đã phòng rồi |
 | **Chiều cao ô và nút** | **`h-12`** | Ngoại lệ duy nhất của `h-11 md:h-10` (`budgets.md`): form đứng một mình giữa trang, cả màn chỉ có nó, ô to hơn một bậc là hợp. Form trong app, modal, cài đặt thì không |
 
 **Dòng báo, đặt chung với dòng báo bố cục lúc giao:**
 
-> Mình sẽ dựng kèm "Quên mật khẩu?", chưa có ghi nhớ đăng nhập và đăng nhập mạng
-> xã hội (hai cái đó cần backend). Muốn khác thì nói.
+> Mình dựng kèm "Quên mật khẩu?" và nút Google (nút chưa nối, cần cấu hình đăng nhập
+> Google ở backend); chưa có ghi nhớ đăng nhập vì nó cần backend đổi thời hạn phiên.
+> Muốn thêm nhà cung cấp khác hay bỏ Google thì nói.
+
+### Placeholder trên màn xác thực
+
+Câu hướng dẫn ngắn, không dùng email mẫu (`ten@congty.com` bị đọc nhầm thành chữ đã
+điền sẵn, `T25`), không dùng `••••••` (`T26`):
+
+| Ô | Placeholder |
+| --- | --- |
+| Họ và tên | `Nhập họ và tên` |
+| Email | `Nhập email` |
+| Mật khẩu (đăng nhập) | `Nhập mật khẩu` |
+| Mật khẩu (đăng ký) | `Tạo mật khẩu`, dòng gợi ý "Ít nhất 8 ký tự" vẫn nằm **dưới ô** vì nó phải còn đó lúc đang gõ |
+
+Câu lỗi vẫn không được trùng placeholder: "Chưa nhập email", không phải "Nhập email".
+Ngoại lệ này chỉ cho màn xác thực đứng một mình. Form trong app, modal, cài đặt vẫn
+theo `T25`.
 
 Một dòng, không phải một bảng câu hỏi. Người dùng **không nhắc gì** thì coi như
 đồng ý, dựng theo mặc định, đi tiếp.
@@ -111,13 +138,41 @@ ngay dưới. Có `cursor-pointer`, gạch chân khi hover.
 
 ---
 
+## Luồng quên mật khẩu
+
+Ba bước và một màn xong, cùng một card, cùng khuôn với màn đăng nhập: logo, ô `h-12`,
+placeholder. Gửi mã 6 số hay gửi link trong email là chuyện backend; mặc định dựng mã
+vì cả luồng nằm trong một tab, báo một dòng lúc giao.
+
+1. **Nhập email.** Tiêu đề "Quên mật khẩu", câu dẫn nói sẽ nhận được gì ("Nhập email
+   đã đăng ký, mã đặt lại mật khẩu sẽ được gửi tới đó"). Đến từ trang đăng nhập mà ô
+   email đã gõ thì điền sẵn. Nút "Gửi mã". Dưới card là link **"Quay lại đăng nhập"**,
+   cách hầu hết app gọi lối ra này.
+2. **Nhập mã**, theo `components/otp-input.md`. Câu dẫn **không xác nhận email có tài
+   khoản hay không**: "Nếu email này đã đăng ký, mã gồm 6 số đã được gửi tới …". Báo
+   "Email chưa đăng ký" là cho người lạ dò xem ai có tài khoản.
+3. **Mật khẩu mới.** Câu dẫn nói đang đổi cho tài khoản nào: "Cho tài khoản
+   **an@congty.vn**" (email in bằng `EmailText`). Một ô "Mật khẩu mới" có nút mắt, gợi ý
+   "Ít nhất 8 ký tự" dưới ô, **không có ô nhập lại** (cùng lý do với trang đăng ký, bảng
+   mặc định ở trên). Nút "Lưu mật khẩu". Form có ô `username` ẩn mang email đó để trình
+   quản lý mật khẩu lưu đúng tài khoản (`I28`).
+   - **Phiên đặt lại hết hạn thì thay cả form** bằng câu báo và một nút `primary`
+     "Gửi mã mới" (gửi lại tới email cũ, sang bước 2). Câu báo nói luôn điều người
+     dùng lo: "Mật khẩu cũ chưa bị đổi". Đừng để ô mật khẩu và nút "Lưu mật khẩu" nằm
+     dưới khối lỗi: bấm Lưu lần nữa vẫn hỏng, và khối lỗi có nút riêng thì màn có hai
+     nút tranh nhau làm việc chính (đã dính 25/09/2026, `N5`).
+4. **Xong.** "Đã đổi mật khẩu", nút "Đăng nhập" về trang đăng nhập với email điền sẵn.
+   Backend cho đăng nhập luôn sau khi đổi thì bỏ màn này, vào thẳng app; báo lúc giao.
+
+---
+
 ## Nút đăng nhập mạng xã hội
 
 Số lượng quyết định bố cục:
 
 | Số nút | Bố cục |
 | --- | --- |
-| 1–2 | Xếp dọc, full width, có chữ: `Đăng nhập bằng Google` |
+| 1–2 | Xếp dọc, full width, có chữ: `Đăng nhập bằng Google`. Nút viền (`variant="outline"`), logo gốc trái chữ, cao bằng ô nhập |
 | **3 trở lên** | **A** bên dưới. Báo một dòng lúc giao: muốn xếp dọc đủ chữ thì nói |
 
 Xếp dọc 3–4 nút full width thì phần mạng xã hội **dài hơn cả form thật**, và

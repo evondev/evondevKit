@@ -140,7 +140,9 @@ không `/5` như nút đứng ngoài (`components/button.md`). Chuột đang ở
 dòng 11 mức, mắt đọc thành cùng một mảng xám (đã dính 25/09/2026, ô vai trò và nút ⋯ ở
 trang thành viên, chủ dự án: "hover vào trong table màu cũng khá như nhau"). `/8` ra
 `#e6e6e8`, tách rõ mà vẫn nhạt. Áp cho ô sửa tại chỗ, nút ⋯, icon button trong dòng, cả
-lúc mở (`aria-expanded:bg-foreground/8`).
+lúc mở (`aria-expanded:bg-foreground/8`). Chữ phụ trong ô đó (`—` của ô trống, ngày
+nhạt) rê vào thì lên `hover:text-foreground`, như nút ghost: `--muted` trên nền `/8` chỉ
+4.05 : 1 (`styles.md`).
 
 **I11. Hành động trên dòng: ít thì hiện thẳng, nhiều thì gom vào nút ba chấm.**
 
@@ -420,6 +422,17 @@ Việc phải làm là ngược lại: khai báo đủ để nó đoán đúng.
 
 Mỗi ô cũng phải có `name`. Thiếu `name` thì trình duyệt không có gì để lưu, và
 lần sau không gợi ý được.
+
+**Form đặt mật khẩu mới không có ô email** (bước cuối luồng quên mật khẩu, đổi mật khẩu
+qua link) thì thêm một ô ẩn mang tên tài khoản, ngay đầu form:
+
+```html
+<input type="email" name="username" autocomplete="username" value="an@congty.vn" hidden readonly />
+```
+
+Không có ô này thì trình quản lý mật khẩu lưu mật khẩu mới mà không biết của tài khoản
+nào, hoặc lưu thành một mục mới bên cạnh mục cũ. Lần đăng nhập sau nó vẫn gợi ý mật khẩu
+cũ, người dùng tưởng đổi chưa được (đã dính 25/09/2026, `/forgot-password/new-password`).
 
 Khung gợi ý **che mất ô ngay dưới** — đó là hành vi bình thường của trình duyệt,
 nó tự đóng khi gõ hoặc khi rời ô. Đừng đẩy khoảng cách các trường ra xa để

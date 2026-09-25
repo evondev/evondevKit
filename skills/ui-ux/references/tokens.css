@@ -26,8 +26,9 @@
   --background: #f4f4f6;   /* nền trang, xám nhạt, không bao giờ trắng */
   --surface: #ffffff;      /* nền card, input, header */
   --foreground: #2c2c2c;   /* chữ chính */
-  --muted: #6b6b73;        /* chữ phụ, label, placeholder, icon phụ. 5.3:1 trên
-                              --surface, 4.8:1 trên --background (WCAG AA 4.5) */
+  --muted: #707070;        /* chữ phụ, label, placeholder, icon phụ. Xám trung tính
+                              nhạt nhất còn qua WCAG AA 4.5 trên cả hai nền: 4.95:1
+                              trên --surface, 4.51:1 trên --background */
   /* Đường tóc trang trí: viền card, viền khung dropdown, đường chia trong danh
      sách và trong menu. Nhạt đến mức chỉ đủ vạch ranh giới. Xem luật M13, M14. */
   --border: #f7f7f8;

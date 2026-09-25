@@ -6,7 +6,8 @@ trang thì theo card một mình (`M29`) và chiều cao `h-12` của form xác 
 
 ```html
 <p class="text-sm text-muted">Mã gồm 6 số vừa được gửi tới</p>
-<p class="text-sm font-medium [overflow-wrap:anywhere]">
+<p class="text-sm font-medium">
+  <!-- In email bằng EmailText (description-list.md), không wrap-anywhere trơn -->
   tran.anh.tuan@gmail.com
   <a href="#" class="ml-1 whitespace-nowrap font-normal text-muted underline underline-offset-2 hover:text-foreground">Đổi email</a>
 </p>
@@ -36,4 +37,5 @@ trang thì theo card một mình (`M29`) và chiều cao `h-12` của form xác 
 - **Sai mã**: cả sáu ô viền `red-500` (quầng đỏ chỉ ở ô đang focus, `input.md`), câu lỗi dưới hàng ô nói cách sửa: "Mã chưa đúng, kiểm tra lại email mới nhất". **Mã hết hạn**: câu lỗi "Mã đã hết hạn, bấm Gửi lại mã để nhận mã mới", **không** thêm nút trong câu lỗi. Hai lỗi khác nhau thì hai câu khác nhau.
 - **Một việc, một nút.** Mã hết hạn thì đếm ngược cũng đã hết, dòng dưới đã có "Gửi lại mã". Thêm "Gửi mã mới" trong câu lỗi là hai nút cùng làm một việc, khác tên, người dùng phải đoán có khác nhau không (đã dính 22/09/2026, `N3`, `N5`).
 - **Dòng lỗi giữ chỗ sẵn** (`min-h-5`, rỗng khi chưa lỗi). Người dùng bấm Xác nhận, lỗi hiện ra mà không giữ chỗ thì nút tụt xuống một dòng ngay dưới con trỏ (`N1`).
+- **Bấm Xác nhận khi chưa đủ sáu số thì phải có phản hồi**: câu lỗi "Chưa nhập mã" (chưa gõ số nào) hoặc "Mã còn thiếu số, nhập đủ 6 số", viền đỏ ở **các ô còn trống** (số đã gõ không sai, giữ viền thường), con trỏ nhảy về ô trống đầu tiên. Bấm mà im lặng thì người dùng tưởng nút hỏng (đã dính 25/09/2026: hàng ô trống, bấm Xác nhận, không có gì xảy ra).
 - Nút Xác nhận `primary` rộng hết card, `h-12`. Đang kiểm mã thì spinner thay chỗ icon hoặc thêm trước chữ, chữ giữ nguyên (`components/button.md`).

@@ -236,6 +236,9 @@ Có placeholder trong hai ca:
 - **Không dùng ví dụ giả cho ô định dạng ai cũng biết** (email, họ tên, mật khẩu): `ten@congty.com` bị đọc nhầm thành chữ đã gõ sẵn, nhất là trên mobile.
 - **Ô có ô không trong cùng form là bình thường.** Luật cũ "cả form phải thống nhất" (22/09/2026) kéo theo câu chép nhãn vào mọi ô, bỏ ngày 23/09/2026.
 - Placeholder **không thay được nhãn**: gõ vào là nó biến mất.
+- **Ngoại lệ: màn đăng nhập, đăng ký đứng một mình** thì có placeholder câu hướng dẫn
+  ngắn ("Nhập email"), xem `layouts/form.md`. Cả trang chỉ có vài ô, ô trống trơn trông
+  như chưa dựng xong (đã dính 25/09/2026).
 
 **T26. Ô mật khẩu KHÔNG dùng dấu chấm tròn làm placeholder.**
 

@@ -55,7 +55,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 4 | Đơn hàng: chi tiết, xem nhanh | `/dashboard/orders/detail`, `/orders/quick-view` | |
 | 5 | Thành viên và phân quyền | `/dashboard/members` | 25/09/2026 (hai lượt) |
 | 6 | Hồ sơ cá nhân | `/dashboard/profile`, `/profile/states` | |
-| 7 | Đăng nhập, đăng ký, OTP | `/login`, `/register`, `/verify-otp`, `/verify-otp/states` | |
+| 7 | Đăng nhập, đăng ký, quên mật khẩu, OTP | `/login`, `/register`, `/forgot-password`, `/forgot-password/verify`, `/forgot-password/new-password`, `/forgot-password/states`, `/verify-otp`, `/verify-otp/states` | 25/09/2026 (hai lượt) |
 | 8 | Bảng giá | `/pricing`, `/pricing/joined` | |
 | 9 | Form đăng ký doanh nghiệp | `/business-registration` | |
 | 10 | Trợ lý AI | `/dashboard/assistant`, `/assistant/states` | |
@@ -73,3 +73,16 @@ Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một 
   vỡ giữa tên miền ("…hcm@co" / "ngtyminhphat.com.vn"). Toast không có chuyển động vào
   ra (render bằng điều kiện), và khối chữ toast dùng `wrap-anywhere` nên email vỡ giữa
   tên miền.
+- Màn xác thực (`/login`, `/register`, `/forgot-password`, `/verify-otp`): chưa có logo
+  sản phẩm, placeholder, nút Google; `/register` và bước đặt mật khẩu mới còn ô "Nhập lại
+  mật khẩu". Luồng quên mật khẩu: phiên hết hạn vẫn để ô mật khẩu và nút Lưu dưới khối lỗi;
+  link cuối card nên là "Quay lại đăng nhập".
+- `/verify-otp`: bấm Xác nhận khi hàng ô trống thì im lặng. Ô đầu `maxlength="1"` nên tự
+  điền mã trên iOS bị cắt còn một số (điền "482917" ra "4"), skill ghi `maxlength="6"`.
+- `--color-muted: #828282` trong `src/index.css` chỉ 3,8:1 trên nền trắng (3,5:1 trên nền
+  trang), dưới 4,5:1. Kéo theo câu dẫn, "Đổi email", đếm ngược, "Chưa có tài khoản?",
+  placeholder ở mọi màn. Đổi sang `#707070` như token của skill.
+- `/forgot-password/verify`: chưa gõ số nào mà bấm Xác nhận thì ra "Mã còn thiếu số",
+  skill ghi "Chưa nhập mã"; gõ thiếu thì cả sáu ô đỏ, kể cả ô đã có số (skill: chỉ ô trống).
+- `/forgot-password/new-password`: chưa có ô `username` ẩn, chưa nói đang đổi cho tài
+  khoản nào, con trỏ không nằm sẵn ở ô đầu (`/login`, `/register` cũng vậy).

@@ -60,10 +60,19 @@ Token mặc định:
 
 | Token | Nền sáng | Nền tối | Đạt |
 | --- | --- | --- | --- |
-| `--muted` (chữ phụ, placeholder) | 5.3 : 1 trên card, 4.8 : 1 trên nền trang | 6.1 : 1 | ✅ 4.5 |
+| `--muted` (chữ phụ, placeholder) | 4.95 : 1 trên card, 4.51 : 1 trên nền trang | 6.1 : 1 | ✅ 4.5 |
 | `--border-focus` | 16.8 : 1 | 3.6 : 1 | ✅ 3 |
 | **Viền ô nhập, select, nút outline, checkbox, radio** (`--border-strong`) | ~1.2 : 1 | ~1.5 : 1 | ❌ 3 |
 | **Track công tắc lúc tắt** (`muted/40`) | ~1.6 : 1 | | ❌ 3 |
+
+**`--muted` chỉ đạt trên ba nền sáng nhất**: card `--surface`, `--surface-hover`, nền trang
+`--background`. Trên nền xám đậm hơn nó trượt: `--secondary` 4.04, `--background-hover`
+4.01, lớp phủ `foreground/5` trên nền trang 4.12, `foreground/8` trên dòng đang rê 4.05.
+Chữ phụ nằm trên những nền đó (số đếm trong tab đang chọn, chữ trong ô sửa tại chỗ lúc rê)
+thì dùng **`text-foreground/70`**: lớp phủ theo màu chữ nên đậm theo nền, đạt từ 4.82 : 1
+trên mọi nền xám của skill. Đừng nhạt hơn `/70`: `/65` đã trượt trên `--secondary` (4.17).
+Icon phụ `text-muted` thì cứ giữ, icon chỉ cần 3 : 1 (đo 25/09/2026, khi `--muted` đổi
+sang `#707070`).
 
 ⚠️ **Viền điều khiển KHÔNG đạt 3 : 1, và đó là đánh đổi có chủ ý.** Đạt thì cần viền
 xám cỡ `#8a8a91`; đã thử ngày 21/09/2026, chủ dự án thấy đậm và xấu, trả về. Mức cũ
