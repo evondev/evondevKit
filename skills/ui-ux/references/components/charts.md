@@ -11,7 +11,7 @@ ra là không quyết định được cái nào quan trọng.
 **Một chuỗi dữ liệu là một màu.** Tám cột của cùng một chỉ số thì cả tám cùng
 `--primary`. Cột cao thấp đã nói lên khác biệt rồi, không cần màu nói lại.
 
-**Nhiều chuỗi thì phân biệt bằng đậm nhạt, không bằng sắc.** Đổi hue là bắt
+**Hai tới bốn chuỗi thì phân biệt bằng đậm nhạt, không bằng sắc** (dự án chưa có thang màu biểu đồ). Đổi hue là bắt
 người đọc học một bảng chú giải màu mà họ không xin. Một thang cho cả app, biểu
 đồ cột nhóm và phần donut dùng chung (`N5`):
 
@@ -27,7 +27,26 @@ trắng, nên **mỗi cột, mỗi phần phải có con số đi kèm** (số t
 trong bảng chú giải donut); màu nhạt không bao giờ là thứ duy nhất mang giá trị
 (`N4`). Chấm chú giải dùng đúng class của cột.
 
-**Màu chỉ được đổi sắc khi nó mang nghĩa trạng thái**, và phải trùng đúng bảng
+**Phân loại từ 5 nhóm trở lên thì mỗi nhóm một sắc.** Ngành, kênh, quốc gia, loại
+khách: năm bậc đậm nhạt của một màu thì bậc 4 và bậc 5 mắt không tách được nữa, chấm
+màu trong bảng không còn chỉ về đúng thanh nào. Các app phân tích phổ biến đều tô mỗi
+nhóm một sắc ở đây (thanh chia phần, donut, cột chồng). Cách làm:
+
+- **Dự án có thang màu biểu đồ** (`--chart-1`…`--chart-5` của shadcn, hay thang riêng) thì
+  dùng đúng thang đó theo thứ tự. Dự án có ngôn ngữ màu riêng (`P4`) thì thang theo dự
+  án kể cả khi dưới 5 nhóm.
+- **Chưa có** thì dùng thang mặc định, xếp theo thứ tự nhóm lớn tới nhỏ: `blue-500` ·
+  `sky-400` · `violet-500` · `fuchsia-400` · `teal-500` · `indigo-300`. Tránh sắc trùng
+  bảng trạng thái (`red`, `rose`, `amber`, `emerald`) khi cùng màn có badge trạng thái,
+  để một nhóm không bị đọc thành "lỗi" hay "xong".
+- **Tối đa 6 sắc**, nhóm thứ 7 trở đi gộp thành "Khác" màu `slate-300`. Bảy tám sắc
+  thì lại thành cầu vồng không ai nhớ.
+- **Một nhóm một màu cố định trong cả app** (như `M8`): "Media" tím ở thanh chia phần
+  thì tím ở donut, ở chấm trong bảng.
+- **Chấm màu trong bảng dùng đúng màu của thanh**, và mỗi nhóm luôn có số và phần trăm
+  bằng chữ: màu chỉ giúp nối bảng với biểu đồ, không mang giá trị (`N4`).
+
+**Màu chỉ được đổi sắc khi nó mang nghĩa trạng thái** (ngoài ca phân loại từ 5 nhóm ở trên), và phải trùng đúng bảng
 trạng thái của app: đỏ là hỏng hoặc thất bại, amber là quá hạn hoặc cần chú ý,
 emerald là xong. Cột "quá hạn" tô amber thì được (`M7`, `list-row.md`). Cột "tháng 3" tô đỏ thì không.
 

@@ -93,6 +93,10 @@ count_files() {
 echo "glass:    $(count_files 'backdrop-blur|backdrop-filter')"
 echo "gradient: $(count_files 'bg-gradient-|bg-linear-|bg-radial-|linear-gradient\(|radial-gradient\(')"
 echo "nổi:      $(count_files 'shadow-(md|lg|xl|2xl)')"
+# Màu: nền / viền / chữ có sắc dùng làm trang trí hay phân vai, không phải trạng thái
+echo "màu:      $(count_files '(bg|border|ring)-(blue|sky|indigo|violet|purple|fuchsia|pink|cyan|teal)-(50|100|200)|bg-primary/(5|10|15|20)|bg-(accent|brand)')"
+# Thang màu biểu đồ có sẵn (shadcn sinh --chart-1..5)
+grep -rhoE -- '--(chart|categorical|category)-[a-z0-9-]*' --include='*.css' . 2>/dev/null | grep -v node_modules | sort -u | head
 # Tối: chỉ cần MỘT file, là layout gốc
 grep -rlE '<(body|html)[^>]*(bg-black|bg-(zinc|neutral|slate|gray|stone)-9[0-9]{2})|color-scheme: *dark' \
   --include='*.tsx' --include='*.jsx' --include='*.html' --include='*.css' . 2>/dev/null | grep -v node_modules | head -3

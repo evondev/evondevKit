@@ -20,6 +20,31 @@ tự hỏi. Gu của skill (nhạt, ít tín hiệu) chỉ quyết những chỗ
 *Phép thử:* người dùng lần đầu mở màn này có chỗ nào phải hỏi "cái này nghĩa là
 gì" hay "bấm đâu để…" không? Có thì đang phá cách ở đó.
 
+**Cũng đứng trên mười nguyên tắc: dự án đã có ngôn ngữ màu thì theo dự án.** Gu ít
+màu của skill (xám + một màu nhấn, `M4`, `M5`, biểu đồ đậm nhạt một màu) là **mặc
+định cho dự án trống**, không phải bộ lọc để chạy qua dự án có sẵn. Dự án đã tô chip
+bằng màu nhấn nhạt, khối bước nền xanh nhạt, nhãn nhỏ đầu mục dạng pill tím, nút chính
+có quầng sáng, biểu đồ mỗi loại một màu, thì màn mới dựng **cùng cách đó** (`N5`), và
+refactor **không trung tính hoá** màu của họ. Vào dự án nhiều màu mà rút về xám là làm
+hỏng nhận diện của họ, không phải làm đẹp (chốt 25/09/2026). Cách nhận ra: đếm như phong
+cách, `P4` trong `styles.md` (dòng "màu" ở tầng 3, `SKILL.md` câu 2).
+
+Theo dự án là theo **cách dùng màu**, còn **luật về nghĩa và về đọc được** thì giữ ở
+mọi dự án, vì đó là đúng sai chứ không phải gu:
+- Đỏ chỉ cho lỗi và việc không lấy lại được (`M30`). Màu thương hiệu đỏ trong nội dung
+  (logo, ảnh) không tính.
+- Một bảng trạng thái cho cả app: "xong" ở đâu cũng một màu (`M7`).
+- Màu không bao giờ là thứ duy nhất mang nghĩa hay giá trị: luôn có chữ, số, icon đi kèm (`N4`).
+- Chữ đạt tương phản 4.5:1, kể cả chữ màu trên nền màu nhạt.
+- Một màu thương hiệu dùng cho một vai: màu nhấn của dự án là xanh thì nút chính, tab
+  đang chọn, link cùng xanh đó, không thêm màu nhấn thứ hai.
+
+Dự án dùng màu lung tung, không ra quy luật (mỗi màn một kiểu) thì theo phần **mới nhất**
+như `P5`, và báo một dòng lúc giao.
+
+*Phép thử:* đặt màn mới cạnh màn cũ của dự án. Nhìn có như cùng một sản phẩm không, hay
+màn mới xám nhạt lạc giữa các màn có màu?
+
 ---
 
 **N1. Đổi trạng thái thì giao diện không nhảy chỗ, không co giãn.**

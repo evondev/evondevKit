@@ -103,6 +103,8 @@ Chạy lệnh tầng 3 ở `SKILL.md` câu 2, rồi đọc số:
 | Chỉ 1–2 file | Ngoại lệ cục bộ: một banner, một trang quảng bá. **Không** tính là phong cách của dự án, làm flat |
 | Có token riêng cho nó (`--glass-bg`, `--gradient-*`, `--shadow-card`) | Tính là phong cách của dự án **dù đếm file ra ít**, vì có token là có chủ đích → **theo** |
 | **Tối**: layout gốc có nền tối | Tính là phong cách của dự án **chỉ với một file đó**, vì nền tối chỉ nằm ở gốc → **theo** |
+| **Màu**: nền, viền, chữ có sắc (chip tô màu nhấn nhạt, khối nền xanh nhạt, pill màu) ở **từ 3 file trở lên** | Dự án có ngôn ngữ màu → **theo**: màn mới dùng đúng những cách tô đó, không rút về xám (nguyên tắc "dự án đã có ngôn ngữ màu" ở đầu `principles.md`). Luật về nghĩa và đọc được vẫn giữ |
+| Có token thang màu biểu đồ (`--chart-1`…) | Biểu đồ phân loại dùng thang đó (`components/charts.md`) |
 | Không tín hiệu nào đáng kể | Flat hoặc dự án trống → flat (`P6`) |
 
 Đếm ra để **quyết định theo dự án hay flat**. Ngưỡng 3 file là để một banner lẻ

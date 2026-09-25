@@ -14,7 +14,7 @@ Không hỏi. Lấy mặc định dưới đây, **nói lại cả bốn ở đ�
 thì theo đề.
 
 1. **Mục tiêu mặc định là "chụp lại hiện trạng", không "đổi diện mạo".** Đề có chữ "làm lại giao diện", "cho đẹp hơn", "theo gu" thì mới là đổi diện mạo. Hai việc khác hẳn nhau về rủi ro.
-2. **Mặc định giữ pixel.** Mọi bước refactor không được đổi giao diện; thấy chỗ trái luật skill thì ghi vào danh sách "đề xuất sửa" lúc giao, không tự sửa trong cùng đợt. Đây là ràng buộc quyết định cách chọn token.
+2. **Mặc định giữ pixel.** Mọi bước refactor không được đổi giao diện; thấy chỗ trái luật skill thì ghi vào danh sách "đề xuất sửa" lúc giao, không tự sửa trong cùng đợt. **Dự án nhiều màu hơn gu của skill thì không phải trái luật**: không đề xuất rút về xám; chỉ đề xuất khi phạm luật về nghĩa hay đọc được (đầu `principles.md`: đỏ cho thứ không phải lỗi, chữ màu dưới 4.5:1, màu đứng một mình mang nghĩa). Đây là ràng buộc quyết định cách chọn token.
 3. **Người duyệt "trông vẫn đúng" mặc định là người giao việc.** Lúc giao đưa danh sách màn cần họ mở ra đối chiếu, kèm ảnh trước/sau nếu chụp được.
 4. **Tài liệu hiện có: không xoá, chỉ đánh dấu chỗ sai.** Ở dự án đó, `design-system.md` mô tả một sản phẩm khác chứ không mô tả chính nó — nhưng vẫn có một mục là kiến thức thật, xoá trắng là mất.
 

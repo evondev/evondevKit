@@ -104,6 +104,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] **Màn xác thực: đã báo một dòng** về "quên mật khẩu" / ghi nhớ đăng nhập / mạng xã hội chưa? Dựng theo mặc định thì được, dựng xong im lặng thì không.
 - [ ] "Quên mật khẩu?" có nằm cùng hàng với nhãn không? Dưới ô nhập là **tranh chỗ với câu lỗi**.
 - [ ] "Quên mật khẩu?" có bị làm mờ không? Mờ là đọc ra disabled (`I8`).
+- [ ] Dự án có ngôn ngữ màu riêng (dòng "màu" ở tầng 3 từ 3 file, hoặc có `--chart-*`) thì màn mới có tô cùng cách không, hay rút về xám lạc giữa các màn cũ? Refactor có lỡ trung tính hoá màu của họ không? Biểu đồ phân loại từ 5 nhóm có mỗi nhóm một sắc, chấm trong bảng khớp màu thanh, tối đa 6 sắc + "Khác" (`principles.md` đầu file, `components/charts.md`)?
 - [ ] Mô tả dưới tiêu đề modal / hộp xác nhận: cách tiêu đề `mt-2` và dòng `text-sm/6`, hay `mt-1` + dòng 20px làm dấu tiếng Việt chạm dòng trên (`T30`)?
 - [ ] Toast có trượt vào từ mép màn và trượt ra khi hết giờ không, hay bật "phựt"? Render bằng `{toast && …}` là mất chuyển động ra. Email trong toast nằm tầng dưới, xuống dòng sau `@` (`layouts/overlay.md`, Toast)?
 - [ ] Ô mật khẩu có đang lấy `••••••` làm placeholder không? Nhìn y hệt mật khẩu đã gõ (`T26`).

@@ -43,6 +43,11 @@ công thức phần tử bên dưới, `small-controls.md`). Màu thứ hai ph�
 
 **M4. Màu để báo trạng thái, không để phân loại.**
 
+> `M4` và `M5` là **gu mặc định cho dự án chưa có ngôn ngữ màu**. Dự án đã tô màu
+> theo cách riêng (đếm ở `P4`) thì theo dự án; chỉ giữ các luật về nghĩa và đọc được
+> liệt kê ở đầu `principles.md` (đỏ cho lỗi và phá huỷ, một bảng trạng thái, màu không
+> đứng một mình, tương phản 4.5:1).
+
 Bảng màu của MỘT màn hình, không thêm:
 
 | Màu | Chỉ dùng cho |
