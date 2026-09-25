@@ -48,7 +48,7 @@ chỉ báo khi cả lượt tải kết thúc (xem mục Toast). Nút theo `butt
   - **Tiêu đề đổi thành lý do**, giữ `text-foreground font-medium`: "Dự án đã dùng hết 5 GB". Để nguyên "Kéo thả tài liệu vào đây" là mời người dùng làm đúng việc đang bị cấm. **Không làm mờ cả khối**: lý do là thứ duy nhất người dùng cần đọc ở trạng thái này (`N6`, `N8`).
   - **Dòng dưới nói lối ra**, `text-muted`: "Xoá bớt tệp cũ hoặc nâng gói để tải thêm".
   - **Nút "Chọn tệp" mờ bị bỏ, thay bằng nút dẫn tới lối ra** nếu có ("Nâng gói", nút viền `h-9`, bấm được). Nút khoá nằm giữa khung chỉ nói lại điều tiêu đề đã nói (`N2`, `N3`). Khoá tạm mà người dùng không tự gỡ được (dự án đã lưu trữ) thì không nút, dòng dưới nói ai gỡ được.
-- **Không có quyền tải lên thì ẩn cả khu tải**, không dựng khung khoá. Người chỉ được xem mà thấy một khung lớn ghi "Bạn chưa có quyền tải tệp lên" ở mỗi lần mở trang là nhận một lời từ chối cho việc họ không định làm; GitHub, Google Drive đều ẩn nút tải khi không có quyền. Khung khoá chỉ dành cho khoá **tạm** (hết dung lượng, dự án đã lưu trữ), thứ người đang được phép tải cần biết. Bản cũ còn lặp một ý hai tầng: "Bạn chưa có quyền tải tệp lên" / "Chỉ quản trị dự án tải tệp lên được" (đã dính 24/09/2026).
+- **Không có quyền tải lên thì ẩn cả khu tải**, không dựng khung khoá. Người chỉ được xem mà thấy một khung lớn ghi "Bạn chưa có quyền tải tệp lên" ở mỗi lần mở trang là nhận một lời từ chối cho việc họ không định làm; các kho tệp lớn đều ẩn nút tải khi không có quyền. Khung khoá chỉ dành cho khoá **tạm** (hết dung lượng, dự án đã lưu trữ), thứ người đang được phép tải cần biết. Bản cũ còn lặp một ý hai tầng: "Bạn chưa có quyền tải tệp lên" / "Chỉ quản trị dự án tải tệp lên được" (đã dính 24/09/2026).
 
 ## Dòng tệp
 
@@ -84,7 +84,7 @@ chỉ báo khi cả lượt tải kết thúc (xem mục Toast). Nút theo `butt
 | Hỏng khi tải | trống | `text-xs text-red-600` "Mất kết nối mạng" · nút chữ **Thử lại** | ✕ "Bỏ tệp …" |
 | Bị từ chối (quá cỡ, sai loại) | trống | `text-xs text-red-600` "Quá 25 MB (tệp nặng 48 MB)" / "Không nhận tệp .zip" | ✕ "Bỏ tệp …" |
 
-- **Chỉ tệp đang tải mới có thanh.** Chờ là chưa bắt đầu, rãnh rỗng không nói gì. Bị từ chối là không bao giờ bắt đầu: rãnh xám rỗng đọc như "sắp chạy". Xong thì **thanh biến mất**: thanh xanh lá đầy + `100%` + "Đã tải xong" là ba tín hiệu cho một ý, và một cột thanh xanh đỏ đen là thứ nặng nhất màn (`N3`, đã dính 24/09/2026). Google Drive, Dropbox, Notion đều bỏ thanh khi xong.
+- **Chỉ tệp đang tải mới có thanh.** Chờ là chưa bắt đầu, rãnh rỗng không nói gì. Bị từ chối là không bao giờ bắt đầu: rãnh xám rỗng đọc như "sắp chạy". Xong thì **thanh biến mất**: thanh xanh lá đầy + `100%` + "Đã tải xong" là ba tín hiệu cho một ý, và một cột thanh xanh đỏ đen là thứ nặng nhất màn (`N3`, đã dính 24/09/2026). Các kho tệp lớn đều bỏ thanh khi xong.
 - **Hỏng thì bỏ thanh và bỏ số %.** "54%" trên một tệp đã hỏng là con số chết: bấm Thử lại là chạy lại từ đầu. Thanh đỏ dừng giữa chừng thêm một khối đỏ đặc cho điều câu chữ đã nói.
 - **Tầng dưới cao cố định** (`min-h-5`), chứa thanh hoặc chữ. Dòng đổi trạng thái (chờ → tải → xong) thì cao không đổi, các dòng bên dưới không nhảy (`N1`). Chữ lỗi dài hơn một dòng ở màn hẹp thì được xuống dòng (`min-h`, không `h`), không `truncate` lý do (`N8`).
 - **Thanh `h-1`**, không `h-2` như thanh đứng riêng: nhiều tệp tải cùng lúc là nhiều thanh xếp chồng, thanh dày thì cả danh sách thành một dàn sọc đen.

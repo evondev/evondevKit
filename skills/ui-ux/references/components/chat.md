@@ -38,7 +38,7 @@ file đã có (`N5`): danh sách bước dùng công cụ mượn đường dọ
 
 ## Hai phía
 
-- **Câu trả lời không có avatar.** Bên nào nói đã rõ bằng bong bóng và căn phải; một vòng robot trước mỗi câu trả lời là lần nói thứ hai, và ăn mất ~56px bề ngang của cột chữ (`N3`). ChatGPT, Claude, Copilot đều đã bỏ. Chỉ thêm avatar khi cuộc chat có **từ ba bên trở lên** (trợ lý + nhân viên hỗ trợ thật) (đã dính 24/09/2026: vòng robot có viền ở mọi câu trả lời, cột chữ lùi vào 80px so với tiêu đề và ô soạn).
+- **Câu trả lời không có avatar.** Bên nào nói đã rõ bằng bong bóng và căn phải; một vòng robot trước mỗi câu trả lời là lần nói thứ hai, và ăn mất ~56px bề ngang của cột chữ (`N3`). Các trợ lý AI phổ biến đều đã bỏ. Chỉ thêm avatar khi cuộc chat có **từ ba bên trở lên** (trợ lý + nhân viên hỗ trợ thật) (đã dính 24/09/2026: vòng robot có viền ở mọi câu trả lời, cột chữ lùi vào 80px so với tiêu đề và ô soạn).
 - **Tin người dùng**: `bg-surface` trên nền trang, `rounded-3xl`, `max-w-[80%]` (màn hẹp `max-w-[85%]`), giữ xuống dòng người gõ (`whitespace-pre-wrap`), đường dẫn liền một chuỗi thì bẻ ở bất kỳ đâu (`[overflow-wrap:anywhere]`, `N8`). Không màu nhấn, không bóng.
 - **Câu trả lời `max-w-[55ch]`** (`T11`), `text-pretty`. Mã đơn, mã khách `font-mono` (`T17`), tiền theo đúng khuôn `đ` của app (`N5`).
 - **Tin nhắn một cỡ, phụ trợ nhỏ hơn**: tin nhắn hai phía `text-base` (đây là chữ để đọc dài, như bài viết), mọi thứ phụ trợ (hàng công cụ, bước, gợi ý, "Đã dừng giữa chừng") `text-sm` hoặc `text-xs`. **Quá trình nhẹ hơn kết quả** (đã dính 24/09/2026: tên bước công cụ `text-base text-foreground`, nặng ngang câu trả lời ngay bên dưới).

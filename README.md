@@ -1,6 +1,6 @@
 # evondevKit
 
-Bộ skill Claude Code của evondev. Hiện có một plugin: **`evon`**, chứa skill
+Bộ skill cho Claude Code. Hiện có một plugin: **`evon`**, chứa skill
 **`ui-ux`** — gu UI/UX cho hệ thống dashboard.
 
 ```
@@ -170,11 +170,11 @@ Mười nhóm, không nhóm nào trùng ký tự với nhóm nào:
 
 ## Nguồn
 
-Luật trong skill này đến từ hai nơi, và khi hai nơi đá nhau thì **focus.camp
+Luật trong skill này đến từ hai nơi, và khi hai nơi đá nhau thì **dự án thật
 thắng**, vì đó là bản đã sống 4,5 tháng trên sản phẩm thật:
 
 - **21 vòng test** dựng file HTML rời (xem `TESTS.md`)
-- **Đợt refactor focus.camp 09/2026** — Next 16 + React 19, 237k dòng TS/TSX, 14.218 dòng CSS, có tiền thật chạy qua
+- **Đợt refactor một dự án thật 09/2026** — Next 16 + React 19, 237k dòng TS/TSX, 14.218 dòng CSS, có tiền thật chạy qua
 
 Ba chỗ đã đảo luật so với bản cũ, mỗi chỗ có khối ⚠️ ghi rõ trong file tương ứng:
 

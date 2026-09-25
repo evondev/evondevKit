@@ -72,7 +72,7 @@ hình (đã dính 24/09/2026).
 - **Tạo và sửa dùng CÙNG một form.** Chỉ khác tiêu đề và chữ trên nút. Hai form
   riêng là hai chỗ để lệch nhau.
 - **Xoá mà khôi phục được** (thùng rác, xoá mềm) thì **xoá ngay + toast "Hoàn tác"**, như
-  Gmail, Notion, Linear: hộp xác nhận cho mọi thùng rác dạy người ta bấm "Đồng ý" không
+  Các app lớn: hộp xác nhận cho mọi thùng rác dạy người ta bấm "Đồng ý" không
   đọc. **Hộp xác nhận** chỉ khi không lấy lại được, hoặc xoá nhiều dòng một lúc. Khôi
   phục được hay không là logic, người dùng quyết (`N10`); đề không nói thì hỏi một dòng
   lúc giao. Xem `layouts/overlay.md`.
@@ -109,7 +109,7 @@ Hệ thống nhiều màn luôn có một khung chung: cột trái, vùng nội 
 thanh trên mobile, thanh dưới mobile. Đặt tên một lần, ghi ra, rồi dùng đúng tên
 đó trong mọi câu trả lời sau.
 
-Nghe như chuyện nhỏ, nhưng ở focus.camp đây là mục **đầu tiên** của `AGENTS.md`,
+Nghe như chuyện nhỏ, nhưng ở một dự án thật đây là mục **đầu tiên** của `AGENTS.md`,
 vì không có nó thì mỗi lượt lại phải mô tả lại "cái cột bên trái ấy" và mỗi lần
 mô tả lại lệch một chút.
 

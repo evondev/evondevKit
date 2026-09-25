@@ -131,8 +131,8 @@ tự vẽ, không emoji. Lấy ở đâu thì tuỳ dự án có gì:
 
 Luật ở đây là **nét mảnh, một màu, đồng bộ** — không phải tên thư viện.
 
-**F16. Ngoại lệ: logo thương hiệu bên thứ ba.** Nút đăng nhập bằng Google, Apple,
-GitHub phải có đúng logo của họ, giữ nguyên màu gốc, dán SVG thẳng vào. Lucide
+**F16. Ngoại lệ: logo thương hiệu bên thứ ba.** Nút đăng nhập bằng tài khoản bên
+thứ ba phải có đúng logo của nhà cung cấp đó, giữ nguyên màu gốc, dán SVG thẳng vào. Lucide
 không có, và đây là dấu hiệu nhận diện mang chức năng.
 
 **F17. Cùng một nhóm thì cùng một icon, trừ khi từng mục thật sự khác nghĩa.**

@@ -74,7 +74,7 @@ vẫn `h-11 md:h-10`, xem `budgets.md`.
 - **`min-w`** cho khối bọc bảng, đủ để mọi cột thở. Không có nó thì bảng vẫn co.
 - **`whitespace-nowrap`** cho ô ngày tháng, số, trạng thái. Chữ dài như tên hay mô tả thì cho xuống dòng bình thường.
 - Lề đặt trên **khối bên trong**, không đặt trên khung cuộn. Xem R6.
-- Cột quan trọng nhất, thường là cột đầu, có thể ghim bằng `sticky left-0` kèm nền `--surface`.
+- Cuộn ngang thì **bắt buộc** ghim cột nhận diện (thường là cột đầu) bằng `sticky left-0` kèm nền `--surface`, cột ghim không quá ~40% khung. Cột đầu rộng hơn thế (tên + email) thì đừng cuộn: **dưới `sm`, bảng quản lý thành danh sách dòng** (`layouts/app.md`, mục Bảng dữ liệu). Cuộn mà không ghim thì cuộn một nhịp là mất tên, các ô còn lại không biết của ai (đã dính 25/09/2026).
 
 Đây là ngoại lệ hợp lệ của R1, cùng loại với R6: cuộn trong khung chứ không phải cả trang.
 
@@ -91,6 +91,41 @@ sidebar mở, quá 6 cột là bắt đầu chật (đã dính 23/09/2026: bản
 3. **Gom vào một dropdown**, hiện mục đang chọn kèm mũi tên. Hợp khi có trên sáu mục, hoặc khi hàng cuộn ngang làm người ta không thấy hết lựa chọn.
 
 Đừng để `flex-wrap`, đó là cách duy nhất sai trong ba cách trên.
+
+**Hàng cuộn ngang thì mép mờ dần ở phía còn mục bị khuất**, cùng cách với vùng nav sidebar (`layouts/app.md`): `mask-image` 32px, mép trái mờ khi đã cuộn khỏi đầu, mép phải mờ khi còn mục phía sau, tính cờ từ `scrollLeft`/`scrollWidth`/`clientWidth`. Thanh cuộn đã ẩn (`scrollbar-clean`) nên mép cắt thẳng qua chữ không báo được gì: ở 375px hàng chip cắt ngang "Bán|", còn tab "Ngừng giao dịch 6" nằm hẳn ngoài khung, trông như chỉ có ba trạng thái (đã dính 25/09/2026, bảng khách hàng). Áp cho hàng tab, hàng chip, và khung bảng cuộn ngang (`R9`).
+
+**Vạch chỉ vị trí tự vẽ: KHÔNG dựng mặc định, đề xuất một dòng lúc giao.** Mặc định hàng cuộn
+ngang chỉ có mép mờ ở trên. Lúc giao màn có hàng tab/chip cuộn ngang ở màn hẹp thì báo một
+dòng, **nói bằng vấn đề của người dùng cuối, không nhắc tên dự án hay sản phẩm tham khảo nào**:
+_"Trên điện thoại không có thanh cuộn, người dùng không biết hàng [tab lọc] này kéo sang được.
+Mình đang để mép phải mờ dần; có thể đổi sang dropdown, hoặc thêm một thanh cuộn mảnh luôn hiện
+bên dưới hàng."_ Người dùng chọn cách nào mới dựng cách đó (chủ dự án chốt
+25/09/2026: đây là thứ gợi ý cho người dùng, không áp sẵn). Công thức khi dựng (chủ dự án duyệt
+17–18/09/2026 ở một dự án thật): Mép mờ báo "phía này còn", vạch báo "còn bao
+nhiêu và đang ở đâu". Thanh cuộn gốc của iOS/Android là thanh nổi, chỉ hiện **lúc đang
+vuốt**, nên không báo trước được; thanh 4px tự ẩn theo `I18` cũng chỉ hiện khi rê chuột,
+điện thoại không có rê chuột. Tab lấp ló ở mép cũng không chắc có: tab có thể kết thúc
+khít mép khung.
+
+```tsx
+<div className="relative min-w-0">
+  <div ref={scrollerRef} className="flex overflow-x-auto scrollbar-clean …">{items}</div>
+  {isOverflowing ? (
+    <div aria-hidden className="pointer-events-none absolute inset-x-0 top-full mt-1 h-[3px] overflow-hidden rounded-full bg-foreground/5">
+      {/* Bề rộng và vị trí đổi theo từng pixel cuộn: style, không class. */}
+      <div className="absolute inset-y-0 rounded-full bg-foreground/15"
+        style={{ width: `${visibleRatio * 100}%`, left: `${offsetRatio * 100}%` }} />
+    </div>
+  ) : null}
+</div>
+```
+
+- **Chỉ hiện khi hàng thật sự tràn** (`scrollWidth > clientWidth + 1`), ở mọi bề rộng, không riêng màn hẹp. `visibleRatio = clientWidth / scrollWidth`, `offsetRatio = scrollLeft / scrollWidth`, đo lúc cuộn (`passive`) và bằng `ResizeObserver` (xoay máy, font tải xong đổi bề rộng). Dùng chung hook với mép mờ.
+- **Nằm NỔI (`absolute top-full mt-1`) dưới hàng, không nằm trong luồng**: vạch chỉ hiện sau khi đo xong lúc tải, nằm trong luồng thì cả trang nhảy xuống một nhịp. Nơi gọi chừa khoảng trống dưới hàng từ 8px trở lên (vạch chiếm 7px).
+- **Hàng tab gạch chân có đường kẻ nền thì vạch chạy ĐÈ lên đường kẻ đó** (`bottom-0 h-0.5`, rãnh chính là đường kẻ nền), không vẽ rãnh riêng bên dưới: hai đường sát nhau đọc như gạch chân bị lệch. Hàng tab gạch chân không có đường kẻ nền thì dùng rãnh riêng như trên.
+- **Màu nhạt, không nhạt hơn nữa**: thanh là gợi ý "kéo được", đậm hơn là kéo mắt khỏi mục đang chọn; nhạt hơn thì ngoài nắng mất hẳn (đã thử `/50`, `/30` rồi chốt khoảng `/20` của màu xám chữ phụ, tương đương `bg-foreground/15` ở đây).
+- **Mục đang chọn bị khuất thì tự cuộn nó vào giữa hàng** lúc tải và khi đổi mục. Tự tính `scrollLeft` rồi `scroller.scrollTo`, **không `scrollIntoView`**: hàng có thể đang nằm dưới màn lúc tải, `scrollIntoView` kéo cả trang xuống theo. Lần đầu `behavior: "auto"`, các lần sau `"smooth"`.
+- Áp cho hàng chip, hàng tab còn cuộn ngang, dải card/carousel. **Tab trạng thái của bảng ở màn hẹp mà có tab nằm hẳn ngoài khung thì vẫn thành dropdown** (`layouts/app.md`): vạch báo được "còn", không báo được còn trạng thái nào.
 
 ---
 

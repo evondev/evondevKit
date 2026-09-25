@@ -1,6 +1,6 @@
 # Khung trang
 
-Nguồn: `new-tab-todo/src/features/dashboard/pages/dashboard-page.tsx`
+Nguồn: trang dashboard của một dự án thật.
 
 ```tsx
 <div className="flex min-h-screen w-full flex-col p-4 sm:p-6">
@@ -37,6 +37,6 @@ Nguồn: `new-tab-todo/src/features/dashboard/pages/dashboard-page.tsx`
 
 ## Lưu ý khi mượn khung này
 
-Bản gốc trong `new-tab-todo` dùng `p-3` vì đó là **trang tab mới của trình
+Bản gốc dùng `p-3` vì đó là **trang tab mới của trình
 duyệt**, cố ý sát mép để tận dụng hết màn hình. Trang app bình thường thì đó là
 chật: dùng `p-4 sm:p-6`, xem `budgets.md`.

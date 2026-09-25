@@ -16,7 +16,7 @@ dựng lại từ đầu và mỗi trang một kiểu:
 
 Tới bậc 2, bậc 3 thì chỉ **ráp** từ các file đó, không vẽ lại.
 
-**Đề có ảnh tham khảo** (Dribbble, sản phẩm khác) thì chỉ mượn **bố cục và cách tổ
+**Đề có ảnh tham khảo** (trang thiết kế, sản phẩm khác) thì chỉ mượn **bố cục và cách tổ
 chức**, hình thức vẫn theo skill. Gửi ảnh kèm câu "ảnh này chỉ là wireframe", để skill
 đọc theo `S12` nhánh wireframe, không bám màu và bóng của ảnh.
 
@@ -95,7 +95,7 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
 ### Ưu tiên 1
 
 - ✅ **Khung app có sidebar** — "Dựng cho tôi khung app dashboard có sidebar, sidebar thu gọn được."
-- [ ] **Trang quản lý khách hàng** — ráp data table vào khung app.
+- ✅ **Trang quản lý khách hàng** — ráp data table vào khung app.
 - [ ] **Trang chi tiết bản ghi** — "Dựng cho tôi trang chi tiết một khách hàng."
 - [ ] **Thành viên và phân quyền** — "Dựng cho tôi trang quản lý thành viên trong workspace, có mời thành viên và đổi vai trò."
 - [ ] **Hồ sơ cá nhân** — "Dựng cho tôi trang cài đặt hồ sơ cá nhân."

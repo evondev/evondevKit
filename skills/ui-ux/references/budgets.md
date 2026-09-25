@@ -96,7 +96,7 @@ Tám tên, và tám tên đó là **hết**. Không inline pixel ngoài thang (`
 Thứ bậc bắt buộc: **tên trang (`xl`) > tiêu đề khối (`lg`) > tên thẻ (`base`)**,
 mỗi bậc cách nhau đúng một nấc ở **mọi** breakpoint (luật `T8`).
 
-⚠️ Hai bẫy đã dính ở focus.camp:
+⚠️ Hai bẫy đã dính ở dự án thật:
 
 - `md` và `lg` lỡ cùng một giá trị, nên "8 size chuẩn" thực ra chỉ có **7**. Kiểm thang của dự án trước khi tin vào tên token.
 - Tên trang từng là `2xl` ở desktop, chủ dự án chốt hạ về `xl` ngày 16/09/2026 vì đọc ra **quá to so với nội dung bên dưới**. `2xl` chỉ còn cho hero.

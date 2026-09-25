@@ -142,7 +142,7 @@ Dùng thư viện của họ thì cách áp skill là **chỉnh token cho khớp
 
 **Phong cách mặc định là flat**, theo `P1` trong `references/styles.md`:
 
-- **Người dùng tự nêu phong cách** ("kiểu glassmorphism", "gradient như Stripe") → làm theo, không hỏi lại. Mở `references/styles.md` lấy khối của phong cách đó.
+- **Người dùng tự nêu phong cách** ("kiểu glassmorphism", "gradient kiểu landing SaaS") → làm theo, không hỏi lại. Mở `references/styles.md` lấy khối của phong cách đó.
 - **Audit tầng 3 thấy dự án có phong cách khác flat** → **theo phong cách dự án**, dựng luôn. Lúc giao báo một dòng: đã theo phong cách gì, thấy ở đâu, muốn flat thì nói. Mẫu ở `P1`.
 - **Còn lại** → flat, không hỏi về phong cách.
 
@@ -244,8 +244,8 @@ biến nó thành một bảng câu hỏi.
 thì giữ nguyên đúng danh sách đó, và bày ra theo bố cục mặc định (câu 4).
 
 Ví dụ: đề ghi "trang đăng nhập có ô email, ô mật khẩu, link quên mật khẩu, nút
-đăng nhập, nút đăng nhập bằng Google". Nội dung thế là chốt cứng, dựng luôn
-một cột giữa màn. Đừng hỏi lại có cần nút Google không.
+đăng nhập, nút đăng nhập bằng tài khoản bên thứ ba". Nội dung thế là chốt cứng, dựng luôn
+một cột giữa màn. Đừng hỏi lại có cần nút đó không.
 
 **S5. Đề để hở phạm vi thì dựng phạm vi mặc định, không hỏi.**
 

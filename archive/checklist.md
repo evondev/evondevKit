@@ -21,7 +21,7 @@ Chạy hết trước khi báo xong. Mỗi dòng là một lỗi đã thật s�
 - [ ] Có nút nào nhét icon mà icon không mang chức năng không.
 - [ ] Có emoji nào đang đóng vai icon không.
 - [ ] Bo góc có nằm trong bốn bậc không, và có bo nhầm link chữ không nền không.
-- [ ] Nút đăng nhập bằng Google hay Apple đã có logo gốc chưa.
+- [ ] Nút đăng nhập bằng tài khoản bên thứ ba đã có logo gốc chưa.
 - [ ] Có chỗ nào mỗi mục một card không. Có thì gom thành một khối chia đường kẻ.
 - [ ] Card cùng lưới đã thẳng chân chưa. Nút CTA có cùng độ cao không.
 - [ ] **Đường kẻ ngang của các card có thẳng hàng nhau không.** Lệch là thiếu `min-h` cho khối mô tả.

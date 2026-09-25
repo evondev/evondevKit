@@ -5,7 +5,7 @@
     "email": "trananhtuan400@gmail.com"
   },
   "metadata": {
-    "description": "Bộ skill của evondev cho Claude Code."
+    "description": "Bộ skill cho Claude Code."
   },
   "plugins": [
     {

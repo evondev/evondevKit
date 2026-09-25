@@ -197,8 +197,8 @@ Chưa dựng. Cấu trúc đã chốt:
 ```
 ui-corpus/
 ├── ai-ui/            trang trông như AI đẻ
-├── good-ui/          sản phẩm ship thật (Linear, Stripe, Vercel, Raycast...)
-└── pretty-unusable/  Dribbble, đẹp nhưng không chạy được với dữ liệu thật
+├── good-ui/          sản phẩm ship thật, có dữ liệu thật
+└── pretty-unusable/  ảnh portfolio thiết kế, đẹp nhưng không chạy được với dữ liệu thật
 ```
 
 Trong mỗi thư mục chia theo loại màn hình: `pricing/`, `settings/`, `list/`,
@@ -212,6 +212,6 @@ Hai điều kiện để nó có giá trị:
 - Ưu tiên **cặp đối chiếu** cùng loại màn hình, một tốt một xấu. Luật sắc nhất
   từ trước tới nay đều sinh ra từ lúc đặt hai ảnh cạnh nhau.
 
-**Đừng lấy Dribbble làm `good-ui`.** Đó là tranh portfolio, không có dữ liệu
+**Đừng lấy ảnh portfolio thiết kế làm `good-ui`.** Đó là tranh trưng bày, không có dữ liệu
 dài, không có trạng thái lỗi, không có tiếng Việt làm vỡ dòng. Và nhiều mốt
-Dribbble chính là thứ mục 1 đang cấm.
+trên các trang portfolio chính là thứ mục 1 đang cấm.

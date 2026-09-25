@@ -15,7 +15,7 @@ cả trang: chữ mảnh hơn, sạch hơn, bớt cái vẻ nặng nề của fo
 
 **T2. Một họ chữ cho cả app.** Phân vai bằng weight và cỡ, không bằng font thứ
 hai: tiêu đề `600`, body `400`, nhãn phụ `500`. `700` chỉ cho tên trang của trang
-trình diễn (giới thiệu, bảng giá). Linear, Vercel, GitHub dùng 600 cho tiêu đề app;
+trình diễn (giới thiệu, bảng giá). Các app lớn dùng 600 cho tiêu đề app;
 700 nặng hơn gu mờ của dự án (hạ ngày 23/09/2026).
 
 `tracking-tight` **cho chữ có dấu chỉ từ `text-3xl` trở lên** (nâng từ `2xl` ngày
@@ -33,7 +33,7 @@ body. Lỗi đã xảy ra thật: "99K" viết bằng font tiêu đề trông nh
 
 **T4. Nạp đúng số weight cần, và biết mình đang nạp gì.**
 
-focus.camp nạp 400 / 500 / 600 và **cố ý không nạp 700**: 553 chỗ trong repo khai
+Một dự án thật nạp 400 / 500 / 600 và **cố ý không nạp 700**: 553 chỗ trong repo khai
 `font-weight: 700/800` theo luật cũ, không có face 700 thì trình duyệt vẽ bằng
 face gần nhất là 600, giao diện giữ nguyên. Cái bẫy đi kèm: `.font-strong` đặt
 weight 900 nhưng **không chạy**, vì không có face nào trên 600.
@@ -69,7 +69,7 @@ Thứ bậc đầy đủ của một trang app: **tên trang > tiêu đề khố
 
 Mở một bài viết, một khoá học, một sản phẩm thì tiêu đề nên **bằng đúng cỡ tiêu
 đề của nó ở danh sách**, không nhảy lên một bậc. Nhảy size gây cảm giác "chữ bự"
-so với nội dung bên dưới. Chốt ở focus.camp 16/09/2026 sau khi hạ tên trang từ
+so với nội dung bên dưới. Chốt 16/09/2026 sau khi hạ tên trang từ
 24px về 20px.
 
 Cỡ hero chỉ còn cho trang trình diễn thật sự.
@@ -129,7 +129,7 @@ xuống dòng, đừng cắt — mô tả bị cắt thì mất luôn lý do nó
 file. **Phần giữ lại là vài ký tự cuối của tên (khoảng 8) cộng đuôi**, không chỉ mỗi đuôi:
 cắt sát dấu chấm thì `…` dính `.xlsx` thành bốn chấm "doanh-thu….xlsx", đọc như lỗi
 gõ (đã dính 24/09/2026), và mất luôn phần cuối tên, thường là chỗ phân biệt các bản
-("…quy-3", "…ban-cuoi"). Finder, Dropbox cắt kiểu này. Dấu `…` **dính liền** phần giữ lại, không chừa khoảng trắng trước đuôi (đã dính
+("…quy-3", "…ban-cuoi"). Trình quản lý tệp của hệ điều hành cắt kiểu này. Dấu `…` **dính liền** phần giữ lại, không chừa khoảng trắng trước đuôi (đã dính
 23/09/2026: "Báo cáo doan… .xlsx" cạnh "Báo cáo tổng kết năm….pdf", hai kiểu trong
 cùng một cây).
 
@@ -144,7 +144,7 @@ Nhãn tiếng Việt của nút khá dài ("Gia hạn / Đổi gói", "Tham gia 
 `nowrap`, chỗ chứa hẹp hơn nhãn thì nút không co được — hoặc đẩy tràn ra ngoài,
 hoặc chữ trào ra khỏi viên nút khi bị `max-width` chặn.
 
-Đo thật ở focus.camp: hộp 140px, nút cũ rộng 192px, **tràn 60px**.
+Đo thật ở một dự án: hộp 140px, nút cũ rộng 192px, **tràn 60px**.
 
 Công thức đúng: `white-space: normal` + `line-height: 1.25` (để hai dòng không
 dính nhau) + `overflow-wrap: anywhere` (ngắt cả URL và mã dài) + `max-width: 100%`.
@@ -170,7 +170,7 @@ dòng thời gian đơn hàng, nhật ký thao tác thì hiện thẳng giờ tu
 **Trong danh sách, mốc thuộc năm hiện tại thì bỏ năm**: `08:30 · 16/09`, không
 `08:30 · 16/09/2026`. Mười hàng cùng đuôi `/2026` là một ý nhắc mười lần, và cột giờ rộng
 thêm gần một nửa (đã dính 24/09/2026: tab Tin nhắn, Tệp, Hoạt động của panel khách hàng).
-Khác năm thì ghi đủ `16/09/2025`; `title` và `datetime` luôn đủ. **Bẫy:** `Intl.DateTimeFormat('vi-VN', { day: '2-digit', month: '2-digit' })` bỏ năm thì ra `23-09` gạch ngang, không phải `23/09`; tự ghép ngày và tháng bằng `/`. GitHub, Linear cùng làm
+Khác năm thì ghi đủ `16/09/2025`; `title` và `datetime` luôn đủ. **Bẫy:** `Intl.DateTimeFormat('vi-VN', { day: '2-digit', month: '2-digit' })` bỏ năm thì ra `23-09` gạch ngang, không phải `23/09`; tự ghép ngày và tháng bằng `/`. Các app lớn cùng làm
 vậy. Một mốc đứng riêng làm trường dữ liệu ("Ngày tạo" trong khối nhãn và giá trị) thì giữ đủ năm.
 
 **T17. Mã và định danh dùng `font-mono`.** Mã đơn hàng, mã vận đơn, mã giảm giá, ID,
@@ -222,7 +222,7 @@ cạnh "Sign in" đọc ra là làm dở dang. Chọn nhầm tiếng thì ít ra
 **T25. Placeholder chỉ có khi nó nói thêm điều nhãn chưa nói.**
 
 **Mặc định không có placeholder.** "Nhập email của bạn" nằm dưới nhãn "Email" là chép
-lại nhãn, một ý nói hai lần (`T20`, `N3`). Stripe, GitHub, Linear để trống.
+lại nhãn, một ý nói hai lần (`T20`, `N3`). Các app lớn để trống.
 
 Có placeholder trong hai ca:
 

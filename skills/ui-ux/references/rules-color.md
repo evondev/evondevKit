@@ -20,7 +20,7 @@ Luật có dấu ⚑ là chưa qua vòng test nào.
 Đây là luật quan trọng nhất trong nhóm, và là thứ quyết định một màn hình trông
 có chủ ý hay trông như chưa ai quyết định gì.
 
-Bằng chứng thật (focus.camp, 11/09/2026): trang challenge tích dần tới **năm màu
+Bằng chứng thật (một dự án, 11/09/2026): trang challenge tích dần tới **năm màu
 nền** cho năm loại khối — vàng be cho dặn dò, đỏ hồng cho nội quy, xanh nhạt cho
 quà và nhật ký, tím indigo cho chip quà, cộng xanh/vàng của trạng thái. Khối nào
 cũng đòi được chú ý nên **không khối nào nổi**, và trang đọc ra như "rainbow UI".
@@ -107,7 +107,7 @@ luồng đó không có bước "xong".
 **Luồng có từ hai trạng thái cùng tông thì chấm đổi thành icon, mỗi trạng thái một hình.**
 Bốn tông không đủ cho luồng công việc: theo đoạn trên thì Cần làm và Đang làm cùng xám, và
 bảng nhóm theo trạng thái ra ba nhóm xám một nhóm xanh, liếc không tách được nhóm nào với
-nhóm nào (đã dính 24/09/2026, bảng công việc). Linear, Jira tách bằng **hình**, không thêm màu:
+nhóm nào (đã dính 24/09/2026, bảng công việc). Các app quản lý công việc lớn tách bằng **hình**, không thêm màu:
 
 | Trạng thái | Tông | Icon lucide | Vì sao |
 | --- | --- | --- | --- |
@@ -145,7 +145,7 @@ thông tin**. Bốn điều kiện, thiếu một là bỏ:
 - **Một nhãn một màu cố định** trong cả app. "Technology" xanh dương thì ở đâu cũng xanh dương.
 - Không lan sang nút, nền khối, hay đường kẻ.
 
-Đặt tên thang màu phân loại **khác tên trạng thái**. focus.camp tách riêng
+Đặt tên thang màu phân loại **khác tên trạng thái**. Dự án thật tách riêng
 `iris` / `magenta` / `coral` thay vì dùng lại `accent` / `danger`, để badge đỏ
 "B2C" không bị đọc nhầm thành lỗi.
 
@@ -171,7 +171,7 @@ Ngoại lệ duy nhất: **mục điều hướng lúc chưa rê/chưa chọn** 
 `foreground/70`, để hover có chỗ "sáng lên" mà lúc thường vẫn đọc rõ. Dùng
 `--muted` ở đó thì tên mục mờ quá trên nền trắng (21/09/2026).
 
-⚠️ Bẫy đã dính ở focus.camp: token tên `--text-muted` bị alias về `--text-normal`,
+⚠️ Bẫy đã dính ở dự án thật: token tên `--text-muted` bị alias về `--text-normal`,
 tức "chữ phụ" và "chữ chính" cùng một màu đen. Đừng tin tên token — mở giá trị
 thật ra xem. Xem `refactor.md` luật L3.
 
@@ -188,7 +188,7 @@ Không bao giờ cho nút, card, nền trang, hay chữ (`bg-clip-text text-tran
 ## Viền và bóng
 
 > **⚠️ Đảo luật.** Bản cũ của skill này cấm viền card và bắt tách khối bằng chênh
-> lệch nền. **Luật đó đã bỏ.** focus.camp sống với luật cấm viền 4 tháng rồi bỏ
+> lệch nền. **Luật đó đã bỏ.** Dự án thật sống với luật cấm viền 4 tháng rồi bỏ
 > nó ngày 08/09/2026, và chốt phong cách "đường tóc 1px + bo góc, không bóng"
 > ngày 11/09/2026 sau khi chủ dự án đưa ba ảnh tham chiếu. Đừng hồi sinh luật cũ.
 

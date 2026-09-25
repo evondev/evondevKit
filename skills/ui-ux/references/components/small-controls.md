@@ -1,6 +1,6 @@
 # Chip và IconButton
 
-Nguồn: `new-tab-todo/src/components/chip/chip.tsx`, `.../icon-button/icon-button.tsx`
+Nguồn: chip và nút icon của một dự án thật.
 
 ```tsx
 // Chip: bộ lọc, tag chọn được. Luôn kèm aria-pressed={isActive}
@@ -171,7 +171,7 @@ isSelected && "text-foreground after:bg-foreground"
 ```
 
 - **Hàng tab nằm chung hàng với ô tìm và nút (toolbar trên bảng) thì bỏ đường kẻ hết hàng, chỉ giữ vạch 2px dưới tab đang chọn.** Đường kẻ chạy nửa hàng rồi cụt ở mép ô tìm trông dở dang, và vì khung cuộn lùi `-mx-2` nên đầu trái của nó còn thò ra ngoài mép card bên dưới 8px (đã dính 23/09/2026). Đường kẻ hết hàng chỉ dùng khi hàng tab đứng riêng một hàng, như trang chi tiết.
-- **Focus bàn phím của tab `underline` là vòng quanh chữ, không quanh cả tab.** Vòng quanh cả tab `h-10` thì mép dưới vòng nằm sát vạch 2px, đọc thành hai đường gạch chồng nhau (đã dính 24/09/2026); vẽ ra ngoài tab thì khung cuộn cắt mất mép. Tab thêm `group outline-hidden`, chữ bọc trong `<span class="rounded-md px-1.5 py-0.5 group-focus-visible:ring-2 group-focus-visible:ring-foreground/50">`: span cao 24px giữa tab 40px, vòng cách vạch ~8px, như GitHub. Các variant có nền (`boxed`, `solid`, `segmented`) giữ vòng quanh cả tab theo `I13`.
+- **Focus bàn phím của tab `underline` là vòng quanh chữ, không quanh cả tab.** Vòng quanh cả tab `h-10` thì mép dưới vòng nằm sát vạch 2px, đọc thành hai đường gạch chồng nhau (đã dính 24/09/2026); vẽ ra ngoài tab thì khung cuộn cắt mất mép. Tab thêm `group outline-hidden`, chữ bọc trong `<span class="rounded-md px-1.5 py-0.5 group-focus-visible:ring-2 group-focus-visible:ring-foreground/50">`: span cao 24px giữa tab 40px, vòng cách vạch ~8px. Các variant có nền (`boxed`, `solid`, `segmented`) giữ vòng quanh cả tab theo `I13`.
 - Vạch màu `--foreground`, không màu nhấn có sắc: nhấn đã có ở nút chính của trang (`M3`).
 - Khung cuộn lùi `-mx-2` để chữ tab đầu thẳng cột với nội dung bên dưới.
 - Tab đang chọn không tô nền, không đổi nền lúc hover. Vạch là tín hiệu duy nhất.

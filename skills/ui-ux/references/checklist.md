@@ -126,7 +126,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Có emoji nào trong tiêu đề, câu chào, hay đang đóng vai icon không?
 - [ ] Có chữ hướng dẫn thừa không ("Bấm để lưu", chữ "Có" cạnh dấu tick)?
 - [ ] Có dấu gạch dài trong copy tiếng Việt không?
-- [ ] Nút đăng nhập bằng Google hay Apple đã có logo gốc chưa?
+- [ ] Nút đăng nhập bằng tài khoản bên thứ ba đã có logo gốc của nhà cung cấp chưa?
 - [ ] Có tự gán mỗi mục một icon khác nhau, hay ba mục ba icon giống hệt nhau?
 - [ ] **Có câu nào giống hệt nhau ở mọi ô, mọi hàng không** ("so với 2025" bốn ô, "Chưa có kỳ trước" bốn ô, `/2026` ở mọi mốc giờ)? Kéo ra ghi một lần, hoặc bỏ (`N3`, `T16b`).
 
@@ -157,7 +157,10 @@ Kiểm thêm ở 375px:
 - [ ] Lưới nào còn giữ 2 cột ở mobile không? Ô số liệu phải xuống 1 cột.
 - [ ] Hàng chip có rớt xuống hàng dưới một cái lẻ không? Phải cho cuộn ngang.
 - [ ] Board hay dòng thời gian có bị wrap thành 2 hàng không? Phải cuộn ngang trong khung.
-- [ ] Bảng có bị bóp cột không? Phải cuộn ngang trong khung, có `min-w`.
+- [ ] Bảng có bị bóp cột không? Từ `sm` trở lên thì cuộn ngang trong khung, có `min-w`, **cột đầu ghim**; dưới `sm` bảng quản lý thành danh sách dòng (tên + email, badge + số chính), không cuộn ngang. Hàng tab/chip cuộn ngang có mép mờ ở phía còn mục khuất (`R10`)?
+- [ ] Trang có **đúng một `<h1>`** không? Trang danh sách: tên trên thanh header là `<h1>`, vùng nội dung không lặp tên. Trang có đầu trang riêng: `<h1>` ở đầu trang, thanh header chỉ ghi cấp cha.
+- [ ] Ô tìm `type="search"` có còn nút × của trình duyệt (Chrome tô xanh) không? Phải tắt, và có nút `X` xám tự dựng khi ô có chữ (`components/input.md`).
+- [ ] Tìm/lọc ra 0 kết quả: câu có nói đúng thứ đang lọc không, có link "Xoá tìm kiếm"/"Xoá lọc" (cùng chữ với nút cuối hàng chip) không, chỉ có từ khoá thì hàng chip có đang hiện thừa nút "Xoá lọc" không, checkbox chọn tất cả đã ẩn chưa (`components/empty-state.md`)? Ở 375px tab trạng thái có tab nào nằm hẳn ngoài khung không, phải thành dropdown có nhãn "Trạng thái:", căn trái. Hàng cuộn ngang (chip, tab, dải card) có mép mờ ở phía còn mục khuất không, lúc giao đã đề xuất một dòng vạch chỉ vị trí chưa (`R10`, không dựng sẵn)? Người dùng đã chọn vạch thì: vạch nổi, trang không nhảy lúc vạch hiện, mục đang chọn tự cuộn vào giữa.
 - [ ] Card ở mobile còn `p-8` không? Phải `p-4`, tối đa `p-5`.
 - [ ] Chip lọc có đứng cùng hàng với ô nhập và chênh chiều cao quá một bậc không?
 - [ ] Chip lọc: đang chọn là `bg-primary text-primary-foreground` (không gõ cứng màu)? Nhãn dài đã `max-w-48` + `truncate` + `title` chưa? Có `aria-pressed` chưa?

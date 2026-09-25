@@ -15,7 +15,7 @@ Nếu CSS cũ của dự án dùng **trùng tên biến** — rất thường g�
 ai cũng đặt — thì **hai hệ tranh nhau một không gian tên**.
 
 Hệ quả: xoá một override trong `@theme` không chỉ đổi code mới, mà đổi luôn **mọi
-chỗ CSS cũ đang đọc biến đó**. Ở focus.camp con số là **3.419 chỗ**.
+chỗ CSS cũ đang đọc biến đó**. Ở một dự án thật con số là **3.419 chỗ**.
 
 **Luật: trước khi thêm hoặc bớt bất kỳ khai báo nào trong `@theme`, đếm xem có
 bao nhiêu chỗ đang đọc tên biến đó.**
@@ -51,7 +51,7 @@ lúc nào không hay.
 
 Nối tiếp `W2`, nhưng nguy hiểm hơn vì **không hề báo lỗi**.
 
-Ở focus.camp, file token cũ có:
+Ở một dự án thật, file token cũ có:
 
 ```css
 :root { --container-md: 720px; --container-lg: 1040px; --container-xl: 1200px; }
@@ -114,7 +114,7 @@ Nếu không ghi đè `--radius-*` thì `rounded-*` chạy thang gốc: 4 / 6 / 
 / 24. Token bo góc của dự án **phải nằm đúng trên các bậc đó**, nếu không thì mỗi
 khối refactor sang utility lại đổi hình một chút mà không ai chủ ý.
 
-Ở focus.camp đã phải sửa: `9px → 8px`, thêm bậc `4px`, và **xoá bậc `22px`** vì
+Ở một dự án thật đã phải sửa: `9px → 8px`, thêm bậc `4px`, và **xoá bậc `22px`** vì
 không bậc Tailwind nào bằng.
 
 Cùng đợt: mọi `border-radius` chôn cứng trong CSS cũ quy về token — không còn

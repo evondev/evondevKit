@@ -1,6 +1,6 @@
 # Empty state
 
-Nguồn: `new-tab-todo/src/features/reminders/components/reminders-widget.tsx`
+Nguồn: widget nhắc việc của một dự án thật.
 
 ```tsx
 {isLoading ? (
@@ -34,6 +34,28 @@ dùng lần đầu vào chưa có gì để làm. Trong một widget hay một t
 
 **Người dùng là người mở đầu** (khung chat mới) thì không dùng câu báo rỗng: đưa 2–3
 việc bấm được ngay, vẫn không hình không tiêu đề (`N6`, `chat.md`).
+
+## Rỗng do lọc: câu nói đúng điều đang lọc, và có lối ra
+
+Ngoại lệ của "không nút": danh sách rỗng **vì người dùng đang tìm hay lọc** thì người
+đó tự dẫn mình vào ngõ cụt, phải có lối ra ngay tại chỗ (`N6`). Vẫn một dòng mờ, thêm
+**một link chữ** ngay sau câu, không nút đặc, không hình:
+
+```tsx
+<p className="py-6 text-center text-sm text-muted">
+  Không có khách hàng nào khớp {quotedQuery}. Thử từ khoá khác.{" "}
+  <Button variant="ghost" onClick={clearFilters}
+    className="inline h-auto p-0 align-baseline font-medium text-foreground underline-offset-4 hover:bg-transparent hover:underline">
+    Xoá tìm kiếm
+  </Button>
+</p>
+```
+
+- **Câu theo đúng thứ đang lọc**: chỉ từ khoá thì nhắc lại từ khoá và "Thử từ khoá khác." (không "ngắn hơn": gõ "zzzz" 4 ký tự mà bảo gõ ngắn hơn là vô lý); chỉ chip thì "Không có khách hàng nào có nhãn này. Bỏ bớt nhãn để xem thêm."; cả hai thì câu chung. Đừng khuyên "bỏ bớt nhãn" khi không nhãn nào đang chọn (đã dính 25/09/2026).
+- **Từ khoá dài cắt bằng số ký tự trong JS, không bằng CSS**: giữ ~24 ký tự + `…`, cặp ngoặc kép dính liền từ khoá (`"Công ty cổ phần thươ…"`), từ khoá đủ trong `title`. Cắt bằng `truncate` trên span nội tuyến thì dấu mở ngoặc rơi xuống cuối dòng trên và hở một khoảng trước dấu đóng (đã dính 25/09/2026). Từ khoá tô `--foreground`, phần câu còn lại `text-muted`.
+- Link đổi chữ theo thứ nó gỡ: "Xoá tìm kiếm" (chỉ từ khoá), **"Xoá lọc"** (có chip) — **cùng chữ với nút "Xoá lọc" cuối hàng chip**, vì hai nút làm cùng một việc; hai chữ khác nhau ("Xoá lọc" / "Xoá bộ lọc") là bắt người dùng đoán chúng có khác nhau không (`N6`, đã dính 25/09/2026). Bấm là gỡ hết, trả tiêu điểm về ô tìm.
+- Link màu `--foreground`, không màu nhấn: đây là lối ra, không phải hành động chính của trang.
+- Hàng tiêu đề bảng giữ nguyên (để người dùng thấy mình vẫn ở bảng nào) nhưng **ẩn checkbox chọn tất cả**: chọn tất cả của 0 dòng là nút vô nghĩa.
 
 ---
 

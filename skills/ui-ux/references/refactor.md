@@ -3,7 +3,7 @@
 Mở file này khi việc là **sửa giao diện một dự án đang chạy**, không phải dựng
 màn mới. Hai việc khác hẳn nhau về rủi ro và về thứ tự các bước.
 
-Đúc rút từ đợt refactor focus.camp (09/2026): Next 16 + React 19, 237k dòng
+Đúc rút từ một đợt refactor dự án thật (09/2026): Next 16 + React 19, 237k dòng
 TS/TSX, 14.218 dòng CSS, 4,5 tháng tuổi, có tiền thật chạy qua.
 
 ---
@@ -16,14 +16,14 @@ thì theo đề.
 1. **Mục tiêu mặc định là "chụp lại hiện trạng", không "đổi diện mạo".** Đề có chữ "làm lại giao diện", "cho đẹp hơn", "theo gu" thì mới là đổi diện mạo. Hai việc khác hẳn nhau về rủi ro.
 2. **Mặc định giữ pixel.** Mọi bước refactor không được đổi giao diện; thấy chỗ trái luật skill thì ghi vào danh sách "đề xuất sửa" lúc giao, không tự sửa trong cùng đợt. Đây là ràng buộc quyết định cách chọn token.
 3. **Người duyệt "trông vẫn đúng" mặc định là người giao việc.** Lúc giao đưa danh sách màn cần họ mở ra đối chiếu, kèm ảnh trước/sau nếu chụp được.
-4. **Tài liệu hiện có: không xoá, chỉ đánh dấu chỗ sai.** Ở focus.camp, `design-system.md` mô tả Discord chứ không mô tả sản phẩm — nhưng vẫn có một mục là kiến thức thật, xoá trắng là mất.
+4. **Tài liệu hiện có: không xoá, chỉ đánh dấu chỗ sai.** Ở dự án đó, `design-system.md` mô tả một sản phẩm khác chứ không mô tả chính nó — nhưng vẫn có một mục là kiến thức thật, xoá trắng là mất.
 
 ---
 
 ## L1. Đo trước khi kết luận. Luôn luôn.
 
 Cảm giác "code loạn quá" gần như luôn **đúng về triệu chứng** và gần như luôn
-**sai về nguyên nhân**. Ở đợt focus.camp, mọi giả định ban đầu đều lệch sau khi đo:
+**sai về nguyên nhân**. Ở đợt refactor đó, mọi giả định ban đầu đều lệch sau khi đo:
 
 | Tưởng là | Đo ra |
 | --- | --- |
@@ -71,12 +71,12 @@ trước** — tầng primitive, CSS Module, thư mục component — rồi mớ
 
 ## L3. Đừng tin tài liệu. Tin CSS đã build.
 
-Ở focus.camp, ba nguồn cùng mô tả một thang chữ, cả ba khác nhau:
+Ở dự án đó, ba nguồn cùng mô tả một thang chữ, cả ba khác nhau:
 
 | Token | `docs/design-system.md` | `AGENTS.md` | file token (chạy thật) |
 | --- | --- | ---: | ---: |
-| `--text-sm` | *(mô tả Discord)* | 13px | **15px** |
-| `--text-base` | *(mô tả Discord)* | 14px | **16px** |
+| `--text-sm` | *(mô tả sản phẩm khác)* | 13px | **15px** |
+| `--text-base` | *(mô tả sản phẩm khác)* | 14px | **16px** |
 
 Cách kiểm chân lý duy nhất — đọc CSS mà **trình duyệt thật nhận được**:
 
@@ -131,7 +131,7 @@ grep -rn "dc-" --include="*.tsx" app components   # tiền tố của trang vừ
 
 ## L6. Migrate tăng dần chỉ an toàn khi hai hệ BẰNG NHAU về giá trị
 
-Sai lầm suýt mắc ở focus.camp: định đổi tên **3.419 chỗ** để tách hai không gian
+Sai lầm suýt mắc ở dự án đó: định đổi tên **3.419 chỗ** để tách hai không gian
 tên biến.
 
 Không cần. Chỉ cần khai **đúng giá trị dự án đang chạy** vào hệ mới. Khi đó trang
@@ -145,7 +145,7 @@ kiểm soát, không phải rủi ro rải suốt đường.
 
 ## L7. Đừng "sửa" một token đang là `transparent`
 
-Ở focus.camp, `--border-subtle` và `--border-strong` đều là `transparent`, nghĩa
+Ở dự án đó, `--border-subtle` và `--border-strong` đều là `transparent`, nghĩa
 là hàng trăm rule CSS cũ dạng `border: 1px solid var(--border-subtle)` đang vẽ
 ra… không gì cả.
 
@@ -226,7 +226,7 @@ trông ổn cho tới lúc gặp khách thật.
 Test đang xanh mà đột nhiên đỏ sau khi đụng vào môi trường → **nghi môi trường
 trước khi nghi code**. Kiểm bằng cách chạy đúng file test đó riêng.
 
-Ba ca đã dính trong một tuần ở focus.camp, không cái nào là lỗi code: package
+Ba ca đã dính trong một tuần ở dự án đó, không cái nào là lỗi code: package
 manager sai phiên bản; shell nạp nvm sai đường; và thiếu partial index vì
 `db push` bỏ qua **im lặng** những thứ không diễn đạt nổi trong schema (partial
 index `WHERE`, trigger, generated column) — dựng lại DB local xong phải grep
@@ -237,7 +237,7 @@ phần thiếu.
 
 ## L13. Đo tác động thật, không chỉ đo số dòng
 
-Chỗ này focus.camp **chưa làm được**, ghi ra để không quên: chưa có số Lighthouse
+Chỗ này dự án đó **chưa làm được**, ghi ra để không quên: chưa có số Lighthouse
 trước/sau, nên chưa chứng minh được refactor cải thiện gì ngoài số dòng CSS.
 
 Số dòng CSS giảm là một chỉ số **dễ đo**, không phải chỉ số **quan trọng**. Nếu

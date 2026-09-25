@@ -187,7 +187,7 @@ Menu gọn, mục cao dưới 40px (`py-1.5`, `text-xs`) thì hạ về cặp c�
 `rounded-lg`, khung `p-2`.
 
 **Khe 4px là cho khối hẹp, đừng nâng lên 8px.** Dropdown, select, popover dạng
-danh sách rộng 224–320px: khe `p-1` là chuẩn chung (Radix, shadcn, Linear, Notion,
+danh sách rộng 224–320px: khe `p-1` là chuẩn chung của các thư viện menu (Radix, shadcn;
 menu macOS 5px). Nâng lên `p-2` thì mỗi bên mất thêm 4px bề ngang cho chữ, và nền
 sáng trông như lơ lửng giữa khung. **Khối rộng từ ~480px (command palette) thì
 khe `p-2`**: ở bề ngang đó khe 4px làm nền sáng thành một thanh chạy gần hết khung,
@@ -231,7 +231,7 @@ theo "Cắt email" bên dưới, không bẻ dòng.
 
 Mở từ avatar trên header, hoặc từ hàng profile chân sidebar (`app.md`).
 
-- **Tài khoản chỉ có một lối vào.** Đề bảo đặt avatar trên header mà chân sidebar đã có hàng profile thì chuyển hẳn lên header, bỏ hàng profile, báo một dòng lúc giao. Hai chỗ mở cùng một menu là một ý nói hai lần (`N3`); Vercel, GitHub, Linear, Supabase đều chỉ có một.
+- **Tài khoản chỉ có một lối vào.** Đề bảo đặt avatar trên header mà chân sidebar đã có hàng profile thì chuyển hẳn lên header, bỏ hàng profile, báo một dòng lúc giao. Hai chỗ mở cùng một menu là một ý nói hai lần (`N3`); các app lớn đều chỉ có một.
 - **Đầu menu mở từ avatar: tên + email, không avatar.** Avatar vừa bấm nằm ngay bên trên; lặp lại một avatar 40px ở đầu menu thì nó thành thứ nặng nhất menu (đã dính 24/09/2026). Tên `text-sm font-medium truncate`, email `text-xs text-muted` một dòng, khối `px-3 py-2`. Mở từ chân sidebar thì chỉ email, vì tên đã ở hàng profile.
 - Thứ tự: đầu menu, đường chia, Hồ sơ / Trợ giúp…, **Chuyển tài khoản** (chỉ khi có từ 2 tài khoản), đường chia, Đăng xuất (`I4`).
 - **Hàng tài khoản trong menu con**: avatar `size-8` (màu theo `avatar.md`), tên `text-sm font-medium truncate`, email một dòng, và ô `size-4` luôn giữ chỗ ở mép phải cho dấu `Check` của tài khoản đang dùng. Chỉ dấu tick, không tô nền, không chữ đậm thêm. Hàng `role="menuitemradio"`. Bấm tài khoản đang dùng thì chỉ đóng menu.
@@ -251,7 +251,7 @@ thành một component (vd `AccountEmail`) dùng chung:
 </span>
 ```
 
-Ra `tran.ngu…@evondev-studio.com` cạnh `tran.nguyen.an…@gmail.com`: mỗi hàng một
+Ra `tran.ngu…@minhphat-studio.vn` cạnh `tran.nguyen.an…@gmail.com`: mỗi hàng một
 dòng, vẫn phân biệt được. Email đầy đủ ở `title`. Dùng khuôn này ở mọi chỗ hiện
 email trong menu: đầu menu, hàng tài khoản, đầu menu chân sidebar.
 
@@ -311,7 +311,7 @@ bấm không ăn, mất lòng tin ngay.
 </div>
 ```
 
-- **Ghim từ trên (`sm:top-[15vh]`), không căn giữa dọc.** Gõ để lọc thì danh sách co lại; khung căn giữa thì ô tìm nhảy lên xuống theo từng phím gõ, ngay dưới con trỏ (`N1`). Ghim từ trên thì ô tìm đứng yên, chỉ đáy khung co. Linear, Raycast, GitHub đều ghim.
+- **Ghim từ trên (`sm:top-[15vh]`), không căn giữa dọc.** Gõ để lọc thì danh sách co lại; khung căn giữa thì ô tìm nhảy lên xuống theo từng phím gõ, ngay dưới con trỏ (`N1`). Ghim từ trên thì ô tìm đứng yên, chỉ đáy khung co. Các bảng lệnh phổ biến đều ghim.
 - **Khe `p-2`, mục `rounded-lg`**: khung 16 = 8 + 8 (`M19`). Palette rộng 576px, khe `p-1` của dropdown ở bề ngang này thì nền sáng thành một thanh gần hết khung (lý do ở "Dropdown" bên trên). Mục `h-10`, icon `size-4 text-muted`, chữ `text-sm`.
 - **Icon ô tìm thẳng cột icon mục**: ô tìm `px-5` = khe `p-2` + mục `px-3`. Đổi một bên thì đổi cả hai.
 - **Nhãn nhóm gần nhóm của nó**: `pt-5 pb-1`. **Đo từ chữ tới chữ, không từ mép hàng**: mục `h-10` đã có sẵn 10px khoảng thở trên và dưới chữ, nên `pt-4 pb-1.5` nhìn bằng mắt chỉ còn 26px trên, 16px dưới, nhãn vẫn lơ lửng giữa hai nhóm (đã dính 2 lần 24/09/2026). `pt-5 pb-1` ra 30px trên, 14px dưới, khoảng gấp đôi, mắt gắn nhãn với nhóm bên dưới. Kiểu chữ như nhãn nhóm sidebar (`app.md`): IN HOA bằng CSS, xám. Không kẻ đường giữa các nhóm.
@@ -345,7 +345,7 @@ Mở tại chỗ từ nút chuông trên header (`I24`), đóng bằng bấm ra 
 
 - **Khung**: popover `w-96 max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-surface shadow-lg`, neo mép phải nút chuông, portal ra `body` (`I22`).
 - **Mép trên không đứng sát đường kẻ header.** Panel neo theo nút với khoảng cách mặc định thì mép trên thường rơi cách đường kẻ header vài px, đường kẻ chọc vào góc bo của panel như hai thứ suýt khớp (đã dính 24/09/2026: lệch 3px). Chỉnh khoảng cách (`sideOffset`) cho mép trên panel nằm **dưới đường kẻ 8px**. Luật chung cho mọi khối nổi mở từ header.
-- **Header: tiêu đề bên trái, "Đánh dấu đã đọc" bên phải**, nút `ghost h-8`, chỉ chữ (`I1`). Mọi panel thông báo thật đều có nút này (GitHub, Linear, Vercel, Slack); thiếu nó thì muốn dọn bốn chấm người dùng phải bấm vào bốn thông báo (đã dính 24/09/2026). Không còn gì chưa đọc thì ẩn nút. Đánh dấu cả danh sách hay chỉ tab đang xem là logic của dự án, handler để rỗng (`I25`). Không thêm icon bánh răng hay nút ⋯ khi chưa được yêu cầu.
+- **Header: tiêu đề bên trái, "Đánh dấu đã đọc" bên phải**, nút `ghost h-8`, chỉ chữ (`I1`). Mọi panel thông báo thật đều có nút này; thiếu nó thì muốn dọn bốn chấm người dùng phải bấm vào bốn thông báo (đã dính 24/09/2026). Không còn gì chưa đọc thì ẩn nút. Đánh dấu cả danh sách hay chỉ tab đang xem là logic của dự án, handler để rỗng (`I25`). Không thêm icon bánh răng hay nút ⋯ khi chưa được yêu cầu.
 - **Tab `boxed`** như tab trạng thái trên bảng (`components/small-controls.md`): chữ trơn, không số đếm (chấm trên chuông đã báo có chưa đọc).
 - **Chiều cao danh sách = chiều cao của tab Tất cả**, chặn trên `max-h-[min(28rem,calc(100dvh-13rem))]`, cuộn trong khung theo `I18` (đầu dưới rãnh chạm góc bo: `mb-4`). Tab Tất cả chứa mọi thứ nên luôn cao nhất; panel mở ở tab đó, đo chiều cao danh sách một lần rồi đặt làm `min-height` cho các tab còn lại: bấm sang tab rỗng hay tab ít mục thì mép dưới đứng yên (`N1`). Không có thông báo nào thì panel gọn theo câu rỗng (`py-10`). Chiều cao đo ở tab Tất cả là chiều cao **đã hạ cho mục cuối lộ nửa** (`getPeekListHeight`, `I18`): thông báo cao thấp khác nhau nên không chốt được một con số.
   Đã thử hai cách và bỏ (24/09/2026): `min-h-72` thì sang tab rỗng vẫn sụp 448 → 288px; **cao cố định** thì hết sụp, nhưng lúc chưa có thông báo nào panel là một khối trắng 563px với một dòng chữ xám giữa lòng, trông như tải chưa xong.

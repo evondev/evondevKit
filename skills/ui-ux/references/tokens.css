@@ -174,7 +174,7 @@
    tử đang cuộn). Ẩn bằng MÀU TRONG SUỐT chứ không bằng `scrollbar-width: none`:
    bề rộng 4px vẫn giữ chỗ, nên lúc thanh hiện ra nội dung không bị đẩy ngang.
    Màu lấy từ --foreground nên nền tối tự đảo, không cần khai lại.
-   Nguồn: focus.camp app/globals.css, chủ dự án chốt 08/09/2026.
+   Nguồn: dự án thật, chủ dự án chốt 08/09/2026.
 
    ⚠️ Màu thumb đi qua BIẾN --scrollbar-thumb đặt trên chính khung cuộn, không
    viết `*:hover::-webkit-scrollbar-thumb`. Chrome không vẽ lại thumb khi selector
@@ -196,7 +196,7 @@
 /* Firefox. ⚠️ PHẢI nằm trong @supports: từ Chrome 121, phần tử có
    scrollbar-width/scrollbar-color là Chrome BỎ QUA toàn bộ ::-webkit-scrollbar
    và vẽ thanh "thin" gốc ~8-11px chiếm chỗ. Để trần thì bản 4px ở trên chỉ còn
-   chạy trên Safari (dính ở focus.camp 18/09/2026). */
+   chạy trên Safari (dính ở dự án thật 18/09/2026). */
 @supports not selector(::-webkit-scrollbar) {
   * { scrollbar-width: thin; scrollbar-color: transparent transparent; }
   *:hover { scrollbar-color: color-mix(in srgb, var(--foreground) 18%, transparent) transparent; }

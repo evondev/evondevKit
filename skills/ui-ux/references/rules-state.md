@@ -8,14 +8,14 @@ Nguồn duy nhất cho nút, hover, focus, danh sách, modal. Con số ở `budg
 
 > **⚠️ Đảo luật.** Bản cũ của skill này viết "ba variant `primary` / `ghost` /
 > `danger`, không outline" và "nút mặc định không icon". **Cả hai đã bỏ.** Chủ dự
-> án chốt ngược lại ở focus.camp ngày 13/09/2026. Đừng hồi sinh luật cũ.
+> án chốt ngược lại ngày 13/09/2026. Đừng hồi sinh luật cũ.
 
 **I1. Nút mặc định là nút viền, không phải nền màu nhấn. Icon trái chỉ khi nó nói đúng hành động.**
 
 Dựng nút mới → nút viền. Gắn icon lucide **bên trái** chữ khi có một glyph gọi đúng tên
 hành động: thêm (`plus`), lọc, tải xuống, xuất, sao chép, chia sẻ. Nút form và nút
 trong modal (Lưu, Huỷ, Gửi, Tạo công việc) **chỉ có chữ**: tiêu đề đã nói việc gì, icon
-chỉ lặp lại (Linear, GitHub, Stripe, Polaris). Bản 13/09/2026 bắt mọi nút có icon, nới
+chỉ lặp lại. Bản 13/09/2026 bắt mọi nút có icon, nới
 lại ngày 23/09/2026.
 
 *Vì sao:* nguyên lời chủ dự án — *"không nên để brand bị nhiều màu quá trong dự
@@ -41,7 +41,7 @@ nhau là chưa quyết định hộ người dùng.
 **I4. Hành động nguy hiểm không đỏ đặc.**
 
 Áp cho xoá, huỷ tài khoản, rời nhóm, **và đăng xuất**. Đăng xuất không mất dữ liệu,
-GitHub, Linear để nó trung tính; nhưng **chủ dự án chốt giữ đỏ khi rê vào** (23/09/2026,
+Nhiều app để nó trung tính; nhưng **chủ dự án chốt giữ đỏ khi rê vào** (23/09/2026,
 sau khi thử bản trung tính: "đăng xuất mất danger"). Đăng xuất chỉ nằm trong menu, nên
 nó chỉ đỏ lúc rê, không bao giờ đỏ sẵn. Có hai dạng tuỳ chỗ đứng:
 
@@ -86,7 +86,7 @@ và một variant `glow` dùng ba lớp radial gradient — đó là ví dụ ng
 **I7. "Xem tất cả", "Đọc thêm" là nút `ghost`, không phải nút nền xám.**
 
 Nó dẫn sang màn khác và là hành động phụ của khối: phải trông bấm được, nhưng không
-được nặng ngang tiêu đề. Stripe, GitHub, Polaris đều để nó nhẹ ở góc header.
+được nặng ngang tiêu đề. Các app lớn đều để nó nhẹ ở góc header.
 
 - Dùng **nút `ghost` `h-8`**: chữ `text-foreground/70`, rê vào mới có nền và chữ đậm lên. Không icon mũi tên. Bản cũ dùng `secondary` nền xám cao 40px ở đầu mọi card, card nào cũng có một khối xám kéo mắt (bỏ 23/09/2026).
 - Không phải link chữ màu trơn: vẫn là nút, có vùng bấm và nền khi rê vào.
@@ -157,7 +157,7 @@ Thiết bị không có chuột thì không có hover: nút ẩn-hiện-khi-rê 
 
 `focus-visible` **không bao giờ hiện khi bấm chuột**, chỉ khi Tab tới. Vì vậy vòng
 focus không làm giao diện nặng lên với người dùng chuột, mà người dùng bàn phím
-thì thấy rõ mình đang đứng ở đâu. Linear, GitHub, Vercel, Polaris đều làm vậy.
+thì thấy rõ mình đang đứng ở đâu. Các app lớn đều làm vậy.
 
 | Phần tử | Focus bàn phím |
 | --- | --- |
@@ -201,7 +201,7 @@ sáng. Không dùng Radix thì khi chuột vào mục nào, gọi `.focus()` cho
 
 Mặc định của skill là **vòng mờ chỉ hiện khi dùng bàn phím** (`I13`). Bỏ luôn cả
 vòng đó, tức bấm Tab không thấy gì, thì người dùng bàn phím không còn biết mình đang
-đứng ở nút nào. focus.camp đã làm vậy (16/09/2026) và ghi rõ đánh đổi. Nếu làm
+đứng ở nút nào. Đã có dự án làm vậy (16/09/2026) và ghi rõ đánh đổi. Nếu làm
 thì:
 
 - Ghi lý do ngay tại chỗ, kèm câu **"đừng sửa lại khi thấy bấm Tab không có dấu hiệu gì"**.
@@ -224,7 +224,7 @@ màu đè lên ảnh thì không đọc ra là "đang chọn" — dùng vòng `b
 
 Danh sách hay bảng quá khoảng 25 dòng thì thêm phân trang, hoặc nút tải thêm.
 Nguồn dữ liệu trả về tổng thì hiện **tổng số** và **đang xem tới đâu**: "51 tới 75
-trong 312 dòng". Không có tổng (API phân trang bằng con trỏ, như Stripe, Linear) thì
+trong 312 dòng". Không có tổng (API phân trang bằng con trỏ) thì
 chỉ "‹ Trước / Sau ›" hoặc "Tải thêm", **không bịa tổng** (`N7`, `N10`).
 
 **I17. Ngưỡng giấu nội dung sau một cú bấm:** chỉ dùng accordion hay tab khi danh
@@ -233,7 +233,7 @@ hiện hết.
 
 **I18. Thanh cuộn tự ẩn: đứng yên thì không thấy, rê vào hoặc đang cuộn thì hiện.**
 
-Công thức lấy từ focus.camp (chốt 08/09/2026, sửa lỗi Chrome 18/09/2026), CSS
+Công thức đã chạy ở dự án thật (chốt 08/09/2026, sửa lỗi Chrome 18/09/2026), CSS
 nằm sẵn trong `tokens.css`, áp cho cả app:
 
 - Thanh **4px**, rãnh trong suốt, thumb bo tròn hẳn.
@@ -282,7 +282,7 @@ cuộn ngang**. Vùng cuộn dọc thì để thanh tự ẩn lo, đừng gắn 
 **Thanh ẩn thì mép cắt phải báo "còn nữa".** Thanh tự ẩn chỉ hiện khi chuột đã
 nằm trong vùng cuộn; người vừa mở command palette bằng ⌘K, tay còn trên bàn
 phím, không thấy gì cả. Tín hiệu lúc đứng yên là **mục cuối bị mép dưới cắt
-ngang, lộ khoảng một nửa** (macOS, Linear, Raycast đều dựa vào đây, không ai để
+ngang, lộ khoảng một nửa** (macOS và các app lớn đều dựa vào đây, không ai để
 thanh cuộn đứng sẵn):
 
 - **Chọn `max-h` sao cho mép dưới cắt giữa một mục, không cắt sát ranh giới hai mục.** Cắt còn thiếu vài px thì trông như danh sách hết ở đó (đã dính 24/09/2026: palette cắt mục "Hợp đồng" lộ gần trọn, không ai biết còn mục bên dưới). Công thức cho khung `p-1`, mục `h-10`: `max-h` = 40 × số mục trọn + 4 + 20 → **`max-h-76`** (304px, lộ 7 mục rưỡi) cho select, dropdown dài. Danh sách có nhãn nhóm thì đo ở trạng thái mặc định rồi xê `max-h` từng bậc 4px tới khi mục cuối lộ giữa 1/3 và 2/3.
@@ -340,7 +340,7 @@ ra ngoài là mất sạch — không có nháp, không undo. Đóng bằng nút
 tức là phải cố ý.
 
 - `e.target === e.currentTarget` **không phải cách vá**: nó chỉ chặn click bị bubble từ bên trong, còn click thẳng vào backdrop — đúng cái tay lỡ bấm — vẫn đóng. Xoá cả prop `onClick` đi.
-- Gỡ dismiss thì **phải chắc còn đường đóng khác**. Dính thật ở focus.camp: hai bottom sheet lấy backdrop làm lối ra DUY NHẤT, gỡ xong là khoá luôn người dùng trong sheet.
+- Gỡ dismiss thì **phải chắc còn đường đóng khác**. Dính thật ở một dự án: hai bottom sheet lấy backdrop làm lối ra DUY NHẤT, gỡ xong là khoá luôn người dùng trong sheet.
 
 **I21. Vẫn giữ dismiss cho thứ chỉ để đọc hoặc chọn.** Lightbox ảnh, xem chi
 tiết đơn, roster, dropdown, menu, panel thông báo, drawer mobile. Đóng nhầm mấy

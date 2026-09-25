@@ -85,7 +85,7 @@ Xem mục **Khung app có sidebar** bên dưới cho công thức đầy đủ.
 - **Mỗi link cao 40px** (`h-10`, `px-3`), bo `rounded-xl` 12px theo luật bo-theo-chiều-cao `F1`. Link 36px trông chật, nền hover lọt thỏm; 40px thì hàng thoáng và bấm trúng dễ hơn.
 - **Icon và chữ đi cùng nhau.** Lúc thường cả hai `text-foreground/70`: dịu hơn chữ chính nhưng **không mờ tới `--muted`**, xám `--muted` trên nền trắng là đọc không ra tên mục. Hover hay đang chọn thì **cả icon lẫn chữ** lên `text-foreground`. Đặt màu trên phần tử `<a>`, icon dùng `currentColor`, đừng gán màu riêng cho icon, nếu không hover chỉ sáng mỗi chữ.
 - **Nhãn nhóm IN HOA, chữ XÁM**: `text-xs font-medium uppercase tracking-wide text-muted`, hover mới lên `text-foreground`. IN HOA đã đủ tách nhãn khỏi link, nên nhãn phải **nhạt hơn** mục con, không đậm hơn: nhãn đen `--foreground` cộng IN HOA thì nặng nhất cột, lấn cả mục đang chọn (đã dính 21/09/2026). Viết thường thì nhãn nhóm trông y như một mục nav nhạt màu, mắt không tách được đâu là tiêu đề, đâu là link (đã dính 21/09/2026). Chữ trong dữ liệu vẫn viết thường ("Công việc"), IN HOA bằng CSS, để screen reader không đánh vần từng chữ.
-- **Giữa các nhóm KHÔNG kẻ đường chia**, tách bằng khoảng trắng `mt-4` và nhãn nhóm. Nhãn IN HOA xám + chevron đã đủ báo "nhóm mới bắt đầu" kể cả khi sidebar cuộn; thêm đường kẻ là ba tín hiệu cho một ý (`N3`). Linear, Notion, Vercel, GitHub đều không kẻ. Bản cũ kẻ `border-t` trên mỗi nhóm, tới khi token viền đậm lên `#e4e4e7` thì ba đường kẻ chạy ngang cột thành thứ nặng nhất sidebar (bỏ 23/09/2026, chủ dự án: "đường line hơi đậm").
+- **Giữa các nhóm KHÔNG kẻ đường chia**, tách bằng khoảng trắng `mt-4` và nhãn nhóm. Nhãn IN HOA xám + chevron đã đủ báo "nhóm mới bắt đầu" kể cả khi sidebar cuộn; thêm đường kẻ là ba tín hiệu cho một ý (`N3`). Các app quản lý lớn đều không kẻ. Bản cũ kẻ `border-t` trên mỗi nhóm, tới khi token viền đậm lên `#e4e4e7` thì ba đường kẻ chạy ngang cột thành thứ nặng nhất sidebar (bỏ 23/09/2026, chủ dự án: "đường line hơi đậm").
 - **Sidebar chỉ còn một đường kẻ `--border-strong`**: dưới đầu sidebar (tên workspace). Trên nền trắng, `--border` (`#f7f7f8`) gần như tàng hình, đường chia mất tác dụng (đã dính 21/09/2026). Cả sidebar một màu viền, không chỗ rõ chỗ mờ.
 - **Đường kẻ chạy HẾT bề ngang sidebar, mép chạm mép.** Không để padding của vùng nav cắt cụt hai đầu đường. Cách làm: vùng nav chỉ có padding dọc (`py-3`), padding ngang đặt trên **từng nhóm** (`px-3`), đường kẻ nằm trên phần tử nhóm nên tự dài hết. Đừng vá bằng `-mx-3`: đổi padding một chỗ là đường lệch. **Vùng nav cuộn được thì thanh cuộn không được giữ chỗ** (`scrollbar-gutter: auto`, thanh cuộn tự ẩn theo `I18`): giữ gutter 4px là mọi đường kẻ nhóm cụt cách mép phải 4px, trong khi đường dưới tên workspace và đường trên Cài đặt (nằm ngoài vùng cuộn) vẫn chạy hết (đã dính 23/09/2026, lộ ra khi viền đậm lên `#e4e4e7`).
 - **Sidebar nhiều link thì nhóm thu gọn được.** Từ **3 nhóm có nhãn trở lên**, hoặc tổng số mục đủ để sidebar phải cuộn: nhãn nhóm thành một **nút rộng hết hàng** (`I29`), chevron ở mép phải (`ChevronDown` `size-4`, xoay `-rotate-90` khi đóng), có `aria-expanded`. Hover nhãn là nền `--background` như mục nav.
@@ -96,7 +96,7 @@ Xem mục **Khung app có sidebar** bên dưới cho công thức đầy đủ.
   - Nhóm đầu không nhãn (Tổng quan, Hộp thư) thì luôn mở, không thu gọn.
   - Mặc định **mở hết**. Nhóm chứa trang đang xem thì **không được đóng lúc tải trang**, nếu không người ta không thấy mình đang ở đâu.
 - **Thanh cuộn của sidebar tự ẩn** theo `I18`: đứng yên không thấy, rê vào hoặc đang cuộn mới hiện, 4px. Thanh cuộn xám đứng yên chạy dọc sidebar trắng là thứ nặng nhất trên cột, nặng hơn cả chữ (đã dính 21/09/2026).
-- **Số đếm căn phải, là số trơn** `text-xs tabular-nums text-muted`, không pill, không viền. Năm pill viền cạnh nhau trên một cột là năm khung nhỏ kéo mắt (bỏ pill ngày 23/09/2026; Linear, Vercel dùng số trơn). Mục đang chọn thì số lên `text-foreground` cùng chữ. **Không badge màu brand**, xem `../components/small-controls.md`.
+- **Số đếm căn phải, là số trơn** `text-xs tabular-nums text-muted`, không pill, không viền. Năm pill viền cạnh nhau trên một cột là năm khung nhỏ kéo mắt (bỏ pill ngày 23/09/2026). Mục đang chọn thì số lên `text-foreground` cùng chữ. **Không badge màu brand**, xem `../components/small-controls.md`.
 
 ```tsx
 <Link
@@ -167,7 +167,7 @@ Nhóm thu gọn được: nút nhãn cùng khuôn mục con, trượt bằng `gr
 ```
 Mở                                 Thu gọn
 ┌──────────────────┐               ┌──────┐
-│ ◐ Evondev Studio │               │  ◐   │
+│ ◐ Tên workspace  │               │  ◐   │
 ├──────────────────┤               ├──────┤
 │ ⌂ Tổng quan      │               │  ⌂   │
 │ ✉ Hộp thư    99+ │               │  ✉•  │  <- chấm chỉ cho số "cần xử lý"
@@ -187,7 +187,7 @@ Mở                                 Thu gọn
 Mặc định là **thu về dải icon**, không ẩn hẳn. Ẩn hẳn (bề rộng về 0) chỉ làm khi
 người dùng yêu cầu.
 
-- **Mục nào đang hiện lúc mở thì lúc thu vẫn hiện, thành icon.** Nhóm đang mở giữ nguyên icon các mục con; nhóm đang đóng thì vẫn đóng. Như chế độ `collapsible="icon"` của sidebar shadcn, Jira, Vercel. Bản cũ chỉ giữ nhóm đầu (3 icon) còn mọi nhóm có nhãn đều ẩn: mở thấy 13 mục, thu còn 3, người dùng tưởng mất mục, và trang đang xem nằm trong nhóm bị ẩn thì dải icon không có mục nào đang chọn (bỏ 23/09/2026, chủ dự án).
+- **Mục nào đang hiện lúc mở thì lúc thu vẫn hiện, thành icon.** Nhóm đang mở giữ nguyên icon các mục con; nhóm đang đóng thì vẫn đóng. Như chế độ `collapsible="icon"` của sidebar shadcn. Bản cũ chỉ giữ nhóm đầu (3 icon) còn mọi nhóm có nhãn đều ẩn: mở thấy 13 mục, thu còn 3, người dùng tưởng mất mục, và trang đang xem nằm trong nhóm bị ẩn thì dải icon không có mục nào đang chọn (bỏ 23/09/2026, chủ dự án).
   - **Chỉ nhãn nhóm và chevron mờ đi tại chỗ** (`opacity-0` + `inert`), hàng nhãn vẫn giữ chiều cao. Khoảng trống nhãn để lại chính là chỗ tách nhóm trong dải icon, và mọi icon **đứng yên đúng vị trí** lúc thu và lúc mở (luật icon đứng yên bên dưới). Gỡ hàng nhãn ra thì icon bên dưới nhảy lên.
   - **Hàng nhãn lúc thu có một gạch ngắn** thay cho chữ: `w-4 h-px bg-border-strong`, nằm giữa hàng theo chiều dọc, **thẳng tâm icon** (hàng nhãn `px-3` nên gạch tự rơi vào 24–40px, tâm 32px, không `justify-center`). Như số đếm, gạch và chữ là **hai bản chuyển bằng opacity**: chữ + chevron `opacity-0`, gạch `opacity-100`, cả hai luôn trong DOM; gạch `aria-hidden`. Chỉ khoảng trống thì một nhóm đang đóng thành một lỗ trống giữa dải icon: đóng Kinh doanh rồi thu gọn, giữa Tài liệu và Thành viên trống 156px, gần gấp ba khoảng thường, không ai biết ở đó có một nhóm (đã dính 25/09/2026, chủ dự án duyệt gạch ngắn). Có gạch thì mỗi khoảng trống đọc ra là ranh giới nhóm, hai gạch liền nhau là có nhóm đang đóng ở giữa.
   - **Vùng nav cuộn được cả lúc thu** (dải icon có thể dài hơn màn). Lúc thu thì **ẩn hẳn thanh cuộn** (`[scrollbar-width:none]`), vẫn cuộn bằng chuột, phím, cảm ứng: thanh cuộn 4px giữ chỗ làm ô icon 40px còn 36px và lệch khỏi tâm (đã dính 23/09/2026).
@@ -323,7 +323,10 @@ Khách hàng từ 3/2024, 18 đơn hàng, doanh thu 1.284.500.000 đ
 
 - **Đường dẫn chỉ ghi các cấp cha, không ghi trang đang đứng.** Tên trang nằm ngay dưới, ghi lại là lặp ("Cài đặt › Thành viên" rồi "Thành viên"). Ghi một chữ khác tên trang còn tệ hơn: "Khách hàng › Hồ sơ" trên đầu "Công ty TNHH Minh Phát", người đọc không biết mình đang ở đâu (đã dính 22/09/2026). Mỗi mục cha là link. Mục dài thì `max-w-48 truncate` kèm `title`.
 - **Đường dẫn đặt ở MỘT chỗ.** App đã có đường dẫn trên thanh header `h-16` thì đầu trang không lặp lại, chỉ còn tên, mô tả, nút.
-- **Một trang đúng một `<h1>`, và đó là tên trang trong page header.** Thanh trên cùng của khung app (tên mục đang mở, breadcrumb) dùng `<p>` hoặc `<span>`, không `<h1>`: hai `<h1>` thì trình đọc màn hình không biết trang này tên gì (đã dính 23/09/2026: "Việc của tôi" trên header và "Tạo công việc mới" cùng là `<h1>`).
+- **Một trang đúng một `<h1>`, và tên trang chỉ ghi MỘT chỗ.** Hai `<h1>` thì trình đọc màn hình không biết trang này tên gì (đã dính 23/09/2026: "Việc của tôi" trên header và "Tạo công việc mới" cùng là `<h1>`); không `<h1>` nào thì cũng vậy (đã dính 25/09/2026: trang khách hàng bỏ đầu trang để khỏi lặp "Khách hàng", mất luôn `<h1>`). Chia theo loại trang:
+  - **Trang không có đầu trang riêng** (danh sách, bảng quản lý, tổng quan, kanban): tên trên thanh header `h-16` **chính là `<h1>`**, giữ nguyên cỡ chữ của thanh (`text-base font-bold`, cỡ chữ không đổi theo thẻ). Vùng nội dung không lặp lại tên; nút chính ("+ Thêm khách hàng") nằm cuối hàng công cụ cạnh ô tìm.
+  - **Trang có đầu trang riêng** (chi tiết bản ghi, form tạo, trang có mô tả hay nút riêng cho bản ghi): `<h1>` là tên trong đầu trang; thanh header chỉ ghi **cấp cha** ("Khách hàng" là link), bằng `<p>`/`<nav>`, không ghi lại tên trang.
+  - Khung app nhận tên trang từ route rồi tự chọn thẻ: có đầu trang riêng thì `<p>`, không thì `<h1>`. Đừng để mỗi trang tự nhớ.
 - **Tên trang `text-xl`**, trang chi tiết của một bản ghi (khách hàng, đơn, dự án) thì `text-lg` theo `T9`. Không `text-2xl`, `text-3xl`: đó là cỡ hero (`budgets.md`). `text-balance` để tên dài xuống dòng đều.
 - **Khối chữ `min-w-0 flex-1`.** Thiếu `flex-1` thì khối co theo dòng dài nhất (thường là đường dẫn), mô tả bị ép xuống dòng ở nửa khung dù bên phải còn trống (đã dính 22/09/2026, sửa `max-w` không ăn vì bề rộng đã bị flex bóp trước).
 - **Tên trang `font-semibold`, không `tracking-tight`** ở cỡ `lg`/`xl`. Tên trang là chữ đậm nhất vùng nội dung; nhạt hơn tiêu đề khối bên dưới là đảo thứ bậc.
@@ -366,8 +369,8 @@ mấy gạch đầu dòng trên. File đó đã qua vòng tra tấn 375px, cuộ
 
 ```
 ┌─────────────────────────────────────┐
-│ Tiêu đề              [+ Thêm mới]   │
-│ tab  [tab]  tab           [tìm    ] │  <- chọn một: tab; chọn nhiều: chip
+│ tab  [tab]  tab   [tìm    ] [+ Thêm]│  <- chọn một: tab; chọn nhiều: chip
+│                                     │     tên trang là <h1> trên thanh header, không lặp ở đây
 ├─────────────────────────────────────┤
 │ ⬤ nội dung dòng      giá trị  ⋯ ⋯  │  <- hành động phụ ẩn, hiện khi hover
 │ ⬤ nội dung dòng      giá trị       │
@@ -391,8 +394,8 @@ Bảng quản lý (khách hàng, đơn hàng, thành viên…) có tìm, lọc, 
 nhiều dòng. Bộ mặc định, dựng đủ không hỏi:
 
 ```
-Khách hàng                                       [+ Thêm khách hàng]
-[Tất cả 32] Đang giao dịch 18  Tiềm năng 9  Ngừng 5   [tìm…] [Lọc]
+(tên trang "Khách hàng" là <h1> trên thanh header, không lặp ở đây)
+[Tất cả 32] Đang giao dịch 18  Tiềm năng 9  Ngừng 5  [tìm…] [Lọc] [+ Thêm khách hàng]
 ┌──────────────────────────────────────────────────────────────────┐
 │ ☐  Khách hàng ↕     Công ty      Trạng thái      Doanh thu ↕   ⋯ │
 ├──────────────────────────────────────────────────────────────────┤
@@ -402,24 +405,27 @@ Khách hàng                                       [+ Thêm khách hàng]
 │ 1 tới 10 trong 32 khách hàng        Mỗi trang [10▾]  ‹ 1 2 3 4 › │
 └──────────────────────────────────────────────────────────────────┘
 
-Khi có dòng được chọn, hàng tab + tìm được THAY bằng:
+Khi có dòng được chọn, hàng tab + tìm + nút thêm được THAY bằng:
 [Đã chọn 3 · Bỏ chọn]                                     [Xoá 3 dòng]
 ```
 
 - **Tab trạng thái** ở trên bảng theo "Thanh tab" trong `../components/small-controls.md` — mở file đó lấy variant và class, đừng chép lại ở đây. Bảng này thường có thêm hàng chip lọc ngay dưới hàng tab, và khi đó tab dùng `underline`. "Bộ lọc" trong đề không chỉ là hàng tab: các trường khác (công ty, người phụ trách, khoảng ngày) vào nút **Lọc** mở popover.
+- **Dưới `sm`, tab trạng thái không vừa một hàng thì thành một nút dropdown**, không cuộn ngang: nút viền `h-10` ghi **nhãn "Trạng thái:" (`text-muted`) rồi trạng thái đang chọn kèm số** ("Trạng thái: Tất cả · 32") và `ChevronDown`; thiếu nhãn thì nút "Tất cả · 32" đứng một mình trông như ô nhập hay nút lạ, không biết đang lọc theo gì (chủ dự án chốt 25/09/2026). Nút mở ra là danh sách đủ các trạng thái, mỗi mục kèm số, mục đang chọn có dấu check (khuôn Select ở `../components/choice-controls.md`, danh sách mở ra theo Dropdown ở `overlay.md`). Đây là bước 3 của `R10`: hàng tab cuộn ngang làm tab cuối nằm **hẳn** ngoài khung ("Ngừng giao dịch 6" bắt đầu ở 370px trong khung 367px), mép mờ không có gì để mờ, người dùng tưởng chỉ có ba trạng thái (đã dính 25/09/2026). Rút chữ ("Đang GD") thì mất nghĩa. Nút **căn trái, rộng theo nội dung** (`w-fit`), đứng riêng một hàng: nó là bộ lọc, đọc từ trái như hàng chip bên dưới và ô tìm bên trên; căn phải thì một nút lẻ trôi giữa khoảng trống, tách khỏi hàng chip nó đi cùng. Không kéo rộng hết hàng: trông như ô nhập. Hàng chip vẫn cuộn ngang, có mép mờ (`R10`; vạch chỉ vị trí chỉ khi người dùng chọn): chip là lọc thêm, thấy một phần là đủ biết còn.
 - **Hover dòng `hover:bg-surface-hover`**, không `hover:bg-background` (`I10`). Dòng chạm hai mép khung trắng mà tô màu nền trang là trông như thủng.
 - **Cột trạng thái là badge màu** theo `M7`, không chấm xám + chữ đen.
-- **Nút gỡ lọc ghi "Xoá lọc", không ghi "Bỏ chọn".** Khi đang chọn dòng, thanh trên cùng đã có "Bỏ chọn" (bỏ tick dòng); cuối hàng chip mà cũng "Bỏ chọn" thì một màn có hai nút cùng chữ khác việc (`N6`, đã dính 23/09/2026).
+- **Nút gỡ lọc ghi "Xoá lọc", không ghi "Bỏ chọn".** Khi đang chọn dòng, thanh trên cùng đã có "Bỏ chọn" (bỏ tick dòng); cuối hàng chip mà cũng "Bỏ chọn" thì một màn có hai nút cùng chữ khác việc (`N6`, đã dính 23/09/2026). **"Xoá lọc" cuối hàng chip chỉ hiện khi có chip đang chọn** (bấm là gỡ hết: chip, từ khoá, tab về Tất cả). Chỉ có từ khoá thì không hiện: ô tìm đã có nút `X` riêng, khối rỗng đã có "Xoá tìm kiếm"; thêm nút này là **ba nút cùng gỡ một từ khoá** trên một màn, và ở 375px nó chiếm một phần ba hàng chip (đã dính 25/09/2026, sau khi thử cho nó hiện với mọi bộ lọc).
 - **Cột chữ tự co giãn, đừng khoá `max-w` khi bảng còn dư chỗ.** Cột tên và cột công ty để co theo bảng, `truncate` chỉ bật khi thật sự hết chỗ. Khoá cứng thì ra cảnh tên bị cắt "Tôn Nữ Thị Phương Thảo N…" trong khi giữa bảng còn một mảng trắng (đã dính 23/09/2026).
-- **Đếm cột trước khi dựng**: khung còn ~970px ở 1280px khi sidebar mở, quá ~6 cột là bắt đầu chật. Thử theo thứ tự: gộp cột (email xuống dưới tên), ẩn cột ít dùng sau nút "Hiển thị cột", rồi mới cho cuộn ngang trong khung với cột đầu ghim `sticky left-0` (`R9`). Stripe, Polaris vẫn có bảng 7–9 cột cuộn ngang, cuộn không sai; sai là cuộn khi chưa thử gộp.
+- **Đếm cột trước khi dựng**: khung còn ~970px ở 1280px khi sidebar mở, quá ~6 cột là bắt đầu chật. Thử theo thứ tự: gộp cột (email xuống dưới tên), ẩn cột ít dùng sau nút "Hiển thị cột", rồi mới cho cuộn ngang trong khung với cột đầu ghim `sticky left-0` (`R9`). Bảng 7–9 cột cuộn ngang ở các sản phẩm lớn vẫn có, cuộn không sai; sai là cuộn khi chưa thử gộp.
 - **Cột tiền là đúng ca cần `tabular-nums`** (`T16`). Font không có bảng `tnum` thì class chỉ là chữ chết, các mốc nghìn không thẳng cột: báo người dùng một dòng lúc giao, đổi font là việc của họ (`N10`).
 - **Hành động dòng** theo `I11`: 1–2 cái thì icon button luôn hiện ở cột cuối; từ 3 cái hoặc có xoá thì một nút `MoreHorizontal` ra dropdown. Cột cuối hẹp `w-12`, căn phải, không tiêu đề (có `<span class="sr-only">Thao tác</span>`).
-- **Chọn nhiều dòng:** checkbox đầu dòng, checkbox tiêu đề có ba trạng thái (không / một phần / tất cả trong trang). Có dòng được chọn thì **thanh hành động hàng loạt thay chỗ** hàng tab, cùng chiều cao để bảng không nhảy. Xoá hàng loạt luôn qua hộp xác nhận (`../layouts/overlay.md`), nói rõ số dòng.
+- **Chọn nhiều dòng:** checkbox đầu dòng, checkbox tiêu đề có ba trạng thái (không / một phần / tất cả trong trang). Không có dòng nào (rỗng, rỗng do lọc, đang tải, lỗi) thì **ẩn checkbox tiêu đề**, giữ chỗ để cột không xê dịch. Có dòng được chọn thì **thanh hành động hàng loạt thay chỗ** hàng tab, cùng chiều cao để bảng không nhảy. Xoá hàng loạt luôn qua hộp xác nhận (`../layouts/overlay.md`), nói rõ số dòng.
 - **Mỗi ô một dòng.** Tên công ty dài thì `truncate` (`min-w-0`) và `title` đầy đủ, bề rộng do bảng chia chứ không khoá `max-w`, không cho xuống ba dòng: một dòng cao gấp ba làm cả bảng mất nhịp. Ô hai tầng (tên + email) là ngoại lệ duy nhất, và mọi dòng đều hai tầng như nhau.
 - **Giá trị trống thống nhất một kiểu**: `—` màu `text-muted`. Không chỗ "Chưa có", chỗ "Khách lẻ", chỗ để trống.
 - **Số căn phải, `tabular-nums`**, tiêu đề cột số cũng căn phải. Cột số, ngày có sắp xếp thì tiêu đề là nút có icon mũi tên.
 - **Dòng tiêu đề bảng** `text-xs font-medium text-muted`, nền `--surface`, chia với thân bằng `--border`.
-- Phân trang có tổng số và vị trí đang xem (`I16`), dựng theo "Phân trang" trong `../components/small-controls.md`: một trang thì ẩn nav, không có dòng thì ẩn cả footer. Màn hẹp thì bảng cuộn ngang trong khung (`R9`).
+- Phân trang có tổng số và vị trí đang xem (`I16`), dựng theo "Phân trang" trong `../components/small-controls.md`: một trang thì ẩn nav, không có dòng thì ẩn cả footer. Màn hẹp xem gạch dưới.
+- **Dưới `sm`, bảng quản lý thành danh sách dòng, không cuộn ngang.** Mỗi dòng theo `../components/list-row.md`: checkbox · avatar · tên (`font-medium truncate`) trên email (`text-xs text-muted truncate`) · nút ⋯ ở mép phải; hàng dưới cùng thụt thẳng mép chữ tên là **badge trạng thái** bên trái, **số chính** (doanh thu) căn phải `tabular-nums`. Cột phụ (công ty, ngày tạo) không hiện, xem ở trang/drawer chi tiết. Hàng tab, chip, thanh hàng loạt, phân trang giữ nguyên. Bảng 6 cột ở 375px mà cuộn ngang thì cột tên (271px trong khung 341px) trôi mất ngay nhịp cuộn đầu, còn lại "Công ty —, Đang giao dịch" không biết của ai; ghim cột tên cũng chỉ chừa ~70px để cuộn (đã dính 25/09/2026). Các app quản lý lớn trên điện thoại đều đổi sang dòng.
+- **Từ `sm` tới hết bề rộng mà bảng vẫn phải cuộn ngang thì bắt buộc ghim cột đầu** `sticky left-0 bg-surface` (dòng hover/đang chọn thì ô ghim đổi nền theo), cột ghim không quá ~40% khung, mép phải cột ghim có mép mờ theo `R10` khi đang cuộn.
 
 
 ### Bảng nhóm theo trạng thái (danh sách công việc)
@@ -490,6 +496,6 @@ Vùng nguy hiểm
 - Nhãn trái, điều khiển phải, cùng một hàng.
 - Không viết chữ giải thích dưới mọi dòng. Chỉ giải thích thứ thật sự khó đoán.
 - Vùng nguy hiểm tách xuống cuối cùng.
-- **Mặc định dựng kiểu không có nút "Lưu thay đổi" tổng**: mỗi dòng chừa chỗ cho một dấu "Đã lưu" nhỏ cạnh điều khiển. Lưu lúc nào, gọi gì là việc của người dùng, skill chỉ để handler rỗng (`onChange`). **Toggle, select áp ngay; ô chữ thì lưu khi rời ô, hoặc có nút Lưu riêng của đúng khối đó** (như Vercel, GitHub: mỗi card cài đặt có ô chữ thì có nút Lưu ở chân card). Cái cần tránh là **một nút Lưu tổng cho cả trang** trong khi có toggle tự áp: người dùng không biết bật xong có phải bấm Lưu không. Nút Lưu của khối khoá khi chưa có gì đổi.
+- **Mặc định dựng kiểu không có nút "Lưu thay đổi" tổng**: mỗi dòng chừa chỗ cho một dấu "Đã lưu" nhỏ cạnh điều khiển. Lưu lúc nào, gọi gì là việc của người dùng, skill chỉ để handler rỗng (`onChange`). **Toggle, select áp ngay; ô chữ thì lưu khi rời ô, hoặc có nút Lưu riêng của đúng khối đó** (mỗi card cài đặt có ô chữ thì có nút Lưu ở chân card). Cái cần tránh là **một nút Lưu tổng cho cả trang** trong khi có toggle tự áp: người dùng không biết bật xong có phải bấm Lưu không. Nút Lưu của khối khoá khi chưa có gì đổi.
 
 **B. Tab dọc bên trái** (từ 15 tuỳ chọn trở lên, hoặc trên 4 nhóm)

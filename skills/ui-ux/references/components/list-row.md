@@ -1,6 +1,6 @@
 # Dòng trong danh sách
 
-Nguồn: `new-tab-todo/src/features/reminders/components/reminder-item.tsx`
+Nguồn: dòng nhắc việc của một dự án thật.
 
 ```tsx
 <li className="group flex items-center gap-3 rounded-xl px-1 py-2 hover:bg-background">
