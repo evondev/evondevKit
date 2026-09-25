@@ -214,7 +214,7 @@ Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu
 | Token | Cho | Vì sao |
 | --- | --- | --- |
 | `--border` | Viền card, khung dropdown, đường chia trong danh sách và menu | **Trang trí**: chỉ vạch ranh giới, nhạt được bao nhiêu thì nhạt |
-| `--border-strong` | **Viền ô nhập**, **viền nút outline**, select, viền card khi hover, **đường kẻ trong khung app** (kẻ dọc sidebar, kẻ chia nhóm, kẻ dưới header, khung profile chân sidebar) | **Chức năng**: ô nhập và nút outline cùng nền trắng với card, viền là thứ duy nhất báo "đây là chỗ gõ", "đây là chỗ bấm" (`I8`) |
+| `--border-strong` | **Viền ô nhập**, **viền nút outline**, select, viền card khi hover, **đường kẻ trong khung app** (kẻ dưới đầu sidebar và dưới header; kẻ dọc sidebar **chỉ khi vùng nội dung cũng trắng**, xem `layouts/app.md`) | **Chức năng**: ô nhập và nút outline cùng nền trắng với card, viền là thứ duy nhất báo "đây là chỗ gõ", "đây là chỗ bấm" (`I8`) |
 
 Trong mỗi nhóm thì mọi chỗ dùng chung đúng một token, để đường tóc không chỗ
 đậm chỗ nhạt. Muốn viền card nhạt đi thì hạ `--border`, ô nhập không nhạt theo.

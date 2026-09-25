@@ -57,23 +57,26 @@ Xem mục **Khung app có sidebar** bên dưới cho công thức đầy đủ.
 ## Khung app có sidebar
 
 ```
-┌──────────────┬──────────────────────────────────────┐
-│ ◐ Tên tổ chức ⌄ │ Trang / Mục hiện tại      [nút][nút]│
-│ [tìm      /] ├──────────────────────────────────────┤
-│              │                                      │
-│ ⌂ Trang chủ  │                                      │
-│ ✉ Hộp thư  20│  <- số đếm căn phải                  │
-│ ☑ Việc       │                                      │
-│──────────────│  <- đường chia chạy hết bề ngang     │
-│ CÔNG VIỆC  ⌄ │  <- nhãn nhóm IN HOA, bấm để thu gọn │
-│ ▤ Dự án    4 │                                      │
-│ ▦ Tài liệu   │                                      │
-│──────────────│                                      │
-│ KINH DOANH › │  <- nhóm đang thu gọn                │
-│              │                                      │
-│ ⚙ Cài đặt    │                                      │
-│ ◐ Tên người ⋯│  <- ghim đáy                         │
-└──────────────┴──────────────────────────────────────┘
+ nền trắng --surface     nền xám --background
+┌──────────────┐░┌──────────────────────────────────────┐
+│ ◐ Tổ chức    │░│ Trang / Mục hiện tại  [chuông][avatar] │
+├──────────────┤░├──────────────────────────────────────┤  <- một đường kẻ ngang, chạy liền qua cả hai cột
+│ [tìm     ⌘K] │░│                                      │
+│              │░│                                      │
+│ ⌂ Trang chủ  │░│                                      │
+│ ✉ Hộp thư  20│░│  <- số đếm căn phải, số trơn          │
+│ ☑ Việc       │░│                                      │
+│              │░│  <- giữa các nhóm chỉ khoảng trắng    │
+│ CÔNG VIỆC  ⌄ │░│  <- nhãn nhóm IN HOA, bấm để thu gọn  │
+│ ▤ Dự án    4 │░│                                      │
+│ ▦ Tài liệu   │░│                                      │
+│              │░│                                      │
+│ KINH DOANH › │░│  <- nhóm đang thu gọn                 │
+│              │░│                                      │
+│ ⚙ Cài đặt    │░│                                      │
+│ ◐ Tên người ⇕│░│  <- ghim đáy (bỏ nếu avatar ở header) │
+└──────────────┘░└──────────────────────────────────────┘
+                ↑ KHÔNG có đường kẻ dọc: trắng cạnh xám đã là ranh giới
 ```
 
 - **Sidebar nền trắng `--surface`, KHÔNG `border-r`** khi vùng nội dung là nền trang xám `--background`: trắng cạnh xám đã là ranh giới, thêm đường kẻ là hai tín hiệu cho một ý (`N3`; bỏ 23/09/2026, chủ dự án). Chỉ kẻ `border-r border-border-strong` khi vùng nội dung cũng trắng. **Đừng để sidebar trong suốt** ăn theo `--background` của trang: sidebar xám trùng nền trang thì cả màn thành một mảng xám, không còn ranh giới nào (đã dính 21/09/2026).
@@ -156,7 +159,8 @@ Nhóm thu gọn được: nút nhãn cùng khuôn mục con, trượt bằng `gr
 
 - **Khối tài khoản ghim đáy, nằm TRONG một khung**, xem mục **Chân sidebar** bên dưới.
 - **Ô tìm ở đầu sidebar** có gợi ý phím tắt `/` hoặc `⌘K` ở mép phải.
-- Mobile thì sidebar ẩn, mở bằng nút, trượt từ trái. Xem `overlay.md`.
+- **Tên mục bị cắt thì rê vào hiện đủ tên**, cả lúc sidebar đang mở: "Báo cáo tài chính theo q…" phải có tooltip "Báo cáo tài chính theo quý". Dùng lại tooltip của chế độ thu gọn, chỉ bật khi chữ **thật sự bị cắt** (đo theo `T14`: bề rộng chữ bằng `Range`, không bằng `scrollWidth`), mục ngắn không bật. Bản dựng 25/09/2026 chỉ bật tooltip lúc thu gọn, lúc mở thì tên dài cụt hẳn, không có cách nào đọc được.
+- **Dưới `lg`, sidebar là panel trượt từ TRÁI, cùng khuôn với panel trượt ở `overlay.md`, chỉ đổi phía**: lớp phủ `bg-black/15` (không `/30`, đó là của modal), vào **500ms** / ra **350ms** `cubic-bezier(0.32,0.72,0,1)`, lớp phủ cùng nhịp; chỉ `translate`, không `scale`, không `opacity` trên panel. Đầu sidebar có nút ✕ ở mép phải, Escape và bấm lớp phủ cũng đóng; bấm một link thì đóng. Mọi khối trượt từ mép trong app dùng **một** lớp phủ và **một** đường cong (`N5`). Bản dựng 25/09/2026 tự chọn `bg-black/30` + 200ms `ease-out` vì spec chỉ ghi "trượt từ trái".
 
 ### Thu gọn sidebar (từ `lg` trở lên)
 
@@ -169,11 +173,11 @@ Mở                                 Thu gọn
 │ ✉ Hộp thư    99+ │               │  ✉•  │  <- chấm chỉ cho số "cần xử lý"
 │ ▦ Lịch           │               │  ▦   │
 │                  │               │      │
-│ CÔNG VIỆC      ⌄ │               │      │  <- nhãn mờ đi TẠI CHỖ, để lại khoảng trống
+│ CÔNG VIỆC      ⌄ │               │  ─   │  <- nhãn mờ đi TẠI CHỖ, thay bằng gạch ngắn
 │ ▣ Dự án        4 │               │  ▣   │  <- nhóm đang mở: icon vẫn hiện, đứng yên
 │ ☰ Việc của tôi 12│               │  ☰   │
 │                  │               │      │
-│ KINH DOANH     › │               │      │  <- nhóm đang đóng: vẫn đóng
+│ KINH DOANH     › │               │  ─   │  <- nhóm đang đóng: vẫn đóng, chỉ còn gạch
 │                  │               │      │
 │ ⚙ Cài đặt        │               │  ⚙   │
 │ ◐ Tên người    ⇕ │               │  ◐   │  <- chỉ avatar, vẫn mở menu
@@ -185,8 +189,10 @@ người dùng yêu cầu.
 
 - **Mục nào đang hiện lúc mở thì lúc thu vẫn hiện, thành icon.** Nhóm đang mở giữ nguyên icon các mục con; nhóm đang đóng thì vẫn đóng. Như chế độ `collapsible="icon"` của sidebar shadcn, Jira, Vercel. Bản cũ chỉ giữ nhóm đầu (3 icon) còn mọi nhóm có nhãn đều ẩn: mở thấy 13 mục, thu còn 3, người dùng tưởng mất mục, và trang đang xem nằm trong nhóm bị ẩn thì dải icon không có mục nào đang chọn (bỏ 23/09/2026, chủ dự án).
   - **Chỉ nhãn nhóm và chevron mờ đi tại chỗ** (`opacity-0` + `inert`), hàng nhãn vẫn giữ chiều cao. Khoảng trống nhãn để lại chính là chỗ tách nhóm trong dải icon, và mọi icon **đứng yên đúng vị trí** lúc thu và lúc mở (luật icon đứng yên bên dưới). Gỡ hàng nhãn ra thì icon bên dưới nhảy lên.
+  - **Hàng nhãn lúc thu có một gạch ngắn** thay cho chữ: `w-4 h-px bg-border-strong`, nằm giữa hàng theo chiều dọc, **thẳng tâm icon** (hàng nhãn `px-3` nên gạch tự rơi vào 24–40px, tâm 32px, không `justify-center`). Như số đếm, gạch và chữ là **hai bản chuyển bằng opacity**: chữ + chevron `opacity-0`, gạch `opacity-100`, cả hai luôn trong DOM; gạch `aria-hidden`. Chỉ khoảng trống thì một nhóm đang đóng thành một lỗ trống giữa dải icon: đóng Kinh doanh rồi thu gọn, giữa Tài liệu và Thành viên trống 156px, gần gấp ba khoảng thường, không ai biết ở đó có một nhóm (đã dính 25/09/2026, chủ dự án duyệt gạch ngắn). Có gạch thì mỗi khoảng trống đọc ra là ranh giới nhóm, hai gạch liền nhau là có nhóm đang đóng ở giữa.
   - **Vùng nav cuộn được cả lúc thu** (dải icon có thể dài hơn màn). Lúc thu thì **ẩn hẳn thanh cuộn** (`[scrollbar-width:none]`), vẫn cuộn bằng chuột, phím, cảm ứng: thanh cuộn 4px giữ chỗ làm ô icon 40px còn 36px và lệch khỏi tâm (đã dính 23/09/2026).
   - **Đổi trang thì cuộn mục đang chọn vào tầm nhìn** (`scrollIntoView({ block: "nearest" })`): màn thấp, mục ở gần đáy bị mép dưới cắt mất nửa, không biết mình đang ở đâu (đã dính 23/09/2026).
+  - **Mép vùng nav mờ dần khi còn mục bị khuất** (cả lúc mở lẫn lúc thu, vì thanh cuộn tự ẩn hoặc ẩn hẳn): `mask-image` gradient **32px** ở mép trên khi đã cuộn khỏi đầu, ở mép dưới khi còn mục phía dưới, không cuộn được thì không mờ. Tính hai cờ từ `scrollTop`, `scrollHeight`, `clientHeight` lúc cuộn và khi đổi kích thước (`ResizeObserver`), đưa vào biến CSS để mask đổi ngay: `[mask-image:linear-gradient(to_bottom,transparent,#000_var(--fade-top),#000_calc(100%-var(--fade-bottom)),transparent)]`, `--fade-top`/`--fade-bottom` là `0px` hoặc `32px`. **Dài 32px, gần bằng một hàng `h-10`**, không 16px: tự cuộn xong thường còn một hàng bị cắt ló ở mép, 16px thì phần ló vẫn đậm 70–80%, thành mấy vệt vụn (đáy icon, dấu chấm của "ị") dính ngay dưới hàng Tìm kiếm như rác (đã dính 25/09/2026). Mục đang chọn tự cuộn vào thì dừng **ngoài** dải mờ: `scroll-my-8` trên link, khớp độ dài mờ. Mask chứ không đè một lớp gradient trắng: đè lớp màu thì hover và nền mục đang chọn ở mép bị phủ trắng lệch màu. Không mờ thì màn thấp 600px sau khi tự cuộn tới Thành viên: Lịch dính ngay dưới icon Tìm, Tổng quan và Hộp thư khuất phía trên, Phòng ban khuất phía dưới, không có dấu gì báo còn mục (đã dính 25/09/2026).
   - **Chấm ở góc icon chỉ cho số "cần xử lý"** (chưa đọc, chờ duyệt, quá hạn). Số đếm tổng như "Dự án 4", "Thành viên 18" lúc thu thì bỏ, không chấm: mười chấm trên một cột là mười tín hiệu vô nghĩa. Số vẫn nằm trong tooltip.
 - **Chân sidebar giữ lại**: Cài đặt thành icon, hàng profile thành **chỉ avatar**, bấm vẫn mở menu tài khoản như cũ.
   - **Lúc thu, rê vào avatar không tô nền ô vuông**, mà hiện vòng quanh chính avatar: `ring-2 ring-foreground/10` (menu đang mở thì giữ vòng). Avatar là hình tròn có nền màu riêng; tô thêm một ô xám bo góc quanh nó là tròn trong vuông, hai nền nhạt lồng nhau, trông như một cục mờ (đã dính 23/09/2026). Cùng lý do với ngoại lệ ảnh ở `I15`. Lúc mở thì hàng có chữ, tô nền cả hàng như link là đúng.
@@ -284,14 +290,15 @@ người dùng yêu cầu.
 ```
 
 Vùng nội dung có **thanh tiêu đề riêng** ở trên: đường dẫn ở trái, nhóm nút ở
-phải. Thanh đó cũng tách bằng đường kẻ ngang `--border-strong`, cùng màu với kẻ dọc của sidebar để hai đường gặp nhau liền mạch, không tách bằng nền.
+phải. Thanh đó tách bằng đường kẻ ngang `--border-strong`, **cùng độ cao `h-16` và cùng màu với đường dưới đầu sidebar** để thành một đường liền chạy ngang cả màn, không tách bằng nền. Đường ngang này **không kéo theo đường kẻ dọc** cho sidebar: kẻ dọc chỉ có khi vùng nội dung cũng trắng (xem đầu mục). Bản cũ ghi "cùng màu với kẻ dọc của sidebar" sót lại sau khi kẻ dọc đã bỏ, và bản dựng đọc câu đó rồi thêm lại `border-r` (đã dính 25/09/2026).
 
 ```
-┌──────┬──────────────────────────────┐
-│ w-60 │ header h-16                  │
-│ nav  ├──────────────────────────────┤
-│      │ nội dung                     │
-└──────┴──────────────────────────────┘
+┌──────┐░┌─────────────────────────────┐
+│ w-60 │░│ header h-16                 │
+├──────┤░├─────────────────────────────┤  <- hai đoạn cùng một đường
+│ nav  │░│ nội dung                    │
+└──────┘░└─────────────────────────────┘
+        ↑ không kẻ dọc khi nội dung nền xám
 ```
 
 ### Đầu trang trong vùng nội dung

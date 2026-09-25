@@ -133,7 +133,7 @@ gõ (đã dính 24/09/2026), và mất luôn phần cuối tên, thường là c
 23/09/2026: "Báo cáo doan… .xlsx" cạnh "Báo cáo tổng kết năm….pdf", hai kiểu trong
 cùng một cây).
 
-**Chỉ hiện đủ tên khi tên thật sự bị cắt.** So chiều rộng thật rồi mới gắn `title`;
+**Chỉ hiện đủ tên khi tên thật sự bị cắt.** So chiều rộng thật rồi mới gắn `title` hay tooltip. **Đo bằng `Range`, không bằng `scrollWidth > clientWidth`**: hai số đó làm tròn về số nguyên, chữ rộng 182,4px trong khung 182px thì cả hai đều ra 182, trình duyệt vẫn cắt "quý" thành "q…" mà phép so báo không cắt (đã dính 25/09/2026, sidebar). Cách đo: `range.selectNodeContents(el)`, so `range.getBoundingClientRect().width > el.getBoundingClientRect().width`;
 gắn sẵn cho mọi hàng thì hàng ngắn cũng bật bong bóng, thành nhiễu (đã dính 23/09/2026:
 cây thư mục hiện tooltip "Khách hàng doanh nghiệp" dù tên còn nguyên). Bong bóng đó
 cũng không được che hàng kế bên (`N8`).
