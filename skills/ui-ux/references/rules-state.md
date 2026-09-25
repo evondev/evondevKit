@@ -134,6 +134,14 @@ Chủ dự án chốt 23/09/2026 sau khi thử hết các cách tách nền, và
 Muốn hai trạng thái tách nhau thì tách bằng checkbox, không bằng thêm một bậc xám. Vạch
 trái để dành cho **một** mục đang mở trong cột điều hướng (sidebar, cây thư mục).
 
+**Nút và ô bấm được nằm trong dòng có nền rê thì nền rê của nó là `bg-foreground/8`**,
+không `/5` như nút đứng ngoài (`components/button.md`). Chuột đang ở trên nút thì cũng
+đang ở trên dòng, nên nút luôn chồng lên nền dòng `#f8f8fa`: `/5` ra `#ededef`, chỉ hơn nền
+dòng 11 mức, mắt đọc thành cùng một mảng xám (đã dính 25/09/2026, ô vai trò và nút ⋯ ở
+trang thành viên, chủ dự án: "hover vào trong table màu cũng khá như nhau"). `/8` ra
+`#e6e6e8`, tách rõ mà vẫn nhạt. Áp cho ô sửa tại chỗ, nút ⋯, icon button trong dòng, cả
+lúc mở (`aria-expanded:bg-foreground/8`).
+
 **I11. Hành động trên dòng: ít thì hiện thẳng, nhiều thì gom vào nút ba chấm.**
 
 | Số hành động của một dòng | Cách hiện |

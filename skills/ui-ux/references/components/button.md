@@ -15,8 +15,10 @@ type ButtonVariant = "outline" | "primary" | "secondary" | "ghost";
 function getVariantClasses(variant: ButtonVariant): string {
   return cn(
     // MẶC ĐỊNH. Dựng nút mới thì dùng cái này.
+    // Hover: GIỮ nền trắng, viền đậm lên. Không tô xám nền: nút viền hay đứng thẳng
+    // trên nền trang (hàng công cụ trên bảng), tô xám là nút tan vào nền.
     variant === "outline" &&
-      "border border-border-strong bg-surface text-foreground hover:bg-background",
+      "border border-border-strong bg-surface text-foreground hover:border-foreground/20 hover:bg-surface-hover",
     // Hành động chính DUY NHẤT của một khu, khi thật cần nổi.
     variant === "primary" &&
       "bg-primary text-primary-foreground hover:bg-primary-hover",
@@ -64,6 +66,9 @@ function getVariantClasses(variant: ButtonVariant): string {
 **Vì sao ổn**
 
 - **`outline` là mặc định**, không phải `primary`. Nút nền nhấn rải khắp nơi thì màu thương hiệu loang ra, tới lúc có một nút thật sự cần nổi thì nó không nổi được nữa (`I1`, `M2`).
+- **Nút viền rê vào thì giữ nền trắng, viền đậm lên** (`hover:border-foreground/20`, nền nhích sang `--surface-hover`). Nút viền là một mảnh trắng; nó nằm trên card trắng hay thẳng trên nền trang xám thì không biết trước, và **tô xám nền nút thì trên nền trang nó tan vào trang**. Đã dính hai lần 25/09/2026 ở nút lọc "Vai trò" của trang thành viên: `hover:bg-background` ra đúng `#f4f4f6` của nền trang; đổi sang lớp phủ `foreground/5` thì ra `#e9e9eb`, chỉ đậm hơn nền trang 11 mức và **trùng luôn màu viền** `#eaeaea`, nút thành một mảng xám không viền (chủ dự án: "hover thì vẫn bị"). Viền đậm lên thì ở đâu cũng thấy. Nút có mũi tên mở danh sách lựa chọn thì không theo mục này mà theo ô Select (xem dưới).
+- **`ghost` rê vào `hover:bg-foreground/5`**, không `bg-background` (ghost trong suốt, không có viền để đậm lên, nên phải là lớp phủ). Nút ghost nằm **trong dòng bảng / danh sách có nền rê** (⋯, icon button, ô sửa tại chỗ) thì `/8`, vì nó chồng lên nền dòng đang rê (`I10`).
+- **Nút mở danh sách lựa chọn** (nút lọc "Vai trò ▾", "Trạng thái: Tất cả ▾", "Mỗi trang 10 ▾") **là ô Select, không phải nút viền**: dùng đúng class của ô Select (`choice-controls.md`), tức **không có hover**, chỉ `cursor-pointer`; lúc mở `aria-expanded:border-focus aria-expanded:ring-2 aria-expanded:ring-focus`, nền giữ `bg-surface`, mũi tên xoay. Mũi tên + con trỏ đã nói "bấm được", như ô Select trong form và ô nhập vốn không có hover; thêm hover nữa là tín hiệu thứ hai cho một ý (`N3`), và lệch khuôn với ô Select ngay trong modal (`N5`). Chủ dự án chốt 25/09/2026, sau hai lần hover làm nút tan vào nền trang. Nút mở **menu thao tác** (⋯, "Xuất ▾") thì không phải ô chọn: lúc mở giữ nền rê `aria-expanded:bg-foreground/5`.
 - **`secondary` (nền xám, không viền)** dùng khi nút phụ cần có mặt rõ hơn `ghost` nhưng viền mảnh trông rỗng: nút rộng hết card (các gói thường trong bảng giá, `layouts/pricing.md`), hoặc nút phụ đứng cạnh nút `primary` trong footer. Không thay `outline` làm mặc định (chủ dự án chốt 21/09/2026).
 - **`ghost` đứng đầu hàng, thẳng cột với chữ phía trên** thì thêm `-ml-4` bù đúng `px-4`. Nền trong suốt nên mắt thấy mép của chữ chứ không thấy mép nút, không bù thì cả hàng trông lệch vào 16px so với tiêu đề và nhãn bên dưới. Nền hover lấn ra lề trái là đúng ý. Nút có nền hoặc viền thì không bù. **Cuối hàng bên phải cũng vậy**, bù bằng `-mr` đúng `px` của nút (`h-8` là `-mr-3`): chữ "Đánh dấu đã đọc" ở header panel thông báo thẳng cột với chấm chưa đọc bên dưới, lúc rê vào nền xám sát mép panel hơn tiêu đề bên trái là đúng ý, không phải lệch.
 - Icon lucide **bên trái chữ**, `size-4`, `shrink-0` để nó không bị bóp khi nhãn dài. `aria-hidden` vì chữ đã nói rồi.
@@ -112,7 +117,7 @@ Vuông, cao **bằng đúng** nút chữ đứng cạnh nó, và luôn có `aria
 ```tsx
 <button
   aria-label="Lọc danh sách"
-  className="inline-flex size-10 cursor-pointer items-center justify-center rounded-xl border border-border-strong bg-surface text-muted outline-hidden hover:bg-background hover:text-foreground"
+  className="inline-flex size-10 cursor-pointer items-center justify-center rounded-xl border border-border-strong bg-surface text-muted outline-hidden hover:border-foreground/20 hover:bg-surface-hover hover:text-foreground"
 >
   <SlidersHorizontal className="size-4" aria-hidden />
 </button>

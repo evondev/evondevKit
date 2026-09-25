@@ -177,6 +177,7 @@ mở cũng giữ viền + ring như đang focus, vì người dùng vẫn đang 
 
 - Chưa chọn thì chữ là placeholder `text-muted`, viết theo `T25`: "Chọn tỉnh, thành phố".
 - Radix / shadcn: thay `aria-expanded:` bằng `data-[state=open]:`.
+- **Nút lọc dạng dropdown ngoài form** (co theo chữ, `w-fit`) cũng mượn đúng trạng thái mở này: viền `border-focus` + `ring-2`, nền giữ trắng. **Không có hover**, như ô Select trong form: mũi tên + `cursor-pointer` đã đủ báo bấm được (`button.md`). Đừng mượn hover của nút viền: đã thử tô nền xám (tan vào nền trang) rồi viền đậm lên, chủ dự án chốt bỏ hẳn 25/09/2026.
 - Lỗi: y như ô nhập, `border-red-500`, quầng `ring-red-500/10` chỉ khi đang focus.
 
 **Danh sách mở ra** theo khung dropdown ở `layouts/overlay.md` (`rounded-2xl`,
@@ -266,7 +267,7 @@ Bấm năm    ──►   lưới 12 năm (2020–2031), ‹ › nhảy 12 năm
     - **Căn trái, không căn phải.** Mép phải của hàng cuối popover là chỗ của nút xác nhận ("Áp dụng"); ở đây bấm ngày là lưu nên không có nút đó, đặt "Xoá hạn" bên phải là trông như nút chính.
     - **Không đỏ, kể cả lúc rê.** Đỏ khi rê (`I4`) dành cho xoá **bản ghi**: mất một thứ. Gỡ hạn là đổi một giá trị về trống, đặt lại là có, không mất gì. Tô đỏ thì người ta ngần ngại bấm một việc vô hại, và làm nhạt nghĩa của đỏ ở mục "Xoá công việc" ngay trong menu ba chấm cùng dòng. Không hỏi xác nhận.
     - Ô chưa có hạn thì không có hàng này (không có gì để gỡ).
-  - Ô mở popover giữ nền hover suốt lúc popover mở (`aria-expanded:bg-foreground/5`, không `bg-surface-hover` vì trùng nền dòng đang rê), để biết lịch này đang sửa ô nào.
+  - Ô mở popover giữ nền hover suốt lúc popover mở (`aria-expanded:bg-foreground/8`, không `bg-surface-hover` vì trùng nền dòng đang rê, không `/5` vì gần trùng, `I10`), để biết lịch này đang sửa ô nào.
   - **Dấu bấm được lúc đứng yên**: ô sửa tại chỗ là việc phụ (hạn chót giữa ba bốn ô sửa được của một dòng việc) thì chỉ hiện lúc rê; ô là **việc chính của trang** (vai trò ở trang thành viên) thì `ChevronDown` luôn hiện. Xem "Trang thành viên và phân quyền" trong `../layouts/app.md`.
   - Gợi ý (người dùng quyết): hàng mốc nhanh "Hôm nay · Ngày mai · Thứ Hai tới" trên lưới. Hạn chót đa phần rơi vào vài ngày tới.
 - Kiểu khác, chỉ dựng khi đề yêu cầu: **hai select tháng và năm** thay cho tiêu đề (hợp ô ngày sinh, năm lùi vài chục năm). Mặc định vẫn là tiêu đề bấm được ở trên.

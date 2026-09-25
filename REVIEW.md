@@ -24,7 +24,7 @@ chưa tick đầu tiên. Nhiều trang cùng lúc thì lỗi bị lướt và c�
    modal, hộp xác nhận, bấm lọc, chọn nhiều dòng, gửi form rỗng và form sai, chờ toast
    vào và ra, Tab qua các nút xem tiêu điểm. Trang có route `/states` thì mở luôn.
 4. **Đo trước khi nói.** Khoảng cách, cỡ chữ, dòng cao, màu viền thì đọc
-   `getComputedStyle` / `getBoundingClientRect`, không đoán bằng mắt.
+   `getComputedStyle` / `getBoundingClientRect`, không đoán bằng mắt. Rê chuột, mở menu xong thì **chờ ~300ms cho `transition` chạy hết** rồi mới đo hay chụp: đo giữa chừng ra màu sai. Đề xuất đổi class thì thử ngay trên trang (gán `style` vào phần tử rồi chụp lại) trước khi ghi vào skill.
 5. **Chấm theo `review-by-eye-first`**: thứ nặng nhất màn có đáng nặng vậy không, một ý
    nói mấy lần, việc chính của trang có thấy ngay không. So với cách hầu hết app làm
    (luật "theo quy ước số đông" trong `principles.md`). Chỗ xấu mà khớp spec thì spec sai.
@@ -35,7 +35,11 @@ chưa tick đầu tiên. Nhiều trang cùng lúc thì lỗi bị lướt và c�
      `checklist.md`. Ghi "đã dính <ngày>" kèm ví dụ thật như các mục khác.
    - **Dự án chưa theo kịp** (skill đã đúng, dự án dựng bằng bản skill cũ hoặc bỏ sót):
      chỉ liệt kê, không sửa dự án.
-7. **Báo lại**: danh sách lỗi xếp theo mức nặng, mỗi lỗi kèm chỗ đã sửa trong skill;
+7. **Quay lại trang đã rà thì đo lại từ đầu.** Người dùng nói "quay lại trang X" hoặc gửi
+   lại link sau khi sửa dự án: chạy lại đủ bước 2–5 trên bản mới, kể cả chỗ lần trước đã
+   ổn. Bản sửa hay đẻ lỗi mới (vd thêm mũi tên cho ô vai trò thì mũi tên lệch cột, nền ô
+   trùng nền dòng). Không trả lời từ trí nhớ của lượt trước.
+8. **Báo lại**: danh sách lỗi xếp theo mức nặng, mỗi lỗi kèm chỗ đã sửa trong skill;
    rồi danh sách "dự án chưa theo kịp"; rồi một dòng những gì đã đúng. Tick mục trong
    bảng dưới, ghi ngày. Không commit khi người dùng chưa bảo.
 
@@ -49,7 +53,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 2 | Công việc: bảng nhóm, kanban, tạo mới | `/dashboard/tasks`, `/tasks/new`, `/tasks/states` | |
 | 3 | Khách hàng: danh sách, xem nhanh, chi tiết | `/dashboard/customers`, `/customers/quick-view`, `/customers/c-030`, `/customers/khong-co`, `/customers/states` | |
 | 4 | Đơn hàng: chi tiết, xem nhanh | `/dashboard/orders/detail`, `/orders/quick-view` | |
-| 5 | Thành viên và phân quyền | `/dashboard/members` | 25/09/2026 (lượt đầu) |
+| 5 | Thành viên và phân quyền | `/dashboard/members` | 25/09/2026 (hai lượt) |
 | 6 | Hồ sơ cá nhân | `/dashboard/profile`, `/profile/states` | |
 | 7 | Đăng nhập, đăng ký, OTP | `/login`, `/register`, `/verify-otp`, `/verify-otp/states` | |
 | 8 | Bảng giá | `/pricing`, `/pricing/joined` | |
