@@ -110,6 +110,8 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Mọi màn trong luồng xác thực mở ra con trỏ đã nằm ở ô đầu chưa? Form đặt mật khẩu mới có ô `username` ẩn chưa (`I28`)?
 - [ ] "Quên mật khẩu?" có nằm cùng hàng với nhãn không? Dưới ô nhập là **tranh chỗ với câu lỗi**.
 - [ ] "Quên mật khẩu?" có bị làm mờ không? Mờ là đọc ra disabled (`I8`).
+- [ ] Từ ô email bấm Tab có vào thẳng ô mật khẩu không, hay rơi vào "Quên mật khẩu?" trước? Link phải đứng sau ô trong DOM.
+- [ ] Sai email hoặc mật khẩu: ô mật khẩu đã xoá và con trỏ nằm trong đó chưa? Khối lỗi có `role="alert"` không?
 - [ ] Nút, ô sửa tại chỗ trong dòng bảng: rê vào có tách khỏi nền dòng đang rê không (`bg-foreground/8`, không `/5`, `I10`)? Cột có nút mũi tên (vai trò, trạng thái) thì các mũi tên có thẳng một cột không (nút rộng bằng nhãn dài nhất)?
 - [ ] Nút viền đứng thẳng trên nền trang: rê vào có tan vào nền không? Rê phải giữ nền trắng + viền đậm lên (`hover:border-foreground/20`); tô xám nền (`bg-background`, cả lớp phủ `foreground/5`) là tan. Đo pixel nền nút so với nền trang, đừng nhìn class. Nút có mũi tên mở danh sách lựa chọn ("Vai trò ▾", "Mỗi trang 10 ▾") thì **không hover**, cùng class ô Select. Nút lọc dạng dropdown lúc mở có viền + ring như ô Select không (`components/button.md`)?
 - [ ] Dự án có ngôn ngữ màu riêng (dòng "màu" ở tầng 3 từ 3 file, hoặc có `--chart-*`) thì màn mới có tô cùng cách không, hay rút về xám lạc giữa các màn cũ? Refactor có lỡ trung tính hoá màu của họ không? Biểu đồ phân loại từ 5 nhóm có mỗi nhóm một sắc, chấm trong bảng khớp màu thanh, tối đa 6 sắc + "Khác" (`principles.md` đầu file, `components/charts.md`)?

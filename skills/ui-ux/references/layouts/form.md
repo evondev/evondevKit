@@ -92,7 +92,7 @@ Một dòng, không phải một bảng câu hỏi. Người dùng **không nh�
 
 **Chưa nối backend thì gửi hợp lệ vẫn phải đi tiếp.** Bấm "Đăng ký" với form đúng mà
 không có gì xảy ra thì người duyệt tưởng nút hỏng (đã dính 25/09/2026). Giả lập: nút
-quay spinner ~1 giây, rồi sang bước kế tiếp nếu đã dựng (đăng ký → nhập OTP, quên mật
+quay spinner ~1 giây, rồi sang bước kế tiếp nếu đã dựng (đăng nhập → trang đầu của app, đăng ký → nhập OTP, quên mật
 khẩu → nhập mã, mật khẩu mới → màn xong). Hàm gọi API vẫn để trống, có comment chỗ nối.
 
 **Bước sau hiện đúng thứ người dùng vừa gõ.** Gõ `an@congty.vn` ở trang đăng ký thì trang
@@ -121,11 +121,20 @@ dựng luôn, không hỏi "bro muốn tích sẵn không, đặt ở đâu". M�
 nằm dưới nút submit.
 
 ```html
-<div class="flex items-center justify-between">
+<div class="relative flex flex-col gap-2">
   <label for="password" class="w-fit cursor-pointer text-sm font-medium">Mật khẩu</label>
-  <a href="/quen-mat-khau" class="text-sm text-foreground hover:underline">Quên mật khẩu?</a>
+  <div class="relative"><!-- ô mật khẩu + nút mắt --></div>
+  <!-- Đứng SAU ô trong DOM, absolute lên hàng nhãn -->
+  <a href="/quen-mat-khau" class="absolute top-0 right-0 text-sm text-foreground hover:underline">Quên mật khẩu?</a>
 </div>
 ```
+
+**Thứ tự Tab: email → mật khẩu → nút mắt → "Quên mật khẩu?" → Đăng nhập.** Link đặt
+trong hàng nhãn bằng `flex justify-between` thì nó đứng trước ô mật khẩu trong DOM: gõ
+email xong bấm Tab là rơi vào link, bấm Enter theo thói quen là rời trang đăng nhập (đã
+dính 25/09/2026). Nên link nằm sau ô trong DOM, `absolute top-0 right-0` để vẫn hiện ở
+hàng nhãn; vị trí trên màn không đổi một pixel. Đừng chữa bằng `tabindex="-1"`: người
+dùng bàn phím mất luôn lối vào link.
 
 **Vì sao không để dưới ô nhập** — dòng đó đã có chủ: gợi ý lúc thường, câu lỗi
 khi sai. Và "gõ sai mật khẩu" chính là lúc link này cần rõ nhất, nên hai thứ đạt
@@ -372,3 +381,8 @@ nhất ở form, và nhìn ảnh chụp rất khó nhận ra vì "trông vẫn �
 Dòng cuối là ca riêng: nói rõ sai cái nào **là lỗ hổng bảo mật** — người ngoài dò
 được email nào có tài khoản. Nên ở đúng ca này thì mơ hồ là cố ý, và câu lỗi đặt
 ở chỗ câu lỗi trên nút Đăng nhập (xem khung wireframe đăng nhập ở đầu file) chứ không dưới một ô cụ thể.
+Sau lỗi này: **giữ email, xoá ô mật khẩu và đưa con trỏ vào đó**, khối lỗi `role="alert"`
+để trình đọc màn hình đọc ngay. Người dùng gần như luôn gõ lại mật khẩu chứ không sửa
+từng ký tự, và ô còn chấm tròn cũ thì họ phải bôi đen xoá trước (cách Google, GitHub,
+Microsoft đều làm). Không tô đỏ ô nào, vì không biết ô nào sai. Gõ lại vào ô thì khối
+lỗi vẫn đứng yên tới lần gửi sau, không biến mất giữa lúc gõ làm nút nhảy lên (`N1`).
