@@ -159,8 +159,18 @@ khi bị báo lỗi. Chọn một trong hai cách theo tỉ lệ, đừng dùng 
 | Đa số trường bắt buộc | Ghi `Không bắt buộc` bên cạnh nhãn của số ít trường tuỳ chọn |
 | Đa số trường tuỳ chọn | Ghi dấu `*` sau nhãn của trường bắt buộc, kèm một dòng chú thích ở đầu form |
 
-Dấu `*` dùng `text-muted`, không tô đỏ. Đỏ để dành cho lỗi thật, đánh dấu bắt
-buộc mà đỏ sẵn thì lúc có lỗi không còn gì để nhấn.
+Dấu `*` **tô đỏ**, cùng sắc với câu lỗi (`text-red-600 dark:text-red-400`), ngoại lệ có tên ở `M9`,
+`aria-hidden="true"`; ô vẫn mang `required` để trình đọc màn hình đọc "bắt buộc".
+Đây là quy ước số đông: người dùng đã quen "* đỏ = phải điền", để xám thì họ phải
+dừng lại tự hỏi dấu đó nghĩa là gì (đổi 25/09/2026: bản cũ ở đây ghi `text-muted`, cãi nhau với `M9`).
+
+Dấu `*` trong dòng chú thích ("Mục có dấu * là bắt buộc") cũng đỏ y như ở nhãn: chú thích giải nghĩa một ký hiệu thì phải in đúng ký hiệu đó, xám ở đây đỏ ở kia là hai dấu khác nhau (đã dính 25/09/2026).
+
+```html
+<label for="full-name" class="text-sm font-medium">
+  Họ và tên <span aria-hidden="true" class="text-red-600 dark:text-red-400">*</span>
+</label>
+```
 
 ---
 

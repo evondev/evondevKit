@@ -531,8 +531,49 @@ Vùng nguy hiểm
 
 - Mỗi mục là **một khối chia kẻ**, không phải mỗi tuỳ chọn một card.
 - Nhãn trái, điều khiển phải, cùng một hàng.
+- **Nhãn thẳng hàng với ô, không với cả khối bên phải.** Hàng có chữ gợi ý hoặc lỗi dưới ô thì khối phải cao hơn ô; nhãn căn giữa cả hàng là tụt xuống lưng chừng giữa ô và dòng chữ. Grid mặc định kéo ô nhãn cao bằng cả hàng (`stretch`), nên `min-h` + `items-center` trên ô nhãn không đủ, phải có `sm:items-start` trên hàng (đã dính 25/09/2026, trang hồ sơ: nhãn "Múi giờ" và nhãn của ô đang báo lỗi lệch xuống 11px so với ô):
+
+  ```html
+  <div class="grid gap-2 px-4 py-4 sm:grid-cols-[10rem_minmax(0,1fr)] sm:items-start sm:gap-6 sm:px-5">
+    <!-- min-h bằng chiều cao ô: nhãn một dòng nằm đúng tâm ô -->
+    <div class="flex min-w-0 flex-wrap items-center gap-x-2 sm:min-h-11 md:min-h-10">
+      <label for="timezone" class="text-sm font-medium">Múi giờ</label>
+      <!-- dấu "Đã lưu" ở đây -->
+    </div>
+    <div class="flex min-w-0 flex-col gap-2">
+      <!-- ô, rồi chữ gợi ý hoặc lỗi -->
+    </div>
+  </div>
+  ```
+
+  Hàng **chữ chỉ đọc + nút** (Email, Mật khẩu) cũng `sm:items-start`: nhãn và nút nằm ở dải cao bằng ô đầu hàng, chữ giá trị `sm:py-2.5` để dòng đầu thẳng nhãn. Căn giữa thì giá trị dài bốn dòng (email xuống dòng + dòng "Đang chờ xác nhận…") làm nhãn "Email" trôi xuống giữa dòng 2 và 3 (đã dính 25/09/2026). Chỉ hàng ảnh đại diện căn giữa (`sm:items-center`): avatar cao 64px, không có dòng đầu nào để thẳng theo.
 - Không viết chữ giải thích dưới mọi dòng. Chỉ giải thích thứ thật sự khó đoán.
 - Vùng nguy hiểm tách xuống cuối cùng.
 - **Mặc định dựng kiểu không có nút "Lưu thay đổi" tổng**: mỗi dòng chừa chỗ cho một dấu "Đã lưu" nhỏ cạnh điều khiển. Lưu lúc nào, gọi gì là việc của người dùng, skill chỉ để handler rỗng (`onChange`). **Toggle, select áp ngay; ô chữ thì lưu khi rời ô, hoặc có nút Lưu riêng của đúng khối đó** (mỗi card cài đặt có ô chữ thì có nút Lưu ở chân card). Cái cần tránh là **một nút Lưu tổng cho cả trang** trong khi có toggle tự áp: người dùng không biết bật xong có phải bấm Lưu không. Nút Lưu của khối khoá khi chưa có gì đổi.
 
 **B. Tab dọc bên trái** (từ 15 tuỳ chọn trở lên, hoặc trên 4 nhóm)
+
+---
+
+## Trang hồ sơ cá nhân
+
+Là trang cài đặt kiểu A ở trên, không phải khuôn riêng. Bộ mục mặc định:
+
+| Mục | Hàng | Lưu |
+| --- | --- | --- |
+| Thông tin cá nhân | Ảnh đại diện, Họ và tên, Chức danh, Số điện thoại | Ô chữ: nút Lưu ở chân card. Ảnh: áp ngay khi tải xong |
+| Đăng nhập | Email, Mật khẩu: chữ chỉ đọc + nút viền "Đổi email", "Đổi mật khẩu" | Luồng riêng (modal) |
+| Tuỳ chọn | Ngôn ngữ, Múi giờ | Áp ngay, dấu "Đã lưu" cạnh nhãn |
+| Vùng nguy hiểm | Xoá tài khoản | Hộp xác nhận (`overlay.md`) |
+
+- **Avatar trên trang là cùng component, cùng seed màu với avatar ở header / chân sidebar** (`../components/avatar.md`). Đã dính 25/09/2026: header nền chàm, trang hồ sơ nền hổ phách, cùng chữ "T" của cùng một người. Nhìn hai chỗ tưởng hai tài khoản.
+- **Avatar và tên ở header vẽ theo giá trị đã lưu, không theo ô đang gõ.** Xoá trống ô họ tên thì avatar vẫn là "T", không thành "?" (đã dính 25/09/2026). Lưu xong mới đổi, header và trang đổi cùng lúc.
+- **Hàng ảnh đại diện có bốn trạng thái:**
+  - Chưa có ảnh: chữ cái đầu, nút "Tải ảnh lên", dòng gợi ý `text-xs text-muted` "JPG hoặc PNG, tối đa 2 MB".
+  - Có ảnh: "Đổi ảnh" và "Xoá ảnh" **đều là nút `outline`**. Xoá ảnh **không đỏ, không hộp xác nhận**: bấm là xoá ngay, avatar về chữ cái đầu, kèm toast "Đã xoá ảnh đại diện" có nút **Hoàn tác** (`D3`: xoá mà lấy lại được thì xoá ngay + hoàn tác). Có hoàn tác thì không mất gì, nên không phải việc phá huỷ (`rose` của `I4` dành cho thứ mất hẳn: xoá tài khoản, xoá dự án). Hai nút cùng `outline`, không để Xoá ảnh `secondary` nền xám: nó thành nút nặng hơn Đổi ảnh, trong khi đổi ảnh mới là việc người ta hay làm. **Không dùng `ghost`**: chữ `text-muted` đứng cạnh nút viền đọc ra là nút đang khoá, và lúc khoá thật (đang tải ảnh) thì gần như không khác gì (đã dính 25/09/2026: "Xoá ảnh" `#828282`, cùng xám với dòng gợi ý bên dưới).
+  - Đang tải: avatar mờ `opacity-50` với spinner giữa, nút "Tải ảnh lên" khoá.
+  - Lỗi: chữ đỏ **thay chỗ** dòng gợi ý, không thêm dòng. Nói số thật và cách sửa: "Ảnh nặng 4,8 MB, chọn ảnh dưới 2 MB".
+- **Ảnh áp ngay khi tải xong**, như select, không tính vào nút Lưu của card. Người dùng chọn ảnh xong thấy ảnh mới trên avatar là nghĩ đã xong; bắt bấm Lưu nữa thì rời trang là mất ảnh.
+- **Email và mật khẩu không sửa tại chỗ.** Đổi email phải xác nhận địa chỉ mới, đổi mật khẩu phải nhập mật khẩu cũ, nên hàng chỉ đọc + nút mở luồng riêng. Email đang chờ xác nhận thì dưới email hiện một dòng `text-sm text-muted`: "Đang chờ xác nhận **moi@…** · Gửi lại · Huỷ" ("Gửi lại", "Huỷ" là nút chữ `font-medium text-foreground hover:underline underline-offset-2`, như "Thử lại" ở `../components/file-upload.md`), email cũ vẫn là email đăng nhập tới lúc xác nhận.
+- Mật khẩu ghi mốc đổi gần nhất `text-muted` ("Đổi lần cuối 12/06/2026"), không ghi chuỗi `••••••••`: chấm tròn không nói gì mà trông như ô nhập được.
+- **Trang trạng thái** (dựng tĩnh cạnh nhau) đủ các ca: chưa sửa (Lưu khoá), vừa sửa, đang lưu, vừa lưu, lỗi nhập, ảnh quá dung lượng, **có ảnh**, **đang tải ảnh**, **email chờ xác nhận**, tên và chức danh rất dài, vừa đổi múi giờ, hộp xác nhận xoá tài khoản. Hộp xác nhận xem thêm ở 375px: email dài phải xuống dòng ở sau `@` (`../components/description-list.md`).

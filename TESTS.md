@@ -98,7 +98,7 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
 - ✅ **Trang quản lý khách hàng** — ráp data table vào khung app.
 - ✅ **Trang chi tiết bản ghi** — "Dựng cho tôi trang chi tiết một khách hàng."
 - [ ] **Thành viên và phân quyền** — "Dựng cho tôi trang quản lý thành viên trong workspace, có mời thành viên và đổi vai trò."
-- [ ] **Hồ sơ cá nhân** — "Dựng cho tôi trang cài đặt hồ sơ cá nhân."
+- ✅ **Hồ sơ cá nhân** — "Dựng cho tôi trang cài đặt hồ sơ cá nhân."
 
 ### Ưu tiên 2
 

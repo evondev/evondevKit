@@ -44,6 +44,28 @@ Nằm trong card (`card.md`), mỗi hàng một cặp nhãn và giá trị, theo
 - **Giá trị `font-medium text-foreground`, nhãn `text-muted`** (`T23`). Giá trị dài xuống dòng, bám mép trên cùng nhãn (`items-start`), không `truncate`: đây là chỗ để đọc đủ.
 - **`[overflow-wrap:anywhere]` cho giá trị**: email, URL, mã dài không có dấu cách nên không tự xuống dòng, sẽ đẩy tràn card ở màn hẹp.
 - **Email chèn `<wbr>` ngay sau `@`**, để email dài xuống dòng ở ranh giới tên / tên miền. `overflow-wrap:anywhere` chỉ là lưới đỡ: một mình nó thì bẻ ở bất kỳ ký tự nào vừa hết chỗ. Đã dính 25/09/2026: thêm nút sao chép cạnh email, cột giá trị hẹp đi 28px, "…@hoanggiap" / "hat-import-export.com.vn" vỡ giữa chữ.
+  - **Email nằm giữa câu chữ** (hộp xác nhận, toast, dòng "Đang chờ xác nhận…") thì `<wbr>` chưa đủ: tên miền có gạch nối thì trình duyệt còn bẻ ở gạch nối, ra "…khang@evondev-" / "studio.com" (đã dính 25/09/2026, hộp xoá tài khoản; ở 375px còn vỡ "…@evo" / "ndev-studio.com"). Tách email làm hai khúc `inline-block max-w-full`, mỗi khúc chỉ bẻ bên trong khi tự nó dài hơn cả dòng:
+
+    ```tsx
+    interface EmailTextProps {
+      email: string;
+    }
+
+    function EmailText({ email }: EmailTextProps) {
+      const atIndex = email.lastIndexOf("@");
+
+      if (atIndex < 0) return <span className="wrap-anywhere">{email}</span>;
+
+      return (
+        <span className="wrap-anywhere">
+          <span className="inline-block max-w-full">{email.slice(0, atIndex + 1)}</span>
+          <span className="inline-block max-w-full">{email.slice(atIndex + 1)}</span>
+        </span>
+      );
+    }
+    ```
+
+    Dùng chung một component này cho mọi chỗ in email, kể cả hàng giá trị ở trên.
 - **Giá trị trống là `—` `text-muted`**, một ký hiệu cho mọi ô trống, giống ô trống trong bảng (`layouts/app.md`, `T18`). Không viết "Chưa có", "Chưa gắn nhãn", mỗi dòng một câu.
 - **Giá trị có khuôn riêng thì dùng đúng component của nó**, không viết chữ trơn: trạng thái là badge màu (`M7`), nhãn phân loại là pill (`M8`, `list-row.md`), tiền dùng `đ` không `₫` (`charts.md`), số `tabular-nums`, mã và ID `font-mono` (`T17`).
 - **Email là link `mailto:`, số điện thoại là link `tel:`**, chữ vẫn `text-foreground`, rê vào gạch chân. Kèm icon button `copy` `h-7` hiện khi rê vào hàng, luôn hiện trên màn chạm (`I11`); bấm thì icon đổi `check` 1,5 giây, không toast. Mặc định ở trang chi tiết và panel xem bản ghi; ở form xác nhận, màn chỉ đọc lại thông tin vừa nhập thì để chữ trơn. **Không lặp các việc này vào menu ⋯** ("Gọi điện", "Sao chép email"): việc gắn với một giá trị thì nằm cạnh giá trị đó (`layouts/app.md`, "Trang chi tiết bản ghi").

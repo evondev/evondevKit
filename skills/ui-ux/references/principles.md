@@ -10,6 +10,16 @@ Mỗi nguyên tắc có một **phép thử**: câu hỏi tự trả lời đư�
 dựng. Trả lời "không" là đang vi phạm, dù chưa có luật cụ thể nào cho component
 đó.
 
+**Đứng trên cả mười nguyên tắc: theo quy ước số đông.** Chỗ nào đã có một cách làm
+mà hầu hết app đều làm và người dùng đã quen (dấu `*` đỏ cho trường bắt buộc, logo
+góc trái về trang chủ, ✕ góc phải để đóng, Huỷ bên trái nút chính), thì làm đúng
+như thế, **kể cả khi một cách khác trông gọn hơn**. Người dùng không nên phải dừng lại
+tự hỏi. Gu của skill (nhạt, ít tín hiệu) chỉ quyết những chỗ chưa có quy ước. Chốt
+25/09/2026, khi `form.md` còn ghi dấu `*` xám, lệch quy ước.
+
+*Phép thử:* người dùng lần đầu mở màn này có chỗ nào phải hỏi "cái này nghĩa là
+gì" hay "bấm đâu để…" không? Có thì đang phá cách ở đó.
+
 ---
 
 **N1. Đổi trạng thái thì giao diện không nhảy chỗ, không co giãn.**
@@ -129,7 +139,9 @@ cũng một lưới.
 chỗ đứng); `₫` chỗ này `đ` chỗ kia; `12,4 / 20` cạnh `4/6`; thang xám của cột nhóm khác thang xám của donut; `2,8 %` ở số chính cạnh `27,3%` ở dòng
 so sánh; khối nhãn và
 giá trị viết trạng thái, nhãn phân loại, tiền thành chữ trơn thay vì dùng badge,
-pill, `đ` đã có sẵn. **Một giá trị có khuôn riêng thì ở đâu cũng dùng khuôn đó**,
+pill, `đ` đã có sẵn; avatar cỡ to trên trang hồ sơ dựng riêng nên khác màu
+avatar của cùng người ấy trên header; email trong hộp xác nhận không dùng cách bẻ
+dòng đã có ở khối nhãn và giá trị. **Một giá trị có khuôn riêng thì ở đâu cũng dùng khuôn đó**,
 kể cả khi nó nằm trong một component khác. **Mượn khuôn là mượn cả class**, không chỉ
 mượn dáng (cỡ chữ, độ dày đường nối, cách căn dòng đầu với vòng).
 

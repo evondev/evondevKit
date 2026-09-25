@@ -41,7 +41,7 @@ dưới đây, báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`.
 
 - Rộng `max-w-md`, căn giữa màn, nền phủ đen mờ phía sau.
 - Tiêu đề là **câu hỏi**, thân là hậu quả cụ thể có tên đối tượng.
-- **Tên đối tượng `font-medium text-foreground`**, phần còn lại của câu `text-muted`. Đó là thứ người dùng cần liếc thấy để biết đang xoá đúng cái. Để cả câu cùng màu xám thì tên chìm vào câu (đã dính 22/09/2026). Tên dài thì cho xuống dòng, **không `truncate`**: xác nhận mà không đọc được hết tên thì không xác nhận được gì.
+- **Tên đối tượng `font-medium text-foreground`**, phần còn lại của câu `text-muted`. Đó là thứ người dùng cần liếc thấy để biết đang xoá đúng cái. Để cả câu cùng màu xám thì tên chìm vào câu (đã dính 22/09/2026). Tên dài thì cho xuống dòng, **không `truncate`**: xác nhận mà không đọc được hết tên thì không xác nhận được gì. Tên đối tượng là email (xoá tài khoản, gỡ thành viên) thì xuống dòng ở sau `@`, không vỡ giữa tên miền (`EmailText` ở `../components/description-list.md`).
 - **Icon tròn `size-10` nằm cùng hàng với tiêu đề**, bên trái, `-mt-1.5` để tâm icon thẳng tâm dòng tiêu đề. Đặt icon thành một hàng riêng phía trên thì hộp cao thêm ~60px mà không thêm thông tin.
 - **Tiêu đề `text-lg font-semibold`, luôn đậm hơn tên đối tượng** (`font-medium`). Tiêu đề thiếu `font-semibold` thì tên dài hai dòng lấn át câu hỏi, mắt đọc tên trước (đã dính 22/09/2026).
 - **Nút trong hộp xác nhận chỉ có chữ, không icon.** Đây là ngoại lệ có tên của `I1`: icon thùng rác đã đứng ở đầu hộp, gắn thêm vào nút là hai tín hiệu cho một ý (`M6`). Chữ trên nút lặp lại động từ và đối tượng: "Xoá dự án", không chỉ "Xoá" hay "Đồng ý".

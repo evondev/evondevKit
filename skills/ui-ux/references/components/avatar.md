@@ -90,6 +90,8 @@ const avatarTones: AvatarTone[] = [
 **Vì sao ổn**
 
 - **Màu lấy theo `id` hoặc email, không theo tên.** Hai người trùng tên vẫn khác màu, và đổi tên hiển thị thì màu không nhảy. Lấy ngẫu nhiên lúc render thì mỗi lần tải lại là một màu khác — người dùng nhận ra nhau bằng màu, màu nhảy là mất.
+- **Cùng một người thì mọi chỗ cùng màu, trên cùng một màn cũng vậy.** Avatar ở header, chân sidebar, trang hồ sơ, danh sách thành viên gọi chung một component với cùng seed. Chỗ hay lệch là avatar cỡ to trên trang hồ sơ được dựng riêng: đã dính 25/09/2026, header nền chàm mà trang hồ sơ nền hổ phách, cùng chữ "T".
+- **Chữ cái theo tên đã lưu, không theo ô đang sửa, và không bao giờ là "?".** Tên rỗng (tài khoản mới, chưa đặt tên) thì lấy chữ đầu email.
 - **Sáu sắc, cố định.** Đủ để một danh sách mười người trông khác nhau, ít đủ để không thành cầu vồng. Đừng sinh màu từ hash ra HSL tự do — sẽ ra những sắc bùn xỉn không ai chọn.
 - **Không có `red`, không có `rose`.** Hai sắc đó đã có nghĩa trong app: lỗi và hành động nguy hiểm (`M30`). Avatar một người mà đỏ thì trông như tài khoản đó đang có vấn đề. Hồng thì dùng `pink`.
 - **Nền `-50`, chữ `-700`, viền `-200`**: cả ba cùng một sắc. Chữ `-700` trên nền `-50` đạt tương phản đọc được ở cỡ `text-sm`.
