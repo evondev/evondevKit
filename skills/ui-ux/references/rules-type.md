@@ -320,3 +320,13 @@ dự án.
 
 - **Một việc một cặp từ, suốt app.** "Sign in / Sign out" hoặc "Log in / Log out", không trộn. `Delete` là xoá hẳn, `Remove` là gỡ khỏi một nhóm: hai việc khác nhau thì hai từ khác nhau.
 - **Không "Please", không dấu chấm than** trong thông báo thường. "Project deleted", không "Your project has been deleted successfully!".
+
+**T30. Câu văn chạy nhiều dòng dùng `text-sm/6`, chữ một dòng trong control giữ dòng mặc định.**
+
+Đoạn có thể chạy từ hai dòng trở lên (mô tả dưới tiêu đề modal, thân hộp xác nhận,
+câu mô tả của banner, câu trên trang rỗng có mô tả) dùng `text-sm/6` (14px, dòng 24px).
+Chữ tiếng Việt có dấu chồng hai tầng (`ệ`, `ở`, `ữ`): dòng 20px mặc định của `text-sm`
+làm dấu dòng dưới chạm sát chân chữ dòng trên, đoạn đọc ra đặc (đã dính 25/09/2026, hộp
+thu hồi lời mời). Chữ một dòng trong nút, ô nhập, dòng bảng, mục menu, badge giữ dòng
+mặc định: ở đó chiều cao do control quyết, tăng dòng là nút phình. Khoảng giữa tiêu đề
+và đoạn mô tả ngay dưới là `mt-2` (8px), không `mt-1`.

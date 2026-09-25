@@ -267,6 +267,7 @@ Bấm năm    ──►   lưới 12 năm (2020–2031), ‹ › nhảy 12 năm
     - **Không đỏ, kể cả lúc rê.** Đỏ khi rê (`I4`) dành cho xoá **bản ghi**: mất một thứ. Gỡ hạn là đổi một giá trị về trống, đặt lại là có, không mất gì. Tô đỏ thì người ta ngần ngại bấm một việc vô hại, và làm nhạt nghĩa của đỏ ở mục "Xoá công việc" ngay trong menu ba chấm cùng dòng. Không hỏi xác nhận.
     - Ô chưa có hạn thì không có hàng này (không có gì để gỡ).
   - Ô mở popover giữ nền hover suốt lúc popover mở (`aria-expanded:bg-foreground/5`, không `bg-surface-hover` vì trùng nền dòng đang rê), để biết lịch này đang sửa ô nào.
+  - **Dấu bấm được lúc đứng yên**: ô sửa tại chỗ là việc phụ (hạn chót giữa ba bốn ô sửa được của một dòng việc) thì chỉ hiện lúc rê; ô là **việc chính của trang** (vai trò ở trang thành viên) thì `ChevronDown` luôn hiện. Xem "Trang thành viên và phân quyền" trong `../layouts/app.md`.
   - Gợi ý (người dùng quyết): hàng mốc nhanh "Hôm nay · Ngày mai · Thứ Hai tới" trên lưới. Hạn chót đa phần rơi vào vài ngày tới.
 - Kiểu khác, chỉ dựng khi đề yêu cầu: **hai select tháng và năm** thay cho tiêu đề (hợp ô ngày sinh, năm lùi vài chục năm). Mặc định vẫn là tiêu đề bấm được ở trên.
 

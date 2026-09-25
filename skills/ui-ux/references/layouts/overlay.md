@@ -27,7 +27,7 @@ dưới đây, báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`.
     </div>
     <div class="min-w-0">
       <h2 id="confirm-title" class="text-lg font-semibold">Xoá dự án?</h2>
-      <p id="confirm-desc" class="mt-1 text-sm text-muted">
+      <p id="confirm-desc" class="mt-2 text-sm/6 text-muted">
         <span class="font-medium text-foreground">Website bán hàng 2026</span>
         cùng 48 công việc bên trong sẽ bị xoá vĩnh viễn, không khôi phục được.
       </p>
@@ -43,6 +43,7 @@ dưới đây, báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`.
 - Tiêu đề là **câu hỏi**, thân là hậu quả cụ thể có tên đối tượng.
 - **Tên đối tượng `font-medium text-foreground`**, phần còn lại của câu `text-muted`. Đó là thứ người dùng cần liếc thấy để biết đang xoá đúng cái. Để cả câu cùng màu xám thì tên chìm vào câu (đã dính 22/09/2026). Tên dài thì cho xuống dòng, **không `truncate`**: xác nhận mà không đọc được hết tên thì không xác nhận được gì. Tên đối tượng là email (xoá tài khoản, gỡ thành viên) thì xuống dòng ở sau `@`, không vỡ giữa tên miền (`EmailText` ở `../components/description-list.md`).
 - **Icon tròn `size-10` nằm cùng hàng với tiêu đề**, bên trái, `-mt-1.5` để tâm icon thẳng tâm dòng tiêu đề. Đặt icon thành một hàng riêng phía trên thì hộp cao thêm ~60px mà không thêm thông tin.
+- **Tiêu đề cách thân `mt-2`, thân `text-sm/6`** (dòng cao 24px), không `mt-1` + dòng 20px mặc định. Thân hộp xác nhận thường chạy hai ba dòng có tên đối tượng đậm xen chữ xám; dòng 20px thì dấu chồng hai tầng (`ệ`, `ở`, `ữ`) chạm sát dòng trên, còn 4px dưới tiêu đề làm tiêu đề dính vào thân (đã dính 25/09/2026, hộp thu hồi lời mời, chủ dự án: "heading sát nội dung quá"). Các hộp thoại phổ biến đều cách 8px. Xem `T30`.
 - **Tiêu đề `text-lg font-semibold`, luôn đậm hơn tên đối tượng** (`font-medium`). Tiêu đề thiếu `font-semibold` thì tên dài hai dòng lấn át câu hỏi, mắt đọc tên trước (đã dính 22/09/2026).
 - **Nút trong hộp xác nhận chỉ có chữ, không icon.** Đây là ngoại lệ có tên của `I1`: icon thùng rác đã đứng ở đầu hộp, gắn thêm vào nút là hai tín hiệu cho một ý (`M6`). Chữ trên nút lặp lại động từ và đối tượng: "Xoá dự án", không chỉ "Xoá" hay "Đồng ý".
 - Nút phá huỷ nằm bên phải cùng và là nút duy nhất mang màu cảnh báo. Huỷ là nút phụ nền `--secondary`, và là nơi tiêu điểm rơi vào khi mở, để Enter không xoá nhầm.
@@ -69,11 +70,13 @@ panel trượt hoặc trang riêng.
 **Modal có form** (mời thành viên, đổi tên, thêm nhanh):
 
 - **Đường chia header/footer chỉ có khi thân thật sự cuộn.** Form hai ba ô không cuộn thì bỏ cả hai đường, dùng khoảng trắng (`gap-6`). Ba khối chia kẻ cho một form ngắn là nặng hơn nội dung.
+- **Mô tả dưới tiêu đề `mt-2 text-sm/6 text-muted`** như hộp xác nhận (`T30`).
 - **Mô tả dưới tiêu đề chạy tới sát cột nút ✕**: chỉ header chừa `pr-10` cho nút đóng, đừng đặt `max-w` hẹp cho câu mô tả. Thêm `text-pretty` để không rớt một chữ xuống dòng cuối (đã dính 22/09/2026: "…để tham gia / nhóm.").
 - Có ô nhập nên **bấm ra ngoài không đóng** (`I20`); đóng bằng ✕, Huỷ, Esc. Mở ra thì tiêu điểm vào ô đầu tiên.
 - Nút chính ở footer là `primary` (một hành động duy nhất của modal, `I2`), **chỉ có chữ** theo `I1`: "Gửi lời mời", không icon. Nút Huỷ `secondary`. Cả hai `h-11 md:h-10`, cao bằng ô nhập.
 - **Trạng thái đang gửi**: nút chỉ chữ thì **spinner đè lên giữa nút, chữ `invisible`** (vẫn chiếm chỗ), nút `disabled` + `aria-busy`. Chèn spinner cạnh chữ là nút rộng ra, đẩy Huỷ sang trái (đã dính 22/09/2026). Xem `../components/button.md`.
 - Câu lỗi dưới ô nói **cách sửa**, theo bảng "Ô trống thì viết gì" trong `form.md` (một nguồn): "Email phải có dấu @".
+- **Modal mời thành viên: ô email là tag input** (`../components/tag-input.md`), mời nhiều người một lần, nút ghi số ("Gửi 3 lời mời"); email trùng phân biệt "Đã là thành viên" với "Đã mời …, chưa chấp nhận". Chi tiết ở "Trang thành viên và phân quyền" trong `app.md`.
 
 **Modal xem bản ghi có nút trước / sau** (chi tiết đơn hàng, hoá đơn, phiếu nhập):
 
@@ -402,6 +405,11 @@ form; toast bật ra ở đáy đúng lúc vừa bấm nút là che mất nửa 
 - Toast báo hỏng: **có nút Thử lại và nút đóng** (vì nó không tự tắt), `role="alert"` thay cho `role="status"`.
 - Nhiều toast cùng lúc thì xếp chồng cột, `gap-2`, cái mới nhất gần mép màn nhất. Tối đa 3 cái.
 - Gợi ý thời gian (người dùng quyết): tự tắt sau khoảng 4 giây, có Hoàn tác thì lâu hơn và dừng đếm khi rê chuột vào. Hoàn tác, Thử lại gọi gì là handler rỗng (`onUndo`, `onRetry`).
+- **Toast có chuyển động vào và ra** theo bảng "Chuyển động" bên dưới: trượt lên từ đáy (màn hẹp: trượt xuống từ đỉnh), hết giờ thì trượt về. Quãng trượt là cả chiều cao toast, không phải 8px: 8px trong 200ms mắt gần như không bắt được, toast trông như bật "phựt" ra (chủ dự án 25/09/2026: "không có animation hiển thị ra như trượt từ dưới lên").
+  - **Bẫy: `{toast && <Toast />}` thì không có chuyển động ra.** Hết giờ là phần tử bị gỡ khỏi DOM ngay, không còn gì để trượt (đã dính 25/09/2026, bản dựng không có cả chuyển động vào). Giữ toast trong DOM qua một pha "đang đóng": đổi cờ → chạy chuyển động ra → `onTransitionEnd`/`onAnimationEnd` mới gỡ. Dự án có Sonner thì nó lo sẵn, dùng nó.
+  - **Toast mới thay toast cũ** thì đổi `key` để toast mới chạy lại chuyển động vào, không đổi chữ tại chỗ trong cùng một khung.
+  - `motion-reduce`: chỉ `opacity`, không trượt.
+- **Toast có email thì email xuống tầng dưới**, tầng trên là việc vừa xong ("Đã gửi lại lời mời"), tầng dưới là email bọc `EmailText` (`../components/description-list.md`) để xuống dòng sau `@`. **Không đặt `wrap-anywhere` cho cả khối chữ của toast**: nó bẻ bất kỳ chỗ nào, ra "…@congtymi" / "nhphat.com.vn" (đã dính 25/09/2026). Câu một dòng thì không cần bẻ; tầng nào có chuỗi dài không dấu cách (email, link) thì bọc riêng chuỗi đó.
 - Duyệt toast thì bày **từng loại một bản tĩnh** cạnh nhau, không dựng nút bấm giả lỗi (phạm vi ở `../../SKILL.md`).
 
 ---
@@ -419,7 +427,7 @@ lấy số ở bảng này.
 | **Lớp phủ** (sau modal, panel) | `opacity 0→1`, **cùng thời gian và đường cong với khối nó đi kèm** (sau modal 150ms, sau panel 500ms) | cùng thời gian với khối lúc ra |
 | **Panel trượt** | **chỉ** `translate-x-full → 0`, không `scale`, không `opacity` trên panel. **500ms** `cubic-bezier(0.32,0.72,0,1)` (đường cong sheet của iOS, `vaul`) | `0 → translate-x-full`, **350ms** cùng đường cong |
 | **Dropdown, popover, select, date picker** | `opacity` + `scale-95→100` + **dịch 4px từ phía nút**: mở xuống thì từ trên xuống (`-translate-y-1 → 0`), lật lên thì từ dưới lên (`translate-y-1 → 0`). Gốc biến hình ở mép gần nút. 150ms `ease-out` | `opacity` + `scale-95`, 100ms `ease-in`, không dịch |
-| **Toast** | trồi từ mép gần nhất: toast ở đáy thì `translate-y-2 → 0` (dưới lên), toast ở đỉnh (màn hẹp) thì `-translate-y-2 → 0`; kèm `opacity`. 200ms `ease-out` | `opacity` + trượt tiếp 8px theo hướng ra, 150ms |
+| **Toast** | trượt ra từ mép màn gần nhất, **quãng bằng cả chiều cao toast**: toast ở đáy `translate-y-full → 0` (dưới lên), toast ở đỉnh (màn hẹp) `-translate-y-full → 0`; kèm `opacity 0→1`. **300ms `ease-out`** | trượt ngược về mép đã ra + `opacity → 0`, **200ms `ease-in`** |
 | **Tooltip** | chỉ `opacity`, trễ 300–500ms mới hiện, 100ms | 100ms |
 | **Sidebar thu gọn, nhóm mở đóng** | theo `app.md`: `transition-[width]` và `grid-rows`, 200ms | như vào |
 
