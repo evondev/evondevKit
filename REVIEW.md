@@ -49,6 +49,11 @@ chưa tick đầu tiên. Nhiều trang cùng lúc thì lỗi bị lướt và c�
 5. **Chấm theo `review-by-eye-first`**: thứ nặng nhất màn có đáng nặng vậy không, một ý
    nói mấy lần, việc chính của trang có thấy ngay không. So với cách hầu hết app làm
    (luật "theo quy ước số đông" trong `principles.md`). Chỗ xấu mà khớp spec thì spec sai.
+   **Màn skill chưa có mẫu thì tra thật** (WebSearch / WebFetch trang tài liệu, ảnh chụp
+   của các sản phẩm lớn) trước khi viết luật, không nói "số đông làm X" theo trí nhớ. Và
+   trước khi đổi màu hay mức nặng của nút, đọc lại luật chủ dự án đã chốt (vd `I4`: đăng
+   xuất là nguy hiểm). Đã dính 26/09/2026, trang bảo mật: đổi nút đăng xuất hàng loạt sang
+   trung tính và để nút bật xác thực hai lớp là nút viền, không tra gì, sai cả hai.
 6. **Tách hai loại lỗi:**
    - **Lỗi của skill** (skill thiếu, sai, hoặc mơ hồ nên bản dựng làm sai): sửa skill
      ngay trong lượt. Sửa spec của component/layout, xem bài học có chung cho nhiều chỗ
@@ -86,8 +91,32 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 14 | Tạo dự án (khu "Cài đặt nâng cao" thu gọn) | `/dashboard/projects/new` | 26/09/2026 (hai lượt, đã theo kịp) |
 | 15 | Form tạo workspace ba bước | `/workspaces/new` | 26/09/2026 (ba lượt, đã theo kịp) |
 | 16 | Cài đặt thông báo (và hàng tab khu cài đặt) | `/dashboard/settings`, `/settings/notifications`, `/settings/notifications/states` | 26/09/2026 (hai lượt, đã theo kịp trừ màu đường kẻ hàng tab) |
+| 17 | Bảo mật: xác thực hai lớp, phiên đăng nhập | `/dashboard/settings/security`, `/security/states` | 26/09/2026 (ba lượt; lượt ba đổi màu nút theo chủ dự án, dự án chưa theo kịp) |
 
 Route mới xuất hiện trong dự án thì thêm dòng vào bảng (`grep -rhoE "path: ?['\"][^'\"]+" src`).
+
+## Việc để sau: kiểm chứng quy ước
+
+26/09/2026: skill có những câu "các app lớn đều…", "hầu hết app…", "các … phổ biến đều…"
+viết theo trí nhớ, chưa ai tra. Trang bảo mật đã dính vì vậy (bước 5). Mỗi lượt một nhóm:
+tra thật từng câu (WebSearch / WebFetch trang tài liệu, bài hướng dẫn, ảnh chụp của các sản
+phẩm lớn), ghi kết quả vào cột "Kết quả".
+- **Đúng**: giữ luật, câu trong skill giữ nguyên (không ghi tên sản phẩm, xem memory "giấu
+  nguồn tham khảo").
+- **Sai hoặc chia đôi**: sửa luật theo số đông; chia đôi thì ghi rõ là chia đôi và lý do chọn
+  bên nào. Trang nào bị ảnh hưởng thì thêm vào "Dự án chưa theo kịp".
+- **Không tra được**: bỏ câu "số đông làm X", giữ lý do riêng của luật nếu còn đứng được.
+Luật chủ dự án đã chốt (vd `I4` đăng xuất đỏ, `*` đỏ) không lật, chỉ ghi thêm nếu số đông khác.
+
+Lệnh tìm: `grep -rniE "hầu hết (app|sản phẩm)|số đông|app lớn|phổ biến|mọi app|sản phẩm lớn|các app" skills/ui-ux`
+
+| Nhóm | Câu cần tra | Kết quả | Xong |
+| --- | --- | --- | --- |
+| A. Nút, trạng thái | `rules-state.md` `I7` "Xem tất cả" là link chữ nhẹ ở góc header; `I13` vòng focus chỉ khi dùng bàn phím; `I18` thanh cuộn tự ẩn, mục cuối bị cắt nửa báo còn nữa. `system.md:75` xoá khôi phục được thì xoá ngay + toast Hoàn tác, không hộp xác nhận. `components/input.md:115` ô tìm có nút xoá. `layouts/overlay.md:249` tài khoản chỉ một lối vào; `:356` bảng lệnh ghim từ trên, không căn giữa dọc | 26/09/2026: **đúng 6, sửa câu 1.** `I7`: bộ component thương mại lớn để hành động ở đầu card là nút dạng link. `I13`: `:focus-visible` là chuẩn của trình duyệt, chuột không hiện vòng. Xoá + Hoàn tác: nghiên cứu khả dụng khuyên hoàn tác cho việc lấy lại được, hộp xác nhận chỉ cho việc mất hẳn. Nút xoá ô tìm: có sẵn trong ba bộ thiết kế lớn và ô tìm gốc của iOS. Bảng lệnh: trình soạn code phổ biến nhất đặt ở trên, có người xin thêm tuỳ chọn căn giữa (tức mặc định không căn giữa). Một lối vào tài khoản: bằng chứng mỏng (bài phân tích SaaS gom về avatar góc phải), giữ vì lý do `N3`. `I18`: đúng là nội dung cắt ngang báo còn nữa, nhưng câu "không ai để thanh cuộn đứng sẵn" sai (Windows hiện sẵn), đã sửa | ✅ |
+| B. Form, xác thực | `layouts/form.md:62` màn đăng nhập có nút Google; `:65` bỏ ô "Nhập lại mật khẩu"; `:171` lối ra "Quay lại đăng nhập"; `:361` chỉ lỗi tại chỗ, không banner tóm tắt. `components/inline-edit.md:10` bấm ra ngoài thì lưu. `components/accordion.md:136` "Cài đặt nâng cao" là dòng chữ có chevron; `:235` riêng tư / công khai để ngoài khu thu gọn | | |
+| C. Chữ, số, hộp thoại | `rules-type.md:18` tiêu đề app weight 600; `:195` ngày `23/09`; `:247` mặc định không placeholder (đối chiếu: "Dự án chưa theo kịp" đang ghi màn xác thực thiếu placeholder). `layouts/overlay.md:46` tiêu đề hộp thoại cách thân 8px. `components/sortable-header.md:44` tiêu đề cột chỉ đổi màu chữ khi rê | | |
+| D. Trang, dữ liệu | `layouts/app.md:494` bảng 7–9 cột cuộn ngang; `:629` cài đặt thông báo ba mục, không lưới việc × kênh; `:770` ô vai trò luôn có mũi tên; `:775` lọc vai trò bằng dropdown; `:779` mời nhiều email một lần. `components/charts.md:32` mỗi nhóm một sắc; `:167` kỳ đang chạy vẽ nhạt; `:248` ô số 2×2 trên điện thoại. `components/chat.md:41` câu trả lời AI không avatar | | |
+| E. Độ nặng nút ở trang đã rà | Mỗi trang: việc nên làm nhất có là nút đặc không (`I2`), việc nguy hiểm có đỏ không (`I4`), có nút nào nặng hơn việc của nó không. Trang: thành viên, xác thực, bảng giá, hồ sơ, tổng quan, công việc, cài đặt thông báo, tạo workspace, tạo dự án | | |
 
 ## Việc để sau: bỏ số âm trong skill (`N11`)
 
@@ -134,6 +163,11 @@ không ghi class. Rà xong 11 nhóm thì xem skill có nói gì về chúng khô
 
 Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần.
 
+- `/dashboard/settings/security` (skill sửa lượt ba, 26/09/2026): "Bật xác thực hai lớp" sang
+  `primary`; "Đăng xuất 4 thiết bị khác" trả lại `isDestructive`; nút dòng và nút hàng loạt lên cỡ nút form
+  `h-11 md:h-10 rounded-xl` (bỏ `sessionActionButtonClass` `h-8`, dùng như nút 2FA); nút
+  "Đăng xuất" trong dòng rê vào / Tab tới thì đỏ (`I4`, dạng nút lặp trên từng dòng); hộp xác
+  nhận đăng xuất hàng loạt về `tone` đỏ như hộp xoá.
 - `/dashboard/members`: hộp "Thu hồi lời mời" chưa bọc email bằng `EmailText`, email
   vỡ giữa tên miền ("…hcm@co" / "ngtyminhphat.com.vn"). Toast không có chuyển động vào
   ra (render bằng điều kiện), và khối chữ toast dùng `wrap-anywhere` nên email vỡ giữa

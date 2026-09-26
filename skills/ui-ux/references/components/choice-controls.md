@@ -162,6 +162,14 @@ Công tắc = **có hiệu lực ngay**, không chờ nút Lưu (`layouts/app.md
 
 - Chỉ một dòng dưới nhãn: có lỗi thì câu lỗi `text-red-600` thay chỗ mô tả, khoá thì câu lý do (không mờ theo ô) thay chỗ mô tả. Cả hai **cùng `text-sm` với mô tả**, để hàng không co lại và không lạc cỡ giữa các hàng bên cạnh.
 
+- **Công tắc chỉ cho việc gạt là xong**, đổi lại được ngay, không qua bước nào nữa.
+  Bật lên mà phải quét mã, nhập mật khẩu, thanh toán hay xác nhận thì là **nút mở
+  luồng**, cạnh một dòng trạng thái ("Chưa bật" / "Bật từ 12/06/2026"). Công tắc mở
+  modal thì bấm Huỷ giữa chừng làm công tắc bật lên rồi bật về, và dấu "Đã lưu" hiện
+  lúc chưa có gì được lưu. Đã dính 26/09/2026 ở trang bảo mật: xác thực hai lớp là một
+  công tắc, gạt là ra "Đã lưu", trong khi comment trong code ghi bật thật phải qua bước
+  quét mã QR. Xem "Trang bảo mật" ở `../layouts/app.md`.
+
 ---
 
 ## Select

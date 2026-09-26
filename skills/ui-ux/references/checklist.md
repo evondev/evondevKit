@@ -75,6 +75,10 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Màn chỉ có MỘT card giữa trang trống? Vậy card phải **không viền** (`M29`), và không bao giờ có cả viền lẫn bóng.
 - [ ] **Đăng xuất** ở cuối menu sau đường chia, lúc thường trung tính, **rê vào thì đỏ** như mục xoá (`I4`)?
 - [ ] **Nút xoá** đứng riêng: nền `rose-500/10` + chữ `rose-700` ngay lúc thường, không viền, không đỏ đặc (`I4`)? **Mục** xoá trong menu: rê vào thì chữ, icon VÀ nền cùng đỏ lên chưa? Icon còn xám là thiếu `group`. Chữ đỏ là `rose-700` chưa, hay đang `rose-500` hồng tươi (3.2:1, trượt tương phản)? Radix thì đi bằng phím mũi tên cũng đỏ (`data-[highlighted]`)?
+- [ ] **Công tắc chỉ cho việc gạt là xong.** Bật mà phải quét mã, nhập mật khẩu, xác nhận (xác thực hai lớp, tên miền riêng, gói trả phí) thì là dòng trạng thái + nút mở luồng (`components/choice-controls.md`, "Hàng cài đặt")?
+- [ ] Hộp xác nhận cho việc **không mất dữ liệu** (gửi lại lời mời hàng loạt, gửi email hàng loạt): icon và nút xác nhận trung tính, không `rose` (`layouts/overlay.md`)? Đăng xuất thì ngược lại: đỏ (`I4`).
+- [ ] **Trang bảo mật**: "Bật xác thực hai lớp" là nút `primary`? Nút đăng xuất hàng loạt đỏ sẵn nhưng cùng cỡ `h-8` với nút "Đăng xuất" trong dòng, còn nút trong dòng chỉ đỏ lúc rê (`I4`, `layouts/app.md`)?
+- [ ] **Bấm nút làm dòng của nó biến mất** (đăng xuất thiết bị, xoá dòng, gỡ hàng loạt qua hộp xác nhận): `document.activeElement` sau đó là gì? `<body>` là lỗi (`I31`).
 - [ ] Đỏ đang dùng đúng sắc chưa (`M30`)? Lỗi là `red`, hành động nguy hiểm lúc rê vào là `rose`. Không có viền hay banner `rose`.
 - [ ] Đường chia trong dropdown, card: có chạm hai mép khối không, hay thụt theo padding (`F25`)?
 - [ ] **Bo lồng nhau (`M19`)**: bo khung ngoài = bo phần tử trong + padding khung? Dropdown mặc định `rounded-2xl` + `p-1` + mục `rounded-xl` (`layouts/overlay.md`). Command palette rộng thì `p-2` + mục `rounded-lg`. Trong bằng ngoài là góc phình.

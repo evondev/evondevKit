@@ -51,6 +51,18 @@ dưới đây, báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`.
 - Không dùng modal cho thứ chỉ để thông báo. Cái đó là toast.
 - Duyệt thì dựng hộp ở trạng thái mở sẵn, không cần danh sách bấm được hay bộ đếm "đã xoá mấy dự án".
 
+**Hộp xác nhận cho việc không mất dữ liệu.** Có việc cần hỏi lại vì đụng nhiều thứ một
+lúc, nhưng không mất gì và không đá ai ra: gửi lại lời mời hàng loạt, gửi email cho 240
+khách hàng, xuất bản thay đổi cho cả nhóm. Cùng khuôn trên, chỉ đổi màu:
+- icon tròn `bg-background`, glyph `text-foreground` (không `rose`);
+- nút xác nhận `primary` (ngoại lệ có tên của `I2`: đây là nút duy nhất đi tiếp của hộp),
+  vẫn lặp động từ + đối tượng: "Gửi lại 12 lời mời";
+- Huỷ vẫn là nút `--secondary` và nhận tiêu điểm khi mở.
+
+**Đăng xuất không thuộc nhóm này**: đăng xuất ở skill này là việc nguy hiểm (`I4`), hộp
+"Đăng xuất các thiết bị khác?" đỏ như hộp xoá. Đã dính 26/09/2026: skill từng lấy chính
+hộp đó làm ví dụ cho hộp trung tính, chủ dự án chốt lại là đỏ.
+
 ## Modal có nội dung
 
 ```

@@ -42,16 +42,23 @@ nhau là chưa quyết định hộ người dùng.
 
 Áp cho xoá, huỷ tài khoản, rời nhóm, **và đăng xuất**. Đăng xuất không mất dữ liệu,
 Nhiều app để nó trung tính; nhưng **chủ dự án chốt giữ đỏ khi rê vào** (23/09/2026,
-sau khi thử bản trung tính: "đăng xuất mất danger"). Đăng xuất chỉ nằm trong menu, nên
-nó chỉ đỏ lúc rê, không bao giờ đỏ sẵn. Có hai dạng tuỳ chỗ đứng:
+sau khi thử bản trung tính: "đăng xuất mất danger"; chốt lại 26/09/2026 cho đăng xuất
+hàng loạt ở trang bảo mật). Đăng xuất trong menu thì chỉ đỏ lúc rê; nút "Đăng xuất N
+thiết bị khác" là nút đứng riêng nên đỏ sẵn. Có ba dạng tuỳ chỗ đứng:
 
 | Chỗ | Lúc thường | Rê vào / Tab tới |
 | --- | --- | --- |
 | **Nút đứng riêng** — hàng nút, hộp xác nhận, khu nguy hiểm | nền `rose-500/10`, chữ + icon `rose-700` | nền `rose-500/15` |
 | **Mục trong menu** — dropdown, sidebar | trung tính như mục khác | chữ + icon đỏ, nền `rose-500/10` |
+| **Nút lặp lại trên từng dòng** — "Đăng xuất" mỗi thiết bị, "Gỡ" mỗi thành viên hiện thẳng | nút viền trung tính như nút dòng khác | viền trong suốt, nền `rose-500/10`, chữ `rose-700` |
 
 Nút thì nền mờ đỏ luôn hiện (chủ dự án chốt 21/09/2026), code ở
 `components/button.md`. Không bao giờ `bg-rose-500 text-white`, không viền đỏ.
+
+Nút lặp trên từng dòng thì đỏ lúc rê như mục menu, không đỏ sẵn: bốn dòng bốn nút nền
+đỏ là cả khung đỏ, và nút hàng loạt ở chân khung ("Đăng xuất 4 thiết bị khác", nút đứng
+riêng, đỏ sẵn) không còn nổi lên được. Class: `hover:border-transparent hover:bg-rose-500/10
+hover:text-rose-700`, kèm cùng bộ đó cho `focus-visible:`. Thử trên trang bảo mật 26/09/2026.
 
 Phần dưới là cho **mục trong menu**. Khi rê vào thì đổi **cả hai**: chữ (kèm icon) sang đỏ, nền sang đỏ rất mờ.
 
@@ -319,8 +326,9 @@ cuộn ngang**. Vùng cuộn dọc thì để thanh tự ẩn lo, đừng gắn 
 **Thanh ẩn thì mép cắt phải báo "còn nữa".** Thanh tự ẩn chỉ hiện khi chuột đã
 nằm trong vùng cuộn; người vừa mở command palette bằng ⌘K, tay còn trên bàn
 phím, không thấy gì cả. Tín hiệu lúc đứng yên là **mục cuối bị mép dưới cắt
-ngang, lộ khoảng một nửa** (macOS và các app lớn đều dựa vào đây, không ai để
-thanh cuộn đứng sẵn):
+ngang, lộ khoảng một nửa**. macOS, iOS, Android mặc định ẩn thanh cuộn lúc đứng
+yên, và người dùng hay bỏ sót cả thanh cuộn đang hiện; nội dung bị cắt ngang thì mắt
+muốn cuộn tiếp để xem nốt (kiểm chứng 26/09/2026):
 
 - **Chọn `max-h` sao cho mép dưới cắt giữa một mục, không cắt sát ranh giới hai mục.** Cắt còn thiếu vài px thì trông như danh sách hết ở đó (đã dính 24/09/2026: palette cắt mục "Hợp đồng" lộ gần trọn, không ai biết còn mục bên dưới). Công thức cho khung `p-1`, mục `h-10`: `max-h` = 40 × số mục trọn + 4 + 20 → **`max-h-76`** (304px, lộ 7 mục rưỡi) cho select, dropdown dài. Danh sách có nhãn nhóm thì đo ở trạng thái mặc định rồi xê `max-h` từng bậc 4px tới khi mục cuối lộ giữa 1/3 và 2/3.
 - **Mục cao thấp khác nhau** (thông báo, bình luận, kết quả tìm có mô tả) thì không chốt được một con số `max-h`. Tính bằng JS lúc mở: trong giới hạn cao tối đa, tìm mục thấp nhất mà **điểm giữa** của nó còn lọt, rồi hạ chiều cao danh sách xuống đúng điểm giữa đó. Dữ liệu dài ngắn hay màn cao thấp thế nào cũng cắt giữa một mục (dự án test làm trước skill, 24/09/2026):
@@ -573,3 +581,24 @@ Công thức lõi, giống nhóm sidebar (`layouts/app.md`):
 
 Grep một lượt khi dựng xong: `<details` và `<summary` phải ra 0.
 
+
+---
+
+## Gỡ phần tử đang có focus
+
+**I31. Bấm một nút làm chính dòng của nó biến mất thì tự chuyển focus.** Gỡ dòng
+(đăng xuất thiết bị, xoá dòng không qua hộp xác nhận, thu hồi lời mời) làm nút đang có
+focus rời DOM, và focus rơi về `<body>`: trình đọc màn hình đọc lại từ đầu trang, người
+dùng bàn phím mất chỗ.
+
+- Còn dòng sau: focus vào nút cùng loại ở dòng sau. Hết dòng sau thì dòng trước.
+- Hết dòng có nút (hoặc gỡ hàng loạt): focus lên tiêu đề của khối (`tabIndex={-1}`,
+  `outline-hidden`), hay ô trống / nút chính của trạng thái rỗng.
+- Gỡ qua hộp xác nhận: hộp đóng thì trả focus theo đúng luật trên, không trả về nút mở
+  hộp vì nút đó có thể đã mất (vd nút "Đăng xuất 4 thiết bị khác" ẩn khi không còn thiết
+  bị khác).
+- Đổi focus sau khi React đã gỡ dòng: `flushSync` rồi `focus()`, hoặc giữ id đích trong
+  ref và focus trong `useEffect` khi danh sách đổi.
+
+Đã dính 26/09/2026 ở trang bảo mật: đăng xuất một thiết bị và đăng xuất hàng loạt, cả
+hai lần `document.activeElement` là `<body>`.

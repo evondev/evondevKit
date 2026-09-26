@@ -110,7 +110,7 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
 ### Ưu tiên 2
 
 - ✅ **Tổng quan** — "Dựng cho tôi màn hình tổng quan cho app quản lý dự án."
-- [ ] **Kanban** — "Dựng cho tôi bảng kanban quản lý công việc, kéo thả giữa các cột trạng thái."
+- ✅ **Kanban** — "Dựng cho tôi bảng kanban quản lý công việc, kéo thả giữa các cột trạng thái."
 - ✅ **Bảng giá** — "Dựng cho tôi trang bảng giá."
 - ✅ **Đăng nhập** — "Dựng cho tôi trang đăng nhập."
 - ✅ **Đăng ký** — "Dựng cho tôi trang đăng ký tài khoản."
@@ -121,7 +121,7 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
 
 - ✅ **Form nhiều bước** — "Dựng cho tôi form tạo workspace mới gồm ba bước."
 - ✅ **Tuỳ chọn thông báo** — "Dựng cho tôi trang cài đặt thông báo."
-- [ ] **Bảo mật** — "Dựng cho tôi trang cài đặt bảo mật, có bật xác thực hai lớp và danh sách phiên đăng nhập."
+- ✅ **Bảo mật** — "Dựng cho tôi trang cài đặt bảo mật, có bật xác thực hai lớp và danh sách phiên đăng nhập."
 - [ ] **API key** — "Dựng cho tôi trang quản lý API key."
 - [ ] **Gói hiện tại và hoá đơn** — "Dựng cho tôi trang thanh toán, hiện gói đang dùng và lịch sử hoá đơn."
 - [ ] **Báo cáo / analytics** — "Dựng cho tôi trang báo cáo doanh thu có chọn khoảng ngày."
