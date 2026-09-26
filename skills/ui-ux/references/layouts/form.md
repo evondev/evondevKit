@@ -288,6 +288,11 @@ Thông tin cá nhân
 
 Nút hành động nằm cuối, căn phải, primary bên phải cùng.
 
+**Ô tuỳ chọn ít người đụng tới** (mã, tuỳ chọn kỹ thuật, đều có mặc định): gom vào một
+khu thu gọn "Cài đặt nâng cao" ở cuối các ô, dựng là dòng chữ có chevron, không khung, ô
+bên trong thẳng cột với ô ngoài. Mẫu ở "Khu thu gọn trong form" trong
+`../components/accordion.md`.
+
 **C. Nhiều bước** (khi **các bước phụ thuộc nhau** hoặc là luồng làm một lần: onboarding, thanh toán, đăng ký hồ sơ. Form dài mà các phần độc lập thì dùng kiểu B có mục, như trang cài đặt — số trường nhiều không phải lý do chia bước)
 
 Thanh bước ở trên, mỗi bước một màn, nút "Quay lại" và "Tiếp" ở đáy. Không dùng

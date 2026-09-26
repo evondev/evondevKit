@@ -256,6 +256,8 @@ sách dài hơn 6 mục, hoặc mỗi phần trả lời dài quá 3 dòng. Dư�
 hiện hết.
 Ngoại lệ: FAQ ở trang bảng giá luôn accordion (`layouts/pricing.md`): nó là chỗ tra,
 không phải thứ người ta đến để đọc.
+Khu "Cài đặt nâng cao" trong form cũng không tính theo ngưỡng này: nó giấu các ô ít
+người đụng tới để đường chính ngắn (`components/accordion.md`, "Khu thu gọn trong form").
 
 **I18. Thanh cuộn tự ẩn: đứng yên thì không thấy, rê vào hoặc đang cuộn thì hiện.**
 
