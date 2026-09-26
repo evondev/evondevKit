@@ -1,6 +1,9 @@
 # Dòng thời gian hoạt động (timeline)
 
 Lịch sử của một đối tượng: đơn hàng, hồ sơ, ticket. Nằm trong card (`card.md`).
+**Không dùng cho "Hoạt động gần đây" của cả workspace** (nhiều người, nhiều dự án):
+ở đó câu hỏi là ai vừa đụng gì, khuôn là avatar + một câu, xem `layouts/app.md`
+mục Dashboard (đã dính 26/09/2026).
 Vòng và đường nối mượn thanh các bước (`layouts/form.md`), chữ mượn dòng danh
 sách (`list-row.md`). Mượn là chép class, không chỉ chép dáng (`N5`).
 

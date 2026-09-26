@@ -11,7 +11,7 @@ chê. Vòng tra tấn bắt buộc nằm ở `checklist.md` cổng 3.
 
 Triệu chứng dễ nhận nhất: cuộn sang ngang thì thấy **một mảng trống** bên phải, vì có một phần tử nào đó rộng hơn màn đẩy cả trang ra. Thấy mảng trống đó là biết ngay có thứ gì đang tràn, đi tìm bằng cách bỏ dần `min-w-0` ra. Nội dung thật sự rộng thì cho cuộn trong khung riêng `overflow-x-auto`, đừng để nó đẩy cả trang. Kiểm ở 375px **trước khi** báo xong.
 
-**R2. Lưới xuống một cột ở mobile.** Mặc định `grid-cols-1`, rồi mới `sm:grid-cols-2` và `lg:grid-cols-4`.
+**R2. Lưới xuống một cột ở mobile.** Mặc định `grid-cols-1`, rồi mới `sm:grid-cols-2` và `lg:grid-cols-4`. Ngoại lệ: hàng ô số liệu 2×2 ở mobile khi mọi số vừa ô (`components/charts.md`, "Ô số liệu ở màn hẹp").
 
 **R3. Không để phần tử rớt hàng lẻ.** Wrap mà còn dư một cái đứng một mình ở hàng dưới thì đọc ra là lỗi, không phải là thiết kế.
 

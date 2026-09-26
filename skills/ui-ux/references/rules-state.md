@@ -83,14 +83,26 @@ loạt là một PR không ai duyệt nổi.
 `className`. Một bản `Button` ở project cũ của bro đã phình lên 8 variant, 3 size
 và một variant `glow` dùng ba lớp radial gradient — đó là ví dụ ngược.
 
-**I7. "Xem tất cả", "Đọc thêm" là nút `ghost`, không phải nút nền xám.**
+**I7. "Xem tất cả", "Đọc thêm" là link chữ, không phải nút.**
 
 Nó dẫn sang màn khác và là hành động phụ của khối: phải trông bấm được, nhưng không
-được nặng ngang tiêu đề. Các app lớn đều để nó nhẹ ở góc header.
+được nặng ngang tiêu đề. Các app lớn đều để nó nhẹ ở góc header, và phần lớn dựng
+nó là link chữ.
 
-- Dùng **nút `ghost` `h-8`**: chữ `text-foreground/70`, rê vào mới có nền và chữ đậm lên. Không icon mũi tên. Bản cũ dùng `secondary` nền xám cao 40px ở đầu mọi card, card nào cũng có một khối xám kéo mắt (bỏ 23/09/2026).
-- Không phải link chữ màu trơn: vẫn là nút, có vùng bấm và nền khi rê vào.
+- **Dẫn sang màn khác thì là link, nhìn cũng là link**: `<Link>` `inline-flex h-8 items-center text-sm font-medium text-foreground/70`, **không padding ngang, không nền**; rê vào thì `text-foreground underline underline-offset-4`; `focus-visible` vòng mờ bo `rounded-md` (`I13`), **`ring-offset-4`, không `-2`**: link không có padding ngang nên offset 2px thì vòng ôm sát chữ, chữ "X" gần chạm vòng (đã dính 26/09/2026, thử 4px trên trang thì chữ có khoảng thở, vòng vẫn nằm trong padding card). `h-8` là vùng bấm dọc. Không icon mũi tên, không tô màu nhấn.
+- **Vì sao không còn là nút `ghost`** (đổi 26/09/2026, chủ dự án hỏi): (1) rê vào mà hiện nền xám bo góc là ngôn ngữ của nút làm một việc tại chỗ, trong khi cùng card các tên việc, tên dự án là link rê vào gạch chân: hai kiểu cho cùng một việc "sang trang khác" (`N5`); (2) `px-3` của nút đẩy chữ lệch vào trong 12px so với mép phải nội dung (số % của hàng bên dưới); bỏ padding thì chữ thẳng mép, đo trên `/dashboard`: 1235 = 1235.
+- **Nạp thêm tại chỗ thì vẫn là nút `ghost`**: "Xem hoạt động cũ hơn" nối thêm hàng ngay bên dưới, không đổi trang (`components/timeline.md`). Phân theo việc nó làm, không theo chữ trên nó.
+- Bản cũ hơn nữa dùng `secondary` nền xám cao 40px ở đầu mọi card, card nào cũng có một khối xám kéo mắt (bỏ 23/09/2026).
 - **Căn phải.** Khối có header thì đặt ở header bên phải, cùng hàng với tiêu đề. Danh sách phải đọc hết mới bấm thì đặt cuối khối, vẫn căn phải, vẫn **trong khung** (xem `F3`).
+
+```tsx
+<Link
+  to={href}
+  className="inline-flex h-8 items-center rounded-md text-sm font-medium whitespace-nowrap text-foreground/70 underline-offset-4 outline-hidden transition-colors hover:text-foreground hover:underline focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
+>
+  Xem tất cả
+</Link>
+```
 
 **I8. Nút phụ không được trông như đã bị khoá.** Chữ nhạt trên nền nhạt thì người
 dùng đọc ra là nút disabled. Chênh lệch nền của nút phụ với nền cha phải **thấy

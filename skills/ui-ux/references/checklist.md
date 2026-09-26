@@ -68,7 +68,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Nút mặc định có phải **nút viền** không, hay đang là nền nhấn? Icon chỉ ở nút mà glyph gọi đúng hành động; nút form và nút trong modal chỉ có chữ (`I1`)
 - [ ] Trong một nhóm có đúng một nút nền nhấn không?
 - [ ] Nút phụ có trông như đã bị khoá không? Chữ và nền có đủ chênh không?
-- [ ] "Xem tất cả" / "Đọc thêm" có đang là nút nền xám hay link chữ trơn không? Phải là nút `ghost` `h-8`, căn phải, không icon mũi tên (`I7`).
+- [ ] "Xem tất cả" / "Đọc thêm" (sang màn khác) có đang là nút có nền khi rê không? Phải là link chữ `h-8` không padding ngang, rê vào gạch chân, chữ thẳng mép phải nội dung, không icon mũi tên (`I7`). Nạp thêm tại chỗ ("Xem hoạt động cũ hơn") mới là nút `ghost`.
 - [ ] **Rê chuột lên một hàng: có phần tử con nào biến mất không?** (`M18`)
 - [ ] Rê chuột lên hàng: nền hover có ôm sát chữ không? Phải có padding đủ bốn phía.
 - [ ] Màn chỉ có MỘT card giữa trang trống? Vậy card phải **không viền** (`M29`), và không bao giờ có cả viền lẫn bóng.
@@ -149,6 +149,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Câu giao có cùng tiếng với người dùng không, có câu mẫu tiếng Việt nào lọt vào câu trả lời tiếng Anh không (`T27`)?
 - [ ] Nút đăng nhập bằng Google hay Apple đã có logo gốc chưa?
 - [ ] Có tự gán mỗi mục một icon khác nhau, hay ba mục ba icon giống hệt nhau?
+- [ ] Màn tổng quan: số đếm theo kỳ đã là cột chưa (`charts.md`, "Cột hay đường")? Thanh tiến độ trong danh sách có thanh nào tô hổ phách không (phải `bg-primary`, chỉ cụm "quá hạn" có màu)? "Hoạt động gần đây" có đang bê khuôn timeline không (phải avatar + một câu, 5 mục)? Hai cột lưới có kết thúc gần ngang nhau không? Workspace mới có phải một khối chào có nút "Tạo dự án", không phải năm khung "Chưa có…"?
 - [ ] **Có câu nào giống hệt nhau ở mọi ô, mọi hàng không** ("so với 2025" bốn ô, "Chưa có kỳ trước" bốn ô, `/2026` ở mọi mốc giờ)? Kéo ra ghi một lần, hoặc bỏ (`N3`, `T16b`).
 
 ### Grep một lượt
@@ -177,7 +178,7 @@ Không cần dựng file mới. Mở lại file đã có rồi làm sáu việc:
 Kiểm thêm ở 375px:
 
 - [ ] Flex và grid item chứa nội dung động đã có `min-w-0` chưa? (`T13` — nguyên nhân số một của cuộn ngang)
-- [ ] Lưới nào còn giữ 2 cột ở mobile không? Ô số liệu phải xuống 1 cột.
+- [ ] Lưới nào còn giữ 2 cột ở mobile không? Phải xuống 1 cột, **trừ hàng ô số liệu**: 2×2 ở mobile, số nào dài quá 138px (tiền đầy đủ hàng tỷ) thì rút gọn hoặc hàng đó về 1 cột; số ô lẻ thì 1 cột (`charts.md`).
 - [ ] Hàng chip có rớt xuống hàng dưới một cái lẻ không? Phải cho cuộn ngang.
 - [ ] Board hay dòng thời gian có bị wrap thành 2 hàng không? Phải cuộn ngang trong khung.
 - [ ] Bảng có bị bóp cột không? Từ `sm` trở lên thì cuộn ngang trong khung, có `min-w`, **cột đầu ghim**; dưới `sm` bảng quản lý thành danh sách dòng (tên + email, badge + số chính), không cuộn ngang. Hàng tab/chip cuộn ngang có mép mờ ở phía còn mục khuất (`R10`)?

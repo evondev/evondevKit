@@ -36,7 +36,7 @@ người cùng làm thì thêm hoạt động gần đây. Lúc giao liệt kê 
 
 | Khối | Khi nào đáng có |
 | --- | --- |
-| Hàng ô số liệu | Gần như luôn. Bốn ô là vừa, sáu ô là bắt đầu loãng. Mobile xuống một cột, xem `../components/charts.md` |
+| Hàng ô số liệu | Gần như luôn. Bốn ô là vừa, sáu ô là bắt đầu loãng. Mobile 2×2, xem `../components/charts.md` |
 | Biểu đồ xu hướng theo thời gian | Khi có dữ liệu tích luỹ theo tuần hoặc tháng |
 | Danh sách tiến độ theo nhóm | Khi công việc chia được thành dự án hoặc nhóm |
 | Việc cần làm hôm nay | Khi người dùng vào đây để bắt tay làm, không phải để xem báo cáo |
@@ -47,6 +47,26 @@ Ba khối là mỏng cho một màn tổng quan. Bốn tới năm là vừa. Đ�
 thì vẫn dựng, lúc giao gợi ý một câu khối nào nên tách sang màn riêng.
 
 Xem `../components/charts.md` cho công thức biểu đồ và luật màu.
+
+**Chi tiết từng khối** (rà `/dashboard` 26/09/2026):
+
+- **Widget chính đếm theo kỳ thì là biểu đồ cột, không phải đường.** "Việc xong mỗi tuần", "đơn mỗi ngày" là số đếm rời của từng kỳ; cột có số trên đầu đọc được cả 8 tuần một lượt, đường chỉ ghi số ở điểm cuối, muốn biết tuần 24/08 bao nhiêu phải rê chuột từng điểm (đã dính 26/09/2026). Chọn loại theo bảng "Cột hay đường" ở `../components/charts.md`.
+- **Danh sách tiến độ: thanh luôn `bg-primary`, chỉ cụm "2 việc quá hạn" tô hổ phách.** Quá hạn là một chuyện khác với phần trăm xong; tô cả thanh 93% màu hổ phách đọc ra "tiến độ đang có vấn đề", và hai trên bốn thanh cam thành thứ nặng nhất màn. Tô cả dòng phụ "112 / 120 việc · 2 việc quá hạn" cũng sai: khối việc hôm nay ngay bên cạnh chỉ tô cụm "Quá hạn 2 ngày", hai khối một màn hai cách (`N5`, đã dính 26/09/2026). Chi tiết ở "Thanh tiến độ trong danh sách", `../components/charts.md`.
+- **Hoạt động gần đây là luồng tin của cả workspace, không phải dòng thời gian của một bản ghi.** Đừng bê `../components/timeline.md` (vòng icon theo loại việc, đường nối, nhãn loại việc đậm, người làm dòng cuối cỡ nhỏ): câu hỏi ở đây là "**ai** vừa đụng **gì**", mà khuôn timeline đưa loại việc lên chữ đậm, tên việc xám, người làm xuống dòng mờ nhất. Mỗi mục bốn dòng, sáu mục cao 820px (đã dính 26/09/2026). Khuôn, như các app quản lý dự án phổ biến:
+
+  ```
+  (TK)  Tuấn Khang hoàn thành Cập nhật ảnh đội ngũ trên trang giới thiệu
+        Website Evondev Studio · 09:37
+  ```
+
+  - Avatar người làm `size-8` bên trái (`avatar.md`), không vòng icon loại việc, không đường nối (các mục không phải các bước của một thứ).
+  - Một câu `text-sm text-muted line-clamp-2`: **tên người** `font-medium text-foreground`, động từ xám, **tên đối tượng** `text-foreground` và là link sang đối tượng đó (`N8`; cả khối không link nào là trang cụt, như "Bản ghi khác nhắc tới trên trang là link" ở dưới).
+  - Dòng phụ `text-xs text-muted`: dự án · giờ. Hôm nay ghi giờ, hôm qua ghi "Hôm qua", cũ hơn ghi ngày. Dự án dài `truncate`, giờ `shrink-0`.
+  - **5 mục**, header có "Xem tất cả" như các khối danh sách khác trên màn (`card.md`). Đã thử trên trang: trang cao 1512px còn ~1150px, hai cột kết thúc gần ngang nhau.
+- **Hai cột lưới phải kết thúc gần ngang nhau.** Khối việc hôm nay `self-start` (đúng, không kéo card trắng rỗng), nhưng cột phải dài gấp đôi thì dưới cột trái là một mảng xám 450px. Chữa bằng cách **cắt số hàng của khối dài** (luồng hoạt động 5 mục, việc hôm nay tối đa 8 rồi "Xem tất cả"), không kéo khối ngắn, không đổi thứ tự khối.
+- **Workspace mới (chưa có dự án nào): một khối chào thay cả lưới, có nút chính.** Đừng dựng đủ năm khối rồi cho mỗi khối một câu "Chưa có…": năm khung cùng nói một ý (`N3`), khung biểu đồ cao 340px chỉ chứa một dòng chữ, và cả màn **không có lối đi tiếp** nào (`N6`, đã dính 26/09/2026). Khối chào: tiêu đề `text-base font-semibold` ("Bắt đầu với dự án đầu tiên"), một câu vì sao, nút `primary` "+ Tạo dự án", có thể thêm một nút viền "Mời thành viên". Nằm trong một card trắng như mọi khối khác, không nền trong suốt. Từ lúc có một dự án thì lưới trở lại, khối nào chưa có số thì theo ca rỗng của khối đó (biểu đồ một điểm, việc hôm nay trống).
+- **Khối không có dữ liệu thì bỏ "Xem tất cả"**, nút dẫn sang một danh sách rỗng là thừa. "Hôm nay không có việc nào đến hạn" chỉ đúng khi có việc mà không việc nào đến hạn hôm nay; chưa có việc nào thì câu là "Chưa có việc nào được giao cho bạn".
+- **Câu rỗng của các khối cùng hàng cùng căn một kiểu.** Khung biểu đồ căn câu giữa theo chiều dọc, khung tiến độ bên cạnh để câu sát đầu: cùng hàng hai vị trí (`N5`). Cả hai căn giữa khung.
 
 **B. Cột trái điều hướng, nội dung phải** (khi có từ 5 mục điều hướng trở lên)
 

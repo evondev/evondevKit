@@ -36,7 +36,7 @@ Skill này chỉ lo **màn hình trong app** — dashboard, danh sách, bảng, 
 | Chiều cao dòng danh sách | 12–16px chiều dọc |
 | Chiều cao nút | `py-2.5` |
 | **Ô nhập, select, nút trong form** | **`h-11 md:h-10`** (44px màn hẹp, 40px từ `md`), ô và nút đổi cùng nhau. Form đăng nhập/đăng ký đứng riêng giữa trang được lên `h-12` |
-| Nút "xem tất cả", "đọc thêm" | `ghost` `h-8`, `px-3`, căn phải (`I7`) |
+| "Xem tất cả", "đọc thêm" | link chữ `h-8`, không padding ngang, căn phải (`I7`) |
 | Viền card | đường tóc 1px, một token duy nhất |
 | Bóng card | **không có** |
 

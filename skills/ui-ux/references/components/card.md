@@ -73,10 +73,12 @@ mới. **Luôn căn phải, cùng hàng với tiêu đề.**
 
 | Hành động | Nút |
 | --- | --- |
-| Dẫn sang màn khác: "Xem tất cả", "Đọc thêm" | nút `ghost` `h-8`, **không icon** (`I7`) |
+| Dẫn sang màn khác: "Xem tất cả", "Đọc thêm" | **link chữ** `h-8`, không padding ngang, rê vào gạch chân, **không icon** (`I7`) |
 | Làm một việc: tải, xuất, thêm, lọc | nút viền `outline` **có icon trái** (`I1`): `download`, `plus`, `filter` |
 
 Đã dính 22/09/2026: "Tải báo cáo" dựng y như "Xem tất cả" (không icon), đọc ra là link sang trang khác chứ không phải nút tải.
 
-Đừng biến "Xem tất cả" thành một dòng chữ màu ở cuối khối. Nó vẫn là nút, chỉ là
-nút `ghost` nhẹ: `h-8`, `px-3`, không icon mũi tên. Xem luật `I7`.
+"Xem tất cả" là link chữ `text-foreground/70`, không màu nhấn, không icon mũi tên,
+không padding ngang nên chữ thẳng mép phải nội dung card. Header có link thì khối
+tiêu đề vẫn `min-h-10` như có nút (link cao `h-8`, thêm `my-1` để thẳng tâm dòng
+tiêu đề). Xem luật `I7`.

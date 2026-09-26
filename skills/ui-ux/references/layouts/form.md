@@ -152,9 +152,10 @@ Ba thông số:
 | Màu | `--foreground`, **không làm mờ** | Chữ nhạt đọc ra là đã bị khoá (`I8`). Đây là lối thoát duy nhất của người không vào được tài khoản — làm nó trông disabled là chặn đúng người đang cần |
 | Độ đậm | `font-normal` (nhãn là `font-medium`) | Phân cấp bằng **một** thứ thôi. `M13`: thứ bậc đến từ cỡ chữ, độ đậm, màu chữ — dùng cả ba cùng lúc là thừa |
 
-**Là link, không phải nút.** `I7` bắt "Xem tất cả" phải là nút, nhưng đó là luật
-cho dashboard. Trong form mà thành nút thì nó cạnh tranh với nút đăng nhập nằm
-ngay dưới. Có `cursor-pointer`, gạch chân khi hover.
+**Là link, không phải nút.** Trong form mà thành nút thì nó cạnh tranh với nút đăng
+nhập nằm ngay dưới. Có `cursor-pointer`, gạch chân khi hover. Khác "Xem tất cả" của
+dashboard (`I7`, cũng là link) ở màu: ở đây `--foreground` không làm mờ, vì là lối
+thoát duy nhất của người không vào được tài khoản.
 
 ---
 
