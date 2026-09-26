@@ -18,8 +18,12 @@ chưa tick đầu tiên. Nhiều trang cùng lúc thì lỗi bị lướt và c�
    không cài vào dự án. Chromium có sẵn ở `~/Library/Caches/ms-playwright`, không cần
    `playwright install`. Dev server không chạy (curl không ra 200) thì dừng lại, nhờ
    người dùng bật.
-2. **Chụp ở 375, 768, 1280px** (`deviceScaleFactor: 2`, `fullPage`). Ghi lại
-   `scrollWidth` để bắt cuộn ngang, và lỗi console.
+2. **Chạy `skills/ui-ux/scripts/probe.mjs <url> --dpr 2 --pw <thư mục playwright>`
+   trước**, giống bản dựng chạy ở cổng 3. Script chụp 375, 768, 1024, 1280px (`fullPage`),
+   ghi cuộn ngang, lỗi console và các lỗi đo được. **Lượt rà tìm ra một lỗi đo được mà
+   probe không báo** (lệch px, tràn, cắt chữ, thiếu dấu focus…) **thì thêm phép đo vào
+   probe**, thử lại trên trang đó cho tới khi nó bắt được: bản dựng sau tự bắt lỗi đó
+   trước khi giao.
    **Dự án có dark mode thì mỗi khổ chụp cả sáng lẫn tối** (`colorScheme: 'dark'` khi
    tạo context, hoặc gắn class `dark` lên `<html>`, theo cách dự án bật). Bước 3 và 4 cũng
    làm ở cả hai: nền hover, màu viền, tương phản chữ đo riêng từng chế độ. Sửa skill cho

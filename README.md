@@ -10,6 +10,8 @@ Bộ skill Claude Code của evondev. Hiện có một plugin: **`evon`**, chứ
 skills/
 └── ui-ux/                → gọi bằng /evon:ui-ux
     ├── SKILL.md          bộ định tuyến: 4 câu hỏi vào việc, luật phạm vi, bảng mở doc
+    ├── scripts/
+    │   └── probe.mjs     mở trang thật ở 4 bề rộng, đo lỗi đo được, chụp ảnh (cổng 3)
     └── references/
         ├── rules-color.md          M — màu, viền, bóng, dark mode, token
         ├── rules-type.md           T — chữ, font, xuống dòng, cắt chữ, copy, tiếng Anh

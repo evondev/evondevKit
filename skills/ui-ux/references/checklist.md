@@ -175,7 +175,31 @@ Dòng grep thứ hai (số âm, `N11`): mỗi kết quả phải có comment lý
 
 ## Cổng 3 — vòng tra tấn, BẮT BUỘC sau mỗi lần dựng
 
-Không cần dựng file mới. Mở lại file đã có rồi làm sáu việc:
+**Mở trang thật, không trả lời cổng này bằng cách đọc lại code.** Đọc code thì chỉ thấy
+thứ mình định viết, không thấy thứ trình duyệt vẽ ra. Đã dính 26/09/2026 ở trang lịch: bản
+dựng qua cổng 3 bằng đọc code, lượt rà mở trang thật tìm ra năm lỗi, ba lỗi trong đó
+(chữ cắt còn một chữ ở 1024px, hàng cao thấp 2px, số ngày lệch mép tên thứ) script dưới
+đây đo ra ngay.
+
+0. [ ] **Chạy `scripts/probe.mjs`** (nằm cạnh `SKILL.md`) trên đúng route vừa dựng:
+   `node <thư mục skill>/scripts/probe.mjs http://localhost:<cổng>/<route>`.
+   Script mở trang ở 375, 768, 1024, 1280px, chụp ảnh từng khổ, và đo: cuộn ngang, lỗi
+   console, chữ bị cắt còn dưới 10 ký tự, phần tử cùng loại cao lệch nhau 1–4px, chữ cùng
+   cột lệch mép, chỗ bấm dưới 32px ở màn cảm ứng, Tab tới mà không thấy gì đổi.
+   - Dev server chưa chạy thì bật ở nền bằng lệnh dev của dự án. Chưa có playwright thì
+     cài vào thư mục tạm theo lệnh script in ra, **không cài vào dự án**.
+   - Trạng thái nằm ở route khác (`/states`, trang rỗng) thì chạy thêm trên route đó. Dự án
+     có dark mode thì chạy thêm `--dark`.
+   - Sửa từng lỗi script in ra rồi chạy lại, **tối đa hai vòng**. Lỗi nào để lại có chủ ý
+     (vd chỗ bấm nhỏ trong bảng dày) thì nói lúc giao.
+   - **Mở từng ảnh chụp ra xem**, soi theo mười phép thử (`principles.md`). Script chỉ đo
+     được thứ đo được: "hôm nay đậm hơn ngày đang chọn", "nút Hôm nay tách khỏi ‹ ›" chỉ
+     mắt mới thấy.
+   - Không mở được trang (không có dev server, không chạy được trình duyệt) thì lúc giao
+     nói một dòng: *"Mình chưa mở được trang thật vì …, chưa rà ở màn hẹp."* Không im lặng
+     coi như đã rà.
+
+Rồi làm sáu việc trên trang thật (sửa tạm dữ liệu giả để thử, thử xong trả lại):
 
 1. [ ] Thu cửa sổ xuống **375px**. **Trang cuộn ngang là hỏng.**
 2. [ ] Vùng nào cuộn ngang thì **cuộn hết sang phải** — phần tử cuối có dính mép không?

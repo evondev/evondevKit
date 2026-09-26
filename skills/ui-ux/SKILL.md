@@ -400,7 +400,7 @@ Rút gọn từ `references/checklist.md`. Chạy hết checklist đầy đủ t
 - [ ] Đã grep codebase xem họ dùng Tailwind / shadcn / gì chưa, hay đang tự áp bộ của mình lên.
 - [ ] Đã dựng đúng **bố cục mặc định** trong file layout chưa, hay tự bịa. Lúc giao đã báo một dòng "muốn kiểu khác thì nói" chưa.
 - [ ] Có section nào tự thêm ngoài đề bài không.
-- [ ] **Kiểm ở 375px. Trang cuộn ngang là hỏng.** Cuộn hết sang phải, phần tử cuối phải còn lề.
+- [ ] **Đã mở trang thật bằng `scripts/probe.mjs` và xem ảnh chụp chưa** (cổng 3), hay trả lời checklist bằng đọc lại code. Trang cuộn ngang ở 375px là hỏng.
 - [ ] Đã chạy **mười phép thử** trong `references/principles.md` chưa, nhất là với thứ chưa có mẫu.
 
 ---
