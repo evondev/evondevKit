@@ -49,17 +49,20 @@ Nằm trong card (`card.md`), mỗi hàng một cặp nhãn và giá trị, theo
     ```tsx
     interface EmailTextProps {
       email: string;
+      // Dấu câu ngay sau email ("." cuối câu, ","): phải nằm trong khúc cuối, xem dưới.
+      suffix?: string;
     }
 
-    function EmailText({ email }: EmailTextProps) {
+    function EmailText({ email, suffix }: EmailTextProps) {
       const atIndex = email.lastIndexOf("@");
 
-      if (atIndex < 0) return <span className="wrap-anywhere">{email}</span>;
+      if (atIndex < 0) return <span className="wrap-anywhere">{email}{suffix}</span>;
 
       const localSegments = email.slice(0, atIndex + 1).split(".");
 
       return (
-        <span className="wrap-anywhere">
+        // Cả email là một khối: vừa một dòng thì xuống dòng nguyên cụm, không bẻ sau "@".
+        <span className="inline-block max-w-full wrap-anywhere">
           <span className="inline-block max-w-full">
             {localSegments.map((segment, index) => (
               <Fragment key={index}>
@@ -69,13 +72,28 @@ Nằm trong card (`card.md`), mỗi hàng một cặp nhãn và giá trị, theo
               </Fragment>
             ))}
           </span>
-          <span className="inline-block max-w-full">{email.slice(atIndex + 1)}</span>
+          <span className="inline-block max-w-full">
+            {email.slice(atIndex + 1)}
+            {suffix}
+          </span>
         </span>
       );
     }
     ```
 
     Dùng chung một component này cho mọi chỗ in email, kể cả hàng giá trị ở trên.
+  - **Dấu câu ngay sau email đi vào `suffix`, không viết sau thẻ.** Sau một khối `inline-block`
+    trình duyệt được phép xuống dòng, nên `<EmailText />.` ở câu dài ra dòng mở đầu bằng dấu
+    chấm: "…evondev.com.vn" / ". Đổi tài khoản" (đã dính 26/09/2026, trang 403 ở 375 và 768px).
+    Viết `<EmailText email={email} suffix="." />`. Bọc cả email và dấu bằng `whitespace-nowrap`
+    thì không được: mất luôn chỗ xuống dòng sau `@`. Probe báo lỗi này ở mục "Dấu câu rơi xuống
+    đầu dòng".
+  - **Khối bọc ngoài cũng `inline-block max-w-full`.** Để khối ngoài là inline thường thì trình
+    duyệt chọn ngắt ngay sau `@` dù cả email vừa một dòng: "Bạn đang đăng nhập bằng
+    tran.nguyen.anh.tuan.khang@" / "evondev-studio.com. Đổi tài khoản", đọc như hai mẩu, câu căn
+    giữa thì hai dòng lệch hẳn nhau (đã dính 26/09/2026, trang 403). Khối ngoài `inline-block` thì
+    email vừa dòng sẽ xuống nguyên cụm; chỉ khi dài hơn cả dòng mới ngắt sau `@` như trên (thử ở
+    320, 375, 1280px).
   - **Phần trước `@` dài hơn cả dòng thì xuống dòng trước dấu chấm** (`<wbr>` trước mỗi `.`, như trên). Không có nó thì `wrap-anywhere` bẻ ở ký tự vừa hết chỗ, và hay rơi đúng trước `@`: một dòng chỉ có mỗi "@" (đã dính 25/09/2026, màn OTP ở 1280px, "…toan.tong.hop" / "@" / "congty-…"). Có `<wbr>` thì ra "…toan.tong" / ".hop@" / "congty-…". Không dính `@` vào ký tự cuối bằng `nowrap`: ra "…tong.ho" / "p@", vẫn vỡ giữa chữ.
 - **Giá trị trống là `—` `text-muted`**, một ký hiệu cho mọi ô trống, giống ô trống trong bảng (`layouts/app.md`, `T18`). Không viết "Chưa có", "Chưa gắn nhãn", mỗi dòng một câu.
 - **Giá trị có khuôn riêng thì dùng đúng component của nó**, không viết chữ trơn: trạng thái là badge màu (`M7`), nhãn phân loại là pill (`M8`, `list-row.md`), tiền dùng `đ` không `₫` (`charts.md`), số `tabular-nums`, mã và ID `font-mono` (`T17`).

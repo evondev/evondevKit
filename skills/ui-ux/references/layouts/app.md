@@ -689,6 +689,71 @@ dùng lần đầu vào chưa có gì để làm.
 
 ---
 
+## Trang lỗi (404, 403, 500, bảo trì)
+
+Rà lần đầu 26/09/2026 ở `/errors/states`. Bốn trang, **hai chỗ đặt** theo việc khung app còn
+dựng được không:
+
+| Trang | Đặt ở đâu | Việc chính (nút đặc) | Lối phụ |
+| --- | --- | --- | --- |
+| 404 trong app (đã đăng nhập) | **trong khung app**, sidebar và header giữ nguyên | Về trang tổng quan | Quay lại trang trước (chỉ khi có trang trước) |
+| 403 | trong khung app | Gửi yêu cầu cấp quyền | Về trang tổng quan; dòng cuối "Bạn đang đăng nhập bằng … · Đổi tài khoản" |
+| 500 của một trang (khung vẫn chạy) | trong khung app | Tải lại trang | Về trang tổng quan; dòng cuối mã lỗi `font-mono` + nút sao chép |
+| 404 khi chưa đăng nhập, 500 làm sập cả app, bảo trì | **đứng riêng**: cùng khối như trong khung, thêm logo căn giữa ở trên; **không card** | 404: về trang chủ / đăng nhập. 500: Tải lại trang. Bảo trì: không nút đặc, "Tải lại trang" là nút viền | — |
+
+- **Người đã đăng nhập gặp lỗi thì vẫn ở trong app.** Bỏ khung app đi là bỏ luôn đường ra: muốn
+  sang trang khác phải bấm đúng một nút trên card. Các hướng dẫn thiết kế trang 404 đều giữ
+  thanh điều hướng của site, và router lồng nhau dựng trang not-found **bên trong** layout cha.
+  Header ghi tên lỗi ("Không tìm thấy trang"), không ghi tên trang cũ, không đường dẫn.
+- **Route bắt mọi đường dẫn trong khung app phải có trang.** `{ path: "*" }` không `element`
+  thì khung dựng vùng nội dung trống, header vẫn ghi "Tổng quan": người dùng tưởng trang đang
+  tải (đã dính 26/09/2026, `/dashboard/khong-co`). Lưới router bắt ở cấp gốc chỉ phủ đường dẫn
+  ngoài khung.
+- **Khối trong khung: không card, căn giữa, chữ căn giữa** như khối lỗi tải
+  (`../components/empty-state.md`): `mx-auto max-w-md pt-16 pb-16 text-center sm:pt-24`, nằm
+  thẳng trên nền trang. Nút `h-11 md:h-10`, dưới `sm` rộng hết và xếp dọc (nút đặc trên), từ
+  `sm` co theo chữ, đứng ngang, căn giữa, nút đặc trước. Thử 26/09/2026 ở 1280 và 375px.
+- **Đứng riêng cũng là khối đó, không card.** Trang `min-h-screen bg-background px-4 pt-24
+  sm:pt-40`, logo (`ProductBrand`) căn giữa ở trên, tiêu đề cách logo `mt-8`; chữ, nút, khoảng
+  cách giống hệt bản trong khung. Trang lỗi không phải form: bản trước mượn card màn xác thực
+  (nút `h-12` rộng hết card) thì trang 404 chỉ có một thanh đen 400px là thứ nặng nhất màn, và đặt
+  cạnh bản trong khung thì một loại trang ra hai khuôn khác hẳn nhau (`N5`; đã dính 26/09/2026,
+  lượt hai, chủ dự án thấy "xấu xấu"). Các bộ component trang 404 phổ biến cũng là trang trơn,
+  không card. `M29` (một card giữa trang trống) chỉ còn cho màn xác thực và onboarding một khối.
+- **404 có dòng mã "404" nhỏ mờ trên tiêu đề**: `text-sm font-medium text-muted tabular-nums`,
+  tiêu đề `mt-1`. Các bộ component trang 404 phổ biến đều có dòng này; "404" là chữ người dùng
+  nhận ra và gõ đi tìm. 403, 500, bảo trì không có (500 đã có mã lỗi riêng ở dòng cuối, hai mã
+  là thừa).
+- **Tiêu đề `text-xl font-semibold`** (`T2`), không `font-bold`. Không icon to, không hình minh
+  hoạ, không đỏ: người dùng không có gì phải sửa (`M30`).
+- **Câu dẫn nói vì sao và làm gì tiếp**, một hai câu. 404: "Đường dẫn có thể bị gõ sai, hoặc
+  trang đã được chuyển sang chỗ khác." 403: nêu tên trang (`font-medium text-foreground`) và ai
+  được vào. 500: "Lỗi nằm ở phía hệ thống, không phải do bạn." Bảo trì: giờ mở lại, viết theo
+  kiểu câu văn (`T16b`: "lúc 23:30 hôm nay", không "23:30 · 26/09/2026").
+- **403: xin quyền và tài khoản đang dùng.** Vào nhầm tài khoản là lý do hay gặp nhất, nên dòng
+  cuối nói email đang đăng nhập và có link "Đổi tài khoản", như trang "cần quyền truy cập" của
+  bộ văn phòng trực tuyến lớn. Email giữa câu thì dấu chấm đi theo `EmailText` `suffix`, và cả
+  email là một khối: vừa một dòng thì xuống dòng nguyên cụm, không bẻ đôi sau `@`
+  (`../components/description-list.md`). **"Đổi tài khoản" đứng một dòng riêng** dưới câu
+  (`mx-auto mt-1 flex h-8 w-fit items-center px-1.5`), không nối sau email: nối sau thì dòng email + link rộng 448px, rộng
+  nhất khối (câu dẫn 439px, tiêu đề 310px), chân nặng hơn đầu; và vòng focus của link nở 4px, chùm
+  lên dấu chấm cuối email (đã dính 26/09/2026, lượt bốn, đo ở 1280px). Tách dòng thì chân còn
+  ~270px, vòng có chỗ đứng. `h-8` cho vùng bấm thì phải kèm `px-1.5`: không padding ngang thì
+  vòng focus hở 7px trên dưới mà sát chữ hai bên (đo 26/09/2026, lượt năm); link đứng giữa khối căn
+  giữa không có mép nào cần thẳng nên không cần `px-0` như link `I7`.
+- **403 đã gửi: đổi cả tiêu đề và câu dẫn, không nhét dòng chữ xanh vào chỗ nút.** Tiêu đề "Đã
+  gửi yêu cầu", câu dẫn "Bạn sẽ nhận email khi **<tên>** chấp nhận yêu cầu.", hàng nút chỉ còn
+  "Về trang tổng quan" (vẫn nút viền, giữ kiểu theo vai); dòng tài khoản giữ nguyên. Tiêu đề
+  `tabIndex={-1}`, gửi xong chuyển tiêu điểm vào đó (`I31`). Bộ văn phòng trực tuyến lớn cũng
+  đổi cả màn thành "Request sent" + câu hẹn email. Bản trước để ô nút ẩn giữ chỗ và dòng "✓ Đã gửi
+  yêu cầu" nằm giữa ô đó: chữ ngắn hơn nút, cả hàng lệch tâm 16px sang phải, trông như thiếu một
+  nút (đã dính 26/09/2026, lượt hai).
+- **"Quay lại trang trước" chỉ khi có trang trước trong app.** Mở thẳng bằng link (tab mới) thì
+  nút này đưa người dùng ra khỏi app hoặc không làm gì; ẩn đi. React Router: `location.key ===
+  "default"` là trang đầu của phiên.
+
+---
+
 ## Trang cài đặt
 
 **A. Một cột, chia mục có tiêu đề** (mặc định, dưới 15 tuỳ chọn)

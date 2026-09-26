@@ -200,6 +200,15 @@ thì thấy rõ mình đang đứng ở đâu. Các app lớn đều làm vậy.
 
 - **`ring-foreground/50` là mức thấp nhất đạt 3:1 trên nền trắng** (WCAG 1.4.11). `/40` là 2,3:1, trượt. Nền tối dùng `ring-white/50`.
 - **`ring-offset-2`** tách vòng khỏi mép nút một khe 2px, để vòng không dính vào viền nút thành một viền dày.
+- **Link chữ nằm giữa câu: vòng chạm dấu câu bên cạnh là chuyện không tránh được, đừng chữa bằng
+  đổi offset.** Vòng nở 4px, một dấu cách của chữ 14px chỉ ~3,5px. Thử 26/09/2026 cả `ring-offset-0`,
+  `-1`, `-2` trên "Chưa có tài khoản? Đăng ký" và "…studio.com. Đổi tài khoản": mức nào cũng dính sát
+  "?" hay ".", offset 0 thì vòng ôm sát dấu tiếng Việt, chật hơn. Giữ vòng như nút. Chỉ khi link
+  nối sau một giá trị dài (email, mã) ở khối căn giữa thì cho link một dòng riêng (`layouts/app.md`,
+  "Trang lỗi"); link ngắn trong câu thường ("Chưa có tài khoản? Đăng ký") để nguyên.
+- **Link đứng riêng có `h-8` (vùng bấm) thì chữ phải cách đều bốn mép khung vòng**: thêm `px-1.5`,
+  khe ngang 6px ngang khe dọc 7px. Chỉ link `I7` ở góc header giữ `px-0` để chữ thẳng mép card.
+  Đã dính 26/09/2026: "Đổi tài khoản" ở trang 403, vòng sát "Đ" và "n" mà hở trên dưới.
 - **Đổi sang vòng thì dọn luôn chỗ ghi đè cũ**, không hỏi: grep `focus-visible:bg-`, `focus:bg-`, `focus-visible:ring-0` trên nút, tab, chip và bỏ, vì còn sót là vừa vòng vừa nền, hai tín hiệu một ý (`N3`). Chỉ giữ nền lúc focus ở chỗ đi bằng mũi tên theo bảng trên: mục menu, listbox, ô lịch (đã dính 24/09/2026: sửa `Button` xong còn bảy chỗ tự đè nền).
 - Đã thử và bỏ (21–23/09/2026): **focus y như hover**. Nền `--background` trên nút trắng chỉ 1,1:1, nút `primary` đổi sang `primary-hover` chỉ 1,28:1, checkbox và radio chỉ có ring 10%: Tab qua cả form gần như không thấy mình ở đâu. Ba lượt rà skill độc lập cùng chỉ ra lỗi này.
 

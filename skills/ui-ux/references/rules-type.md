@@ -195,6 +195,11 @@ Khác năm thì ghi đủ `16/09/2025`; `title` và `datetime` luôn đủ. Copy
 thì tháng viết chữ (`T28`). **Bẫy:** `Intl.DateTimeFormat('vi-VN', { day: '2-digit', month: '2-digit' })` bỏ năm thì ra `23-09` gạch ngang, không phải `23/09`; tự ghép ngày và tháng bằng `/`. Các app lớn cùng làm
 vậy. Một mốc đứng riêng làm trường dữ liệu ("Ngày tạo" trong khối nhãn và giá trị) thì giữ đủ năm.
 
+**Mốc nằm giữa câu văn thì viết như câu nói, không dùng dấu `·`.** `08:30 · 16/09` là kiểu của
+cột và dòng phụ; giữa câu nó đọc thành hai mẩu rời: "Dự kiến mở lại lúc 23:30 · 26/09/2026."
+(đã dính 26/09/2026, trang bảo trì). Viết "lúc 23:30 hôm nay", "lúc 23:30 ngày mai", "lúc 08:00
+ngày 28/09"; năm chỉ khi khác năm nay. Vẫn bọc `<time datetime>` đủ mốc.
+
 **T17. Mã và định danh dùng `font-mono`.** Mã đơn hàng, mã vận đơn, mã giảm giá, ID,
 kể cả khi nằm giữa một câu mô tả. Nó nói
 "đây là thứ để copy chính xác", không phải chữ để đọc.

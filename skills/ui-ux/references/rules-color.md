@@ -390,7 +390,8 @@ bóng rất mờ, không phải viền đậm hơn.**
 
 *Gu flat — phong cách khác đã chọn theo `P1` thì xem `P2` trong `references/styles.md`.*
 
-Đăng nhập, đăng ký, quên mật khẩu, màn onboarding một khối, trang 404. Đặc điểm
+Đăng nhập, đăng ký, quên mật khẩu, màn onboarding một khối. (Trang lỗi không dùng card, xem
+"Trang lỗi" ở `layouts/app.md`.) Đặc điểm
 chung: **không có khối thứ hai nào để mà tách khỏi.**
 
 `M13` bắt viền vì viền là thứ phân định ranh giới giữa các khối nằm cạnh nhau.

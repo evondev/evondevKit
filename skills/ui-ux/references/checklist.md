@@ -188,8 +188,9 @@ dựng qua cổng 3 bằng đọc code, lượt rà mở trang thật tìm ra n�
    `node <thư mục skill>/scripts/probe.mjs http://localhost:<cổng>/<route>`.
    Script mở trang ở 375, 768, 1024, 1280px, chụp ảnh từng khổ, và đo: cuộn ngang, lỗi
    console, chữ bị cắt còn dưới 10 ký tự, phần tử cùng loại cao lệch nhau 1–4px, chữ cùng
-   cột lệch mép, chỗ bấm dưới 32px ở màn cảm ứng, Tab tới mà không thấy gì đổi, dấu ngăn (›, /) cách
-   hai bên không đều, vòng focus vẽ trên chữ mà icon cùng link nằm ngoài vòng.
+   cột lệch mép, chỗ bấm dưới 32px ở màn cảm ứng, Tab tới mà không thấy gì đổi, dấu câu
+   rơi xuống đầu dòng, dấu ngăn (›, /) cách hai bên không đều, vòng focus
+   vẽ trên chữ mà icon cùng link nằm ngoài vòng.
    - Dev server chưa chạy thì bật ở nền bằng lệnh dev của dự án. Chưa có playwright thì
      cài vào thư mục tạm theo lệnh script in ra, **không cài vào dự án**.
    - Trạng thái nằm ở route khác (`/states`, trang rỗng) thì chạy thêm trên route đó. Dự án
@@ -230,6 +231,7 @@ Kiểm thêm ở 375px:
 - [ ] Chip lọc: đang chọn là `bg-primary text-primary-foreground` (không gõ cứng màu), trừ chip trong popover có nút Áp dụng (viền đậm, nền `foreground/10`)? Nhãn dài đã `max-w-48` + `truncate` + `title` chưa? Có `aria-pressed` chưa?
 - [ ] **Popover Lọc**: chọn một người trong ô select bằng chuột rồi nhìn lại, ô còn viền đen + ring như đang mở không (phải `focus-visible:`)? Chữ "Xoá lọc" có thẳng mép trái các nhãn không, hay thụt 16px vì là nút `ghost`? Khung có mấy khối đen (chip chọn, nút Áp dụng): chỉ Áp dụng được đặc. Chọn đủ bốn mức: hàng chip có thành bốn vòng đen dày không (viền chip chọn `inset-ring-1`, không `ring-1 ring-inset`: Tab tới chip đang chọn phải thấy cả viền chọn lẫn vòng focus)? Mở ô khoảng ngày ở 375px: hàng mốc nhanh có mốc nào bị cắt không (phải xuống dòng)? Ở 1280px: lịch có bung hai tháng tràn khỏi khung không, lọc hạn chót có mở ra tháng trước không (`layouts/overlay.md`, "Popover lọc")?
 - [ ] **Trang lịch**: đọc được tên việc trong ô ở 1024px khi sidebar mở không, hay chỉ còn một chữ ("Chuẩn …")? Khuôn đổi theo bề rộng khung (`@container`), không theo viewport. Ở lịch gọn, chọn một ngày khác hôm nay: vòng đặc có nằm ở ngày đang chọn không, hay hôm nay vẫn là khối đậm nhất? Rê chuột, bấm chuột, Tab tới một ngày: nền và vòng focus là vòng quanh số, hay ô vuông cả ô chồng lên vòng? "Hôm nay" có đứng liền ‹ › không? Chuyển qua vài tháng: lưới có cao thấp không (đo cao hàng có 3 việc)? Chữ số "1" và "31" có thẳng mép tên thứ không (`layouts/app.md`, "Trang lịch")?
+- [ ] **Trang lỗi**: gõ một đường dẫn sai **bên trong** khung app (vd `/dashboard/khong-co`): có ra trang 404 trong khung, sidebar còn, header ghi "Không tìm thấy trang" không, hay vùng nội dung trống mà header vẫn tên trang cũ? 403, 500 của một trang cũng nằm trong khung; chỉ bảo trì, chưa đăng nhập, sập cả app mới đứng riêng, và đứng riêng cũng là khối căn giữa không card (logo ở trên), không thanh đen rộng hết. 404 có dòng "404" nhỏ mờ trên tiêu đề chưa? Tiêu đề `font-semibold`, không đỏ, không hình? Email giữa câu có để dấu chấm rơi xuống đầu dòng không (`suffix` của `EmailText`), có bị bẻ sau `@` dù vừa một dòng không? 403 đã gửi: tiêu đề đổi thành "Đã gửi yêu cầu", hay dòng chữ xanh nằm trong ô nút làm hàng lệch tâm? "Đổi tài khoản" có đứng dòng riêng dưới email không, hay nối sau email làm dòng chân rộng nhất khối? Giờ mở lại viết kiểu câu văn chưa (`layouts/app.md`, "Trang lỗi")?
 - [ ] Nhìn lại một lượt: có chỗ nào **chật dồn cục** không? Chật là chưa xong.
 
 Nếu có dark mode:

@@ -284,6 +284,48 @@ function measureInPage({ minTapSize, isMobile }) {
     window.scrollTo(0, 0);
   }
 
+  // 6. Dấu câu rơi xuống đầu dòng (". Đổi tài khoản", "· 3 ngày"): thường do chữ đứng trước là
+  //    inline-block (EmailText, badge) nên trình duyệt được phép ngắt ngay trước dấu.
+  const orphanPunctuation = [];
+  const punctuationPattern = /[.,;:!?)·»”…]/;
+  const textWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  let previousCharRect = null;
+
+  while (textWalker.nextNode() && orphanPunctuation.length < 10) {
+    const textNode = textWalker.currentNode;
+    const parent = textNode.parentElement;
+    if (!parent || !isVisible(parent) || parent.closest("script, style, code, pre, [aria-hidden='true']")) continue;
+
+    for (let index = 0; index < textNode.length; index++) {
+      const character = textNode.data[index];
+      if (/\s/.test(character)) continue;
+
+      const charRange = document.createRange();
+      charRange.setStart(textNode, index);
+      charRange.setEnd(textNode, index + 1);
+      const charRect = charRange.getBoundingClientRect();
+      if (!charRect.width) continue;
+
+      const isOnNewLine = previousCharRect && charRect.top >= previousCharRect.bottom - 2 && charRect.left < previousCharRect.left;
+      // Dấu nằm giữa một chuỗi liền ("…toan" / ".tong@" của email, "1.284") là chỗ ngắt cố ý, không
+      // phải dấu câu: chỉ tính dấu đứng cuối chữ (sau nó là khoảng trắng hoặc hết đoạn).
+      // Dấu "." của EmailText là text node riêng: ký tự sau nó nằm ở node kế tiếp.
+      let nextCharacter = textNode.data[index + 1];
+      if (nextCharacter === undefined) {
+        const peekWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        peekWalker.currentNode = textNode;
+        nextCharacter = peekWalker.nextNode()?.data[0];
+      }
+      const isInsideToken = /[.,:]/.test(character) && nextCharacter !== undefined && !/\s/.test(nextCharacter);
+      if (punctuationPattern.test(character) && isOnNewLine && !isInsideToken) {
+        const lineText = textNode.data.slice(index, index + 30).trim();
+        orphanPunctuation.push({ lineStart: lineText, element: describe(parent.closest("p, li, div, span") || parent) });
+      }
+
+      previousCharRect = charRect;
+    }
+  }
+
   // 7. Ô nhập lệch mép với nút rộng hết khung trong cùng form / hộp thoại: màn hẹp nút xếp dọc
   //    rộng hết, còn ô nằm trong cột chữ thụt sau icon (hộp xác nhận có ô gõ lại tên: ô 239px ở
   //    x=96, nút 295px ở x=40, đo 26/09/2026). Nút tự co theo chữ (màn rộng) thì không so.
@@ -422,6 +464,7 @@ function measureInPage({ minTapSize, isMobile }) {
     misalignedColumns: misalignedColumns.slice(0, 10),
     smallTapTargets: smallTapTargets.slice(0, 15),
     smallTapCount: smallTapTargets.length,
+    orphanPunctuation,
     misalignedFields: misalignedFields.slice(0, 10),
     unevenSeparatorRows: unevenSeparatorRows.slice(0, 10),
     partialFocusRings: [...new Set(partialFocusRings)].slice(0, 10),
@@ -505,10 +548,13 @@ async function probeWidth(browser, options, width) {
   if (options.isDark) await page.evaluate(() => document.documentElement.classList.add("dark"));
   await page.waitForTimeout(options.waitMs);
 
+  // Đo trước khi chụp: chụp fullPage ở khổ mobile làm trang mất `(pointer: coarse)`, nút
+  // `pointer-coarse:size-10` co về 28px và bị báo nhầm là chỗ bấm nhỏ (đã dính 26/09/2026).
+  const measurements = await page.evaluate(measureInPage, { minTapSize, isMobile });
+
   const screenshotPath = join(options.out, `${width}${options.isDark ? "-dark" : ""}.png`);
   await page.screenshot({ path: screenshotPath, fullPage: true });
 
-  const measurements = await page.evaluate(measureInPage, { minTapSize, isMobile });
   const missingFocusRings = isMobile ? [] : await findMissingFocusRings(page);
 
   await context.close();
@@ -546,6 +592,10 @@ function formatReport(results) {
     if (result.smallTapCount > 0) {
       problems.push(`CHỖ BẤM DƯỚI ${minTapSize}px (${result.smallTapCount} chỗ, không có vùng bấm nới ra):`);
       for (const item of result.smallTapTargets.slice(0, 8)) problems.push(`  ${item.size}: ${item.element}`);
+    }
+    if (result.orphanPunctuation.length > 0) {
+      problems.push(`DẤU CÂU RƠI XUỐNG ĐẦU DÒNG (${result.orphanPunctuation.length} chỗ, dấu phải dính chữ đứng trước):`);
+      for (const item of result.orphanPunctuation.slice(0, 5)) problems.push(`  dòng mở đầu "${item.lineStart}": ${item.element}`);
     }
     if (result.misalignedFields.length > 0) {
       problems.push(`Ô NHẬP LỆCH MÉP VỚI NÚT RỘNG HẾT KHUNG (${result.misalignedFields.length} khung, ô và nút phải cùng mép trái phải):`);

@@ -103,7 +103,8 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 18 | Các bước bắt đầu (onboarding), nay nằm đầu tổng quan | `/dashboard/overview/states` (trang `/dashboard/welcome` đã bỏ) | 26/09/2026 (ba lượt, đã theo kịp) |
 | 19 | Lịch công việc (lưới tháng, lịch gọn) | `/dashboard/calendar`, `/calendar/states` | 26/09/2026 (ba lượt, đã theo kịp; nút viền còn hover cũ, nằm trong mục "Nút viền" bên dưới) |
 | 20 | Khoá API | `/dashboard/settings/api-keys`, `/api-keys/states` | 26/09/2026 (hai lượt; lượt hai đã theo kịp) |
-| 21 | Xoá workspace (vùng nguy hiểm, hộp gõ lại tên) | `/dashboard/settings/workspace`, `/workspace/states` | 26/09/2026 (hai lượt, đã theo kịp) |
+| 21 | Trang lỗi: 404, 403, 500, bảo trì | `/errors/states`, `/403`, `/500`, `/maintenance`, `/khong-co`, `/dashboard/khong-co` | 26/09/2026 (năm lượt; lượt năm còn `px-1.5` cho link "Đổi tài khoản", dự án chưa theo kịp) |
+| 22 | Xoá workspace (vùng nguy hiểm, hộp gõ lại tên) | `/dashboard/settings/workspace`, `/workspace/states` | 26/09/2026 (hai lượt, đã theo kịp) |
 
 Route mới xuất hiện trong dự án thì thêm dòng vào bảng (`grep -rhoE "path: ?['\"][^'\"]+" src`).
 
@@ -179,6 +180,10 @@ nền vuông 46×48 cạnh vòng chọn tròn 32px. Thêm vào probe:
 Mỗi phép đo thêm vào phải bắt lại được đúng ca đã dính (nút "Thêm" ở `/dashboard/calendar` bản cũ,
 ô ngày lịch gọn bản lượt hai) trước khi coi là xong.
 
+Báo nhầm cần sửa (26/09/2026): "Ô nhập lệch mép với nút rộng hết khung" báo hàng ô OTP (sáu ô
+40–57px) ở `/forgot-password/states`, `/verify-otp/states`: nên bỏ qua ô nằm trong một hàng nhiều ô
+cùng cỡ.
+
 ## Việc để sau: bỏ số âm trong skill (`N11`)
 
 Luật `N11` (26/09/2026): không dùng số âm cho khoảng cách và vị trí, trừ khi không còn
@@ -223,6 +228,12 @@ không ghi class. Rà xong 11 nhóm thì xem skill có nói gì về chúng khô
 ## Dự án chưa theo kịp
 
 Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần.
+
+- Trang lỗi (lượt 5, 26/09/2026; lượt 1–4 đã theo kịp):
+  - `forbidden-card.tsx`: link "Đổi tài khoản" thêm `px-1.5`. Hiện `h-8` không padding ngang, vòng focus
+    sát chữ hai bên mà hở 7px trên dưới.
+  - Tiêu đề màn xác thực còn `font-bold` (`T2` là 600): `login-card.tsx`, `forgot-password-card.tsx`,
+    `reset-password-card.tsx`, `reset-session-expired-card.tsx`, `verify-otp-card.tsx`.
 
 - Nút viền (skill đổi 26/09/2026, chủ dự án chốt): `src/components/button/button.tsx` bỏ
   `hover:border-foreground/20`, nền hover sang màu đặc `hover:bg-button-hover`; thêm
