@@ -288,7 +288,9 @@ giờ mà đề không yêu cầu không?
 Margin âm (`-mt-*`, `-mx-*`), `-space-*`, `-translate-*`, `-inset-*`, `top-[-…]`: số âm
 kéo phần tử ra khỏi chỗ của nó, nên khung bao không còn nói thật kích thước bên trong.
 Sửa padding một chỗ là chỗ khác lệch theo, và hay lộ lỗi ở trạng thái khác (đã dính
-26/09/2026: margin âm trong accordion làm câu đang đóng lòi dòng đầu câu trả lời). Chủ
+26/09/2026: margin âm trong accordion làm câu đang đóng lòi dòng đầu câu trả lời; nút ⋯
+`size-8` trên thẻ kanban kéo `-mr-2` thì khối bọc co còn 24px, `max-w-full` của Button bóp
+nút theo thành 24×32). Chủ
 dự án chốt 26/09/2026: ưu tiên mọi giá là không dùng.
 
 Làm theo thứ tự:

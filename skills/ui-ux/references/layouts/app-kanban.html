@@ -140,9 +140,11 @@
         </label>
       </div>
 
-      <div class="scrollbar-clean -mx-3 flex-1 overflow-x-auto sm:-mx-5">
-        <div class="flex items-start gap-4 px-3 pb-2 sm:px-5">
-          <section class="w-[280px] min-w-0 shrink-0">
+      <!-- Board không scrollbar-clean: thanh cuộn tự ẩn (I18), người dùng chuột vẫn có chỗ kéo ngang. -->
+      <div class="-mx-3 flex-1 overflow-x-auto sm:-mx-5">
+        <!-- w-max giữ lề phải khi cuộn, min-w-full cho cột giãn khi còn chỗ (layouts/app.md). -->
+        <div class="flex w-max min-w-full items-start gap-4 px-3 pb-2 sm:px-5">
+          <section class="w-[248px] min-w-0 max-w-[320px] shrink-0 grow">
             <header class="mb-3 flex items-center gap-2 px-1">
               <i data-lucide="circle" class="size-4 shrink-0 text-zinc-500"></i>
               <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Cần làm</h2>
@@ -185,7 +187,7 @@
             </ul>
           </section>
 
-          <section class="w-[280px] min-w-0 shrink-0">
+          <section class="w-[248px] min-w-0 max-w-[320px] shrink-0 grow">
             <header class="mb-3 flex items-center gap-2 px-1">
               <i data-lucide="circle-dot" class="size-4 shrink-0 text-zinc-500"></i>
               <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Đang làm</h2>
@@ -220,7 +222,7 @@
             </ul>
           </section>
 
-          <section class="w-[280px] min-w-0 shrink-0">
+          <section class="w-[248px] min-w-0 max-w-[320px] shrink-0 grow">
             <header class="mb-3 flex items-center gap-2 px-1">
               <i data-lucide="circle-ellipsis" class="size-4 shrink-0 text-amber-600"></i>
               <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Chờ duyệt</h2>
@@ -247,7 +249,7 @@
             </ul>
           </section>
 
-          <section class="w-[280px] min-w-0 shrink-0">
+          <section class="w-[248px] min-w-0 max-w-[320px] shrink-0 grow">
             <header class="mb-3 flex items-center gap-2 px-1">
               <i data-lucide="circle-check" class="size-4 shrink-0 text-done"></i>
               <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Xong</h2>
