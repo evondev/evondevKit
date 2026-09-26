@@ -73,7 +73,7 @@ Nút chỉ icon `ghost` `size-8`, có tooltip và `aria-label`: `Copy` "Sao ché
 ```html
 <div class="space-y-2">
   <p class="text-sm text-muted">Hỏi tiếp</p>
-  <button class="block w-fit max-w-full cursor-pointer rounded-xl border border-border-strong bg-surface px-3 py-2 text-left text-sm text-foreground hover:border-foreground/20 hover:bg-surface-hover">
+  <button class="block w-fit max-w-full cursor-pointer rounded-xl border border-border-strong bg-surface px-3 py-2 text-left text-sm text-foreground hover:bg-button-hover">
     Chi nhánh cửa hàng nào giảm nhiều nhất?
   </button>
 </div>

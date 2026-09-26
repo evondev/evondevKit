@@ -514,6 +514,76 @@ thả: hai thứ đó theo các gạch đầu dòng trên và mục "Kéo thả 
 
 ---
 
+## Trang lịch (lịch tháng)
+
+Lịch việc theo hạn chót (hoặc lịch hẹn): lưới tháng đủ khi khung rộng, lịch gọn + danh
+sách việc của ngày đang chọn khi khung hẹp. Rà lần đầu 26/09/2026 ở `/dashboard/calendar`.
+
+```
+Tháng 9, 2026 ⌄   [Hôm nay] ‹ ›                          [+ Thêm việc]
+┌──────┬──────┬──────┬──────┬──────┬──────┬──────┐
+│ T2   │ T3   │ T4   │ T5   │ T6   │ T7   │ CN   │
+├──────┼──────┼──────┼──────┼──────┼──────┼──────┤
+│ 31   │ 1    │ 2    │ …    │      │ (26) │ 27   │   <- lưới: hôm nay vòng đặc
+│ ○ Họp│      │ ✓ Gửi│      │      │ ◉ Viế│ ⋯ Bản│
+│      │      │      │      │      │ ○ Đặt│      │
+│      │      │      │      │      │ 2 việc khác │
+```
+
+- **Hàng công cụ: "Hôm nay" liền ‹ ›, một cụm điều hướng.** Tên tháng (nút mở lưới 12 tháng)
+  bên trái, rồi `[Hôm nay] ‹ ›`, nút chính "Thêm việc" `ml-auto` ở cuối. Bộ lịch phổ biến
+  nhất đặt `today prev,next` liền nhau làm mặc định, các app lịch lớn cũng vậy: cả ba đều là
+  "đi tới ngày khác". Để ‹ › cạnh tên tháng còn "Hôm nay" dạt sang phải cạnh nút chính là tách
+  một việc làm hai chỗ, và "Hôm nay" viền đứng sát nút đặc trông như cặp hành động (đã dính
+  26/09/2026). **‹ › là nút `ghost` chỉ icon** `size-10`, không viền; chỉ "Hôm nay" là nút
+  viền: ba ô viền cạnh nhau là ba khối nặng ngang nhau cho một việc phụ. "Hôm nay"
+  `whitespace-nowrap shrink-0` (375px: tên tháng + cụm vừa 343px, thử 26/09/2026).
+- **Chọn khuôn theo bề rộng khung lịch, không theo viewport.** Ô lưới cần **≥ 128px** mới đọc
+  được tên việc (~12 ký tự sau icon). Đo 26/09/2026, sidebar mở: 1280px ô 139px ("Họp tổng
+  kết s…"), 1024px ô 102px và 768px ô 103px chỉ còn một chữ ("Chuẩn …", "Viết tài …"): lưới
+  đủ mà không đọc được việc nào là trang hỏng việc chính. Khung lịch là `@container`: từ
+  `@4xl` (896px, = 7 × 128) lưới tháng đủ; hẹp hơn là khuôn gọn, và từ `@2xl` (672px) lịch gọn
+  (`w-80`) với danh sách ngày đứng cạnh nhau thay vì chồng dọc. Đừng `useMediaQuery` theo
+  viewport: sidebar mở hay thu đổi bề rộng khung 200px+ mà viewport không đổi.
+- **Ô lưới cao cố định, tính ra chứ không đoán.** Cao = `p` hai đầu + hàng số + N dòng việc +
+  khe; ghi phép tính vào comment. Mỗi `<li>` bọc nút dòng việc phải `flex` (hoặc nút `flex`):
+  nút `inline-flex` trong khối thường dư khe baseline 1px mỗi dòng, ô ba việc cao 122–123px
+  thay vì 120px, lưới co giãn theo tháng (đã dính 26/09/2026: `min-h-30` mà hàng 4, 5 cao
+  hơn). Ngày quá N việc: hiện N−1 việc + "K việc khác" (chữ "khác", không "+K": dấu cộng dưới
+  tên việc đọc thành "thêm việc"), bấm ra khung liệt kê đủ việc ngày đó.
+- **Tên thứ, số ngày, icon dòng việc thẳng một mép.** Số ngày bọc vòng `size-7` căn giữa thì
+  chữ số trôi theo số chữ số: "1" lệch 5px, "31" lệch 1px so với tên thứ và icon (đo 26/09/2026:
+  tên thứ 12px, số 11–17px, icon 12px). Chọn một: số và tên thứ **cùng căn giữa** cột (dòng việc
+  vẫn căn trái), hoặc cùng căn trái: số `px-1.5` không vòng, chữ số đúng mép tên thứ; hôm
+  nay thêm `min-w-7 justify-center` + nền, mép trái vòng trùng mép nền dòng việc. Hôm nay có
+  hai chữ số thì chữ vẫn đúng mép; một chữ số ("5") thì chữ nằm giữa vòng, lệch 3px (đo
+  26/09/2026, lượt hai). Chấp nhận: vòng méo thành viên thuốc để giữ 3px thì xấu hơn.
+- **Hôm nay và ngày đang chọn: vòng đặc chỉ cho một thứ.** Lưới tháng đủ không có ngày đang
+  chọn, nên hôm nay là vòng đặc `bg-primary`. **Lịch gọn có ngày đang chọn** (danh sách bên
+  dưới là của ngày đó), nên theo đúng ô chọn ngày (`../components/choice-controls.md`): **ngày
+  đang chọn là vòng đặc**; hôm nay là vòng viền `inset-ring-1 inset-ring-foreground` +
+  `font-semibold` (chấm dưới số đã là "có việc", không dùng chấm cho hôm nay như ô chọn ngày).
+  Hôm nay cũng là ngày đang chọn thì chỉ vòng đặc. Đừng để ngày chọn là nền ô vuông xám còn
+  hôm nay vẫn vòng đen: chọn 28 mà 26 vẫn là khối đậm nhất lịch, mắt đọc danh sách bên dưới
+  thành việc của 26 (đã dính 26/09/2026). Hai ô chọn ngày của hệ thống thiết kế lớn cũng vậy:
+  hôm nay vòng viền, đang chọn vòng đặc.
+- **Lịch gọn: mọi trạng thái vẽ trên vòng quanh số, không trên cả ô.** Khác ô chọn ngày
+  (`choice-controls.md` tô cả ô `rounded-xl`): ở đây chấm "có việc" nằm dưới số, ngoài vòng, như
+  lịch điện thoại. Nút ngày `h-12 w-full` chỉ là vùng bấm, `hover:bg-transparent` và không ring;
+  số là `group-hover:bg-foreground/5` (ngày chưa chọn) và `group-focus-visible:ring-2
+  ring-foreground/50 ring-offset-2`. Đã dính 26/09/2026 (lượt hai): rê ra nền ô vuông 46×48 cạnh
+  vòng chọn 32px, bấm chuột xong ô vừa chọn giữ nền vuông chồng lên vòng đen, Tab tới thì vòng
+  focus vuông quanh vòng tròn: ba hình cho một ô ngày.
+- **Dòng việc trong ô**: `h-6` icon trạng thái `size-3.5` (bảng `M7`) + tên `text-xs truncate`
+  + `title` đủ tên; không nền màu, không viền (30 việc mỗi việc một khối màu là lịch loang).
+  Xong: chữ `muted`. Quá hạn: chữ hổ phách như hạn chót quá hạn ở danh sách, không đỏ.
+- **Tháng không có việc nào: không cần khối rỗng**, lưới trống là đủ rõ, như các app lịch.
+  Lỗi tải: thanh lỗi trên lưới, lưới vẫn giữ để còn đổi tháng. Đang tải: thanh chờ trong ô.
+- **Màn hẹp, nút thêm nằm ở đầu danh sách ngày đang chọn** (nút viền "+ Thêm" trong slot
+  action của card), mở form với hạn chót là ngày đó.
+
+---
+
 ## Danh sách có bộ lọc
 
 ```

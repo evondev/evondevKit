@@ -57,6 +57,13 @@
      hơn --surface một chút. Xem luật I10. */
   --surface-hover: #f8f8fa;
 
+  /* Hover của nút viền (outline): CHỈ đổi nền, viền giữ nguyên. Màu ĐẶC, nằm giữa nền trang
+     (#f4f4f6) và viền (#eaeaea): trên card trắng thấy rõ, trên nền trang nút chìm nhẹ mà viền
+     vẫn còn. Không dùng --surface-hover (#f8f8fa: trên card gần như không đổi, trên nền trang
+     nút nhạt về màu trang), không dùng lớp phủ foreground/5 (trong suốt nên lấy màu nền phía
+     sau, trên nền trang ra #e9e9eb trùng viền). Chủ dự án chốt 26/09/2026. */
+  --button-hover: #f1f1f3;
+
   /* Tab segmented dạng phím nổi: rãnh CHÌM (bóng trong), ô đang chọn NỔI (bóng
      ngoài rất mờ + viền tóc). Ngoại lệ có tên của luật M15, chỉ dùng ở đây.
      Xem "Thanh tab" trong components/small-controls.md. */
@@ -130,6 +137,7 @@
 
   --background-hover: #171a26;
   --surface-hover: #141722;  /* sáng hơn --surface một chút, luật I10 */
+  --button-hover: #1a1d29;   /* giữa --surface-hover và --secondary; chưa đo trên dự án tối */
   /* Bóng đen vô hình trên nền tối: ô nổi nhờ viền và vệt sáng mép trên. */
   --shadow-segment-track: inset 0 0 0 1px var(--border), inset 0 1px 2px rgb(0 0 0 / 0.4);
   --shadow-segment-thumb: 0 0 0 1px var(--border-strong), inset 0 1px 0 rgb(255 255 255 / 0.06), 0 1px 2px rgb(0 0 0 / 0.5);

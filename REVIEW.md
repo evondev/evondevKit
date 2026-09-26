@@ -101,7 +101,8 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 16 | Cài đặt thông báo (và hàng tab khu cài đặt) | `/dashboard/settings`, `/settings/notifications`, `/settings/notifications/states` | 26/09/2026 (hai lượt, đã theo kịp trừ màu đường kẻ hàng tab) |
 | 17 | Bảo mật: xác thực hai lớp, phiên đăng nhập | `/dashboard/settings/security`, `/security/states` | 26/09/2026 (ba lượt; lượt ba đổi màu nút theo chủ dự án, dự án chưa theo kịp) |
 | 18 | Các bước bắt đầu (onboarding), nay nằm đầu tổng quan | `/dashboard/overview/states` (trang `/dashboard/welcome` đã bỏ) | 26/09/2026 (ba lượt, đã theo kịp) |
-| 19 | Khoá API | `/dashboard/settings/api-keys`, `/api-keys/states` | 26/09/2026 (hai lượt; lượt hai đã theo kịp) |
+| 19 | Lịch công việc (lưới tháng, lịch gọn) | `/dashboard/calendar`, `/calendar/states` | 26/09/2026 (ba lượt, đã theo kịp; nút viền còn hover cũ, nằm trong mục "Nút viền" bên dưới) |
+| 20 | Khoá API | `/dashboard/settings/api-keys`, `/api-keys/states` | 26/09/2026 (hai lượt; lượt hai đã theo kịp) |
 
 Route mới xuất hiện trong dự án thì thêm dòng vào bảng (`grep -rhoE "path: ?['\"][^'\"]+" src`).
 
@@ -131,6 +132,47 @@ Lệnh tìm: `grep -rniE "hầu hết (app|sản phẩm)|số đông|app lớn|p
 | C. Chữ, số, hộp thoại | `rules-type.md:18` tiêu đề app weight 600; `:195` ngày `23/09`; `:247` mặc định không placeholder (đối chiếu: "Dự án chưa theo kịp" đang ghi màn xác thực thiếu placeholder). `layouts/overlay.md:46` tiêu đề hộp thoại cách thân 8px. `components/sortable-header.md:44` tiêu đề cột chỉ đổi màu chữ khi rê | | |
 | D. Trang, dữ liệu | `layouts/app.md:494` bảng 7–9 cột cuộn ngang; `:629` cài đặt thông báo ba mục, không lưới việc × kênh; `:770` ô vai trò luôn có mũi tên; `:775` lọc vai trò bằng dropdown; `:779` mời nhiều email một lần. `components/charts.md:32` mỗi nhóm một sắc; `:167` kỳ đang chạy vẽ nhạt; `:248` ô số 2×2 trên điện thoại. `components/chat.md:41` câu trả lời AI không avatar | | |
 | E. Độ nặng nút ở trang đã rà | Mỗi trang: việc nên làm nhất có là nút đặc không (`I2`), việc nguy hiểm có đỏ không (`I4`), có nút nào nặng hơn việc của nó không. Trang: thành viên, xác thực, bảng giá, hồ sơ, tổng quan, công việc, cài đặt thông báo, tạo workspace, tạo dự án | | |
+
+## Việc để sau: rà các luật vá tạm
+
+26/09/2026: nút viền rê vào "viền đậm lên" là một luật vá sau sự cố (hover tan vào nền trang,
+25/09/2026). Nó chữa đúng triệu chứng nhưng lệch cách số đông làm và trông nặng; chủ dự án phát
+hiện, không phải lượt rà. Skill còn nhiều luật sinh cùng kiểu: một sự cố, chọn một cách lạ, ghi
+"đã dính … nên làm X", không ai tra lại. Loại này dễ lệch quy ước nhất.
+
+**Cách làm:** lọc các đoạn có "đã dính" / "chủ dự án chốt" mà cách chữa **khác cách thông thường**
+của thứ đó (thêm viền, đổi hình, bỏ hover, đổi màu mang nghĩa, số lẻ kiểu `pb-3.5`…). Mỗi luật:
+tra số đông làm thế nào (như "Kiểm chứng quy ước"), rồi thử cách thông thường trên trang dự án
+với đúng ca đã dính (gán `style`, đo như bước 4). Cách thông thường cũng tránh được sự cố thì
+đổi luật theo số đông, giữ lại câu "đã dính" để ghi vì sao; không tránh được thì giữ luật, ghi rõ
+số đông làm khác và vì sao mình khác. Luật chủ dự án chốt thì hỏi trước khi lật.
+
+Lệnh lọc gợi ý: `grep -rnE "đã dính|chủ dự án chốt|bỏ [0-9]{2}/09" skills/ui-ux/references | wc -l`
+rồi đọc theo file, mỗi lượt một file.
+
+| File | Số luật đã xét | Đổi | Giữ | Xong |
+| --- | --- | --- | --- | --- |
+| `components/button.md` | 1 (hover nút viền) | 1: chỉ đổi nền `--button-hover`, 26/09/2026 | | |
+
+## Việc để sau: probe đo cả trạng thái động
+
+`probe.mjs` đo trang đứng yên và Tab. Hai lỗi 26/09/2026 lọt vì chỉ lộ khi rê chuột hoặc bấm:
+nút viền rê vào đổi nền `#fff → #f8f8fa` (gần như không thấy trên card), và ô ngày lịch gọn rê ra
+nền vuông 46×48 cạnh vòng chọn tròn 32px. Thêm vào probe:
+
+- **Rê chuột lên từng phần tử bấm được** (nút, link, dòng, ô có `role`), chờ 300ms, đọc nền,
+  viền, `border-radius`, kích thước của phần tử và của con mang nền:
+  - nền hover so với nền phía sau (card hoặc nền trang, lấy màu đặc của tổ tiên gần nhất): chênh
+    quá ít (vd dưới ~8 mức mỗi kênh) là "hover gần như không thấy";
+  - nền hover trùng (chênh ≤3) màu viền của chính nó hoặc nền trang ngoài card: "tan vào nền";
+  - viền đổi màu lúc hover ở nút viền: báo để soi (skill chỉ đổi nền).
+- **Hình của các trạng thái trên cùng một phần tử**: rê, đang chọn (`aria-pressed`,
+  `aria-selected`, `aria-current`), focus, vẽ ở phần tử nào và `border-radius` bao nhiêu. Hai trạng
+  thái khác hình (vuông với tròn) hoặc khác phần tử vẽ (cả ô với con bên trong) là lỗi.
+- **Bấm chuột xong rồi đứng yên**: phần tử vừa bấm còn nền hover chồng lên nền chọn không.
+
+Mỗi phép đo thêm vào phải bắt lại được đúng ca đã dính (nút "Thêm" ở `/dashboard/calendar` bản cũ,
+ô ngày lịch gọn bản lượt hai) trước khi coi là xong.
 
 ## Việc để sau: bỏ số âm trong skill (`N11`)
 
@@ -177,6 +219,10 @@ không ghi class. Rà xong 11 nhóm thì xem skill có nói gì về chúng khô
 
 Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần.
 
+- Nút viền (skill đổi 26/09/2026, chủ dự án chốt): `src/components/button/button.tsx` bỏ
+  `hover:border-foreground/20`, nền hover sang màu đặc `hover:bg-button-hover`; thêm
+  `--button-hover: #f1f1f3` vào `src/index.css` (và ánh xạ `--color-button-hover`). Kiểm cả nút chỉ
+  icon viền (`iconOnlyOutlineClasses`).
 - `/dashboard/settings/api-keys/states` (lượt hai, 26/09/2026): nút `⋯` ở ca "menu đang mở" chưa có
   nền của trạng thái mở như menu thật, và menu cách dòng 16px thay vì 8px dưới nút.
 - `/dashboard/settings/security` (skill sửa lượt ba, 26/09/2026): "Bật xác thực hai lớp" sang
