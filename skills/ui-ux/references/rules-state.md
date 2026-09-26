@@ -126,7 +126,7 @@ màu.
 **I10. Hover của một dòng là một lớp nền nhẹ, không tô đậm lên, không phóng to.
 Nền hover không bao giờ trùng màu nền trang.**
 
-Ngoại lệ: nút mở/đóng của accordion không tô nền hover (`I30`, `components/accordion.md`).
+Ngoại lệ: nút mở/đóng của accordion không tô nền hover (`I30`, `components/accordion.md`); tiêu đề cột bảng sắp xếp được cũng vậy, chỉ chữ đậm lên (`components/sortable-header.md`).
 
 Chọn token theo **nền hover có chạm hai mép khung hay không**:
 

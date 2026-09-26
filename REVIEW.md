@@ -82,7 +82,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 10 | Trợ lý AI | `/dashboard/assistant`, `/assistant/states` | |
 | 11 | Tài liệu (cây thư mục) | `/dashboard/projects/documents`, `/documents/states` | |
 | 12 | Thông báo | `/dashboard/notifications/states` | |
-| 13 | Thư viện component | `/components` | 26/09/2026 (ô số lượng, ba lượt; tên sửa tại chỗ, hai lượt, đã theo kịp) |
+| 13 | Thư viện component | `/components` | 26/09/2026 (ô số lượng, ba lượt; tên sửa tại chỗ, hai lượt, đã theo kịp; tiêu đề cột sắp xếp, hai lượt, đã theo kịp) |
 | 14 | Tạo dự án (khu "Cài đặt nâng cao" thu gọn) | `/dashboard/projects/new` | 26/09/2026 (hai lượt, đã theo kịp) |
 
 Route mới xuất hiện trong dự án thì thêm dòng vào bảng (`grep -rhoE "path: ?['\"][^'\"]+" src`).

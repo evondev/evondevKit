@@ -362,6 +362,7 @@ thì một trong hai chỗ là sai.
 | Ô nhập mã OTP | `references/components/otp-input.md` |
 | Ô nhập số lượng có nút − + | `references/components/quantity-input.md` |
 | Tên sửa tại chỗ ở đầu trang (tên dự án, tài liệu) | `references/components/inline-edit.md` |
+| Tiêu đề cột bảng bấm để sắp xếp | `references/components/sortable-header.md` |
 | Checkbox, radio, công tắc, select, ô chọn giờ, ô chọn ngày, khoảng ngày, ngày giờ, lựa chọn dạng card | `references/components/choice-controls.md` |
 | Dòng trong danh sách | `references/components/list-row.md` |
 | Dòng thời gian, lịch sử hoạt động | `references/components/timeline.md` |
