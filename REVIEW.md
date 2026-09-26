@@ -84,6 +84,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 12 | Thông báo | `/dashboard/notifications/states` | |
 | 13 | Thư viện component | `/components` | 26/09/2026 (ô số lượng, ba lượt; tên sửa tại chỗ, hai lượt, đã theo kịp; tiêu đề cột sắp xếp, hai lượt, đã theo kịp) |
 | 14 | Tạo dự án (khu "Cài đặt nâng cao" thu gọn) | `/dashboard/projects/new` | 26/09/2026 (hai lượt, đã theo kịp) |
+| 16 | Cài đặt thông báo (và hàng tab khu cài đặt) | `/dashboard/settings`, `/settings/notifications`, `/settings/notifications/states` | 26/09/2026 (hai lượt, đã theo kịp trừ màu đường kẻ hàng tab) |
 
 Route mới xuất hiện trong dự án thì thêm dòng vào bảng (`grep -rhoE "path: ?['\"][^'\"]+" src`).
 
@@ -149,3 +150,6 @@ Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một 
   skill ghi "Chưa nhập mã"; gõ thiếu thì cả sáu ô đỏ, kể cả ô đã có số (skill: chỉ ô trống).
 - `/forgot-password/new-password`: chưa có ô `username` ẩn, chưa nói đang đổi cho tài
   khoản nào, con trỏ không nằm sẵn ở ô đầu (`/login`, `/register` cũng vậy).
+- Khu cài đặt (`src/features/settings/components/settings-tabs.tsx`): đường kẻ dưới hàng tab
+  `border-foreground/10` ra `#e1e1e3`, đậm hơn đường header `#eaeaea`; đổi `border-border-strong`.
+  Các lỗi khác của lượt 1 (trang trắng, thiếu hàng tab, focus công tắc, cỡ câu lỗi, câu chữ) đã theo kịp.

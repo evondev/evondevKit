@@ -591,7 +591,44 @@ Vùng nguy hiểm
 - Vùng nguy hiểm tách xuống cuối cùng.
 - **Mặc định dựng kiểu không có nút "Lưu thay đổi" tổng**: mỗi dòng chừa chỗ cho một dấu "Đã lưu" nhỏ cạnh điều khiển. Lưu lúc nào, gọi gì là việc của người dùng, skill chỉ để handler rỗng (`onChange`). **Toggle, select áp ngay; ô chữ thì lưu khi rời ô, hoặc có nút Lưu riêng của đúng khối đó** (mỗi card cài đặt có ô chữ thì có nút Lưu ở chân card). Cái cần tránh là **một nút Lưu tổng cho cả trang** trong khi có toggle tự áp: người dùng không biết bật xong có phải bấm Lưu không. Nút Lưu của khối khoá khi chưa có gì đổi.
 
-**B. Tab dọc bên trái** (từ 15 tuỳ chọn trở lên, hoặc trên 4 nhóm)
+- **Hàng cài đặt có mô tả thì câu lỗi và câu lý do khoá thay chỗ mô tả, giữ cỡ `text-sm` của mô tả.** `text-xs` chỉ dành cho dòng nằm dưới ô trong form, cạnh chữ gợi ý cũng `text-xs`. Trong khung chia kẻ, mô tả các hàng đều `text-sm`; câu "Bật Email ở trên để nhận bản tin." `text-xs` đứng giữa chúng thì hàng khoá trông như chữ chú thích lạc vào, và hàng cao thấp đổi theo lúc bật tắt Email (đã dính 26/09/2026, trang cài đặt thông báo: lý do khoá và lỗi "Chưa lưu được…" 12px giữa các mô tả 14px).
+- **Câu mô tả của công tắc mở khu phải đọc được khi khu đang đóng.** "Không gửi… trong khung giờ này" khi hai ô giờ còn giấu thì "khung giờ này" trỏ vào thứ chưa thấy. Viết cho lúc tắt: "Không gửi email và thông báo trình duyệt vào khung giờ bạn chọn." (đã dính 26/09/2026).
+
+### Khu cài đặt có nhiều trang
+
+App có từ hai trang cài đặt trở lên (Hồ sơ, Thông báo, Bảo mật…) thì chúng là **một khu** có
+điều hướng riêng, không phải mấy route rời chỉ gõ được bằng tay. Đã dính 26/09/2026: sidebar
+"Cài đặt" và đường dẫn "Cài đặt" trên header đều dẫn tới `/dashboard/settings` là trang trắng,
+trang Thông báo và Bảo mật không có lối vào nào ngoài gõ địa chỉ.
+
+```
+header h-16:  Cài đặt                           <- là <h1>, tên khu
+              Hồ sơ   Thông báo   Bảo mật       <- tab underline, mỗi tab một route
+              ─────── ━━━━━━━━━ ────────────
+              Kênh nhận                         <- vào thẳng mục đầu, không đầu trang riêng
+              ┌──────────────────────────────┐
+```
+
+- **Route gốc không bao giờ trống**: `/settings` chuyển thẳng (replace, không thêm lịch sử) tới trang con đầu. Mục "Cài đặt" ở sidebar sáng ở mọi trang con (`aria-current` theo tiền tố route).
+- **Dưới 6 trang: hàng tab `underline` trên cùng vùng nội dung**, rộng bằng cột nội dung (`max-w-2xl`), chữ tab đầu thẳng cột với tiêu đề mục bên dưới. Tab là `<Link>` có `aria-current="page"`, không `role="tablist"`: mỗi tab là một trang, nút Back phải quay về tab trước. Không dùng `solid`: trang cài đặt đầy công tắc bật đã tô `--primary`, thêm viên đen ở đầu trang là hai loại khối đen tranh nhau, và chữ trong viên thụt `px-3` lệch cột với nội dung (thử trên trang 26/09/2026).
+- **Từ 6 trang trở lên: cột nav dọc bên trái** (kiểu B), `w-48 shrink-0`, mục `h-9 rounded-lg px-3`, đang chọn `bg-foreground/5 font-medium`, như link sidebar. Dưới `lg` cột đó thành hàng tab `underline` cuộn ngang ở trên (`../responsive.md`).
+- **Tên khu ở thanh header là `<h1>`, trang con không có đầu trang riêng.** Tab đang sáng đã nói đang ở trang nào; thêm tiêu đề "Thông báo" + một câu mô tả dưới hàng tab là ghi tên trang hai lần (luật "một trang đúng một `<h1>`" ở "Đầu trang trong vùng nội dung"). Trang trạng thái (`/settings/…/states`) giữ đường dẫn cha như cũ.
+- **Hồ sơ cá nhân là tab đầu của khu**, không phải route riêng ngoài khu. Mục "Hồ sơ" trong menu tài khoản dẫn tới đúng tab đó.
+- **Đường kẻ dưới hàng tab nằm ở khung ngoài rộng đúng bằng cột nội dung**, không ở hàng tab đã lùi `-mx-2`: kẻ ở hàng thì đường kẻ thò ra 8px hai bên so với mép card bên dưới. Màu `border-border-strong`, cùng màu đường kẻ dưới header `h-16`; đừng tự pha `border-foreground/10` (trên nền trang ra `#e1e1e3`, đậm hơn đường header `#eaeaea` ngay phía trên, đo 26/09/2026). Vạch 2px của tab đang chọn vẫn đè lên đường kẻ này.
+- Màn hẹp: hàng tab cuộn ngang theo `small-controls.md` ("Hàng chip ở màn hẹp"), không xuống dòng, không đổi thành select.
+
+**B. Tab dọc bên trái** (từ 15 tuỳ chọn trên một trang, hoặc từ 6 trang cài đặt trở lên): xem mục "Khu cài đặt có nhiều trang" ngay trên.
+
+### Trang tuỳ chọn thông báo
+
+Là trang cài đặt kiểu A. Bộ mục mặc định: **Kênh nhận** (trình duyệt, email, email tổng hợp),
+**Báo cho bạn khi** (mỗi loại việc một công tắc, cuối là mốc nhắc hạn chót), **Không làm phiền**
+(công tắc mở khung giờ trượt ngay dưới, cùng hàng).
+
+- **Nói rõ công tắc loại việc có áp cho chuông trong app hay không, ở MỘT chỗ.** Mục Kênh nhận ghi "Chuông luôn nhận đủ" mà mục bên dưới ghi "Áp dụng cho mọi kênh đang bật" thì tắt "Có bình luận mới" xong người dùng không biết chuông còn báo không (đã dính 26/09/2026). Mặc định: chuông nhận đủ, công tắc loại việc chỉ áp cho kênh gửi ra ngoài, và câu mô tả mục ghi đúng vậy: "Áp dụng cho trình duyệt và email."
+- Nhiều loại việc × nhiều kênh mà cần chọn riêng từng ô (ví dụ bình luận chỉ qua email) thì mới dựng bảng lưới việc × kênh bằng checkbox. Mặc định không: ba mục trên đủ cho hầu hết app.
+- Hàng có ô chọn cùng khuôn hàng công tắc (nhãn trái, ô phải `sm:w-48`); dưới `sm` ô xuống dưới chữ, rộng hết hàng.
+- Trình duyệt đang chặn quyền thông báo: công tắc khoá ở trạng thái tắt, câu lý do nói chỗ mở lại (biểu tượng ổ khoá cạnh địa chỉ trang). Email tắt thì email tổng hợp khoá theo, lý do "Bật Email ở trên để nhận bản tin."
 
 ---
 

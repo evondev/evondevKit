@@ -160,6 +160,8 @@ Công tắc = **có hiệu lực ngay**, không chờ nút Lưu (`layouts/app.md
 </div>
 ```
 
+- Chỉ một dòng dưới nhãn: có lỗi thì câu lỗi `text-red-600` thay chỗ mô tả, khoá thì câu lý do (không mờ theo ô) thay chỗ mô tả. Cả hai **cùng `text-sm` với mô tả**, để hàng không co lại và không lạc cỡ giữa các hàng bên cạnh.
+
 ---
 
 ## Select
@@ -344,13 +346,19 @@ nó). Radix: `side="bottom"` + `avoidCollisions`, không bật `sticky="always"`
 | --- | --- | --- | --- |
 | Thường | viền `--border-strong` | track `muted/40` | viền `--border-strong` |
 | Rê vào | viền `--foreground` | track `muted/60` / `--primary-hover` | giữ nguyên, `cursor-pointer` |
-| Tab tới | ring `--ring-focus` quanh ô (card: quanh card) | ring quanh track | viền `--border-focus` + ring |
+| Tab tới | vòng `I13` quanh ô (card: quanh card) | vòng `I13` quanh track | viền `--border-focus` + ring |
 | Đã chọn / bật / đang mở | tô nhấn theo kiểu | track nhấn, núm sang phải | viền + ring, chevron xoay |
 | Một phần | icon `minus` (chỉ checkbox) | — | — |
 | Lỗi | viền `red-500` + câu lỗi | — | viền `red-500` + ring đỏ |
 | Khoá | `opacity-50`, `cursor-not-allowed`, **cả nhãn** | như trái | như trái |
 
+**Vòng `I13`** = `focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface`.
+Checkbox, radio, công tắc không có viền để đổi màu, nên **không dùng `--ring-focus`** (màu nhấn
+10%, chỉ là vầng sáng phụ cho ô đã đổi viền). Bảng này bản cũ ghi "ring `--ring-focus`", dự án
+chép theo: Tab tới công tắc chỉ có quầng 2px `#e8e8e8` quanh track đen, gần như không thấy mình
+đang ở đâu (đã dính 26/09/2026, trang cài đặt thông báo).
+
 Khoá thì mờ cả nhãn đi cùng ô (`peer-disabled:` hoặc `has-disabled:` trên
 `<label>`). Ô mờ mà nhãn vẫn đen thì người dùng bấm vào nhãn, không có gì xảy ra.
 
-**Khoá thì nói vì sao, ngay dưới ô**, bằng dòng gợi ý `text-xs text-muted`: "Liên hệ quản trị viên để đổi giờ chốt sổ". Ô mờ mà không một lời thì người dùng tưởng app lỗi, và không biết đi đâu để đổi.
+**Khoá thì nói vì sao, ngay dưới ô**, bằng dòng gợi ý `text-xs text-muted`: "Liên hệ quản trị viên để đổi giờ chốt sổ". Trong **hàng cài đặt** có mô tả `text-sm` thì câu lý do (và câu lỗi) thay chỗ mô tả và giữ `text-sm`, không xuống `text-xs` (`../layouts/app.md`, "Trang cài đặt"). Ô mờ mà không một lời thì người dùng tưởng app lỗi, và không biết đi đâu để đổi.

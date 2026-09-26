@@ -85,13 +85,13 @@ Tab và chip trông na ná nhưng là hai thứ khác nhau:
 | Variant | Hình | Đặt ở đâu |
 | --- | --- | --- |
 | `boxed` (mặc định) | Chữ trơn, tab đang chọn là **ô nền nhạt viền mảnh** | Trên bảng / danh sách, chuyển trạng thái: Tất cả / Chờ xử lý / Đã giao |
-| `underline` | Đường kẻ chạy hết hàng, **vạch 2px** dưới tab đang chọn | Chia nội dung trang chi tiết hoặc khối lớn: Tổng quan / Hoạt động / Tệp |
-| `solid` | Tab đang chọn là **pill tô màu nhấn**, chữ đảo màu | Điều hướng mục con trong trang cài đặt: Chung / Thành viên / Quyền |
+| `underline` | Đường kẻ chạy hết hàng, **vạch 2px** dưới tab đang chọn | Chia nội dung trang chi tiết hoặc khối lớn: Tổng quan / Hoạt động / Tệp. **Điều hướng giữa các trang cài đặt**: Hồ sơ / Thông báo / Bảo mật (`../layouts/app.md`, "Khu cài đặt có nhiều trang") |
+| `solid` | Tab đang chọn là **pill tô màu nhấn**, chữ đảo màu | Chỉ khi người dùng chọn. Không cho khu cài đặt: trang đầy công tắc bật đã tô `--primary`, viên đen ở đầu trang tranh với chúng (thử 26/09/2026) |
 | `segmented` | **Rãnh chìm** nhạt, tab đang chọn là **ô trắng nổi** như phím bấm | 2–4 lựa chọn ngắn đổi cách xem: Ngày / Tuần / Tháng, Danh sách / Lưới |
 
 - **Ngay dưới hàng tab còn một hàng chip lọc thì tab dùng `underline`, không `boxed`.** Chip là viên xám bo tròn; tab `boxed` đang chọn cũng là viên xám bo góc. Hai hàng viên xám chồng nhau thì tab đang chọn đọc ra như một cái chip nữa, không ai thấy đó là trạng thái đang xem (đã dính 23/09/2026, bảng khách hàng). Vạch dưới 2px là ngôn ngữ khác hẳn viên, hai hàng tách nhau ngay (`N5`).
 - **Một trang chỉ một variant cho mỗi vai.** Tab trạng thái trên bảng đã `boxed` thì mọi bảng trong app đều `boxed`.
-- **`solid` không dùng cho tab trạng thái trên bảng.** Pill tô đặc đứng đầu bảng thì kéo mắt mạnh hơn cả dữ liệu, và đọc ra như một nút bấm (đã dính 21/09/2026, bảng khách hàng). Nó hợp với menu cài đặt, nơi hàng tab CHÍNH LÀ điều hướng của trang.
+- **`solid` không dùng cho tab trạng thái trên bảng.** Pill tô đặc đứng đầu bảng thì kéo mắt mạnh hơn cả dữ liệu, và đọc ra như một nút bấm (đã dính 21/09/2026, bảng khách hàng). Bản cũ ghi nó hợp với menu cài đặt; thử trên trang cài đặt thông báo (26/09/2026) thì viên đen đứng trên sáu công tắc bật cũng đen, chữ trong viên thụt `px-3` lệch cột với tiêu đề mục bên dưới. Khu cài đặt dùng `underline`.
 - `segmented` quá 4 lựa chọn, hoặc nhãn dài hơn hai chữ, thì đổi sang `boxed` hoặc `underline`.
 
 ### Mặc định khi đề không nói: không icon, không số
@@ -179,7 +179,7 @@ isSelected && "text-foreground after:bg-foreground"
 - **Không tab nào có nền, kể cả lúc focus.** Tab bàn phím tới thì vòng mờ `I13`. Tab là `Button variant="ghost"` mà `Button` dự án còn kiểu cũ "focus trông như hover" (nền xám) thì hàng tab dính theo: tab đang focus có nền xám, tab đang rê chuột đậm chữ, **hai tab cùng sáng** và không đọc ra tab nào đang chọn (đã dính 24/09/2026, panel khách hàng). Sửa ở `Button` dùng chung, không vá riêng từng tab.
 - Hàng tab nằm được cả trên card trắng lẫn trên dải header xám: đường kẻ `--border-strong` đủ nhìn ở cả hai.
 
-### `solid`: điều hướng mục cài đặt
+### `solid`: pill tô đặc (chỉ khi người dùng chọn)
 
 ```ts
 "h-9 rounded-lg px-3"

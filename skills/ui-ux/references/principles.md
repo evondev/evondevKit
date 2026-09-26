@@ -60,7 +60,8 @@ spinner chèn vào nút làm nút phình (spinner thay chỗ icon); cột % lệ
 cuối hàng rộng hẹp khác nhau (cột hành động `w-20`); lịch 5 hay 6 hàng (luôn 6);
 khung chờ sai hình (`I19`); thanh cuộn chiếm chỗ lúc hiện (`I18`); đổi độ đậm
 chữ tab lúc chọn; câu lỗi OTP chèn vào đẩy nút Xác nhận tụt khỏi con trỏ (dòng
-lỗi giữ chỗ sẵn khi nó nằm giữa ô và nút bấm).
+lỗi giữ chỗ sẵn khi nó nằm giữa ô và nút bấm); câu lỗi hay lý do khoá thay chỗ mô tả
+`text-sm` mà xuống `text-xs`, hàng cài đặt co lại lúc bật tắt (câu thay chỗ giữ cỡ của câu nó thay).
 
 **Giữ chỗ là để khớp với phần tử bên cạnh**, không phải để giữ hình. Không có
 gì bên cạnh (màn hẹp xếp một cột, cả hàng cùng thiếu) thì bỏ chỗ giữ, để không
