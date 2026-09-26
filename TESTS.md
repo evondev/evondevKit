@@ -119,7 +119,7 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
 
 ### Ưu tiên 3
 
-- [ ] **Form nhiều bước** — "Dựng cho tôi form tạo workspace mới gồm ba bước."
+- ✅ **Form nhiều bước** — "Dựng cho tôi form tạo workspace mới gồm ba bước."
 - ✅ **Tuỳ chọn thông báo** — "Dựng cho tôi trang cài đặt thông báo."
 - [ ] **Bảo mật** — "Dựng cho tôi trang cài đặt bảo mật, có bật xác thực hai lớp và danh sách phiên đăng nhập."
 - [ ] **API key** — "Dựng cho tôi trang quản lý API key."
