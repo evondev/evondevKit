@@ -210,7 +210,7 @@ chặn được đúng lỗi bố cục bịa mà luật cũ nhắm tới.
 
 | Loại màn hình | Mở |
 | --- | --- |
-| Dashboard, các bước bắt đầu (onboarding checklist), danh sách, bảng, danh sách rỗng, cài đặt, hồ sơ cá nhân, bảo mật (xác thực hai lớp, phiên đăng nhập), thành viên và phân quyền, đầu trang (đường dẫn + tên + nút), trang chi tiết bản ghi | `references/layouts/app.md` |
+| Dashboard, các bước bắt đầu (onboarding checklist), danh sách, bảng, danh sách rỗng, cài đặt, hồ sơ cá nhân, bảo mật (xác thực hai lớp, phiên đăng nhập), khoá API, thành viên và phân quyền, đầu trang (đường dẫn + tên + nút), trang chi tiết bản ghi | `references/layouts/app.md` |
 | Đăng nhập, đăng ký, quên mật khẩu, form nhiều trường, form nhiều bước (thanh các bước), trạng thái lỗi | `references/layouts/form.md` |
 | Modal, panel trượt, dropdown, command palette, panel thông báo, toast, **chuyển động mở đóng của mọi khối nổi** (cả select, date picker) | `references/layouts/overlay.md` |
 | Bảng giá, trang chọn gói | `references/layouts/pricing.md` |

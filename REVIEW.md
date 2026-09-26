@@ -101,6 +101,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 16 | Cài đặt thông báo (và hàng tab khu cài đặt) | `/dashboard/settings`, `/settings/notifications`, `/settings/notifications/states` | 26/09/2026 (hai lượt, đã theo kịp trừ màu đường kẻ hàng tab) |
 | 17 | Bảo mật: xác thực hai lớp, phiên đăng nhập | `/dashboard/settings/security`, `/security/states` | 26/09/2026 (ba lượt; lượt ba đổi màu nút theo chủ dự án, dự án chưa theo kịp) |
 | 18 | Các bước bắt đầu (onboarding), nay nằm đầu tổng quan | `/dashboard/overview/states` (trang `/dashboard/welcome` đã bỏ) | 26/09/2026 (ba lượt, đã theo kịp) |
+| 19 | Khoá API | `/dashboard/settings/api-keys`, `/api-keys/states` | 26/09/2026 (hai lượt; lượt hai đã theo kịp) |
 
 Route mới xuất hiện trong dự án thì thêm dòng vào bảng (`grep -rhoE "path: ?['\"][^'\"]+" src`).
 
@@ -176,6 +177,8 @@ không ghi class. Rà xong 11 nhóm thì xem skill có nói gì về chúng khô
 
 Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần.
 
+- `/dashboard/settings/api-keys/states` (lượt hai, 26/09/2026): nút `⋯` ở ca "menu đang mở" chưa có
+  nền của trạng thái mở như menu thật, và menu cách dòng 16px thay vì 8px dưới nút.
 - `/dashboard/settings/security` (skill sửa lượt ba, 26/09/2026): "Bật xác thực hai lớp" sang
   `primary`; "Đăng xuất 4 thiết bị khác" trả lại `isDestructive`; nút dòng và nút hàng loạt lên cỡ nút form
   `h-11 md:h-10 rounded-xl` (bỏ `sessionActionButtonClass` `h-8`, dùng như nút 2FA); nút

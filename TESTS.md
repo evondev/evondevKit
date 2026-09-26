@@ -130,7 +130,7 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
 - ✅ **Form nhiều bước** — "Dựng cho tôi form tạo workspace mới gồm ba bước."
 - ✅ **Tuỳ chọn thông báo** — "Dựng cho tôi trang cài đặt thông báo."
 - ✅ **Bảo mật** — "Dựng cho tôi trang cài đặt bảo mật, có bật xác thực hai lớp và danh sách phiên đăng nhập."
-- [ ] **API key** — "Dựng cho tôi trang quản lý API key."
+- ✅ **API key** — "Dựng cho tôi trang quản lý API key."
 - [ ] **Gói hiện tại và hoá đơn** — "Dựng cho tôi trang thanh toán, hiện gói đang dùng và lịch sử hoá đơn."
 - [ ] **Báo cáo / analytics** — "Dựng cho tôi trang báo cáo doanh thu có chọn khoảng ngày."
 - [ ] **Lịch** — "Dựng cho tôi trang lịch cho app quản lý công việc."

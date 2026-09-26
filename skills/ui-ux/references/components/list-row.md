@@ -37,5 +37,18 @@ Nguồn: dòng nhắc việc của một dự án thật.
 - `min-w-0` xuất hiện ở cả hai tầng bọc ngoài `truncate`. Thiếu nó thì flex item không chịu co, tiêu đề dài đẩy vỡ dòng. Đây là lỗi hay gặp nhất trong danh sách.
 - Màu chỉ dùng để báo hạn, ba mức: **quá hạn** chữ hổ phách `text-amber-700` kèm số ngày ("quá hạn 2 ngày"), **hôm nay** chữ `text-foreground font-medium` không màu, **còn xa** `text-muted`. Quá hạn là "cần chú ý" theo `M7`, không phải đỏ: đỏ là lỗi người dùng phải sửa mới đi tiếp (`M30`). Hôm nay không phải cảnh báo nên không màu, và nhờ vậy không trùng hổ phách với quá hạn (đổi 22/09/2026, bản cũ tô đỏ quá hạn, hổ phách hôm nay). Ngoài ba chỗ đó cả dòng là đen trắng xám.
 - Dòng phụ là `text-xs text-muted`, ngăn cách bằng dấu `·` chứ không phải gạch dài hay dấu gạch ngang.
+- **Dòng phụ nhiều mảnh (từ 4 mảnh) thì ở màn hẹp chia hai dòng theo nghĩa**, không để trình duyệt tự ngắt. Ngắt tự do thì dấu `·` rớt lên đầu dòng sau ("· Chưa dùng lần nào"), và chỗ ngắt đổi theo độ dài từng dòng nên năm dòng năm kiểu (đã dính 26/09/2026, trang khoá API ở 375px). Gom mảnh thành hai nhóm (nhận dạng / thời gian), mỗi nhóm `block sm:inline`, dấu `·` giữa hai nhóm chỉ hiện từ `sm`:
+
+  ```tsx
+  <p className="mt-0.5 text-xs text-muted">
+    <span className="block sm:inline">
+      <span className="font-mono">evd_live_…a3f9</span> · Toàn quyền
+    </span>
+    <span aria-hidden className="hidden sm:inline"> · </span>
+    <span className="block sm:inline">Dùng 2 phút trước · Không hết hạn</span>
+  </p>
+  ```
+
+  Từ `sm` vẫn là một dòng như cũ. Nhóm nào vẫn quá dài ở 375px thì mỗi mảnh trong nhóm `whitespace-nowrap`, dấu cách giữa hai mảnh nằm ngoài span (không thì cả nhóm không có chỗ ngắt và tràn khung).
 - Hai cỡ chữ trong một dòng, không hơn: `text-sm` cho tiêu đề, `text-xs` cho phụ và cho nhãn. Không `text-[10px]`: dấu tiếng Việt chồng hai tầng ở 10px dính vào nhau. Nhãn là pill `rounded-full` như badge (`F1`, `M7`), không `rounded` 4px.
 - **Dòng bo góc xếp chồng thì chừa 2px** (`space-y-0.5` trên danh sách). Hai dòng cạnh nhau cùng sáng nền — một đang chọn, một đang rê chuột — mà dính mép thì đọc ra thành **một khối cao gấp đôi**, không phải hai dòng (đã dính 23/09/2026 ở cây thư mục). Dòng tràn hết bề ngang khung (bảng) thì không cần, vì nó không bo góc và đã có đường kẻ chia.
