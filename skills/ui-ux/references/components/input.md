@@ -129,6 +129,7 @@ một câu dài ở 375px không có cách xoá nhanh, chữ trôi khuất bên 
 </div>
 ```
 
+- Nút có nền rê nằm trong ô thì nền là ô vuông `size-8 rounded-lg` thụt vào, không phủ kín từ viền tới viền. Nút − + của ô số lượng cùng khuôn này (`quantity-input.md`).
 - Nút xoá **chỉ hiện khi ô có chữ**, icon `X` `size-4` xám, rê vào đậm lên. Bấm xong **trả tiêu điểm về ô** để gõ lại ngay.
 - Giữ `type="search"`: bàn phím điện thoại hiện nút Tìm, Escape vẫn xoá từ khoá.
 - Ô chừa `pr-10` để chữ dài không chui dưới nút.
