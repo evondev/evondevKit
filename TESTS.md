@@ -47,6 +47,11 @@ chức**, hình thức vẫn theo skill. Gửi ảnh kèm câu "ảnh này chỉ
 - ✅ **OTP input** — "Dựng cho tôi ô nhập mã OTP sáu số, dán cả mã vào được."
 - ✅ **Description list** — "Dựng cho tôi khối thông tin dạng nhãn và giá trị cho trang chi tiết khách hàng."
 - ✅ **Chart** — "Dựng cho tôi bộ biểu đồ: đường doanh thu theo tháng, cột so sánh theo nhóm, donut tỉ lệ, và sparkline nhỏ trong card số liệu."
+- [ ] **Accordion** — "Dựng cho tôi phần Cài đặt nâng cao thu gọn được trong form tạo dự án, bên trong có ô nhập và công tắc."
+      Mẫu đã có (`components/accordion.md`) nhưng mới chạy ở FAQ trang giá, nội dung chỉ là chữ. Đề này thử nội dung có thứ bấm được: Tab có lọt vào mục đang đóng không, mở ra thì ô nhập có bị cắt vòng focus không.
+- [ ] **Tiêu đề cột sắp xếp** — "Dựng cho tôi tiêu đề cột bảng sắp xếp được theo tên, ngày tạo và doanh thu: tăng, giảm, và chưa sắp xếp."
+- [ ] **Ô nhập số** — "Dựng cho tôi ô nhập số lượng có nút tăng giảm, tối thiểu 1, tối đa 99."
+- [ ] **Sửa tại chỗ** — "Dựng cho tôi tên dự án sửa tại chỗ: bấm vào để sửa, Enter lưu, Esc huỷ, để trống thì báo lỗi."
 
 ## Bậc 1b — UI chưa có mẫu (thử nguyên tắc)
 
@@ -89,6 +94,8 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
       Cần có: modal, status badge, list row, card, button, tooltip.
 - ✅ **Bảng phức tạp** — "Dựng cho tôi danh sách công việc nhóm theo trạng thái, mỗi nhóm thu gọn được, có cột ưu tiên, người phụ trách, hạn chót, và chuyển giữa các view."
       Cần có: data table, tabs, status badge, avatar, dropdown menu, date picker.
+- [ ] **Popover lọc** — "Dựng cho tôi nút Lọc trên bảng công việc, mở popover chọn người phụ trách, khoảng ngày và mức ưu tiên, có Áp dụng và Xoá lọc, nút hiện số bộ lọc đang bật."
+      Cần có: button, select, date picker, filter chip.
 
 ## Bậc 3 — Trang
 

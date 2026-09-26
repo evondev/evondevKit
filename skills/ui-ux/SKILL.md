@@ -364,6 +364,7 @@ thì một trong hai chỗ là sai.
 | Dòng trong danh sách | `references/components/list-row.md` |
 | Dòng thời gian, lịch sử hoạt động | `references/components/timeline.md` |
 | Cây thư mục, cây lồng nhau mở đóng được | `references/components/tree.md` |
+| Accordion, FAQ, mục mở/đóng tại chỗ | `references/components/accordion.md` |
 | Khu bình luận, trả lời lồng nhau | `references/components/comment-thread.md` |
 | Khung chat với trợ lý AI: tin nhắn hai phía, bước dùng công cụ, gợi ý hỏi tiếp, ô soạn tin | `references/components/chat.md` |
 | Thanh trượt chọn khoảng số, khoảng giá | `references/components/range-slider.md` |

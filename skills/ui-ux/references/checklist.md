@@ -107,6 +107,8 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Luồng quên mật khẩu: bước nhập mã có đang xác nhận email có tài khoản không? Phiên hết hạn có còn để ô mật khẩu và nút Lưu dưới khối lỗi không? (`layouts/form.md`)
 - [ ] Màn OTP: bấm Xác nhận khi chưa đủ sáu số có ra câu lỗi không, hay im lặng?
 - [ ] Màn OTP: "Đổi email" có về form với dữ liệu điền sẵn không? Bấm "Gửi lại mã" có câu "Đã gửi mã mới" (`role="status"`) không? Sai mã, hết hạn có xoá sáu ô và đưa con trỏ về ô đầu không?
+- [ ] Trang bảng giá đứng riêng: đầu trang căn giữa, tên trang `sm:text-3xl` (không nhỏ hơn giá)? Dãy gói xếp chồng có `max-w-lg` không (mở ở 768px xem card có kéo dài 650px không)? FAQ là accordion (`components/accordion.md`) trong khung `max-w-3xl`, câu hỏi dài nhất một dòng ở desktop? `h2` cùng font với `h1`? Vạch dưới giá kẻ `--border-strong`? Gói nổi bật là card nền `--primary` với nút trắng, vòng focus có `ring-offset-primary`? Nút gói `h-12`?
+- [ ] Có accordion: trượt bằng `grid-rows` (không `<details>`), mục đóng có `inert`? Rê vào tiêu đề: không nền xám, chỉ chevron đậm lên? Tô màu nút, khối bọc, nội dung: nút đều hai mép cả lúc mở, nội dung cùng `px` với nút và lấp kín khối bọc (không `max-w`, không `pr` riêng)? Mục đóng không lòi chữ lúc đang trượt? Tiêu đề `text-pretty`? (`components/accordion.md`)
 - [ ] Đường chia "hoặc" kẻ bằng `--border-strong` chưa (`--border` tan trên card trắng)? Nút mắt `size-10` chưa? Form đúng mà bấm gửi có đi tiếp không, hay im lặng? Bước sau có hiện đúng email vừa gõ không?
 - [ ] Mọi màn trong luồng xác thực mở ra con trỏ đã nằm ở ô đầu chưa? Form đặt mật khẩu mới có ô `username` ẩn chưa (`I28`)?
 - [ ] "Quên mật khẩu?" có nằm cùng hàng với nhãn không? Dưới ô nhập là **tranh chỗ với câu lỗi**.
@@ -152,10 +154,12 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 ### Grep một lượt
 
 ```bash
-grep -nE "gradient|backdrop-blur|shadow-(xl|2xl)|scale-1|text-transparent|border-dashed" <file>
+grep -nE "gradient|backdrop-blur|shadow-(xl|2xl)|scale-1|text-transparent|border-dashed|<details|<summary" <file>
+grep -nE "(^|[\" '`:])-(m[trblxy]?|space-[xy]|translate-[xy]|inset|top|left|right|bottom)-" <file>
 ```
 
-Phải sạch, trừ ngoại lệ đã ghi trong luật.
+Phải sạch, trừ ngoại lệ đã ghi trong luật. `<details>` / `<summary>` không có ngoại lệ: mở/đóng tức thì, không animate được (`I30`).
+Dòng grep thứ hai (số âm, `N11`): mỗi kết quả phải có comment lý do ngay trên, không có thì làm lại bằng padding, `gap`, căn hàng.
 
 ---
 

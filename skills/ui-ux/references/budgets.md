@@ -90,8 +90,8 @@ Tám tên, và tám tên đó là **hết**. Không inline pixel ngoài thang (`
 | `sm` + `font-medium` | nút (`button.md`). Tailwind không có `text-md` |
 | `lg` | tiêu đề khối (nhóm nhiều card), **tiêu đề trang chi tiết** |
 | `xl` | **tên của một trang**, ở mọi khổ màn |
-| `2xl` | chỉ cho hero của trang trình diễn |
-| `3xl` | hero |
+| `2xl` | chỉ cho hero của trang trình diễn, ở màn hẹp |
+| `3xl` | hero từ `sm`; giá trong bảng giá. Tên trang bảng giá đứng riêng là `text-2xl sm:text-3xl`, không nhỏ hơn giá (`layouts/pricing.md`) |
 
 Thứ bậc bắt buộc: **tên trang (`xl`) > tiêu đề khối (`lg`) > tên thẻ (`base`)**,
 mỗi bậc cách nhau đúng một nấc ở **mọi** breakpoint (luật `T8`).

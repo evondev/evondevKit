@@ -26,6 +26,8 @@ thành "Côngty" (đã dính 22/09/2026). Copy không dấu thì ngưỡng khác
 
 Font thứ hai chỉ được dùng cho **tiêu đề của trang trình diễn** (trang giới
 thiệu, bảng giá, trang pháp lý) và phải nói được nó khác font body ở chỗ nào.
+Đã dùng thì dùng cho **mọi tiêu đề cấp trang** (`h1` và `h2` của từng phần), không
+chỉ `h1`. Tên thẻ, tên gói, câu hỏi trong danh sách vẫn font body.
 Trong trang làm việc của app thì không.
 
 **T3. Font thứ hai không bao giờ cho số.** Giá, số liệu, chỉ số luôn dùng font
@@ -96,9 +98,27 @@ Không chỉ tiêu đề: **mô tả hai ba dòng trong cột hẹp** (bước d
 mô tả dưới tiêu đề modal) dính nhiều nhất, vì cột cố định nên dòng nào hụt là hụt ở
 mọi màn. Mọi mô tả được xuống dòng đều `text-pretty`.
 
+**`text-balance` chỉ cho chữ đứng một mình trên hàng.** Chữ chung hàng với icon
+hoặc nút ở cuối (câu hỏi accordion có chevron, dòng danh sách có mũi tên, tên có
+badge bên cạnh) thì `text-pretty`, kể cả khi nó là thẻ `h3`. `balance` chia đều mọi
+dòng nên dòng đầu cũng bị cắt ngắn: câu còn chỗ mà đã xuống dòng khi mới được nửa hàng,
+chevron trôi ra xa cả khoảng trống. `pretty` giữ dòng đầu đầy, chỉ chặn chữ đơn côi
+cuối (đã dính 26/09/2026, FAQ trang giá ở 375px: "Chưa biết gì về lập / trình thì bắt
+đầu ở đâu?" chiếm 129px và 162px trong hàng rộng 269px).
+
 Kiểm ở đúng bề rộng thật, nhất là 375px: chữ đơn côi chỉ lộ ở một vài bề rộng.
 
 **T11. Không để dòng chữ dài quá 75 ký tự.** Mọi khối văn bản có `max-width`.
+
+**Chặn ở khung ngoài, không chặn ở phần tử con nằm trong một khối tràn bề ngang.**
+Câu trả lời accordion, dòng mô tả trong hàng có nền: `max-w-*` đặt trên chính nó thì
+khối con hụt so với khối bọc, ai tô nền là lòi một mảng trống bên phải (đã dính
+26/09/2026, FAQ trang giá: `<p>` `max-w-[65ch]` hụt 55px). Thu hẹp cả khung cho tới khi
+dòng dài nhất ≤ 75 ký tự.
+
+**Trần 75 ký tự là cho đoạn văn từ 3 dòng trở lên.** Chữ ngắn đọc một hơi (câu trả lời
+FAQ 1–2 câu, mô tả một dòng) không tính: đừng thu hẹp cả khung vì nó, kẻo tiêu đề cùng
+khung phải xuống dòng khi hàng còn trống (đã dính 26/09/2026, FAQ `max-w-lg`).
 Card rộng hết khung cũng tính.
 
 **Chữ Việt: `max-w-[55ch]` ≈ 75 ký tự**, ở mọi cỡ chữ. `ch` là bề rộng số "0" (~9,5px ở

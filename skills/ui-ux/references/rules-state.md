@@ -114,6 +114,8 @@ màu.
 **I10. Hover của một dòng là một lớp nền nhẹ, không tô đậm lên, không phóng to.
 Nền hover không bao giờ trùng màu nền trang.**
 
+Ngoại lệ: nút mở/đóng của accordion không tô nền hover (`I30`, `components/accordion.md`).
+
 Chọn token theo **nền hover có chạm hai mép khung hay không**:
 
 | Dòng | Hover | Vì sao |
@@ -240,6 +242,8 @@ chỉ "‹ Trước / Sau ›" hoặc "Tải thêm", **không bịa tổng** (`N
 **I17. Ngưỡng giấu nội dung sau một cú bấm:** chỉ dùng accordion hay tab khi danh
 sách dài hơn 6 mục, hoặc mỗi phần trả lời dài quá 3 dòng. Dưới ngưỡng đó thì
 hiện hết.
+Ngoại lệ: FAQ ở trang bảng giá luôn accordion (`layouts/pricing.md`): nó là chỗ tra,
+không phải thứ người ta đến để đọc.
 
 **I18. Thanh cuộn tự ẩn: đứng yên thì không thấy, rê vào hoặc đang cuộn thì hiện.**
 
@@ -495,3 +499,54 @@ bấm được. Padding của hàng đặt trên **phần tử bấm**, không �
 vì padding cũng là vùng bấm.
 
 `cursor-pointer` phải ghi tường minh trên `<button>` ở Tailwind v4 — xem `W7`.
+
+**I30. Không dùng `<details>` / `<summary>` cho bất cứ thứ gì mở/đóng.** Dựng bằng
+`<button aria-expanded>` + khối trượt `grid-rows`.
+
+`<details>` mở và đóng tức thì, không trình duyệt nào animate sẵn: bấm là nội dung
+giật ra, bấm lần nữa là biến mất, cả trang bên dưới nhảy theo (`N1`). Cách vá bằng
+`::details-content` + `interpolate-size` chỉ chạy trên Chrome; Safari và Firefox vẫn
+giật. Đã dính 26/09/2026: FAQ trang giá dựng bằng `<details>` theo đúng spec cũ của
+skill, chủ dự án bấm thử thấy "giật ra chứ không có animation như accordion".
+
+Áp cho mọi thứ mở/đóng: accordion, FAQ, nhóm sidebar thu gọn, mục cây, "xem chi
+tiết" trong dòng, khối bước công cụ trong chat. Cùng lý do, **không render có điều
+kiện** (`{isOpen && …}`) hay `hidden` cho phần nội dung đó: cũng giật y như vậy.
+
+Mẫu đầy đủ cho accordion (padding, hover, khung, cách kiểm) ở `components/accordion.md`.
+Công thức lõi, giống nhóm sidebar (`layouts/app.md`):
+
+```tsx
+<button type="button" aria-expanded={isOpen} aria-controls={panelId} onClick={() => setIsOpen(!isOpen)}>
+  {label}
+  <ChevronDown className={cn("size-4 shrink-0 transition-transform duration-200 motion-reduce:transition-none", isOpen && "rotate-180")} aria-hidden />
+</button>
+
+<div
+  id={panelId}
+  inert={!isOpen}
+  className={cn(
+    "grid transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none",
+    isOpen && "grid-rows-[1fr]",
+    !isOpen && "grid-rows-[0fr]",
+  )}
+>
+  <div className="min-h-0 overflow-hidden">…</div>
+</div>
+```
+
+- **`duration-200 ease-out`**, chevron xoay cùng nhịp. Không đo chiều cao bằng JS.
+- **Khối đóng gắn `inert`**: Tab không lọt vào nội dung đã ẩn, trình đọc màn hình không đọc.
+- **Có `motion-reduce:transition-none`.**
+- **Nút mở/đóng tràn hết bề ngang khung trắng (accordion, FAQ) thì không tô nền hover**,
+  chevron đậm lên thay nền. Ngoại lệ của `I10`, lý do và các cách đã thử ở
+  `components/accordion.md`.
+- **Nút và nội dung giữ padding cố định, không đổi theo trạng thái.** Nút `py-*` như nhau
+  lúc mở và đóng; nội dung cùng `px` với nút, chỉ `pb`, nối tiếp padding dưới của nút.
+  Không bớt `pb` của nút khi mở, không margin âm (`N11`): tô nền nút là chữ lệch hẳn về
+  một mép (đã dính 26/09/2026, FAQ trang giá).
+- Đổi lại mất Ctrl+F tự mở khối chứa chữ (chỉ `<details>` có). Chấp nhận, như
+  accordion của mọi thư viện component.
+
+Grep một lượt khi dựng xong: `<details` và `<summary` phải ra 0.
+

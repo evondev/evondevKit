@@ -70,6 +70,10 @@ thành khoảng trắng vô nghĩa (đã dính: sparkline tháng đầu giữ ch
 không còn gì "bên cạnh" để giữ. Đừng `truncate` chữ cần đọc chỉ để giữ chiều cao
 qua các màn (đã dính: tên bước ở thanh thu gọn bị cắt "…").
 
+**Mở/đóng có chủ ý đẩy phần bên dưới** (accordion, nhóm thu gọn) thì không giữ chỗ
+được, nên phải **trượt**, không giật: `grid-rows` 0fr ↔ 1fr, không `<details>`, không
+render có điều kiện (`I30`).
+
 *Phép thử:* bật lần lượt từng trạng thái, nhìn **phần tử bên cạnh**, không nhìn
 phần tử vừa đổi. Có cái nào xê dịch dù 1px không?
 
@@ -276,6 +280,30 @@ chí (nhẹ, giải quyết đúng việc, hợp hệ sinh thái), không theo t
 
 *Phép thử:* đoạn code vừa viết có gọi API, đặt ngưỡng, lưu trạng thái, hay hẹn
 giờ mà đề không yêu cầu không?
+
+---
+
+**N11. Không dùng số âm cho khoảng cách và vị trí, trừ khi không còn cách nào khác.**
+
+Margin âm (`-mt-*`, `-mx-*`), `-space-*`, `-translate-*`, `-inset-*`, `top-[-…]`: số âm
+kéo phần tử ra khỏi chỗ của nó, nên khung bao không còn nói thật kích thước bên trong.
+Sửa padding một chỗ là chỗ khác lệch theo, và hay lộ lỗi ở trạng thái khác (đã dính
+26/09/2026: margin âm trong accordion làm câu đang đóng lòi dòng đầu câu trả lời). Chủ
+dự án chốt 26/09/2026: ưu tiên mọi giá là không dùng.
+
+Làm theo thứ tự:
+
+1. **Đặt padding ở đúng phần tử cần nó.** Đường chia muốn tràn mép thì khung không có
+   padding ngang, từng hàng tự có `px`: vạch tự chạm mép, không phải kéo ra.
+2. **Chấp nhận khoảng cách mà padding cố định cho ra**, thay vì kéo cho sát hơn. Đừng
+   đổi padding của một khối theo trạng thái để bù cho khối bên cạnh: tô nền khối đó là
+   chữ lệch về một mép (đã dính 26/09/2026, accordion bớt `pb` của nút khi mở, `I30`).
+3. **`gap`, căn `items-*`, đổi `leading`** để thẳng hàng, thay vì nhích bằng `translate`.
+4. Không cách nào ở trên làm được (ví dụ avatar xếp chồng nhau, vùng bấm nở ra ngoài một
+   phần tử nhỏ): dùng số âm, và **ghi comment lý do ngay trên dòng đó**, như `eslint-disable`.
+
+*Phép thử:* grep `-m[trblxy]?-|-space-|-translate-|-inset-` trong file vừa dựng. Mỗi kết
+quả phải có comment giải thích vì sao không làm bằng cách 1–3 được.
 
 ---
 
