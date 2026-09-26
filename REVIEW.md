@@ -170,6 +170,10 @@ nền vuông 46×48 cạnh vòng chọn tròn 32px. Thêm vào probe:
 - **Hình của các trạng thái trên cùng một phần tử**: rê, đang chọn (`aria-pressed`,
   `aria-selected`, `aria-current`), focus, vẽ ở phần tử nào và `border-radius` bao nhiêu. Hai trạng
   thái khác hình (vuông với tròn) hoặc khác phần tử vẽ (cả ô với con bên trong) là lỗi.
+- **Mở các khối đang đóng trước khi đo** (accordion, mục thu gọn): 26/09/2026 lỗi khe quanh nút
+  "…" của đường dẫn nằm trong mục accordion đóng sẵn ở `/components`, probe không thấy. Chỉ bấm
+  nút `aria-expanded="false"` có `aria-controls` mà không có `aria-haspopup`, và bỏ nút mở
+  sidebar ở màn hẹp (mở ra là che cả trang).
 - **Bấm chuột xong rồi đứng yên**: phần tử vừa bấm còn nền hover chồng lên nền chọn không.
 
 Mỗi phép đo thêm vào phải bắt lại được đúng ca đã dính (nút "Thêm" ở `/dashboard/calendar` bản cũ,

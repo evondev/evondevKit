@@ -406,15 +406,15 @@ Khách hàng từ 3/2024, 18 đơn hàng, doanh thu 1.284.500.000 đ
 <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
   {/* flex-1: khối chữ lấy hết chỗ còn lại, không co theo dòng dài nhất */}
   <div className="min-w-0 flex-1">
-    <nav aria-label="Đường dẫn">{/* text-sm text-muted, link hover:text-foreground, ChevronRight size-4 */}</nav>
-    <h1 className="mt-1 text-xl font-semibold text-balance">{title}</h1>
+    <Breadcrumb items={parents} />{/* ../components/breadcrumb.md; hàng h-8 đã chừa khoảng, tên không mt */}
+    <h1 className="text-xl font-semibold text-balance">{title}</h1>
     <p className="mt-1 max-w-[55ch] text-sm text-pretty text-muted">{description}</p>
   </div>
   <div className="flex shrink-0 gap-2">{actions}</div>
 </header>
 ```
 
-- **Đường dẫn chỉ ghi các cấp cha, không ghi trang đang đứng.** Tên trang nằm ngay dưới, ghi lại là lặp ("Cài đặt › Thành viên" rồi "Thành viên"). Ghi một chữ khác tên trang còn tệ hơn: "Khách hàng › Hồ sơ" trên đầu "Công ty TNHH Minh Phát", người đọc không biết mình đang ở đâu (đã dính 22/09/2026). Mỗi mục cha là link. Mục dài thì `max-w-48 truncate` kèm `title`.
+- **Đường dẫn chỉ ghi các cấp cha, không ghi trang đang đứng.** Tên trang nằm ngay dưới, ghi lại là lặp ("Cài đặt › Thành viên" rồi "Thành viên"). Ghi một chữ khác tên trang còn tệ hơn: "Khách hàng › Hồ sơ" trên đầu "Công ty TNHH Minh Phát", người đọc không biết mình đang ở đâu (đã dính 22/09/2026). Hình, đường dài, màn hẹp: `../components/breadcrumb.md`.
 - **Đường dẫn đặt ở MỘT chỗ.** App đã có đường dẫn trên thanh header `h-16` thì đầu trang không lặp lại, chỉ còn tên, mô tả, nút.
 - **Một trang đúng một `<h1>`, và tên trang chỉ ghi MỘT chỗ.** Hai `<h1>` thì trình đọc màn hình không biết trang này tên gì (đã dính 23/09/2026: "Việc của tôi" trên header và "Tạo công việc mới" cùng là `<h1>`); không `<h1>` nào thì cũng vậy (đã dính 25/09/2026: trang khách hàng bỏ đầu trang để khỏi lặp "Khách hàng", mất luôn `<h1>`). Chia theo loại trang:
   - **Trang không có đầu trang riêng** (danh sách, bảng quản lý, tổng quan, kanban): tên trên thanh header `h-16` **chính là `<h1>`**, giữ nguyên cỡ chữ của thanh (`text-base font-bold`, cỡ chữ không đổi theo thẻ). Vùng nội dung không lặp lại tên; nút chính ("+ Thêm khách hàng") nằm cuối hàng công cụ cạnh ô tìm.

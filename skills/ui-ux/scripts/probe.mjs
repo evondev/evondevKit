@@ -319,6 +319,97 @@ function measureInPage({ minTapSize, isMobile }) {
     }
   }
 
+  // 8. Dấu ngăn (›, /) không cách đều hai bên: đo từ nét của dấu tới nét chữ hay icon kế bên, không
+  //    đo hộp. Nút "…" size-8 giữa đường dẫn để trống 22px mỗi bên trong khi chữ cách dấu 12px
+  //    (đo 26/09/2026). Dấu ngăn là svg aria-hidden đứng ngoài link, nút; icon trong nút phân trang
+  //    không tính.
+  function getSvgInkRect(svg) {
+    const rect = svg.getBoundingClientRect();
+    const box = svg.getBBox();
+    const scale = rect.width / (svg.viewBox.baseVal?.width || rect.width);
+
+    return { left: rect.left + box.x * scale, right: rect.left + (box.x + box.width) * scale, top: rect.top };
+  }
+
+  function getItemInkRect(item) {
+    const textNodes = [];
+    const walker = document.createTreeWalker(item, NodeFilter.SHOW_TEXT);
+    while (walker.nextNode()) if (walker.currentNode.textContent.trim()) textNodes.push(walker.currentNode);
+
+    if (textNodes.length === 0) {
+      const icon = item.querySelector("svg");
+
+      return icon ? getSvgInkRect(icon) : null;
+    }
+
+    const range = document.createRange();
+    range.setStartBefore(textNodes[0]);
+    range.setEndAfter(textNodes[textNodes.length - 1]);
+    const textRect = range.getBoundingClientRect();
+    // Chữ bị cắt (truncate): nét chữ dừng ở mép hộp, không ở cuối chuỗi đầy đủ.
+    const itemRect = item.getBoundingClientRect();
+
+    return { left: Math.max(textRect.left, itemRect.left), right: Math.min(textRect.right, itemRect.right), top: itemRect.top };
+  }
+
+  const separatorRows = new Set();
+  for (const svg of document.querySelectorAll("svg[aria-hidden='true']")) {
+    if (svg.closest("a, button, [role='button']") || !isVisible(svg)) continue;
+    const row = svg.closest("ol, ul, nav");
+    if (row) separatorRows.add(row);
+  }
+
+  const unevenSeparatorRows = [];
+  for (const row of separatorRows) {
+    const units = [...row.querySelectorAll("svg[aria-hidden='true'], a, button")]
+      .filter((element) => isVisible(element) && !element.parentElement.closest("a, button"))
+      .map((element) => {
+        const isSeparator = element.tagName.toLowerCase() === "svg";
+
+        return { isSeparator, ink: isSeparator ? getSvgInkRect(element) : getItemInkRect(element) };
+      })
+      .filter((unit) => unit.ink);
+
+    const gaps = [];
+    for (let index = 1; index < units.length; index++) {
+      const previous = units[index - 1];
+      const current = units[index];
+      const isSameLine = Math.abs(current.ink.top - previous.ink.top) < 12;
+      if (isSameLine && (previous.isSeparator || current.isSeparator)) gaps.push(current.ink.left - previous.ink.right);
+    }
+    if (gaps.length < 3) continue;
+
+    const smallestGap = Math.min(...gaps);
+    const largestGap = Math.max(...gaps);
+    if (largestGap - smallestGap > 4) {
+      unevenSeparatorRows.push({
+        element: describe(row),
+        gaps: `${smallestGap.toFixed(1)}–${largestGap.toFixed(1)}px`,
+      });
+    }
+  }
+
+  // 9. Vòng focus vẽ trên một con (group-focus-visible:ring) mà không bọc hết thứ nhìn thấy của
+  //    link, nút: "‹ Bảo mật" có vòng quanh riêng chữ, dấu ‹ đứng ngoài (đo 26/09/2026). Đọc class
+  //    chứ không Tab, nên đo được cả màn hẹp, nơi bước Tab bị bỏ qua.
+  const partialFocusRings = [];
+  for (const ringNode of document.querySelectorAll("[class*='group-focus-visible:ring']")) {
+    const focusable = ringNode.parentElement?.closest("a, button, [tabindex]");
+    if (!focusable || !isVisible(focusable) || !isVisible(ringNode)) continue;
+
+    const ringRect = ringNode.getBoundingClientRect();
+    const visibleParts = [...focusable.querySelectorAll("svg, span, img")].filter(
+      (part) => isVisible(part) && !ringNode.contains(part) && !part.contains(ringNode),
+    );
+    const outsidePart = visibleParts.find((part) => {
+      const partRect = part.getBoundingClientRect();
+
+      return partRect.left < ringRect.left - 1 || partRect.right > ringRect.right + 1;
+    });
+
+    if (outsidePart) partialFocusRings.push(describe(focusable));
+  }
+
   return {
     viewportWidth,
     pageScrollWidth,
@@ -332,6 +423,8 @@ function measureInPage({ minTapSize, isMobile }) {
     smallTapTargets: smallTapTargets.slice(0, 15),
     smallTapCount: smallTapTargets.length,
     misalignedFields: misalignedFields.slice(0, 10),
+    unevenSeparatorRows: unevenSeparatorRows.slice(0, 10),
+    partialFocusRings: [...new Set(partialFocusRings)].slice(0, 10),
   };
 }
 
@@ -457,6 +550,14 @@ function formatReport(results) {
     if (result.misalignedFields.length > 0) {
       problems.push(`Ô NHẬP LỆCH MÉP VỚI NÚT RỘNG HẾT KHUNG (${result.misalignedFields.length} khung, ô và nút phải cùng mép trái phải):`);
       for (const item of result.misalignedFields.slice(0, 5)) problems.push(`  ô ${item.field}, nút ${item.button}: ${item.element}`);
+    }
+    if (result.unevenSeparatorRows.length > 0) {
+      problems.push(`DẤU NGĂN CÁCH KHÔNG ĐỀU (${result.unevenSeparatorRows.length} hàng, nét dấu › tới nét chữ hay icon kế bên phải bằng nhau):`);
+      for (const item of result.unevenSeparatorRows.slice(0, 5)) problems.push(`  khe ${item.gaps}: ${item.element}`);
+    }
+    if (result.partialFocusRings.length > 0) {
+      problems.push(`VÒNG FOCUS KHÔNG BỌC HẾT LINK (${result.partialFocusRings.length} chỗ, icon hay chữ của cùng link nằm ngoài vòng):`);
+      for (const element of result.partialFocusRings.slice(0, 5)) problems.push(`  ${element}`);
     }
     if (result.missingFocusRings.length > 0) {
       problems.push(`TAB TỚI MÀ KHÔNG THẤY GÌ ĐỔI (${result.missingFocusRings.length} chỗ):`);

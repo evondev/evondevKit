@@ -57,6 +57,7 @@ chức**, hình thức vẫn theo skill. Gửi ảnh kèm câu "ảnh này chỉ
 - ✅ **Chart** — "Dựng cho tôi bộ biểu đồ: đường doanh thu theo tháng, cột so sánh theo nhóm, donut tỉ lệ, và sparkline nhỏ trong card số liệu."
 - ✅ **Accordion** — "Dựng cho tôi phần Cài đặt nâng cao thu gọn được trong form tạo dự án, bên trong có ô nhập và công tắc."
       Mẫu đã có (`components/accordion.md`) nhưng mới chạy ở FAQ trang giá, nội dung chỉ là chữ. Đề này thử nội dung có thứ bấm được: Tab có lọt vào mục đang đóng không, mở ra thì ô nhập có bị cắt vòng focus không.
+- ✅ **Breadcrumb** — "Dựng cho tôi breadcrumb cho trang chi tiết đơn hàng nằm trong khách hàng, có ca đường dài năm cấp và ca màn hẹp."
 - ✅ **Tiêu đề cột sắp xếp** — "Dựng cho tôi tiêu đề cột bảng sắp xếp được theo tên, ngày tạo và doanh thu: tăng, giảm, và chưa sắp xếp."
 - ✅ **Ô nhập số** — "Dựng cho tôi ô nhập số lượng có nút tăng giảm, tối thiểu 1, tối đa 99."
 - ✅ **Sửa tại chỗ** — "Dựng cho tôi tên dự án sửa tại chỗ: bấm vào để sửa, Enter lưu, Esc huỷ, để trống thì báo lỗi."
