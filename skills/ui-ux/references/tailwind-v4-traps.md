@@ -170,3 +170,24 @@ thuộc.
 **Cách phát hiện:** trong `package.json` có `"tailwindcss": "^4`, và grep ra
 `<button` không kèm `cursor-pointer` mà trong CSS base cũng không có dòng
 `cursor: pointer` nào.
+
+---
+
+## W8. `ring-*` chỉ có một, vòng focus đã dùng nó
+
+`ring-1`, `ring-2`, `ring-inset` cùng ghi vào **một** lớp bóng (`--tw-ring-shadow`).
+Nút, chip đã có vòng focus bàn phím `focus-visible:ring-2` (`I13`). Dùng thêm `ring-*`
+để vẽ viền "đang chọn" thì Tab tới là vòng focus **thay** viền chọn, không cộng vào;
+kèm `ring-inset` thì vòng focus cũng bị kéo vào trong nút.
+
+**Luật:** viền trạng thái (đang chọn, đang bật) trên phần tử đã có vòng focus thì vẽ
+bằng `inset-ring-*` (lớp bóng riêng của v4), hoặc `border`. Đã dính 26/09/2026: chip
+mức ưu tiên trong popover Lọc theo mẫu `ring-1 ring-inset` của skill, Tab tới chip đang
+chọn là mất viền chọn.
+
+**Ngoại lệ đúng ý:** card chọn được (`has-checked:ring-2` + `has-focus-visible:ring-2`
+trong `components/choice-controls.md`) cố ý dùng chung một vòng: chọn và focus trông như
+nhau, vì card đã có viền `border-focus` đi kèm.
+
+**Cách phát hiện:** grep `aria-pressed:ring-\|isSelected.*ring-\|ring-inset` trên phần tử
+có `focus-visible:ring`.

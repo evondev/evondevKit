@@ -258,6 +258,33 @@ Ra `tran.ngu…@evondev-studio.com` cạnh `tran.nguyen.an…@gmail.com`: mỗi 
 dòng, vẫn phân biệt được. Email đầy đủ ở `title`. Dùng khuôn này ở mọi chỗ hiện
 email trong menu: đầu menu, hàng tài khoản, đầu menu chân sidebar.
 
+### Popover lọc
+
+Nút **Lọc** trên thanh công cụ của danh sách mở một khung có vài trường (người phụ
+trách, khoảng ngày, mức ưu tiên…) và nút xác nhận. Khác dropdown ở chỗ bên trong là
+**một form nhỏ**, không phải danh sách mục.
+
+```
+┌──────────────────────────────────┐
+│ Người phụ trách                  │  <- nhãn text-sm font-medium
+│ [Tất cả người phụ trách       ▾] │  <- select, h-10, rộng hết khung
+│ Hạn chót                    Xoá  │  <- "Xoá" chỉ hiện khi đã có khoảng
+│ [Mọi hạn chót                 ▦] │
+│ Mức ưu tiên                      │
+│ (Thấp) (Trung bình) (Cao) (…)    │  <- chip bật/tắt, xuống dòng được
+├──────────────────────────────────┤  <- F25, tràn hai mép
+│ Xoá lọc                [Áp dụng] │  <- "Xoá lọc" thẳng mép trái nhãn
+└──────────────────────────────────┘
+```
+
+- **Khung** `w-96 max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-surface shadow-lg`, không `p-*`: thân `p-4 flex flex-col gap-4`, footer `border-t px-4 py-3 flex justify-between`. Neo mép phải nút Lọc (dưới `sm` nút đứng riêng hàng, căn trái, thì neo mép trái). Portal ra `body` (`I22`).
+- **Đổi gì trong khung chỉ sửa bản nháp**; bấm Áp dụng mới lọc danh sách. Esc, bấm ra ngoài là bỏ nháp. Mở lại thì nháp lấy lại bộ lọc đang áp. Đang lọc thì nút ghi "Lọc · 2" (số trường đang bật).
+- **"Xoá lọc" là link chữ, không phải nút `ghost` có padding**: `px-0`, chữ `text-muted`, rê vào `text-foreground` + gạch chân, không nền. Nút `ghost` `px-4` đặt trong footer `px-4` làm chữ "Xoá lọc" thụt vào 16px so với mép trái mọi nhãn phía trên, cả khung có một mép chữ lệch (đã dính 26/09/2026: nhãn ở x=754, chữ "Xoá lọc" ở x=770). Cùng chữ, cùng kiểu với "Xoá" ở hàng nhãn của một trường. Không còn gì để gỡ (nháp rỗng và danh sách không lọc) thì khoá `opacity-50`.
+- **Chip đang chọn trong khung KHÔNG tô `bg-primary`.** Footer đã có nút Áp dụng đặc `primary`; chip chọn cũng đặc đen thì khung nhỏ có ba bốn khối đen ngang nhau, mắt không biết đâu là hành động, và thứ nặng nhất khung là lựa chọn chứ không phải nút (cùng bài học với ô chọn giờ ở `../components/choice-controls.md`). Chip chọn trong khung: `bg-foreground/10 text-foreground inset-ring-1 inset-ring-foreground` (Tailwind v4). **Không `ring-1 ring-inset`**: `ring-*` là của vòng focus bàn phím (`I13`), hai thứ dùng chung một biến nên Tab tới chip đang chọn thì vòng focus đè mất viền chọn, và `ring-inset` kéo luôn vòng focus vào trong chip (đã dính 26/09/2026, dự án tự bắt). `inset-ring` là lớp bóng riêng, Tab tới thì thấy cả viền chọn lẫn vòng focus bên ngoài. Tailwind v3 không có `inset-ring`: dùng `shadow-[inset_0_0_0_1px_var(--foreground)]`; chưa chọn giữ `bg-foreground/5 text-foreground/70`, rê vào `bg-foreground/10`. Viền mới là tín hiệu chọn, nền chỉ đậm lên một bậc để chip chọn trông "bật" hơn chip rê. Đã thử và bỏ (26/09/2026): nền trắng + viền đậm (chip chọn nhạt hơn chip chưa chọn, đọc ngược); viền `1.5px` (chọn đủ bốn mức thì hàng chip thành bốn vòng đen dày, nặng ngang nút Áp dụng; đo lại ở 1px vẫn tách rõ chọn với chưa chọn). Hàng chip chính của màn (không có nút xác nhận bên cạnh) vẫn `bg-primary` như `../components/small-controls.md`.
+- **Chip trong khung được xuống dòng** (`flex-wrap`): bốn mức cố định trong một ô của form, cuộn ngang trong một khung nổi là giấu mức cuối. Luật "không bao giờ wrap" của hàng chip chỉ áp cho hàng lọc của cả màn.
+- **Ô chọn trong khung theo luật focus của nút mở** (`focus-visible:`, không `focus:`): chọn người bằng chuột xong mà ô giữ viền đen + ring thì khung có một ô trông như đang mở (đã dính 26/09/2026).
+- **Lịch lồng trong khung dùng khuôn gọn ở mọi bề rộng**: một tháng, mốc nhanh thành hàng chip trên lưới (xuống dòng, không cuộn ngang, xem Ô chọn khoảng ngày), rộng bằng ô bấm mở. Không bung lịch hai tháng + cột mốc nhanh: ở 1280px lịch rộng ~590px mọc ra từ khung 384px, lấn sang bảng hai phía, mép phải còn cách màn 8px, thành ba lớp nổi chồng nhau (đã dính 26/09/2026). Lịch hai tháng dành cho ô khoảng ngày nằm trên trang hoặc trong form rộng.
+
 ## Phím tắt trong menu
 
 Mục nào có phím tắt thì hiện ở **mép phải**, `text-xs text-muted`, đừng để trong

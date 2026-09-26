@@ -164,12 +164,15 @@ Công tắc = **có hiệu lực ngay**, không chờ nút Lưu (`layouts/app.md
 
 ## Select
 
-**Nút mở trông y như ô nhập**: cùng cao, cùng viền, cùng bo, cùng focus. Đang
-mở cũng giữ viền + ring như đang focus, vì người dùng vẫn đang "ở trong" ô đó.
+**Nút mở trông y như ô nhập**: cùng cao, cùng viền, cùng bo. Đang mở thì viền + ring
+như ô nhập đang focus, vì người dùng vẫn đang "ở trong" ô đó. **Focus thì `focus-visible:`,
+không `focus:`**: chọn bằng chuột xong, focus trả về nút, `focus:` làm nút giữ nguyên dáng
+đang mở sau khi danh sách đã đóng (`rules-state.md`, dưới bảng focus; đã dính 26/09/2026).
+Ô chọn ngày, ô chọn giờ cùng luật.
 
 ```html
 <button type="button" role="combobox" aria-haspopup="listbox" aria-expanded="false"
-  class="group flex h-11 w-full md:h-10 cursor-pointer items-center justify-between gap-2 rounded-xl border border-border-strong bg-surface px-4 text-left text-base outline-hidden transition-colors md:text-sm focus:border-focus focus:ring-2 focus:ring-focus aria-expanded:border-focus aria-expanded:ring-2 aria-expanded:ring-focus">
+  class="group flex h-11 w-full md:h-10 cursor-pointer items-center justify-between gap-2 rounded-xl border border-border-strong bg-surface px-4 text-left text-base outline-hidden transition-colors md:text-sm focus-visible:border-focus focus-visible:ring-2 focus-visible:ring-focus aria-expanded:border-focus aria-expanded:ring-2 aria-expanded:ring-focus">
   <span class="truncate">An Giang</span>
   <i data-lucide="chevron-down" class="size-4 shrink-0 text-muted transition-transform group-aria-expanded:rotate-180"></i>
 </button>
@@ -301,8 +304,10 @@ cái thêm vào.
 - **Dải liền theo chiều ngang, có khe theo chiều dọc.** Trong một tuần các ô không cách nhau, dải đọc ra là một khoảng liền; chèn khe ngang thì dải vỡ thành từng viên rời. Nhưng giữa các hàng tuần thêm `gap-y-1`: không có khe thì dải của tuần này dính sát dải tuần sau, thành một khối bậc thang, không còn thấy từng tuần.
 - **Giữa hai lần bấm**: dải nhạt chạy theo con trỏ từ ngày đầu tới ngày đang rê, để thấy trước khoảng sẽ chọn.
 - **Dòng dưới lịch nói bước đang làm**, đổi theo trạng thái: chưa bấm gì "Chọn ngày bắt đầu", đã bấm một ngày "Chọn ngày kết thúc", đủ hai đầu thì tóm tắt khoảng "7 ngày · 16/09 – 22/09/2026". Chọn xong mà vẫn ghi "Chọn ngày bắt đầu" là nói sai trạng thái (đã dính 22/09/2026).
-- **Khoảng có sẵn bên trái**: cột `w-40`, mỗi mục `h-10 rounded-xl`, đang trùng khoảng nào thì mục đó nền `bg-background` + `font-medium`; mục chưa chọn chữ `text-foreground/70`, không mờ tới `text-muted` (trông như bị khoá, `I8`). Danh sách khoảng nào là do người dùng quyết. Màn hẹp thì cột này lên thành một hàng chip cuộn ngang trên lịch.
+- **Khoảng có sẵn bên trái**: cột `w-40`, mỗi mục `h-10 rounded-xl`, đang trùng khoảng nào thì mục đó nền `bg-background` + `font-medium`; mục chưa chọn chữ `text-foreground/70`, không mờ tới `text-muted` (trông như bị khoá, `I8`). Danh sách khoảng nào là do người dùng quyết. Màn hẹp (và khuôn gọn trong popover Lọc) thì cột này lên thành **hàng chip trên lịch, `flex-wrap`, không cuộn ngang**: popover lịch hẹp cỡ ô (~310px ở 375px), ba mốc "7 ngày tới · 30 ngày tới · Tháng này" hụt 28px, cuộn ngang thì mốc cuối bị cắt thành "Tháng nà" sát mép, mà vài mốc cố định thì không đáng một vùng cuộn (đã dính 26/09/2026). Cùng lý do chip trong popover Lọc được xuống dòng. Hàng chip nằm trong khối `px-*` của popover, không `-mx-*` kéo ra (`N11`).
 - Ô hiển thị `16/09/2026 – 22/09/2026`, gạch nối là `–` có dấu cách hai bên.
+- **Chưa có khoảng thì mở ra ở đâu tuỳ trường nhìn về phía nào.** Trường nhìn lùi (báo cáo, lịch sử đơn, mốc "7 ngày qua") thì tháng hiện tại nằm bên phải, tháng trước bên trái. Trường nhìn tới (hạn chót, ngày đặt lịch, mốc "7 ngày tới") thì **tháng hiện tại bên trái**, tháng sau bên phải: mở lọc hạn chót ra tháng 8 + tháng 9 khi hôm nay là 26/09 là nửa lịch toàn ngày đã qua (đã dính 26/09/2026).
+- Nằm trong một lớp nổi khác (popover Lọc) thì dùng khuôn gọn ở mọi bề rộng: một tháng, mốc nhanh thành hàng chip, rộng bằng ô (`../layouts/overlay.md`, "Popover lọc").
 - Popover hai tháng rộng hơn ô: tràn mép phải màn thì **dịch ngang** vào trong (dịch ngang không che ô, được phép), không bóp lưới.
 
 **Popover không bao giờ che chính ô mở ra nó** (áp cho mọi popover: select,

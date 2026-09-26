@@ -187,7 +187,8 @@ thì thấy rõ mình đang đứng ở đâu. Các app lớn đều làm vậy.
 | --- | --- |
 | Nút (mọi dạng), link sidebar, tab, chip, checkbox, radio, công tắc, tay cầm thanh trượt | `outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface` |
 | Mục trong menu, dropdown, listbox, lệnh trong command palette | **tô nền như hover** (`data-[highlighted]:bg-background`): phím mũi tên dời đúng một chỗ sáng, vòng ring ở đây thừa |
-| Ô nhập, textarea, select, ô chọn dạng card | viền + ring mờ: `focus:border-focus focus:ring-2 focus:ring-focus`, xem dưới bảng |
+| Ô nhập, textarea, ô chọn dạng card | viền + ring mờ: `focus:border-focus focus:ring-2 focus:ring-focus`, xem dưới bảng |
+| Nút mở của select, ô chọn ngày, ô chọn giờ (là `<button>`, không gõ được) | viền + ring mờ như ô nhập, nhưng **`focus-visible:`** và `aria-expanded:`, không `focus:` |
 | Link chữ | `focus-visible:underline` + vòng như nút |
 
 - **`ring-foreground/50` là mức thấp nhất đạt 3:1 trên nền trắng** (WCAG 1.4.11). `/40` là 2,3:1, trượt. Nền tối dùng `ring-white/50`.
@@ -197,6 +198,14 @@ thì thấy rõ mình đang đứng ở đâu. Các app lớn đều làm vậy.
 
 **`focus-visible`, không phải `focus`**, trừ ô nhập. Ô nhập dùng `focus` vì người dùng
 cần thấy mình đang gõ vào ô nào, dù vào bằng chuột hay bàn phím.
+
+**Nút mở select trông như ô nhập nhưng không phải ô nhập**: chọn xong một mục, focus
+trả về nút (đúng, cho bàn phím), và nếu nút dùng `focus:` thì nó giữ viền đậm + ring y
+như đang mở, dù danh sách đã đóng. Trên Safari bấm nút khác không lấy focus, nên viền đó
+bám mãi tới khi bấm ra chỗ trống. Đã dính 26/09/2026 ở popover Lọc: ô "Người phụ trách"
+viền đen đậm cạnh ô "Hạn chót" viền nhạt, hai ô cùng loại mà trông như một ô đang mở.
+Dùng `focus-visible:` (bàn phím mới sáng; trình duyệt tự biết lần focus trả về sau cú bấm
+chuột không phải bàn phím) và `aria-expanded:` (đang mở).
 
 **Vì sao ô điền được ring mà nút thì không.** Chủ dự án chốt 21/09/2026, đảo bản
 "ô chỉ đổi viền": viền đổi màu một mình thì trong form nhiều ô khó thấy ô nào
