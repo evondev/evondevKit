@@ -301,7 +301,8 @@ Làm theo thứ tự:
    đổi padding của một khối theo trạng thái để bù cho khối bên cạnh: tô nền khối đó là
    chữ lệch về một mép (đã dính 26/09/2026, accordion bớt `pb` của nút khi mở, `I30`).
 3. **`gap`, căn `items-*`, đổi `leading`** để thẳng hàng, thay vì nhích bằng `translate`.
-4. Không cách nào ở trên làm được (ví dụ avatar xếp chồng nhau, vùng bấm nở ra ngoài một
+4. Không cách nào ở trên làm được (ví dụ avatar xếp chồng nhau, khung của tên sửa tại chỗ
+   tràn ra ngoài chữ để chữ thẳng cột, `components/inline-edit.md`, vùng bấm nở ra ngoài một
    phần tử nhỏ): dùng số âm, và **ghi comment lý do ngay trên dòng đó**, như `eslint-disable`.
 
 *Phép thử:* grep `-m[trblxy]?-|-space-|-translate-|-inset-` trong file vừa dựng. Mỗi kết

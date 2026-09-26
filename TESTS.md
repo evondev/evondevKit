@@ -51,7 +51,7 @@ chức**, hình thức vẫn theo skill. Gửi ảnh kèm câu "ảnh này chỉ
       Mẫu đã có (`components/accordion.md`) nhưng mới chạy ở FAQ trang giá, nội dung chỉ là chữ. Đề này thử nội dung có thứ bấm được: Tab có lọt vào mục đang đóng không, mở ra thì ô nhập có bị cắt vòng focus không.
 - [ ] **Tiêu đề cột sắp xếp** — "Dựng cho tôi tiêu đề cột bảng sắp xếp được theo tên, ngày tạo và doanh thu: tăng, giảm, và chưa sắp xếp."
 - ✅ **Ô nhập số** — "Dựng cho tôi ô nhập số lượng có nút tăng giảm, tối thiểu 1, tối đa 99."
-- [ ] **Sửa tại chỗ** — "Dựng cho tôi tên dự án sửa tại chỗ: bấm vào để sửa, Enter lưu, Esc huỷ, để trống thì báo lỗi."
+- ✅ **Sửa tại chỗ** — "Dựng cho tôi tên dự án sửa tại chỗ: bấm vào để sửa, Enter lưu, Esc huỷ, để trống thì báo lỗi."
 
 ## Bậc 1b — UI chưa có mẫu (thử nguyên tắc)
 
@@ -77,23 +77,23 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
 ## Bậc 2 — Khối ghép
 
 - ✅ **Data table** — "Dựng cho tôi bảng khách hàng có tìm kiếm, bộ lọc, phân trang và chọn nhiều dòng để xoá hàng loạt."
-      Cần có: button, input, status badge, tabs, dropdown menu, checkbox, pagination, confirm dialog, empty / loading / error state.
+  Cần có: button, input, status badge, tabs, dropdown menu, checkbox, pagination, confirm dialog, empty / loading / error state.
 - ✅ **Form validation** — "Dựng cho tôi form tạo công việc mới, có hiện lỗi khi nhập sai."
-      Cần có: input, select, date picker, button, alert, toast.
+  Cần có: input, select, date picker, button, alert, toast.
 - ✅ **Drawer** — "Dựng cho tôi panel bên phải xem nhanh chi tiết một đơn hàng."
-      Cần có: status badge, button, dropdown menu, description list.
+  Cần có: status badge, button, dropdown menu, description list.
 - ✅ **Command palette** — "Dựng cho tôi command palette mở bằng ⌘K."
-      Cần có: input.
+  Cần có: input.
 - ✅ **Notification panel** — "Dựng cho tôi panel thông báo mở từ chuông trên header."
-      Cần có: avatar, tabs, empty state.
+  Cần có: avatar, tabs, empty state.
 - ✅ **File upload** — "Dựng cho tôi khu tải tài liệu lên cho một dự án."
-      Cần có: button, progress bar, toast.
+  Cần có: button, progress bar, toast.
 - ✅ **Drawer phức tạp** — "Dựng cho tôi panel bên phải xem chi tiết một khách hàng: nút thao tác nhanh, các tab Chi tiết / Tin nhắn / Tệp / Hoạt động, và vài card số liệu."
-      Cần có: drawer, tabs, description list, card, button, avatar.
+  Cần có: drawer, tabs, description list, card, button, avatar.
 - ✅ **Modal phức tạp** — "Dựng cho tôi modal xem chi tiết đơn hàng: mã đơn có nút sao chép, trạng thái, danh sách sản phẩm, thanh toán, và nút sang đơn trước / đơn sau."
-      Cần có: modal, status badge, list row, card, button, tooltip.
+  Cần có: modal, status badge, list row, card, button, tooltip.
 - ✅ **Bảng phức tạp** — "Dựng cho tôi danh sách công việc nhóm theo trạng thái, mỗi nhóm thu gọn được, có cột ưu tiên, người phụ trách, hạn chót, và chuyển giữa các view."
-      Cần có: data table, tabs, status badge, avatar, dropdown menu, date picker.
+  Cần có: data table, tabs, status badge, avatar, dropdown menu, date picker.
 - [ ] **Popover lọc** — "Dựng cho tôi nút Lọc trên bảng công việc, mở popover chọn người phụ trách, khoảng ngày và mức ưu tiên, có Áp dụng và Xoá lọc, nút hiện số bộ lọc đang bật."
       Cần có: button, select, date picker, filter chip.
 
@@ -109,9 +109,9 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
 
 ### Ưu tiên 2
 
-- [ ] **Tổng quan** — "Dựng cho tôi màn hình tổng quan cho app quản lý dự án."
+- ✅ **Tổng quan** — "Dựng cho tôi màn hình tổng quan cho app quản lý dự án."
 - [ ] **Kanban** — "Dựng cho tôi bảng kanban quản lý công việc, kéo thả giữa các cột trạng thái."
-- [ ] **Bảng giá** — "Dựng cho tôi trang bảng giá."
+- ✅ **Bảng giá** — "Dựng cho tôi trang bảng giá."
 - ✅ **Đăng nhập** — "Dựng cho tôi trang đăng nhập."
 - ✅ **Đăng ký** — "Dựng cho tôi trang đăng ký tài khoản."
 - ✅ **Quên / đặt lại mật khẩu** — "Dựng cho tôi luồng quên mật khẩu."
