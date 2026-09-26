@@ -20,6 +20,10 @@ chưa tick đầu tiên. Nhiều trang cùng lúc thì lỗi bị lướt và c�
    người dùng bật.
 2. **Chụp ở 375, 768, 1280px** (`deviceScaleFactor: 2`, `fullPage`). Ghi lại
    `scrollWidth` để bắt cuộn ngang, và lỗi console.
+   **Dự án có dark mode thì mỗi khổ chụp cả sáng lẫn tối** (`colorScheme: 'dark'` khi
+   tạo context, hoặc gắn class `dark` lên `<html>`, theo cách dự án bật). Bước 3 và 4 cũng
+   làm ở cả hai: nền hover, màu viền, tương phản chữ đo riêng từng chế độ. Sửa skill cho
+   một chế độ thì chụp lại cả hai.
 3. **Bấm hết các trạng thái**: rê chuột lên dòng và các ô, mở từng menu ⋯, dropdown,
    modal, hộp xác nhận, bấm lọc, chọn nhiều dòng, gửi form rỗng và form sai, chờ toast
    vào và ra, Tab qua các nút xem tiêu điểm. Trang có route `/states` thì mở luôn.
@@ -92,8 +96,13 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 15 | Form tạo workspace ba bước | `/workspaces/new` | 26/09/2026 (ba lượt, đã theo kịp) |
 | 16 | Cài đặt thông báo (và hàng tab khu cài đặt) | `/dashboard/settings`, `/settings/notifications`, `/settings/notifications/states` | 26/09/2026 (hai lượt, đã theo kịp trừ màu đường kẻ hàng tab) |
 | 17 | Bảo mật: xác thực hai lớp, phiên đăng nhập | `/dashboard/settings/security`, `/security/states` | 26/09/2026 (ba lượt; lượt ba đổi màu nút theo chủ dự án, dự án chưa theo kịp) |
+| 18 | Các bước bắt đầu (onboarding) | `/dashboard/welcome`, `/welcome/states` | 26/09/2026 (một lượt; skill có mục mới, dự án chưa theo kịp) |
 
 Route mới xuất hiện trong dự án thì thêm dòng vào bảng (`grep -rhoE "path: ?['\"][^'\"]+" src`).
+
+Dark mode làm sau bậc 3 (`TESTS.md`, mục "Dark mode"). Các lượt rà trước đó chỉ soi nền
+sáng. Khi dự án đã có dark mode, trang đã rà cần thêm một lượt chỉ soi nền tối; xong thì ghi
+"tối: <ngày>" vào cột "Rà ngày". Trang chưa rà thì rà một lần cả hai chế độ.
 
 ## Việc để sau: kiểm chứng quy ước
 
@@ -163,6 +172,12 @@ không ghi class. Rà xong 11 nhóm thì xem skill có nói gì về chúng khô
 
 Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần.
 
+- `/dashboard/welcome` (skill thêm mục "Các bước bắt đầu" trong `layouts/app.md`, 26/09/2026): bỏ
+  trang riêng, đưa `GettingStartedChecklist` lên đầu `/dashboard` thay `OverviewWelcomeCard` (hai màn
+  đang nói một việc); bỏ nút "Vào tổng quan" và tiêu đề "Chào mừng tới …". Vòng số `size-8` đổi sang ô
+  tick `size-5` viền đứt / đặc có check. Mỗi bước thành mục accordion, chỉ bước tiếp theo mở sẵn, nút
+  dưới câu vì sao. Bước khoá bỏ nút `disabled`. Tên bước xong bỏ `line-through`. Thêm nút `X` ẩn
+  (toast Hoàn tác). Xong hết thì thu danh sách bước. `/states` thêm ca "đã ẩn".
 - `/dashboard/settings/security` (skill sửa lượt ba, 26/09/2026): "Bật xác thực hai lớp" sang
   `primary`; "Đăng xuất 4 thiết bị khác" trả lại `isDestructive`; nút dòng và nút hàng loạt lên cỡ nút form
   `h-11 md:h-10 rounded-xl` (bỏ `sessionActionButtonClass` `h-8`, dùng như nút 2FA); nút

@@ -20,6 +20,14 @@ Tới bậc 2, bậc 3 thì chỉ **ráp** từ các file đó, không vẽ lạ
 chức**, hình thức vẫn theo skill. Gửi ảnh kèm câu "ảnh này chỉ là wireframe", để skill
 đọc theo `S12` nhánh wireframe, không bám màu và bóng của ảnh.
 
+**Thứ tự lớn:** bậc 1 → 1b → 2 → 3 → dark mode → rà hết `REVIEW.md` → phase 2 refactor
+(`BACKLOG.md`, mục "Phase 2") → vòng tiếng Anh.
+
+- Dark mode đi trước phần rà còn lại: mỗi lượt rà chụp luôn cả sáng lẫn tối, rà một lần
+  là xong trang. Làm sau thì trang nào cũng phải rà thêm một vòng chỉ cho nền tối.
+- Refactor đợi luật đứng yên: danh sách "đề xuất sửa" của nhánh đó dựa trên luật của skill.
+- Tiếng Anh sau cùng: chỉ kiểm chữ, không đổi bố cục hay màu.
+
 ## Bậc 1 — Component riêng lẻ
 
 - ✅ **Button** — "Dựng cho tôi bộ nút: nút chính, nút viền, nút chỉ icon, nút xoá, đủ trạng thái hover, focus, đang tải, bị khoá."
@@ -94,8 +102,8 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
   Cần có: modal, status badge, list row, card, button, tooltip.
 - ✅ **Bảng phức tạp** — "Dựng cho tôi danh sách công việc nhóm theo trạng thái, mỗi nhóm thu gọn được, có cột ưu tiên, người phụ trách, hạn chót, và chuyển giữa các view."
   Cần có: data table, tabs, status badge, avatar, dropdown menu, date picker.
-- [ ] **Popover lọc** — "Dựng cho tôi nút Lọc trên bảng công việc, mở popover chọn người phụ trách, khoảng ngày và mức ưu tiên, có Áp dụng và Xoá lọc, nút hiện số bộ lọc đang bật."
-      Cần có: button, select, date picker, filter chip.
+- ✅ **Popover lọc** — "Dựng cho tôi nút Lọc trên bảng công việc, mở popover chọn người phụ trách, khoảng ngày và mức ưu tiên, có Áp dụng và Xoá lọc, nút hiện số bộ lọc đang bật."
+  Cần có: button, select, date picker, filter chip.
 
 ## Bậc 3 — Trang
 
@@ -126,14 +134,48 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
 - [ ] **Gói hiện tại và hoá đơn** — "Dựng cho tôi trang thanh toán, hiện gói đang dùng và lịch sử hoá đơn."
 - [ ] **Báo cáo / analytics** — "Dựng cho tôi trang báo cáo doanh thu có chọn khoảng ngày."
 - [ ] **Lịch** — "Dựng cho tôi trang lịch cho app quản lý công việc."
-- [ ] **Onboarding** — "Dựng cho tôi màn chào mừng lần đầu vào app, có checklist các bước bắt đầu."
+- ✅ **Onboarding** — "Dựng cho tôi màn chào mừng lần đầu vào app, có checklist các bước bắt đầu."
 
 ### Ưu tiên 4
 
 - [ ] **404 / 403 / 500 / bảo trì** — "Dựng cho tôi bộ trang lỗi: không tìm thấy, không có quyền, lỗi máy chủ, và đang bảo trì."
 - [ ] **Khu nguy hiểm** — "Dựng cho tôi phần xoá workspace trong trang cài đặt."
 
+## Dark mode
+
+Làm sau bậc 3, trước phần rà còn lại của `REVIEW.md`. Skill mặc định chỉ light (`M20`),
+nên đây là đề **người dùng tự xin dark mode** cho dự án đang có. Dự án test chưa có
+dark mode: chưa có khối `.dark`, chưa có nút đổi theme.
+
+Mục đầu là đề thật. Các mục sau **không gõ đề**, chỉ bật nền tối trên màn đã ✅ rồi soi
+cho tới khi ổn. Mỗi mục chụp cả sáng lẫn tối ở 375 và 1280px, bấm đủ trạng thái như
+`REVIEW.md` bước 3.
+
+Mỗi mục kiểm:
+
+- Thang bề mặt `nút phụ → nền trang → card` giữ đúng thứ tự ở cả hai theme (`M21`).
+- Màu nhấn gần trắng chỉ làm nền, đường mảnh (viền focus, gạch chân tab, chỉ báo đang
+  chọn) hạ độ đục (`M22`).
+- Không còn mảng trắng cứng (`bg-white`, `#fff`, nền `-50` của màu trạng thái), chữ đen
+  trên nền tối, viền biến mất, bóng làm việc mà viền phải làm (`M23`).
+- Nền hover so với nền card và nền trang tối vẫn thấy, không khuyết mảng (`REVIEW.md` bước 4).
+- Chữ phụ, placeholder, chữ trạng thái đạt 4,5:1 trên nền tối; viền và vòng focus đạt 3:1.
+
+Chốt xong thì ghi ngược vào skill như bậc 1: token vào `tokens.css`, luật chung vào
+`rules-color.md` (`M20`–`M23`), chỗ riêng của component vào file `components/` của nó.
+
+- [ ] **Bật dark mode** — "Thêm dark mode cho app, có nút đổi sáng / tối trên header, mặc định theo hệ điều hành."
+      Kiểm thêm: nút đổi theme nằm đâu và nói gì, lựa chọn được nhớ sau khi tải lại, tải trang ở chế độ tối không nháy trắng.
+- [ ] **Khung app + tổng quan** — sidebar, header, card số liệu, biểu đồ (`/dashboard`).
+- [ ] **Bảng** — bảng khách hàng: dòng hover, dòng đang chọn, cột ghim, chip lọc, tab trạng thái (`/dashboard/customers`).
+- [ ] **Lớp nổi** — modal, hộp xác nhận xoá, drawer, dropdown, popover lọc, toast, tooltip: lớp nổi phải tách khỏi nền tối bằng viền, không nhờ bóng.
+- [ ] **Form** — ô nhập thường / lỗi / khoá / focus, select, date picker, checkbox, công tắc, alert (`/dashboard/tasks/new`).
+- [ ] **Badge và biểu đồ** — badge trạng thái, thanh tiến độ, bốn loại biểu đồ: màu mang nghĩa vẫn phân biệt được, nền badge không thành khối sáng.
+- [ ] **Màn xác thực** — đăng nhập, OTP (`/login`, `/verify-otp`): màn không có khung app bọc ngoài, card nằm thẳng trên nền trang tối.
+
 ## Vòng tiếng Anh
+
+Làm sau cùng, sau phase 2.
 
 Chạy lại vài đề đã ✅, lần này **gõ đề bằng tiếng Anh, dự án trống**, rồi so ảnh
 với bản tiếng Việt. Bố cục, màu, khoảng thở phải y như nhau. Chỉ chữ được khác.

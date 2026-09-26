@@ -64,13 +64,77 @@ Xem `../components/charts.md` cho công thức biểu đồ và luật màu.
   - Dòng phụ `text-xs text-muted`: dự án · giờ. Hôm nay ghi giờ, hôm qua ghi "Hôm qua", cũ hơn ghi ngày. Dự án dài `truncate`, giờ `shrink-0`.
   - **5 mục**, header có "Xem tất cả" như các khối danh sách khác trên màn (`card.md`). Đã thử trên trang: trang cao 1512px còn ~1150px, hai cột kết thúc gần ngang nhau.
 - **Hai cột lưới phải kết thúc gần ngang nhau.** Khối việc hôm nay `self-start` (đúng, không kéo card trắng rỗng), nhưng cột phải dài gấp đôi thì dưới cột trái là một mảng xám 450px. Chữa bằng cách **cắt số hàng của khối dài** (luồng hoạt động 5 mục, việc hôm nay tối đa 8 rồi "Xem tất cả"), không kéo khối ngắn, không đổi thứ tự khối.
-- **Workspace mới (chưa có dự án nào): một khối chào thay cả lưới, có nút chính.** Đừng dựng đủ năm khối rồi cho mỗi khối một câu "Chưa có…": năm khung cùng nói một ý (`N3`), khung biểu đồ cao 340px chỉ chứa một dòng chữ, và cả màn **không có lối đi tiếp** nào (`N6`, đã dính 26/09/2026). Khối chào: tiêu đề `text-base font-semibold` ("Bắt đầu với dự án đầu tiên"), một câu vì sao, nút `primary` "+ Tạo dự án", có thể thêm một nút viền "Mời thành viên". Nằm trong một card trắng như mọi khối khác, không nền trong suốt. Từ lúc có một dự án thì lưới trở lại, khối nào chưa có số thì theo ca rỗng của khối đó (biểu đồ một điểm, việc hôm nay trống).
+- **Workspace mới (chưa có dự án nào): khung "Các bước bắt đầu" thay cả lưới.** Đừng dựng đủ năm khối rồi cho mỗi khối một câu "Chưa có…": năm khung cùng nói một ý (`N3`), khung biểu đồ cao 340px chỉ chứa một dòng chữ, và cả màn **không có lối đi tiếp** nào (`N6`, đã dính 26/09/2026). Khung theo mục **Các bước bắt đầu** ngay dưới; app không có checklist thì một khối chào: tiêu đề `text-base font-semibold` ("Bắt đầu với dự án đầu tiên"), một câu vì sao, nút `primary` "+ Tạo dự án". Nằm trong một card trắng như mọi khối khác, không nền trong suốt. Từ lúc có một dự án thì lưới trở lại **dưới** khung các bước (khung còn tới khi xong hết hoặc bị ẩn), khối nào chưa có số thì theo ca rỗng của khối đó (biểu đồ một điểm, việc hôm nay trống).
 - **Khối không có dữ liệu thì bỏ "Xem tất cả"**, nút dẫn sang một danh sách rỗng là thừa. "Hôm nay không có việc nào đến hạn" chỉ đúng khi có việc mà không việc nào đến hạn hôm nay; chưa có việc nào thì câu là "Chưa có việc nào được giao cho bạn".
 - **Câu rỗng của các khối cùng hàng cùng căn một kiểu.** Khung biểu đồ căn câu giữa theo chiều dọc, khung tiến độ bên cạnh để câu sát đầu: cùng hàng hai vị trí (`N5`). Cả hai căn giữa khung.
 
 **B. Cột trái điều hướng, nội dung phải** (khi có từ 5 mục điều hướng trở lên)
 
 Xem mục **Khung app có sidebar** bên dưới cho công thức đầy đủ.
+
+### Các bước bắt đầu (onboarding)
+
+Checklist cho người mới vào app: tạo dự án, mời người, giao việc đầu tiên… Rà lần đầu ở
+`/dashboard/welcome` ngày 26/09/2026. Khuôn theo cách các bộ thiết kế lớn dựng "setup guide":
+mỗi bước một ô tick tròn, bước mở ra xem được, chỉ bước đầu tiên mở sẵn, có nút ẩn cả khung,
+dòng "1 / 5 bước".
+
+```
+┌──────────────────────────────────────────────────┐
+│ Các bước bắt đầu                     1 / 5 bước ✕ │
+│ ████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░         │
+├──────────────────────────────────────────────────┤
+│ (✓) Tạo workspace                              ⌄ │
+├──────────────────────────────────────────────────┤
+│ ( ) Tạo dự án đầu tiên                         ⌃ │
+│     Dự án gom việc, tài liệu và người làm…       │
+│     [ Tạo dự án ]                                │
+├──────────────────────────────────────────────────┤
+│ ( ) Mời thành viên                             ⌄ │
+├──────────────────────────────────────────────────┤
+│ ( ) Giao việc đầu tiên                         ⌄ │
+└──────────────────────────────────────────────────┘
+```
+
+- **Một chỗ, mặc định là đầu trang Tổng quan.** Người mới vào app là rơi vào tổng quan, nên
+  khung nằm ở đó: workspace chưa có gì thì thay cả lưới, có rồi thì nằm trên lưới. Đừng dựng
+  thêm một trang "Chào mừng" riêng khi tổng quan đã có khối chào: bấm "Vào tổng quan" xong lại
+  gặp "Bắt đầu với dự án đầu tiên" + nút "Tạo dự án", hai màn nói một việc (`N3`), header
+  trang chào còn ghi "Tổng quan" cạnh nút "Vào tổng quan" (đã dính 26/09/2026). Trang riêng chỉ
+  khi sản phẩm có mục "Bắt đầu" hẳn trong sidebar, và lúc đó tổng quan không có khối chào nữa.
+  Không cần tiêu đề "Chào mừng tới …": tên workspace đã ở đầu sidebar (`form.md`, không bịa câu chào).
+- **Khung**: một card, các bước chia đường kẻ (`F3`, không mỗi bước một card). Hàng đầu: tên
+  "Các bước bắt đầu" `text-sm font-medium`, "1 / 5 bước" bên phải, thanh tiến độ dưới
+  (`../components/charts.md`), nút ẩn `X` ghost `size-8` ở góc phải, **thẳng cột với chevron
+  của các dòng** dưới.
+- **Vòng bên trái là ô tick, không đánh số.** Chưa xong: vòng `size-5` viền đứt
+  `border-[1.5px] border-dashed border-foreground/40`. Xong: `size-5 bg-primary` + `Check` trắng
+  `size-3`. Số thứ tự đọc như bước bắt buộc làm lần lượt; người dùng làm bước 3 và 5 trước thì
+  màn thành "bước 2 là bước tiếp theo" giữa hai bước đã xong (đã dính 26/09/2026, vòng số
+  `size-8` mượn từ thanh các bước của form nhiều bước). Thứ tự trong danh sách đã là gợi ý.
+- **Mỗi bước là một mục accordion, chỉ bước tiếp theo mở sẵn.** Nút tiêu đề rộng hết hàng
+  theo `../components/accordion.md`: vòng, tên `text-sm font-medium`, `ChevronDown` bên phải,
+  dòng `px-4 py-3.5 sm:px-5`, vòng thẳng tâm dòng tên. Bước tiếp theo = bước chưa xong đầu tiên
+  làm được ngay. Mở ra: một câu vì sao `text-sm text-muted mt-1`, rồi nút `mt-3` **dưới câu, thẳng
+  mép trái với tên**, ở mọi bề rộng (không đẩy sang phải rồi xếp lại ở màn hẹp). Đã dính
+  26/09/2026: cả năm bước mở hết, năm câu mô tả + bốn nút xếp một cột phải, tên bước lặp lại
+  trên nút ("Mời thành viên" / "Mời thành viên"), card cao 830px ở 1280 và 1540px ở 375;
+  dựng thử accordion trên trang còn 390px và 830px, một nút đặc.
+- **Nút**: bước tiếp theo `primary`, là nút đặc duy nhất của khung (`I3`); bước khác người dùng
+  tự mở thì nút viền. Không có nút "Vào tổng quan": khung đã nằm trên tổng quan.
+- **Bước khoá** (phải xong bước khác trước): vòng như bước chưa xong, mở ra là câu lý do
+  nói bước cần làm trước ("Tạo dự án trước: mỗi việc phải nằm trong một dự án"), **không nút mờ**.
+  Nút `disabled` 50% trên nền trắng gần như tan mất, đọc như một khung rỗng (đã dính 26/09/2026).
+- **Bước xong**: tên `text-muted`, **không gạch ngang** (gạch ngang là của danh sách việc người
+  dùng tự tick; bước ở đây app tự đánh dấu), đóng sẵn, vẫn mở ra được.
+- **Ẩn**: bấm `X` là ẩn luôn, không hộp xác nhận; toast "Đã ẩn các bước bắt đầu" có "Hoàn tác"
+  (`../system.md`, xoá khôi phục được).
+- **Xong hết**: thanh xanh lá, danh sách bước **thu hết**, khung còn hàng đầu và một câu "Xong hết
+  các bước. Workspace đã sẵn sàng cho cả nhóm." cùng nút `X`. Đừng in lại năm dòng đã xong: năm vòng
+  đen xếp cột thành thứ nặng nhất màn mà không còn việc gì để làm (đã dính 26/09/2026). Cách này là
+  lựa chọn của skill, các bộ thiết kế lớn chưa chốt ca xong hết.
+- **Trạng thái cần có ở trang `/states`**: vừa vào (xong một bước), làm không theo thứ tự, bước khoá
+  đã mở khoá, xong hết, và đã ẩn (tổng quan không còn khung).
 
 ---
 
