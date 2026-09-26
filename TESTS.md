@@ -139,7 +139,7 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
 ### Ưu tiên 4
 
 - [ ] **404 / 403 / 500 / bảo trì** — "Dựng cho tôi bộ trang lỗi: không tìm thấy, không có quyền, lỗi máy chủ, và đang bảo trì."
-- [ ] **Khu nguy hiểm** — "Dựng cho tôi phần xoá workspace trong trang cài đặt."
+- ✅ **Khu nguy hiểm** — "Dựng cho tôi phần xoá workspace trong trang cài đặt."
 
 ## Dark mode
 

@@ -77,7 +77,11 @@ hình (đã dính 24/09/2026).
   phục được hay không là logic, người dùng quyết (`N10`); đề không nói thì hỏi một dòng
   lúc giao. Xem `layouts/overlay.md`.
 - Hộp xác nhận bắt **gõ lại một cụm từ** chỉ dựng khi đề yêu cầu (quyết định sản
-  phẩm, không phải mặc định). Khi có ô gõ đó thì không cho bấm ra ngoài để đóng (`I20`).
+  phẩm, không phải mặc định), **trừ việc xoá cả không gian** (workspace, tổ chức): việc đó
+  mất dữ liệu của mọi thành viên, nên mặc định bắt gõ lại tên, nút xoá mở khoá khi khớp.
+  Tra 26/09/2026: các sản phẩm lớn đều thêm một bước ngoài hộp hỏi thường cho việc này (gõ
+  tên là cách hay gặp nhất; có nơi gửi mã qua email hoặc hỏi mật khẩu). Khi có ô gõ đó thì
+  không cho bấm ra ngoài để đóng (`I20`). Khuôn hộp và ô ở `layouts/overlay.md`.
 
 ---
 

@@ -103,6 +103,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 18 | Các bước bắt đầu (onboarding), nay nằm đầu tổng quan | `/dashboard/overview/states` (trang `/dashboard/welcome` đã bỏ) | 26/09/2026 (ba lượt, đã theo kịp) |
 | 19 | Lịch công việc (lưới tháng, lịch gọn) | `/dashboard/calendar`, `/calendar/states` | 26/09/2026 (ba lượt, đã theo kịp; nút viền còn hover cũ, nằm trong mục "Nút viền" bên dưới) |
 | 20 | Khoá API | `/dashboard/settings/api-keys`, `/api-keys/states` | 26/09/2026 (hai lượt; lượt hai đã theo kịp) |
+| 21 | Xoá workspace (vùng nguy hiểm, hộp gõ lại tên) | `/dashboard/settings/workspace`, `/workspace/states` | 26/09/2026 (hai lượt, đã theo kịp) |
 
 Route mới xuất hiện trong dự án thì thêm dòng vào bảng (`grep -rhoE "path: ?['\"][^'\"]+" src`).
 
@@ -197,7 +198,7 @@ Lệnh tìm: `grep -rnE "(^|[\"' :\`(])-(m[trblxy]?|inset|top|left|right|bottom|
 | 4 | Vùng cuộn ngang tràn ra mép màn bằng `-mx-*` | `responsive.md:43, 67` (`R6`, `R9`); `layouts/app-kanban.html:143` | Padding ngang của trang dời xuống từng khối con, khối cuộn không có padding cha nên tự chạm mép; lề nằm ở hàng bên trong như `R6` đã ghi | Kanban `/dashboard/tasks`, bảng khách hàng ở 375px | Có thể buộc phải giữ nếu trang dùng `p-4` chung | |
 | 5 | Khung cuộn tab/chip lùi `-mx-1`/`-mx-2` để nền hover tab đầu/cuối không bị cắt, chữ thẳng cột | `components/small-controls.md:55, 66, 148, 176`; `layouts/app-kanban.html:110` | Khung cuộn không lùi, hàng bên trong `px-1`; kiểm chữ tab đầu còn thẳng cột với nội dung bên dưới không | Hàng chip lọc, hàng tab ở `/dashboard/customers` | Phải thử | |
 | 6 | Nút `ghost` đầu hàng lùi `-ml-*` để chữ thẳng cột với chữ phía trên | `components/button.md:75`; `components/chat.md:17, 65` | Thụt khối chữ phía trên bằng đúng `px` của nút, hoặc nút đầu hàng dùng `px-0` và nền hover thụt vào | `/dashboard/assistant` (nút "Đã dùng 3 công cụ", hàng Sao chép / Tạo lại). (Mép phải của "Xem tất cả" đã xong 26/09/2026: `I7` đổi sang link chữ không padding ngang, chữ thẳng mép) | Phải thử | |
-| 7 | Nhích quang học `-mt-1.5` cho icon tròn thẳng tâm dòng tiêu đề | `layouts/overlay.md:24, 25, 45` | Tiêu đề bọc `min-h-10 flex items-center` (bằng cao icon), hàng `items-start` | Hộp "Thu hồi lời mời" ở `/dashboard/members` | Bỏ được | |
+| 7 | Nhích quang học `-mt-1.5` cho icon tròn thẳng tâm dòng tiêu đề | `layouts/overlay.md:24, 25, 45` | Hàng đầu là lưới `grid-cols-[auto_minmax(0,1fr)] items-center` (icon + tiêu đề), thân `sm:mt-0.5` | Hộp xoá workspace ở `/dashboard/settings/workspace`, 375 và 1280px | Bỏ được: 1280px chữ tiêu đề tới chữ thân vẫn 14px, icon cách mép trên 24px (trước 18px) | ✅ 26/09/2026 |
 | 8 | Vạch tab đang chọn đè lên đường kẻ đáy bằng `after:-bottom-px` | `components/small-controls.md:168` | Đường kẻ đáy vẽ bằng `box-shadow: inset 0 -1px` trên hàng, vạch tab `after:bottom-0` | Hàng tab gạch chân | Phải thử | |
 | 9 | Nở vùng bấm tay cầm 44×44 bằng `before:-inset-3.5` | `components/range-slider.md:9` | Không có cách không âm mà giữ được tay cầm 20px nhìn thấy | Thanh trượt giá ở `/components` | **Giữ**, thêm comment lý do vào mẫu | |
 | 10 | Avatar xếp chồng `-space-x-2` | `components/avatar.md:124, 132` | Không có: chồng lên nhau là bản chất của nó | Nhóm avatar ở `/dashboard/tasks` | **Giữ**, thêm comment lý do vào mẫu | |

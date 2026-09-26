@@ -20,17 +20,22 @@ dưới đây, báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`.
 
 ```html
 <div role="alertdialog" aria-labelledby="confirm-title" aria-describedby="confirm-desc" class="w-full max-w-md rounded-2xl bg-surface p-6 shadow-xl">
-  <div class="flex gap-4">
-    <!-- -mt-1.5: tâm icon 40px thẳng tâm dòng tiêu đề text-lg (28px) -->
-    <div class="-mt-1.5 flex size-10 shrink-0 items-center justify-center rounded-full bg-rose-500/10">
+  <!-- Lưới hai cột: hàng đầu là icon + tiêu đề (items-center tự đưa tâm icon về tâm dòng tiêu
+       đề, không cần nhích bằng margin âm). Thân (câu hậu quả, ô gõ lại tên) dưới sm trải hết bề
+       rộng, thẳng mép nút; từ sm nằm ở cột chữ, thẳng mép tiêu đề. -->
+  <div class="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-4">
+    <div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-rose-500/10">
       <i data-lucide="trash-2" class="size-5 text-rose-700"></i>
     </div>
-    <div class="min-w-0">
-      <h2 id="confirm-title" class="text-lg font-semibold">Xoá dự án?</h2>
-      <p id="confirm-desc" class="mt-2 text-sm/6 text-muted">
+    <h2 id="confirm-title" class="text-lg font-semibold">Xoá dự án?</h2>
+    <!-- mt-2 dưới sm: cách đáy icon 8px. sm:mt-0.5: hàng đầu cao 40px, tiêu đề 28px nằm giữa
+         (dư 6px dưới), cộng 2px ra 8px chữ tới chữ như T30. -->
+    <div class="col-span-2 mt-2 min-w-0 sm:col-span-1 sm:col-start-2 sm:mt-0.5">
+      <p id="confirm-desc" class="text-sm/6 text-muted">
         <span class="font-medium text-foreground">Website bán hàng 2026</span>
         cùng 48 công việc bên trong sẽ bị xoá vĩnh viễn, không khôi phục được.
       </p>
+      <!-- Ô gõ lại tên (nếu có): mt-4, cùng khối thân này -->
     </div>
   </div>
   <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
@@ -42,7 +47,8 @@ dưới đây, báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`.
 - Rộng `max-w-md`, căn giữa màn, nền phủ đen mờ phía sau.
 - Tiêu đề là **câu hỏi**, thân là hậu quả cụ thể có tên đối tượng.
 - **Tên đối tượng `font-medium text-foreground`**, phần còn lại của câu `text-muted`. Đó là thứ người dùng cần liếc thấy để biết đang xoá đúng cái. Để cả câu cùng màu xám thì tên chìm vào câu (đã dính 22/09/2026). Tên dài thì cho xuống dòng, **không `truncate`**: xác nhận mà không đọc được hết tên thì không xác nhận được gì. Tên đối tượng là email (xoá tài khoản, gỡ thành viên) thì xuống dòng ở sau `@`, không vỡ giữa tên miền (`EmailText` ở `../components/description-list.md`).
-- **Icon tròn `size-10` nằm cùng hàng với tiêu đề**, bên trái, `-mt-1.5` để tâm icon thẳng tâm dòng tiêu đề. Đặt icon thành một hàng riêng phía trên thì hộp cao thêm ~60px mà không thêm thông tin.
+- **Icon tròn `size-10` nằm cùng hàng với tiêu đề**, bên trái; lưới `items-center` đưa tâm icon về tâm dòng tiêu đề. Đặt icon thành một hàng riêng phía trên thì hộp cao thêm ~60px mà không thêm thông tin.
+- **Dưới `sm`, chỉ tiêu đề đứng cạnh icon; thân hộp trải hết bề rộng**, thẳng mép trái với hai nút xếp dọc. Để cả thân trong cột chữ thụt 56px sau icon thì ô gõ lại tên hẹp hơn nút, lệch mép nút 56px, còn câu hậu quả bị ép thêm một dòng. Đã dính 26/09/2026, hộp xoá workspace ở 375px: ô 239px ở x=96, nút 295px ở x=40, câu năm dòng; đổi sang lưới thì ô, câu, nút cùng mép x=40, câu bốn dòng, hộp thấp đi 12px. Từ `sm` nút co theo chữ và nằm bên phải, thân về cột chữ như cũ. Probe báo lỗi này ở mục "Ô nhập lệch mép với nút rộng hết khung".
 - **Tiêu đề cách thân `mt-2`, thân `text-sm/6`** (dòng cao 24px), không `mt-1` + dòng 20px mặc định. Thân hộp xác nhận thường chạy hai ba dòng có tên đối tượng đậm xen chữ xám; dòng 20px thì dấu chồng hai tầng (`ệ`, `ở`, `ữ`) chạm sát dòng trên, còn 4px dưới tiêu đề làm tiêu đề dính vào thân (đã dính 25/09/2026, hộp thu hồi lời mời, chủ dự án: "heading sát nội dung quá"). Các hộp thoại phổ biến đều cách 8px. Xem `T30`.
 - **Tiêu đề `text-lg font-semibold`, luôn đậm hơn tên đối tượng** (`font-medium`). Tiêu đề thiếu `font-semibold` thì tên dài hai dòng lấn át câu hỏi, mắt đọc tên trước (đã dính 22/09/2026).
 - **Nút trong hộp xác nhận chỉ có chữ, không icon.** Đây là ngoại lệ có tên của `I1`: icon thùng rác đã đứng ở đầu hộp, gắn thêm vào nút là hai tín hiệu cho một ý (`M6`). Chữ trên nút lặp lại động từ và đối tượng: "Xoá dự án", không chỉ "Xoá" hay "Đồng ý".
@@ -62,6 +68,23 @@ khách hàng, xuất bản thay đổi cho cả nhóm. Cùng khuôn trên, chỉ
 **Đăng xuất không thuộc nhóm này**: đăng xuất ở skill này là việc nguy hiểm (`I4`), hộp
 "Đăng xuất các thiết bị khác?" đỏ như hộp xoá. Đã dính 26/09/2026: skill từng lấy chính
 hộp đó làm ví dụ cho hộp trung tính, chủ dự án chốt lại là đỏ.
+
+**Hộp xác nhận có ô gõ lại tên** (xoá workspace, tổ chức; khi nào dựng xem `D3` ở
+`../system.md`). Cùng khuôn trên, thêm ô dưới câu hậu quả, trong khối thân (`mt-4`):
+- Nhãn là một câu, tên đậm ở giữa: "Nhập **Evondev Studio** để xác nhận", `text-sm`, tên
+  `font-semibold`, xuống dòng chứ không cắt (`N8`). Không placeholder ghi sẵn tên: trông như
+  đã điền hộ.
+- Mở hộp là con trỏ vào ô (thay cho Huỷ). Hộp là `<form>`: Enter trong ô bấm nút xoá, nút
+  cao bằng ô (`h-11 md:h-10`). Nút xoá `disabled` tới khi gõ khớp; gõ sai không báo đỏ.
+- So khớp phân biệt hoa thường, bỏ khoảng trắng hai đầu, chuẩn hoá `NFC` cả hai bên (bộ gõ
+  tiếng Việt có thể ra dấu tổ hợp, nhìn y hệt mà so chuỗi lệch).
+- Dọn chữ lúc mở hộp, không lúc đóng: mở lại không còn tên gõ sẵn.
+- Xoá lỗi: khung lỗi dưới ô nói dữ liệu còn hay mất ("…workspace và dữ liệu vẫn còn
+  nguyên."), chữ đã gõ giữ lại, nút xoá mở lại để thử lần nữa.
+- Bấm ra ngoài không đóng (`I20`), Esc và Huỷ vẫn đóng.
+
+Dựng lần đầu 26/09/2026 ở `/dashboard/settings/workspace`, qua hai lượt rà: lượt một chỉ
+lỗi thân hộp lệch mép ở màn hẹp (gạch đầu dòng "Dưới `sm`…" ở trên).
 
 ## Modal có nội dung
 

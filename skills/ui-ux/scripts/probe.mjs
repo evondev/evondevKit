@@ -284,6 +284,41 @@ function measureInPage({ minTapSize, isMobile }) {
     window.scrollTo(0, 0);
   }
 
+  // 7. Ô nhập lệch mép với nút rộng hết khung trong cùng form / hộp thoại: màn hẹp nút xếp dọc
+  //    rộng hết, còn ô nằm trong cột chữ thụt sau icon (hộp xác nhận có ô gõ lại tên: ô 239px ở
+  //    x=96, nút 295px ở x=40, đo 26/09/2026). Nút tự co theo chữ (màn rộng) thì không so.
+  const misalignedFields = [];
+  const fieldContainers = document.querySelectorAll("form, dialog, [role='dialog'], [role='alertdialog']");
+
+  for (const container of fieldContainers) {
+    if (!isVisible(container)) continue;
+
+    const containerWidth = container.getBoundingClientRect().width;
+    const wideButtons = [...container.querySelectorAll("button")].filter(
+      (button) => isVisible(button) && button.getBoundingClientRect().width >= containerWidth * 0.6,
+    );
+    if (wideButtons.length === 0) continue;
+
+    const buttonRect = wideButtons[0].getBoundingClientRect();
+    const fields = [...container.querySelectorAll("input:not([type='hidden']):not([type='checkbox']):not([type='radio']), textarea, select")];
+
+    for (const field of fields) {
+      if (!isVisible(field)) continue;
+
+      const fieldRect = field.getBoundingClientRect();
+      const leftGap = Math.round(Math.abs(fieldRect.left - buttonRect.left));
+      const rightGap = Math.round(Math.abs(fieldRect.right - buttonRect.right));
+      if (leftGap <= 4 && rightGap <= 4) continue;
+
+      misalignedFields.push({
+        field: `${Math.round(fieldRect.width)}px ở x=${Math.round(fieldRect.left)}`,
+        button: `${Math.round(buttonRect.width)}px ở x=${Math.round(buttonRect.left)}`,
+        element: describe(container),
+      });
+      break;
+    }
+  }
+
   return {
     viewportWidth,
     pageScrollWidth,
@@ -296,6 +331,7 @@ function measureInPage({ minTapSize, isMobile }) {
     misalignedColumns: misalignedColumns.slice(0, 10),
     smallTapTargets: smallTapTargets.slice(0, 15),
     smallTapCount: smallTapTargets.length,
+    misalignedFields: misalignedFields.slice(0, 10),
   };
 }
 
@@ -417,6 +453,10 @@ function formatReport(results) {
     if (result.smallTapCount > 0) {
       problems.push(`CHỖ BẤM DƯỚI ${minTapSize}px (${result.smallTapCount} chỗ, không có vùng bấm nới ra):`);
       for (const item of result.smallTapTargets.slice(0, 8)) problems.push(`  ${item.size}: ${item.element}`);
+    }
+    if (result.misalignedFields.length > 0) {
+      problems.push(`Ô NHẬP LỆCH MÉP VỚI NÚT RỘNG HẾT KHUNG (${result.misalignedFields.length} khung, ô và nút phải cùng mép trái phải):`);
+      for (const item of result.misalignedFields.slice(0, 5)) problems.push(`  ô ${item.field}, nút ${item.button}: ${item.element}`);
     }
     if (result.missingFocusRings.length > 0) {
       problems.push(`TAB TỚI MÀ KHÔNG THẤY GÌ ĐỔI (${result.missingFocusRings.length} chỗ):`);
