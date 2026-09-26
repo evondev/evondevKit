@@ -96,7 +96,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 15 | Form tạo workspace ba bước | `/workspaces/new` | 26/09/2026 (ba lượt, đã theo kịp) |
 | 16 | Cài đặt thông báo (và hàng tab khu cài đặt) | `/dashboard/settings`, `/settings/notifications`, `/settings/notifications/states` | 26/09/2026 (hai lượt, đã theo kịp trừ màu đường kẻ hàng tab) |
 | 17 | Bảo mật: xác thực hai lớp, phiên đăng nhập | `/dashboard/settings/security`, `/security/states` | 26/09/2026 (ba lượt; lượt ba đổi màu nút theo chủ dự án, dự án chưa theo kịp) |
-| 18 | Các bước bắt đầu (onboarding) | `/dashboard/welcome`, `/welcome/states` | 26/09/2026 (một lượt; skill có mục mới, dự án chưa theo kịp) |
+| 18 | Các bước bắt đầu (onboarding), nay nằm đầu tổng quan | `/dashboard/overview/states` (trang `/dashboard/welcome` đã bỏ) | 26/09/2026 (ba lượt, đã theo kịp) |
 
 Route mới xuất hiện trong dự án thì thêm dòng vào bảng (`grep -rhoE "path: ?['\"][^'\"]+" src`).
 
@@ -172,12 +172,6 @@ không ghi class. Rà xong 11 nhóm thì xem skill có nói gì về chúng khô
 
 Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần.
 
-- `/dashboard/welcome` (skill thêm mục "Các bước bắt đầu" trong `layouts/app.md`, 26/09/2026): bỏ
-  trang riêng, đưa `GettingStartedChecklist` lên đầu `/dashboard` thay `OverviewWelcomeCard` (hai màn
-  đang nói một việc); bỏ nút "Vào tổng quan" và tiêu đề "Chào mừng tới …". Vòng số `size-8` đổi sang ô
-  tick `size-5` viền đứt / đặc có check. Mỗi bước thành mục accordion, chỉ bước tiếp theo mở sẵn, nút
-  dưới câu vì sao. Bước khoá bỏ nút `disabled`. Tên bước xong bỏ `line-through`. Thêm nút `X` ẩn
-  (toast Hoàn tác). Xong hết thì thu danh sách bước. `/states` thêm ca "đã ẩn".
 - `/dashboard/settings/security` (skill sửa lượt ba, 26/09/2026): "Bật xác thực hai lớp" sang
   `primary`; "Đăng xuất 4 thiết bị khác" trả lại `isDestructive`; nút dòng và nút hàng loạt lên cỡ nút form
   `h-11 md:h-10 rounded-xl` (bỏ `sessionActionButtonClass` `h-8`, dùng như nút 2FA); nút

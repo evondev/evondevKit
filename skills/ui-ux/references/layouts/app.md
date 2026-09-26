@@ -97,7 +97,11 @@ dòng "1 / 5 bước".
 ```
 
 - **Một chỗ, mặc định là đầu trang Tổng quan.** Người mới vào app là rơi vào tổng quan, nên
-  khung nằm ở đó: workspace chưa có gì thì thay cả lưới, có rồi thì nằm trên lưới. Đừng dựng
+  khung nằm ở đó: workspace chưa có gì thì thay cả lưới, có rồi thì nằm trên lưới, **cách lưới
+  `mt-6` (24px), không dùng khe `gap-3` của lưới**. Dòng chú thích `text-xs` trên hàng số
+  (`mb-2`, "Tuần đầu, chưa có tuần trước để so") mà cách khung trên 12px, cách hàng số 8px thì chênh
+  4px, đọc như chú thích của khung các bước (đã dính 26/09/2026); 24px so với 8px thì rõ nó đi
+  với hàng số. Đừng dựng
   thêm một trang "Chào mừng" riêng khi tổng quan đã có khối chào: bấm "Vào tổng quan" xong lại
   gặp "Bắt đầu với dự án đầu tiên" + nút "Tạo dự án", hai màn nói một việc (`N3`), header
   trang chào còn ghi "Tổng quan" cạnh nút "Vào tổng quan" (đã dính 26/09/2026). Trang riêng chỉ
@@ -114,9 +118,14 @@ dòng "1 / 5 bước".
   `size-8` mượn từ thanh các bước của form nhiều bước). Thứ tự trong danh sách đã là gợi ý.
 - **Mỗi bước là một mục accordion, chỉ bước tiếp theo mở sẵn.** Nút tiêu đề rộng hết hàng
   theo `../components/accordion.md`: vòng, tên `text-sm font-medium`, `ChevronDown` bên phải,
-  dòng `px-4 py-3.5 sm:px-5`, vòng thẳng tâm dòng tên. Bước tiếp theo = bước chưa xong đầu tiên
-  làm được ngay. Mở ra: một câu vì sao `text-sm text-muted mt-1`, rồi nút `mt-3` **dưới câu, thẳng
-  mép trái với tên**, ở mọi bề rộng (không đẩy sang phải rồi xếp lại ở màn hẹp). Đã dính
+  dòng `px-4 py-3 sm:px-5` (cao 44px, vừa vùng bấm ở màn cảm ứng), vòng thẳng tâm dòng tên.
+  Bước tiếp theo = bước chưa xong đầu tiên làm được ngay. Mở ra: phần thân `pb-4`, thụt trái bằng
+  `px` của dòng + vòng 20px + `gap-3`; một câu vì sao `text-sm text-muted` **không `mt`**, rồi nút
+  `mt-4` **dưới câu, thẳng mép trái với tên**, ở mọi bề rộng (không đẩy sang phải rồi xếp lại ở màn
+  hẹp). Đo được: tên → câu 12px, câu → nút 16px, nút → mép dưới 16px; câu bám vào tên của nó.
+  Bản trước ghi `py-3.5` + câu `mt-1` + nút `mt-3`: `mt-1` chồng lên đệm dưới của nút tiêu đề,
+  tên → câu 20px mà câu → nút 13px, câu trôi xuống bám vào nút (đã dính 26/09/2026; FAQ ở
+  `accordion.md` cũng không có `mt` ở câu trả lời). Đã dính
   26/09/2026: cả năm bước mở hết, năm câu mô tả + bốn nút xếp một cột phải, tên bước lặp lại
   trên nút ("Mời thành viên" / "Mời thành viên"), card cao 830px ở 1280 và 1540px ở 375;
   dựng thử accordion trên trang còn 390px và 830px, một nút đặc.
