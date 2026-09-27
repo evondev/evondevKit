@@ -59,8 +59,9 @@ Bắt đầu khi xong bậc 2 và bậc 3 trong `TESTS.md`, tức là xong phase
 `skills/ui-ux/references/review.md` (bốn mặc định, `V1`–`V5`), loại "ảnh hiện trạng"
 trong `S12`, câu 1 của mục 0 có ba nhánh. `probe.mjs` đo thêm tương phản chữ, khung giấu
 mất chữ, chữ trong nút xuống dòng, hàng header / nav rớt dòng, và có `--sweep` quét bề
-rộng. Dự án mồi đầu tiên đã dựng (repo riêng, đáp án để ngoài mọi repo). Chưa làm: đưa
-lượt quét về nhánh dựng mới.
+rộng. Dự án mồi đầu tiên đã dựng (repo riêng, đáp án để ngoài mọi repo). Lượt quét
+đã đưa về nhánh dựng mới (27/09/2026): cổng 3 chạy `--sweep`, đủ 5 khổ, sửa tới khi danh
+sách `P` trống (tối đa ba vòng).
 
 **Ý của chủ dự án:** skill tự chụp ảnh hoặc quay video UI hiện tại của dự án,
 chỉ ra lỗi, đưa bảng trước/sau rồi hỏi có muốn sửa không. User không tin phần tự
@@ -134,8 +135,8 @@ còn khoảng 970px ở 1280px).
   "860 tới 1020px").
 - **Dự án mồi phải cài lỗi ở từng khổ**, nhất là lỗi chỉ xuất hiện giữa hai khổ
   cố định, để biết lượt quét bề rộng có bắt được không.
-- Nên đưa cách quét này ngược về nhánh dựng màn mới. Hiện nhánh đó chỉ kiểm ở
-  375px trước khi báo xong.
+- ~~Nên đưa cách quét này ngược về nhánh dựng màn mới.~~ Đã làm 27/09/2026 (cổng 3 trong
+  `checklist.md`).
 
 ### Dark mode: dự án có thì soi cả hai, chưa có thì không bịa
 
@@ -202,7 +203,7 @@ mấy chỗ sửa trước đó có dùng được ở chỗ khác không.
 
 | # | Dự án | Khác ở đâu | Test gì | Trạng thái |
 | --- | --- | --- | --- | --- |
-| 1 | `tim-phong` | Vite + React + Tailwind v4, chép từ một trang thật đang xấu, brand riêng, nhiều lỗi | Bắt lỗi, không báo nhầm brand, quét bề rộng, hai bản dark | Vòng 1 (27/09/2026, `master`, tự chụp): bắt 19/34, báo nhầm 1 (gom bo góc brand về thang), 1 lần đưa khối brand vào Gu. Probe đo ra mà model bỏ: nút 20px, nút bị card cắt. Probe không mở được lớp nổi mở bằng nút thường. Vòng 2: 16/37, không báo nhầm; probe vẫn đo ra mà bảng bỏ, vẫn chưa mở được lớp nổi (nút chỉ có icon, `div` bấm được). Đã sửa: probe in danh sách mã `P` phải đối chiếu, mở lớp nổi rộng hơn, đo trang tự cuộn, bỏ lớp che khi đo tương phản. Vòng 3: 26/37, không báo nhầm, không đưa brand vào Gu. Đã sửa tiếp: Tab không dừng ở body, lướt qua phần tử cùng kiểu; lệnh grep tìm Lệch hệ trong code; lỗi thật mà sửa rộng vẫn lên bảng. Chờ vòng 4. Chưa đo được: header bị bóp chiều cao, ảnh không phủ hết card, lệch mép ở ≥1400px, focus ở mobile |
+| 1 | `tim-phong` | Vite + React + Tailwind v4, chép từ một trang thật đang xấu, brand riêng, nhiều lỗi | Bắt lỗi, không báo nhầm brand, quét bề rộng, hai bản dark | Vòng 1 (27/09/2026, `master`, tự chụp): bắt 19/34, báo nhầm 1 (gom bo góc brand về thang), 1 lần đưa khối brand vào Gu. Probe đo ra mà model bỏ: nút 20px, nút bị card cắt. Probe không mở được lớp nổi mở bằng nút thường. Vòng 2: 16/37, không báo nhầm; probe vẫn đo ra mà bảng bỏ, vẫn chưa mở được lớp nổi (nút chỉ có icon, `div` bấm được). Đã sửa: probe in danh sách mã `P` phải đối chiếu, mở lớp nổi rộng hơn, đo trang tự cuộn, bỏ lớp che khi đo tương phản. Vòng 3: 26/37, không báo nhầm, không đưa brand vào Gu. Đã sửa tiếp: Tab không dừng ở body, lướt qua phần tử cùng kiểu; lệnh grep tìm Lệch hệ trong code; lỗi thật mà sửa rộng vẫn lên bảng. Vòng 4: 27/37, không báo nhầm, 77/77 mã P lên bảng. `master` dừng chỉnh ở đây (sửa tiếp dễ thành học thuộc riêng nó), chuyển sang `chore/ui-setup`, `feat/theme`. Chưa đo được: header bị bóp chiều cao, ảnh không phủ hết card, lệch mép ở ≥1400px, focus ở mobile |
 | 2 | Chưa dựng | Next + shadcn, hệ token gọn, **ít lỗi** (vài lỗi Hỏng nhỏ) | Skill có dám nói "gần như ổn, chỉ có N chỗ" không, hay bịa cho đủ bảng. Quan trọng nhất | |
 | 3 | Chưa dựng | Không Tailwind (CSS thuần hoặc CSS Module), phong cách glass hoặc nền tối | Chấm Lệch hệ khi không có utility, không kéo về flat, dark làm mặc định | |
 

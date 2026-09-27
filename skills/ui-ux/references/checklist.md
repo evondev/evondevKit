@@ -187,18 +187,24 @@ dựng qua cổng 3 bằng đọc code, lượt rà mở trang thật tìm ra n�
 đây đo ra ngay.
 
 0. [ ] **Chạy `scripts/probe.mjs`** (nằm cạnh `SKILL.md`) trên đúng route vừa dựng:
-   `node <thư mục skill>/scripts/probe.mjs http://localhost:<cổng>/<route>`.
-   Script mở trang ở 375, 768, 1024, 1280px, chụp ảnh từng khổ, và đo: cuộn ngang, lỗi
-   console, chữ bị cắt còn dưới 10 ký tự, phần tử cùng loại cao lệch nhau 1–4px, chữ cùng
-   cột lệch mép, chỗ bấm dưới 32px ở màn cảm ứng, Tab tới mà không thấy gì đổi, dấu câu
-   rơi xuống đầu dòng, dấu ngăn (›, /) cách hai bên không đều, vòng focus
-   vẽ trên chữ mà icon cùng link nằm ngoài vòng.
+   `node <thư mục skill>/scripts/probe.mjs http://localhost:<cổng>/<route> --sweep`.
+   Script mở trang ở 375, 768, 1024, 1280, 1440px, chụp ảnh từng khổ, rồi kéo bề rộng từ
+   1440 xuống 375 mỗi bước 20px để bắt lỗi nằm giữa hai khổ. Nó đo: cuộn ngang, lỗi
+   console, tương phản chữ, khung giấu mất chữ, chữ trong nút xuống dòng, chữ bị cắt còn
+   dưới 10 ký tự, phần tử cùng loại cao lệch nhau 1–4px, chữ cùng cột lệch mép, chỗ bấm
+   dưới 32px ở màn cảm ứng, Tab tới mà không thấy gì đổi, rê chuột làm nhảy bố cục, trang
+   tự cuộn khi tải, dấu câu rơi xuống đầu dòng, dấu ngăn (›, /) cách hai bên không đều,
+   vòng focus vẽ trên chữ mà icon cùng link nằm ngoài vòng. Ở 375px nó tự bấm mở menu,
+   hộp chọn, sheet rồi chụp và đo tràn mép, cao quá màn.
    - Dev server chưa chạy thì bật ở nền bằng lệnh dev của dự án. Chưa có playwright thì
      cài vào thư mục tạm theo lệnh script in ra, **không cài vào dự án**.
    - Trạng thái nằm ở route khác (`/states`, trang rỗng) thì chạy thêm trên route đó. Dự án
      có dark mode thì chạy thêm `--dark`.
-   - Sửa từng lỗi script in ra rồi chạy lại, **tối đa hai vòng**. Lỗi nào để lại có chủ ý
-     (vd chỗ bấm nhỏ trong bảng dày) thì nói lúc giao.
+   - **Sửa rồi chạy lại cho tới khi mục "Việc phải đối chiếu" ở cuối báo cáo trống**
+     (danh sách mã `P1`, `P2`… là lỗi hạng Hỏng máy đo ra, `V1` trong `review.md`), tối đa
+     **ba vòng**. Các mục khác probe in ra (theo gu của skill) cũng sửa, vì đây là bản mình
+     dựng. Mã `P` nào còn lại sau ba vòng, hay để lại có chủ ý (vd chỗ bấm nhỏ trong bảng
+     dày), thì lúc giao ghi từng mã và lý do. Không mã nào được biến mất im lặng.
    - **Mở từng ảnh chụp ra xem**, soi theo mười phép thử (`principles.md`). Script chỉ đo
      được thứ đo được: "hôm nay đậm hơn ngày đang chọn", "nút Hôm nay tách khỏi ‹ ›" chỉ
      mắt mới thấy.

@@ -2,7 +2,7 @@
 // Mở trang thật ở nhiều bề rộng, đo những lỗi máy đo được, chụp ảnh để mắt soi phần còn lại.
 // Dùng ở cổng 3 của checklist (references/checklist.md). Chỉ đọc trang, không sửa gì.
 //
-//   node probe.mjs <url> [--widths 375,768,1024,1280] [--out <thư mục>] [--dark] [--wait 800] [--dpr 1]
+//   node probe.mjs <url> [--widths 375,768,1024,1280,1440] [--out <thư mục>] [--dark] [--wait 800] [--dpr 1]
 //                        [--sweep [1440,375,20]]
 //
 // --sweep: đo xong các khổ cố định thì kéo bề rộng từ 1440 xuống 375, mỗi bước 20px, chụp từng bước và
@@ -19,7 +19,7 @@ import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const defaultWidths = [375, 768, 1024, 1280];
+const defaultWidths = [375, 768, 1024, 1280, 1440];
 const defaultSweep = [1440, 375, 20];
 const mobileWidthLimit = 640;
 // Sàn cỡ bấm của skill: nút h-8 trong bảng dày là nhỏ nhất được phép (list-row.md).

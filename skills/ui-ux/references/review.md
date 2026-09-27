@@ -116,7 +116,7 @@ Mỗi route một lượt:
 
 ```bash
 node <thư mục skill>/scripts/probe.mjs http://localhost:5173/<route> \
-  --widths 375,768,1024,1280,1440 --sweep --out "$TMPDIR/evon-review/<route>"
+  --sweep --out "$TMPDIR/evon-review/<route>"
 ```
 
 | Khổ | Bề rộng | Hay vỡ ở đâu |
