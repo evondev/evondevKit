@@ -181,6 +181,12 @@ Giờ, ngày xếp dọc một mép (cột giờ bên phải dòng thời gian, 
 nhau là font không áp (đã dính: Be Vietnam Pro bản Google Fonts, "1" 4,6px, "4" 8,5px).
 Cột căn phải lệch mép trái vài px thì chấp nhận; bảng tiền, bảng số thì báo người dùng
 một dòng lúc giao, đổi font là việc của họ (`N10`).
+**Số tiền kèm đơn vị là một khối không ngắt**: `whitespace-nowrap` trên cả "128.900.000 đ".
+Hàng nhãn–giá trị hai đầu (`flex justify-between`, như khối Thanh toán) thì giá trị tiền
+`shrink-0`, nhãn `min-w-0` co lại và xuống dòng; nhãn có phần phụ thì dán `&nbsp;` để ngắt sau
+dấu `·` ("Tạm tính&nbsp;· 1&nbsp;sản&nbsp;phẩm" ra "Tạm tính ·" / "1 sản phẩm"). Đảo lại (nhãn
+`shrink-0`, giá trị `wrap-anywhere`) thì ở 375px chữ "đ" rớt xuống dòng riêng; chỉ thêm
+`nowrap` mà nhãn vẫn không co thì "đ" tràn ra ngoài khung (đã dính 27/09/2026, modal đơn hàng).
 
 **T16b. Thời gian tương đối luôn kèm giờ tuyệt đối.** "5 giờ trước", "28 phút trước"
 dễ đọc nhưng không dùng để đối chiếu được. Bọc trong `<time datetime>` và cho `title`

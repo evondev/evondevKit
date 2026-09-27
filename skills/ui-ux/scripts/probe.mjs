@@ -615,11 +615,35 @@ function measureInPage({ minTapSize, isMobile }) {
     }
   }
 
+  // 14. Số tiền kèm đơn vị bị ngắt dòng ("128.900.000" / "đ"): đo trên khối chứa cả số lẫn đơn vị, xem
+  //     chuỗi tiền có nằm trên hai dòng không (đã dính 27/09/2026, modal đơn hàng 375px, `T16`).
+  const brokenMoney = [];
+  // Chỉ đo phần tử mà cả nội dung là một số tiền ("128.900.000 đ", "0 ₫", có thể kèm "/tháng"); khối
+  // chứa cả nhãn lẫn tiền thì nhiều dòng là đúng thiết kế.
+  const moneyOnlyPattern = /^\s*-?\d[\d.,]*\s*(đ|₫|VND)(\s*\/\s*[\p{L}]+)?\s*$/u;
+  for (const holder of document.querySelectorAll("dd, td, p, span, div, strong")) {
+    if (!isVisible(holder) || !moneyOnlyPattern.test(holder.textContent)) continue;
+    if (holder.parentElement && moneyOnlyPattern.test(holder.parentElement.textContent)) continue;
+    const range = document.createRange();
+    range.selectNodeContents(holder);
+    // Hai mảnh cùng dòng khi khoảng dọc chồng nhau: số 30px và "/tháng" 14px chung baseline có đáy
+    // lệch nhau, gom theo đáy thì báo nhầm (27/09/2026, trang giá 375px).
+    const pieces = [...range.getClientRects()].filter((rect) => rect.width > 0).sort((first, second) => first.top - second.top);
+    let lineCount = pieces.length > 0 ? 1 : 0;
+    let lineBottom = pieces[0]?.bottom ?? 0;
+    for (const piece of pieces.slice(1)) {
+      if (piece.top >= lineBottom - 2) lineCount++;
+      lineBottom = Math.max(lineBottom, piece.bottom);
+    }
+    if (lineCount > 1) brokenMoney.push(`"${holder.textContent.trim().slice(0, 24)}": ${describe(holder)}`);
+  }
+
   return {
     viewportWidth,
     pageScrollWidth,
     unpinnedScrollTables,
     unevenStatRows,
+    brokenMoney: [...new Set(brokenMoney)].slice(0, 10),
     gridChoiceGroups,
     hasHorizontalScroll: pageScrollWidth > viewportWidth + 1,
     overflowingElements,
@@ -794,6 +818,10 @@ function formatReport(results) {
     if (result.unpinnedScrollTables.length > 0) {
       problems.push(`BẢNG CUỘN NGANG MẤT CỘT (${result.unpinnedScrollTables.length} bảng, R9):`);
       for (const item of result.unpinnedScrollTables.slice(0, 5)) problems.push(`  ${item}`);
+    }
+    if (result.brokenMoney.length > 0) {
+      problems.push(`SỐ TIỀN NGẮT DÒNG (${result.brokenMoney.length} chỗ, số + đơn vị phải nowrap, nhãn bên cạnh co lại, T16):`);
+      for (const item of result.brokenMoney.slice(0, 5)) problems.push(`  ${item}`);
     }
     if (result.unevenStatRows.length > 0) {
       problems.push(`SỐ TRONG HÀNG Ô SỐ LIỆU KHÔNG THẲNG (${result.unevenStatRows.length} hàng, ô dùng grid-rows-subgrid):`);
