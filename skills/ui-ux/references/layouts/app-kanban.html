@@ -90,9 +90,11 @@
   </head>
 
   <body class="bg-background text-foreground antialiased">
-    <div class="flex min-h-screen w-full flex-col p-3 sm:p-5">
+    <!-- Khung ngoài chỉ padding dọc: board cuộn ngang phải chạm hai mép màn, nên lề ngang nằm ở
+         từng khối (header, hàng lọc mx-3 sm:mx-5; hàng cột px-3 sm:px-5), không kéo board ra bằng -mx (N11). -->
+    <div class="flex min-h-screen w-full flex-col py-3 sm:py-5">
       <header
-        class="mb-3 flex items-center justify-between gap-3 rounded-full bg-surface p-2 pl-4 pr-2 border border-border sm:pl-5"
+        class="mx-3 mb-3 flex items-center justify-between gap-3 rounded-full bg-surface p-2 pl-4 pr-2 border border-border sm:mx-5 sm:pl-5"
       >
         <div class="min-w-0">
           <h1 class="truncate text-base font-semibold text-foreground">Bảng công việc</h1>
@@ -106,9 +108,11 @@
         </button>
       </header>
 
-      <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div class="scrollbar-clean -mx-1 overflow-x-auto px-1 py-0.5">
-          <div class="flex items-center gap-2">
+      <!-- Hàng lọc lề ít hơn 4px (mx-2 sm:mx-4) để hàng chip px-1 có chỗ cho vòng focus chip đầu/cuối;
+           ô tìm bù lại mx-1 (small-controls.md, không -mx-1: N11). -->
+      <div class="mx-2 mb-4 flex flex-col gap-3 sm:mx-4 sm:flex-row sm:items-center sm:justify-between">
+        <div class="scrollbar-clean overflow-x-auto py-0.5">
+          <div class="flex items-center gap-2 px-1">
             <button
               type="button"
               class="inline-flex h-9 shrink-0 cursor-pointer items-center rounded-full bg-primary px-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
@@ -130,7 +134,7 @@
           </div>
         </div>
 
-        <label class="relative block w-full shrink-0 sm:w-64">
+        <label class="relative mx-1 block shrink-0 sm:w-64">
           <span class="sr-only">Tìm việc</span>
           <input
             type="search"
@@ -141,7 +145,7 @@
       </div>
 
       <!-- Board không scrollbar-clean: thanh cuộn tự ẩn (I18), người dùng chuột vẫn có chỗ kéo ngang. -->
-      <div class="-mx-3 flex-1 overflow-x-auto sm:-mx-5">
+      <div class="flex-1 overflow-x-auto">
         <!-- w-max giữ lề phải khi cuộn, min-w-full cho cột giãn khi còn chỗ (layouts/app.md). -->
         <div class="flex w-max min-w-full items-start gap-4 px-3 pb-2 sm:px-5">
           <section class="w-[248px] min-w-0 max-w-[320px] shrink-0 grow">

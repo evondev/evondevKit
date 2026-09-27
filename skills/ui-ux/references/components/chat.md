@@ -14,7 +14,8 @@ file đã có (`N5`): danh sách bước dùng công cụ mượn đường dọ
 
       <!-- Câu trả lời: không bong bóng, không avatar, thẳng mép trái cột -->
       <div class="max-w-[55ch] space-y-3">
-        <button class="-ml-2 flex h-8 cursor-pointer items-center gap-2 rounded-lg px-2 text-sm text-muted hover:text-foreground" aria-expanded="false">
+        <!-- Không nền rê nên không px: chữ tự thẳng mép cột, không -ml-2 (button.md, N11) -->
+        <button class="flex h-8 cursor-pointer items-center gap-2 rounded-md text-sm text-muted outline-hidden hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-4 focus-visible:ring-offset-background" aria-expanded="false">
           <!-- ô đầu size-4: ChevronRight (xoay 90° khi mở), hoặc LoaderCircle khi chưa có bước nào -->
           Đã dùng 3 công cụ
         </button>
@@ -63,7 +64,7 @@ file đã có (`N5`): danh sách bước dùng công cụ mượn đường dọ
 
 ## Hàng thao tác dưới câu trả lời
 
-Nút chỉ icon `ghost` `size-8`, có tooltip và `aria-label`: `Copy` "Sao chép", `RotateCw` "Tạo lại". Icon đầu tiên thẳng cột với chữ câu trả lời (bù `-ml-2`, `button.md`).
+Nút chỉ icon `ghost` `size-8`, có tooltip và `aria-label`: `Copy` "Sao chép", `RotateCw` "Tạo lại". Icon đầu tiên thẳng cột với chữ câu trả lời: hàng `-ml-2`, **số âm giữ có chủ ý** (`N11` bước 4, `button.md` mục `ghost` cách 3), comment ngay trên dòng: `{/* -ml-2 bù px-2 của nút: icon đầu thẳng cột chữ câu trả lời; hàng nằm giữa cột chữ nên không bớt padding được (N11) */}`.
 
 - Có ở câu đã chạy xong **và câu bị dừng**; không có ở câu đang chạy và câu lỗi (câu lỗi đã có nút Thử lại). **Câu cuối luôn hiện**; câu cũ hiện khi rê hoặc Tab tới (`opacity-0 group-hover:opacity-100 group-focus-within:opacity-100`), **vẫn giữ chỗ** để rê vào không xô (`N1`). Màn không có hover thì luôn hiện (`I11`).
 - Không thêm like/dislike, chia sẻ, đọc to khi đề không nói. Đây là phần của mỗi câu trả lời (như ✕ của modal), không phải khối tự thêm; lúc giao báo một dòng.

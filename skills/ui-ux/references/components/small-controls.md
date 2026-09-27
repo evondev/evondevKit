@@ -53,20 +53,26 @@ một hàng và một cái rớt xuống đứng một mình, đọc ra như l�
 kế.
 
 ```html
-<div class="scrollbar-clean -mx-1 flex items-center gap-2 overflow-x-auto px-1 py-0.5">
-  <button type="button" aria-pressed="true" class="shrink-0 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">Tất cả</button>
-  <button type="button" aria-pressed="false" class="shrink-0 rounded-full bg-foreground/5 px-3 py-1 text-xs font-medium text-foreground/70 hover:bg-foreground/10 hover:text-foreground">Quá hạn</button>
-  <button type="button" aria-pressed="false" title="Hội chợ Triển lãm Quốc tế 2026" class="max-w-48 shrink-0 rounded-full bg-foreground/5 px-3 py-1 text-xs font-medium text-foreground/70 hover:bg-foreground/10 hover:text-foreground">
-    <span class="block truncate">Hội chợ Triển lãm Quốc tế 2026</span>
-  </button>
+<!-- Khối bọc hàng có lề ngang ít hơn 4px so với các khối khác (card px-5 thì khối này px-4, R6):
+     hàng bên trong px-1 đưa chip đầu về thẳng cột, và chừa 4px cho vòng focus chip đầu/cuối. -->
+<div class="scrollbar-clean overflow-x-auto py-0.5">
+  <div class="flex items-center gap-2 px-1">
+    <button type="button" aria-pressed="true" class="shrink-0 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">Tất cả</button>
+    <button type="button" aria-pressed="false" class="shrink-0 rounded-full bg-foreground/5 px-3 py-1 text-xs font-medium text-foreground/70 hover:bg-foreground/10 hover:text-foreground">Quá hạn</button>
+    <button type="button" aria-pressed="false" title="Hội chợ Triển lãm Quốc tế 2026" class="max-w-48 shrink-0 rounded-full bg-foreground/5 px-3 py-1 text-xs font-medium text-foreground/70 hover:bg-foreground/10 hover:text-foreground">
+      <span class="block truncate">Hội chợ Triển lãm Quốc tế 2026</span>
+    </button>
+  </div>
 </div>
 ```
 
 `shrink-0` để chip không bị bóp méo, `scrollbar-clean` để không lòi thanh cuộn ra.
 
-Lề thì đặt trên **hàng bên trong**, đừng đặt trên khung cuộn: `<div class="-mx-1
-overflow-x-auto"><div class="flex gap-2 px-1">`. Padding bên phải của khung cuộn
-bị bỏ qua khi cuộn tới cuối, nên chip cuối sẽ dính sát mép.
+Lề thì đặt trên **hàng bên trong**, đừng đặt trên khung cuộn: `<div class="overflow-x-auto"><div
+class="flex gap-2 px-1">`. Padding bên phải của khung cuộn bị bỏ qua khi cuộn tới cuối, nên chip
+cuối sẽ dính sát mép. **Khung cuộn không kéo ra bằng `-mx-1`** (`N11`): khối bọc nó lùi lề ít hơn
+4px, các khối anh em giữ lề đủ (cách của `R6`). Đo 27/09/2026 hàng chip và hàng tab ở
+`/dashboard/customers`, 375 và 1280px: trùng từng pixel với bản `-mx-1`.
 
 ---
 
@@ -146,7 +152,7 @@ Icon trước chữ **không bắt buộc**, xem mặc định ở trên. Có th
 ### `boxed`: tab trạng thái trên bảng
 
 ```ts
-// Khung cuộn: -mx-1 py-0.5 để nền hover của tab đầu/cuối không bị cắt. Hàng: gap-1 px-1.
+// Khung cuộn py-0.5, khối bọc lề ít hơn 4px (R6, không -mx-1): nền hover tab đầu/cuối không bị cắt. Hàng: gap-1 px-1.
 "h-9 rounded-lg border px-3"
 isSelected && "border-transparent bg-secondary text-foreground"
 !isSelected && "border-transparent text-foreground/70 hover:bg-foreground/5 hover:text-foreground"
@@ -171,10 +177,10 @@ isSelected && "text-foreground after:bg-foreground"
 !isSelected && "text-foreground/70 after:bg-transparent hover:text-foreground"
 ```
 
-- **Hàng tab nằm chung hàng với ô tìm và nút (toolbar trên bảng) thì bỏ đường kẻ hết hàng, chỉ giữ vạch 2px dưới tab đang chọn.** Đường kẻ chạy nửa hàng rồi cụt ở mép ô tìm trông dở dang, và vì khung cuộn lùi `-mx-2` nên đầu trái của nó còn thò ra ngoài mép card bên dưới 8px (đã dính 23/09/2026). Đường kẻ hết hàng chỉ dùng khi hàng tab đứng riêng một hàng, như trang chi tiết.
+- **Hàng tab nằm chung hàng với ô tìm và nút (toolbar trên bảng) thì bỏ đường kẻ hết hàng, chỉ giữ vạch 2px dưới tab đang chọn.** Đường kẻ chạy nửa hàng rồi cụt ở mép ô tìm trông dở dang, và vì khung cuộn rộng hơn cột nội dung 8px mỗi bên (để chữ tab đầu thẳng cột) nên đầu trái của nó còn thò ra ngoài mép card bên dưới 8px (đã dính 23/09/2026). Đường kẻ hết hàng chỉ dùng khi hàng tab đứng riêng một hàng, như trang chi tiết.
 - **Focus bàn phím của tab `underline` là vòng quanh chữ, không quanh cả tab.** Vòng quanh cả tab `h-10` thì mép dưới vòng nằm sát vạch 2px, đọc thành hai đường gạch chồng nhau (đã dính 24/09/2026); vẽ ra ngoài tab thì khung cuộn cắt mất mép. Tab thêm `group outline-hidden`, chữ bọc trong `<span class="rounded-md px-1.5 py-0.5 group-focus-visible:ring-2 group-focus-visible:ring-foreground/50">`: span cao 24px giữa tab 40px, vòng cách vạch ~8px. Các variant có nền (`boxed`, `solid`, `segmented`) giữ vòng quanh cả tab theo `I13`.
 - Vạch màu `--foreground`, không màu nhấn có sắc: nhấn đã có ở nút chính của trang (`M3`).
-- Khung cuộn lùi `-mx-2` để chữ tab đầu thẳng cột với nội dung bên dưới.
+- Khối bọc hàng tab lùi lề ít hơn 8px (`R6`), khung cuộn không `-mx-2` (`N11`): chữ tab đầu thẳng cột với nội dung bên dưới.
 - Tab đang chọn không tô nền, không đổi nền lúc hover. Vạch là tín hiệu duy nhất.
 - **Không tab nào có nền, kể cả lúc focus.** Tab bàn phím tới thì vòng mờ `I13`. Tab là `Button variant="ghost"` mà `Button` dự án còn kiểu cũ "focus trông như hover" (nền xám) thì hàng tab dính theo: tab đang focus có nền xám, tab đang rê chuột đậm chữ, **hai tab cùng sáng** và không đọc ra tab nào đang chọn (đã dính 24/09/2026, panel khách hàng). Sửa ở `Button` dùng chung, không vá riêng từng tab.
 - Hàng tab nằm được cả trên card trắng lẫn trên dải header xám: đường kẻ `--border-strong` đủ nhìn ở cả hai.

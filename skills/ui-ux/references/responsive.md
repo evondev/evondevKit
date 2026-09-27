@@ -39,9 +39,17 @@ Và luôn giữ: **ngày tháng, nhãn phụ phải nhỏ hơn tiêu đề ít n
 <!-- Sai: cột cuối dính mép -->
 <div class="overflow-x-auto px-3"><div class="flex gap-4">...</div></div>
 
-<!-- Đúng -->
-<div class="-mx-3 overflow-x-auto sm:-mx-5"><div class="flex gap-4 px-3 sm:px-5">...</div></div>
+<!-- Đúng: khối cha chỉ padding dọc, các khối khác tự mang lề, khung cuộn chạm mép -->
+<section class="py-3 sm:py-5">
+  <h2 class="px-3 sm:px-5">…</h2>
+  <div class="overflow-x-auto"><div class="flex gap-4 px-3 sm:px-5">...</div></div>
+</section>
 ```
+
+Không kéo khung cuộn ra bằng `-mx-3 sm:-mx-5` bù padding của cha (`N11`): đổi padding cha mà
+quên số âm là khung cuộn hụt hoặc lòi. Đo 27/09/2026 board kanban `/dashboard/tasks` 375 và
+1280px, cuộn ở đầu và ở cuối: hai bản trùng từng pixel. Nhiều khối liền nhau không cuộn thì
+gom vào một `<div class="px-3 sm:px-5">`.
 
 Cách khác cũng được: chèn phần tử đệm cuối hàng, `<div class="w-3 shrink-0 sm:w-5" aria-hidden="true"></div>`.
 
@@ -64,7 +72,8 @@ vẫn `h-11 md:h-10`, xem `budgets.md`.
 **R9. Bảng ở màn hẹp thì cuộn ngang, đừng bóp cột.** Đây là lỗi hay gặp nhất với bảng: để nguyên `<table>` co lại theo bề rộng màn, kết quả là mỗi ô chỉ còn vài chục pixel, chữ vỡ ba bốn dòng, cột nọ dính cột kia, đọc không ra gì.
 
 ```html
-<div class="-mx-4 overflow-x-auto sm:-mx-6">
+<!-- Khung trang py-4 sm:py-6, các khối khác px-4 sm:px-6 (R6); khung cuộn không padding cha để kéo ra -->
+<div class="overflow-x-auto">
   <div class="min-w-[44rem] px-4 sm:px-6">
     <table class="w-full">…</table>
   </div>
