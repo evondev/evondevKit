@@ -260,6 +260,13 @@ hover trên màn chạm thì thứ ẩn-hiện-khi-rê phải luôn hiện (`I11
 thì chọn được bằng nhiều đường, không chỉ một cử chỉ. `aria-*` cho thứ chỉ nói
 bằng hình (`aria-pressed`, `aria-current`, `role="progressbar"`).
 
+**Thứ bấm được mà hình nhỏ hơn 32px** (nút chữ giữa câu "Thử lại", "Gửi lại", nút icon `size-7`
+cạnh một giá trị) **giữ hình, nới vùng bấm bằng `relative before:absolute before:-inset-*`** cho
+tới ~32–40px, không phóng to hình: to hình thì đẩy lệch hàng và nặng hơn việc của nó. Số âm ở đây
+buộc phải giữ (`N11`). Nếu hai vùng nới chạm nhau thì tách thứ đó ra hàng riêng trước. Đã dính ba
+chỗ trong một ngày (27/09/2026): nút sao chép 28px, "Gửi lại · Huỷ" 18px, "Thử lại" 16px; công thức
+từng chỗ ở `components/description-list.md`, `layouts/app.md` (Hồ sơ), `components/file-upload.md`.
+
 Đã dính: bánh xe giờ chỉ cuộn mới chọn được, và cuộn khựng giữa chừng; chỉ có
 mũi tên ‹ › để đổi tháng, đi xa là mỏi tay (tiêu đề bấm ra lưới tháng/năm).
 

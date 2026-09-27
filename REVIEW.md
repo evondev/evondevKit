@@ -98,7 +98,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 8 | Bảng giá | `/pricing`, `/pricing/joined` | 26/09/2026 (bảy lượt) |
 | 9 | Form đăng ký doanh nghiệp | `/business-registration` | 27/09/2026 (một lượt: không lỗi hình; Tiếp / Quay lại chưa nối xử lý, là logic dự án, `N10`) |
 | 10 | Trợ lý AI | `/dashboard/assistant`, `/assistant/states` | 27/09/2026 (một lượt: không lỗi skill mới, dự án chưa theo kịp hai chỗ; sửa báo nhầm dấu câu sau `<code>` của probe) |
-| 11 | Tài liệu (cây thư mục) | `/dashboard/projects/documents`, `/documents/states` | |
+| 11 | Tài liệu (cây thư mục) | `/dashboard/projects/documents`, `/documents/states` | 27/09/2026 (một lượt: vùng bấm "Thử lại", gộp luật chung vào `N9`; sửa báo nhầm focus ô file ẩn; dự án chưa theo kịp) |
 | 12 | Thông báo | `/dashboard/notifications/states` | |
 | 13 | Thư viện component | `/components` | 26/09/2026 (ô số lượng, ba lượt; tên sửa tại chỗ, hai lượt, đã theo kịp; tiêu đề cột sắp xếp, hai lượt, đã theo kịp) |
 | 14 | Tạo dự án (khu "Cài đặt nâng cao" thu gọn) | `/dashboard/projects/new` | 26/09/2026 (hai lượt, đã theo kịp) |
@@ -195,6 +195,10 @@ nền vuông 46×48 cạnh vòng chọn tròn 32px. Thêm vào probe:
 Mỗi phép đo thêm vào phải bắt lại được đúng ca đã dính (nút "Thêm" ở `/dashboard/calendar` bản cũ,
 ô ngày lịch gọn bản lượt hai) trước khi coi là xong.
 
+Đã sửa báo nhầm (27/09/2026): "Tab tới mà không thấy gì đổi" chụp đúng ô `input type=file` `sr-only` 1px, không thấy vòng
+focus vẽ trên `<label>` khung thả tệp (`/dashboard/projects/documents`). Nay phần tử ≤2px thì chụp theo `<label>` bọc ngoài;
+thử trên trang HTML hai khung (có vòng, không vòng) chỉ báo khung không vòng.
+
 Đã sửa báo nhầm (27/09/2026): "Dấu câu rơi xuống đầu dòng" bỏ qua hẳn chữ trong `<code>`, nên dấu phẩy sau
 `DH-2026-004821` bị so với dòng trên (trợ lý AI 375px). Nay chữ trong code / pre không xét nhưng vẫn làm mốc chữ đứng trước;
 vẫn bắt được "· Huỷ" ở `/dashboard/profile/states`.
@@ -260,6 +264,8 @@ không ghi class. Rà xong 11 nhóm thì xem skill có nói gì về chúng khô
 
 Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần.
 
+- Tài liệu `/dashboard/projects/documents` (lượt 1, 27/09/2026): nút chữ "Thử lại" ở dòng tệp hỏng thêm
+  `relative before:absolute before:-inset-x-1.5 before:-inset-y-2` (hiện 39×16px ở 375px).
 - Trợ lý AI `/dashboard/assistant`, `/states` (lượt 1, 27/09/2026): nút gửi khi ô trống `disabled:opacity-50`, đổi
   `disabled:opacity-30` (`components/chat.md`); câu trả lời bị Dừng giữa chừng chưa có hàng Sao chép / Tạo lại.
 - Hồ sơ `/dashboard/profile/states` (lượt 1, 27/09/2026): email chờ xác nhận, bỏ " · Gửi lại · Huỷ" nối sau email; hai nút

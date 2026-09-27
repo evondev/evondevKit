@@ -701,7 +701,13 @@ async function captureFocusArea(page, probeId) {
   const rect = await page.evaluate((id) => {
     const element = document.querySelector(`[data-evon-probe-id="${id}"]`);
     if (!element) return null;
-    const box = element.getBoundingClientRect();
+    let box = element.getBoundingClientRect();
+    // Ô ẩn `sr-only` (input file trong khung thả tệp) chỉ 1px: vòng focus vẽ trên <label> bọc ngoài,
+    // chụp đúng ô 1px thì không thấy gì đổi, báo nhầm (27/09/2026, /dashboard/projects/documents).
+    if (box.width <= 2 || box.height <= 2) {
+      const holder = element.closest("label") || element.parentElement;
+      if (holder) box = holder.getBoundingClientRect();
+    }
 
     return { x: box.left, y: box.top, width: box.width, height: box.height };
   }, probeId);
