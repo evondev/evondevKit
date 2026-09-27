@@ -93,7 +93,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 3 | Khách hàng: danh sách, xem nhanh, chi tiết | `/dashboard/customers`, `/customers/quick-view`, `/customers/c-030`, `/customers/khong-co`, `/customers/states` | 27/09/2026 (danh sách, một lượt: ẩn cột phụ ở khung vừa, số đếm phân trang ở 375px; xem nhanh, một lượt: vùng bấm nút sao chép, hàng có avatar lệch baseline; chi tiết, một lượt: số ô số liệu lệch hàng khi nhãn xuống dòng; `khong-co`, một lượt: gộp về khuôn 404 trong khung; `/states`, một lượt: không lỗi mới; dự án chưa theo kịp bốn trang đầu) |
 | 4 | Đơn hàng: chi tiết, xem nhanh | `/dashboard/orders/detail`, `/orders/quick-view` | 27/09/2026 (modal chi tiết, một lượt: số tiền ngắt dòng ở 375px; xem nhanh, một lượt: không lỗi skill mới; dự án chưa theo kịp cả hai) |
 | 5 | Thành viên và phân quyền | `/dashboard/members` | 25/09/2026 (chín lượt; cả luồng xác thực đã theo kịp) |
-| 6 | Hồ sơ cá nhân | `/dashboard/profile`, `/profile/states` | |
+| 6 | Hồ sơ cá nhân | `/dashboard/profile`, `/profile/states` | 27/09/2026 (một lượt: "Gửi lại · Huỷ" của email chờ xác nhận, dự án chưa theo kịp) |
 | 7 | Đăng nhập, đăng ký, quên mật khẩu, OTP | `/login`, `/register`, `/forgot-password`, `/forgot-password/verify`, `/forgot-password/new-password`, `/forgot-password/states`, `/verify-otp`, `/verify-otp/states` | 25/09/2026 (chín lượt; cả luồng xác thực đã theo kịp) |
 | 8 | Bảng giá | `/pricing`, `/pricing/joined` | 26/09/2026 (bảy lượt) |
 | 9 | Form đăng ký doanh nghiệp | `/business-registration` | |
@@ -256,6 +256,8 @@ không ghi class. Rà xong 11 nhóm thì xem skill có nói gì về chúng khô
 
 Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần.
 
+- Hồ sơ `/dashboard/profile/states` (lượt 1, 27/09/2026): email chờ xác nhận, bỏ " · Gửi lại · Huỷ" nối sau email; hai nút
+  chữ xuống hàng riêng `flex gap-4 mt-1`, mỗi nút `relative before:absolute before:-inset-x-1.5 before:-inset-y-2`.
 - Panel xem nhanh đơn `/dashboard/orders/quick-view` (lượt 1, 27/09/2026): số điện thoại, email còn là chữ trơn, đổi sang
   link `tel:` / `mailto:` kèm nút sao chép (`components/description-list.md`); "Sao chép mã đơn" rời menu ⋯, thành
   nút sao chép cạnh "Đơn #10248" ở đầu panel như modal chi tiết đơn (`layouts/app.md`, việc gắn với giá trị nằm cạnh

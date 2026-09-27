@@ -322,7 +322,9 @@ function measureInPage({ minTapSize, isMobile }) {
   while (textWalker.nextNode() && orphanPunctuation.length < 10) {
     const textNode = textWalker.currentNode;
     const parent = textNode.parentElement;
-    if (!parent || !isVisible(parent) || parent.closest("script, style, code, pre, [aria-hidden='true']")) continue;
+    // Không bỏ qua aria-hidden: dấu " · " ngăn cách thường aria-hidden mà vẫn nhìn thấy, rơi đầu dòng là
+    // lỗi hình ("· Huỷ", đã lọt 27/09/2026 ở /dashboard/profile/states 375px).
+    if (!parent || !isVisible(parent) || parent.closest("script, style, code, pre")) continue;
 
     for (let index = 0; index < textNode.length; index++) {
       const character = textNode.data[index];
