@@ -162,6 +162,7 @@ rồi đọc theo file, mỗi lượt một file.
 | File | Số luật đã xét | Đổi | Giữ | Xong |
 | --- | --- | --- | --- | --- |
 | `components/button.md` | 4 | 1: hover nút viền chỉ đổi nền `--button-hover`, 26/09/2026 | 3 (27/09/2026): đang xử lý `aria-disabled` giữ focus (khớp trạng thái chờ của thư viện component chú trọng trợ năng: nút chờ vẫn focus được); nút chỉ icon cao bằng ô nhập cạnh nó (quy ước thường); `secondary` không thay `outline` (chủ dự án chốt) | ✅ |
+| `rules-state.md` | 15 | | 15 (27/09/2026): 4 là luật chủ dự án chốt hoặc câu bác lý lẽ cũ (đăng xuất đỏ, nền đỏ nhạt luôn hiện, `/8` cho nút trong dòng); còn lại trùng quy ước thường: ô `username` ẩn cho trình quản lý mật khẩu, vòng quanh avatar đang chọn, accordion không nền hover (như bộ component phổ biến), danh sách cắt ngang một mục, nút mắt 40px, link `ring-offset-4` (đo), thumb thanh cuộn qua biến (lỗi trình duyệt) | ✅ |
 
 ## Việc để sau: câu cũ thiếu mã luật
 
