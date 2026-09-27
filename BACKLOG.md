@@ -188,12 +188,38 @@ Chạy mỗi dự án mồi hai lượt: một lượt skill tự chụp, một 
 
 **Việc cần làm khi dựng dự án mồi:**
 
-- [ ] **Hai bản dark mode.** Một bản có dark mode và cài sẵn vài chỗ làm dở (mảng
+- [x] **Hai bản dark mode.** Một bản có dark mode và cài sẵn vài chỗ làm dở (mảng
       `bg-white` cứng, chữ đen trên nền tối, viền biến mất). Một bản chỉ có khối
       `.dark` thừa, không có cách bật, dùng để test xem skill có bịa dark mode không.
-- [ ] **Lỗi ở từng khổ màn**, có cả lỗi chỉ xuất hiện giữa hai khổ cố định (ví dụ
+- [x] **Lỗi ở từng khổ màn**, có cả lỗi chỉ xuất hiện giữa hai khổ cố định (ví dụ
       nav xuống dòng ở 900px), để test lượt quét bề rộng.
-- [ ] **Đủ ba hạng lỗi**, có ghi đáp án riêng để chấm bắt sót và báo nhầm.
+- [x] **Đủ ba hạng lỗi**, có ghi đáp án riêng để chấm bắt sót và báo nhầm.
+
+**Các dự án mồi.** Một dự án thì skill sửa vài vòng sẽ giỏi đúng dự án đó. Cần ba
+dự án khác nhau ở chỗ dễ làm skill sai. **Làm lần lượt:** xong dự án trước (chấm đạt)
+mới dựng dự án sau, và dự án mới **chạy đúng một lần trước khi sửa skill**, để biết
+mấy chỗ sửa trước đó có dùng được ở chỗ khác không.
+
+| # | Dự án | Khác ở đâu | Test gì | Trạng thái |
+| --- | --- | --- | --- | --- |
+| 1 | `tim-phong` | Vite + React + Tailwind v4, chép từ một trang thật đang xấu, brand riêng, nhiều lỗi | Bắt lỗi, không báo nhầm brand, quét bề rộng, hai bản dark | Vòng 1 (27/09/2026, `master`, tự chụp): bắt 19/34, báo nhầm 1 (gom bo góc brand về thang), 1 lần đưa khối brand vào Gu. Probe đo ra mà model bỏ: nút 20px, nút bị card cắt. Probe không mở được lớp nổi mở bằng nút thường. Vòng 2: 16/37, không báo nhầm; probe vẫn đo ra mà bảng bỏ, vẫn chưa mở được lớp nổi (nút chỉ có icon, `div` bấm được). Đã sửa: probe in danh sách mã `P` phải đối chiếu, mở lớp nổi rộng hơn, đo trang tự cuộn, bỏ lớp che khi đo tương phản. Vòng 3: 26/37, không báo nhầm, không đưa brand vào Gu. Đã sửa tiếp: Tab không dừng ở body, lướt qua phần tử cùng kiểu; lệnh grep tìm Lệch hệ trong code; lỗi thật mà sửa rộng vẫn lên bảng. Chờ vòng 4. Chưa đo được: header bị bóp chiều cao, ảnh không phủ hết card, lệch mép ở ≥1400px, focus ở mobile |
+| 2 | Chưa dựng | Next + shadcn, hệ token gọn, **ít lỗi** (vài lỗi Hỏng nhỏ) | Skill có dám nói "gần như ổn, chỉ có N chỗ" không, hay bịa cho đủ bảng. Quan trọng nhất | |
+| 3 | Chưa dựng | Không Tailwind (CSS thuần hoặc CSS Module), phong cách glass hoặc nền tối | Chấm Lệch hệ khi không có utility, không kéo về flat, dark làm mặc định | |
+
+Sau ba dự án mồi: chạy trên **một app thật** của chủ dự án, không có đáp án, chủ dự
+án tự đọc bảng. Đừng dùng dự án đã dựng bằng chính skill này, vì nó không lộ ra gì.
+
+**Vệ sinh khi dựng dự án mồi** (đã dính ở dự án 1):
+
+- Đáp án và bộ ảnh để ở `~/dev/phase2-dapan/<tên>/`, **ngoài mọi repo**. Skill đọc
+  từ `~/dev/evondevKit`, để đáp án trong đó là nó có thể grep trúng.
+- Tắt skill bằng `.claude/settings.local.json` lúc dựng, và **không commit file đó**
+  (thêm vào `.gitignore` trước lần commit đầu). Test thì xoá file đi.
+- Không commit ảnh so sánh với trang gốc. Commit message, tên branch, tên repo phải
+  trung tính: không có chữ "mồi", "lỗi", "refactor", "test".
+- Tên brand giả phải khác hẳn tên thật, không chỉ đổi vài chữ.
+- Lượt "chỉ đưa ảnh" chạy trong một thư mục trống. Phiên test luôn là phiên mới, không
+  dùng lại phiên đã cài lỗi.
 
 ---
 
