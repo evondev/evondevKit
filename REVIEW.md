@@ -161,7 +161,7 @@ rồi đọc theo file, mỗi lượt một file.
 
 | File | Số luật đã xét | Đổi | Giữ | Xong |
 | --- | --- | --- | --- | --- |
-| `components/button.md` | 1 (hover nút viền) | 1: chỉ đổi nền `--button-hover`, 26/09/2026 | | |
+| `components/button.md` | 4 | 1: hover nút viền chỉ đổi nền `--button-hover`, 26/09/2026 | 3 (27/09/2026): đang xử lý `aria-disabled` giữ focus (khớp trạng thái chờ của thư viện component chú trọng trợ năng: nút chờ vẫn focus được); nút chỉ icon cao bằng ô nhập cạnh nó (quy ước thường); `secondary` không thay `outline` (chủ dự án chốt) | ✅ |
 
 ## Việc để sau: câu cũ thiếu mã luật
 
