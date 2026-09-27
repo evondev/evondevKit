@@ -549,6 +549,12 @@ function measureInPage({ minTapSize, isMobile }) {
 
     if (!isPinned) unpinnedScrollTables.push(`${size}, cột đầu không ghim${isMobile ? " (dưới sm: thành danh sách dòng)" : ""}: ${describe(table)}`);
     else if (pinnedShare > 0.4) unpinnedScrollTables.push(`${size}, cột ghim chiếm ${Math.round(pinnedShare * 100)}% khung: ${describe(table)}`);
+    // Ghim rồi mà cột cuối (nút ⋯ của dòng) vẫn nằm ngoài khung tới khi cuộn: khung vừa phải ẩn cột
+    // phụ trước (đã dính 27/09/2026, bảng khách hàng 960px trong khung 718px ở 768 và 1024px).
+    const lastCell = firstBodyCell.parentElement.cells[firstBodyCell.parentElement.cells.length - 1];
+    if (isPinned && lastCell.getBoundingClientRect().left >= scroller.getBoundingClientRect().right) {
+      unpinnedScrollTables.push(`${size}, cột cuối ("${(lastCell.textContent.trim() || lastCell.querySelector("[aria-label]")?.getAttribute("aria-label") || "").slice(0, 24)}") nằm ngoài khung tới khi cuộn, ẩn cột phụ: ${describe(table)}`);
+    }
   }
 
   // 12. Nhóm radio / checkbox xếp lưới (vừa nhiều cột vừa nhiều hàng): đọc thành chữ Z, thang có thứ
@@ -743,7 +749,7 @@ function formatReport(results) {
       for (const item of result.overflowingElements) problems.push(`  lòi ra tới ${item.right}px: ${item.element}`);
     }
     if (result.unpinnedScrollTables.length > 0) {
-      problems.push(`BẢNG CUỘN NGANG MÀ CỘT ĐẦU TRÔI THEO (${result.unpinnedScrollTables.length} bảng, R9):`);
+      problems.push(`BẢNG CUỘN NGANG MẤT CỘT (${result.unpinnedScrollTables.length} bảng, R9):`);
       for (const item of result.unpinnedScrollTables.slice(0, 5)) problems.push(`  ${item}`);
     }
     if (result.gridChoiceGroups.length > 0) {

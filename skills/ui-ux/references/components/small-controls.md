@@ -290,6 +290,7 @@ isCurrent && "border-transparent bg-secondary text-foreground"   // + aria-curre
 ```
 
 - **Không bao giờ wrap, không nhảy chỗ.** Nav luôn ở cụm phải, cùng hàng với số đếm, bất kể có bao nhiêu trang. Chật thì **bớt số trang trước**: bỏ `2 3 4 5`, chỉ còn `‹ 1 … 12 … 129 ›`. Màn hẹp dưới `sm` thì chỉ còn `‹ 12 / 129 ›`. Không đẩy nav xuống dòng hai (đã dính 22/09/2026: ví dụ nhiều trang thì nav rớt xuống căn trái, ví dụ ít trang lại nằm phải).
+- **Dưới `sm` số đếm chỉ còn tổng**: "32 khách hàng", phần "1 tới 10 trong" bọc `<span class="hidden sm:inline">`. Nav `‹ 1 / 4 ›` đã nói đang ở đâu (`I16` vẫn đủ: tổng số bên trái, vị trí bên phải). Để nguyên câu thì ở 375px nó chỉ còn ~168px cạnh nav, rớt một chữ xuống dòng hai ("1 tới 10 trong 32 khách / hàng"), chân bảng cao gấp đôi (đã dính 27/09/2026, `/dashboard/customers`).
 - **Trang đang chọn chép đúng class tab `boxed` đang chọn**: nền `--secondary`, viền trong suốt. **Không dùng nền trắng + viền**: đứng cạnh select `10 ▾` thì nó trông y như ô input, người dùng tưởng là ô gõ số trang để nhảy.
 - **Select "Mỗi trang" nằm trong cụm phải, sát nav**, không đứng ngay sau số đếm. Số đếm dài ra theo trang ("1 tới 10" rồi "1.271 tới 1.280"), đặt select sau nó là select xê dịch mỗi lần chuyển trang.
 - **Cửa sổ trang luôn đủ 7 ô** (tính cả `…`) khi tổng số trang lớn hơn 7. Ở gần hai đầu thì lấp thêm số cho đủ 7:

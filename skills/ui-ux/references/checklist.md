@@ -138,7 +138,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Modal có ô nhập mà bấm ra ngoài vẫn đóng không? (`I20`)
 - [ ] Modal đã gỡ dismiss thì **còn đường đóng khác** chưa?
 - [ ] Có đủ ba trạng thái chưa: đang tải, rỗng, lỗi? Khung chờ có **đúng hình** nội dung không?
-- [ ] Danh sách quá 25 dòng đã có phân trang chưa, và có hiện tổng số không?
+- [ ] Danh sách quá 25 dòng đã có phân trang chưa, và có hiện tổng số không? Ở 375px số đếm có rớt chữ xuống dòng hai cạnh nav không (dưới `sm` chỉ còn tổng, `components/small-controls.md`)?
 - [ ] Phân trang: nav có nằm phải cùng hàng ở mọi số trang không? Trang đang chọn có trông như ô input không? Một trang thì đã ẩn nav, 0 dòng thì đã ẩn footer chưa?
 - [ ] **Tải tệp lên** (`components/file-upload.md`): chỉ tệp đang tải có thanh (`h-1`), tệp xong và tệp hỏng không còn thanh, không còn số %? Tệp hỏng có cả Thử lại lẫn ✕? Đang kéo tệp vào thì viền đậm lên vừa phải, không nét đứt đen? Dòng đổi trạng thái thì các dòng dưới có nhảy không? Tên dài cắt giữa còn đuôi `.pdf` không? Tên cắt giữa có giữ vài ký tự cuối, không thành bốn chấm "….docx"? Icon tệp cùng dáng tờ giấy, viền không bị hình tròn cắt góc? Không có quyền thì ẩn cả khu tải, không dựng khung khoá? Khung bị khoá: tiêu đề là lý do, nền khác lúc kéo vào, có nút lối ra thay cho nút mờ chưa?
 - [ ] Toast: rộng theo chữ chưa? Hành động là nút có hover, dồn phải cùng ✕ chưa? Câu dài đã tách hai tầng thay vì vỡ ba dòng chưa? (`layouts/overlay.md`)
@@ -210,6 +210,7 @@ Rồi làm sáu việc trên trang thật (sửa tạm dữ liệu giả để t
 
 1. [ ] Thu cửa sổ xuống **375px**. **Trang cuộn ngang là hỏng.**
 2. [ ] Vùng nào cuộn ngang thì **cuộn hết sang phải** — phần tử cuối có dính mép không?
+   Bảng quản lý ở 768px và 1024px (sidebar mở): còn cuộn ngang không, nút ⋯ của dòng có nằm trong khung không? Khung dưới `@4xl` thì ẩn cột phụ (công ty, ngày tạo) trước khi cho cuộn (`layouts/app.md`, Bảng dữ liệu).
 3. [ ] Đổi một tiêu đề thành câu dài **200 ký tự**.
 4. [ ] Đổi một con số thành `0`, một con số thành `1.284.500`.
 5. [ ] Xoá hết dữ liệu của một danh sách, xem trạng thái rỗng.

@@ -90,7 +90,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | --- | --- | --- | --- |
 | 1 | Khung app + tổng quan | `/dashboard`, `/dashboard/overview/states` | 26/09/2026 (tổng quan, ba lượt) |
 | 2 | Công việc: bảng nhóm, kanban, tạo mới | `/dashboard/tasks`, `/tasks/new`, `/tasks/states` | 26/09/2026 (kanban, ba lượt, đã theo kịp; popover Lọc, ba lượt, đã theo kịp); 27/09/2026 (bảng nhóm, một lượt: khuôn theo bề rộng khung, dự án chưa theo kịp; tạo mới, một lượt: nhóm radio, bộ đếm ký tự, dự án chưa theo kịp; `/states`, một lượt: khung chờ cột nhảy ngang, dự án chưa theo kịp) |
-| 3 | Khách hàng: danh sách, xem nhanh, chi tiết | `/dashboard/customers`, `/customers/quick-view`, `/customers/c-030`, `/customers/khong-co`, `/customers/states` | |
+| 3 | Khách hàng: danh sách, xem nhanh, chi tiết | `/dashboard/customers`, `/customers/quick-view`, `/customers/c-030`, `/customers/khong-co`, `/customers/states` | 27/09/2026 (danh sách, một lượt: ẩn cột phụ ở khung vừa, số đếm phân trang ở 375px, dự án chưa theo kịp); còn xem nhanh, chi tiết, `khong-co`, `/states` |
 | 4 | Đơn hàng: chi tiết, xem nhanh | `/dashboard/orders/detail`, `/orders/quick-view` | |
 | 5 | Thành viên và phân quyền | `/dashboard/members` | 25/09/2026 (chín lượt; cả luồng xác thực đã theo kịp) |
 | 6 | Hồ sơ cá nhân | `/dashboard/profile`, `/profile/states` | |
@@ -252,6 +252,9 @@ không ghi class. Rà xong 11 nhóm thì xem skill có nói gì về chúng khô
 
 Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần.
 
+- Danh sách khách hàng `/dashboard/customers` (lượt 1, 27/09/2026): card bảng `@container`, cột Công ty và Ngày tạo
+  `hidden @4xl:table-cell` (cả `<th>` và `<td>`), bỏ khoá bề rộng cột tên để nó nhận phần dư. Chân bảng dưới `sm`:
+  "1 tới 10 trong" bọc `hidden sm:inline`, chỉ còn "32 khách hàng".
 - `/dashboard/tasks/states` (lượt 1, 27/09/2026): khung chờ của bảng nhóm, ô ưu tiên và hạn chót dùng `min-w-32`,
   `min-w-40` như ô thật; thanh tên người phụ trách `w-44` thay vì ngắn hơn. Hiện cột Ưu tiên nhảy 86px lúc dữ liệu về.
 - Form tạo công việc `/dashboard/tasks/new` (lượt 1, 27/09/2026):
