@@ -43,9 +43,10 @@ họ, không phải lỗi.
   chỗ nào của dự án làm thế thì đó là Gu.
 - **Đếm giá trị ngoài thang không phải là Lệch hệ.** "Có 17 kiểu bo góc, gom về
   `sm` / `md` / `lg`" là đang áp thang lên dự án. Chỉ lệch khi **cùng vai mà khác
-  nhau** (hai nút cùng loại, hai card cùng cấp). Một giá trị ngoài token mà dùng đều
-  cho một vai (mọi panel bo 20px, khung chat bo 24px) là hệ của họ, dù file token
-  không khai. Tìm mã hex viết cứng thì mỗi dòng ghi đúng vai và `file:line`: "xanh
+  nhau**: hai nút cùng loại đứng cạnh nhau, hai card trong cùng một lưới. Card khác loại
+  (panel, thẻ số liệu, thẻ quảng bá) không cùng vai chỉ vì cùng là card, nên bo góc
+  khác nhau giữa chúng không phải lỗi. Một giá trị ngoài token mà dùng đều cho một vai
+  (mọi dialog bo 20px, mọi thẻ nổi bật bo 28px) là hệ của họ, dù file token không khai. Tìm mã hex viết cứng thì mỗi dòng ghi đúng vai và `file:line`: "xanh
   `#3b82f6` ở badge số đếm, trong khi xanh của hệ là token `primary` `#2563eb`".
 - **Tìm Lệch hệ trong code bằng lệnh, đừng chỉ nhìn ảnh.** Hai màu đỏ gần giống nhau,
   bóng tự chế, bo góc lẻ trong một hộp thoại thì ảnh không cho thấy. Đọc token trong
@@ -164,8 +165,10 @@ Cùng tinh thần `M20` (mặc định chỉ light), nhưng dự án đã có s�
 - **Chưa có (hoặc chỉ khai báo) thì không làm**: không chụp dark, không đề xuất dark,
   không thêm class `dark:` vào code sửa. Ghi tối đa một dòng "dự án chưa bật dark
   mode" ở phần mở đầu, không vào bảng.
-- **Có thì soi đủ hai chế độ.** Chụp mỗi khổ màn cả light lẫn dark (`--dark`), ảnh
-  "sau" cũng đủ hai bản. Màu dark lấy đúng token dark của dự án (khối `.dark`,
+- **Có thì soi đủ hai chế độ.** Chạy probe thêm một lượt `--dark` ở đủ 5 khổ (không cần
+  `--sweep`), ảnh "sau" cũng đủ hai bản. **Lượt tối có danh sách `P` riêng** và phải đối
+  chiếu như lượt sáng (`V5`): màu nhấn giữ nguyên trên nền tối hay tụt dưới 4.5:1, và chỉ
+  lượt tối đo ra điều đó. Dòng đếm tách hai phần: "sáng 78 mã, tối 41 mã". Màu dark lấy đúng token dark của dự án (khối `.dark`,
   `[data-theme="dark"]`), không lấy navy của skill (`M23`).
 - **Dark mode làm dở là Hỏng**: có nút bật mà còn mảng nền trắng cứng, chữ đen trên
   nền tối, viền biến mất, logo tối trên nền tối, bóng không thấy.
