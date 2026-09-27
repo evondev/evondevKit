@@ -91,7 +91,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 1 | Khung app + tổng quan | `/dashboard`, `/dashboard/overview/states` | 26/09/2026 (tổng quan, ba lượt) |
 | 2 | Công việc: bảng nhóm, kanban, tạo mới | `/dashboard/tasks`, `/tasks/new`, `/tasks/states` | 26/09/2026 (kanban, ba lượt, đã theo kịp; popover Lọc, ba lượt, đã theo kịp); 27/09/2026 (bảng nhóm, một lượt: khuôn theo bề rộng khung, dự án chưa theo kịp; tạo mới, một lượt: nhóm radio, bộ đếm ký tự, dự án chưa theo kịp; `/states`, một lượt: khung chờ cột nhảy ngang, dự án chưa theo kịp) |
 | 3 | Khách hàng: danh sách, xem nhanh, chi tiết | `/dashboard/customers`, `/customers/quick-view`, `/customers/c-030`, `/customers/khong-co`, `/customers/states` | 27/09/2026 (danh sách, một lượt: ẩn cột phụ ở khung vừa, số đếm phân trang ở 375px; xem nhanh, một lượt: vùng bấm nút sao chép, hàng có avatar lệch baseline; chi tiết, một lượt: số ô số liệu lệch hàng khi nhãn xuống dòng; `khong-co`, một lượt: gộp về khuôn 404 trong khung; `/states`, một lượt: không lỗi mới; dự án chưa theo kịp bốn trang đầu) |
-| 4 | Đơn hàng: chi tiết, xem nhanh | `/dashboard/orders/detail`, `/orders/quick-view` | 27/09/2026 (modal chi tiết, một lượt: số tiền ngắt dòng ở 375px, dự án chưa theo kịp); còn xem nhanh |
+| 4 | Đơn hàng: chi tiết, xem nhanh | `/dashboard/orders/detail`, `/orders/quick-view` | 27/09/2026 (modal chi tiết, một lượt: số tiền ngắt dòng ở 375px; xem nhanh, một lượt: không lỗi skill mới; dự án chưa theo kịp cả hai) |
 | 5 | Thành viên và phân quyền | `/dashboard/members` | 25/09/2026 (chín lượt; cả luồng xác thực đã theo kịp) |
 | 6 | Hồ sơ cá nhân | `/dashboard/profile`, `/profile/states` | |
 | 7 | Đăng nhập, đăng ký, quên mật khẩu, OTP | `/login`, `/register`, `/forgot-password`, `/forgot-password/verify`, `/forgot-password/new-password`, `/forgot-password/states`, `/verify-otp`, `/verify-otp/states` | 25/09/2026 (chín lượt; cả luồng xác thực đã theo kịp) |
@@ -256,6 +256,10 @@ không ghi class. Rà xong 11 nhóm thì xem skill có nói gì về chúng khô
 
 Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần.
 
+- Panel xem nhanh đơn `/dashboard/orders/quick-view` (lượt 1, 27/09/2026): số điện thoại, email còn là chữ trơn, đổi sang
+  link `tel:` / `mailto:` kèm nút sao chép (`components/description-list.md`); "Sao chép mã đơn" rời menu ⋯, thành
+  nút sao chép cạnh "Đơn #10248" ở đầu panel như modal chi tiết đơn (`layouts/app.md`, việc gắn với giá trị nằm cạnh
+  giá trị).
 - Modal chi tiết đơn `/dashboard/orders/detail` (lượt 1, 27/09/2026): khối Thanh toán, `<dt>` bỏ `shrink-0` thêm `min-w-0`,
   `<dd>` tiền bỏ `wrap-anywhere` thêm `whitespace-nowrap shrink-0`; nhãn viết "Tạm tính&nbsp;· 1&nbsp;sản&nbsp;phẩm".
   Hiện ở 375px "128.900.000" / "đ" ngắt hai dòng.
