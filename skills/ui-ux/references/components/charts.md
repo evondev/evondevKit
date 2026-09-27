@@ -272,6 +272,8 @@ nhãn trái + số phải, thanh ở giữa, một dòng phụ `text-xs text-mut
 </div>
 ```
 - **Mỗi ô phải có `min-w-0`.** Grid item mặc định không chịu co nhỏ hơn nội dung, thiếu dòng này là cả trang tràn ngang.
+- **Số của các ô cùng hàng luôn thẳng một đường, kể cả khi có nhãn xuống dòng.** Mỗi ô là `grid row-span-2 grid-rows-subgrid content-start` (ba tầng thì `row-span-3`), khung ngoài không cần khai hàng: hàng nhãn cao theo nhãn dài nhất, số cả hàng cùng nằm dưới đó. Không có subgrid thì một nhãn hai dòng đẩy riêng số của ô đó xuống 16px (đã dính 27/09/2026, trang chi tiết khách ở 1280px: cột chính còn ~150px mỗi ô, "Đơn đã giao · 12 tháng" xuống dòng, "3" thấp hơn "12,3 tr đ").
+- **Nhãn có kỳ ngắt sau dấu `·`, không ngắt giữa kỳ**: `Đơn đã giao&nbsp;· 12&nbsp;tháng` ra "Đơn đã giao ·" / "12 tháng". Để khoảng trắng thường thì trình duyệt ngắt "· 12" / "tháng"; dán `&nbsp;` sau dấu thì dấu `·` rơi xuống đầu dòng.
 - **Cỡ số giảm một bậc ở mobile**: `text-xl sm:text-2xl`.
 - **Dùng `tabular-nums`** cho mọi con số. Chữ số đều bề ngang thì các ô thẳng cột nhau, và số không nhảy khi đổi giá trị.
 

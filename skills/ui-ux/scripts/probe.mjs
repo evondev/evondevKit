@@ -591,10 +591,35 @@ function measureInPage({ minTapSize, isMobile }) {
     }
   }
 
+  // 13. Hàng ô số liệu (mỗi ô một cặp dt/dd) mà số không thẳng một đường: một nhãn xuống dòng đẩy riêng
+  //     số của ô đó (đã dính 27/09/2026, trang chi tiết khách 1280px, "3" thấp hơn "12,3 tr đ" 16px).
+  const unevenStatRows = [];
+  for (const statGroup of document.querySelectorAll("dl")) {
+    const tiles = [...statGroup.children].filter((tile) => isVisible(tile) && tile.querySelector(":scope > dt") && tile.querySelector(":scope > dd"));
+    if (tiles.length < 2) continue;
+
+    const tilesByRow = new Map();
+    for (const tile of tiles) {
+      const rowKey = Math.round(tile.getBoundingClientRect().top);
+      if (!tilesByRow.has(rowKey)) tilesByRow.set(rowKey, []);
+      tilesByRow.get(rowKey).push(tile);
+    }
+    for (const rowTiles of tilesByRow.values()) {
+      if (rowTiles.length < 2) continue;
+      const valueTops = rowTiles.map((tile) => tile.querySelector(":scope > dd").getBoundingClientRect().top);
+      const spread = Math.max(...valueTops) - Math.min(...valueTops);
+      if (spread > 2) {
+        unevenStatRows.push(`số lệch ${Math.round(spread)}px giữa ${rowTiles.length} ô cùng hàng: ${describe(statGroup)}`);
+        break;
+      }
+    }
+  }
+
   return {
     viewportWidth,
     pageScrollWidth,
     unpinnedScrollTables,
+    unevenStatRows,
     gridChoiceGroups,
     hasHorizontalScroll: pageScrollWidth > viewportWidth + 1,
     overflowingElements,
@@ -769,6 +794,10 @@ function formatReport(results) {
     if (result.unpinnedScrollTables.length > 0) {
       problems.push(`BẢNG CUỘN NGANG MẤT CỘT (${result.unpinnedScrollTables.length} bảng, R9):`);
       for (const item of result.unpinnedScrollTables.slice(0, 5)) problems.push(`  ${item}`);
+    }
+    if (result.unevenStatRows.length > 0) {
+      problems.push(`SỐ TRONG HÀNG Ô SỐ LIỆU KHÔNG THẲNG (${result.unevenStatRows.length} hàng, ô dùng grid-rows-subgrid):`);
+      for (const item of result.unevenStatRows.slice(0, 5)) problems.push(`  ${item}`);
     }
     if (result.gridChoiceGroups.length > 0) {
       problems.push(`NHÓM LỰA CHỌN XẾP LƯỚI (${result.gridChoiceGroups.length} nhóm, đọc chữ Z; một hàng hoặc một cột):`);
