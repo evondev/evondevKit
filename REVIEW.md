@@ -89,7 +89,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | # | Trang | Route | Rà ngày |
 | --- | --- | --- | --- |
 | 1 | Khung app + tổng quan | `/dashboard`, `/dashboard/overview/states` | 26/09/2026 (tổng quan, ba lượt) |
-| 2 | Công việc: bảng nhóm, kanban, tạo mới | `/dashboard/tasks`, `/tasks/new`, `/tasks/states` | 26/09/2026 (kanban, ba lượt, đã theo kịp; popover Lọc, ba lượt, đã theo kịp); 27/09/2026 (bảng nhóm, một lượt: khuôn theo bề rộng khung, dự án chưa theo kịp); còn tạo mới, `/states` |
+| 2 | Công việc: bảng nhóm, kanban, tạo mới | `/dashboard/tasks`, `/tasks/new`, `/tasks/states` | 26/09/2026 (kanban, ba lượt, đã theo kịp; popover Lọc, ba lượt, đã theo kịp); 27/09/2026 (bảng nhóm, một lượt: khuôn theo bề rộng khung, dự án chưa theo kịp; tạo mới, một lượt: nhóm radio, bộ đếm ký tự, dự án chưa theo kịp); còn `/states` |
 | 3 | Khách hàng: danh sách, xem nhanh, chi tiết | `/dashboard/customers`, `/customers/quick-view`, `/customers/c-030`, `/customers/khong-co`, `/customers/states` | |
 | 4 | Đơn hàng: chi tiết, xem nhanh | `/dashboard/orders/detail`, `/orders/quick-view` | |
 | 5 | Thành viên và phân quyền | `/dashboard/members` | 25/09/2026 (chín lượt; cả luồng xác thực đã theo kịp) |
@@ -248,6 +248,13 @@ không ghi class. Rà xong 11 nhóm thì xem skill có nói gì về chúng khô
 
 Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần.
 
+- Form tạo công việc `/dashboard/tasks/new` (lượt 1, 27/09/2026):
+  - Nhóm "Mức ưu tiên": bỏ `grid grid-cols-2`, dưới `sm` xếp dọc, mỗi lựa chọn là `<label>` bọc ô + chữ
+    `flex w-fit min-h-11 items-center gap-3`; từ `sm` giữ một hàng.
+  - Ô radio còn `focus-visible:ring-focus/10` (Tab tới gần như không thấy), đổi sang
+    `ring-2 ring-foreground/50 ring-offset-2 ring-offset-surface` như `components/choice-controls.md`.
+  - Ô tiêu đề ghi "Tối đa 120 ký tự" mà không đếm: thêm bộ đếm cùng dòng gợi ý từ 96 ký tự, đỏ khi vượt,
+    bấm gửi mà vượt thì câu lỗi "Dài hơn 120 ký tự, bớt N ký tự". Không thêm `maxlength`.
 - Bảng nhóm công việc `/dashboard/tasks` (lượt 1, 27/09/2026): bỏ `min-w-[52rem]` và khung cuộn ngang, card
   bảng là `@container`. Khung dưới `@4xl` thì cột người phụ trách chỉ avatar (tên vào `title` + `sr-only`),
   tiêu đề cột "Phụ trách". Dưới `@2xl` thành danh sách dòng: tên việc `line-clamp-2` cùng hàng nút ⋯, dự án,

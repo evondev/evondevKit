@@ -547,10 +547,27 @@ function measureInPage({ minTapSize, isMobile }) {
     else if (pinnedShare > 0.4) unpinnedScrollTables.push(`${size}, cột ghim chiếm ${Math.round(pinnedShare * 100)}% khung: ${describe(table)}`);
   }
 
+  // 12. Nhóm radio / checkbox xếp lưới (vừa nhiều cột vừa nhiều hàng): đọc thành chữ Z, thang có thứ
+  //     tự như mức ưu tiên ra "Thấp, Trung bình / Cao, Khẩn cấp" (đã dính 27/09/2026, form tạo công
+  //     việc 375px). Một hàng hoặc một cột thì đúng.
+  const gridChoiceGroups = [];
+  for (const group of document.querySelectorAll("fieldset, [role='radiogroup'], [role='group']")) {
+    const choices = [...group.querySelectorAll("input[type='radio'], input[type='checkbox'], [role='radio']")].filter(isVisible);
+    if (choices.length < 3) continue;
+
+    const lefts = new Set(choices.map((choice) => Math.round(choice.getBoundingClientRect().left / 4)));
+    const tops = new Set(choices.map((choice) => Math.round(choice.getBoundingClientRect().top / 4)));
+    if (lefts.size > 1 && tops.size > 1) {
+      const legend = group.querySelector("legend")?.textContent.trim() || describe(group);
+      gridChoiceGroups.push(`${choices.length} lựa chọn thành ${lefts.size} cột × ${tops.size} hàng: "${legend.slice(0, 40)}"`);
+    }
+  }
+
   return {
     viewportWidth,
     pageScrollWidth,
     unpinnedScrollTables,
+    gridChoiceGroups,
     hasHorizontalScroll: pageScrollWidth > viewportWidth + 1,
     overflowingElements,
     truncatedCount: truncatedTexts.length,
@@ -724,6 +741,10 @@ function formatReport(results) {
     if (result.unpinnedScrollTables.length > 0) {
       problems.push(`BẢNG CUỘN NGANG MÀ CỘT ĐẦU TRÔI THEO (${result.unpinnedScrollTables.length} bảng, R9):`);
       for (const item of result.unpinnedScrollTables.slice(0, 5)) problems.push(`  ${item}`);
+    }
+    if (result.gridChoiceGroups.length > 0) {
+      problems.push(`NHÓM LỰA CHỌN XẾP LƯỚI (${result.gridChoiceGroups.length} nhóm, đọc chữ Z; một hàng hoặc một cột):`);
+      for (const item of result.gridChoiceGroups.slice(0, 5)) problems.push(`  ${item}`);
     }
     if (result.consoleErrors.length > 0) {
       problems.push(`LỖI CONSOLE (${result.consoleErrors.length}):`);

@@ -390,6 +390,23 @@ nhất ở form, và nhìn ảnh chụp rất khó nhận ra vì "trông vẫn �
 **Dưới ô chỉ có MỘT dòng.** Có lỗi thì câu lỗi **thay chỗ** gợi ý, không đẩy gợi
 ý xuống thành hai dòng chồng nhau.
 
+### Ô có giới hạn ký tự
+
+Gợi ý đã ghi "Tối đa 120 ký tự" thì ô phải cho thấy mình đang ở đâu so với mức đó.
+Chỉ ghi mà không đếm thì người gõ câu 132 ký tự không biết mình vượt, tới lúc gửi mới
+bị chặn (đã dính 27/09/2026, `/dashboard/tasks/new`: gõ 132 ký tự, dưới ô không đổi gì).
+Cách của các hệ thiết kế lớn:
+
+- **Bộ đếm cùng dòng với gợi ý, căn phải**: `flex justify-between gap-3`, gợi ý trái, bộ
+  đếm `shrink-0 text-xs text-muted tabular-nums` phải, ghi "98/120". Vẫn một dòng dưới ô.
+- **Chỉ hiện khi đã gõ tới khoảng 80% giới hạn.** Dưới đó chỉ có gợi ý; đếm từ ký tự đầu
+  là một con số nhảy liên tục ngay cạnh chỗ người ta đang nghĩ câu chữ.
+- **Vượt thì bộ đếm đỏ** ("132/120", chữ đỏ như câu lỗi), gợi ý giữ nguyên. Bấm gửi mà
+  vẫn vượt thì câu lỗi thay gợi ý và nói cách sửa: "Dài hơn 120 ký tự, bớt 12 ký tự".
+- **Không `maxlength`.** Chặn cứng thì dán một câu dài bị cắt giữa chữ mà không ai báo,
+  người dùng mất phần đuôi. Cho gõ và dán quá, rồi báo.
+- Bộ đếm nằm trong `aria-describedby` của ô, cập nhật trong vùng `aria-live="polite"`.
+
 ### Ba câu hỏi trước khi viết một dòng chữ đỏ
 
 1. **Câu này có trùng chữ với placeholder hoặc nhãn không?** Trùng thì bỏ. Placeholder ghi "Nhập mật khẩu của bạn" mà chữ đỏ dưới ô cũng ghi "Nhập mật khẩu của bạn" thì người dùng đọc hai lần cùng một câu, và vẫn không biết mình sai ở đâu.

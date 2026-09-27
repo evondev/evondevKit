@@ -102,7 +102,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Tailwind v4: `<button>` có `cursor-pointer` chưa, hoặc base CSS đã trả lại chưa (`W7`)?
 - [ ] **Bấm Tab qua các nút, tab, checkbox**: có vòng mờ `ring-foreground/50` cách 2px không? Bấm chuột thì không được hiện. **Trong menu** thì mục đang focus đổi nền như hover, không vòng (`I13`).
 - [ ] **Bấm Tab qua ô nhập, select**: có viền `--border-focus` **và** ring mờ `--ring-focus` `ring-2` chưa? `ring-4` là quá dày (`F20`). Select đang mở cũng giữ viền + ring (`I13`).
-- [ ] **Checkbox / radio / công tắc** (`components/choice-controls.md`): cỡ mặc định 20px (công tắc 24×44), không phải 16px? Card chọn: đang chọn có viền + ring? Khoá thì nhãn mờ theo? Nhóm radio có sẵn một lựa chọn và có `<legend>`?
+- [ ] **Checkbox / radio / công tắc** (`components/choice-controls.md`): cỡ mặc định 20px (công tắc 24×44), không phải 16px? Card chọn: đang chọn có viền + ring? Khoá thì nhãn mờ theo? Nhóm radio có sẵn một lựa chọn và có `<legend>`? Nhóm xếp một hàng hoặc một cột, không lưới 2×2 (thang Thấp → Khẩn cấp đọc chữ Z)? Ở 375px mỗi lựa chọn là dòng cao 44px bấm được cả dòng?
 - [ ] Vừa Tab vừa rê chuột trong menu: có **hai mục sáng cùng lúc** không? Chỉ được một (`data-[highlighted]`).
 - [ ] Rê chuột lên **nút chính**: có đổi màu không? Nút `primary` là chỗ hay quên hover nhất (`I9`).
 - [ ] **Bấm vào chữ nhãn**: ô có focus không (`for`/`htmlFor`)? Con trỏ có thành bàn tay không?
@@ -134,6 +134,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Toast có trượt vào từ mép màn và trượt ra khi hết giờ không, hay bật "phựt"? Render bằng `{toast && …}` là mất chuyển động ra. Email trong toast nằm tầng dưới, xuống dòng sau `@` (`layouts/overlay.md`, Toast)?
 - [ ] Ô mật khẩu có đang lấy `••••••` làm placeholder không? Nhìn y hệt mật khẩu đã gõ (`T26`).
 - [ ] Form có yêu cầu độ dài tối thiểu: đã ghi bằng chữ ở dòng gợi ý chưa, hay đợi gõ sai mới báo?
+- [ ] Ô có giới hạn tối đa ("Tối đa 120 ký tự"): gõ tới ~80% có bộ đếm cùng dòng gợi ý, căn phải không? Gõ quá có đỏ lên không, hay im lặng? Có `maxlength` cắt mất đuôi câu dán vào không (`layouts/form.md`, "Ô có giới hạn ký tự")?
 - [ ] Modal có ô nhập mà bấm ra ngoài vẫn đóng không? (`I20`)
 - [ ] Modal đã gỡ dismiss thì **còn đường đóng khác** chưa?
 - [ ] Có đủ ba trạng thái chưa: đang tải, rỗng, lỗi? Khung chờ có **đúng hình** nội dung không?
