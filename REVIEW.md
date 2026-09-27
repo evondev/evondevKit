@@ -89,7 +89,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | # | Trang | Route | Rà ngày |
 | --- | --- | --- | --- |
 | 1 | Khung app + tổng quan | `/dashboard`, `/dashboard/overview/states` | 26/09/2026 (tổng quan, ba lượt) |
-| 2 | Công việc: bảng nhóm, kanban, tạo mới | `/dashboard/tasks`, `/tasks/new`, `/tasks/states` | 26/09/2026 (kanban, ba lượt, đã theo kịp; popover Lọc, ba lượt, đã theo kịp; còn bảng nhóm, tạo mới, `/states`) |
+| 2 | Công việc: bảng nhóm, kanban, tạo mới | `/dashboard/tasks`, `/tasks/new`, `/tasks/states` | 26/09/2026 (kanban, ba lượt, đã theo kịp; popover Lọc, ba lượt, đã theo kịp); 27/09/2026 (bảng nhóm, một lượt: khuôn theo bề rộng khung, dự án chưa theo kịp); còn tạo mới, `/states` |
 | 3 | Khách hàng: danh sách, xem nhanh, chi tiết | `/dashboard/customers`, `/customers/quick-view`, `/customers/c-030`, `/customers/khong-co`, `/customers/states` | |
 | 4 | Đơn hàng: chi tiết, xem nhanh | `/dashboard/orders/detail`, `/orders/quick-view` | |
 | 5 | Thành viên và phân quyền | `/dashboard/members` | 25/09/2026 (chín lượt; cả luồng xác thực đã theo kịp) |
@@ -115,7 +115,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 
 Route mới xuất hiện trong dự án thì thêm dòng vào bảng (`grep -rhoE "path: ?['\"][^'\"]+" src`).
 
-Dark mode làm sau bậc 3 (`TESTS.md`, mục "Dark mode"). Các lượt rà trước đó chỉ soi nền
+Dark mode làm sau phase 2 (`TESTS.md`, mục "Dark mode"). Các lượt rà trước đó chỉ soi nền
 sáng. Khi dự án đã có dark mode, trang đã rà cần thêm một lượt chỉ soi nền tối; xong thì ghi
 "tối: <ngày>" vào cột "Rà ngày". Trang chưa rà thì rà một lần cả hai chế độ.
 
@@ -247,6 +247,11 @@ không ghi class. Rà xong 11 nhóm thì xem skill có nói gì về chúng khô
 ## Dự án chưa theo kịp
 
 Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần.
+
+- Bảng nhóm công việc `/dashboard/tasks` (lượt 1, 27/09/2026): bỏ `min-w-[52rem]` và khung cuộn ngang, card
+  bảng là `@container`. Khung dưới `@4xl` thì cột người phụ trách chỉ avatar (tên vào `title` + `sr-only`),
+  tiêu đề cột "Phụ trách". Dưới `@2xl` thành danh sách dòng: tên việc `line-clamp-2` cùng hàng nút ⋯, dự án,
+  rồi hàng ưu tiên · hạn chót `text-xs` với avatar thẳng cột nút ⋯; mảnh trống bỏ hẳn, không `—`.
 
 - Trang thanh toán (lượt 4, 27/09/2026; lượt 1–3 đã theo kịp):
   - Ca trừ tiền thất bại ở `/states`: câu của Vùng nguy hiểm (và hộp huỷ nếu mở từ ca này) còn "bạn vẫn dùng tới

@@ -20,12 +20,14 @@ Tới bậc 2, bậc 3 thì chỉ **ráp** từ các file đó, không vẽ lạ
 chức**, hình thức vẫn theo skill. Gửi ảnh kèm câu "ảnh này chỉ là wireframe", để skill
 đọc theo `S12` nhánh wireframe, không bám màu và bóng của ảnh.
 
-**Thứ tự lớn:** bậc 1 → 1b → 2 → 3 → dark mode → rà hết `REVIEW.md` → phase 2 refactor
-(`BACKLOG.md`, mục "Phase 2") → vòng tiếng Anh.
+**Thứ tự lớn:** bậc 1 → 1b → 2 → 3 → rà hết `REVIEW.md` → phase 2 refactor
+(`BACKLOG.md`, mục "Phase 2") → dark mode → vòng tiếng Anh.
 
-- Dark mode đi trước phần rà còn lại: mỗi lượt rà chụp luôn cả sáng lẫn tối, rà một lần
-  là xong trang. Làm sau thì trang nào cũng phải rà thêm một vòng chỉ cho nền tối.
-- Refactor đợi luật đứng yên: danh sách "đề xuất sửa" của nhánh đó dựa trên luật của skill.
+- Phase 2 đi trước dark mode (chốt 27/09/2026): người dùng thật đang có UI sẵn mà nhìn
+  rối, muốn dùng skill để tối ưu. Dark mode ít người cần hơn, để sau.
+- Refactor đợi luật đứng yên: danh sách "đề xuất sửa" của nhánh đó dựa trên luật của skill,
+  nên rà hết `REVIEW.md` trước.
+- Dark mode làm sau thì các trang đã rà phải thêm một lượt chỉ soi nền tối. Chấp nhận.
 - Tiếng Anh sau cùng: chỉ kiểm chữ, không đổi bố cục hay màu.
 
 ## Bậc 1 — Component riêng lẻ
@@ -144,7 +146,7 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
 
 ## Dark mode
 
-Làm sau bậc 3, trước phần rà còn lại của `REVIEW.md`. Skill mặc định chỉ light (`M20`),
+Làm sau phase 2 (xem "Thứ tự lớn" ở đầu file). Skill mặc định chỉ light (`M20`),
 nên đây là đề **người dùng tự xin dark mode** cho dự án đang có. Dự án test chưa có
 dark mode: chưa có khối `.dark`, chưa có nút đổi theme.
 

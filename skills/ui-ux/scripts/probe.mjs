@@ -246,6 +246,12 @@ function measureInPage({ minTapSize, isMobile }) {
   //    elementFromPoint ở mép 44px vẫn trúng chính nó, không tính là lỗi.
   const smallTapTargets = [];
   if (isMobile) {
+    // scrollIntoView cuộn cả khung cuộn bên trong (bảng cuộn ngang), window.scrollTo cuối vòng không
+    // trả chúng về: ảnh chụp sau đó ra bảng lệch hẳn sang phải, mất cột tên (đã dính 27/09/2026,
+    // /dashboard/tasks ở 375px). Ghi vị trí cuộn của mọi khung trước, trả lại sau.
+    const scrolledContainers = [...document.querySelectorAll("*")]
+      .filter((container) => container.scrollWidth > container.clientWidth || container.scrollHeight > container.clientHeight)
+      .map((container) => ({ container, left: container.scrollLeft, top: container.scrollTop }));
     const interactiveElements = [...document.querySelectorAll('button, a[href], input:not([type="hidden"]), select, textarea, [role="button"], [role="tab"], [role="checkbox"], [role="switch"], [role="menuitem"]')];
 
     for (const element of interactiveElements) {
@@ -281,6 +287,10 @@ function measureInPage({ minTapSize, isMobile }) {
       if (!isEachProbeHit) smallTapTargets.push({ element: describe(element), size: `${Math.round(rect.width)}×${Math.round(rect.height)}` });
     }
 
+    for (const { container, left, top } of scrolledContainers) {
+      container.scrollLeft = left;
+      container.scrollTop = top;
+    }
     window.scrollTo(0, 0);
   }
 
@@ -513,9 +523,34 @@ function measureInPage({ minTapSize, isMobile }) {
     }
   }
 
+  // 11. Bảng cuộn ngang mà cột nhận diện trôi theo (R9): cuộn một nhịp là mất tên, các ô còn lại
+  //     không biết của ai. Cột đầu phải `sticky` và không quá ~40% khung; dưới `sm` bảng quản lý
+  //     thành danh sách dòng (đã dính 27/09/2026: bảng nhóm công việc 832px trong khung 341px ở
+  //     375px, không ghim, cuộn sang thì cả tên nhóm lẫn tên việc trôi mất).
+  const unpinnedScrollTables = [];
+  for (const table of document.querySelectorAll("table")) {
+    if (!isVisible(table)) continue;
+    let scroller = table.parentElement;
+    while (scroller && scroller !== document.body && !["auto", "scroll"].includes(getComputedStyle(scroller).overflowX)) scroller = scroller.parentElement;
+    if (!scroller || scroller === document.body || scroller.scrollWidth <= scroller.clientWidth + 1) continue;
+
+    const firstBodyCell = [...table.querySelectorAll("tbody tr")]
+      .map((row) => row.cells[0])
+      .find((cell) => cell && cell.colSpan === 1 && isVisible(cell));
+    if (!firstBodyCell) continue;
+
+    const isPinned = getComputedStyle(firstBodyCell).position === "sticky";
+    const pinnedShare = firstBodyCell.getBoundingClientRect().width / scroller.clientWidth;
+    const size = `bảng ${table.scrollWidth}px trong khung ${scroller.clientWidth}px`;
+
+    if (!isPinned) unpinnedScrollTables.push(`${size}, cột đầu không ghim${isMobile ? " (dưới sm: thành danh sách dòng)" : ""}: ${describe(table)}`);
+    else if (pinnedShare > 0.4) unpinnedScrollTables.push(`${size}, cột ghim chiếm ${Math.round(pinnedShare * 100)}% khung: ${describe(table)}`);
+  }
+
   return {
     viewportWidth,
     pageScrollWidth,
+    unpinnedScrollTables,
     hasHorizontalScroll: pageScrollWidth > viewportWidth + 1,
     overflowingElements,
     truncatedCount: truncatedTexts.length,
@@ -685,6 +720,10 @@ function formatReport(results) {
     if (result.hasHorizontalScroll) {
       problems.push(`CUỘN NGANG: trang rộng ${result.pageScrollWidth}px trên màn ${result.viewportWidth}px.`);
       for (const item of result.overflowingElements) problems.push(`  lòi ra tới ${item.right}px: ${item.element}`);
+    }
+    if (result.unpinnedScrollTables.length > 0) {
+      problems.push(`BẢNG CUỘN NGANG MÀ CỘT ĐẦU TRÔI THEO (${result.unpinnedScrollTables.length} bảng, R9):`);
+      for (const item of result.unpinnedScrollTables.slice(0, 5)) problems.push(`  ${item}`);
     }
     if (result.consoleErrors.length > 0) {
       problems.push(`LỖI CONSOLE (${result.consoleErrors.length}):`);
