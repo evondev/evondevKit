@@ -96,7 +96,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 6 | Hồ sơ cá nhân | `/dashboard/profile`, `/profile/states` | 27/09/2026 (một lượt: "Gửi lại · Huỷ" của email chờ xác nhận, dự án chưa theo kịp) |
 | 7 | Đăng nhập, đăng ký, quên mật khẩu, OTP | `/login`, `/register`, `/forgot-password`, `/forgot-password/verify`, `/forgot-password/new-password`, `/forgot-password/states`, `/verify-otp`, `/verify-otp/states` | 25/09/2026 (chín lượt; cả luồng xác thực đã theo kịp) |
 | 8 | Bảng giá | `/pricing`, `/pricing/joined` | 26/09/2026 (bảy lượt) |
-| 9 | Form đăng ký doanh nghiệp | `/business-registration` | |
+| 9 | Form đăng ký doanh nghiệp | `/business-registration` | 27/09/2026 (một lượt: không lỗi hình; Tiếp / Quay lại chưa nối xử lý, là logic dự án, `N10`) |
 | 10 | Trợ lý AI | `/dashboard/assistant`, `/assistant/states` | |
 | 11 | Tài liệu (cây thư mục) | `/dashboard/projects/documents`, `/documents/states` | |
 | 12 | Thông báo | `/dashboard/notifications/states` | |
