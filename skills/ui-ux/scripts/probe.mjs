@@ -324,7 +324,20 @@ function measureInPage({ minTapSize, isMobile }) {
     const parent = textNode.parentElement;
     // Không bỏ qua aria-hidden: dấu " · " ngăn cách thường aria-hidden mà vẫn nhìn thấy, rơi đầu dòng là
     // lỗi hình ("· Huỷ", đã lọt 27/09/2026 ở /dashboard/profile/states 375px).
-    if (!parent || !isVisible(parent) || parent.closest("script, style, code, pre")) continue;
+    if (!parent || !isVisible(parent) || parent.closest("script, style")) continue;
+    // Chữ trong code / pre không xét, nhưng vẫn là "chữ đứng trước" của dấu theo sau: bỏ qua hẳn thì dấu
+    // phẩy sau `DH-2026-004821` bị so với dòng trên, báo nhầm (27/09/2026, trợ lý AI 375px).
+    if (parent.closest("code, pre")) {
+      const lastIndex = textNode.data.trimEnd().length - 1;
+      if (lastIndex >= 0) {
+        const lastRange = document.createRange();
+        lastRange.setStart(textNode, lastIndex);
+        lastRange.setEnd(textNode, lastIndex + 1);
+        const lastRect = lastRange.getBoundingClientRect();
+        if (lastRect.width) previousCharRect = lastRect;
+      }
+      continue;
+    }
 
     for (let index = 0; index < textNode.length; index++) {
       const character = textNode.data[index];
