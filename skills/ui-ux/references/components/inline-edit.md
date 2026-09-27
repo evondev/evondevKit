@@ -8,6 +8,9 @@ Email và mật khẩu không sửa tại chỗ (`../layouts/app.md`, trang hồ
 
 - **Bấm vào tên thì thành ô nhập, chữ chọn sẵn** để gõ đè luôn. Enter hoặc nút ✓ thì lưu,
   Esc hoặc nút ✕ thì huỷ, bấm ra ngoài thì lưu (như hầu hết app quản lý công việc).
+  **Vùng chữ dài nhiều dòng (mô tả, ghi chú) thì bấm ra ngoài không lưu mà giữ ô mở**, chỉ ✓ / ✕ mới
+  thoát: bấm nhầm ra ngoài giữa chừng thì lưu một đoạn viết dở hoặc mất nó (hệ thiết kế lớn khuyên
+  vậy cho vùng chữ dài; tra 27/09/2026). Tên một dòng thì bấm ra ngoài vẫn lưu.
 - **Để trống thì không lưu**: viền đỏ, câu lỗi dưới ô ("Chưa nhập tên dự án", nói việc cần
   làm, `layouts/form.md`), ô vẫn mở. Gõ lại chữ thì lỗi mất, dòng lỗi giữ chỗ tới lúc thoát.
   Lưu tên đã bỏ khoảng trắng hai đầu; tên không đổi thì không gọi lưu.
