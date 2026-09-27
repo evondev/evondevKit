@@ -218,6 +218,22 @@ nền vuông 46×48 cạnh vòng chọn tròn 32px. Thêm vào probe:
 Mỗi phép đo thêm vào phải bắt lại được đúng ca đã dính (nút "Thêm" ở `/dashboard/calendar` bản cũ,
 ô ngày lịch gọn bản lượt hai) trước khi coi là xong.
 
+**Làm 27/09/2026** (`probe.mjs`, phần "Trạng thái động"; mỗi trang chạy thêm ~10–15 giây mỗi khổ desktop):
+- ✅ Rê chuột từng loại phần tử bấm được (gộp theo thẻ + class, tối đa 80), đọc màu thật qua canvas (oklab / oklch):
+  "nền rê gần như không thấy" (chênh dưới 8 mức, chỉ phần tử cỡ nút: dòng bảng rộng thì `#f8f8fa` vẫn thấy), "tan vào
+  nền khác" (chạm mép card mà gần nền ngoài card; trùng màu viền), "viền đổi màu lúc rê".
+- ✅ Lớp nổi phải nằm trong màn: sau mỗi lần rê, mở từng nút `aria-haspopup`, và ở khổ chạm thì chạm chữ bị cắt
+  (chỗ hay gắn tooltip tên đầy đủ). Chỉ xét khung tự định vị, còn một phần trong màn; tràn đáy chỉ tính khung `fixed`.
+- ✅ Mở khối đang đóng (`aria-expanded="false"` + `aria-controls`, không popup, bỏ nút mở sidebar / menu) rồi đo lại, trước
+  khi rê và chạm.
+- Kiểm bằng trang HTML thử dựng lại đúng các ca đã dính (nút viền `#fff → #f8f8fa`, dòng rê trùng nền trang, nút rê trùng
+  viền, viền đậm lên, menu tràn phải, tooltip tên tệp tràn ở 375px, khối 700px trong accordion): bắt đủ; không báo nhầm ở
+  khách hàng, thành viên, công việc, thanh toán, lịch, bảng giá, `/components`.
+- Báo nhầm đã sửa trong lúc làm: sidebar đang đóng nằm ngoài màn tính là lớp nổi; bảng lệnh dựng tĩnh làm mẫu tính là
+  lớp nổi tràn đáy; ô nhập nhiều email (input không viền trong khung viền) và hàng ô OTP bị báo lệch mép nút.
+- Chưa làm: **hình của các trạng thái** trên cùng một phần tử (vuông với tròn, vẽ ở cả ô với con bên trong) và **bấm xong
+  đứng yên** (nền rê chồng nền chọn). Ca gốc (ô ngày lịch gọn) dự án đã sửa, cần dựng lại trên trang thử.
+
 Đã sửa báo nhầm (27/09/2026): "Tab tới mà không thấy gì đổi" chụp đúng ô `input type=file` `sr-only` 1px, không thấy vòng
 focus vẽ trên `<label>` khung thả tệp (`/dashboard/projects/documents`). Nay phần tử ≤2px thì chụp theo `<label>` bọc ngoài;
 thử trên trang HTML hai khung (có vòng, không vòng) chỉ báo khung không vòng.
@@ -238,7 +254,7 @@ Báo nhầm cần sửa (27/09/2026): "Cao gần bằng mà không bằng" gom c
 `/dashboard/settings/billing/states` (mục gói 118px vì tên gói 16px, mục thẻ 114px vì tên thẻ 14px).
 Chỉ nên so các khối cùng tiêu đề hoặc cùng cấu trúc con.
 
-Báo nhầm cần sửa (26/09/2026): "Ô nhập lệch mép với nút rộng hết khung" báo hàng ô OTP (sáu ô
+Đã sửa 27/09/2026 (bỏ qua hàng nhiều ô cùng cỡ): "Ô nhập lệch mép với nút rộng hết khung" báo hàng ô OTP (sáu ô
 40–57px) ở `/forgot-password/states`, `/verify-otp/states`: nên bỏ qua ô nằm trong một hàng nhiều ô
 cùng cỡ.
 

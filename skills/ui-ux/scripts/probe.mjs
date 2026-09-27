@@ -389,8 +389,20 @@ function measureInPage({ minTapSize, isMobile }) {
 
     for (const field of fields) {
       if (!isVisible(field)) continue;
+      // Hàng nhiều ô cùng cỡ (OTP sáu ô 40–57px) không cần khớp mép nút (báo nhầm 26/09/2026).
+      const siblingFields = [...(field.parentElement?.parentElement || field.parentElement).querySelectorAll("input")].filter(isVisible);
+      if (siblingFields.length >= 3 && siblingFields.every((sibling) => Math.abs(sibling.getBoundingClientRect().width - field.getBoundingClientRect().width) <= 2)) continue;
 
-      const fieldRect = field.getBoundingClientRect();
+      // Ô không viền nằm trong một khung có viền (ô nhập nhiều email: chip + input trong một khung) thì
+      // mép người dùng thấy là mép khung (báo nhầm 27/09/2026, /components).
+      let visualBox = field;
+      for (let node = field; node && node !== container; node = node.parentElement) {
+        if ((parseFloat(getComputedStyle(node).borderLeftWidth) || 0) >= 1) {
+          visualBox = node;
+          break;
+        }
+      }
+      const fieldRect = visualBox.getBoundingClientRect();
       const leftGap = Math.round(Math.abs(fieldRect.left - buttonRect.left));
       const rightGap = Math.round(Math.abs(fieldRect.right - buttonRect.right));
       if (leftGap <= 4 && rightGap <= 4) continue;
@@ -787,6 +799,255 @@ async function findMissingFocusRings(page) {
   return missingFocusRings;
 }
 
+// ---------- Trạng thái động: rê chuột, lớp nổi, khối đang đóng ----------
+// Ba lỗi 26–27/09/2026 lọt vì chỉ lộ khi rê hoặc chạm: nền rê nút viền #fff → #f8f8fa gần như không
+// thấy, tooltip tên tệp 765px tràn khỏi màn 375px, lỗi nằm trong khối accordion đang đóng.
+
+const maxHoverTargets = 80;
+const maxPopupTriggers = 20;
+const maxTruncatedTaps = 10;
+
+// Đọc màu thật trên màn của một phần tử: nền của nó phủ lên nền đặc gần nhất phía sau. Màu oklab /
+// oklch của Tailwind v4 đổi sang rgb qua canvas.
+function readHoverState(probeId) {
+  const element = document.querySelector(`[data-evon-hover-id="${probeId}"]`);
+  if (!element) return null;
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 1;
+  canvas.height = 1;
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  const toRgba = (cssColor) => {
+    context.clearRect(0, 0, 1, 1);
+    context.fillStyle = "rgba(0,0,0,0)";
+    context.fillStyle = cssColor;
+    context.fillRect(0, 0, 1, 1);
+    const [red, green, blue, alpha] = context.getImageData(0, 0, 1, 1).data;
+
+    return { red, green, blue, alpha: alpha / 255 };
+  };
+  const blend = (top, bottom) => ({
+    red: Math.round(top.red * top.alpha + bottom.red * (1 - top.alpha)),
+    green: Math.round(top.green * top.alpha + bottom.green * (1 - top.alpha)),
+    blue: Math.round(top.blue * top.alpha + bottom.blue * (1 - top.alpha)),
+    alpha: 1,
+  });
+  const findOpaqueAncestor = (start) => {
+    for (let node = start; node; node = node.parentElement) {
+      const color = toRgba(getComputedStyle(node).backgroundColor);
+      if (color.alpha > 0.9) return { node, color };
+    }
+
+    return { node: document.documentElement, color: { red: 255, green: 255, blue: 255, alpha: 1 } };
+  };
+
+  const style = getComputedStyle(element);
+  const behind = findOpaqueAncestor(element.parentElement);
+  const outside = findOpaqueAncestor(behind.node.parentElement);
+  const ownColor = toRgba(style.backgroundColor);
+  const rect = element.getBoundingClientRect();
+  const cardRect = behind.node.getBoundingClientRect();
+  const borderWidth = parseFloat(style.borderTopWidth) || 0;
+
+  return {
+    color: blend(ownColor, behind.color),
+    borderColor: borderWidth > 0 ? blend(toRgba(style.borderTopColor), behind.color) : null,
+    outsideColor: outside.color,
+    // Chạm mép khung đặc phía sau (dòng bảng tràn hai mép card): nền rê gần màu nền ngoài khung là
+    // card như bị khuyết một mảng (đã dính 26/09/2026, FAQ trang giá).
+    width: rect.width,
+    height: rect.height,
+    touchesCardEdge: behind.node !== document.documentElement && (Math.abs(rect.left - cardRect.left) <= 1 || Math.abs(rect.right - cardRect.right) <= 1),
+  };
+}
+
+// Lớp nổi đang hiện (tooltip, menu, listbox, popover, khung fixed nhỏ) mà lòi khỏi viewport.
+function findOverflowingLayers() {
+  const viewportWidth = document.documentElement.clientWidth;
+  const viewportHeight = window.innerHeight;
+  const layers = [...document.querySelectorAll("[role='tooltip'], [role='menu'], [role='listbox'], [role='dialog'], dialog[open], body *")].filter((node) => {
+    const style = getComputedStyle(node);
+    if (style.visibility === "hidden" || style.display === "none" || parseFloat(style.opacity) === 0) return false;
+    // Lớp nổi phải tự định vị (fixed / absolute): listbox của bảng lệnh dựng tĩnh làm mẫu trong trang
+    // nằm trong dòng chảy, kéo xuống dưới mép màn là chuyện cuộn trang (báo nhầm 27/09/2026, /components).
+    const isPositioned = style.position === "fixed" || style.position === "absolute";
+    const isLayer = isPositioned && (["tooltip", "menu", "listbox", "dialog"].includes(node.getAttribute("role")) || node.tagName === "DIALOG" || (parseInt(style.zIndex, 10) || 0) >= 20);
+    if (!isLayer) return false;
+    const rect = node.getBoundingClientRect();
+
+    // Lớp phủ toàn màn (phủ kín cả hai chiều) không phải lớp nổi cần đo. Tooltip rộng hơn màn thì
+    // vẫn đo: đó chính là lỗi (tooltip tên tệp 765px ở 375px, 27/09/2026).
+    const isFullScreen = rect.width >= viewportWidth - 1 && rect.height >= viewportHeight - 1;
+    // Khung nằm hẳn ngoài màn (sidebar đang đóng chờ trượt vào) không phải lớp nổi đang mở: lớp nổi
+    // tràn thật luôn còn một phần trong màn (báo nhầm 27/09/2026, sidebar ở 375px).
+    const isPartlyVisible = rect.right > 0 && rect.left < viewportWidth && rect.bottom > 0 && rect.top < viewportHeight;
+    return rect.width > 0 && rect.height > 0 && !isFullScreen && isPartlyVisible;
+  });
+
+  return layers
+    .map((node) => {
+      const rect = node.getBoundingClientRect();
+      const overflowLeft = Math.max(0, -rect.left);
+      const overflowRight = Math.max(0, rect.right - viewportWidth);
+      // Tràn đáy chỉ tính với khung fixed: khung absolute cuộn theo trang, kéo xuống là thấy.
+      const overflowBottom = getComputedStyle(node).position === "fixed" ? Math.max(0, rect.bottom - viewportHeight) : 0;
+      const worst = Math.max(overflowLeft, overflowRight, overflowBottom);
+      if (worst <= 1) return null;
+      const label = (node.getAttribute("role") || node.tagName.toLowerCase()) + ` "${node.textContent.trim().replace(/\s+/g, " ").slice(0, 30)}"`;
+
+      return `${label} rộng ${Math.round(rect.width)}px, lòi ${Math.round(worst)}px khỏi màn`;
+    })
+    .filter(Boolean);
+}
+
+function colorDistance(first, second) {
+  return Math.max(Math.abs(first.red - second.red), Math.abs(first.green - second.green), Math.abs(first.blue - second.blue));
+}
+
+function formatColor(color) {
+  return `#${[color.red, color.green, color.blue].map((channel) => channel.toString(16).padStart(2, "0")).join("")}`;
+}
+
+async function probeHoverStates(page) {
+  const weakHovers = [];
+  const blendedHovers = [];
+  const borderHovers = [];
+  const overflowingLayers = new Set();
+
+  const probeIds = await page.evaluate((limit) => {
+    const seenSignatures = new Set();
+    const ids = [];
+    const candidates = document.querySelectorAll("button, a[href], [role='button'], [role='tab'], [role='menuitem'], [role='option'], tbody tr, summary");
+
+    for (const element of candidates) {
+      const rect = element.getBoundingClientRect();
+      if (rect.width < 8 || rect.height < 8 || element.closest("[inert], [aria-hidden='true']")) continue;
+      if (getComputedStyle(element).visibility === "hidden") continue;
+      // Gộp theo loại: cùng thẻ + cùng class là cùng một kiểu hover, đo một cái là đủ.
+      const signature = `${element.tagName}|${element.getAttribute("class") || ""}`;
+      if (seenSignatures.has(signature)) continue;
+      seenSignatures.add(signature);
+      element.dataset.evonHoverId = String(ids.length);
+      ids.push(element.dataset.evonHoverId);
+      if (ids.length >= limit) break;
+    }
+
+    return ids;
+  }, maxHoverTargets);
+
+  for (const probeId of probeIds) {
+    const locator = page.locator(`[data-evon-hover-id="${probeId}"]`);
+    await page.mouse.move(1, 1);
+    const isReady = await locator.scrollIntoViewIfNeeded({ timeout: 800 }).then(() => true, () => false);
+    if (!isReady) continue;
+    const before = await page.evaluate(readHoverState, probeId);
+    const isHovered = await locator.hover({ timeout: 800, force: true }).then(() => true, () => false);
+    if (!before || !isHovered) continue;
+    await page.waitForTimeout(60);
+    const after = await page.evaluate(readHoverState, probeId);
+    if (!after) continue;
+
+    for (const layer of await page.evaluate(findOverflowingLayers)) overflowingLayers.add(`rê: ${layer}`);
+
+    const label = await locator.evaluate((element) => {
+      const text = (element.getAttribute("aria-label") || element.textContent || "").trim().replace(/\s+/g, " ").slice(0, 32);
+
+      return `${element.tagName.toLowerCase()} "${text}"`;
+    });
+    // Viền xét trước: nút viền đổi màu viền mà nền đứng yên vẫn là ca cần báo.
+    if (before.borderColor && after.borderColor && colorDistance(before.borderColor, after.borderColor) > 8) {
+      borderHovers.push(`${label}: viền ${formatColor(before.borderColor)} → ${formatColor(after.borderColor)}`);
+    }
+    const change = colorDistance(before.color, after.color);
+    if (change === 0) continue;
+
+    // Chỉ xét phần tử cỡ nút: dòng bảng, dòng danh sách rộng thì nền rê nhạt (#f8f8fa trên card trắng,
+    // `I10`) vẫn thấy vì phủ cả một mảng rộng.
+    const isButtonSized = before.width < 320 && before.height < 80;
+    if (change < 8 && isButtonSized) weakHovers.push(`${label}: ${formatColor(before.color)} → ${formatColor(after.color)} (chênh ${change} mức)`);
+    if (after.touchesCardEdge && colorDistance(after.color, after.outsideColor) <= 3) {
+      blendedHovers.push(`${label}: nền rê ${formatColor(after.color)} gần như bằng nền ngoài khung ${formatColor(after.outsideColor)}, card như bị khuyết`);
+    }
+    if (before.borderColor && colorDistance(after.color, before.borderColor) <= 3) {
+      blendedHovers.push(`${label}: nền rê ${formatColor(after.color)} trùng màu viền ${formatColor(before.borderColor)}, nút thành mảng không viền`);
+    }
+  }
+  await page.mouse.move(1, 1);
+
+  return { weakHovers, blendedHovers, borderHovers, overflowingLayers: [...overflowingLayers] };
+}
+
+// Mở từng nút có popup (menu, listbox, lịch) và, ở màn chạm, chạm vào chữ bị cắt (nơi hay gắn
+// tooltip tên đầy đủ), xem lớp nổi vừa hiện có nằm trong màn không.
+async function probePopupLayers(page, isMobile) {
+  const overflowingLayers = new Set();
+  const triggerIds = await page.evaluate(({ popupLimit, tapLimit, isTouch }) => {
+    const ids = [];
+    const popupTriggers = [...document.querySelectorAll("[aria-haspopup]:not([aria-haspopup='false'])")].filter((element) => element.getBoundingClientRect().width > 0).slice(0, popupLimit);
+    for (const element of popupTriggers) {
+      element.dataset.evonPopupId = `popup-${ids.length}`;
+      ids.push(element.dataset.evonPopupId);
+    }
+    if (isTouch) {
+      const truncated = [...document.querySelectorAll("body *")]
+        .filter((element) => element.children.length === 0 && element.scrollWidth > element.clientWidth + 1 && getComputedStyle(element).textOverflow === "ellipsis" && !element.closest("a[href]"))
+        .slice(0, tapLimit);
+      for (const element of truncated) {
+        element.dataset.evonPopupId = `tap-${ids.length}`;
+        ids.push(element.dataset.evonPopupId);
+      }
+    }
+
+    return ids;
+  }, { popupLimit: maxPopupTriggers, tapLimit: maxTruncatedTaps, isTouch: isMobile });
+
+  for (const triggerId of triggerIds) {
+    const locator = page.locator(`[data-evon-popup-id="${triggerId}"]`);
+    const isTap = triggerId.startsWith("tap-");
+    const isDone = await (isTap ? locator.tap({ timeout: 800, force: true }) : locator.click({ timeout: 800, force: true })).then(() => true, () => false);
+    if (!isDone) continue;
+    await page.waitForTimeout(250);
+    for (const layer of await page.evaluate(findOverflowingLayers)) overflowingLayers.add(`${isTap ? "chạm chữ bị cắt" : "mở"}: ${layer}`);
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(120);
+  }
+
+  return [...overflowingLayers];
+}
+
+// Mở các khối đang đóng (accordion, mục thu gọn) để đo lại phần bên trong. Bỏ nút có popup (menu,
+// lịch) và nút mở sidebar / menu ở màn hẹp: mở ra là che cả trang (đã dính 26/09/2026: lỗi khe
+// quanh nút "…" của đường dẫn nằm trong mục accordion đóng sẵn ở /components).
+async function expandCollapsedBlocks(page) {
+  const count = await page.evaluate(() => {
+    let expandedCount = 0;
+    for (const button of document.querySelectorAll("[aria-expanded='false'][aria-controls]:not([aria-haspopup])")) {
+      const label = `${button.getAttribute("aria-label") || ""} ${button.textContent || ""}`.toLowerCase();
+      if (/sidebar|menu|điều hướng|thanh bên/.test(label) || button.getBoundingClientRect().width === 0) continue;
+      button.click();
+      expandedCount += 1;
+    }
+
+    return expandedCount;
+  });
+  if (count > 0) await page.waitForTimeout(300);
+
+  return count;
+}
+
+function mergeMeasurements(base, extra) {
+  const merged = { ...base };
+  for (const [key, value] of Object.entries(extra)) {
+    if (!Array.isArray(value) || !Array.isArray(base[key])) continue;
+    const seen = new Set(base[key].map((item) => JSON.stringify(item)));
+    merged[key] = [...base[key], ...value.filter((item) => !seen.has(JSON.stringify(item)))];
+  }
+  merged.hasHorizontalScroll = base.hasHorizontalScroll || extra.hasHorizontalScroll;
+  merged.pageScrollWidth = Math.max(base.pageScrollWidth, extra.pageScrollWidth);
+
+  return merged;
+}
+
 // ---------- Chạy ----------
 
 async function probeWidth(browser, options, width) {
@@ -820,9 +1081,30 @@ async function probeWidth(browser, options, width) {
 
   const missingFocusRings = isMobile ? [] : await findMissingFocusRings(page);
 
+  // Mở khối đang đóng trước khi rê và chạm: cây thư mục nằm trong accordion đóng ở /components thì
+  // tooltip tên tệp tràn màn chỉ lộ khi khối đã mở (27/09/2026).
+  const expandedCount = await expandCollapsedBlocks(page);
+  const allMeasurements = expandedCount > 0 ? mergeMeasurements(measurements, await page.evaluate(measureInPage, { minTapSize, isMobile })) : measurements;
+
+  // Màn chạm không có rê chuột: chỉ đo nền rê ở khổ desktop.
+  const hoverStates = isMobile ? { weakHovers: [], blendedHovers: [], borderHovers: [], overflowingLayers: [] } : await probeHoverStates(page);
+  const popupLayers = await probePopupLayers(page, isMobile);
+  const overflowingLayers = [...new Set([...hoverStates.overflowingLayers, ...popupLayers])];
+
   await context.close();
 
-  return { width, screenshotPath, consoleErrors: [...new Set(consoleErrors)], ...measurements, missingFocusRings };
+  return {
+    width,
+    screenshotPath,
+    consoleErrors: [...new Set(consoleErrors)],
+    ...allMeasurements,
+    expandedCount,
+    missingFocusRings,
+    weakHovers: hoverStates.weakHovers,
+    blendedHovers: hoverStates.blendedHovers,
+    borderHovers: hoverStates.borderHovers,
+    overflowingLayers,
+  };
 }
 
 function formatReport(results) {
@@ -896,6 +1178,22 @@ function formatReport(results) {
       problems.push(`NHÃN SỐ LÒI RA NGOÀI VÙNG VẼ (${result.outsideChartLabels.length} chỗ, rơi vào hàng nhãn trục hoặc trên đỉnh):`);
       for (const element of result.outsideChartLabels.slice(0, 5)) problems.push(`  ${element}`);
     }
+    if (result.weakHovers.length > 0) {
+      problems.push(`NỀN RÊ GẦN NHƯ KHÔNG THẤY (${result.weakHovers.length} loại, chênh dưới 8 mức với lúc thường):`);
+      for (const item of result.weakHovers.slice(0, 6)) problems.push(`  ${item}`);
+    }
+    if (result.blendedHovers.length > 0) {
+      problems.push(`NỀN RÊ TAN VÀO NỀN KHÁC (${result.blendedHovers.length} chỗ):`);
+      for (const item of result.blendedHovers.slice(0, 6)) problems.push(`  ${item}`);
+    }
+    if (result.borderHovers.length > 0) {
+      problems.push(`VIỀN ĐỔI MÀU LÚC RÊ (${result.borderHovers.length} loại, skill chỉ đổi nền, xem button.md):`);
+      for (const item of result.borderHovers.slice(0, 6)) problems.push(`  ${item}`);
+    }
+    if (result.overflowingLayers.length > 0) {
+      problems.push(`LỚP NỔI LÒI KHỎI MÀN (${result.overflowingLayers.length} chỗ, tooltip / menu / popover mở ra phải nằm trong màn):`);
+      for (const item of result.overflowingLayers.slice(0, 6)) problems.push(`  ${item}`);
+    }
     if (result.missingFocusRings.length > 0) {
       problems.push(`TAB TỚI MÀ KHÔNG THẤY GÌ ĐỔI (${result.missingFocusRings.length} chỗ):`);
       for (const element of result.missingFocusRings.slice(0, 8)) problems.push(`  ${element}`);
@@ -904,6 +1202,7 @@ function formatReport(results) {
     problemCount += problems.filter((line) => !line.startsWith("  ")).length;
     lines.push(`\n## ${result.width}px  (ảnh: ${result.screenshotPath})`);
     lines.push(problems.length > 0 ? problems.join("\n") : "Không đo ra lỗi.");
+    if (result.expandedCount > 0) lines.push(`(Đã mở ${result.expandedCount} khối đang đóng rồi đo lại phần bên trong.)`);
     if (result.truncatedCount > 0) lines.push(`(Có ${result.truncatedCount} chỗ chữ bị cắt có dấu …: xem ảnh xem có chỗ nào cắt mất ý không.)`);
   }
 
