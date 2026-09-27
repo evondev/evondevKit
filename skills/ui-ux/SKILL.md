@@ -63,8 +63,8 @@ cat package.json 2>/dev/null | grep -E '"(tailwindcss|@radix-ui|@mui|antd|@chakr
 ls components/ui src/components/ui 2>/dev/null          # dấu hiệu shadcn
 # thư viện chuyên dụng: biểu đồ, lịch/ngày, bảng, danh sách ảo
 cat package.json 2>/dev/null | grep -E '"(recharts|chart\.js|react-chartjs-2|echarts[a-z-]*|@tremor/react|@nivo/[a-z]+|victory|react-apexcharts|react-day-picker|react-datepicker|@mantine/dates|@fullcalendar/[a-z]+|react-big-calendar|date-fns|dayjs|@tanstack/react-table|@tanstack/react-virtual|react-window|react-virtuoso|ag-grid-react)"'
-grep -rn "@theme\|--primary\|--brand\|font-family" \
-  app/globals.css src/index.css tailwind.config.* 2>/dev/null | head
+grep -rn "@import\|@theme\|--primary\|--brand\|font-family" \
+  app/globals.css src/index.css tailwind.config.* 2>/dev/null | head   # không có `@import "tailwindcss"` = không preflight, W9
 
 # Tầng 2 — thứ sắp dựng đã có chưa. Thay TÊN bằng thứ đang dựng:
 # avatar, dropdown, menu, modal, dialog, button, input, badge, toast...

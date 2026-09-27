@@ -639,3 +639,19 @@ dùng bàn phím mất chỗ.
 
 Đã dính 26/09/2026 ở trang bảo mật: đăng xuất một thiết bị và đăng xuất hàng loạt, cả
 hai lần `document.activeElement` là `<body>`.
+
+**I32. Nền rê của một khối không được trùng nền của khối con bên trong nó.** ⚑
+
+Dòng danh sách, ô danh mục, card bấm được hay có một ô icon (hoặc badge) nền xám nhạt.
+Rê vào mà khối chuyển đúng sang màu đó thì ô icon **biến mất**, chỉ còn icon trơ trọi,
+như vừa bị gỡ khỏi dòng. Mẫu `list-row.md` rê `hover:bg-background`, ô icon trong nhiều
+file cũng `bg-background`: ghép hai cái là dính.
+
+- Khối rê được có ô con nền `bg-background` thì ô con **đảo sang nền card lúc rê**:
+  khối có `group`, ô con thêm `group-hover:bg-surface`. Mảng rê xám, ô icon thành trắng,
+  vẫn đọc ra là một ô.
+- Hoặc cho ô con một viền `border-border` để nó không dựa vào nền.
+- Kiểm khi rê: ô con có còn nhìn ra là một ô không. Probe báo "Khối con biến mất lúc rê".
+
+Đã dính 27/09/2026 ở bản dựng lại của dự án mồi phase 2: hàng "Mời bạn bè" và ô danh mục
+đang rê mất hẳn ô icon.

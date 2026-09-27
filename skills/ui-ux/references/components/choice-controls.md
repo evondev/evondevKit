@@ -58,7 +58,7 @@ Một app chọn **một** kiểu tô, dùng khắp nơi (`D1`).
 | Hàng | ô + nhãn một dòng | Lựa chọn tự giải thích: "Nhớ đăng nhập" |
 | Hàng có mô tả | ô + nhãn đậm + một câu phụ `text-muted` | Lựa chọn cần một câu hệ quả |
 | Card | cả khung viền là vùng bấm, ô ở góc trái trên | 2–4 lựa chọn **quan trọng**, mỗi cái có hệ quả khác nhau: quyền đăng bài, gói cước, phương thức giao hàng |
-| Card có icon | như card, thêm icon lucide trong ô vuông `size-10 rounded-lg bg-background` bên trái chữ | Như card, khi các lựa chọn khác nhau về **loại**: giao tiêu chuẩn / giao nhanh / nhận tại cửa hàng |
+| Card có icon | như card, thêm icon lucide trong ô vuông `size-10 rounded-lg bg-background` bên trái chữ; card có nền rê thì nền rê không được là `bg-background` (`I32`) | Như card, khi các lựa chọn khác nhau về **loại**: giao tiêu chuẩn / giao nhanh / nhận tại cửa hàng |
 
 Công tắc có thêm bố cục **hàng cài đặt**: nhãn + mô tả bên trái, công tắc căn
 phải, xem cuối file.

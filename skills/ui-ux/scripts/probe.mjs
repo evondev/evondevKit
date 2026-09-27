@@ -991,7 +991,39 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
 
   const sortedLowContrast = [...lowContrastTexts.values()].sort((first, second) => first.ratio - second.ratio);
 
+  // 16. Khung khai viền mà viền không thấy: nền trong khung trùng nền ngoài, viền cũng trùng cả hai, nên cả
+  //     khung tan vào nền (khung chat nền trang + viền nhạt hơn nền, 27/09/2026, bản sửa dự án mồi).
+  const channelDistance = (first, second) => Math.max(Math.abs(first.red - second.red), Math.abs(first.green - second.green), Math.abs(first.blue - second.blue));
+  const invisibleFrames = [];
+  for (const element of allElements) {
+    if (invisibleFrames.length >= 6) break;
+    const style = getComputedStyle(element);
+    if (!(parseFloat(style.borderTopWidth) > 0) || style.borderTopStyle === "none" || style.boxShadow !== "none" || !isVisible(element)) continue;
+    const rect = element.getBoundingClientRect();
+    if (rect.width * rect.height < 20000) continue;
+    const outside = element.parentElement ? readAncestorBackdrop(element.parentElement) : whiteCanvas;
+    const inside = readAncestorBackdrop(element);
+    if (!outside || !inside) continue;
+    const border = blendColors(readColor(style.borderTopColor), outside);
+    if (channelDistance(inside, outside) <= 4 && channelDistance(border, outside) <= 4 && channelDistance(border, inside) <= 4) {
+      invisibleFrames.push(`viền ${toHex(border)}, nền trong ${toHex(inside)}, nền ngoài ${toHex(outside)}: ${describe(element)}`);
+    }
+  }
+
+  // 17. Ô nhập, nút, select còn kiểu mặc định của trình duyệt: dự án không nạp preflight (reset) của
+  //     Tailwind mà control chưa tự reset (viền inset / outset, viền xám #767676, select `appearance: auto`).
+  const browserDefaultControls = [];
+  for (const control of document.querySelectorAll("input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='hidden']), textarea, select, button")) {
+    if (browserDefaultControls.length >= 8 || !isVisible(control)) continue;
+    const style = getComputedStyle(control);
+    const hasDefaultBorder = ["inset", "outset"].includes(style.borderTopStyle) || (parseFloat(style.borderTopWidth) > 0 && style.borderTopColor === "rgb(118, 118, 118)");
+    const isNativeSelect = control.tagName === "SELECT" && ["auto", "menulist"].includes(style.appearance);
+    if (hasDefaultBorder || isNativeSelect) browserDefaultControls.push(`${isNativeSelect ? "select gốc trình duyệt" : `viền ${style.borderTopWidth} ${style.borderTopStyle} ${style.borderTopColor}`}: ${describe(control)}`);
+  }
+
   return {
+    invisibleFrames,
+    browserDefaultControls,
     autoScrolledAreas,
     clippedBlocks,
     wrappedControls,
@@ -1211,8 +1243,21 @@ function readHoverState(probeId) {
   const cardRect = behind.node.getBoundingClientRect();
   const borderWidth = parseFloat(style.borderTopWidth) || 0;
 
+  // Nền của các khối con (ô icon, badge) để so lúc rê: dòng rê `bg-background` chứa ô icon `bg-background`
+  // thì ô icon biến mất lúc rê (đã dính 27/09/2026, bản sửa của dự án mồi phase 2).
+  const ownFill = blend(ownColor, behind.color);
+  const childFills = [...element.querySelectorAll("*")]
+    .filter((child) => {
+      const childRect = child.getBoundingClientRect();
+
+      return childRect.width * childRect.height >= 144 && toRgba(getComputedStyle(child).backgroundColor).alpha > 0.9;
+    })
+    .slice(0, 30)
+    .map((child) => toRgba(getComputedStyle(child).backgroundColor));
+
   return {
-    color: blend(ownColor, behind.color),
+    childFills,
+    color: ownFill,
     borderColor: borderWidth > 0 ? blend(toRgba(style.borderTopColor), behind.color) : null,
     isBorderTransparent: borderWidth > 0 && toRgba(style.borderTopColor).alpha === 0,
     outsideColor: outside.color,
@@ -1290,6 +1335,7 @@ function readFollowerTops(probeId) {
 
 async function probeHoverStates(page) {
   const layoutShifts = [];
+  const vanishedChildren = [];
   const weakHovers = [];
   const blendedHovers = [];
   const borderHovers = [];
@@ -1346,6 +1392,14 @@ async function probeHoverStates(page) {
       ? Math.max(0, ...followerTopsBefore.map((top, index) => Math.abs(followerTopsAfter[index] - top)))
       : 0;
     if (largestShift > 2) layoutShifts.push(`${label}: rê vào thì khối phía sau dời ${Math.round(largestShift)}px`);
+    const vanishedIndex = before.childFills.findIndex((fill, index) => {
+      const afterFill = after.childFills[index];
+
+      return afterFill && colorDistance(before.color, fill) > 3 && colorDistance(after.color, afterFill) <= 3;
+    });
+    if (vanishedIndex !== -1) {
+      vanishedChildren.push(`${label}: nền rê ${formatColor(after.color)} trùng nền khối con bên trong (ô icon, badge), khối con biến mất lúc rê`);
+    }
     if (await locator.evaluate((element) => element.dataset.evonLayoutOnly === "1")) continue;
 
     // Viền xét trước: nút viền đổi màu viền mà nền đứng yên vẫn là ca cần báo.
@@ -1371,7 +1425,7 @@ async function probeHoverStates(page) {
   }
   await page.mouse.move(1, 1);
 
-  return { layoutShifts, weakHovers, blendedHovers, borderHovers, overflowingLayers: [...overflowingLayers] };
+  return { layoutShifts, vanishedChildren, weakHovers, blendedHovers, borderHovers, overflowingLayers: [...overflowingLayers] };
 }
 
 // Mở từng nút có popup (menu, listbox, lịch) và, ở màn chạm, chạm vào chữ bị cắt (nơi hay gắn
@@ -1633,6 +1687,34 @@ function mergeMeasurements(base, extra) {
 
 // ---------- Chạy ----------
 
+// Khung app `h-screen` + cột nội dung `overflow-y-auto`: ảnh fullPage chỉ ra đúng một màn, phần dưới mép cột
+// cuộn không bao giờ lên ảnh (ô nhập dính viền mặc định ở cuối trang bị sót, 27/09/2026). Kéo cửa sổ cao
+// thêm bằng phần đang khuất của khung cuộn lớn nhất rồi mới chụp, chụp xong trả lại.
+function measureHiddenScrollHeight() {
+  let hiddenHeight = 0;
+  for (const container of document.querySelectorAll("body *")) {
+    const overflowY = getComputedStyle(container).overflowY;
+    if (!["auto", "scroll"].includes(overflowY) || container.clientHeight < window.innerHeight * 0.6) continue;
+    hiddenHeight = Math.max(hiddenHeight, container.scrollHeight - container.clientHeight);
+  }
+
+  return hiddenHeight;
+}
+
+async function takeFullScreenshot(page, path) {
+  const viewport = page.viewportSize();
+  const hiddenHeight = await page.evaluate(measureHiddenScrollHeight);
+  if (hiddenHeight > 1) {
+    await page.setViewportSize({ width: viewport.width, height: Math.min(viewport.height + hiddenHeight, 12000) });
+    await page.waitForTimeout(250);
+  }
+  await page.screenshot({ path, fullPage: true });
+  if (hiddenHeight > 1) {
+    await page.setViewportSize(viewport);
+    await page.waitForTimeout(150);
+  }
+}
+
 async function probeWidth(browser, options, width) {
   const isMobile = width < mobileWidthLimit;
   const context = await browser.newContext({
@@ -1660,7 +1742,7 @@ async function probeWidth(browser, options, width) {
   const measurements = await page.evaluate(measureInPage, { minTapSize, isMobile });
 
   const screenshotPath = join(options.out, `${width}${options.isDark ? "-dark" : ""}.png`);
-  await page.screenshot({ path: screenshotPath, fullPage: true });
+  await takeFullScreenshot(page, screenshotPath);
 
   const missingFocusRings = isMobile ? [] : await findMissingFocusRings(page);
 
@@ -1670,7 +1752,7 @@ async function probeWidth(browser, options, width) {
   const allMeasurements = expandedCount > 0 ? mergeMeasurements(measurements, await page.evaluate(measureInPage, { minTapSize, isMobile })) : measurements;
 
   // Màn chạm không có rê chuột: chỉ đo nền rê ở khổ desktop.
-  const hoverStates = isMobile ? { layoutShifts: [], weakHovers: [], blendedHovers: [], borderHovers: [], overflowingLayers: [] } : await probeHoverStates(page);
+  const hoverStates = isMobile ? { layoutShifts: [], vanishedChildren: [], weakHovers: [], blendedHovers: [], borderHovers: [], overflowingLayers: [] } : await probeHoverStates(page);
   const popupLayers = await probePopupLayers(page, isMobile);
   const overflowingLayers = [...new Set([...hoverStates.overflowingLayers, ...popupLayers])];
   // Chạy sau cùng: bấm thử đổi lựa chọn trên trang (ngày, tab), các phép đo khác phải xong trước.
@@ -1690,6 +1772,7 @@ async function probeWidth(browser, options, width) {
     openerLayerProblems: openerLayers.problems,
     openedLayerShots: openerLayers.openedShots,
     layoutShifts: hoverStates.layoutShifts,
+    vanishedChildren: hoverStates.vanishedChildren,
     weakHovers: hoverStates.weakHovers,
     blendedHovers: hoverStates.blendedHovers,
     borderHovers: hoverStates.borderHovers,
@@ -1894,7 +1977,7 @@ async function sweepWidths(browser, options) {
     await page.waitForTimeout(150);
     const measurements = await page.evaluate(measureInPage, { minTapSize, isMobile: false, isSweep: true });
     const screenshotPath = join(sweepDir, `${width}.png`);
-    await page.screenshot({ path: screenshotPath, fullPage: true });
+    await takeFullScreenshot(page, screenshotPath);
     steps.push({ width, screenshotPath, ...measurements });
   }
 
@@ -2103,6 +2186,18 @@ function formatReport(results) {
     if (result.missingFocusRings.length > 0) {
       problems.push(`TAB TỚI MÀ KHÔNG THẤY GÌ ĐỔI (${result.missingFocusRings.length} chỗ):`);
       for (const element of result.missingFocusRings.slice(0, 8)) problems.push(`  ${element}`);
+    }
+    if (result.browserDefaultControls.length > 0) {
+      problems.push(`CONTROL CÒN KIỂU MẶC ĐỊNH CỦA TRÌNH DUYỆT (${result.browserDefaultControls.length} chỗ, dự án thiếu reset hay control chưa tự reset):`);
+      for (const item of result.browserDefaultControls) problems.push(`  ${item}`);
+    }
+    if (result.invisibleFrames.length > 0) {
+      problems.push(`KHUNG KHAI VIỀN MÀ VIỀN KHÔNG THẤY (${result.invisibleFrames.length} khung, nền trong, viền, nền ngoài gần như một màu):`);
+      for (const item of result.invisibleFrames) problems.push(`  ${item}`);
+    }
+    if (result.vanishedChildren.length > 0) {
+      problems.push(`KHỐI CON BIẾN MẤT LÚC RÊ (${result.vanishedChildren.length} chỗ):`);
+      for (const item of result.vanishedChildren.slice(0, 6)) problems.push(`  ${item}`);
     }
     if (result.autoScrolledAreas.length > 0) {
       problems.push(`TRANG TỰ CUỘN KHI VỪA TẢI (${result.autoScrolledAreas.length} chỗ, người dùng chưa chạm mà đầu trang đã khuất):`);

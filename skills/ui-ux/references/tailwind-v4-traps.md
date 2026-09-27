@@ -192,3 +192,34 @@ chọn, trông y như lúc không focus.
 
 **Cách phát hiện:** grep `aria-pressed:ring-\|isSelected.*ring-\|ring-inset` trên phần tử
 có `focus-visible:ring`.
+
+## W9. Dự án không nạp preflight thì control nào cũng giữ kiểu của trình duyệt ⚑
+
+Preflight là phần reset của Tailwind, đi kèm `@import "tailwindcss"`. Có dự án chỉ nạp
+`tailwindcss/theme.css` và `tailwindcss/utilities.css` (thường để khỏi đè CSS cũ). Khi
+đó ô nhập vẫn viền 2px inset, nút viền nổi nền xám, `<select>` là ô chọn gốc của trình
+duyệt, `ul` có chấm, `h1`, `p` có margin mặc định.
+
+**Cách phát hiện** (chạy ở audit, `SKILL.md` câu 2):
+
+```bash
+grep -rn '@import "tailwindcss' --include='*.css' . 2>/dev/null | grep -v node_modules
+# chỉ ra theme.css / utilities.css, không có dòng `@import "tailwindcss";` hay preflight.css = không có reset
+```
+
+**Làm gì:**
+
+- Ghi vào dòng `Audit:` "không có preflight".
+- **Không tự bật preflight cho cả app**: nó đổi hình mọi trang cùng lúc, và dự án tắt
+  nó là có lý do.
+- Mỗi control mình dựng hay sửa **tự reset đủ**: ô nhập, textarea có viền token (hoặc
+  `border-0` nếu khung ngoài đã có viền), nền, `[font:inherit]`; nút `border-0` và nền
+  của nó; select `appearance-none` cộng chevron của mình. Thiếu một cái là chính nó mang
+  kiểu trình duyệt, giữa một trang đã có kiểu.
+- Probe báo "Control còn kiểu mặc định của trình duyệt" (viền inset / outset, viền xám
+  `#767676`, select `appearance: auto`).
+
+Đã dính 27/09/2026 ở bản dựng lại của dự án mồi phase 2: bản dựng tự thêm reset cho nút
+và danh sách, quên ô nhập của khung chat, ô đó mang nguyên viền đen của trình duyệt. Ô
+nằm dưới mép khung cuộn nên ảnh chụp cũng không thấy (probe giờ kéo cửa sổ cao bằng khung
+cuộn trước khi chụp).

@@ -37,6 +37,22 @@ file đã có (`N5`): danh sách bước dùng công cụ mượn đường dọ
 </div>
 ```
 
+## Khung chat nằm trong trang, cạnh các card khác ⚑
+
+Mẫu trên là khung chat **chiếm cả vùng nội dung**, nằm thẳng trên nền trang. Khung chat
+là **một khối trong lưới** (trang chủ có chat ở giữa, số liệu bên phải) thì cả khung là
+một card như các card cạnh nó (`card.md`): `bg-surface`, viền `border-border`, bo và bóng
+theo card của dự án. Đầu khung, vùng tin, ô soạn cùng nằm trên nền card, không để vùng
+tin trong suốt ra nền trang.
+
+- Vùng tin nền card thì bong bóng tin người dùng đổi sang `bg-background` (bong bóng
+  `bg-surface` trên nền card là tàng hình). Ô soạn giữ viền `border-border-strong`.
+- Kiểm: nhìn ở 1440px, mép khung chat có rõ như mép các card bên cạnh không. Probe báo
+  "Khung khai viền mà viền không thấy" khi nền trong, viền và nền ngoài gần như một màu.
+
+Đã dính 27/09/2026 ở bản dựng lại của dự án mồi phase 2: khung chat trên trang chủ để
+vùng tin nền trang, viền `#f7f7f8` còn nhạt hơn nền `#f4f4f6`, cả khung như trong suốt.
+
 ## Hai phía
 
 - **Câu trả lời không có avatar.** Bên nào nói đã rõ bằng bong bóng và căn phải; một vòng robot trước mỗi câu trả lời là lần nói thứ hai, và ăn mất ~56px bề ngang của cột chữ (`N3`). Các trợ lý AI dạng khung chính đều đã bỏ. Hệ thiết kế lớn khuyên khung nhúng hẹp phải tách hai bên bằng thứ khác ngoài căn lề: ở đây là nền bong bóng của tin người dùng, nên vẫn không cần avatar (tra 27/09/2026). Chỉ thêm avatar khi cuộc chat có **từ ba bên trở lên** (trợ lý + nhân viên hỗ trợ thật) (đã dính 24/09/2026: vòng robot có viền ở mọi câu trả lời, cột chữ lùi vào 80px so với tiêu đề và ô soạn).
