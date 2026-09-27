@@ -497,6 +497,8 @@ lấy số ở bảng này.
 | **Tooltip** | chỉ `opacity`, trễ 300–500ms mới hiện, 100ms | 100ms |
 | **Sidebar thu gọn, nhóm mở đóng** | theo `app.md`: `transition-[width]` và `grid-rows`, 200ms | như vào |
 
+- **Tooltip mang nội dung người dùng đặt** (tên tệp, tên dự án, email) thì không `whitespace-nowrap`: `max-w-[min(20rem,calc(100vw-1rem))] whitespace-normal wrap-anywhere`. Tooltip nhãn nút ngắn ("Đơn trước") giữ một dòng. Chi tiết và ca đã dính ở `../components/tree.md`.
+
 - **Ra nhanh hơn vào.** Vào `ease-out` (nhanh đầu, chậm cuối, như đồ vật đặt xuống), ra `ease-in` và ngắn hơn: người đã bấm đóng thì không muốn chờ.
 - **Bẫy đã dính khi dựng panel (23/09/2026)** — panel "chạy từ trong ra, cách lề một khoảng rồi giật mạnh vào lề", tooltip nhấp nháy, cả chuyển động giật cục:
   - **Panel dính `zoom-in-95` chép từ modal.** Phóng 95% quanh tâm thì mép phải panel bắt đầu cách lề màn ~11px, chạy xong mới nhảy vào lề. Panel chỉ `translate`, **không bao giờ `scale`**: nó đến từ mép, không mọc từ tâm.

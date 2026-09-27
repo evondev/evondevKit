@@ -98,7 +98,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 8 | Bảng giá | `/pricing`, `/pricing/joined` | 26/09/2026 (bảy lượt) |
 | 9 | Form đăng ký doanh nghiệp | `/business-registration` | 27/09/2026 (một lượt: không lỗi hình; Tiếp / Quay lại chưa nối xử lý, là logic dự án, `N10`) |
 | 10 | Trợ lý AI | `/dashboard/assistant`, `/assistant/states` | 27/09/2026 (một lượt: không lỗi skill mới, dự án chưa theo kịp hai chỗ; sửa báo nhầm dấu câu sau `<code>` của probe) |
-| 11 | Tài liệu (cây thư mục) | `/dashboard/projects/documents`, `/documents/states` | 27/09/2026 (một lượt: vùng bấm "Thử lại", gộp luật chung vào `N9`; sửa báo nhầm focus ô file ẩn; dự án chưa theo kịp) |
+| 11 | Tài liệu (cây thư mục) | `/dashboard/projects/documents`, `/documents/states` | 27/09/2026 (một lượt: vùng bấm "Thử lại", gộp luật chung vào `N9`; sửa báo nhầm focus ô file ẩn; route này là khu tải tệp, cây thư mục nằm ở `/components`: tooltip tên dài tràn màn ở 375px; dự án chưa theo kịp) |
 | 12 | Thông báo | `/dashboard/notifications/states` | |
 | 13 | Thư viện component | `/components` | 26/09/2026 (ô số lượng, ba lượt; tên sửa tại chỗ, hai lượt, đã theo kịp; tiêu đề cột sắp xếp, hai lượt, đã theo kịp) |
 | 14 | Tạo dự án (khu "Cài đặt nâng cao" thu gọn) | `/dashboard/projects/new` | 26/09/2026 (hai lượt, đã theo kịp) |
@@ -191,6 +191,9 @@ nền vuông 46×48 cạnh vòng chọn tròn 32px. Thêm vào probe:
   nút `aria-expanded="false"` có `aria-controls` mà không có `aria-haspopup`, và bỏ nút mở
   sidebar ở màn hẹp (mở ra là che cả trang).
 - **Bấm chuột xong rồi đứng yên**: phần tử vừa bấm còn nền hover chồng lên nền chọn không.
+- **Lớp nổi mở ra nằm trong màn**: chạm / rê từng phần tử có tooltip, mở từng popover, đo khung `fixed` vừa hiện có
+  lòi khỏi viewport không (27/09/2026: tooltip tên tệp ở cây thư mục 375px rộng 765px, tràn gần 400px, probe không thấy vì chỉ
+  đo trang đứng yên).
 
 Mỗi phép đo thêm vào phải bắt lại được đúng ca đã dính (nút "Thêm" ở `/dashboard/calendar` bản cũ,
 ô ngày lịch gọn bản lượt hai) trước khi coi là xong.
@@ -264,6 +267,9 @@ không ghi class. Rà xong 11 nhóm thì xem skill có nói gì về chúng khô
 
 Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần.
 
+- Cây thư mục ở `/components` (lượt 1, 27/09/2026): tooltip tên tệp (`file-tree-item.tsx`, component Tooltip) bỏ
+  `whitespace-nowrap`, thêm `max-w-[min(20rem,calc(100vw-1rem))] whitespace-normal wrap-anywhere`, lật xuống dưới hàng khi
+  bên phải hết chỗ. Hiện ở 375px tooltip rộng 765px, tràn khỏi màn.
 - Tài liệu `/dashboard/projects/documents` (lượt 1, 27/09/2026): nút chữ "Thử lại" ở dòng tệp hỏng thêm
   `relative before:absolute before:-inset-x-1.5 before:-inset-y-2` (hiện 39×16px ở 375px).
 - Trợ lý AI `/dashboard/assistant`, `/states` (lượt 1, 27/09/2026): nút gửi khi ô trống `disabled:opacity-50`, đổi
