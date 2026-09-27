@@ -885,7 +885,7 @@ Là trang cài đặt kiểu A. Bộ mục mặc định: **Kênh nhận** (trì
 (công tắc mở khung giờ trượt ngay dưới, cùng hàng).
 
 - **Nói rõ công tắc loại việc có áp cho chuông trong app hay không, ở MỘT chỗ.** Mục Kênh nhận ghi "Chuông luôn nhận đủ" mà mục bên dưới ghi "Áp dụng cho mọi kênh đang bật" thì tắt "Có bình luận mới" xong người dùng không biết chuông còn báo không (đã dính 26/09/2026). Mặc định: chuông nhận đủ, công tắc loại việc chỉ áp cho kênh gửi ra ngoài, và câu mô tả mục ghi đúng vậy: "Áp dụng cho trình duyệt và email."
-- Nhiều loại việc × nhiều kênh mà cần chọn riêng từng ô (ví dụ bình luận chỉ qua email) thì mới dựng bảng lưới việc × kênh bằng checkbox. Mặc định không: ba mục trên đủ cho hầu hết app.
+- Nhiều loại việc × nhiều kênh mà cần chọn riêng từng ô (ví dụ bình luận chỉ qua email) thì mới dựng bảng lưới việc × kênh bằng checkbox. Quy ước chia đôi (tra 27/09/2026): sản phẩm có nhiều loại sự kiện và từ hai kênh gửi ra ngoài (email, đẩy) thì dùng lưới, sản phẩm ít sự kiện dùng danh sách công tắc. Mặc định của skill là ba mục trên, vì app dashboard thường ít sự kiện; dự án có trên ~6 loại việc và hai kênh gửi ra ngoài thì đề xuất lưới lúc giao.
 - Hàng có ô chọn cùng khuôn hàng công tắc (nhãn trái, ô phải `sm:w-48`); dưới `sm` ô xuống dưới chữ, rộng hết hàng.
 - Trình duyệt đang chặn quyền thông báo: công tắc khoá ở trạng thái tắt, câu lý do nói chỗ mở lại (biểu tượng ổ khoá cạnh địa chỉ trang). Email tắt thì email tổng hợp khoá theo, lý do "Bật Email ở trên để nhận bản tin."
 
