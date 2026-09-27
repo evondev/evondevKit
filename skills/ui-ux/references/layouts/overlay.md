@@ -159,7 +159,7 @@ cần nhìn thấy danh sách phía sau. Không dùng panel cho một câu xác 
 
 **Panel xem bản ghi có tab** (khách hàng, dự án, ticket: tên, trạng thái, nút thao tác nhanh, hàng tab):
 
-- **Phần cố định chỉ là hàng tên**: avatar, tên, nút ⋯ và ✕. Trạng thái, dòng phụ (công ty), hàng nút thao tác nhanh nằm đầu thân cuộn và **cuộn đi**; hàng tab `sticky top-0 z-10 bg-surface` trong thân cuộn, đường kẻ dưới tab tràn hai mép panel (`-mx-6 px-6`). Giữ cố định cả khối thì với tên hai dòng và tên công ty dài, phần đứng yên cao ~240px: laptop 800px mất gần một phần ba, điện thoại mất gần nửa, vùng đọc tab Tin nhắn còn một mẩu (đã dính 24/09/2026). Cuộn xuống thì còn lại tên + ✕ + tab, đủ biết đang xem ai và đang ở tab nào.
+- **Phần cố định chỉ là hàng tên**: avatar, tên, nút ⋯ và ✕. Trạng thái, dòng phụ (công ty), hàng nút thao tác nhanh nằm đầu thân cuộn và **cuộn đi**; hàng tab `sticky top-0 z-10 bg-surface` trong thân cuộn, đường kẻ dưới tab tràn hai mép panel: thân cuộn không padding ngang, mỗi khối trong thân tự `px-6`, hàng tab `px-6` bên trong, không kéo ra bằng `-mx-6` (`N11`; đo 27/09/2026 ở `/dashboard/customers/quick-view` 375 và 1280px, đầu thân và cuộn 400px: trùng từng pixel). Giữ cố định cả khối thì với tên hai dòng và tên công ty dài, phần đứng yên cao ~240px: laptop 800px mất gần một phần ba, điện thoại mất gần nửa, vùng đọc tab Tin nhắn còn một mẩu (đã dính 24/09/2026). Cuộn xuống thì còn lại tên + ✕ + tab, đủ biết đang xem ai và đang ở tab nào.
 - **Tên là chữ nặng nhất panel** (`text-lg font-semibold`). Số liệu, tiêu đề mục, không thứ gì trong thân to hơn tên. Ô số liệu trong panel theo mục "Trong panel trượt hay cột hẹp" ở `../components/charts.md`: một khung 2×2, số `text-lg`, không phải bốn card rời số `text-3xl` (đã dính 24/09/2026: bốn card số to nhất panel, tên khách đứng hàng hai).
 - **Đổi tab thì hàng tab đứng yên dưới con trỏ** (`N1`): đang dính đỉnh thì cuộn về ngay dưới hàng tab, không về 0; chưa dính thì giữ nguyên chỗ cuộn. Về 0 lúc đang dính là hàng tab tụt xuống dưới khối trạng thái, trượt khỏi chỗ vừa bấm. Muốn vậy thì nội dung tab `min-h` bằng vùng cuộn trừ hàng tab, để tab ngắn (tin nhắn trống) không kéo hàng tab xuống. Trang phía sau đứng yên. Mũi tên trái/phải chuyển tab (`../components/small-controls.md`). (Sửa 24/09/2026: bản trước ghi "cuộn về đầu", bản dựng làm khác và đúng hơn.)
 - Danh sách trong tab (tin nhắn, tệp, hoạt động) ghi giờ theo `T16b`: năm hiện tại thì bỏ năm.
@@ -194,14 +194,19 @@ thu rồi mở sidebar, bấm mở lại. Menu phải nằm sát nút cả hai l
 **Bo góc và khoảng cách, theo `M19`:**
 
 ```html
-<div class="min-w-56 rounded-2xl border border-border bg-surface p-1 shadow-lg">
-  <button class="flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm outline-hidden hover:bg-background focus-visible:bg-background">…</button>
-  <hr class="-mx-1 my-1 border-border" />   <!-- -mx-1 khớp p-1 của khung, F25 -->
-  <!-- Mục nguy hiểm: lúc thường y như mục khác, rê vào mới đỏ (I4) -->
-  <button class="group flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm text-foreground outline-hidden hover:bg-rose-500/10 hover:text-rose-700 focus-visible:bg-rose-500/10 focus-visible:text-rose-700 dark:hover:text-rose-400 dark:focus-visible:text-rose-400">
-    <i data-lucide="trash-2" class="size-4 shrink-0 text-muted group-hover:text-rose-700 group-focus-visible:text-rose-700 dark:group-hover:text-rose-400 dark:group-focus-visible:text-rose-400"></i>
-    Xoá
-  </button>
+<!-- Khung chỉ padding dọc, mỗi nhóm mục px-1: vạch giữa hai nhóm tự chạm mép (F25, N11) -->
+<div class="min-w-56 rounded-2xl border border-border bg-surface py-1 shadow-lg">
+  <div class="px-1">
+    <button class="flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm outline-hidden hover:bg-background focus-visible:bg-background">…</button>
+  </div>
+  <hr class="my-1 border-border" />
+  <div class="px-1">
+    <!-- Mục nguy hiểm: lúc thường y như mục khác, rê vào mới đỏ (I4) -->
+    <button class="group flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm text-foreground outline-hidden hover:bg-rose-500/10 hover:text-rose-700 focus-visible:bg-rose-500/10 focus-visible:text-rose-700 dark:hover:text-rose-400 dark:focus-visible:text-rose-400">
+      <i data-lucide="trash-2" class="size-4 shrink-0 text-muted group-hover:text-rose-700 group-focus-visible:text-rose-700 dark:group-hover:text-rose-400 dark:group-focus-visible:text-rose-400"></i>
+      Xoá
+    </button>
+  </div>
 </div>
 ```
 
@@ -212,7 +217,7 @@ trượt 4.5:1). Lúc chưa rê thì chữ `--foreground`, icon `text-muted` nh�
 | Thứ | Giá trị | Vì sao |
 | --- | --- | --- |
 | Khung | `rounded-2xl` 16px | |
-| Padding khung | `p-1` 4px | Khe hở giữa nền hover và mép khung |
+| Khe quanh mục | 4px: `p-1` ở khung; menu có vạch chia thì `py-1` ở khung + `px-1` ở từng nhóm mục | Khe hở giữa nền hover và mép khung; vạch chạm mép mà không cần `-mx-1` (`F25`) |
 | Mục | `h-10` 40px | Cùng chiều cao link sidebar, nút, ô nhập. Mục 36px trông chật |
 | Nền hover của mục | `rounded-xl` 12px | **16 = 12 + 4**, hai góc đồng tâm. Mục cao 40px nên bo 12px (`F1`) |
 

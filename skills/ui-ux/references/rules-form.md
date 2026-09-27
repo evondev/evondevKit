@@ -104,11 +104,20 @@ Muốn chữ vẫn thẳng lề với các khối khác mà nền hover vẫn tr
 <!-- Sai: hover xong chữ dính hai mép -->
 <li class="py-3 hover:bg-background">…</li>
 
-<!-- Đúng: nền tràn ra ngoài lề, chữ vẫn thẳng hàng -->
-<ul class="-mx-3">
-  <li class="rounded-lg px-3 py-3 hover:bg-background">…</li>
-</ul>
+<!-- Đúng: nền tràn ra ngoài lề, chữ vẫn thẳng hàng. Card không padding ngang, mỗi khối
+     tự mang px: tiêu đề px-5, khối danh sách px-2 (= 5 − 3) để chữ dòng px-3 thẳng tiêu đề -->
+<section class="rounded-2xl bg-surface py-5">
+  <h2 class="px-5">…</h2>
+  <ul class="px-2">
+    <li class="rounded-lg px-3 py-3 hover:bg-background">…</li>
+  </ul>
+</section>
 ```
+
+Không kéo danh sách ra bằng `-mx-3` (`N11`). Đo 27/09/2026 card "Việc hôm nay" ở `/dashboard`,
+375 và 1280px: bản padding từng khối và bản `-mx-*` trùng từng pixel (chữ tiêu đề, ô tick, nền
+dòng). Ô trong bảng cùng cách: ô chứa nút bớt padding đúng bằng `px` của nút (`td` `px-2` khi
+nút `px-2`, các ô khác `px-4`), không kéo nút ra.
 
 **F14. Không spacing tuỳ hứng, không bo góc tuỳ hứng.** Lấy từ `budgets.md`.
 
@@ -189,11 +198,15 @@ Chọn cách theo **nền hover của mục có thụt vào so với mép khung 
 
 ```html
 <!-- Cách 1 — menu, dropdown: mục hover thụt vào, cách mép khung một khe.
-     Khung PHẢI có padding ngang để giữ khe đó, nên đường chia âm lề bằng đúng padding. -->
-<div class="rounded-2xl p-2">
-  <button class="w-full rounded-lg px-3 py-2">…</button>
-  <hr class="-mx-2 my-2 border-border" />
-  <button class="w-full rounded-lg px-3 py-2">…</button>
+     Khung chỉ padding dọc; khe ngang nằm ở từng nhóm mục, vạch đứng giữa hai nhóm nên tự chạm mép. -->
+<div class="rounded-2xl py-2">
+  <div class="px-2">
+    <button class="w-full rounded-lg px-3 py-2">…</button>
+  </div>
+  <hr class="my-2 border-border" />
+  <div class="px-2">
+    <button class="w-full rounded-lg px-3 py-2">…</button>
+  </div>
 </div>
 
 <!-- Cách 2 — danh sách trong card: dòng tràn hết bề ngang, không thụt.
@@ -209,9 +222,12 @@ Chọn cách theo **nền hover của mục có thụt vào so với mép khung 
 mép, mất khe hở, và bo góc của mục với bo góc của khung không còn đồng tâm
 (`M19`).
 
-**Cách 1 có hai con số phải khớp nhau**: `-mx-*` của đường chia bằng đúng `p-*`
-của khung. Đổi padding khung mà quên đổi âm lề là đường chia lại hụt, hoặc tràn
-ra khỏi khung. Ghi hai số đó cạnh nhau trong code để người sửa sau thấy.
+**Cách 1 không kéo vạch ra bằng `-mx-*`** (`N11`). Bản cũ để khung `p-2` rồi cho vạch
+`-mx-2`: hai con số phải khớp nhau, đổi padding khung mà quên đổi âm lề là vạch lại hụt
+hoặc tràn khỏi khung. Gom mục thành nhóm `px-*` thì không còn số nào phải khớp. Nhóm
+chỉ là `<div>` trơn, không `role`: trình đọc màn hình vẫn thấy các `menuitem` là con của
+`menu`. Đo 27/09/2026 trên 12 menu (tài khoản, ⋯ của thành viên, ⋯ của khoá API; 375 và
+1280px): vị trí từng mục, từng vạch và chiều cao menu trùng từng pixel với bản `-mx-1`.
 
 Cùng lý do, `divide-y` trên danh sách trong card cũng tràn hết bề ngang — xem
 `references/components/card.md`.

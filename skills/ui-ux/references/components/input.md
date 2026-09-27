@@ -69,7 +69,7 @@ const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     type="button"
     onClick={() => setIsPasswordVisible((isVisible) => !isVisible)}
     aria-label={isPasswordVisible ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
-    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-foreground"
+    className="absolute inset-y-0 right-1 my-auto flex size-10 items-center justify-center rounded-lg text-muted hover:text-foreground"
   >
     {isPasswordVisible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
   </button>
@@ -77,6 +77,8 @@ const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 ```
 
 - `type="button"`, không phải mặc định `submit`.
+- Nút `size-10` sát phải `right-1`, vừa khít `pr-11` của ô (`I27`).
+- **Căn giữa dọc bằng `inset-y-0 my-auto` cộng cỡ cố định** (`size-*`), không `top-1/2 -translate-y-1/2` (`N11`). Áp cho mọi icon, nút nằm trong ô dưới đây. Đo 27/09/2026 ở `/login`, `/register`, đặt mật khẩu mới, ô tìm khách hàng, 375 và 1280px: trùng từng pixel. Quên cỡ thì khối `inset-y-0` giãn cao bằng cả ô (nút mắt 40px thành 48px).
 - Nút nằm **trong** ô, không phải chữ "Hiện" nằm ngoài bên cạnh — chữ ngoài làm hàng bị lệch so với các field khác.
 - Nút không có nền, không viền. Nó là hành động phụ trong ô, hiện lên bằng màu chữ khi rê vào.
 
@@ -89,7 +91,7 @@ const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
 ```tsx
 <div className="relative">
-  <Mail className="absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted" aria-hidden />
+  <Mail className="absolute inset-y-0 left-3.5 my-auto size-4 text-muted" aria-hidden />
   <input className="... w-full pl-11" />
 </div>
 ```
@@ -124,7 +126,7 @@ một câu dài ở 375px không có cách xoá nhanh, chữ trôi khuất bên 
   {query ? (
     <Button variant="ghost" icon={X} aria-label="Xoá từ khoá"
       onClick={() => { clearQuery(); inputRef.current?.focus(); }}
-      className="absolute right-1 top-1/2 size-8 -translate-y-1/2 rounded-lg p-0 text-muted hover:text-foreground" />
+      className="absolute inset-y-0 right-1 my-auto size-8 rounded-lg p-0 text-muted hover:text-foreground" />
   ) : null}
 </div>
 ```
