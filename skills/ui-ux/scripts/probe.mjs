@@ -404,9 +404,12 @@ function measureInPage({ minTapSize, isMobile }) {
     return { left: Math.max(textRect.left, itemRect.left), right: Math.min(textRect.right, itemRect.right), top: itemRect.top };
   }
 
+  // Chỉ dấu ngăn cách thật (›, ‹, /). Icon ưu tiên trong thẻ kanban cũng là svg aria-hidden trong một
+  // <ul>, đo như dấu › thì ra "khe 150–178px" (báo nhầm 27/09/2026, /dashboard/tasks/states ở 375px).
+  const isSeparatorIcon = (svg) => /lucide-(chevron-(right|left)|slash)\b/.test(svg.getAttribute("class") || "");
   const separatorRows = new Set();
   for (const svg of document.querySelectorAll("svg[aria-hidden='true']")) {
-    if (svg.closest("a, button, [role='button']") || !isVisible(svg)) continue;
+    if (svg.closest("a, button, [role='button']") || !isVisible(svg) || !isSeparatorIcon(svg)) continue;
     const row = svg.closest("ol, ul, nav");
     if (row) separatorRows.add(row);
   }
@@ -415,6 +418,7 @@ function measureInPage({ minTapSize, isMobile }) {
   for (const row of separatorRows) {
     const units = [...row.querySelectorAll("svg[aria-hidden='true'], a, button")]
       .filter((element) => isVisible(element) && !element.parentElement.closest("a, button"))
+      .filter((element) => element.tagName.toLowerCase() !== "svg" || isSeparatorIcon(element))
       .map((element) => {
         const isSeparator = element.tagName.toLowerCase() === "svg";
 

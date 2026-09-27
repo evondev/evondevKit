@@ -89,7 +89,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | # | Trang | Route | Rà ngày |
 | --- | --- | --- | --- |
 | 1 | Khung app + tổng quan | `/dashboard`, `/dashboard/overview/states` | 26/09/2026 (tổng quan, ba lượt) |
-| 2 | Công việc: bảng nhóm, kanban, tạo mới | `/dashboard/tasks`, `/tasks/new`, `/tasks/states` | 26/09/2026 (kanban, ba lượt, đã theo kịp; popover Lọc, ba lượt, đã theo kịp); 27/09/2026 (bảng nhóm, một lượt: khuôn theo bề rộng khung, dự án chưa theo kịp; tạo mới, một lượt: nhóm radio, bộ đếm ký tự, dự án chưa theo kịp); còn `/states` |
+| 2 | Công việc: bảng nhóm, kanban, tạo mới | `/dashboard/tasks`, `/tasks/new`, `/tasks/states` | 26/09/2026 (kanban, ba lượt, đã theo kịp; popover Lọc, ba lượt, đã theo kịp); 27/09/2026 (bảng nhóm, một lượt: khuôn theo bề rộng khung, dự án chưa theo kịp; tạo mới, một lượt: nhóm radio, bộ đếm ký tự, dự án chưa theo kịp; `/states`, một lượt: khung chờ cột nhảy ngang, dự án chưa theo kịp) |
 | 3 | Khách hàng: danh sách, xem nhanh, chi tiết | `/dashboard/customers`, `/customers/quick-view`, `/customers/c-030`, `/customers/khong-co`, `/customers/states` | |
 | 4 | Đơn hàng: chi tiết, xem nhanh | `/dashboard/orders/detail`, `/orders/quick-view` | |
 | 5 | Thành viên và phân quyền | `/dashboard/members` | 25/09/2026 (chín lượt; cả luồng xác thực đã theo kịp) |
@@ -195,6 +195,10 @@ nền vuông 46×48 cạnh vòng chọn tròn 32px. Thêm vào probe:
 Mỗi phép đo thêm vào phải bắt lại được đúng ca đã dính (nút "Thêm" ở `/dashboard/calendar` bản cũ,
 ô ngày lịch gọn bản lượt hai) trước khi coi là xong.
 
+Đã sửa báo nhầm (27/09/2026): "Dấu ngăn cách không đều" coi icon ưu tiên trong thẻ kanban (svg trong `<ul>`) là dấu ›, ra
+khe 150–178px ở `/dashboard/tasks/states` 375px. Nay chỉ đo icon `chevron-right/left`, `slash`; thử lại bằng cách làm
+lệch một dấu › trên đường dẫn ở `/components`, vẫn bắt được.
+
 Báo nhầm cần sửa (27/09/2026): "Cao gần bằng mà không bằng" gom các `section` khác loại ở
 `/dashboard/settings/billing/states` (mục gói 118px vì tên gói 16px, mục thẻ 114px vì tên thẻ 14px).
 Chỉ nên so các khối cùng tiêu đề hoặc cùng cấu trúc con.
@@ -248,6 +252,8 @@ không ghi class. Rà xong 11 nhóm thì xem skill có nói gì về chúng khô
 
 Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần.
 
+- `/dashboard/tasks/states` (lượt 1, 27/09/2026): khung chờ của bảng nhóm, ô ưu tiên và hạn chót dùng `min-w-32`,
+  `min-w-40` như ô thật; thanh tên người phụ trách `w-44` thay vì ngắn hơn. Hiện cột Ưu tiên nhảy 86px lúc dữ liệu về.
 - Form tạo công việc `/dashboard/tasks/new` (lượt 1, 27/09/2026):
   - Nhóm "Mức ưu tiên": bỏ `grid grid-cols-2`, dưới `sm` xếp dọc, mỗi lựa chọn là `<label>` bọc ô + chữ
     `flex w-fit min-h-11 items-center gap-3`; từ `sm` giữ một hàng.
