@@ -41,8 +41,9 @@ Thứ tự vòng bấm là logic, component chỉ gọi `onSort` (`N10`). Khi đ
 - **Không nền hover. Rê vào thì chữ và mũi tên đậm lên** (`hover:text-foreground`). Ngoại lệ
   của `I10`, cùng lý do với accordion (`accordion.md`). Đã dính 26/09/2026: nút phủ ô tô
   `--surface-hover` lúc rê thành một mảng `#f8f8fa` rộng 505px cho một nhãn 12px, và ô cột đầu,
-  cột cuối chạm mép card, sát màu nền trang `#f4f4f6`, card như bị khoét một góc. Các app lớn
-  đều chỉ đổi màu chữ ở tiêu đề cột.
+  cột cuối chạm mép card, sát màu nền trang `#f4f4f6`, card như bị khoét một góc. Quy ước chia đôi
+  (tra 27/09/2026): có hệ thiết kế doanh nghiệp tô nền cả ô, có hệ chỉ hiện mũi tên và đậm chữ; skill
+  chọn không nền vì ca đã dính ở trên.
 - **Vòng focus `ring-inset`**: ô chạm ô bên cạnh và mép khung cuộn, vòng vẽ ra ngoài bị cắt.
 
 ```tsx

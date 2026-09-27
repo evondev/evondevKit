@@ -15,8 +15,8 @@ cả trang: chữ mảnh hơn, sạch hơn, bớt cái vẻ nặng nề của fo
 
 **T2. Một họ chữ cho cả app.** Phân vai bằng weight và cỡ, không bằng font thứ
 hai: tiêu đề `600`, body `400`, nhãn phụ `500`. `700` chỉ cho tên trang của trang
-trình diễn (giới thiệu, bảng giá). Các app lớn dùng 600 cho tiêu đề app;
-700 nặng hơn gu mờ của dự án (hạ ngày 23/09/2026).
+trình diễn (giới thiệu, bảng giá). Phần lớn hệ thiết kế sản phẩm dùng 600 cho tiêu đề app (có
+hệ dùng 650–700, tra 27/09/2026); skill chọn 600 vì 700 nặng hơn gu mờ của dự án (hạ ngày 23/09/2026).
 
 `tracking-tight` **cho chữ có dấu chỉ từ `text-3xl` trở lên** (nâng từ `2xl` ngày
 22/09/2026: tiêu đề `2xl` "Xác thực email" vẫn đọc ra "thựcemail"). Con số không
@@ -198,8 +198,8 @@ dòng thời gian đơn hàng, nhật ký thao tác thì hiện thẳng giờ tu
 `08:30 · 16/09/2026`. Mười hàng cùng đuôi `/2026` là một ý nhắc mười lần, và cột giờ rộng
 thêm gần một nửa (đã dính 24/09/2026: tab Tin nhắn, Tệp, Hoạt động của panel khách hàng).
 Khác năm thì ghi đủ `16/09/2025`; `title` và `datetime` luôn đủ. Copy tiếng Anh
-thì tháng viết chữ (`T28`). **Bẫy:** `Intl.DateTimeFormat('vi-VN', { day: '2-digit', month: '2-digit' })` bỏ năm thì ra `23-09` gạch ngang, không phải `23/09`; tự ghép ngày và tháng bằng `/`. Các app lớn cùng làm
-vậy. Một mốc đứng riêng làm trường dữ liệu ("Ngày tạo" trong khối nhãn và giá trị) thì giữ đủ năm.
+thì tháng viết chữ (`T28`). **Bẫy:** `Intl.DateTimeFormat('vi-VN', { day: '2-digit', month: '2-digit' })` bỏ năm thì ra `23-09` gạch ngang, không phải `23/09`; tự ghép ngày và tháng bằng `/`. Bỏ năm với
+mốc trong năm nay là cách của các thành phần hiển thị thời gian phổ biến ("Sat, 31 Dec" nhưng "Wed, 26 Aug 2021", tra 27/09/2026). Một mốc đứng riêng làm trường dữ liệu ("Ngày tạo" trong khối nhãn và giá trị) thì giữ đủ năm.
 
 **Mốc nằm giữa câu văn thì viết như câu nói, không dùng dấu `·`.** `08:30 · 16/09` là kiểu của
 cột và dòng phụ; giữa câu nó đọc thành hai mẩu rời: "Dự kiến mở lại lúc 23:30 · 26/09/2026."
