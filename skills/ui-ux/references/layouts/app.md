@@ -64,7 +64,7 @@ Xem `../components/charts.md` cho công thức biểu đồ và luật màu.
   - Dòng phụ `text-xs text-muted`: dự án · giờ. Hôm nay ghi giờ, hôm qua ghi "Hôm qua", cũ hơn ghi ngày. Dự án dài `truncate`, giờ `shrink-0`.
   - **5 mục**, header có "Xem tất cả" như các khối danh sách khác trên màn (`card.md`). Đã thử trên trang: trang cao 1512px còn ~1150px, hai cột kết thúc gần ngang nhau.
 - **Hai cột lưới phải kết thúc gần ngang nhau.** Khối việc hôm nay `self-start` (đúng, không kéo card trắng rỗng), nhưng cột phải dài gấp đôi thì dưới cột trái là một mảng xám 450px. Chữa bằng cách **cắt số hàng của khối dài** (luồng hoạt động 5 mục, việc hôm nay tối đa 8 rồi "Xem tất cả"), không kéo khối ngắn, không đổi thứ tự khối.
-- **Workspace mới (chưa có dự án nào): khung "Các bước bắt đầu" thay cả lưới.** Đừng dựng đủ năm khối rồi cho mỗi khối một câu "Chưa có…": năm khung cùng nói một ý (`N3`), khung biểu đồ cao 340px chỉ chứa một dòng chữ, và cả màn **không có lối đi tiếp** nào (`N6`, đã dính 26/09/2026). Khung theo mục **Các bước bắt đầu** ngay dưới; app không có checklist thì một khối chào: tiêu đề `text-base font-semibold` ("Bắt đầu với dự án đầu tiên"), một câu vì sao, nút `primary` "+ Tạo dự án". Nằm trong một card trắng như mọi khối khác, không nền trong suốt. Từ lúc có một dự án thì lưới trở lại **dưới** khung các bước (khung còn tới khi xong hết hoặc bị ẩn), khối nào chưa có số thì theo ca rỗng của khối đó (biểu đồ một điểm, việc hôm nay trống).
+- **Workspace mới (chưa có dự án nào): khung "Các bước bắt đầu" thay cả lưới.** Đừng dựng đủ năm khối rồi cho mỗi khối một câu "Chưa có…": năm khung cùng nói một ý (`N3`), khung biểu đồ cao 340px chỉ chứa một dòng chữ, và cả màn **không có lối đi tiếp** nào (`N6`, đã dính 26/09/2026). Khung theo mục **Các bước bắt đầu** ngay dưới; app không có checklist thì một khối chào: tiêu đề `text-base font-semibold` ("Bắt đầu với dự án đầu tiên"), một câu vì sao, nút `primary` "+ Tạo dự án" (`I2`: lối đi tiếp duy nhất của màn rỗng). Nằm trong một card trắng như mọi khối khác, không nền trong suốt. Từ lúc có một dự án thì lưới trở lại **dưới** khung các bước (khung còn tới khi xong hết hoặc bị ẩn), khối nào chưa có số thì theo ca rỗng của khối đó (biểu đồ một điểm, việc hôm nay trống).
 - **Khối không có dữ liệu thì bỏ "Xem tất cả"**, nút dẫn sang một danh sách rỗng là thừa. "Hôm nay không có việc nào đến hạn" chỉ đúng khi có việc mà không việc nào đến hạn hôm nay; chưa có việc nào thì câu là "Chưa có việc nào được giao cho bạn".
 - **Câu rỗng của các khối cùng hàng cùng căn một kiểu.** Khung biểu đồ căn câu giữa theo chiều dọc, khung tiến độ bên cạnh để câu sát đầu: cùng hàng hai vị trí (`N5`). Cả hai căn giữa khung.
 
@@ -424,7 +424,7 @@ Khách hàng từ 3/2024, 18 đơn hàng, doanh thu 1.284.500.000 đ
 - **Khối chữ `min-w-0 flex-1`.** Thiếu `flex-1` thì khối co theo dòng dài nhất (thường là đường dẫn), mô tả bị ép xuống dòng ở nửa khung dù bên phải còn trống (đã dính 22/09/2026, sửa `max-w` không ăn vì bề rộng đã bị flex bóp trước).
 - **Tên trang `font-semibold`, không `tracking-tight`** ở cỡ `lg`/`xl`. Tên trang là chữ đậm nhất vùng nội dung; nhạt hơn tiêu đề khối bên dưới là đảo thứ bậc.
 - **Mô tả `max-w-[55ch] text-pretty`**: đủ rộng để một câu ngắn nằm một dòng, câu dài vẫn dưới 75 ký tự mỗi dòng (`T11`). Bản cũ `max-w-2xl` ghi là dưới 75 nhưng ở `text-sm` thực tế ~99 ký tự.
-- **Nút bên phải, bám mép trên** (`sm:items-start`), `shrink-0`. Tối đa một nút `primary` (hành động chính của trang), còn lại nút viền có icon (`I1`). Từ nút thứ ba thì gom vào nút `MoreHorizontal`.
+- **Nút bên phải, bám mép trên** (`sm:items-start`), `shrink-0`. Tối đa một nút `primary` (hành động chính của trang, `I3`), còn lại nút viền có icon (`I1`). Từ nút thứ ba thì gom vào nút `MoreHorizontal`.
 - **Màn hẹp**: nút xuống dưới chữ, căn trái, giữ trên một hàng, không để hai nút trên một nút dưới (`../responsive.md`).
 - Không có mô tả, không có nút thì đầu trang chỉ còn tên, không chừa chỗ trống.
 
@@ -1062,7 +1062,7 @@ Dùng để gọi API từ máy chủ của bạn. Giữ khoá như mật khẩu
   · quyền" / "lần dùng · hạn dùng". Từ `sm` nối thành một dòng. Ngắt tự do thì dấu `·` rớt
   lên đầu dòng sau ("· Chưa dùng lần nào"), đã dính 26/09/2026 ở 375px. Cách làm ở
   `list-row.md`, "Dòng phụ nhiều mảnh".
-- **Thu hồi hỏi lại** bằng hộp xác nhận đỏ như hộp xoá (`D3`: ứng dụng đang dùng khoá hỏng
+- **Thu hồi hỏi lại** bằng hộp xác nhận đỏ như hộp xoá (`I4` câu 2, kết thúc thứ đang chạy; `D3`: ứng dụng đang dùng khoá hỏng
   ngay, không gọi lại được), icon `key-round`, tên khoá in đậm đầu câu, nút "Thu hồi khoá".
   **Xoá khoá đã hết hạn làm ngay**, không hỏi: khoá đó đã không gọi được gì. Cả hai xong thì
   toast, tên khoá ở dòng dưới; không Hoàn tác. Gỡ dòng thì chuyển focus (`I31`): sang nút `⋯`
@@ -1080,7 +1080,7 @@ Dùng để gọi API từ máy chủ của bạn. Giữ khoá như mật khẩu
   nhịp chớp, focus đi hai lần). Tiêu đề "Sao chép khoá API", câu mô tả nói đây là lần duy nhất
   thấy khoá đầy đủ. Khoá nằm trong khối `bg-background rounded-xl px-4 py-3 font-mono
   break-all select-all` (bấm là bôi đen cả khoá; không cắt "…" vì người dùng cần đối chiếu
-  khoá đã dán). Dưới khối là nút `primary` "Sao chép khoá" có icon `copy`, nhận focus khi bước
+  khoá đã dán). Dưới khối là nút `primary` "Sao chép khoá" (`I2`: việc duy nhất của bước này) có icon `copy`, nhận focus khi bước
   này hiện; chép xong icon thành `check` 1,5 giây, chữ giữ nguyên (`N1`), kèm `role="status"`
   "Đã sao chép". Chân hộp chỉ còn "Xong" (`secondary`). Không đặt nút sao chép cạnh khối khoá
   trên một hàng: thử 26/09/2026 ở 640 và 1280px, khoá bị ép xuống hai dòng và khối đen to

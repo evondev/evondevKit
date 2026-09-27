@@ -57,7 +57,7 @@ Bảng màu của MỘT màn hình, không thêm:
 | Xanh lá | "Đang ổn", "đã xong": badge, thanh tiến độ xong (`M7`). Cố định, không lấy màu nhấn |
 | Hổ phách | "Cần chú ý": quá hạn, nộp trễ, bỏ lỡ |
 | Đỏ lỗi — `red` | Lỗi thật mà người dùng phải xử lý: bài bị từ chối, lỗi form |
-| Đỏ nguy hiểm — `rose` | Hành động không lấy lại được: xoá, huỷ tài khoản, rời nhóm, và mục đăng xuất trong menu. Nút đứng riêng thì nền mờ + chữ đỏ luôn hiện; mục menu thì chỉ đỏ khi rê vào (`I4`) |
+| Đỏ nguy hiểm — `rose` | Hành động trả lời "có" ở một trong ba câu của `I4` (mất dữ liệu, kết thúc thứ đang chạy, cắt quyền): xoá, huỷ gói, thu hồi khoá, rời nhóm, đăng xuất. Lấy lại được không làm việc đó hết đỏ. Nút đứng riêng thì nền mờ + chữ đỏ luôn hiện; mục menu thì chỉ đỏ khi rê vào (`I4`) |
 
 Hai sắc đỏ là cố ý, không phải gõ nhầm — xem `M30`.
 

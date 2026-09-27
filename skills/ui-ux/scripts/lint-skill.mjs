@@ -27,8 +27,12 @@ const rebuttalPattern = /bác|đã dính|chưa đủ|không làm .{0,40}hết ng
 const dangerDecisionPattern =
   /không đỏ|nút nguy hiểm|isDestructive|nền `?rose-500\/1[05]|chữ `?rose-700|đỏ như hộp xoá|không `?rose/i;
 // Câu chọn nút nền đặc.
-const primaryDecisionPattern = /(nút|là|thành|sang) `primary`|`primary` "/;
-const dangerRulePattern = /\bI4\b|locked-rules/;
+// Chỉ câu gán vai nút chính ("là `primary`", "một nút `primary`", nút `primary` "Nhãn"), không câu mô tả
+// ("đứng cạnh nút `primary`", "nút `primary` đổi sang `primary-hover`": báo nhầm 27/09/2026).
+const primaryDecisionPattern = /(là|thành|sang|dùng) (nút )?`primary`(?!-)|(một|duy nhất) nút `primary`|nút `primary` (duy nhất|["“])|`primary` "/;
+// "Không đỏ" của một thứ không phải hành động (tiêu đề lỗi, chấm chưa đọc, câu "đã dừng") dựa vào luật màu
+// mang nghĩa (M4, M7, M30), không phải I4: gắn I4 vào đó là sai nghĩa.
+const dangerRulePattern = /\bI4\b|\bM(4|7|30)\b|locked-rules/;
 const primaryRulePattern = /\bI[23]\b|ngoại lệ có tên|locked-rules/;
 
 function listSkillMarkdown(directory) {

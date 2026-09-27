@@ -178,7 +178,7 @@ vì cả luồng nằm trong một tab, báo một dòng lúc giao.
    mặc định ở trên). Nút "Lưu mật khẩu". Form có ô `username` ẩn mang email đó để trình
    quản lý mật khẩu lưu đúng tài khoản (`I28`).
    - **Phiên đặt lại hết hạn thì thay cả form** bằng câu báo và một nút `primary`
-     "Gửi mã mới" (gửi lại tới email cũ, sang bước 2). Câu báo nói luôn điều người
+     "Gửi mã mới" (`I3`: lối ra duy nhất) (gửi lại tới email cũ, sang bước 2). Câu báo nói luôn điều người
      dùng lo: "Mật khẩu cũ chưa bị đổi". Đừng để ô mật khẩu và nút "Lưu mật khẩu" nằm
      dưới khối lỗi: bấm Lưu lần nữa vẫn hỏng, và khối lỗi có nút riêng thì màn có hai
      nút tranh nhau làm việc chính (đã dính 25/09/2026, `N5`).

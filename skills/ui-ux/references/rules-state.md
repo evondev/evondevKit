@@ -30,7 +30,7 @@ lại ngày 23/09/2026.
 | Nút phụ cần rõ hơn ghost: nút rộng hết card, nút cạnh `primary` | nền `--secondary`, không viền |
 | Chỉ icon | nút cỡ icon, có `aria-label`, cao bằng nút chữ cạnh nó |
 | Nút trong hộp xác nhận | chỉ chữ, không icon: icon đã đứng ở đầu hộp (`layouts/overlay.md`) |
-| Xoá (nút đứng riêng) | nền `rose-500/10` + chữ `rose-700` lúc nào cũng hiện, rê vào nền đậm lên `/15` |
+| Xoá và việc nguy hiểm khác (nút đứng riêng, `I4`) | nền `rose-500/10` + chữ `rose-700` lúc nào cũng hiện, rê vào nền đậm lên `/15` |
 
 **I2. Chọn nền màu nhấn thì nói một câu lý do.** Nộp bài, thanh toán, tham gia —
 những chỗ đó hợp lệ. Nhưng phải là một lựa chọn, không phải mặc định.

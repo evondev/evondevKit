@@ -7,7 +7,7 @@ Bình luận dưới một bản ghi: task, tài liệu, đơn hàng. Chữ mư�
 - **Thụt lề mỗi tầng ~29px** (`ml-4` + viền + `pl-3`), đường dọc `border-l` rơi đúng tâm avatar của bình luận cha.
 - **Màn hẹp chỉ thụt tối đa 2 tầng.** Sâu hơn thì hàng con **không thụt nữa**, thay bằng dòng `text-xs text-muted` "Trả lời **<tên>**" ở đầu bình luận. Thụt tiếp là cột chữ còn ~140px, ô trả lời vỡ hai dòng placeholder, và nội dung xuống dòng từng hai ba chữ (`R5`, đã dính 23/09/2026).
 - **Ô trả lời ở màn hẹp bỏ avatar bên trái** (lấy lại 44px), ô viết chiếm hết bề ngang. Ô gốc ở cuối khu thì vẫn có avatar.
-- **Nút trong ô viết**: gửi là `primary` và **khoá khi ô trống** (`opacity-50`), huỷ là `secondary`. Một nút thì **không kéo rộng hết hàng ở màn hẹp** — `R3` chỉ áp khi cụm nút không vừa.
+- **Nút trong ô viết**: gửi là `primary` (`I3`: một nút chính trong cụm) và **khoá khi ô trống** (`opacity-50`), huỷ là `secondary`. Một nút thì **không kéo rộng hết hàng ở màn hẹp** — `R3` chỉ áp khi cụm nút không vừa.
 - **Bốn trạng thái của một bình luận** (`N2`), mỗi cái một hình riêng:
   - *đang gửi*: spinner `size-4` cạnh tên, cả khối `text-muted`, link "Trả lời" mờ và không bấm được;
   - *gửi lỗi*: dòng `text-xs text-red-600` kèm icon cạnh tên ("Gửi không thành công") — **`red` chứ không phải `rose`**, vì gửi hỏng là việc đã xảy ra rồi, không phải cảnh báo trước khi bấm (`M30`) — cộng hai nút "Thử lại" (`outline`) và "Xoá" (nền `rose-500/10`, chữ `rose-700`, theo `I4`);

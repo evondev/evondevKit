@@ -58,7 +58,7 @@ file đã có (`N5`): danh sách bước dùng công cụ mượn đường dọ
 
 - **Chữ đang chạy ra**: một khối con trỏ nhạt ở cuối (`inline-block h-[1.1em] w-2 rounded-sm bg-foreground/30 align-text-bottom`), không nhấp nháy: chữ đang chạy đã là chuyển động. Chưa có gợi ý, chưa có hàng thao tác.
 - **Nút gửi thành nút dừng**: cùng chỗ, cùng cỡ, cùng `primary`, icon `Square` đặc, `aria-label="Dừng trả lời"` + tooltip. Ô soạn **không khoá**, gõ trước câu sau được.
-- **Người dùng bấm dừng**: giữ nguyên phần đã chạy ra, rồi **hàng thao tác như câu đã xong**, chữ `text-xs text-muted` "Đã dừng giữa chừng" đứng cùng hàng, sau hai icon. Không đỏ: người dùng tự dừng, không có gì hỏng. Đã dính 24/09/2026: dừng xong chỉ có dòng chữ, không Tạo lại, không Sao chép: muốn chạy tiếp phải gõ lại cả câu hỏi (`N6`, mỗi bước có lối ra).
+- **Người dùng bấm dừng**: giữ nguyên phần đã chạy ra, rồi **hàng thao tác như câu đã xong**, chữ `text-xs text-muted` "Đã dừng giữa chừng" đứng cùng hàng, sau hai icon. Không đỏ: người dùng tự dừng, không có gì hỏng (`M30`). Đã dính 24/09/2026: dừng xong chỉ có dòng chữ, không Tạo lại, không Sao chép: muốn chạy tiếp phải gõ lại cả câu hỏi (`N6`, mỗi bước có lối ra).
 - **Không trả lời được**: hai tầng như "Lỗi tải" (`empty-state.md`): `text-sm font-medium text-red-600` "Trợ lý chưa trả lời được", dưới là lý do `text-muted`, rồi nút viền `RotateCw` "Thử lại". **Căn trái** ở chỗ câu trả lời, không căn giữa như danh sách.
 
 ## Hàng thao tác dưới câu trả lời

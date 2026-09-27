@@ -171,6 +171,16 @@ file: đọc từng chỗ, câu đúng luật thì thêm mã; câu lệch luật
 trung tính) thì sửa theo `I4` và ghi vào "Dự án chưa theo kịp". Báo nhầm thì sửa script cho
 hết nhầm, đừng thêm mã cho qua. Xong khi `--all` sạch.
 
+**Xong 27/09/2026.** Còn 20 chỗ khi làm (một số đã sửa trong các lượt rà cùng ngày):
+- 13 câu đúng luật thiếu mã: thêm `I2` / `I3` / `I4` kèm lý do ngắn, hoặc `M30` cho "không đỏ" của thứ không phải hành động.
+- 2 báo nhầm của lint: câu mô tả ("đứng cạnh nút `primary`", "nút `primary` đổi sang `primary-hover`") bị coi là quyết định
+  chọn nút. Mẫu nhận diện nay chỉ bắt câu gán vai ("là `primary`", "một nút `primary`", nút `primary` "Nhãn").
+- 5 chỗ lint chỉ nhận `I4`: câu "không đỏ" về màu mang nghĩa (tiêu đề lỗi, chấm chưa đọc, ô lịch quá hạn) đã ghi `M30`
+  / `M7`. Lint nay nhận `M4`, `M7`, `M30` làm luật gốc cho câu đó.
+- 1 câu lệch luật lint không bắt: `rules-color.md` định nghĩa đỏ nguy hiểm là "hành động không lấy lại được", trái `I4`
+  ("lấy lại được không làm việc đó hết nguy hiểm"). Viết lại theo ba câu của `I4`.
+Thử lint trên câu mẫu sai: vẫn bắt "không đỏ vì không mất gì" và "là nút `primary`" thiếu lý do.
+
 ## Việc để sau: probe đo cả trạng thái động
 
 `probe.mjs` đo trang đứng yên và Tab. Hai lỗi 26/09/2026 lọt vì chỉ lộ khi rê chuột hoặc bấm:

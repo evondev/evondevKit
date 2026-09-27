@@ -346,7 +346,7 @@ nó). Radix: `side="bottom"` + `avoidCollisions`, không bật `sticky="always"`
 - **Lịch bên trái, bánh xe bên phải** từ `sm`, ngăn bằng `border-l`. Màn hẹp thì bánh xe xuống dưới lịch.
 - **Bánh xe cao bằng vùng lịch**, dải chọn ở giữa chiều cao đó. Bánh xe ngắn hơn lịch thì dưới nó trống một khoảng, cột bên phải trông như chưa dựng xong.
 - **Có nút Xong, nên giá trị chỉ ghi vào ô khi bấm Xong** (hoặc Enter). Trong lúc chọn, ô giữ nguyên giá trị cũ hoặc placeholder; mốc đang chọn hiện ở **dòng tóm tắt** bên trái footer (`text-sm text-muted tabular-nums`). Esc hay bấm ra ngoài là bỏ, ô không đổi. Đừng vừa có Xong vừa ghi vào ô ngay từng lần đổi: hai mô hình lẫn nhau, người dùng không biết Esc có hoàn lại không.
-- **Xong** là nút `primary` duy nhất của popover, căn phải footer. Footer `border-t`, `px-4 py-3`.
+- **Xong** là nút `primary` duy nhất của popover (`I3`), căn phải footer. Footer `border-t`, `px-4 py-3`.
 - Icon trong ô là `calendar-clock` (lucide), không phải `calendar`: nhìn ô là biết có cả giờ.
 - Ô hiển thị `23/09/2026 23:05`, ngày và giờ cách một dấu cách, `tabular-nums`. Có giây thì ô và khung rộng thêm cho cột giây.
 
