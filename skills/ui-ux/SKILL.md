@@ -350,6 +350,7 @@ thì một trong hai chỗ là sai.
 | Ngân sách, nhịp, thang cỡ chữ | `references/budgets.md` |
 | Bảng màu, font, cách đổi thương hiệu | `references/brand-tokens.md` + `references/tokens.css` |
 | Kiểm trước khi báo xong | `references/checklist.md` |
+| Luật chủ dự án đã chốt và lý lẽ đã bị bác: mở trước khi chọn màu, mức nặng của nút (đỏ hay trung tính, `primary` hay viền) | `references/locked-rules.md` |
 
 **Mở khi dựng đúng khối đó:**
 

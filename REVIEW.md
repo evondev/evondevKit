@@ -67,6 +67,11 @@ chưa tick đầu tiên. Nhiều trang cùng lúc thì lỗi bị lướt và c�
      ngay trong lượt. Sửa spec của component/layout, xem bài học có chung cho nhiều chỗ
      không thì thêm vào `principles.md` hoặc `rules-*.md`, thêm câu hỏi vào
      `checklist.md`. Ghi "đã dính <ngày>" kèm ví dụ thật như các mục khác.
+     **Sửa skill xong chạy `node skills/ui-ux/scripts/lint-skill.mjs`** (soát các dòng vừa
+     sửa): câu nói màu nút phải ghi mã luật gốc (`I4`, `I2`), và lý lẽ đã bị bác
+     (`references/locked-rules.md`) không được quay lại. Viết **mục mới** cho một trang cũng
+     chạy, không riêng lúc rà. Đã dính 27/09/2026: mục "Trang thanh toán" ghi "Huỷ gói không
+     đỏ, vì không mất gì", lặp đúng lý lẽ chủ dự án đã bác ở trang bảo mật hôm trước.
    - **Dự án chưa theo kịp** (skill đã đúng, dự án dựng bằng bản skill cũ hoặc bỏ sót):
      chỉ liệt kê, không sửa dự án.
 7. **Quay lại trang đã rà thì đo lại từ đầu.** Người dùng nói "quay lại trang X" hoặc gửi
@@ -106,6 +111,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 21 | Trang lỗi: 404, 403, 500, bảo trì | `/errors/states`, `/403`, `/500`, `/maintenance`, `/khong-co`, `/dashboard/khong-co` | 26/09/2026 (năm lượt; lượt năm còn `px-1.5` cho link "Đổi tài khoản", dự án chưa theo kịp) |
 | 22 | Xoá workspace (vùng nguy hiểm, hộp gõ lại tên) | `/dashboard/settings/workspace`, `/workspace/states` | 26/09/2026 (hai lượt, đã theo kịp) |
 | 23 | Báo cáo doanh thu (khoảng ngày, biểu đồ đường) | `/dashboard/revenue`, `/revenue/states` | 27/09/2026 (ba lượt, đã theo kịp) |
+| 24 | Thanh toán: gói đang dùng, lịch sử hoá đơn | `/dashboard/settings/billing`, `/billing/states` | 27/09/2026 (bốn lượt; lượt ba đã theo kịp, lượt bốn còn câu huỷ gói ở ca trừ lỗi) |
 
 Route mới xuất hiện trong dự án thì thêm dòng vào bảng (`grep -rhoE "path: ?['\"][^'\"]+" src`).
 
@@ -157,6 +163,14 @@ rồi đọc theo file, mỗi lượt một file.
 | --- | --- | --- | --- | --- |
 | `components/button.md` | 1 (hover nút viền) | 1: chỉ đổi nền `--button-hover`, 26/09/2026 | | |
 
+## Việc để sau: câu cũ thiếu mã luật
+
+27/09/2026: `node skills/ui-ux/scripts/lint-skill.mjs --all` báo 23 chỗ trong các file cũ, phần
+lớn là câu quyết màu đỏ hay `primary` mà không ghi `I4` / `I2` trong cùng khối. Mỗi lượt một
+file: đọc từng chỗ, câu đúng luật thì thêm mã; câu lệch luật (nhất là hạ việc nguy hiểm xuống
+trung tính) thì sửa theo `I4` và ghi vào "Dự án chưa theo kịp". Báo nhầm thì sửa script cho
+hết nhầm, đừng thêm mã cho qua. Xong khi `--all` sạch.
+
 ## Việc để sau: probe đo cả trạng thái động
 
 `probe.mjs` đo trang đứng yên và Tab. Hai lỗi 26/09/2026 lọt vì chỉ lộ khi rê chuột hoặc bấm:
@@ -180,6 +194,10 @@ nền vuông 46×48 cạnh vòng chọn tròn 32px. Thêm vào probe:
 
 Mỗi phép đo thêm vào phải bắt lại được đúng ca đã dính (nút "Thêm" ở `/dashboard/calendar` bản cũ,
 ô ngày lịch gọn bản lượt hai) trước khi coi là xong.
+
+Báo nhầm cần sửa (27/09/2026): "Cao gần bằng mà không bằng" gom các `section` khác loại ở
+`/dashboard/settings/billing/states` (mục gói 118px vì tên gói 16px, mục thẻ 114px vì tên thẻ 14px).
+Chỉ nên so các khối cùng tiêu đề hoặc cùng cấu trúc con.
 
 Báo nhầm cần sửa (26/09/2026): "Ô nhập lệch mép với nút rộng hết khung" báo hàng ô OTP (sáu ô
 40–57px) ở `/forgot-password/states`, `/verify-otp/states`: nên bỏ qua ô nằm trong một hàng nhiều ô
@@ -229,6 +247,10 @@ không ghi class. Rà xong 11 nhóm thì xem skill có nói gì về chúng khô
 ## Dự án chưa theo kịp
 
 Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần.
+
+- Trang thanh toán (lượt 4, 27/09/2026; lượt 1–3 đã theo kịp):
+  - Ca trừ tiền thất bại ở `/states`: câu của Vùng nguy hiểm (và hộp huỷ nếu mở từ ca này) còn "bạn vẫn dùng tới
+    hết 12/10/2026". Đổi theo dữ liệu, mẫu "Huỷ gói Pro: workspace về gói Miễn phí ngay."
 
 - Trang lỗi (lượt 5, 26/09/2026; lượt 1–4 đã theo kịp):
   - `forbidden-card.tsx`: link "Đổi tài khoản" thêm `px-1.5`. Hiện `h-8` không padding ngang, vòng focus

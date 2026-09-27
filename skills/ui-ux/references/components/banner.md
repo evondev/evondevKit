@@ -9,7 +9,7 @@ rồi đi; banner báo một **tình trạng** còn kéo dài tới khi được
   <i data-lucide="triangle-alert" class="mt-0.5 size-5 shrink-0 text-amber-700"></i>
   <div class="min-w-0 flex-1">
     <p class="text-sm font-medium text-amber-800">Gói Pro hết hạn sau 3 ngày</p>
-    <p class="mt-0.5 text-sm text-foreground/80">Sau 25/09/2026, tài khoản về gói Miễn phí và chỉ giữ 3 thành viên</p>
+    <p class="mt-0.5 text-sm text-pretty text-foreground/80">Sau 25/09/2026, tài khoản về gói Miễn phí và chỉ giữ 3 thành viên</p>
   </div>
   <!-- Nút và ✕ chung một cụm, căn giữa theo chiều dọc với khối chữ -->
   <div class="flex shrink-0 items-center gap-1 self-center">
@@ -32,7 +32,7 @@ tình trạng (`M30`). Không có banner xanh lá "thành công": xong việc th
 
 ## Luật
 
-- **Chỉ icon và tiêu đề mang màu. Mô tả `text-foreground/80`**, không tô cả đoạn. Hai dòng cùng hổ phách, cùng đỏ thì cả khối hét lên, và câu mô tả dài đọc mỏi hơn chữ tối.
+- **Chỉ icon và tiêu đề mang màu. Mô tả `text-foreground/80`**, không tô cả đoạn. Mô tả `text-pretty` (`T10`): banner rộng hết cột, câu hai dòng dễ trơ một chữ ở dòng cuối (đã dính 27/09/2026, trang thanh toán ở 1280px: "…để giữ gói" / "Pro."). Hai dòng cùng hổ phách, cùng đỏ thì cả khối hét lên, và câu mô tả dài đọc mỏi hơn chữ tối.
 - **Hai tầng**: tiêu đề `font-medium` nói chuyện gì; mô tả nói hệ quả hoặc vì sao, có số, có mốc thời gian. Một câu đủ thì bỏ tầng dưới.
 - **Nút và ✕ chung một cụm, `self-center`** theo khối chữ. Đừng để nút căn giữa còn ✕ bám góc trên: hai thứ cùng hàng mà lệch cao là lỗi thấy ngay (đã dính 22/09/2026).
 - **Nút trong banner chỉ có chữ, không icon**, nền trắng viền mảnh (`outline`), `h-9`. Cùng ngoại lệ với hộp xác nhận: icon đã đứng ở đầu khối. Tối đa một nút. Không nút `primary` trong banner: màu tông đã đủ gọi mắt.

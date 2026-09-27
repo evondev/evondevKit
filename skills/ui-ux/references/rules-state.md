@@ -40,11 +40,38 @@ nhau là chưa quyết định hộ người dùng.
 
 **I4. Hành động nguy hiểm không đỏ đặc.**
 
-Áp cho xoá, huỷ tài khoản, rời nhóm, **và đăng xuất**. Đăng xuất không mất dữ liệu,
-Nhiều app để nó trung tính; nhưng **chủ dự án chốt giữ đỏ khi rê vào** (23/09/2026,
-sau khi thử bản trung tính: "đăng xuất mất danger"; chốt lại 26/09/2026 cho đăng xuất
-hàng loạt ở trang bảo mật). Đăng xuất trong menu thì chỉ đỏ lúc rê; nút "Đăng xuất N
-thiết bị khác" là nút đứng riêng nên đỏ sẵn. Có ba dạng tuỳ chỗ đứng:
+**Việc nào là nguy hiểm: xét ba câu hỏi, không dò theo danh sách.** Việc đó có
+1. làm **mất dữ liệu** không (xoá dự án, workspace, tài khoản)?
+2. **kết thúc một thứ đang chạy** không (gói trả phí, phiên đăng nhập, lời mời, khoá API)?
+3. **cắt quyền hay cắt truy cập** của ai đó không (rời nhóm, gỡ thành viên, đăng xuất)?
+
+Chỉ cần một câu "có" là nguy hiểm, tô theo bảng ba dạng bên dưới. **"Lấy lại được" không
+làm việc đó hết nguy hiểm**: huỷ gói vẫn dùng tới hết kỳ, đăng xuất rồi đăng nhập lại được,
+rời nhóm rồi xin mời lại được, cả ba vẫn đỏ.
+
+**Lý lẽ đã bị bác, đừng dùng lại** (danh sách đủ ở `locked-rules.md`):
+- "Không mất dữ liệu nên để trung tính": chủ dự án đã thử bản đăng xuất trung tính
+  (23/09/2026, "đăng xuất mất danger"), chốt lại một lần nữa cho đăng xuất hàng loạt ở
+  trang bảo mật (26/09/2026).
+- "Vẫn dùng được tới hết kỳ nên không đỏ": đã dính 27/09/2026. Mục trang thanh toán ghi
+  "Huỷ gói không đỏ", bản dựng làm theo: nút viền xám, hộp xác nhận icon xám, nút đen.
+- "Nhiều app để nó trung tính": quy ước số đông không lật luật chủ dự án đã chốt.
+
+| Việc | Nguy hiểm? | Câu nào "có" |
+| --- | --- | --- |
+| Xoá dự án, workspace, tài khoản, khoá API đã hết hạn | Có | 1 |
+| Huỷ gói trả phí | Có | 2 |
+| Thu hồi khoá API, thu hồi lời mời | Có | 2 |
+| Đăng xuất, đăng xuất thiết bị khác, đăng xuất hàng loạt | Có | 3 (chủ dự án chốt) |
+| Rời nhóm, gỡ thành viên | Có | 3 |
+| Xoá ảnh đại diện (có Hoàn tác trong toast) | Không, nút viền trung tính | Không câu nào: ảnh cũ quay lại ngay khi bấm Hoàn tác (`app.md`, "Trang hồ sơ cá nhân") |
+| Gửi lại lời mời hàng loạt, gửi email cho 240 khách | Không | Không câu nào. Vẫn hỏi lại vì đụng nhiều thứ một lúc, dùng hộp trung tính (`overlay.md`) |
+
+Gặp việc chưa có trong bảng thì trả lời ba câu, ghi thêm một dòng vào bảng, và ghi mã
+`I4` ngay cạnh câu nói màu nút trong spec (`scripts/lint-skill.mjs` bắt câu thiếu mã).
+
+Đăng xuất trong menu thì chỉ đỏ lúc rê; nút "Đăng xuất N thiết bị khác" là nút đứng riêng
+nên đỏ sẵn. Có ba dạng tuỳ chỗ đứng:
 
 | Chỗ | Lúc thường | Rê vào / Tab tới |
 | --- | --- | --- |
