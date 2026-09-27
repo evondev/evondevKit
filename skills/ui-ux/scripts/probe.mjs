@@ -1013,11 +1013,22 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   // 17. Ô nhập, nút, select còn kiểu mặc định của trình duyệt: dự án không nạp preflight (reset) của
   //     Tailwind mà control chưa tự reset (viền inset / outset, viền xám #767676, select `appearance: auto`).
   const browserDefaultControls = [];
-  for (const control of document.querySelectorAll("input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='hidden']), textarea, select, button")) {
+  for (const control of document.querySelectorAll("input:not([type='checkbox']):not([type='radio']):not([type='hidden']), textarea, select, button")) {
     if (browserDefaultControls.length >= 8 || !isVisible(control)) continue;
     const style = getComputedStyle(control);
     const hasDefaultBorder = ["inset", "outset"].includes(style.borderTopStyle) || (parseFloat(style.borderTopWidth) > 0 && style.borderTopColor === "rgb(118, 118, 118)");
-    const isNativeSelect = control.tagName === "SELECT" && ["auto", "menulist"].includes(style.appearance);
+    // Select gốc chưa tô: còn `appearance: auto` VÀ còn góc vuông hay viền xám của trình duyệt. Select gốc đã
+    // bo góc, viền token vẫn giữ mũi tên trình duyệt là cách làm được, không báo.
+    const isNativeSelect = control.tagName === "SELECT" && ["auto", "menulist"].includes(style.appearance)
+      && (style.borderTopLeftRadius === "0px" || style.borderTopColor === "rgb(118, 118, 118)" || style.borderTopColor === "rgb(0, 0, 0)");
+    // Thanh trượt gốc: `appearance: auto` mà trang không tự vẽ thanh (thanh trượt hai đầu tự dựng thì input nằm
+    // dưới, `pointer-events-none` hoặc trong suốt).
+    const isNativeRange = control.type === "range" && style.appearance === "auto" && style.pointerEvents !== "none" && Number(style.opacity) > 0.1;
+    if (isNativeRange) {
+      browserDefaultControls.push(`thanh trượt gốc trình duyệt: ${describe(control)}`);
+      continue;
+    }
+    if (control.type === "range") continue;
     if (hasDefaultBorder || isNativeSelect) browserDefaultControls.push(`${isNativeSelect ? "select gốc trình duyệt" : `viền ${style.borderTopWidth} ${style.borderTopStyle} ${style.borderTopColor}`}: ${describe(control)}`);
   }
 

@@ -11,6 +11,33 @@ Khác nhánh `L` (`refactor.md`): `L` dọn code và **giữ nguyên hình**. `V
 Ở nhánh này **skill chỉ là tham khảo**. Dự án có màu, bo góc, font riêng là hệ của
 họ, không phải lỗi.
 
+## Hai chế độ ⚑
+
+Nhận chế độ từ đề, không hỏi, rồi nói một dòng ở phần mở đầu lúc giao.
+
+| | **Soi** (mặc định) | **Dựng lại theo skill** |
+| --- | --- | --- |
+| Nhận ra khi | "xem giúp", "review", "chỗ nào chưa ổn", "nhìn rối", gửi ảnh hay link nhờ xem | đề có "dựng lại", "làm lại giao diện", "theo gu", "theo skill", "cho đẹp theo skill" |
+| Dòng Gu | chỉ nêu, mặc định không chọn | **chọn sẵn**, người dùng bỏ dòng nào thì bỏ |
+| Component | không viết lại, sửa đúng chỗ lỗi | được thay control gốc và khối tự chế bằng mẫu của skill (bảng dưới) |
+| Brand (màu, font, bo góc, khối màu đậm) | giữ | **vẫn giữ**: dựng lại theo cách làm của skill, tô bằng token của dự án |
+| Logic, handler, dữ liệu | không đụng (`N10`) | không đụng: component mới nhận đúng props và state của cái cũ |
+| Hỏi trước khi sửa | có | có: bảng trước, người dùng trả lời rồi mới sửa |
+| Sửa xong | chụp lại, chạy lại probe route đó | chạy lại probe **tới khi danh sách `P` trống**, tối đa ba vòng, như cổng 3 (`checklist.md`) |
+
+Mẫu để thay ở chế độ dựng lại (dự án đã có component riêng cho thứ đó thì dùng cái của
+họ, chỉ sửa nó cho hết lỗi):
+
+| Thứ đang có | Thay theo |
+| --- | --- |
+| `<select>` gốc, select tự chế | `components/choice-controls.md` (Select; từ khoảng 8 mục thì có ô tìm) |
+| `<input type="range">` gốc, thanh trượt giá | `components/range-slider.md` |
+| Menu, dropdown, popover tự chế | `layouts/overlay.md` |
+| Checkbox, radio, công tắc, ô chọn ngày | `components/choice-controls.md` |
+| Tab, chip lọc, phân trang | `components/small-controls.md` |
+| Ô nhập, ô tìm | `components/input.md` |
+| Nút | `components/button.md` |
+
 ---
 
 ## Bốn mặc định
@@ -26,7 +53,8 @@ họ, không phải lỗi.
    tin cả bảng. Phân vân giữa hai hạng thì chọn hạng nhẹ hơn. Phân vân có phải lỗi
    không thì bỏ dòng đó.
 4. **Không làm thêm việc.** Không đề xuất dark mode khi dự án chưa có (`V4`), không
-   đề xuất đổi phong cách, không viết lại component. Mỗi dòng sửa đúng chỗ lỗi.
+   đề xuất đổi phong cách. Ở chế độ soi thì không viết lại component, mỗi dòng sửa đúng
+   chỗ lỗi. Chế độ dựng lại được thay component, theo bảng ở trên.
 
 ---
 
@@ -48,6 +76,12 @@ họ, không phải lỗi.
   khác nhau giữa chúng không phải lỗi. Một giá trị ngoài token mà dùng đều cho một vai
   (mọi dialog bo 20px, mọi thẻ nổi bật bo 28px) là hệ của họ, dù file token không khai. Tìm mã hex viết cứng thì mỗi dòng ghi đúng vai và `file:line`: "xanh
   `#3b82f6` ở badge số đếm, trong khi xanh của hệ là token `primary` `#2563eb`".
+- **Control gốc của trình duyệt chưa có kiểu là Lệch hệ ở mọi chế độ**, không cần trên
+  màn có một bản đã có kiểu để so: `<select>` còn góc vuông, viền xám của trình duyệt,
+  `<input type="range">` mặc định, ô nhập viền inset. Giữa một app đã có kiểu, chúng đọc
+  ra là chỗ bị bỏ quên. Cột Sửa: dự án có component riêng thì dùng cái đó; chưa có thì
+  dựng theo mẫu của skill (bảng "Hai chế độ"), tô bằng token của dự án. Select gốc đã
+  được tô (bo góc, viền token, `appearance-none` với chevron riêng) thì không phải lỗi.
 - **Tìm Lệch hệ trong code bằng lệnh, đừng chỉ nhìn ảnh.** Hai màu đỏ gần giống nhau,
   bóng tự chế, bo góc lẻ trong một hộp thoại thì ảnh không cho thấy. Đọc token trong
   `@theme` hoặc `tailwind.config` trước, rồi grep:
@@ -83,7 +117,7 @@ sang hạng theo bảng này. Những mục xếp Hỏng thì probe đã tự go
 | Trang tự cuộn khi vừa tải, cuộn ngang, lớp nổi lòi khỏi màn, lớp nổi mở bằng nút bị vỡ, rê chuột làm nhảy bố cục, tab tới mà không thấy gì đổi, tương phản chữ dưới ngưỡng, khung giấu mất chữ, chữ cắt còn quá ngắn, chữ trong nút xuống dòng, nhãn số đè lên đường biểu đồ | Hỏng |
 | Chỗ bấm dưới 32px | Mục có ghi "(dưới 24px)" là Hỏng, còn lại (24 tới 31px) là Gu |
 | Hàng trong header / nav rớt dòng | Hỏng khi đè hay đẩy lệch khối khác, không thì Lệch hệ (so với cách hàng đó ở khổ khác). Xem ảnh mới quyết |
-| Cao gần bằng mà không bằng, chữ cùng cột lệch mép, dấu ngăn cách không đều, control còn kiểu mặc định của trình duyệt (khi control khác đã có kiểu), khung khai viền mà viền không thấy, khối con biến mất lúc rê | Lệch hệ |
+| Cao gần bằng mà không bằng, chữ cùng cột lệch mép, dấu ngăn cách không đều, control còn kiểu mặc định của trình duyệt, khung khai viền mà viền không thấy, khối con biến mất lúc rê | Lệch hệ |
 | Nền rê gần như không thấy, nền rê tan vào nền khác, viền đổi màu lúc rê, rê / focus khác hình mục đang chọn, bấm xong còn dấu thừa, vòng focus không bọc hết link, bảng cuộn ngang mất cột, nhóm lựa chọn xếp lưới, số tiền ngắt dòng, số không thẳng hàng, nhãn số lòi ra ngoài vùng vẽ, dấu câu rơi xuống đầu dòng | Gu |
 | Lỗi console | Không vào bảng. Ghi một dòng dưới bảng |
 
@@ -221,7 +255,9 @@ Cùng tinh thần `M20` (mặc định chỉ light), nhưng dự án đã có s�
    mà bảng không có thì người dùng không có cách nào biết đã bị bỏ.
 4. **Rà hạng Gu lần cuối**: dòng nào đề xuất bớt màu, đổi màu brand, làm nhạt khối màu
    đậm của brand thì xoá (`V1`, "Không bao giờ là lỗi").
-5. **Kết**: *"Trả lời số dòng muốn sửa, ví dụ `sửa 1, 3, 4`."* Không tự đề nghị sửa hết.
+5. **Kết**: *"Trả lời số dòng muốn sửa, ví dụ `sửa 1, 3, 4`."* Chế độ soi: không tự đề
+   nghị sửa hết. Chế độ dựng lại: dòng nào đã chọn sẵn thì đánh ✓ ở đầu dòng, kết bằng
+   *"Mình sẽ sửa các dòng ✓. Trả lời `ok`, hoặc bỏ bớt, ví dụ `bỏ 7, 12`."*
 
 **Người dùng chọn xong:**
 

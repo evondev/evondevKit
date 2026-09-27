@@ -61,7 +61,10 @@ trong `S12`, câu 1 của mục 0 có ba nhánh. `probe.mjs` đo thêm tương p
 mất chữ, chữ trong nút xuống dòng, hàng header / nav rớt dòng, và có `--sweep` quét bề
 rộng. Dự án mồi đầu tiên đã dựng (repo riêng, đáp án để ngoài mọi repo). Lượt quét
 đã đưa về nhánh dựng mới (27/09/2026): cổng 3 chạy `--sweep`, đủ 5 khổ, sửa tới khi danh
-sách `P` trống (tối đa ba vòng).
+sách `P` trống (tối đa ba vòng). Nhánh `V` có hai chế độ (27/09/2026): soi (mặc định, thận
+trọng) và dựng lại theo skill (đề có "dựng lại", "theo skill"; Gu chọn sẵn, được thay control
+gốc bằng component của skill, vẫn giữ brand). Control gốc chưa có kiểu là Lệch hệ ở mọi chế
+độ. Chưa test chế độ dựng lại bằng đáp án: thử trên bản sao `tim-phong-sua`.
 
 **Ý của chủ dự án:** skill tự chụp ảnh hoặc quay video UI hiện tại của dự án,
 chỉ ra lỗi, đưa bảng trước/sau rồi hỏi có muốn sửa không. User không tin phần tự
