@@ -53,7 +53,14 @@ ví dụ cho đúng bộ kanban + table.
 
 ## Phase 2: soi UI đang có, đề xuất trước/sau, hỏi rồi mới sửa
 
-Bắt đầu khi xong bậc 2 và bậc 3 trong `TESTS.md`, tức là xong phase 1. Chưa làm.
+Bắt đầu khi xong bậc 2 và bậc 3 trong `TESTS.md`, tức là xong phase 1.
+
+**Đang làm (27/09/2026).** Đã vào skill, chưa qua vòng test nào (⚑): nhánh `V` ở
+`skills/ui-ux/references/review.md` (bốn mặc định, `V1`–`V5`), loại "ảnh hiện trạng"
+trong `S12`, câu 1 của mục 0 có ba nhánh. `probe.mjs` đo thêm tương phản chữ, khung giấu
+mất chữ, chữ trong nút xuống dòng, hàng header / nav rớt dòng, và có `--sweep` quét bề
+rộng. Dự án mồi đầu tiên đã dựng (repo riêng, đáp án để ngoài mọi repo). Chưa làm: đưa
+lượt quét về nhánh dựng mới.
 
 **Ý của chủ dự án:** skill tự chụp ảnh hoặc quay video UI hiện tại của dự án,
 chỉ ra lỗi, đưa bảng trước/sau rồi hỏi có muốn sửa không. User không tin phần tự

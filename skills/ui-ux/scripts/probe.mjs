@@ -3,6 +3,11 @@
 // Dùng ở cổng 3 của checklist (references/checklist.md). Chỉ đọc trang, không sửa gì.
 //
 //   node probe.mjs <url> [--widths 375,768,1024,1280] [--out <thư mục>] [--dark] [--wait 800] [--dpr 1]
+//                        [--sweep [1440,375,20]]
+//
+// --sweep: đo xong các khổ cố định thì kéo bề rộng từ 1440 xuống 375, mỗi bước 20px, chụp từng bước và
+// báo khoảng bề rộng có lỗi (cuộn ngang, khung giấu chữ, chữ trong nút xuống dòng, hàng rớt dòng). Bắt
+// lỗi nằm giữa hai khổ cố định, ví dụ nav xuống dòng ở 900px. Dùng ở nhánh soi UI (references/review.md).
 //
 // Playwright tìm theo thứ tự: --pw <thư mục có node_modules/playwright>, thư mục đang đứng, thư mục script.
 // Chưa có thì cài vào một thư mục tạm, đừng cài vào dự án:
@@ -11,23 +16,28 @@
 import { createRequire } from "node:module";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const defaultWidths = [375, 768, 1024, 1280];
+const defaultSweep = [1440, 375, 20];
 const mobileWidthLimit = 640;
 // Sàn cỡ bấm của skill: nút h-8 trong bảng dày là nhỏ nhất được phép (list-row.md).
 const minTapSize = 32;
 const maxTabStops = 60;
 
 function parseArgs(argv) {
-  const options = { url: "", widths: defaultWidths, out: "", isDark: false, waitMs: 800, dpr: 1, playwrightDir: "" };
+  const options = { url: "", widths: defaultWidths, out: "", isDark: false, waitMs: 800, dpr: 1, playwrightDir: "", sweep: null };
   const rest = [...argv];
 
   while (rest.length > 0) {
     const arg = rest.shift();
 
     if (arg === "--widths") options.widths = rest.shift().split(",").map(Number);
+    else if (arg === "--sweep") {
+      const [from, to, step] = /^\d+,\d+(,\d+)?$/.test(rest[0] ?? "") ? rest.shift().split(",").map(Number) : defaultSweep;
+      options.sweep = { from: Math.max(from, to), to: Math.min(from, to), step: step || defaultSweep[2] };
+    }
     else if (arg === "--out") options.out = rest.shift();
     else if (arg === "--dark") options.isDark = true;
     else if (arg === "--wait") options.waitMs = Number(rest.shift());
@@ -69,7 +79,7 @@ async function launchBrowser(chromium) {
 // Tắt transition và animation để đo và chụp ra trạng thái cuối, không phải giữa chừng.
 const freezeMotionCss = "*,*::before,*::after{transition:none!important;animation-duration:0s!important;animation-delay:0s!important;caret-color:transparent!important}";
 
-function measureInPage({ minTapSize, isMobile }) {
+function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   const viewportWidth = document.documentElement.clientWidth;
 
   function describe(element) {
@@ -160,6 +170,96 @@ function measureInPage({ minTapSize, isMobile }) {
     .filter((element) => isVisible(element) && element.getBoundingClientRect().right > viewportWidth + 1 && !isClippedHorizontally(element))
     .map((element) => ({ element: describe(element), right: Math.round(element.getBoundingClientRect().right) }))
     .slice(0, 8);
+
+  // 1b. Khung giấu mất chữ: khung overflow hidden / clip mà có chữ bên trong nằm ngoài khung (hàng chip
+  //     cao cố định giấu hàng thứ hai, số liệu bị xén). Chữ nằm trong một khung cắt hay khung cuộn nhỏ
+  //     hơn thì để khung đó tự báo: dấu … và line-clamp đã có mục 2, bảng cuộn ngang là cố ý.
+  function findHiddenText(container) {
+    const box = container.getBoundingClientRect();
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+
+    for (let textNode = walker.nextNode(); textNode; textNode = walker.nextNode()) {
+      const holder = textNode.parentElement;
+      if (!textNode.textContent.trim() || !holder || holder.closest("[aria-hidden='true'], [inert]")) continue;
+      if (getComputedStyle(holder).visibility === "hidden") continue;
+
+      let isInnerClip = false;
+      for (let node = holder; node && node !== container; node = node.parentElement) {
+        const style = getComputedStyle(node);
+        if (style.overflowX !== "visible" || style.overflowY !== "visible") isInnerClip = true;
+      }
+      if (isInnerClip) continue;
+
+      const range = document.createRange();
+      range.selectNodeContents(textNode);
+      for (const rect of range.getClientRects()) {
+        if (rect.width === 0) continue;
+        if (rect.right > box.right + 1 || rect.left < box.left - 1 || rect.bottom > box.bottom + 1 || rect.top < box.top - 1) {
+          return textNode.textContent.trim().replace(/\s+/g, " ").slice(0, 30);
+        }
+      }
+    }
+
+    return "";
+  }
+
+  const clippedBlocks = [];
+  for (const element of allElements) {
+    if (clippedBlocks.length >= 8) break;
+    const style = getComputedStyle(element);
+    const isClipping = ["hidden", "clip"].includes(style.overflowX) || ["hidden", "clip"].includes(style.overflowY);
+    const isEllipsis = style.textOverflow === "ellipsis" || style.webkitLineClamp !== "none";
+    const hasMoreContent = element.scrollWidth > element.clientWidth + 1 || element.scrollHeight > element.clientHeight + 1;
+    if (!isClipping || isEllipsis || !hasMoreContent || !isVisible(element)) continue;
+
+    const hiddenText = findHiddenText(element);
+    if (hiddenText) clippedBlocks.push({ element: describe(element), hiddenText });
+  }
+
+  // 1c. Chữ trong nút, link, tab xuống hai dòng: nút bị bóp. Chỉ tính nhãn ngắn một mảnh chữ; link nằm
+  //     trong đoạn văn, card bọc link, mục menu có dòng mô tả thì nhiều dòng là đúng.
+  const wrappedControls = [];
+  for (const control of document.querySelectorAll("a, button, [role='tab'], [role='menuitem']")) {
+    if (wrappedControls.length >= 8) break;
+    if (!isVisible(control) || getComputedStyle(control).display === "inline") continue;
+
+    const textNodes = [];
+    const walker = document.createTreeWalker(control, NodeFilter.SHOW_TEXT);
+    for (let textNode = walker.nextNode(); textNode; textNode = walker.nextNode()) if (textNode.textContent.trim()) textNodes.push(textNode);
+    if (textNodes.length !== 1 || textNodes[0].textContent.trim().length > 40) continue;
+
+    const range = document.createRange();
+    range.selectNodeContents(textNodes[0]);
+    const lineTops = new Set([...range.getClientRects()].filter((rect) => rect.width > 0).map((rect) => Math.round(rect.top)));
+    if (lineTops.size > 1) wrappedControls.push(describe(control));
+  }
+
+  // 1d. Hàng rớt dòng trong header, nav, thanh công cụ, thanh tab: con của một hàng flex-wrap nằm trên
+  //     hai dòng. Lưới card flex-wrap ở thân trang thì rớt dòng là cố ý, không đo.
+  const wrappedRows = [];
+  for (const row of document.querySelectorAll("header, header *, nav, nav *, [role='toolbar'], [role='tablist']")) {
+    if (wrappedRows.length >= 6) break;
+    const style = getComputedStyle(row);
+    if (!style.display.includes("flex") || !style.flexDirection.startsWith("row") || style.flexWrap !== "wrap" || !isVisible(row)) continue;
+
+    const children = [...row.children].filter(isVisible).map((child) => child.getBoundingClientRect());
+    if (children.length < 2) continue;
+    const shortestHeight = Math.min(...children.map((rect) => rect.height));
+    const topSpread = Math.max(...children.map((rect) => rect.top)) - Math.min(...children.map((rect) => rect.top));
+    if (topSpread > shortestHeight / 2) wrappedRows.push(describe(row));
+  }
+
+  if (isSweep) {
+    return {
+      viewportWidth,
+      pageScrollWidth,
+      hasHorizontalScroll: pageScrollWidth > viewportWidth + 1,
+      overflowingElements: overflowingElements.slice(0, 3),
+      clippedBlocks,
+      wrappedControls,
+      wrappedRows,
+    };
+  }
 
   // 2. Chữ bị cắt còn quá ngắn: ô chỉ đọc được vài ký tự thì như không có chữ.
   const truncatedTexts = allElements
@@ -729,7 +829,142 @@ function measureInPage({ minTapSize, isMobile }) {
     if (lineCount > 1) brokenMoney.push(`"${holder.textContent.trim().slice(0, 24)}": ${describe(holder)}`);
   }
 
+  // 15. Tương phản chữ: màu chữ trộn lên nền thật phía sau nó. Màu đọc qua canvas nên oklch của
+  //     Tailwind v4 cũng ra rgb. Nền lấy ở lớp nằm ngay dưới chữ (elementsFromPoint), rồi đi ngược lên
+  //     các cha tới lớp nền đặc. Chữ trên ảnh, video hay gradient không đo được, chỉ đếm. Chữ trong
+  //     control đang khoá thì WCAG không tính, bỏ qua.
+  const colorCanvas = document.createElement("canvas");
+  colorCanvas.width = 1;
+  colorCanvas.height = 1;
+  const colorContext = colorCanvas.getContext("2d", { willReadFrequently: true });
+
+  function readColor(cssColor) {
+    colorContext.clearRect(0, 0, 1, 1);
+    colorContext.fillStyle = "rgba(0, 0, 0, 0)";
+    colorContext.fillStyle = cssColor;
+    colorContext.fillRect(0, 0, 1, 1);
+    const [red, green, blue, alpha] = colorContext.getImageData(0, 0, 1, 1).data;
+
+    return { red, green, blue, alpha: alpha / 255 };
+  }
+
+  function blendColors(top, bottom) {
+    const alpha = top.alpha + bottom.alpha * (1 - top.alpha);
+    if (alpha === 0) return { red: 0, green: 0, blue: 0, alpha: 0 };
+    const mixChannel = (channel) => (top[channel] * top.alpha + bottom[channel] * bottom.alpha * (1 - top.alpha)) / alpha;
+
+    return { red: mixChannel("red"), green: mixChannel("green"), blue: mixChannel("blue"), alpha };
+  }
+
+  function readLuminance(color) {
+    const toLinear = (channel) => {
+      const value = channel / 255;
+
+      return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+    };
+
+    return 0.2126 * toLinear(color.red) + 0.7152 * toLinear(color.green) + 0.0722 * toLinear(color.blue);
+  }
+
+  function readContrastRatio(first, second) {
+    const [lighter, darker] = [readLuminance(first), readLuminance(second)].sort((first, second) => second - first);
+
+    return (lighter + 0.05) / (darker + 0.05);
+  }
+
+  function toHex(color) {
+    return `#${[color.red, color.green, color.blue].map((channel) => Math.round(channel).toString(16).padStart(2, "0")).join("")}`;
+  }
+
+  const whiteCanvas = { red: 255, green: 255, blue: 255, alpha: 1 };
+
+  // Gom các lớp nền từ một phần tử lên tới lớp đặc đầu tiên. Gặp ảnh hay gradient thì trả null.
+  function readAncestorBackdrop(element) {
+    const layers = [];
+
+    for (let node = element; node; node = node.parentElement) {
+      const style = getComputedStyle(node);
+      if (style.backgroundImage !== "none") return null;
+      const color = readColor(style.backgroundColor);
+      if (color.alpha > 0) layers.push(color);
+      if (color.alpha >= 0.99) break;
+    }
+
+    return layers.reverse().reduce((bottom, top) => blendColors(top, bottom), whiteCanvas);
+  }
+
+  // Nền thật dưới chữ: lớp phủ định vị tuyệt đối (panel, ảnh bìa) không phải cha trong DOM của chữ.
+  function readBackdrop(element) {
+    const rect = element.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const isInViewport = centerX >= 0 && centerY >= 0 && centerX < innerWidth && centerY < innerHeight;
+    if (!isInViewport) return readAncestorBackdrop(element);
+
+    for (const layer of document.elementsFromPoint(centerX, centerY)) {
+      if (layer === element || element.contains(layer)) continue;
+      if (layer.contains(element)) break;
+      if (["IMG", "VIDEO", "CANVAS", "svg"].includes(layer.tagName) || getComputedStyle(layer).backgroundImage !== "none") return null;
+      if (readColor(getComputedStyle(layer).backgroundColor).alpha > 0) return readAncestorBackdrop(layer);
+    }
+
+    return readAncestorBackdrop(element);
+  }
+
+  function readOpacityChain(element) {
+    let opacity = 1;
+    for (let node = element; node; node = node.parentElement) opacity *= Number(getComputedStyle(node).opacity);
+
+    return opacity;
+  }
+
+  const lowContrastTexts = new Map();
+  let unmeasuredContrastCount = 0;
+
+  function checkContrast(element, cssColor, sample) {
+    const backdrop = readBackdrop(element);
+    if (!backdrop) {
+      unmeasuredContrastCount++;
+      return;
+    }
+
+    const style = getComputedStyle(element);
+    const textColor = readColor(cssColor);
+    textColor.alpha *= readOpacityChain(element);
+    const shownColor = blendColors(textColor, backdrop);
+    const fontSize = parseFloat(style.fontSize);
+    const isLargeText = fontSize >= 24 || (fontSize >= 18.66 && Number(style.fontWeight) >= 700);
+    const requiredRatio = isLargeText ? 3 : 4.5;
+    const ratio = readContrastRatio(shownColor, backdrop);
+    if (ratio >= requiredRatio) return;
+
+    const key = `${toHex(shownColor)}|${toHex(backdrop)}|${element.tagName}.${element.getAttribute("class") || ""}`;
+    if (!lowContrastTexts.has(key)) {
+      lowContrastTexts.set(key, {
+        ratio,
+        line: `${ratio.toFixed(2)}:1, cần ${requiredRatio}:1, chữ ${toHex(shownColor)} trên nền ${toHex(backdrop)} "${sample}": ${describe(element)}`,
+      });
+    }
+  }
+
+  for (const element of allElements) {
+    if (element.closest(":disabled, [aria-disabled='true']") || !isVisible(element)) continue;
+    const ownText = [...element.childNodes].filter((node) => node.nodeType === Node.TEXT_NODE).map((node) => node.textContent.trim()).join(" ").trim();
+    if (ownText) checkContrast(element, getComputedStyle(element).color, ownText.slice(0, 24));
+
+    const isEmptyField = (element.tagName === "INPUT" || element.tagName === "TEXTAREA") && element.placeholder && !element.value;
+    if (isEmptyField) checkContrast(element, getComputedStyle(element, "::placeholder").color, `placeholder: ${element.placeholder.slice(0, 20)}`);
+  }
+
+  const sortedLowContrast = [...lowContrastTexts.values()].sort((first, second) => first.ratio - second.ratio);
+
   return {
+    clippedBlocks,
+    wrappedControls,
+    wrappedRows,
+    lowContrastTexts: sortedLowContrast.slice(0, 12).map((item) => item.line),
+    lowContrastCount: sortedLowContrast.length,
+    unmeasuredContrastCount,
     viewportWidth,
     pageScrollWidth,
     unpinnedScrollTables,
@@ -1363,6 +1598,96 @@ async function probeWidth(browser, options, width) {
   };
 }
 
+// Kéo bề rộng từ lớn xuống nhỏ trên cùng một trang, đo nhẹ và chụp ở từng bước. Cửa sổ desktop suốt
+// lượt quét (không giả lập màn chạm): lượt này chỉ tìm chỗ vỡ bố cục, cỡ bấm đã đo ở các khổ cố định.
+async function sweepWidths(browser, options) {
+  const { from, to, step } = options.sweep;
+  const context = await browser.newContext({
+    viewport: { width: from, height: 900 },
+    deviceScaleFactor: 1,
+    colorScheme: options.isDark ? "dark" : "light",
+  });
+  const page = await context.newPage();
+  const sweepDir = join(options.out, options.isDark ? "sweep-dark" : "sweep");
+  mkdirSync(sweepDir, { recursive: true });
+
+  await page.goto(options.url, { waitUntil: "load" });
+  await page.addStyleTag({ content: freezeMotionCss });
+  if (options.isDark) await page.evaluate(() => document.documentElement.classList.add("dark"));
+  await page.waitForTimeout(options.waitMs);
+
+  const sweepWidthList = [];
+  for (let width = from; width > to; width -= step) sweepWidthList.push(width);
+  sweepWidthList.push(to);
+
+  const steps = [];
+  for (const width of sweepWidthList) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.waitForTimeout(150);
+    const measurements = await page.evaluate(measureInPage, { minTapSize, isMobile: false, isSweep: true });
+    const screenshotPath = join(sweepDir, `${width}.png`);
+    await page.screenshot({ path: screenshotPath, fullPage: true });
+    steps.push({ width, screenshotPath, ...measurements });
+  }
+
+  await context.close();
+
+  return steps;
+}
+
+function listSweepSignals(step) {
+  const signals = [];
+
+  if (step.hasHorizontalScroll) signals.push(`cuộn ngang, lòi ra: ${step.overflowingElements[0]?.element ?? "(không rõ phần tử)"}`);
+  // Khoá theo khung, không theo chữ bị giấu: hẹp dần thì chữ bị giấu đầu tiên đổi, khung vẫn là một.
+  for (const item of step.clippedBlocks) signals.push(`khung giấu mất chữ: ${item.element}`);
+  for (const item of step.wrappedControls) signals.push(`chữ trong nút xuống dòng: ${item}`);
+  for (const item of step.wrappedRows) signals.push(`hàng rớt dòng: ${item}`);
+
+  return signals;
+}
+
+function formatSweepReport(steps, step) {
+  const widthsBySignal = new Map();
+  const changedFrames = [];
+  let previousKey = null;
+
+  for (const sweepStep of steps) {
+    const signals = listSweepSignals(sweepStep);
+    for (const signal of signals) {
+      if (!widthsBySignal.has(signal)) widthsBySignal.set(signal, []);
+      widthsBySignal.get(signal).push(sweepStep.width);
+    }
+
+    const signalKey = signals.join("|");
+    if (previousKey !== null && signalKey !== previousKey) changedFrames.push(sweepStep.screenshotPath);
+    previousKey = signalKey;
+  }
+
+  // Gom bề rộng liền bước thành khoảng: [1000, 980, 960, 700] → "960–1000px, 700px".
+  function formatRanges(widths) {
+    const ranges = [];
+    for (const width of widths) {
+      const lastRange = ranges.at(-1);
+      if (lastRange && lastRange.low - width <= step) lastRange.low = width;
+      else ranges.push({ low: width, high: width });
+    }
+
+    return ranges.map((range) => (range.low === range.high ? `${range.low}px` : `${range.low}–${range.high}px`)).join(", ");
+  }
+
+  const lines = [`\n# Quét bề rộng ${steps[0].width} → ${steps.at(-1).width}px, bước ${step}px (${steps.length} ảnh ở ${dirname(steps[0].screenshotPath)})`];
+  if (widthsBySignal.size === 0) lines.push("Không đo ra chỗ vỡ ở bề rộng nào. Vẫn mở vài ảnh ở giữa hai khổ cố định mà xem.");
+  for (const [signal, widths] of widthsBySignal) lines.push(`${formatRanges(widths)}: ${signal}`);
+  if (changedFrames.length > 0) {
+    lines.push("Khung đáng xem (tín hiệu đổi so với bước trước):");
+    for (const framePath of changedFrames.slice(0, 12)) lines.push(`  ${framePath}`);
+  }
+  lines.push("Máy không thấy chồng lấn, lệch hàng, khoảng trắng vô lý. Xem thêm các ảnh quanh ngưỡng sidebar thu và ngưỡng lưới đổi cột.");
+
+  return lines.join("\n");
+}
+
 function formatReport(results) {
   const lines = [];
   let problemCount = 0;
@@ -1462,6 +1787,22 @@ function formatReport(results) {
       problems.push(`TAB TỚI MÀ KHÔNG THẤY GÌ ĐỔI (${result.missingFocusRings.length} chỗ):`);
       for (const element of result.missingFocusRings.slice(0, 8)) problems.push(`  ${element}`);
     }
+    if (result.lowContrastCount > 0) {
+      problems.push(`TƯƠNG PHẢN CHỮ DƯỚI NGƯỠNG (${result.lowContrastCount} cặp màu, chữ thường 4.5:1, chữ lớn 3:1):`);
+      for (const item of result.lowContrastTexts) problems.push(`  ${item}`);
+    }
+    if (result.clippedBlocks.length > 0) {
+      problems.push(`KHUNG GIẤU MẤT CHỮ (${result.clippedBlocks.length} khung overflow hidden, chữ nằm ngoài khung; xem ảnh xác nhận):`);
+      for (const item of result.clippedBlocks) problems.push(`  giấu "${item.hiddenText}": ${item.element}`);
+    }
+    if (result.wrappedControls.length > 0) {
+      problems.push(`CHỮ TRONG NÚT / LINK / TAB XUỐNG DÒNG (${result.wrappedControls.length} chỗ, nút bị bóp):`);
+      for (const item of result.wrappedControls) problems.push(`  ${item}`);
+    }
+    if (result.wrappedRows.length > 0) {
+      problems.push(`HÀNG TRONG HEADER / NAV / THANH TAB RỚT DÒNG (${result.wrappedRows.length} hàng):`);
+      for (const item of result.wrappedRows) problems.push(`  ${item}`);
+    }
 
     problemCount += problems.filter((line) => !line.startsWith("  ")).length;
     lines.push(`\n## ${result.width}px  (ảnh: ${result.screenshotPath})`);
@@ -1469,6 +1810,7 @@ function formatReport(results) {
     if (result.expandedCount > 0) lines.push(`(Đã mở ${result.expandedCount} khối đang đóng rồi đo lại phần bên trong.)`);
     if (result.stateGroupCount > 0) lines.push(`(Đã thử rê, Tab, bấm ${result.stateGroupCount} nhóm có mục đang chọn.)`);
     if (result.truncatedCount > 0) lines.push(`(Có ${result.truncatedCount} chỗ chữ bị cắt có dấu …: xem ảnh xem có chỗ nào cắt mất ý không.)`);
+    if (result.unmeasuredContrastCount > 0) lines.push(`(Có ${result.unmeasuredContrastCount} chỗ chữ trên ảnh / gradient, máy không đo được tương phản: xem ảnh.)`);
   }
 
   lines.unshift(problemCount > 0 ? `# Probe: ${problemCount} nhóm lỗi đo được` : "# Probe: không đo ra lỗi");
@@ -1503,9 +1845,11 @@ async function main() {
 
   mkdirSync(options.out, { recursive: true });
   const results = [];
+  let sweepSteps = [];
 
   try {
     for (const width of options.widths) results.push(await probeWidth(browser, options, width));
+    if (options.sweep) sweepSteps = await sweepWidths(browser, options);
   } catch (error) {
     console.error(`Không mở được ${options.url}: ${error.message.split("\n")[0]}. Dev server đã chạy chưa?`);
     process.exit(2);
@@ -1513,8 +1857,9 @@ async function main() {
     await browser.close();
   }
 
-  writeFileSync(join(options.out, "report.json"), JSON.stringify(results, null, 2));
+  writeFileSync(join(options.out, "report.json"), JSON.stringify({ widths: results, sweep: sweepSteps }, null, 2));
   console.log(formatReport(results));
+  if (sweepSteps.length > 0) console.log(formatSweepReport(sweepSteps, options.sweep.step));
   console.log(`\nChi tiết: ${join(options.out, "report.json")}`);
 }
 

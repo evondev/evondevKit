@@ -1,6 +1,6 @@
 ---
 name: ui-ux
-description: Gu UI/UX cho hệ thống dashboard — dashboard, danh sách, bảng, form, cài đặt, modal. Hai nhánh - dựng màn mới, và refactor codebase đã có mà không vỡ giao diện. Bám theo thư viện component và token sẵn có của dự án. Mặc định flat, làm được glassmorphism, gradient, nổi, nền tối khi được chọn. Dùng khi dựng hoặc sửa bất kỳ giao diện app nào, khi refactor CSS, hoặc khi người dùng nhắc "làm UI cho đẹp", "đừng làm kiểu AI", "theo gu của mình", "ui-ux", "evon".
+description: Gu UI/UX cho hệ thống dashboard — dashboard, danh sách, bảng, form, cài đặt, modal. Ba nhánh - dựng màn mới, soi UI đang có rồi đề xuất sửa (bảng trước/sau, hỏi rồi mới sửa), và refactor codebase đã có mà không vỡ giao diện. Bám theo thư viện component và token sẵn có của dự án. Mặc định flat, làm được glassmorphism, gradient, nổi, nền tối khi được chọn. Dùng khi dựng hoặc sửa bất kỳ giao diện app nào, khi refactor CSS, khi người dùng gửi ảnh hay link app của họ nhờ xem, hoặc khi họ nhắc "làm UI cho đẹp", "xem giúp UI", "review UI", "chỗ nào chưa ổn", "nhìn rối", "đừng làm kiểu AI", "theo gu của mình", "ui-ux", "evon".
 ---
 
 # UI/UX cho hệ thống dashboard
@@ -9,6 +9,8 @@ description: Gu UI/UX cho hệ thống dashboard — dashboard, danh sách, bả
 > Mục 0 là bốn câu, tự trả lời được hết. **Không dừng lại hỏi trước khi dựng.**
 > Skill là bộ tiêu chí để làm trước: chỗ nào đề chưa rõ thì lấy mặc định, dựng
 > xong rồi **báo lúc giao** mình đã chọn gì. Người dùng muốn khác thì họ nói sau.
+> Ngoại lệ duy nhất: **soi UI đang có** (`references/review.md`) thì soi luôn không
+> hỏi, nhưng **sửa thì hỏi** — người dùng chọn dòng trong bảng rồi mới đụng code.
 
 Skill này không dạy "thế nào là đẹp" bằng tính từ. Nó làm ba việc: **đi đúng thứ
 tự** trước khi dựng, **cấm** những thói quen làm giao diện lộ ngay ra là AI dựng,
@@ -35,12 +37,14 @@ về thứ tự các bước, và về người phải duyệt.
 
 | Trả lời | Đi đâu |
 | --- | --- |
-| **Đã có UI, muốn refactor / dọn lại** | Mở `references/refactor.md` và đi theo nhánh `L`. **Dừng mục 0 tại đây** — nhánh đó có bộ mặc định riêng, bắt đầu bằng "đo trước khi kết luận" |
+| **Đã có UI, muốn biết chỗ nào chưa ổn / cho đẹp hơn** ("xem giúp", "review", "nhìn rối", gửi ảnh hay link app của họ) | Mở `references/review.md` và đi theo nhánh `V`: soi, lập bảng trước/sau, người dùng chọn dòng rồi mới sửa. **Dừng mục 0 tại đây**, lúc giao theo `V5` chứ không theo `S15` ⚑ |
+| **Đã có UI, muốn refactor / dọn code mà giữ nguyên hình** | Mở `references/refactor.md` và đi theo nhánh `L`. **Dừng mục 0 tại đây** — nhánh đó có bộ mặc định riêng, bắt đầu bằng "đo trước khi kết luận" |
 | **Dựng mới** | Đi tiếp câu 2 |
 
 Đề bài không nói rõ thì **nhìn vào thư mục** để tự quyết, không hỏi: có `app/`,
-`components/`, có file CSS nào trên 500 dòng không. Có là đang ở nhánh refactor,
-dù người dùng gọi nó là "làm lại giao diện".
+`components/`, có file CSS nào trên 500 dòng không. Có là đang ở nhánh `V` hoặc `L`,
+dù người dùng gọi nó là "làm lại giao diện": muốn đổi hình thì `V`, chỉ dọn code thì
+`L`, cả hai thì soi theo `V` trước.
 
 ### Câu 2 — Dự án đang dùng gì? (TỰ TÌM, ĐỪNG HỎI)
 
@@ -301,7 +305,8 @@ kanban mẫu thì rất dễ đọc mọi thứ mơ hồ thành kanban.
 
 - **Mặc định là design ref**: bám bố cục, bảng màu, kiểu dáng.
 - **Là wireframe** khi đề gọi nó là wireframe / phác thảo / khung, hoặc ảnh chỉ có đen trắng xám, khối chữ nhật, chữ giả: chỉ lấy bố cục, màu và kiểu dáng theo skill.
-- Lúc giao nói một dòng: *"Mình dùng ảnh làm design ref (bám cả màu)"*, hoặc *"…làm wireframe (chỉ lấy bố cục)"*.
+- **Là ảnh hiện trạng** khi đó là ảnh app của chính người dùng mà họ nhờ xem: đề có "xem giúp", "review", "chỗ nào chưa ổn", "sao trông kỳ", "nhìn rối", hoặc ảnh khớp với một route trong repo. Ảnh này là **thứ để soi lỗi, không phải mẫu để bám**. Đi nhánh `V` (`references/review.md`). ⚑
+- Lúc giao nói một dòng: *"Mình dùng ảnh làm design ref (bám cả màu)"*, *"…làm wireframe (chỉ lấy bố cục)"*, hoặc *"…là ảnh hiện trạng app của bạn (soi lỗi)"*.
 
 **S13. Bố cục gồm cả vị trí, không chỉ danh sách phần tử.** Badge nằm giữa mép
 trên card thì để giữa. Ô icon đứng cạnh giá thì giữ đúng chỗ. Thứ tự các khối giữ
@@ -338,6 +343,7 @@ thì một trong hai chỗ là sai.
 | **I** | `references/rules-state.md` | Nút, hover, focus, danh sách, modal |
 | **R** | `references/responsive.md` | **Mọi luật về màn hẹp, ngưỡng kiểm 375px** |
 | **D** | `references/system.md` | Đề nhiều hơn một màn: hợp đồng nguyên tố |
+| **V** | `references/review.md` | Soi UI đang có: ba hạng lỗi, quét bề rộng, dark mode của dự án, bảng trước/sau |
 | **L** | `references/refactor.md` | Refactor codebase đã có |
 | **W** | `references/tailwind-v4-traps.md` | Bẫy Tailwind v4 khi có CSS cũ |
 | **P** | `references/styles.md` | Phong cách thị giác: flat, nổi, glass, gradient, tối. Luật nào được đè, bẫy riêng, **tương phản** |
@@ -398,7 +404,7 @@ mượn khuôn của Y"*.
 
 Rút gọn từ `references/checklist.md`. Chạy hết checklist đầy đủ trước khi báo xong.
 
-- [ ] Câu 1 của mục 0 đã trả lời chưa — đây là **refactor** hay **dựng mới**.
+- [ ] Câu 1 của mục 0 đã trả lời chưa — đây là **soi UI**, **refactor** hay **dựng mới**.
 - [ ] Đã grep codebase xem họ dùng Tailwind / shadcn / gì chưa, hay đang tự áp bộ của mình lên.
 - [ ] Đã dựng đúng **bố cục mặc định** trong file layout chưa, hay tự bịa. Lúc giao đã báo một dòng "muốn kiểu khác thì nói" chưa.
 - [ ] Có section nào tự thêm ngoài đề bài không.
