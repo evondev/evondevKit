@@ -331,6 +331,14 @@ function measureInPage({ minTapSize, isMobile }) {
 
       const rect = element.getBoundingClientRect();
       if (rect.width >= minTapSize && rect.height >= minTapSize) continue;
+      // Ô nằm trong <label> đủ cỡ (dòng lựa chọn min-h-11, I26): cả nhãn là vùng bấm. Ô đứng sát mép
+      // trái nhãn nên điểm thử bên trái rơi ra ngoài; đã báo nhầm 27/09/2026, radio ở /dashboard/tasks/new.
+      const hasLargeWrappingLabel = [...(element.labels || [])].some((label) => {
+        const labelRect = label.getBoundingClientRect();
+
+        return label.contains(element) && labelRect.width >= minTapSize && labelRect.height >= minTapSize;
+      });
+      if (hasLargeWrappingLabel) continue;
 
       element.scrollIntoView({ block: "center", inline: "center" });
       const centeredRect = element.getBoundingClientRect();
@@ -908,6 +916,7 @@ function readHoverState(probeId) {
   return {
     color: blend(ownColor, behind.color),
     borderColor: borderWidth > 0 ? blend(toRgba(style.borderTopColor), behind.color) : null,
+    isBorderTransparent: borderWidth > 0 && toRgba(style.borderTopColor).alpha === 0,
     outsideColor: outside.color,
     // Chạm mép khung đặc phía sau (dòng bảng tràn hai mép card): nền rê gần màu nền ngoài khung là
     // card như bị khuyết một mảng (đã dính 26/09/2026, FAQ trang giá).
@@ -1011,7 +1020,10 @@ async function probeHoverStates(page) {
       return `${element.tagName.toLowerCase()} "${text}"`;
     });
     // Viền xét trước: nút viền đổi màu viền mà nền đứng yên vẫn là ca cần báo.
-    if (before.borderColor && after.borderColor && colorDistance(before.borderColor, after.borderColor) > 8) {
+    // Viền tan hẳn mà nền đổi là nút lặp trên dòng của I4 (rê vào thì viền trong suốt, nền đỏ nhạt,
+    // rules-state.md): không báo. Đã báo nhầm 27/09/2026, "Đăng xuất" mỗi dòng ở trang bảo mật.
+    const isBorderSwappedForFill = after.isBorderTransparent && colorDistance(before.color, after.color) > 8;
+    if (before.borderColor && after.borderColor && !isBorderSwappedForFill && colorDistance(before.borderColor, after.borderColor) > 8) {
       borderHovers.push(`${label}: viền ${formatColor(before.borderColor)} → ${formatColor(after.borderColor)}`);
     }
     const change = colorDistance(before.color, after.color);

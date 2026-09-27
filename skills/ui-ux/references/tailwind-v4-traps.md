@@ -185,9 +185,10 @@ bằng `inset-ring-*` (lớp bóng riêng của v4), hoặc `border`. Đã dính
 mức ưu tiên trong popover Lọc theo mẫu `ring-1 ring-inset` của skill, Tab tới chip đang
 chọn là mất viền chọn.
 
-**Ngoại lệ đúng ý:** card chọn được (`has-checked:ring-2` + `has-focus-visible:ring-2`
-trong `components/choice-controls.md`) cố ý dùng chung một vòng: chọn và focus trông như
-nhau, vì card đã có viền `border-focus` đi kèm.
+**Card chọn được cũng vậy, không có ngoại lệ:** trạng thái chọn là `has-checked:ring-2` mờ, nên
+vòng focus vẽ bằng `outline` (`components/choice-controls.md`). Skill từng cho hai cái dùng chung
+một vòng vì "card đã có viền đi kèm"; đã dính 27/09/2026: Tab vào nhóm radio rơi đúng card đang
+chọn, trông y như lúc không focus.
 
 **Cách phát hiện:** grep `aria-pressed:ring-\|isSelected.*ring-\|ring-inset` trên phần tử
 có `focus-visible:ring`.

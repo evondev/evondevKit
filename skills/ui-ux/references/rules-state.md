@@ -221,7 +221,8 @@ thì thấy rõ mình đang đứng ở đâu. Các app lớn đều làm vậy.
 | --- | --- |
 | Nút (mọi dạng), link sidebar, tab, chip, checkbox, radio, công tắc, tay cầm thanh trượt | `outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface` |
 | Mục trong menu, dropdown, listbox, lệnh trong command palette | **tô nền như hover** (`data-[highlighted]:bg-background`): phím mũi tên dời đúng một chỗ sáng, vòng ring ở đây thừa |
-| Ô nhập, textarea, ô chọn dạng card | viền + ring mờ: `focus:border-focus focus:ring-2 focus:ring-focus`, xem dưới bảng |
+| Ô nhập, textarea | viền + ring mờ: `focus:border-focus focus:ring-2 focus:ring-focus`, xem dưới bảng |
+| Ô chọn dạng card | vòng như nút nhưng vẽ bằng `outline` (`has-focus-visible:outline-2 outline-offset-2 outline-foreground/50`): viền + ring mờ đã là dấu **đang chọn**, Tab vào nhóm radio rơi đúng card đó (`components/choice-controls.md`) |
 | Nút mở của select, ô chọn ngày, ô chọn giờ (là `<button>`, không gõ được) | viền + ring mờ như ô nhập, nhưng **`focus-visible:`** và `aria-expanded:`, không `focus:` |
 | Link chữ | `focus-visible:underline` + vòng như nút |
 

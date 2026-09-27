@@ -113,7 +113,7 @@ chọn; chỉ tô nền thì cả card đổi màu, quá nặng.
 <fieldset class="space-y-3">
   <legend class="mb-3 text-sm font-medium">Ai được đăng bài</legend>
 
-  <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-border-strong bg-surface p-4 transition-colors hover:bg-surface-hover has-checked:border-focus has-checked:ring-2 has-checked:ring-focus has-focus-visible:border-focus has-focus-visible:ring-2 has-focus-visible:ring-focus">
+  <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-border-strong bg-surface p-4 transition-colors hover:bg-surface-hover has-checked:border-focus has-checked:ring-2 has-checked:ring-focus has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-foreground/50">
     <input type="radio" name="post" checked class="mt-0.5 size-5 shrink-0 cursor-pointer appearance-none rounded-full border-[1.5px] border-border-strong bg-surface outline-hidden checked:border-[6px] checked:border-primary" />
     <span class="min-w-0">
       <span class="block text-sm font-medium">Mọi thành viên</span>
@@ -124,7 +124,8 @@ chọn; chỉ tô nền thì cả card đổi màu, quá nặng.
 </fieldset>
 ```
 
-- **Ring đặt trên card, không đặt trên ô tròn.** Ô bên trong không có `focus-visible:ring`: Tab tới thì card sáng lên, hai vòng ring lồng nhau là thừa.
+- **Tab tới là vòng như nút, khác hẳn dấu đang chọn** (`I13`): `outline-2 outline-offset-2 outline-foreground/50`, không lặp viền `border-focus` + ring mờ. Tab vào nhóm radio luôn rơi vào đúng card **đang chọn**, mà card đó đã mang sẵn viền + ring mờ: focus cùng kiểu thì không có gì đổi, người dùng bàn phím không biết mình đang ở đâu. Đã dính 27/09/2026: hộp tạo khoá API, ảnh card "Chỉ đọc" lúc Tab tới và lúc không focus trùng từng điểm ảnh. Dùng `outline` chứ không `ring`: `ring` cùng lớp bóng với ring mờ của trạng thái chọn, hai cái đè nhau (`tailwind-v4-traps.md`).
+- **Vòng đặt trên card, không đặt trên ô tròn.** Ô bên trong không có `focus-visible:ring`: hai vòng lồng nhau là thừa.
 - `has-checked:` là Tailwind v4. Tailwind v3.4 viết `has-[:checked]:`.
 - `mt-0.5` để ô 20px thẳng hàng với dòng đầu `text-sm`, không căn giữa cả card.
 - Card chưa chọn viền `--border-strong` như ô nhập.

@@ -102,7 +102,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Tailwind v4: `<button>` có `cursor-pointer` chưa, hoặc base CSS đã trả lại chưa (`W7`)?
 - [ ] **Bấm Tab qua các nút, tab, checkbox**: có vòng mờ `ring-foreground/50` cách 2px không? Bấm chuột thì không được hiện. **Trong menu** thì mục đang focus đổi nền như hover, không vòng (`I13`).
 - [ ] **Bấm Tab qua ô nhập, select**: có viền `--border-focus` **và** ring mờ `--ring-focus` `ring-2` chưa? `ring-4` là quá dày (`F20`). Select đang mở cũng giữ viền + ring (`I13`).
-- [ ] **Checkbox / radio / công tắc** (`components/choice-controls.md`): cỡ mặc định 20px (công tắc 24×44), không phải 16px? Card chọn: đang chọn có viền + ring? Khoá thì nhãn mờ theo? Nhóm radio có sẵn một lựa chọn và có `<legend>`? Nhóm xếp một hàng hoặc một cột, không lưới 2×2 (thang Thấp → Khẩn cấp đọc chữ Z)? Ở 375px mỗi lựa chọn là dòng cao 44px bấm được cả dòng?
+- [ ] **Checkbox / radio / công tắc** (`components/choice-controls.md`): cỡ mặc định 20px (công tắc 24×44), không phải 16px? Card chọn: đang chọn có viền + ring, và Tab tới card **đang chọn** vẫn hiện thêm vòng `outline`? Khoá thì nhãn mờ theo? Nhóm radio có sẵn một lựa chọn và có `<legend>`? Nhóm xếp một hàng hoặc một cột, không lưới 2×2 (thang Thấp → Khẩn cấp đọc chữ Z)? Ở 375px mỗi lựa chọn là dòng cao 44px bấm được cả dòng?
 - [ ] Vừa Tab vừa rê chuột trong menu: có **hai mục sáng cùng lúc** không? Chỉ được một (`data-[highlighted]`).
 - [ ] Rê chuột lên **nút chính**: có đổi màu không? Nút `primary` là chỗ hay quên hover nhất (`I9`).
 - [ ] **Bấm vào chữ nhãn**: ô có focus không (`for`/`htmlFor`)? Con trỏ có thành bàn tay không?

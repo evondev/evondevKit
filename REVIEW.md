@@ -89,29 +89,29 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | # | Trang | Route | Rà ngày |
 | --- | --- | --- | --- |
 | 1 | Khung app + tổng quan | `/dashboard`, `/dashboard/overview/states` | 26/09/2026 (tổng quan, ba lượt) |
-| 2 | Công việc: bảng nhóm, kanban, tạo mới | `/dashboard/tasks`, `/tasks/new`, `/tasks/states` | 26/09/2026 (kanban, ba lượt, đã theo kịp; popover Lọc, ba lượt, đã theo kịp); 27/09/2026 (bảng nhóm, một lượt: khuôn theo bề rộng khung, dự án chưa theo kịp; tạo mới, một lượt: nhóm radio, bộ đếm ký tự, dự án chưa theo kịp; `/states`, một lượt: khung chờ cột nhảy ngang, dự án chưa theo kịp) |
-| 3 | Khách hàng: danh sách, xem nhanh, chi tiết | `/dashboard/customers`, `/customers/quick-view`, `/customers/c-030`, `/customers/khong-co`, `/customers/states` | 27/09/2026 (danh sách, một lượt: ẩn cột phụ ở khung vừa, số đếm phân trang ở 375px; xem nhanh, một lượt: vùng bấm nút sao chép, hàng có avatar lệch baseline; chi tiết, một lượt: số ô số liệu lệch hàng khi nhãn xuống dòng; `khong-co`, một lượt: gộp về khuôn 404 trong khung; `/states`, một lượt: không lỗi mới; dự án chưa theo kịp bốn trang đầu) |
-| 4 | Đơn hàng: chi tiết, xem nhanh | `/dashboard/orders/detail`, `/orders/quick-view` | 27/09/2026 (modal chi tiết, một lượt: số tiền ngắt dòng ở 375px; xem nhanh, một lượt: không lỗi skill mới; dự án chưa theo kịp cả hai) |
+| 2 | Công việc: bảng nhóm, kanban, tạo mới | `/dashboard/tasks`, `/tasks/new`, `/tasks/states` | 26/09/2026 (kanban, ba lượt, đã theo kịp; popover Lọc, ba lượt, đã theo kịp); 27/09/2026 (bảng nhóm, một lượt: khuôn theo bề rộng khung, đã theo kịp; tạo mới, một lượt: nhóm radio, bộ đếm ký tự, đã theo kịp; `/states`, một lượt: khung chờ cột nhảy ngang, đã theo kịp) |
+| 3 | Khách hàng: danh sách, xem nhanh, chi tiết | `/dashboard/customers`, `/customers/quick-view`, `/customers/c-030`, `/customers/khong-co`, `/customers/states` | 27/09/2026 (danh sách, một lượt: ẩn cột phụ ở khung vừa, số đếm phân trang ở 375px; xem nhanh, một lượt: vùng bấm nút sao chép, hàng có avatar lệch baseline; chi tiết, một lượt: số ô số liệu lệch hàng khi nhãn xuống dòng; `khong-co`, một lượt: gộp về khuôn 404 trong khung; `/states`, một lượt: không lỗi mới; đã theo kịp cả bốn trang) |
+| 4 | Đơn hàng: chi tiết, xem nhanh | `/dashboard/orders/detail`, `/orders/quick-view` | 27/09/2026 (modal chi tiết, một lượt: số tiền ngắt dòng ở 375px; xem nhanh, một lượt: không lỗi skill mới; đã theo kịp cả hai) |
 | 5 | Thành viên và phân quyền | `/dashboard/members` | 25/09/2026 (chín lượt; cả luồng xác thực đã theo kịp) |
-| 6 | Hồ sơ cá nhân | `/dashboard/profile`, `/profile/states` | 27/09/2026 (một lượt: "Gửi lại · Huỷ" của email chờ xác nhận, dự án chưa theo kịp) |
+| 6 | Hồ sơ cá nhân | `/dashboard/profile`, `/profile/states` | 27/09/2026 (một lượt: "Gửi lại · Huỷ" của email chờ xác nhận, đã theo kịp) |
 | 7 | Đăng nhập, đăng ký, quên mật khẩu, OTP | `/login`, `/register`, `/forgot-password`, `/forgot-password/verify`, `/forgot-password/new-password`, `/forgot-password/states`, `/verify-otp`, `/verify-otp/states` | 25/09/2026 (chín lượt; cả luồng xác thực đã theo kịp) |
 | 8 | Bảng giá | `/pricing`, `/pricing/joined` | 26/09/2026 (bảy lượt) |
 | 9 | Form đăng ký doanh nghiệp | `/business-registration` | 27/09/2026 (một lượt: không lỗi hình; Tiếp / Quay lại chưa nối xử lý, là logic dự án, `N10`) |
-| 10 | Trợ lý AI | `/dashboard/assistant`, `/assistant/states` | 27/09/2026 (một lượt: không lỗi skill mới, dự án chưa theo kịp hai chỗ; sửa báo nhầm dấu câu sau `<code>` của probe) |
-| 11 | Tài liệu (cây thư mục) | `/dashboard/projects/documents`, `/documents/states` | 27/09/2026 (một lượt: vùng bấm "Thử lại", gộp luật chung vào `N9`; sửa báo nhầm focus ô file ẩn; route này là khu tải tệp, cây thư mục nằm ở `/components`: tooltip tên dài tràn màn ở 375px; dự án chưa theo kịp) |
+| 10 | Trợ lý AI | `/dashboard/assistant`, `/assistant/states` | 27/09/2026 (một lượt: không lỗi skill mới, đã theo kịp; sửa báo nhầm dấu câu sau `<code>` của probe) |
+| 11 | Tài liệu (cây thư mục) | `/dashboard/projects/documents`, `/documents/states` | 27/09/2026 (một lượt: vùng bấm "Thử lại", gộp luật chung vào `N9`; sửa báo nhầm focus ô file ẩn; route này là khu tải tệp, cây thư mục nằm ở `/components`: tooltip tên dài tràn màn ở 375px; đã theo kịp) |
 | 12 | Thông báo | `/dashboard/notifications/states` | 27/09/2026 (một lượt: không lỗi hình; "Đánh dấu đã đọc" chưa nối xử lý, là logic dự án, `N10`) |
 | 13 | Thư viện component | `/components` | 26/09/2026 (ô số lượng, ba lượt; tên sửa tại chỗ, hai lượt, đã theo kịp; tiêu đề cột sắp xếp, hai lượt, đã theo kịp) |
 | 14 | Tạo dự án (khu "Cài đặt nâng cao" thu gọn) | `/dashboard/projects/new` | 26/09/2026 (hai lượt, đã theo kịp) |
 | 15 | Form tạo workspace ba bước | `/workspaces/new` | 26/09/2026 (ba lượt, đã theo kịp) |
-| 16 | Cài đặt thông báo (và hàng tab khu cài đặt) | `/dashboard/settings`, `/settings/notifications`, `/settings/notifications/states` | 26/09/2026 (hai lượt, đã theo kịp trừ màu đường kẻ hàng tab) |
-| 17 | Bảo mật: xác thực hai lớp, phiên đăng nhập | `/dashboard/settings/security`, `/security/states` | 26/09/2026 (ba lượt; lượt ba đổi màu nút theo chủ dự án, dự án chưa theo kịp) |
+| 16 | Cài đặt thông báo (và hàng tab khu cài đặt) | `/dashboard/settings`, `/settings/notifications`, `/settings/notifications/states` | 26/09/2026 (hai lượt, đã theo kịp; 27/09/2026 công tắc chưa nới vùng bấm, dự án chưa theo kịp) |
+| 17 | Bảo mật: xác thực hai lớp, phiên đăng nhập | `/dashboard/settings/security`, `/security/states` | 26/09/2026 (ba lượt; lượt ba đổi màu nút theo chủ dự án, đã theo kịp) |
 | 18 | Các bước bắt đầu (onboarding), nay nằm đầu tổng quan | `/dashboard/overview/states` (trang `/dashboard/welcome` đã bỏ) | 26/09/2026 (ba lượt, đã theo kịp) |
-| 19 | Lịch công việc (lưới tháng, lịch gọn) | `/dashboard/calendar`, `/calendar/states` | 26/09/2026 (ba lượt, đã theo kịp; nút viền còn hover cũ, nằm trong mục "Nút viền" bên dưới) |
-| 20 | Khoá API | `/dashboard/settings/api-keys`, `/api-keys/states` | 26/09/2026 (hai lượt; lượt hai đã theo kịp) |
-| 21 | Trang lỗi: 404, 403, 500, bảo trì | `/errors/states`, `/403`, `/500`, `/maintenance`, `/khong-co`, `/dashboard/khong-co` | 26/09/2026 (năm lượt; lượt năm còn `px-1.5` cho link "Đổi tài khoản", dự án chưa theo kịp) |
+| 19 | Lịch công việc (lưới tháng, lịch gọn) | `/dashboard/calendar`, `/calendar/states` | 26/09/2026 (ba lượt, đã theo kịp; nút viền đã theo kịp) |
+| 20 | Khoá API | `/dashboard/settings/api-keys`, `/api-keys/states` | 26/09/2026 (hai lượt; lượt hai đã theo kịp); 27/09/2026 (đo lại: card "Quyền" trong hộp tạo khoá, Tab tới card đang chọn không đổi gì, lỗi skill đã sửa, dự án chưa theo kịp) |
+| 21 | Trang lỗi: 404, 403, 500, bảo trì | `/errors/states`, `/403`, `/500`, `/maintenance`, `/khong-co`, `/dashboard/khong-co` | 26/09/2026 (năm lượt; lượt năm đã theo kịp) |
 | 22 | Xoá workspace (vùng nguy hiểm, hộp gõ lại tên) | `/dashboard/settings/workspace`, `/workspace/states` | 26/09/2026 (hai lượt, đã theo kịp) |
 | 23 | Báo cáo doanh thu (khoảng ngày, biểu đồ đường) | `/dashboard/revenue`, `/revenue/states` | 27/09/2026 (ba lượt, đã theo kịp) |
-| 24 | Thanh toán: gói đang dùng, lịch sử hoá đơn | `/dashboard/settings/billing`, `/billing/states` | 27/09/2026 (bốn lượt; lượt ba đã theo kịp, lượt bốn còn câu huỷ gói ở ca trừ lỗi) |
+| 24 | Thanh toán: gói đang dùng, lịch sử hoá đơn | `/dashboard/settings/billing`, `/billing/states` | 27/09/2026 (bốn lượt; lượt ba đã theo kịp, lượt bốn đã theo kịp) |
 
 Route mới xuất hiện trong dự án thì thêm dòng vào bảng (`grep -rhoE "path: ?['\"][^'\"]+" src`).
 
@@ -323,96 +323,21 @@ chấm biểu đồ doanh thu); `-left-[5px]` của cây thư mục là chỗ gi
 
 ## Dự án chưa theo kịp
 
-Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần.
+Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần. Đo lại trên trang thật khi người
+dùng báo đã sửa (bước 7); mục nào đã theo kịp thì xoá khỏi danh sách, ghi vào cột "Rà ngày".
+Lần đo lại 27/09/2026: 29 route, 25 mục đã theo kịp, còn công tắc và bỏ số âm (`N11`).
 
-- Cây thư mục ở `/components` (lượt 1, 27/09/2026): tooltip tên tệp (`file-tree-item.tsx`, component Tooltip) bỏ
-  `whitespace-nowrap`, thêm `max-w-[min(20rem,calc(100vw-1rem))] whitespace-normal wrap-anywhere`, lật xuống dưới hàng khi
-  bên phải hết chỗ. Hiện ở 375px tooltip rộng 765px, tràn khỏi màn.
-- Tài liệu `/dashboard/projects/documents` (lượt 1, 27/09/2026): nút chữ "Thử lại" ở dòng tệp hỏng thêm
-  `relative before:absolute before:-inset-x-1.5 before:-inset-y-2` (hiện 39×16px ở 375px).
-- Trợ lý AI `/dashboard/assistant`, `/states` (lượt 1, 27/09/2026): nút gửi khi ô trống `disabled:opacity-50`, đổi
-  `disabled:opacity-30` (`components/chat.md`); câu trả lời bị Dừng giữa chừng chưa có hàng Sao chép / Tạo lại.
-- Hồ sơ `/dashboard/profile/states` (lượt 1, 27/09/2026): email chờ xác nhận, bỏ " · Gửi lại · Huỷ" nối sau email; hai nút
-  chữ xuống hàng riêng `flex gap-4 mt-1`, mỗi nút `relative before:absolute before:-inset-x-1.5 before:-inset-y-2`.
-- Panel xem nhanh đơn `/dashboard/orders/quick-view` (lượt 1, 27/09/2026): số điện thoại, email còn là chữ trơn, đổi sang
-  link `tel:` / `mailto:` kèm nút sao chép (`components/description-list.md`); "Sao chép mã đơn" rời menu ⋯, thành
-  nút sao chép cạnh "Đơn #10248" ở đầu panel như modal chi tiết đơn (`layouts/app.md`, việc gắn với giá trị nằm cạnh
-  giá trị).
-- Modal chi tiết đơn `/dashboard/orders/detail` (lượt 1, 27/09/2026): khối Thanh toán, `<dt>` bỏ `shrink-0` thêm `min-w-0`,
-  `<dd>` tiền bỏ `wrap-anywhere` thêm `whitespace-nowrap shrink-0`; nhãn viết "Tạm tính&nbsp;· 1&nbsp;sản&nbsp;phẩm".
-  Hiện ở 375px "128.900.000" / "đ" ngắt hai dòng.
-- Khách không tìm thấy `/dashboard/customers/khong-co` (lượt 1, 27/09/2026): dựng lại bằng khối 404 trong khung (như
-  `/dashboard/khong-co`), tiêu đề "Không tìm thấy khách hàng", nút đặc "Về danh sách khách hàng", lối phụ "Quay lại
-  trang trước". Hiện là đầu trang căn trái với link chữ trơn cao 20px.
-- Trang chi tiết khách `/dashboard/customers/c-030` (lượt 1, 27/09/2026): mỗi ô số liệu `grid row-span-2
-  grid-rows-subgrid content-start` để số cả hàng thẳng khi "Đơn đã giao · 12 tháng" xuống dòng (hiện "3" thấp hơn
-  16px ở 1280px); nhãn viết `Đơn đã giao&nbsp;· 12&nbsp;tháng`. Hàng "Phụ trách" như panel xem nhanh (`flex h-5`).
-- Panel xem nhanh khách hàng `/dashboard/customers/quick-view` (lượt 1, 27/09/2026): nút sao chép email / số điện
-  thoại thêm `relative before:absolute before:-inset-1.5` (vùng bấm 40px, hình giữ 28px). Hàng "Phụ trách": cụm
-  avatar + tên đổi `inline-flex` thành `flex h-5 items-center` (chữ tên đang thấp hơn nhãn 1,5px, hàng cao 24px).
-- Danh sách khách hàng `/dashboard/customers` (lượt 1, 27/09/2026): card bảng `@container`, cột Công ty và Ngày tạo
-  `hidden @4xl:table-cell` (cả `<th>` và `<td>`), bỏ khoá bề rộng cột tên để nó nhận phần dư. Chân bảng dưới `sm`:
-  "1 tới 10 trong" bọc `hidden sm:inline`, chỉ còn "32 khách hàng".
-- `/dashboard/tasks/states` (lượt 1, 27/09/2026): khung chờ của bảng nhóm, ô ưu tiên và hạn chót dùng `min-w-32`,
-  `min-w-40` như ô thật; thanh tên người phụ trách `w-44` thay vì ngắn hơn. Hiện cột Ưu tiên nhảy 86px lúc dữ liệu về.
-- Form tạo công việc `/dashboard/tasks/new` (lượt 1, 27/09/2026):
-  - Nhóm "Mức ưu tiên": bỏ `grid grid-cols-2`, dưới `sm` xếp dọc, mỗi lựa chọn là `<label>` bọc ô + chữ
-    `flex w-fit min-h-11 items-center gap-3`; từ `sm` giữ một hàng.
-  - Ô radio còn `focus-visible:ring-focus/10` (Tab tới gần như không thấy), đổi sang
-    `ring-2 ring-foreground/50 ring-offset-2 ring-offset-surface` như `components/choice-controls.md`.
-  - Ô tiêu đề ghi "Tối đa 120 ký tự" mà không đếm: thêm bộ đếm cùng dòng gợi ý từ 96 ký tự, đỏ khi vượt,
-    bấm gửi mà vượt thì câu lỗi "Dài hơn 120 ký tự, bớt N ký tự". Không thêm `maxlength`.
-- Bảng nhóm công việc `/dashboard/tasks` (lượt 1, 27/09/2026): bỏ `min-w-[52rem]` và khung cuộn ngang, card
-  bảng là `@container`. Khung dưới `@4xl` thì cột người phụ trách chỉ avatar (tên vào `title` + `sr-only`),
-  tiêu đề cột "Phụ trách". Dưới `@2xl` thành danh sách dòng: tên việc `line-clamp-2` cùng hàng nút ⋯, dự án,
-  rồi hàng ưu tiên · hạn chót `text-xs` với avatar thẳng cột nút ⋯; mảnh trống bỏ hẳn, không `—`.
-
-- Trang thanh toán (lượt 4, 27/09/2026; lượt 1–3 đã theo kịp):
-  - Ca trừ tiền thất bại ở `/states`: câu của Vùng nguy hiểm (và hộp huỷ nếu mở từ ca này) còn "bạn vẫn dùng tới
-    hết 12/10/2026". Đổi theo dữ liệu, mẫu "Huỷ gói Pro: workspace về gói Miễn phí ngay."
-
-- Trang lỗi (lượt 5, 26/09/2026; lượt 1–4 đã theo kịp):
-  - `forbidden-card.tsx`: link "Đổi tài khoản" thêm `px-1.5`. Hiện `h-8` không padding ngang, vòng focus
-    sát chữ hai bên mà hở 7px trên dưới.
-  - Tiêu đề màn xác thực còn `font-bold` (`T2` là 600): `login-card.tsx`, `forgot-password-card.tsx`,
-    `reset-password-card.tsx`, `reset-session-expired-card.tsx`, `verify-otp-card.tsx`.
-
-- Nút viền (skill đổi 26/09/2026, chủ dự án chốt): `src/components/button/button.tsx` bỏ
-  `hover:border-foreground/20`, nền hover sang màu đặc `hover:bg-button-hover`; thêm
-  `--button-hover: #f1f1f3` vào `src/index.css` (và ánh xạ `--color-button-hover`). Kiểm cả nút chỉ
-  icon viền (`iconOnlyOutlineClasses`).
-- `/dashboard/settings/api-keys/states` (lượt hai, 26/09/2026): nút `⋯` ở ca "menu đang mở" chưa có
-  nền của trạng thái mở như menu thật, và menu cách dòng 16px thay vì 8px dưới nút.
-- `/dashboard/settings/security` (skill sửa lượt ba, 26/09/2026): "Bật xác thực hai lớp" sang
-  `primary`; "Đăng xuất 4 thiết bị khác" trả lại `isDestructive`; nút dòng và nút hàng loạt lên cỡ nút form
-  `h-11 md:h-10 rounded-xl` (bỏ `sessionActionButtonClass` `h-8`, dùng như nút 2FA); nút
-  "Đăng xuất" trong dòng rê vào / Tab tới thì đỏ (`I4`, dạng nút lặp trên từng dòng); hộp xác
-  nhận đăng xuất hàng loạt về `tone` đỏ như hộp xoá.
-- `/dashboard/members`: hộp "Thu hồi lời mời" chưa bọc email bằng `EmailText`, email
-  vỡ giữa tên miền ("…hcm@co" / "ngtyminhphat.com.vn"). Toast không có chuyển động vào
-  ra (render bằng điều kiện), và khối chữ toast dùng `wrap-anywhere` nên email vỡ giữa
-  tên miền.
-- Màn xác thực (`/login`, `/register`, `/forgot-password`, `/verify-otp`): chưa có logo
-  sản phẩm, placeholder, nút Google; `/register` và bước đặt mật khẩu mới còn ô "Nhập lại
-  mật khẩu". Luồng quên mật khẩu: phiên hết hạn vẫn để ô mật khẩu và nút Lưu dưới khối lỗi;
-  link cuối card nên là "Quay lại đăng nhập".
-- `/verify-otp`: bấm Xác nhận khi hàng ô trống thì im lặng. Ô đầu `maxlength="1"` nên tự
-  điền mã trên iOS bị cắt còn một số (điền "482917" ra "4"), skill ghi `maxlength="6"`.
-- `--color-muted: #828282` trong `src/index.css` chỉ 3,8:1 trên nền trắng (3,5:1 trên nền
-  trang), dưới 4,5:1. Kéo theo câu dẫn, "Đổi email", đếm ngược, "Chưa có tài khoản?",
-  placeholder ở mọi màn. Đổi sang `#707070` như token của skill.
-- `/forgot-password/verify`: chưa gõ số nào mà bấm Xác nhận thì ra "Mã còn thiếu số",
-  skill ghi "Chưa nhập mã"; gõ thiếu thì cả sáu ô đỏ, kể cả ô đã có số (skill: chỉ ô trống).
-- `/forgot-password/new-password`: chưa có ô `username` ẩn, chưa nói đang đổi cho tài
-  khoản nào, con trỏ không nằm sẵn ở ô đầu (`/login`, `/register` cũng vậy).
-- Khu cài đặt (`src/features/settings/components/settings-tabs.tsx`): đường kẻ dưới hàng tab
-  `border-foreground/10` ra `#e1e1e3`, đậm hơn đường header `#eaeaea`; đổi `border-border-strong`.
-  Các lỗi khác của lượt 1 (trang trắng, thiếu hàng tab, focus công tắc, cỡ câu lỗi, câu chữ) đã theo kịp.
-- Công tắc ở `/dashboard/settings/notifications` (27/09/2026, probe 375px): bảy công tắc 44×24 không có
-  vùng bấm nới ra. Skill nay ghi `relative before:absolute before:-inset-2` trên nút `role="switch"`;
-  dự án đang dùng `<input type="checkbox">` `appearance-none`, ô nhập không có `::before`, nên đổi sang
-  nút như skill hoặc bọc cả hàng trong `<label>`.
-- Bỏ số âm (`N11`, skill xong 27/09/2026): dự án còn ~114 dòng. Theo `principles.md` `N11` và từng file:
+- Công tắc ở `/dashboard/settings/notifications` (27/09/2026, probe 375px; đo lại cùng ngày vẫn còn): bảy công
+  tắc 44×24 không có vùng bấm nới ra. Skill ghi `relative before:absolute before:-inset-2` trên nút
+  `role="switch"`; dự án đang dùng `<input type="checkbox">` `appearance-none` (`src/components/switch/switch.tsx`),
+  ô nhập không có `::before`, nên đổi sang nút như skill, đặt `before:` trên `<span>` bọc ngoài, hoặc bọc cả hàng
+  trong `<label>`.
+- Card chọn (`src/components/choice-card/choice-card.tsx`, skill sửa 27/09/2026): bỏ
+  `has-focus-visible:border-focus has-focus-visible:ring-2 has-focus-visible:ring-focus/10`, thay bằng
+  `has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-foreground/50`. Hiện Tab vào
+  nhóm "Quyền" ở hộp tạo khoá API (`/dashboard/settings/api-keys/states`) rơi đúng card đang chọn, trông y như lúc
+  không focus. Kiểm cả `radio-group-showcase-row.tsx` ở `/components`.
+- Bỏ số âm (`N11`, skill xong 27/09/2026): dự án còn ~114 dòng (đo lại 27/09/2026 chiều: còn 108, chưa sửa). Theo `principles.md` `N11` và từng file:
   icon / nút trong ô nhập `inset-y-0 my-auto` + cỡ cố định (khối bọc nút mắt thêm `size-10`); vạch chia menu
   (`action-menu-items`, `account-dropdown`, `select`, `date-picker-panel`, `date-time-picker-panel`,
   `date-range-preset-list`) theo `F25` cách 1 mới; ô vai trò, ô hạn chót bớt padding ô thay `-ml-2`; board kanban
