@@ -139,12 +139,13 @@ Công tắc = **có hiệu lực ngay**, không chờ nút Lưu (`layouts/app.md
 
 ```html
 <button type="button" role="switch" aria-checked="false" aria-labelledby="notify-label"
-  class="group inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full bg-muted/40 p-0.5 outline-hidden transition-colors hover:bg-muted/60 aria-checked:bg-primary aria-checked:hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:cursor-not-allowed disabled:opacity-50">
+  class="group relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full bg-muted/40 p-0.5 outline-hidden before:absolute before:-inset-2 transition-colors hover:bg-muted/60 aria-checked:bg-primary aria-checked:hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:cursor-not-allowed disabled:opacity-50">
   <span class="size-5 rounded-full bg-surface shadow-sm transition-transform group-aria-checked:translate-x-5 group-aria-checked:bg-primary-foreground motion-reduce:transition-none"></span>
 </button>
 ```
 
 - `role="switch"` + `aria-checked`, JS đảo `aria-checked` khi bấm. Có nhãn qua `aria-labelledby`.
+- **Vùng bấm nới ra 40px mà hình giữ 24px** (`N9`): `relative before:absolute before:-inset-2` (số âm buộc phải giữ theo `N11`, như nút sao chép ở `description-list.md`). Track 44×24 trơn trên màn chạm thấp hơn mức 32px; to track lên `h-8` thì công tắc nặng hơn chữ nhãn cạnh nó. Hai hàng cài đặt `py-4` cách nhau đủ xa nên vùng 40px không chồng nhau. Đo 27/09/2026 ở `/dashboard/settings/notifications` 375px: bảy công tắc 44×24, không vùng nới.
 - Track tắt `bg-muted/40`, không dùng `--background-hover`: track xám quá nhạt trên card trắng thì trông như công tắc bị khoá (`I8`).
 - **Núm trượt là ngoại lệ của `I12`** (chỉ đổi màu khi chuyển trạng thái): vị trí núm là thông tin, nhảy cụp một cái thì mắt không kịp thấy đã đổi. Kèm `motion-reduce:transition-none`.
 - `shadow-sm` trên núm là ngoại lệ có tên của `M15`, như ô nổi của tab segmented. Không đổ bóng track.

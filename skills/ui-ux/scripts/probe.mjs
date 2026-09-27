@@ -131,6 +131,27 @@ function measureInPage({ minTapSize, isMobile }) {
     return textRect;
   }
 
+  const isColorClass = (className) =>
+    /^(bg|fill|stroke|ring|inset-ring|outline|decoration|shadow|from|via|to)-/.test(className) ||
+    (/^text-/.test(className) && !/^text-(xs|sm|base|lg|\d?xl|\[)/.test(className)) ||
+    (/^border-/.test(className) && !/^border-(\d|[trblxy]($|-\d))/.test(className));
+  // Tập các đường thẻ + class (bỏ class màu) của con cháu ba tầng, không tính số lượng: ô lịch hai việc
+  // với ô ba việc cùng cấu trúc, nên ô ba việc cao lệch 2px vẫn bị bắt (26/09/2026).
+  function getStructureSignature(element) {
+    const paths = new Set();
+    const visit = (node, prefix, depth) => {
+      for (const child of node.children) {
+        const classKey = (child.getAttribute("class") || "").split(/\s+/).filter((className) => className && !isColorClass(className)).sort().join(".");
+        const path = `${prefix}>${child.tagName}.${classKey}`;
+        paths.add(path);
+        if (depth < 3) visit(child, path, depth + 1);
+      }
+    };
+    visit(element, "", 1);
+
+    return [...paths].sort().join("|");
+  }
+
   const allElements = [...document.body.querySelectorAll("*")].filter((element) => !["SCRIPT", "STYLE", "svg", "path"].includes(element.tagName));
 
   // 1. Cuộn ngang: trang rộng hơn màn, và phần tử nào lòi ra ngoài mép phải.
@@ -173,7 +194,22 @@ function measureInPage({ minTapSize, isMobile }) {
       groups.get(key).push(child);
     }
 
-    for (const siblings of groups.values()) {
+    // Chỉ so các khối cùng cấu trúc con: hàng có badge `py-1` cao hơn hàng chữ trơn, mục gói tên 16px
+    // cao hơn mục thẻ tên 14px, là nội dung khác chứ không phải khe baseline (báo nhầm 27/09/2026,
+    // danh sách mô tả ở /components, /dashboard/settings/billing/states). Class màu bỏ khỏi khoá:
+    // badge xanh với badge xám vẫn cùng cấu trúc.
+    const splitByStructure = (siblings) => {
+      const byStructure = new Map();
+      for (const sibling of siblings) {
+        const structure = getStructureSignature(sibling);
+        if (!byStructure.has(structure)) byStructure.set(structure, []);
+        byStructure.get(structure).push(sibling);
+      }
+
+      return [...byStructure.values()];
+    };
+
+    for (const siblings of [...groups.values()].flatMap(splitByStructure)) {
       if (siblings.length < 3) continue;
 
       const innerHeights = siblings.map((sibling) => {
@@ -231,6 +267,9 @@ function measureInPage({ minTapSize, isMobile }) {
           cell,
           leftOffset: edge.left - cellRect.left,
           rightOffset: cellRect.right - edge.right,
+          textLeftOffset: textRect.left - cellRect.left,
+          textRightOffset: cellRect.right - textRect.right,
+          isBoxed: edge !== textRect,
           centerDelta: textRect.left + textRect.width / 2 - (cellRect.left + cellRect.width / 2),
           text: textRect.text,
         });
@@ -241,6 +280,20 @@ function measureInPage({ minTapSize, isMobile }) {
       // Ô căn giữa cả ô (lịch chọn ngày) thì mép chữ lệch theo độ dài là đúng, bỏ qua.
       const startAlignedCells = cells.filter((item) => Math.abs(item.centerDelta) > 2);
       if (startAlignedCells.length < 3) continue;
+
+      // Chữ trong khối có nền: mép khối hoặc mép chữ trùng cột đều được. Pill "VIP" thẳng theo mép
+      // khối; số hôm nay trong vòng `min-w-7` thẳng theo mép chữ với tên thứ (báo nhầm 27/09/2026, lịch
+      // tháng: "27" đúng mép chữ "CN" nhưng mép vòng lệch 6px).
+      const plainCells = startAlignedCells.filter((item) => !item.isBoxed);
+      if (plainCells.length > 0) {
+        const plainLeft = plainCells.map((item) => item.leftOffset).sort((first, second) => first - second)[Math.floor(plainCells.length / 2)];
+        const plainRight = plainCells.map((item) => item.rightOffset).sort((first, second) => first - second)[Math.floor(plainCells.length / 2)];
+        for (const item of startAlignedCells) {
+          if (!item.isBoxed) continue;
+          if (Math.abs(item.textLeftOffset - plainLeft) < Math.abs(item.leftOffset - plainLeft)) item.leftOffset = item.textLeftOffset;
+          if (Math.abs(item.textRightOffset - plainRight) < Math.abs(item.rightOffset - plainRight)) item.rightOffset = item.textRightOffset;
+        }
+      }
 
       const leftOffsets = startAlignedCells.map((item) => item.leftOffset);
       const rightOffsets = startAlignedCells.map((item) => item.rightOffset);
@@ -338,6 +391,9 @@ function measureInPage({ minTapSize, isMobile }) {
       }
       continue;
     }
+    // Ký tự đứng một mình trong khối riêng (vòng "!" của bước lỗi, `flex size-8`) là hình, không phải dấu
+    // câu của chữ trước (báo nhầm 27/09/2026, bộ bước ở /components). Dấu " · " inline vẫn xét.
+    if (/^[.,;:!?)·»”…]+$/.test(parent.textContent.trim()) && /^(block|flex|grid)$/.test(getComputedStyle(parent).display)) continue;
 
     for (let index = 0; index < textNode.length; index++) {
       const character = textNode.data[index];
@@ -1035,6 +1091,189 @@ async function expandCollapsedBlocks(page) {
   return count;
 }
 
+// ---------- Hình của các trạng thái trên cùng một phần tử ----------
+// Lịch gọn 26/09/2026 (lượt hai): rê ra nền ô vuông 46×48 cạnh vòng chọn tròn 32px, Tab tới thì vòng
+// focus vuông quanh vòng tròn, bấm chuột xong ô vừa chọn giữ nền vuông chồng lên vòng đen: ba hình
+// cho một ô ngày. Mỗi nhóm có mục đang chọn: lấy một mục chưa chọn cùng loại, rê, Tab tới, bấm rồi
+// để chuột đứng yên, so hình vẽ ra với hình của mục đang chọn.
+
+const maxStateGroups = 15;
+
+// Những gì phần tử và con cháu (hai tầng) đang vẽ: nền và vòng (outline / box-shadow), kèm kích
+// thước, có tròn không, và đường dẫn con (`0` là chính nó) để so trước với sau.
+function readStatePaints(probeId) {
+  const element = document.querySelector(`[data-evon-state-id="${probeId}"]`);
+  if (!element) return null;
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 1;
+  canvas.height = 1;
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  const readAlpha = (cssColor) => {
+    context.clearRect(0, 0, 1, 1);
+    context.fillStyle = "rgba(0,0,0,0)";
+    context.fillStyle = cssColor;
+    context.fillRect(0, 0, 1, 1);
+
+    return context.getImageData(0, 0, 1, 1).data[3] / 255;
+  };
+  const paints = [];
+  const hostRect = element.getBoundingClientRect();
+  const visit = (node, path, depth) => {
+    const style = getComputedStyle(node);
+    const rect = node.getBoundingClientRect();
+    if (rect.width >= 6 && rect.height >= 6) {
+      const radiusText = style.borderTopLeftRadius;
+      const radius = radiusText.endsWith("%") ? (parseFloat(radiusText) / 100) * rect.width : parseFloat(radiusText) || 0;
+      const shape = {
+        path,
+        width: Math.round(rect.width),
+        height: Math.round(rect.height),
+        // Phần nền phủ trên phần tử: hai tab chữ dài ngắn khác nhau thì rộng khác nhau nhưng cùng phủ
+        // kín, không phải khác hình (báo nhầm khi thử, hàng tab Tuần / Tháng).
+        coverWidth: rect.width / hostRect.width,
+        coverHeight: rect.height / hostRect.height,
+        isRound: radius >= Math.min(rect.width, rect.height) / 2 - 1,
+      };
+      if (readAlpha(style.backgroundColor) > 0.05) paints.push({ kind: "bg", ...shape, paint: style.backgroundColor });
+      const hasOutline = style.outlineStyle !== "none" && parseFloat(style.outlineWidth) > 0;
+      if (hasOutline || style.boxShadow !== "none") paints.push({ kind: "ring", ...shape, paint: hasOutline ? `outline ${style.outlineWidth} ${style.outlineColor}` : style.boxShadow });
+    }
+    if (depth < 2) [...node.children].forEach((child, index) => visit(child, `${path}.${index}`, depth + 1));
+  };
+  visit(element, "0", 0);
+
+  return paints;
+}
+
+function findNewPaints(after, before, kind) {
+  const seen = new Set(before.filter((paint) => paint.kind === kind).map((paint) => `${paint.path}|${paint.paint}`));
+
+  return after.filter((paint) => paint.kind === kind && !seen.has(`${paint.path}|${paint.paint}`));
+}
+
+function pickLargestPaint(paints) {
+  return paints.reduce((largest, paint) => (!largest || paint.width * paint.height > largest.width * largest.height ? paint : largest), null);
+}
+
+// Hai phần tử khác nhau (mục chưa chọn với mục đang chọn): so phần phủ. Cùng một phần tử (nền ngoài
+// với nền con): so kích thước.
+function isDifferentCover(first, second) {
+  return first.isRound !== second.isRound || Math.abs(first.coverWidth - second.coverWidth) > 0.1 || Math.abs(first.coverHeight - second.coverHeight) > 0.1;
+}
+
+function isDifferentShape(first, second) {
+  return first.isRound !== second.isRound || Math.abs(first.width - second.width) > 4 || Math.abs(first.height - second.height) > 4;
+}
+
+function describePaint(paint) {
+  return `${paint.width}×${paint.height} ${paint.isRound ? "tròn" : "vuông"} ở ${paint.path === "0" ? "cả phần tử" : "con bên trong"}`;
+}
+
+async function probeStateShapes(page) {
+  const shapeMismatches = [];
+  const stuckStates = [];
+
+  const groups = await page.evaluate((limit) => {
+    // Ngày hôm nay (`aria-current="date"`) không phải lựa chọn: nó được vẽ khác ngày đang chọn là đúng.
+    const selectedSelector = "[aria-pressed='true'], [aria-selected='true'], [aria-current]:not([aria-current='false']):not([aria-current='date'])";
+    const isVisible = (element) => {
+      const rect = element.getBoundingClientRect();
+
+      return rect.width > 0 && rect.height > 0 && getComputedStyle(element).visibility !== "hidden" && !element.closest("[inert], [aria-hidden='true']");
+    };
+    const seenGroups = new Set();
+    const found = [];
+
+    for (const selected of document.querySelectorAll(selectedSelector)) {
+      if (found.length >= limit || !isVisible(selected)) continue;
+      const group = selected.closest("[role='group'], [role='grid'], [role='tablist'], [role='listbox'], [role='radiogroup'], nav, ul, ol, table") || selected.parentElement?.parentElement;
+      if (!group || seenGroups.has(group)) continue;
+      const sibling = [...group.querySelectorAll(selected.tagName)].find(
+        (candidate) =>
+          candidate !== selected &&
+          candidate.getAttribute("role") === selected.getAttribute("role") &&
+          !candidate.matches(selectedSelector) &&
+          !candidate.matches(":disabled, [aria-disabled='true']") &&
+          !candidate.contains(selected) &&
+          !selected.contains(candidate) &&
+          isVisible(candidate),
+      );
+      if (!sibling) continue;
+      seenGroups.add(group);
+      selected.dataset.evonStateId = `selected-${found.length}`;
+      sibling.dataset.evonStateId = `sibling-${found.length}`;
+      // Bấm thử chỉ với nút đổi lựa chọn tại chỗ: link thì chuyển trang, nút submit thì gửi form.
+      const isSubmit = sibling.tagName === "BUTTON" && sibling.type === "submit" && sibling.form;
+      const canClick = !sibling.closest("a[href]") && !isSubmit;
+      const groupName = group.getAttribute("aria-label") || "";
+      const text = (selected.getAttribute("aria-label") || selected.textContent || "").trim().replace(/\s+/g, " ").slice(0, 24);
+      found.push({ index: found.length, canClick, label: `${selected.tagName.toLowerCase()} "${text}"${groupName ? ` trong "${groupName}"` : ""}` });
+    }
+
+    return found;
+  }, maxStateGroups);
+
+  for (const group of groups) {
+    const siblingId = `sibling-${group.index}`;
+    const sibling = page.locator(`[data-evon-state-id="${siblingId}"]`);
+    await page.mouse.move(1, 1);
+    await page.evaluate(() => document.activeElement?.blur());
+    const isReady = await sibling.scrollIntoViewIfNeeded({ timeout: 800 }).then(() => true, () => false);
+    if (!isReady) continue;
+
+    const selectedPaints = await page.evaluate(readStatePaints, `selected-${group.index}`);
+    const selectedShape = pickLargestPaint((selectedPaints || []).filter((paint) => paint.kind === "bg"));
+    const restPaints = await page.evaluate(readStatePaints, siblingId);
+    if (!selectedPaints || !restPaints) continue;
+
+    // Rê: nền mới hiện ra phải cùng hình với nền của mục đang chọn.
+    const isHovered = await sibling.hover({ timeout: 800, force: true }).then(() => true, () => false);
+    await page.waitForTimeout(60);
+    const hoverPaints = isHovered ? await page.evaluate(readStatePaints, siblingId) : null;
+    const hoverShape = hoverPaints && pickLargestPaint(findNewPaints(hoverPaints, restPaints, "bg"));
+    if (selectedShape && hoverShape && isDifferentCover(hoverShape, selectedShape)) {
+      shapeMismatches.push(`${group.label}: rê ra nền ${describePaint(hoverShape)}, đang chọn là nền ${describePaint(selectedShape)}`);
+    }
+
+    // Tab tới: phím vừa bấm làm focus bằng code cũng tính là focus bàn phím (`:focus-visible`).
+    await page.mouse.move(1, 1);
+    await page.keyboard.press("Shift");
+    await sibling.focus({ timeout: 800 }).catch(() => {});
+    await page.waitForTimeout(60);
+    const focusPaints = await page.evaluate(readStatePaints, siblingId);
+    const ringShape = focusPaints && pickLargestPaint(findNewPaints(focusPaints, restPaints, "ring"));
+    if (selectedShape && ringShape && isDifferentCover(ringShape, selectedShape)) {
+      shapeMismatches.push(`${group.label}: vòng focus ${describePaint(ringShape)}, đang chọn là nền ${describePaint(selectedShape)}`);
+    }
+    await page.evaluate(() => document.activeElement?.blur());
+
+    if (!group.canClick) continue;
+    // Bấm chuột rồi để chuột đứng yên trên mục vừa chọn: nền rê không được chồng lên nền chọn, và
+    // vòng focus không hiện vì đây là chuột (`I13`).
+    const isClicked = await sibling.click({ timeout: 800 }).then(() => true, () => false);
+    if (!isClicked) continue;
+    await page.waitForTimeout(150);
+    const clickedPaints = await page.evaluate(readStatePaints, siblingId);
+    if (clickedPaints) {
+      const backgrounds = clickedPaints.filter((paint) => paint.kind === "bg");
+      for (const outer of backgrounds) {
+        const inner = backgrounds.find((paint) => paint.path.startsWith(`${outer.path}.`) && isDifferentShape(paint, outer) && paint.width * paint.height > 0.3 * outer.width * outer.height);
+        if (inner) {
+          stuckStates.push(`${group.label}: bấm xong đứng yên, nền ${describePaint(outer)} chồng lên nền ${describePaint(inner)}`);
+          break;
+        }
+      }
+      const clickRing = pickLargestPaint(findNewPaints(clickedPaints, selectedPaints, "ring").filter((paint) => !restPaints.some((rest) => rest.kind === "ring" && rest.path === paint.path && rest.paint === paint.paint)));
+      if (clickRing) stuckStates.push(`${group.label}: bấm chuột mà hiện vòng ${describePaint(clickRing)} (vòng focus chỉ khi dùng bàn phím, I13)`);
+    }
+    await page.keyboard.press("Escape");
+  }
+  await page.mouse.move(1, 1);
+
+  return { shapeMismatches, stuckStates, groupCount: groups.length };
+}
+
 function mergeMeasurements(base, extra) {
   const merged = { ...base };
   for (const [key, value] of Object.entries(extra)) {
@@ -1090,6 +1329,8 @@ async function probeWidth(browser, options, width) {
   const hoverStates = isMobile ? { weakHovers: [], blendedHovers: [], borderHovers: [], overflowingLayers: [] } : await probeHoverStates(page);
   const popupLayers = await probePopupLayers(page, isMobile);
   const overflowingLayers = [...new Set([...hoverStates.overflowingLayers, ...popupLayers])];
+  // Chạy sau cùng: bấm thử đổi lựa chọn trên trang (ngày, tab), các phép đo khác phải xong trước.
+  const stateShapes = isMobile ? { shapeMismatches: [], stuckStates: [], groupCount: 0 } : await probeStateShapes(page);
 
   await context.close();
 
@@ -1104,6 +1345,9 @@ async function probeWidth(browser, options, width) {
     blendedHovers: hoverStates.blendedHovers,
     borderHovers: hoverStates.borderHovers,
     overflowingLayers,
+    shapeMismatches: stateShapes.shapeMismatches,
+    stuckStates: stateShapes.stuckStates,
+    stateGroupCount: stateShapes.groupCount,
   };
 }
 
@@ -1194,6 +1438,14 @@ function formatReport(results) {
       problems.push(`LỚP NỔI LÒI KHỎI MÀN (${result.overflowingLayers.length} chỗ, tooltip / menu / popover mở ra phải nằm trong màn):`);
       for (const item of result.overflowingLayers.slice(0, 6)) problems.push(`  ${item}`);
     }
+    if (result.shapeMismatches.length > 0) {
+      problems.push(`RÊ / FOCUS KHÁC HÌNH MỤC ĐANG CHỌN (${result.shapeMismatches.length} chỗ, mọi trạng thái vẽ trên cùng một hình):`);
+      for (const item of result.shapeMismatches.slice(0, 6)) problems.push(`  ${item}`);
+    }
+    if (result.stuckStates.length > 0) {
+      problems.push(`BẤM XONG CÒN DẤU THỪA (${result.stuckStates.length} chỗ, chuột đứng yên trên mục vừa chọn):`);
+      for (const item of result.stuckStates.slice(0, 6)) problems.push(`  ${item}`);
+    }
     if (result.missingFocusRings.length > 0) {
       problems.push(`TAB TỚI MÀ KHÔNG THẤY GÌ ĐỔI (${result.missingFocusRings.length} chỗ):`);
       for (const element of result.missingFocusRings.slice(0, 8)) problems.push(`  ${element}`);
@@ -1203,6 +1455,7 @@ function formatReport(results) {
     lines.push(`\n## ${result.width}px  (ảnh: ${result.screenshotPath})`);
     lines.push(problems.length > 0 ? problems.join("\n") : "Không đo ra lỗi.");
     if (result.expandedCount > 0) lines.push(`(Đã mở ${result.expandedCount} khối đang đóng rồi đo lại phần bên trong.)`);
+    if (result.stateGroupCount > 0) lines.push(`(Đã thử rê, Tab, bấm ${result.stateGroupCount} nhóm có mục đang chọn.)`);
     if (result.truncatedCount > 0) lines.push(`(Có ${result.truncatedCount} chỗ chữ bị cắt có dấu …: xem ảnh xem có chỗ nào cắt mất ý không.)`);
   }
 

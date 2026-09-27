@@ -231,8 +231,23 @@ Mỗi phép đo thêm vào phải bắt lại được đúng ca đã dính (nú
   khách hàng, thành viên, công việc, thanh toán, lịch, bảng giá, `/components`.
 - Báo nhầm đã sửa trong lúc làm: sidebar đang đóng nằm ngoài màn tính là lớp nổi; bảng lệnh dựng tĩnh làm mẫu tính là
   lớp nổi tràn đáy; ô nhập nhiều email (input không viền trong khung viền) và hàng ô OTP bị báo lệch mép nút.
-- Chưa làm: **hình của các trạng thái** trên cùng một phần tử (vuông với tròn, vẽ ở cả ô với con bên trong) và **bấm xong
-  đứng yên** (nền rê chồng nền chọn). Ca gốc (ô ngày lịch gọn) dự án đã sửa, cần dựng lại trên trang thử.
+- ✅ Hình của các trạng thái: mỗi nhóm có mục đang chọn (`aria-pressed` / `aria-selected` / `aria-current`, trừ
+  `aria-current="date"`), lấy một mục chưa chọn cùng loại, rê rồi Tab tới; nền rê và vòng focus phải phủ cùng phần
+  (so tỉ lệ phủ trên phần tử, không so số px: tab "Tuần" với "Tháng" rộng khác nhau vẫn cùng phủ kín) và cùng tròn
+  hay vuông với nền mục đang chọn.
+- ✅ Bấm xong đứng yên (chỉ nút đổi lựa chọn tại chỗ, không link, không nút submit): nền ngoài không được chồng lên
+  nền con khác hình, và không hiện vòng focus vì là chuột (`I13`).
+- Kiểm bằng trang thử dựng lại lịch gọn bản lượt hai (rê ra nền vuông 46×48, focus vòng vuông cả ô, bấm xong nền vuông
+  chồng vòng đen, bấm chuột hiện vòng): bắt đủ bốn; bản đúng (mọi trạng thái trên vòng quanh số), tab segmented,
+  sidebar `aria-current` không bị báo. Không báo nhầm ở 10 trang dự án (1–15 nhóm mỗi trang); báo cáo ghi "Đã thử rê,
+  Tab, bấm N nhóm" để biết phép đo có chạy.
+
+Đã sửa báo nhầm (27/09/2026): "Chữ cùng cột lệch mép" ở lịch tháng: hôm nay 27 là Chủ nhật, số trong vòng `min-w-7`
+thẳng đúng mép chữ "CN" nhưng probe đo mép vòng (quy tắc chip bên dưới). Nay chữ trong khối có nền lấy mép khối
+hoặc mép chữ, bên nào gần mép các ô chữ trơn cùng cột hơn; thử lại pill "VIP", vòng "27", ô lệch 4px: chỉ báo ô lệch.
+
+Đã sửa báo nhầm (27/09/2026): "Dấu câu rơi xuống đầu dòng" bắt vòng "!" của bước lỗi (`flex size-8`) ở `/components`.
+Ký tự đứng một mình trong khối riêng là hình, không xét; dấu " · " inline vẫn bắt.
 
 Đã sửa báo nhầm (27/09/2026): "Tab tới mà không thấy gì đổi" chụp đúng ô `input type=file` `sr-only` 1px, không thấy vòng
 focus vẽ trên `<label>` khung thả tệp (`/dashboard/projects/documents`). Nay phần tử ≤2px thì chụp theo `<label>` bọc ngoài;
@@ -250,9 +265,10 @@ giá trị lệch 4px, vẫn bắt được.
 khe 150–178px ở `/dashboard/tasks/states` 375px. Nay chỉ đo icon `chevron-right/left`, `slash`; thử lại bằng cách làm
 lệch một dấu › trên đường dẫn ở `/components`, vẫn bắt được.
 
-Báo nhầm cần sửa (27/09/2026): "Cao gần bằng mà không bằng" gom các `section` khác loại ở
-`/dashboard/settings/billing/states` (mục gói 118px vì tên gói 16px, mục thẻ 114px vì tên thẻ 14px).
-Chỉ nên so các khối cùng tiêu đề hoặc cùng cấu trúc con.
+Đã sửa báo nhầm (27/09/2026): "Cao gần bằng mà không bằng" gom các `section` khác loại ở
+`/dashboard/settings/billing/states` (mục gói 118px vì tên gói 16px, mục thẻ 114px vì tên thẻ 14px), và ở `/components`
+hàng mô tả có badge `py-1` (24px) với hàng chữ trơn (20px). Nay chỉ so khối cùng cấu trúc con (tập thẻ + class ba tầng,
+bỏ class màu, không tính số lượng); thử ô lịch ba việc cao hơn ô một, hai việc 2px vẫn bắt.
 
 Đã sửa 27/09/2026 (bỏ qua hàng nhiều ô cùng cỡ): "Ô nhập lệch mép với nút rộng hết khung" báo hàng ô OTP (sáu ô
 40–57px) ở `/forgot-password/states`, `/verify-otp/states`: nên bỏ qua ô nằm trong một hàng nhiều ô
@@ -386,3 +402,7 @@ Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một 
 - Khu cài đặt (`src/features/settings/components/settings-tabs.tsx`): đường kẻ dưới hàng tab
   `border-foreground/10` ra `#e1e1e3`, đậm hơn đường header `#eaeaea`; đổi `border-border-strong`.
   Các lỗi khác của lượt 1 (trang trắng, thiếu hàng tab, focus công tắc, cỡ câu lỗi, câu chữ) đã theo kịp.
+- Công tắc ở `/dashboard/settings/notifications` (27/09/2026, probe 375px): bảy công tắc 44×24 không có
+  vùng bấm nới ra. Skill nay ghi `relative before:absolute before:-inset-2` trên nút `role="switch"`;
+  dự án đang dùng `<input type="checkbox">` `appearance-none`, ô nhập không có `::before`, nên đổi sang
+  nút như skill hoặc bọc cả hàng trong `<label>`.
