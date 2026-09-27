@@ -297,16 +297,23 @@ Lệnh tìm: `grep -rnE "(^|[\"' :\`(])-(m[trblxy]?|inset|top|left|right|bottom|
 | 5 | Khung cuộn tab/chip lùi `-mx-1`/`-mx-2` để nền hover tab đầu/cuối không bị cắt, chữ thẳng cột | `components/small-controls.md:55, 66, 148, 176`; `layouts/app-kanban.html:110` | Khung cuộn không lùi, hàng bên trong `px-1`; kiểm chữ tab đầu còn thẳng cột với nội dung bên dưới không | Hàng chip lọc, hàng tab ở `/dashboard/customers` | Bỏ được: khối bọc lùi lề ít hơn 4 / 8px, anh em giữ lề, hàng bên trong `px-1` / `px-2`. Hàng chip, hàng tab `/dashboard/customers` trùng từng pixel. Đường kẻ dưới hàng tab khu cài đặt phải vẽ bằng `after:inset-x-2` (dương) trên khối bọc, vì khung cuộn rộng hơn cột 8px mỗi bên | ✅ 27/09/2026 |
 | 6 | Nút `ghost` đầu hàng lùi `-ml-*` để chữ thẳng cột với chữ phía trên | `components/button.md:75`; `components/chat.md:17, 65` | Thụt khối chữ phía trên bằng đúng `px` của nút, hoặc nút đầu hàng dùng `px-0` và nền hover thụt vào | `/dashboard/assistant` (nút "Đã dùng 3 công cụ", hàng Sao chép / Tạo lại). (Mép phải của "Xem tất cả" đã xong 26/09/2026: `I7` đổi sang link chữ không padding ngang, chữ thẳng mép) | **Bỏ hai, giữ một.** Nút ở đầu / cuối hàng riêng: hàng bớt padding phía đó (header tổng quan, dòng khách hàng và thành viên 375px: trùng từng pixel). Nút chỉ đổi màu chữ (bước công cụ chat): bỏ `px`, vòng focus như link. Hàng icon Sao chép / Tạo lại có nền rê giữa cột chữ: chia padding từng khối làm lệch bong bóng `max-w-[80%]` và cột `55ch`, **giữ `-ml-2` kèm comment** | ✅ 27/09/2026 |
 | 7 | Nhích quang học `-mt-1.5` cho icon tròn thẳng tâm dòng tiêu đề | `layouts/overlay.md:24, 25, 45` | Hàng đầu là lưới `grid-cols-[auto_minmax(0,1fr)] items-center` (icon + tiêu đề), thân `sm:mt-0.5` | Hộp xoá workspace ở `/dashboard/settings/workspace`, 375 và 1280px | Bỏ được: 1280px chữ tiêu đề tới chữ thân vẫn 14px, icon cách mép trên 24px (trước 18px) | ✅ 26/09/2026 |
-| 8 | Vạch tab đang chọn đè lên đường kẻ đáy bằng `after:-bottom-px` | `components/small-controls.md:168` | Đường kẻ đáy vẽ bằng `box-shadow: inset 0 -1px` trên hàng, vạch tab `after:bottom-0` | Hàng tab gạch chân | Phải thử | |
-| 9 | Nở vùng bấm tay cầm 44×44 bằng `before:-inset-3.5` | `components/range-slider.md:9` | Không có cách không âm mà giữ được tay cầm 20px nhìn thấy | Thanh trượt giá ở `/components` | **Giữ**, thêm comment lý do vào mẫu | |
-| 10 | Avatar xếp chồng `-space-x-2` | `components/avatar.md:124, 132` | Không có: chồng lên nhau là bản chất của nó | Nhóm avatar ở `/dashboard/tasks` | **Giữ**, thêm comment lý do vào mẫu | |
-| 11 | Điểm xuất phát của chuyển động `-translate-y-1 → 0`, `-translate-y-full → 0` | `layouts/overlay.md:429, 430` | Số âm ở đây là hướng chuyển động (từ trên xuống), không phải khoảng cách | Dropdown, toast | **Giữ**, ghi rõ trong `N11` là ngoại lệ | |
+| 8 | Vạch tab đang chọn đè lên đường kẻ đáy bằng `after:-bottom-px` | `components/small-controls.md:168` | Đường kẻ đáy vẽ bằng `box-shadow: inset 0 -1px` trên hàng, vạch tab `after:bottom-0` | Hàng tab gạch chân | Bỏ được: hàng `shadow-[inset_0_-1px_0_…]`, tab `box-content h-10 pb-px`, vạch `after:bottom-0`. So ảnh (DPR 2) hàng tab chi tiết khách và panel xem nhanh: trùng từng điểm ảnh; thử nhích vạch 1px thì phép so bắt được. Khu cài đặt: bản cũ bị khung cuộn cắt mất 1px dưới của vạch (đường kẻ nằm ngoài khung cuộn), bản mới hiện đủ 2px; đường kẻ ở khối bọc vẽ bằng `before:` (không `after:`, sẽ đè vạch) | ✅ 27/09/2026 |
+| 9 | Nở vùng bấm tay cầm 44×44 bằng `before:-inset-3.5` | `components/range-slider.md:9` | Không có cách không âm mà giữ được tay cầm 20px nhìn thấy | Thanh trượt giá ở `/components` | Giữ, ghi lý do vào `range-slider.md`; mọi vùng bấm `before:-inset-*` khác (sao chép, Thử lại, công tắc, đường dẫn) đã ghi `N11` bước 4 | ✅ 27/09/2026 |
+| 10 | Avatar xếp chồng `-space-x-2` | `components/avatar.md:124, 132` | Không có: chồng lên nhau là bản chất của nó | Nhóm avatar ở `/dashboard/tasks` | Giữ, comment trong mẫu `avatar.md` | ✅ 27/09/2026 |
+| 11 | Điểm xuất phát của chuyển động `-translate-y-1 → 0`, `-translate-y-full → 0` | `layouts/overlay.md:429, 430` | Số âm ở đây là hướng chuyển động (từ trên xuống), không phải khoảng cách | Dropdown, toast | Ghi vào `N11`: không tính là số âm, không cần comment | ✅ 27/09/2026 |
 
 Đã đúng `N11`, không cần làm: `layouts/app.md:90` (dặn "đừng vá bằng `-mx-3`"),
 `layouts/pricing.md:72` (vạch dưới giá đã chuyển sang `py-7 *:px-7`).
 
+**Xong 27/09/2026.** Skill còn số âm ở đúng các chỗ giữ có chủ ý, mỗi chỗ có lý do và comment:
+vùng bấm `before:-inset-*`, avatar xếp chồng, khung tên sửa tại chỗ, hàng icon Sao chép / Tạo lại
+trong chat, đoạn đậm đường dọc cây thư mục; cộng điểm xuất phát chuyển động (không tính).
+
 Dự án còn những kiểu **không có trong 38 chỗ trên**, có thể do skill tả bằng lời mà
-không ghi class. Rà xong 11 nhóm thì xem skill có nói gì về chúng không:
+không ghi class. Đã xem (27/09/2026): nút ✕ góc phải `-mr-3` theo `button.md` mục `ghost` cách 1
+(header bớt padding); `-mt-1.5` cùng cách nhóm 7; `-my-*` theo `N11` bước 1–3 (không mẫu riêng);
+căn giữa `-translate-x-1/2` nay có cách trong `N11` bước 3 (khối `w-0 flex justify-center`, đo ở
+chấm biểu đồ doanh thu); `-left-[5px]` của cây thư mục là chỗ giữ có chủ ý (`tree.md`). Danh sách cũ:
 - nút ✕ góc phải lùi `-mr-3` (`modal-panel`, `drawer-panel`, `notification-panel`);
 - `-mt-1.5` ở `page-header`, `drawer-panel` (cùng kiểu nhóm 7);
 - `-my-1`, `-my-1.5`, `-my-2` ở `alert-banner`, `detail-list`, `modal-panel`,
@@ -405,3 +412,13 @@ Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một 
   vùng bấm nới ra. Skill nay ghi `relative before:absolute before:-inset-2` trên nút `role="switch"`;
   dự án đang dùng `<input type="checkbox">` `appearance-none`, ô nhập không có `::before`, nên đổi sang
   nút như skill hoặc bọc cả hàng trong `<label>`.
+- Bỏ số âm (`N11`, skill xong 27/09/2026): dự án còn ~114 dòng. Theo `principles.md` `N11` và từng file:
+  icon / nút trong ô nhập `inset-y-0 my-auto` + cỡ cố định (khối bọc nút mắt thêm `size-10`); vạch chia menu
+  (`action-menu-items`, `account-dropdown`, `select`, `date-picker-panel`, `date-time-picker-panel`,
+  `date-range-preset-list`) theo `F25` cách 1 mới; ô vai trò, ô hạn chót bớt padding ô thay `-ml-2`; board kanban
+  `task-board.tsx` bỏ `-mx-4 sm:-mx-6`, khung trang chỉ padding dọc; hàng chip / tab (`filter-chip-group`,
+  `get-tab-classes`, `settings-tabs`) khối bọc lùi lề ít hơn; hàng tab `underline` `box-content h-10 pb-px` + vạch
+  `bottom-0`, đường kẻ khu cài đặt `before:inset-x-2` (sẽ hiện đủ vạch 2px, hiện bị cắt còn 1px); tab dính trong
+  `drawer-panel` bỏ `-mx-6`; header và dòng danh sách (`dashboard-page`, `customer-list-row`, `member-list-row`)
+  bớt padding hàng thay `-ml-2` / `-mr-*`; nút bước công cụ chat bỏ `px-2` và `-ml-2`. Giữ có comment: hàng icon
+  `chat-answer-actions`, `before:-left-*` của cây thư mục, vùng bấm `before:-inset-*`, avatar xếp chồng.

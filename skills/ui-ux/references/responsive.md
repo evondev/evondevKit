@@ -49,7 +49,9 @@ Và luôn giữ: **ngày tháng, nhãn phụ phải nhỏ hơn tiêu đề ít n
 Không kéo khung cuộn ra bằng `-mx-3 sm:-mx-5` bù padding của cha (`N11`): đổi padding cha mà
 quên số âm là khung cuộn hụt hoặc lòi. Đo 27/09/2026 board kanban `/dashboard/tasks` 375 và
 1280px, cuộn ở đầu và ở cuối: hai bản trùng từng pixel. Nhiều khối liền nhau không cuộn thì
-gom vào một `<div class="px-3 sm:px-5">`.
+gom vào một `<div class="px-3 sm:px-5">`. Khối nằm giữa khung trang và khung cuộn mà có `max-w-*` thì
+nới `max-w` thêm đúng phần lấn ra hai bên, không thì các khối anh em hẹp lại (đo 27/09/2026, cột
+`max-w-2xl` ở khu cài đặt: công tắc dịch 16px khi quên nới).
 
 Cách khác cũng được: chèn phần tử đệm cuối hàng, `<div class="w-3 shrink-0 sm:w-5" aria-hidden="true"></div>`.
 

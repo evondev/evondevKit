@@ -19,7 +19,7 @@ nền hover, cùng đường dọc, cùng cách báo mục đang chọn (`N5`).
 </ul>
 ```
 
-- **Hàng đang chọn**: nền `bg-background` + `font-medium` + **đoạn đường dọc của nó đậm lên `--foreground`**, y như menu con của sidebar. Không tô màu nhấn, không viền.
+- **Hàng đang chọn**: nền `bg-background` + `font-medium` + **đoạn đường dọc của nó đậm lên `--foreground`**, y như menu con của sidebar. Không tô màu nhấn, không viền. Đoạn đậm là `before:absolute before:inset-y-0 before:w-px before:bg-foreground` trên hàng, lùi sang trái đúng `pl` của danh sách cộng 1px viền (`before:-left-[9px]` với `pl-2`); số âm giữ có chủ ý (`N11` bước 4), comment ngay trên dòng. Cách không âm là mỗi `<li>` tự `border-l` và đoạn đang chọn đổi màu viền, nhưng khe `space-y-0.5` giữa các hàng làm đường dọc đứt từng quãng 2px, còn đổi khe sang `pt-0.5` thì đoạn đậm dài hơn nền hàng 2px.
 - **Hover và đang chọn cùng một nền.** Vì vậy hai hàng cạnh nhau cùng sáng nền là chuyện bình thường, và danh sách **phải có `space-y-0.5`**, nếu không hai hàng dính thành một khối (đã dính 23/09/2026).
 - **Chevron chỉ ở hàng mở được.** Hàng file vẫn chừa đúng một ô `size-4` để chữ thẳng cột với hàng thư mục. Icon thư mục đổi theo trạng thái: `FolderOpen` khi mở, `Folder` khi đóng. Icon file lấy theo đuôi từ **bảng chung trong `file-upload.md`** (cùng dáng tờ giấy, một màu).
 - **Thư mục rỗng có một hàng chữ xám "Thư mục trống"**, `text-muted`, **thẳng mép chữ của hàng con cùng cấp** — không thụt ít hơn, không có icon. Không có hàng này thì mở thư mục ra chẳng thấy gì đổi, người dùng tưởng bấm hụt (`N2`).

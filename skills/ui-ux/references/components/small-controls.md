@@ -169,10 +169,10 @@ isSelected && "border-transparent bg-secondary text-foreground"
 ### `underline`: chia nội dung trang chi tiết
 
 ```ts
-// Hàng: đường kẻ chạy hết bề ngang, vạch của tab đang chọn đè lên nó.
-"flex min-w-full gap-2 border-b border-border-strong px-2"
-// Tab: vạch là ::after nên không đẩy chiều cao.
-"relative h-10 rounded-xl px-2 after:absolute after:inset-x-2 after:-bottom-px after:h-0.5 after:rounded-full"
+// Hàng: đường kẻ chạy hết bề ngang, vẽ bên trong hàng (bóng inset 1px ở đáy), vạch của tab đang chọn đè lên nó.
+"flex min-w-full gap-2 px-2 shadow-[inset_0_-1px_0_var(--color-border-strong)]"
+// Tab: vạch là ::after nên không đẩy chiều cao. box-content h-10 pb-px: tab cao 41px phủ cả dòng kẻ, vạch bottom-0 đè đúng lên nó.
+"relative box-content h-10 rounded-xl px-2 pb-px after:absolute after:inset-x-2 after:bottom-0 after:h-0.5 after:rounded-full"
 isSelected && "text-foreground after:bg-foreground"
 !isSelected && "text-foreground/70 after:bg-transparent hover:text-foreground"
 ```
@@ -180,6 +180,7 @@ isSelected && "text-foreground after:bg-foreground"
 - **Hàng tab nằm chung hàng với ô tìm và nút (toolbar trên bảng) thì bỏ đường kẻ hết hàng, chỉ giữ vạch 2px dưới tab đang chọn.** Đường kẻ chạy nửa hàng rồi cụt ở mép ô tìm trông dở dang, và vì khung cuộn rộng hơn cột nội dung 8px mỗi bên (để chữ tab đầu thẳng cột) nên đầu trái của nó còn thò ra ngoài mép card bên dưới 8px (đã dính 23/09/2026). Đường kẻ hết hàng chỉ dùng khi hàng tab đứng riêng một hàng, như trang chi tiết.
 - **Focus bàn phím của tab `underline` là vòng quanh chữ, không quanh cả tab.** Vòng quanh cả tab `h-10` thì mép dưới vòng nằm sát vạch 2px, đọc thành hai đường gạch chồng nhau (đã dính 24/09/2026); vẽ ra ngoài tab thì khung cuộn cắt mất mép. Tab thêm `group outline-hidden`, chữ bọc trong `<span class="rounded-md px-1.5 py-0.5 group-focus-visible:ring-2 group-focus-visible:ring-foreground/50">`: span cao 24px giữa tab 40px, vòng cách vạch ~8px. Các variant có nền (`boxed`, `solid`, `segmented`) giữ vòng quanh cả tab theo `I13`.
 - Vạch màu `--foreground`, không màu nhấn có sắc: nhấn đã có ở nút chính của trang (`M3`).
+- **Vạch không kéo xuống bằng `after:-bottom-px`** (`N11`). Bản cũ: hàng `border-b`, vạch `-bottom-px` đè lên viền. Khung cuộn `overflow-x-auto` cũng cắt theo chiều dọc, nên khi đường kẻ nằm ở khối bọc ngoài khung cuộn (khu cài đặt) thì mép dưới vạch bị cắt, vạch chỉ còn 1px trên đường kẻ (đo 27/09/2026 ở `/dashboard/settings/notifications` 375 và 768px). Bản `box-content pb-px` + `bottom-0` trùng từng pixel với bản cũ ở hàng tab trang chi tiết khách và panel xem nhanh, và ở khu cài đặt thì vạch hiện đủ 2px.
 - Khối bọc hàng tab lùi lề ít hơn 8px (`R6`), khung cuộn không `-mx-2` (`N11`): chữ tab đầu thẳng cột với nội dung bên dưới.
 - Tab đang chọn không tô nền, không đổi nền lúc hover. Vạch là tín hiệu duy nhất.
 - **Không tab nào có nền, kể cả lúc focus.** Tab bàn phím tới thì vòng mờ `I13`. Tab là `Button variant="ghost"` mà `Button` dự án còn kiểu cũ "focus trông như hover" (nền xám) thì hàng tab dính theo: tab đang focus có nền xám, tab đang rê chuột đậm chữ, **hai tab cùng sáng** và không đọc ra tab nào đang chọn (đã dính 24/09/2026, panel khách hàng). Sửa ở `Button` dùng chung, không vá riêng từng tab.

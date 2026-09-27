@@ -121,6 +121,7 @@ tiếng Anh tên gọi đứng trước, họ đứng cuối, nên hai chữ lu�
 Nhóm người, danh sách thành viên, "3 người đang xem":
 
 ```tsx
+// -space-x-2: chồng lên nhau là bản chất của nhóm avatar, không có cách dương nào (N11 bước 4).
 <div className="flex -space-x-2">
   {members.map((member) => (
     <Avatar key={member.id} className="ring-2 ring-surface" {...member} />

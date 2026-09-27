@@ -312,12 +312,21 @@ Làm theo thứ tự:
    đổi padding của một khối theo trạng thái để bù cho khối bên cạnh: tô nền khối đó là
    chữ lệch về một mép (đã dính 26/09/2026, accordion bớt `pb` của nút khi mở, `I30`).
 3. **`gap`, căn `items-*`, đổi `leading`** để thẳng hàng, thay vì nhích bằng `translate`.
-4. Không cách nào ở trên làm được (ví dụ avatar xếp chồng nhau, khung của tên sửa tại chỗ
-   tràn ra ngoài chữ để chữ thẳng cột, `components/inline-edit.md`, vùng bấm nở ra ngoài một
-   phần tử nhỏ): dùng số âm, và **ghi comment lý do ngay trên dòng đó**, như `eslint-disable`.
+   **Căn giữa quanh một điểm** (chấm trên biểu đồ, nhãn trên tay cầm): đặt khối `absolute
+   w-0 flex justify-center` đúng tại điểm, phần tử nằm trong nó, không `-translate-x-1/2`. Đo
+   27/09/2026 chấm cuối đường doanh thu ở 375 và 1280px: trùng (chênh 0,02px do làm tròn).
+4. Không cách nào ở trên làm được: dùng số âm, và **ghi comment lý do ngay trên dòng đó**, như
+   `eslint-disable`. Các chỗ đã thử và giữ (27/09/2026): avatar xếp chồng (`avatar.md`); vùng
+   bấm nở ra ngoài một phần tử nhỏ (`before:-inset-*`, `N9`); khung tên sửa tại chỗ tràn ra
+   ngoài chữ để chữ thẳng cột (`inline-edit.md`); hàng icon có nền rê nằm giữa một cột chữ
+   (`button.md`, mục `ghost`); đoạn đậm của đường dọc cây thư mục (`tree.md`).
+
+**Không tính là số âm của `N11`**: điểm xuất phát của chuyển động (`-translate-y-1 → 0` của
+dropdown, `-translate-y-full → 0` của toast ở đỉnh). Đó là hướng trượt vào, không phải khoảng cách
+hay vị trí đứng yên; phần tử đứng yên luôn ở `translate-0`.
 
 *Phép thử:* grep `-m[trblxy]?-|-space-|-translate-|-inset-` trong file vừa dựng. Mỗi kết
-quả phải có comment giải thích vì sao không làm bằng cách 1–3 được.
+quả phải có comment giải thích vì sao không làm bằng cách 1–3 được (trừ điểm xuất phát chuyển động).
 
 ---
 
