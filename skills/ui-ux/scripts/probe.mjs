@@ -452,6 +452,67 @@ function measureInPage({ minTapSize, isMobile }) {
     if (outsidePart) partialFocusRings.push(describe(focusable));
   }
 
+  // 10. Nhãn số đè lên đường biểu đồ: số ghi cạnh chấm mà đường đi xuyên qua chữ (đo 27/09/2026,
+  //     báo cáo doanh thu: điểm cuối thấp hơn điểm kề, số đặt trên chấm nằm đúng trên đoạn nối).
+  //     Lấy mẫu dọc từng đường theo toạ độ màn, rồi xem có mẫu nào lọt vào khung chữ của nhãn
+  //     nằm cùng khung vẽ (chữ HTML đặt đè lên svg, hoặc <text> trong svg của thư viện).
+  const overlappedChartLabels = [];
+  const outsideChartLabels = [];
+  for (const svg of document.querySelectorAll("svg")) {
+    const svgRect = svg.getBoundingClientRect();
+    if (svgRect.width < 120 || svgRect.height < 60 || !isVisible(svg)) continue;
+
+    const lines = [...svg.querySelectorAll("polyline, path, line")].filter((shape) => {
+      const style = getComputedStyle(shape);
+
+      return style.stroke !== "none" && parseFloat(style.strokeWidth) > 0 && (style.fill === "none" || shape.tagName === "polyline");
+    });
+    if (lines.length === 0) continue;
+
+    const samplePoints = [];
+    for (const shape of lines) {
+      const matrix = shape.getScreenCTM();
+      const totalLength = shape.getTotalLength?.() ?? 0;
+      if (!matrix || totalLength === 0) continue;
+
+      for (let step = 0; step <= 400; step++) {
+        const point = shape.getPointAtLength((totalLength * step) / 400).matrixTransform(matrix);
+        samplePoints.push(point);
+      }
+    }
+
+    const container = svg.parentElement;
+    const labelNodes = [...container.querySelectorAll("*")].filter((node) => {
+      if (node === svg || (svg.contains(node) && node.tagName.toLowerCase() !== "text")) return false;
+      const ownText = [...node.childNodes].some((child) => child.nodeType === Node.TEXT_NODE && child.textContent.trim());
+
+      return ownText && isVisible(node);
+    });
+
+    // Chữ lồng trong nhãn ("Hôm nay ·" trong "Hôm nay · 6,8 tr đ") tính theo nhãn ngoài cùng.
+    const outerLabelNodes = labelNodes.filter((node) => !labelNodes.some((other) => other !== node && other.contains(node)));
+
+    for (const labelNode of outerLabelNodes) {
+      const range = document.createRange();
+      range.selectNodeContents(labelNode);
+      const textRect = range.getBoundingClientRect();
+      const isInsidePlot = textRect.bottom > svgRect.top && textRect.top < svgRect.bottom;
+      if (!isInsidePlot) continue;
+
+      // Nhãn lọt ra ngoài vùng vẽ: dưới đường 0 là chỗ của nhãn trục, số rơi xuống đó đọc ra một
+      // nhãn trục thứ hai (đo 27/09/2026: "Hôm nay · 6,8 tr đ" dưới đáy 16px, cách "27/09" 9px).
+      const outsideBy = Math.max(svgRect.top - textRect.top, textRect.bottom - svgRect.bottom);
+      if (outsideBy > 2) {
+        outsideChartLabels.push(`"${labelNode.textContent.trim().slice(0, 24)}" lòi ${Math.round(outsideBy)}px: ${describe(labelNode)}`);
+      }
+
+      const hitPoint = samplePoints.find(
+        (point) => point.x > textRect.left + 1 && point.x < textRect.right - 1 && point.y > textRect.top + 1 && point.y < textRect.bottom - 1,
+      );
+      if (hitPoint) overlappedChartLabels.push(`"${labelNode.textContent.trim().slice(0, 24)}": ${describe(labelNode)}`);
+    }
+  }
+
   return {
     viewportWidth,
     pageScrollWidth,
@@ -468,6 +529,8 @@ function measureInPage({ minTapSize, isMobile }) {
     misalignedFields: misalignedFields.slice(0, 10),
     unevenSeparatorRows: unevenSeparatorRows.slice(0, 10),
     partialFocusRings: [...new Set(partialFocusRings)].slice(0, 10),
+    overlappedChartLabels: [...new Set(overlappedChartLabels)].slice(0, 10),
+    outsideChartLabels: [...new Set(outsideChartLabels)].slice(0, 10),
   };
 }
 
@@ -478,10 +541,52 @@ function snapshotFocusStyles(element) {
   return chain
     .map((node) => {
       const style = getComputedStyle(node);
+      // `outline-hidden` của Tailwind v4 là viền 2px trong suốt: đổi style mà mắt không thấy gì.
+      const isOutlineInvisible = style.outlineStyle === "none" || parseFloat(style.outlineWidth) === 0 || /rgba\(.*,\s*0\)|transparent/.test(style.outlineColor);
+      const outline = isOutlineInvisible ? "none" : [style.outlineStyle, style.outlineWidth, style.outlineColor].join(" ");
 
-      return [style.outlineStyle, style.outlineWidth, style.outlineColor, style.boxShadow, style.borderColor, style.backgroundColor, style.color, style.textDecorationLine].join("|");
+      return [outline, style.boxShadow, style.borderColor, style.backgroundColor, style.color, style.textDecorationLine].join("|");
     })
     .join("||");
+}
+
+// Chụp đúng vùng của phần tử (nới 8px cho vòng focus) để so điểm ảnh lúc có và không có focus.
+// Dấu focus có thể vẽ ở phần tử anh em (chấm của biểu đồ, nhãn bọc ngoài), đọc style không thấy,
+// nhìn ảnh thì thấy. Phần tử ra ngoài màn thì bỏ, trả null.
+async function captureFocusArea(page, probeId) {
+  const rect = await page.evaluate((id) => {
+    const element = document.querySelector(`[data-evon-probe-id="${id}"]`);
+    if (!element) return null;
+    const box = element.getBoundingClientRect();
+
+    return { x: box.left, y: box.top, width: box.width, height: box.height };
+  }, probeId);
+  const viewport = page.viewportSize();
+  if (!rect || rect.width === 0 || rect.height === 0) return null;
+
+  const clip = {
+    x: Math.max(0, rect.x - 8),
+    y: Math.max(0, rect.y - 8),
+    width: Math.min(viewport.width, rect.x + rect.width + 8) - Math.max(0, rect.x - 8),
+    height: Math.min(viewport.height, rect.y + rect.height + 8) - Math.max(0, rect.y - 8),
+  };
+  if (clip.width <= 0 || clip.height <= 0) return null;
+
+  const scroll = await page.evaluate(() => ({ x: window.scrollX, y: window.scrollY }));
+
+  return { clip, scroll, pixels: await page.screenshot({ clip }) };
+}
+
+// Chụp lại vùng của phần tử vừa rời focus ở đúng chỗ cuộn lúc nó có focus. Tab sang phần tử sau
+// làm trang dài cuộn đi, vùng chụp lệch thì không so được (đã dính 27/09/2026, trang /states có
+// tám biểu đồ xếp dọc: báo nhầm cả tám).
+async function captureBlurredArea(page, probeId, focusedArea) {
+  const currentScroll = await page.evaluate(() => ({ x: window.scrollX, y: window.scrollY }));
+  await page.evaluate(({ x, y }) => window.scrollTo(x, y), focusedArea.scroll);
+  const blurredArea = await captureFocusArea(page, probeId);
+  await page.evaluate(({ x, y }) => window.scrollTo(x, y), currentScroll);
+
+  return blurredArea;
 }
 
 async function findMissingFocusRings(page) {
@@ -512,9 +617,17 @@ async function findMissingFocusRings(page) {
         },
         { probeId: previous.id, snapshotSource: snapshotFocusStyles.toString() },
       );
+      const blurredArea = previous.focusedArea ? await captureBlurredArea(page, previous.id, previous.focusedArea) : null;
+      const isSameArea = blurredArea && JSON.stringify(blurredArea.clip) === JSON.stringify(previous.focusedArea.clip);
+      const isStyleUnchanged = Boolean(blurredStyles) && blurredStyles === previous.focusedStyles;
+      // So được ảnh thì tin ảnh: dấu focus vẽ ở phần tử anh em (chấm biểu đồ) thì style của chính
+      // nó không đổi mà ảnh đổi. Không so được (cuộn đi, ra khỏi màn) mới dựa vào style.
+      const isMissing = isSameArea ? blurredArea.pixels.equals(previous.focusedArea.pixels) : isStyleUnchanged;
 
-      if (blurredStyles && blurredStyles === previous.focusedStyles) missingFocusRings.push(previous.element);
+      if (isMissing) missingFocusRings.push(previous.element);
     }
+
+    if (current) current.focusedArea = await captureFocusArea(page, current.id);
 
     if (!current || current.id === firstFocusedId) break;
     if (!firstFocusedId) firstFocusedId = current.id;
@@ -608,6 +721,14 @@ function formatReport(results) {
     if (result.partialFocusRings.length > 0) {
       problems.push(`VÒNG FOCUS KHÔNG BỌC HẾT LINK (${result.partialFocusRings.length} chỗ, icon hay chữ của cùng link nằm ngoài vòng):`);
       for (const element of result.partialFocusRings.slice(0, 5)) problems.push(`  ${element}`);
+    }
+    if (result.overlappedChartLabels.length > 0) {
+      problems.push(`NHÃN SỐ ĐÈ LÊN ĐƯỜNG BIỂU ĐỒ (${result.overlappedChartLabels.length} chỗ, đặt nhãn về phía không có đường):`);
+      for (const element of result.overlappedChartLabels.slice(0, 5)) problems.push(`  ${element}`);
+    }
+    if (result.outsideChartLabels.length > 0) {
+      problems.push(`NHÃN SỐ LÒI RA NGOÀI VÙNG VẼ (${result.outsideChartLabels.length} chỗ, rơi vào hàng nhãn trục hoặc trên đỉnh):`);
+      for (const element of result.outsideChartLabels.slice(0, 5)) problems.push(`  ${element}`);
     }
     if (result.missingFocusRings.length > 0) {
       problems.push(`TAB TỚI MÀ KHÔNG THẤY GÌ ĐỔI (${result.missingFocusRings.length} chỗ):`);

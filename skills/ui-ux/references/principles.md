@@ -235,7 +235,10 @@ luôn `text-pretty`** (`T10`), nhất là trong cột hẹp: không để trơ m
 nửa trên popover trống trơn vì chèn đệm. Mô tả bước ở thanh các bước dọc rớt "thoại", "hệ",
 "doanh" xuống một mình (cột ~200px, thiếu `text-pretty`). Link "Đổi email" bị bẻ đôi ở cuối dòng. **Link ngắn nằm
 trong câu không bị bẻ giữa chừng**: `whitespace-nowrap` để nó xuống dòng nguyên
-cụm. Nhãn nút thì ngược lại, được xuống dòng (`T15`).
+cụm. Nhãn nút thì ngược lại, được xuống dòng (`T15`). **Chữ ghi đè lên hình (số trên
+biểu đồ) đặt về phía trống**, không đặt cố định một phía: số "44,4 tr đ" đặt trên chấm
+nằm đúng trên đoạn nối đi lên, nền sau chữ cắt đôi đường (27/09/2026). Một con số không
+kèm mốc khi trục chỉ ghi vài nhãn cũng là thiếu thứ cần đọc: không biết số của ngày nào.
 
 **Phải cắt thì cắt phần giống nhau, giữ phần phân biệt.** Cắt ở cuối không phải cách
 duy nhất, và xuống dòng không phải cách thay duy nhất. Email giữ tên miền, cắt phần

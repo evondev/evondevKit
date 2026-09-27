@@ -105,6 +105,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 20 | Khoá API | `/dashboard/settings/api-keys`, `/api-keys/states` | 26/09/2026 (hai lượt; lượt hai đã theo kịp) |
 | 21 | Trang lỗi: 404, 403, 500, bảo trì | `/errors/states`, `/403`, `/500`, `/maintenance`, `/khong-co`, `/dashboard/khong-co` | 26/09/2026 (năm lượt; lượt năm còn `px-1.5` cho link "Đổi tài khoản", dự án chưa theo kịp) |
 | 22 | Xoá workspace (vùng nguy hiểm, hộp gõ lại tên) | `/dashboard/settings/workspace`, `/workspace/states` | 26/09/2026 (hai lượt, đã theo kịp) |
+| 23 | Báo cáo doanh thu (khoảng ngày, biểu đồ đường) | `/dashboard/revenue`, `/revenue/states` | 27/09/2026 (ba lượt, đã theo kịp) |
 
 Route mới xuất hiện trong dự án thì thêm dòng vào bảng (`grep -rhoE "path: ?['\"][^'\"]+" src`).
 

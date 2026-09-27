@@ -430,6 +430,47 @@ Khách hàng từ 3/2024, 18 đơn hàng, doanh thu 1.284.500.000 đ
 
 ---
 
+## Trang báo cáo (doanh thu, phân tích)
+
+Trang để **đọc số theo một khoảng ngày**, khác màn tổng quan (vào để bắt tay làm). Rà
+`/dashboard/revenue` 27/09/2026.
+
+```
+thanh header:  ☰  Báo cáo doanh thu                           🔔  (T)
+┌──────────────────────────────┐
+│ 29/08/2026 – 27/09/2026   📅 │   <- ô khoảng ngày, căn trái, mở đầu vùng nội dung
+└──────────────────────────────┘
+So với 30 ngày liền trước, 30/07/2026 – 28/08/2026           <- kỳ so, ghi MỘT lần
+┌ Doanh thu ─┬ Số đơn ─┬ Giá trị đơn TB ─┬ Tỷ lệ hoàn tiền ┐
+│ 1,62 tỷ đ  │ 2.571   │ 632.000 đ       │ 2,1%            │
+│ ↗ 4,4%     │ ↗ 4,6%  │ — Không đổi     │ ↘ 0,1 điểm      │
+└────────────┴─────────┴─────────────────┴─────────────────┘
+┌ Doanh thu theo ngày ──────────────────────────────────────┐
+│ 60 tr ─────────────────────────────────────────────────── │   <- lưới ngang + nhãn mức
+│ 40 tr ───────╱╲──────╱╲─────── 13/09 · 70,9 tr đ ──────── │
+│ 20 tr ─────────────────────────────────────────────────── │
+│ 0 ─────────────────────────────────────────────────────── │
+│        02/09   07/09   12/09   17/09   22/09   27/09      │
+└───────────────────────────────────────────────────────────┘
+┌ Doanh thu theo kênh ────────┐ ┌ Sản phẩm bán chạy ────────┐
+│ Website   636,4 tr đ    39% │ │ Tai nghe…   123 đơn  232 tr│
+│ ▓▓▓▓▓▓▓▓░░░░░░░░            │ │ …                          │
+└─────────────────────────────┘ └────────────────────────────┘
+```
+
+- **Ô khoảng ngày là bộ lọc của cả trang**, mở đầu vùng nội dung, căn trái, `sm:w-72`. Tên trang đã nằm trên thanh header thì không dựng thêm đầu trang. Ô theo "Khoảng ngày" trong `../components/choice-controls.md`; trường nhìn lùi nên **ngày sau hôm nay khoá** (gợi ý mặc định, danh sách ngày khoá là của người dùng) và mở ra với tháng hiện tại bên phải.
+- **Kỳ so ghi một lần** ở dòng `text-xs text-muted` ngay trên hàng ô số (`../components/charts.md`, "Dòng so sánh"), không lặp trong từng ô. Chưa có kỳ trước (tháng mở bán đầu tiên) thì dòng đó ghi "Chưa có kỳ trước để so" và các ô bỏ dòng so sánh.
+- **Kỳ so theo kiểu khoảng**, như các công cụ phân tích phổ biến (tra 27/09/2026):
+  - Khoảng trượt ("7 ngày qua", "30 ngày qua", khoảng tự chọn): **cùng số ngày liền trước**. "So với 30 ngày liền trước, 30/07 – 28/08/2026".
+  - Khoảng theo lịch ("Tháng này", "Quý này", "Năm nay", cả một tháng): **cùng kỳ của đơn vị trước**, tính tới cùng ngày. Tháng này tới 26/09 thì so 01/08 – 26/08 ("So với cùng kỳ tháng trước"); năm nay thì so 01/01 – 26/09/2025 ("So với cùng kỳ năm trước"). Lùi đúng số ngày ra những khoảng không ai nghĩ tới: đã dính 27/09/2026, "Từ đầu năm" ghi "So với 269 ngày liền trước, 07/04/2025 – 31/12/2025", "Cả tháng 9" ghi "so với 26 ngày liền trước, 06/08 – 31/08".
+  Chọn kỳ nào là logic của người dùng (`N10`); skill lo câu chữ và mặc định khi đề để hở.
+- **Mỗi mốc của biểu đồ theo độ dài khoảng**, như trang doanh thu của các cổng thanh toán lớn: **1 ngày → theo giờ** (24 mốc), tới ~31 ngày → ngày, tới ~92 ngày → tuần, dài hơn → tháng. Tên card đổi theo: "Doanh thu theo giờ / ngày / tuần / tháng". Khoảng một ngày mà thay biểu đồ bằng khối chữ "87,6 tr đ · Chọn từ hai ngày trở lên để thấy xu hướng" là lặp đúng số ở ô "Doanh thu" ngay trên (`N3`) và bắt người dùng đổi khoảng mới thấy gì (đã dính 27/09/2026). Khối chữ "một điểm" chỉ dùng khi dữ liệu thật sự mới có một mốc.
+- **Biểu đồ chính có lưới ngang và nhãn mức** (ngoại lệ trong "Bỏ bớt đi" của `../components/charts.md`), số ở điểm đang xem **kèm mốc** ("13/09 · 70,9 tr đ", "Hôm nay · 44,4 tr đ"), đặt về phía không có đường, và Tab vào thì chấm có vòng focus. Kỳ chưa trọn (hôm nay, tuần này) nét đứt.
+- **Hai khối phân tích dưới biểu đồ**, hai cột từ `lg`, một cột ở màn hẹp: phần chia theo nhóm (kênh, khu vực) là danh sách thanh xếp lớn dần, mỗi dòng số + phần trăm (`../components/charts.md`, "Thanh tiến độ trong danh sách"); top mục (sản phẩm, khách hàng) là danh sách dòng tên + dòng phụ bên trái, số bên phải `tabular-nums`, 5 dòng.
+- **Trạng thái**: đang tải giữ khung từng khối với skeleton đúng chiều cao (ô khoảng ngày vẫn dùng được); tải hỏng một khung `ListError` thay phần dưới ô khoảng ngày; khoảng không có đơn nào thì một khung câu "Không có đơn nào từ … tới …" + link về khoảng mặc định. Khoảng ở tương lai không có ca rỗng riêng: ngày sau hôm nay đã khoá trong lịch.
+
+---
+
 ## Trang chi tiết bản ghi
 
 ```
