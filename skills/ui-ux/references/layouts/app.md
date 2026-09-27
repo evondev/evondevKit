@@ -504,7 +504,7 @@ thanh header:  ☰  Khách hàng                                  🔔  (T)
 - **Bản ghi khác nhắc tới trên trang là link**: mã đơn trong dòng hoạt động, mã đơn trong bảng, tên tệp. Cả vùng nội dung không có link nào là trang cụt: thấy "Đơn DH-10412" mà không mở được.
 - **Hành động gắn với một giá trị thì nằm cạnh giá trị đó**, không vào menu ⋯ đầu trang. Email là link `mailto:`, số điện thoại là link `tel:`, rê vào hàng thì hiện icon button sao chép (`description-list.md`). Menu ⋯ chỉ còn việc với cả bản ghi: Sửa thông tin, rồi Xoá sau đường chia (`I11`). Đã dính 25/09/2026: "Gọi điện" và "Sao chép email" nằm trong menu ⋯ ở góc trên, còn số điện thoại và email ngay bên dưới là chữ chết.
 - **Khách chưa có đơn nào thì bỏ hẳn hàng số liệu.** Tab Đơn hàng rỗng đã nói "Chưa có đơn nào", nút "Tạo đơn" đã ở đầu trang; giữ thêm khung "Chưa có đơn nào. Số liệu hiện sau đơn đầu tiên" là hai khối cùng nói một ý (`N3`). Khung gọn đó chỉ dành cho panel, nơi không có tab Đơn hàng (`../components/charts.md`).
-- **Không tìm thấy bản ghi** (id sai, đã xoá): vẫn là đầu trang có `<h1>` "Không tìm thấy khách hàng", một câu vì sao, một lối về danh sách (`N6`). Thanh header vẫn ghi cấp cha.
+- **Không tìm thấy bản ghi** (id sai, đã xoá) là một ca 404 trong khung app: dựng đúng khối căn giữa của "Trang lỗi" bên dưới (dòng "404" mờ, `<h1>` "Không tìm thấy khách hàng", một câu vì sao), nhưng **nút đặc là "Về danh sách khách hàng"**, không phải "Về trang tổng quan": người mở một khách hỏng gần như luôn muốn tìm khách khác (`N6`). Lối phụ "Quay lại trang trước" như 404. Thanh header vẫn ghi cấp cha. Không dựng đầu trang căn trái kèm một link chữ trơn: link cao 20px là chỗ bấm dưới 32px trên điện thoại, và một trang lỗi trong khung app mà hai kiểu là hai khuôn cho một việc (đã dính 27/09/2026, `/dashboard/customers/khong-co`, dựng theo luật cũ của mục này viết trước mục "Trang lỗi").
 
 ---
 
@@ -745,6 +745,7 @@ dựng được không:
 | Trang | Đặt ở đâu | Việc chính (nút đặc) | Lối phụ |
 | --- | --- | --- | --- |
 | 404 trong app (đã đăng nhập) | **trong khung app**, sidebar và header giữ nguyên | Về trang tổng quan | Quay lại trang trước (chỉ khi có trang trước) |
+| Bản ghi không tìm thấy (khách, đơn… id sai hoặc đã xoá) | trong khung app, cùng khối với 404 | Về danh sách của loại bản ghi đó ("Về danh sách khách hàng") | Quay lại trang trước (chỉ khi có trang trước) |
 | 403 | trong khung app | Gửi yêu cầu cấp quyền | Về trang tổng quan; dòng cuối "Bạn đang đăng nhập bằng … · Đổi tài khoản" |
 | 500 của một trang (khung vẫn chạy) | trong khung app | Tải lại trang | Về trang tổng quan; dòng cuối mã lỗi `font-mono` + nút sao chép |
 | 404 khi chưa đăng nhập, 500 làm sập cả app, bảo trì | **đứng riêng**: cùng khối như trong khung, thêm logo căn giữa ở trên; **không card** | 404: về trang chủ / đăng nhập. 500: Tải lại trang. Bảo trì: không nút đặc, "Tải lại trang" là nút viền | — |
