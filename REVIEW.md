@@ -90,7 +90,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | --- | --- | --- | --- |
 | 1 | Khung app + tổng quan | `/dashboard`, `/dashboard/overview/states` | 26/09/2026 (tổng quan, ba lượt) |
 | 2 | Công việc: bảng nhóm, kanban, tạo mới | `/dashboard/tasks`, `/tasks/new`, `/tasks/states` | 26/09/2026 (kanban, ba lượt, đã theo kịp; popover Lọc, ba lượt, đã theo kịp); 27/09/2026 (bảng nhóm, một lượt: khuôn theo bề rộng khung, dự án chưa theo kịp; tạo mới, một lượt: nhóm radio, bộ đếm ký tự, dự án chưa theo kịp; `/states`, một lượt: khung chờ cột nhảy ngang, dự án chưa theo kịp) |
-| 3 | Khách hàng: danh sách, xem nhanh, chi tiết | `/dashboard/customers`, `/customers/quick-view`, `/customers/c-030`, `/customers/khong-co`, `/customers/states` | 27/09/2026 (danh sách, một lượt: ẩn cột phụ ở khung vừa, số đếm phân trang ở 375px, dự án chưa theo kịp); còn xem nhanh, chi tiết, `khong-co`, `/states` |
+| 3 | Khách hàng: danh sách, xem nhanh, chi tiết | `/dashboard/customers`, `/customers/quick-view`, `/customers/c-030`, `/customers/khong-co`, `/customers/states` | 27/09/2026 (danh sách, một lượt: ẩn cột phụ ở khung vừa, số đếm phân trang ở 375px; xem nhanh, một lượt: vùng bấm nút sao chép, hàng có avatar lệch baseline; dự án chưa theo kịp cả hai); còn chi tiết, `khong-co`, `/states` |
 | 4 | Đơn hàng: chi tiết, xem nhanh | `/dashboard/orders/detail`, `/orders/quick-view` | |
 | 5 | Thành viên và phân quyền | `/dashboard/members` | 25/09/2026 (chín lượt; cả luồng xác thực đã theo kịp) |
 | 6 | Hồ sơ cá nhân | `/dashboard/profile`, `/profile/states` | |
@@ -195,6 +195,10 @@ nền vuông 46×48 cạnh vòng chọn tròn 32px. Thêm vào probe:
 Mỗi phép đo thêm vào phải bắt lại được đúng ca đã dính (nút "Thêm" ở `/dashboard/calendar` bản cũ,
 ô ngày lịch gọn bản lượt hai) trước khi coi là xong.
 
+Đã sửa báo nhầm (27/09/2026): "Chữ cùng cột lệch mép" đo chữ trong chip ("VIP" thụt 8px trong pill) như chữ trơn, báo ở
+panel xem nhanh khách hàng. Nay chữ nằm trong khối có nền hoặc viền thì đo mép khối; thử lại bằng cách đẩy một ô
+giá trị lệch 4px, vẫn bắt được.
+
 Đã sửa báo nhầm (27/09/2026): "Dấu ngăn cách không đều" coi icon ưu tiên trong thẻ kanban (svg trong `<ul>`) là dấu ›, ra
 khe 150–178px ở `/dashboard/tasks/states` 375px. Nay chỉ đo icon `chevron-right/left`, `slash`; thử lại bằng cách làm
 lệch một dấu › trên đường dẫn ở `/components`, vẫn bắt được.
@@ -252,6 +256,9 @@ không ghi class. Rà xong 11 nhóm thì xem skill có nói gì về chúng khô
 
 Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần.
 
+- Panel xem nhanh khách hàng `/dashboard/customers/quick-view` (lượt 1, 27/09/2026): nút sao chép email / số điện
+  thoại thêm `relative before:absolute before:-inset-1.5` (vùng bấm 40px, hình giữ 28px). Hàng "Phụ trách": cụm
+  avatar + tên đổi `inline-flex` thành `flex h-5 items-center` (chữ tên đang thấp hơn nhãn 1,5px, hàng cao 24px).
 - Danh sách khách hàng `/dashboard/customers` (lượt 1, 27/09/2026): card bảng `@container`, cột Công ty và Ngày tạo
   `hidden @4xl:table-cell` (cả `<th>` và `<td>`), bỏ khoá bề rộng cột tên để nó nhận phần dư. Chân bảng dưới `sm`:
   "1 tới 10 trong" bọc `hidden sm:inline`, chỉ còn "32 khách hàng".

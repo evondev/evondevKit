@@ -111,7 +111,24 @@ function measureInPage({ minTapSize, isMobile }) {
 
     const rect = range.getBoundingClientRect();
 
-    return { left: rect.left, right: rect.right, width: rect.width, text: text.trim().slice(0, 12) };
+    return { left: rect.left, right: rect.right, width: rect.width, text: text.trim().slice(0, 12), node: textNode };
+  }
+
+  // Chữ trong chip / badge (khối có nền hoặc viền) thì mép thẳng cột là mép khối, không phải mép chữ:
+  // chữ "VIP" thụt 8px trong pill là đúng (báo nhầm 27/09/2026, panel xem nhanh khách hàng).
+  function getBoxedTextEdge(textRect, cell) {
+    for (let node = textRect.node.parentElement; node && node !== cell; node = node.parentElement) {
+      const style = getComputedStyle(node);
+      const hasFill = style.backgroundColor !== "rgba(0, 0, 0, 0)" && style.backgroundColor !== "transparent";
+      const hasBorder = parseFloat(style.borderLeftWidth) > 0 && style.borderLeftStyle !== "none";
+      if (hasFill || hasBorder) {
+        const boxRect = node.getBoundingClientRect();
+
+        return { left: boxRect.left, right: boxRect.right };
+      }
+    }
+
+    return textRect;
   }
 
   const allElements = [...document.body.querySelectorAll("*")].filter((element) => !["SCRIPT", "STYLE", "svg", "path"].includes(element.tagName));
@@ -209,10 +226,11 @@ function measureInPage({ minTapSize, isMobile }) {
 
         const columnKey = Math.round(cellRect.left);
         if (!cellsByColumn.has(columnKey)) cellsByColumn.set(columnKey, []);
+        const edge = getBoxedTextEdge(textRect, cell);
         cellsByColumn.get(columnKey).push({
           cell,
-          leftOffset: textRect.left - cellRect.left,
-          rightOffset: cellRect.right - textRect.right,
+          leftOffset: edge.left - cellRect.left,
+          rightOffset: cellRect.right - edge.right,
           centerDelta: textRect.left + textRect.width / 2 - (cellRect.left + cellRect.width / 2),
           text: textRect.text,
         });
