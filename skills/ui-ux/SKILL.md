@@ -37,7 +37,7 @@ về thứ tự các bước, và về người phải duyệt.
 
 | Trả lời | Đi đâu |
 | --- | --- |
-| **Đã có UI, muốn biết chỗ nào chưa ổn / cho đẹp hơn** ("xem giúp", "review", "nhìn rối", gửi ảnh hay link app của họ) | Mở `references/review.md` và đi theo nhánh `V`: soi, lập bảng trước/sau, người dùng chọn dòng rồi mới sửa. Đề có "dựng lại", "làm lại giao diện", "theo skill" là **chế độ dựng lại**: được thay control gốc bằng component của skill, vẫn giữ brand. **Dừng mục 0 tại đây**, lúc giao theo `V5` chứ không theo `S15` ⚑ |
+| **Đã có UI, muốn biết chỗ nào chưa ổn / cho đẹp hơn** ("xem giúp", "review", "nhìn rối", gửi ảnh hay link app của họ) | Mở `references/review.md` và đi theo nhánh `V`: soi, lập bảng trước/sau, người dùng chọn dòng rồi mới sửa. Đề có "dựng lại", "làm lại giao diện", "theo skill" là **chế độ dựng lại giữ brand**: được thay control gốc bằng component của skill, giữ vai màu của dự án. Đề nói "hoàn toàn theo gu skill", "bỏ style cũ" thì đổi sang gu của skill, chỉ giữ logo và màu nhấn chính. **Dừng mục 0 tại đây**, lúc giao theo `V5` chứ không theo `S15` ⚑ |
 | **Đã có UI, muốn refactor / dọn code mà giữ nguyên hình** | Mở `references/refactor.md` và đi theo nhánh `L`. **Dừng mục 0 tại đây** — nhánh đó có bộ mặc định riêng, bắt đầu bằng "đo trước khi kết luận" |
 | **Dựng mới** | Đi tiếp câu 2 |
 

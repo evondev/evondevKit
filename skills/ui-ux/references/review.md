@@ -11,19 +11,43 @@ Khác nhánh `L` (`refactor.md`): `L` dọn code và **giữ nguyên hình**. `V
 Ở nhánh này **skill chỉ là tham khảo**. Dự án có màu, bo góc, font riêng là hệ của
 họ, không phải lỗi.
 
-## Hai chế độ ⚑
+## Ba chế độ ⚑
 
 Nhận chế độ từ đề, không hỏi, rồi nói một dòng ở phần mở đầu lúc giao.
 
-| | **Soi** (mặc định) | **Dựng lại theo skill** |
-| --- | --- | --- |
-| Nhận ra khi | "xem giúp", "review", "chỗ nào chưa ổn", "nhìn rối", gửi ảnh hay link nhờ xem | đề có "dựng lại", "làm lại giao diện", "theo gu", "theo skill", "cho đẹp theo skill" |
-| Dòng Gu | chỉ nêu, mặc định không chọn | **chọn sẵn**, người dùng bỏ dòng nào thì bỏ |
-| Component | không viết lại, sửa đúng chỗ lỗi | được thay control gốc và khối tự chế bằng mẫu của skill (bảng dưới) |
-| Brand (màu, font, bo góc, khối màu đậm) | giữ | **vẫn giữ**: dựng lại theo cách làm của skill, tô bằng token của dự án |
-| Logic, handler, dữ liệu | không đụng (`N10`) | không đụng: component mới nhận đúng props và state của cái cũ |
-| Hỏi trước khi sửa | có | có: bảng trước, người dùng trả lời rồi mới sửa |
-| Sửa xong | chụp lại, chạy lại probe route đó | chạy lại probe **tới khi danh sách `P` trống**, tối đa ba vòng, như cổng 3 (`checklist.md`) |
+| | **Soi** (mặc định) | **Dựng lại, giữ brand** | **Dựng lại theo gu skill** |
+| --- | --- | --- | --- |
+| Nhận ra khi | "xem giúp", "review", "chỗ nào chưa ổn", "nhìn rối", gửi ảnh hay link nhờ xem | "dựng lại", "làm lại giao diện", "theo skill", "cho đẹp theo skill" | "**hoàn toàn** theo gu skill", "bỏ style cũ", "đổi sang gu của skill", "không cần giữ style cũ" |
+| Dòng Gu | chỉ nêu, mặc định không chọn | **chọn sẵn**, người dùng bỏ dòng nào thì bỏ | chọn sẵn |
+| Component | không viết lại, sửa đúng chỗ lỗi | được thay control gốc và khối tự chế bằng mẫu của skill (bảng dưới) | như cột giữa |
+| Brand | giữ | **giữ theo bảng vai màu** (dưới): dựng theo cách làm của skill, tô bằng token và vai màu của dự án | **bỏ bảng vai màu**, dùng token và gu của skill (`tokens.css`, `principles.md`): nền trang xám nhạt, card trắng viền mảnh, mục chọn nền nhạt, badge nhạt. Chỉ giữ **logo** và **màu nhấn chính** của dự án làm màu nhấn duy nhất (`brand-tokens.md`). Lúc giao nói một dòng *"giữ đỏ làm màu nhấn, muốn đổi thì nói"* |
+| Logic, handler, dữ liệu | không đụng (`N10`) | không đụng: component mới nhận đúng props và state của cái cũ | như cột giữa |
+| Hỏi trước khi sửa | có | có: bảng trước, người dùng trả lời rồi mới sửa | có |
+| Sửa xong | chụp lại, chạy lại probe route đó | chạy lại probe **tới khi danh sách `P` trống**, tối đa ba vòng, như cổng 3 (`checklist.md`) | như cột giữa |
+
+Đề chỉ nói "dựng lại theo skill" là **giữ brand**: đổi nhận diện của một sản phẩm đang
+chạy phải là người dùng tự nói ra, không suy từ chữ "theo skill".
+
+**Bảng vai màu, ghi trước khi dựng lại** ⚑. Brand không chỉ là màu nút chính mà là
+**cách dự án dùng màu cho từng vai**. Mở ảnh "trước" và code, ghi một bảng ngắn:
+
+| Vai | Dự án đang làm |
+| --- | --- |
+| Nút chính | ví dụ: nền đỏ đặc, chữ trắng |
+| Mục đang chọn (sidebar, tab, chip) | ví dụ: nền đỏ đặc, chữ trắng |
+| Badge, nhãn nhỏ ("Mới", số đếm) | ví dụ: nền đỏ, chữ trắng |
+| Link, hành động phụ | ví dụ: chữ xanh, không viền |
+| Giá, số nổi bật | ví dụ: chữ đỏ đậm |
+| Khối màu đậm, gradient | ví dụ: thẻ ví gradient navy |
+
+Chế độ giữ brand được đổi **bố cục, nhịp, cấu trúc component, cỡ chữ, cách đè lên ảnh**.
+Không được đổi **vai màu**: mục đang chọn đỏ đặc thì bản mới vẫn đỏ đặc, dù gu skill là nền
+xám nhạt. Dựng xong, đặt ảnh trước và sau cạnh nhau, đi lại từng dòng của bảng. Dòng nào
+đổi vai thì sửa lại cho khớp. Lúc giao ghi một dòng *"Vai màu giữ nguyên: …"*.
+
+Đã dính 28/09/2026 ở lần dựng lại đầu tiên của dự án mồi: mục đang chọn ở sidebar từ đỏ
+đặc thành viền xám, badge "Mới" từ nền đỏ thành chữ xám, link đăng nhập xanh thành nút
+viền. Bản mới gọn hơn, nhưng mất nhận diện.
 
 Khối không có mẫu trong skill (card tin đăng, card sản phẩm, khối lạ của dự án) thì dựng
 lại theo luồng "Dựng một thứ chưa có mẫu" ở cuối `principles.md`: mượn khuôn gần nhất,
@@ -58,7 +82,7 @@ họ, chỉ sửa nó cho hết lỗi):
    không thì bỏ dòng đó.
 4. **Không làm thêm việc.** Không đề xuất dark mode khi dự án chưa có (`V4`), không
    đề xuất đổi phong cách. Ở chế độ soi thì không viết lại component, mỗi dòng sửa đúng
-   chỗ lỗi. Chế độ dựng lại được thay component, theo bảng ở trên.
+   chỗ lỗi. Hai chế độ dựng lại được thay component, theo bảng ở trên.
 
 ---
 
@@ -84,7 +108,7 @@ họ, chỉ sửa nó cho hết lỗi):
   màn có một bản đã có kiểu để so: `<select>` còn góc vuông, viền xám của trình duyệt,
   `<input type="range">` mặc định, ô nhập viền inset. Giữa một app đã có kiểu, chúng đọc
   ra là chỗ bị bỏ quên. Cột Sửa: dự án có component riêng thì dùng cái đó; chưa có thì
-  dựng theo mẫu của skill (bảng "Hai chế độ"), tô bằng token của dự án. Select gốc đã
+  dựng theo mẫu của skill (bảng "Ba chế độ"), tô bằng token của dự án. Select gốc đã
   được tô (bo góc, viền token, `appearance-none` với chevron riêng) thì không phải lỗi.
 - **Tìm Lệch hệ trong code bằng lệnh, đừng chỉ nhìn ảnh.** Hai màu đỏ gần giống nhau,
   bóng tự chế, bo góc lẻ trong một hộp thoại thì ảnh không cho thấy. Đọc token trong
@@ -260,7 +284,7 @@ Cùng tinh thần `M20` (mặc định chỉ light), nhưng dự án đã có s�
 4. **Rà hạng Gu lần cuối**: dòng nào đề xuất bớt màu, đổi màu brand, làm nhạt khối màu
    đậm của brand thì xoá (`V1`, "Không bao giờ là lỗi").
 5. **Kết**: *"Trả lời số dòng muốn sửa, ví dụ `sửa 1, 3, 4`."* Chế độ soi: không tự đề
-   nghị sửa hết. Chế độ dựng lại: dòng nào đã chọn sẵn thì đánh ✓ ở đầu dòng, kết bằng
+   nghị sửa hết. Hai chế độ dựng lại: dòng nào đã chọn sẵn thì đánh ✓ ở đầu dòng, kết bằng
    *"Mình sẽ sửa các dòng ✓. Trả lời `ok`, hoặc bỏ bớt, ví dụ `bỏ 7, 12`."*
 
 **Người dùng chọn xong:**
