@@ -43,7 +43,7 @@ export default function AccordionItem({ title, children }: AccordionItemProps) {
           {title}
           <ChevronDown
             className={cn(
-              "size-4 shrink-0 text-muted transition-[transform,color] duration-200 group-hover:text-foreground motion-reduce:transition-none",
+              "size-4 shrink-0 text-muted transition-[rotate,color] duration-200 group-hover:text-foreground motion-reduce:transition-none",
               isOpen && "rotate-180",
             )}
             aria-hidden
@@ -172,7 +172,7 @@ export default function FormDisclosure({ title, isOpen, onOpenChange, children }
           {title}
           <ChevronDown
             className={cn(
-              "size-4 shrink-0 text-muted transition-[transform,color] duration-200 group-hover:text-foreground motion-reduce:transition-none",
+              "size-4 shrink-0 text-muted transition-[rotate,color] duration-200 group-hover:text-foreground motion-reduce:transition-none",
               isOpen && "rotate-180",
             )}
             aria-hidden

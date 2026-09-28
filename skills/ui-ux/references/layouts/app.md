@@ -402,6 +402,37 @@ phải. Thanh đó tách bằng đường kẻ ngang `--border-strong`, **cùng 
         ↑ không kẻ dọc khi nội dung nền xám
 ```
 
+### Nhóm nút bên phải thanh header
+
+```
+Phòng trọ                       ♡  🔔   Quản lý tin   Đăng nhập   [+ Đăng tin]
+                                └ chỉ icon ┘  └──── ghost có chữ ────┘   └ nút đặc duy nhất
+```
+
+- **Một nút đặc**, là việc chính của cả sản phẩm (Đăng tin, Tạo mới), đặt **cuối hàng**. Còn
+  lại là nút ghost. Màu nút đặc theo vai màu của dự án (`review.md`), nhưng **cùng chiều cao,
+  cùng bo, cùng cỡ chữ** với nút ghost cạnh nó (`h-9`, `rounded-lg`, `text-sm font-medium`),
+  không bóng màu (`M15`), không chữ `font-extrabold`.
+- **Mục chỉ cần nhận ra, không cần đọc thì chỉ icon**: đã lưu (tim), thông báo (chuông, có
+  chấm hay số khi có tin mới), giỏ. Chữ nằm ở `aria-label` và tooltip. Các trang rao vặt và
+  đặt phòng lớn đều để tim và chuông chỉ icon (tra 28/09/2026). Mục có chữ tối đa khoảng ba.
+- **Chữ nút ghost không nặng hơn tên trang** bên trái: `font-medium`, màu chữ thường hoặc
+  `--muted`. Năm mục cùng `font-semibold` màu chữ chính là năm thứ tranh với tên trang.
+- **Khoảng giữa các nút `gap-1`**: padding của nút ghost đã là khoảng thở. `gap-4` cộng
+  padding thì hàng trải ra nửa header, đọc như menu trang giới thiệu.
+- **Mục đã có trong sidebar thì không lặp trên header** (luật "Hai chỗ một việc", `V1b`).
+  Bỏ bên nào là quyết định của người dùng: đưa lên bảng, không chọn sẵn.
+- **Liên hệ, hỗ trợ, tải app** không đứng cùng hàng với việc chính: để cuối sidebar hoặc
+  trong menu tài khoản.
+- Đăng nhập khi chưa có tài khoản là một nút ghost ("Đăng nhập"); đăng ký nằm trong màn đăng
+  nhập. Dự án đã tô link đăng nhập bằng màu riêng thì giữ màu (vai màu), vẫn theo cỡ chung.
+
+Đã dính 28/09/2026, tim-phong-sua: wireframe đã vẽ năm mục cùng cỡ, một nút đặc, nhưng bản
+dựng giữ header cũ: sáu mục icon + chữ `font-semibold` cách nhau 32px, "Đăng tin" bo tròn
+hẳn cao 30px chữ 13px `font-extrabold` có bóng đỏ đứng giữa các nút bo 12px cao 34px chữ
+14px, "Thông báo" có chữ, "Liên hệ" chen giữa. Chủ dự án tự thấy. Probe nay đo "hàng nút
+trên header không đồng cỡ".
+
 ### Đầu trang trong vùng nội dung
 
 ```
@@ -648,6 +679,19 @@ Tháng 9, 2026 ⌄   [Hôm nay] ‹ ›                          [+ Thêm việc
 
 Xem `../components/list-row.md` cho công thức từng dòng. Danh sách là **một khối
 chia đường kẻ**, không phải mỗi dòng một card.
+
+**Danh sách + chi tiết (hai cột, bấm mục trái mở chi tiết phải).** Mục bên trái chỉ mang
+thứ để **chọn**: một ảnh nhỏ, dòng giá hay trạng thái, tên, **một** dòng phụ. Tối đa ba dòng
+chữ. Mọi thứ khác (địa chỉ đầy đủ, xác thực, ngày đăng, thông số) đã có ở cột chi tiết, lặp
+lại ở trái chỉ làm cột chật (đã dính 28/09/2026: năm dòng mỗi mục, đọc như một bức tường
+chữ). Dòng thụt vào, mục đang mở và mục đang rê khác nền (`I10`, đoạn "Mục đang mở"). Ảnh ở cột chi tiết
+có trần cao (`max-h-[420px]`, `object-cover`): dữ liệu chỉ có một ảnh thì không để nó phủ
+hết khung rộng 1400px.
+
+**Đếm cột trước khi thêm cột lọc.** Sidebar app + cột lọc + danh sách + chi tiết là bốn cột:
+ở 1440px vùng nội dung chỉ còn khoảng 1190px, danh sách bị ép còn khoảng 320px, tiêu đề
+cụt sau hai ba chữ (đã dính 28/09/2026). Ba cột nội dung chỉ khi vùng nội dung từ khoảng
+1600px; hẹp hơn thì lọc thành nút "Bộ lọc" mở panel, như bản 1024px.
 
 **Cột lọc bên trái dính theo khi cuộn, không cuộn riêng.** `sticky top-*` chỉ khi cột thấp
 hơn màn. Cột dài hơn màn thì để nó cuộn theo trang, đừng bó `max-h-[calc(100vh-…)]

@@ -223,3 +223,17 @@ grep -rn '@import "tailwindcss' --include='*.css' . 2>/dev/null | grep -v node_m
 và danh sách, quên ô nhập của khung chat, ô đó mang nguyên viền đen của trình duyệt. Ô
 nằm dưới mép khung cuộn nên ảnh chụp cũng không thấy (probe giờ kéo cửa sổ cao bằng khung
 cuộn trước khi chụp).
+
+## W10. `scale-*`, `translate-*`, `rotate-*` không chạy theo `transition-[transform]` ⚑
+
+Tailwind v4 ghi `scale-95`, `-translate-y-1`, `rotate-180` vào thuộc tính CSS **riêng**
+`scale`, `translate`, `rotate`, không vào `transform`. Viết `transition-[opacity,transform]`
+hay `transition-[transform,color]` thì ba thuộc tính đó **nhảy thẳng**, chỉ `opacity` và màu
+chạy: menu co lại 95% và nhích lên 4px ngay khung đầu rồi mới mờ, nhìn như giật; mũi tên
+accordion lật ngược tức thì (đã dính 28/09/2026, menu tài khoản, select, drawer, hộp thoại của
+một dự án, và chính mẫu `components/accordion.md`).
+
+- Dùng `transition-transform` (v4 gồm `transform, translate, scale, rotate`), hoặc ghi đúng tên:
+  `transition-[opacity,scale,translate]`, `transition-[rotate,color]`.
+- Probe báo mục "Scale / translate / rotate không chạy chuyển động" (hạng Hỏng).
+

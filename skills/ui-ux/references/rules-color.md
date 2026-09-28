@@ -226,6 +226,17 @@ Trong mỗi nhóm thì mọi chỗ dùng chung đúng một token, để đườ
 
 Checkbox, radio chưa chọn cũng dùng `--border-strong`, cùng độ đậm với ô nhập.
 
+**Dự án đã có token viền riêng** (dựng mới trong dự án có sẵn, hai chế độ dựng lại): xám
+viền là **dáng, không phải vai màu** (`review.md`), nên xếp token của họ vào hai vai trên
+chứ không giữ cách bản cũ dùng. Bậc nhạt nhất của dự án cho vai trang trí (viền card, khung
+dropdown, đường chia). Đường kẻ khung app: **đoạn dưới đầu sidebar và đoạn dưới header
+cùng một token**, vì hai đoạn nối thành một đường (probe: "đường ngăn thẳng hàng mà khác
+màu"). Bậc nào đậm cỡ `#e4e4e7` trở lên (~1.25:1 trên trắng, mức đã chê "đường kẻ sidebar
+đậm" ngày 23/09/2026) thì không dùng cho đường kẻ khung và viền card, chỉ cho ô nhập, nút
+viền. Đã dính 28/09/2026, tim-phong-sua: vạch dưới logo `border-light` `#f1f5f9` nối vào
+vạch dưới header `border` `#e2e8f0`, card lọc, card danh sách, card chi tiết cũng
+`#e2e8f0`; chủ dự án thấy "đường ở sidebar ổn, ngoài thì đậm" và tưởng brand bắt vậy.
+
 > Ngày 21/09/2026 đã thử làm đậm viền điều khiển cho đạt 3:1 (WCAG 1.4.11): ô nhập,
 > select, nút outline lên `#8a8a91`; checkbox, radio lên `--muted`; track công
 > tắc lên `muted/75`. Chủ dự án xem thật thấy **đậm và xấu**, trả về hết cùng

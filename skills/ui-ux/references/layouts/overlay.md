@@ -199,6 +199,7 @@ thu rồi mở sidebar, bấm mở lại. Menu phải nằm sát nút cả hai l
   <div class="px-1">
     <button class="flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm outline-hidden hover:bg-background focus-visible:bg-background">…</button>
   </div>
+  <!-- Vạch chia cùng token với viền khung, không border-strong: đậm hơn viền là vạch nổi hơn khung -->
   <hr class="my-1 border-border" />
   <div class="px-1">
     <!-- Mục nguy hiểm: lúc thường y như mục khác, rê vào mới đỏ (I4) -->
@@ -504,6 +505,14 @@ lấy số ở bảng này.
 
 - **Tooltip mang nội dung người dùng đặt** (tên tệp, tên dự án, email) thì không `whitespace-nowrap`: `max-w-[min(20rem,calc(100vw-1rem))] whitespace-normal wrap-anywhere`. Tooltip nhãn nút ngắn ("Đơn trước") giữ một dòng. Chi tiết và ca đã dính ở `../components/tree.md`.
 
+- **Viết `scale`, `translate` vào danh sách chuyển động.** Tailwind v4: `transition-[opacity,transform]`
+  không chạy `scale-95` hay `translate-y-1`, khung nhảy cỡ rồi mới mờ (`W10`). Dùng
+  `transition-[opacity,scale,translate]` hoặc `transition-transform` + `transition-opacity`.
+- **Khung hộp thoại không nằm trong lớp nền mờ đang chuyển `opacity`.** Lớp nền (`bg-black/30`) và
+  khung là hai anh em trong một khối `fixed` đứng yên, mỗi cái tự mờ, cùng thời lượng. Khung là
+  con của lớp nền thì độ mờ nhân nhau: lúc đóng khung tan nhanh hơn nền, nhìn giật (đã dính
+  28/09/2026). **Mở khoá cuộn trang sau khi chạy xong**, không ngay lúc bấm đóng: thanh cuộn hiện
+  lại giữa chừng làm cả trang dưới lớp nền xô ngang.
 - **Ra nhanh hơn vào.** Vào `ease-out` (nhanh đầu, chậm cuối, như đồ vật đặt xuống), ra `ease-in` và ngắn hơn: người đã bấm đóng thì không muốn chờ.
 - **Bẫy đã dính khi dựng panel (23/09/2026)** — panel "chạy từ trong ra, cách lề một khoảng rồi giật mạnh vào lề", tooltip nhấp nháy, cả chuyển động giật cục:
   - **Panel dính `zoom-in-95` chép từ modal.** Phóng 95% quanh tâm thì mép phải panel bắt đầu cách lề màn ~11px, chạy xong mới nhảy vào lề. Panel chỉ `translate`, **không bao giờ `scale`**: nó đến từ mép, không mọc từ tâm.

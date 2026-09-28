@@ -56,6 +56,15 @@ Không được đổi **vai màu**: mục đang chọn đỏ đặc thì bản 
 xám nhạt. Dựng xong, đặt ảnh trước và sau cạnh nhau, đi lại từng dòng của bảng. Dòng nào
 đổi vai thì sửa lại cho khớp. Lúc giao ghi một dòng *"Vai màu giữ nguyên: …"*.
 
+**Mỗi vai đúng một mã màu, cả trang ăn nhập** ⚑. Trước khi dựng, `grep` các mã viết cứng
+(`-[#…]`, `red-500`, `slate-…`) trong những file sẽ đụng. Mã nào gần một màu trong bảng vai
+màu (đỏ khác sắc, xanh khác sắc) là cùng vai viết lệch: gom về đúng token đó. Xám (chữ phụ,
+viền, nền) về token xám của dự án, một họ xám, viền xếp theo `M14` trong `rules-color.md`.
+Mã không khớp vai nào (tím, cam trang trí) thì theo dòng "Màu trang trí tranh với màu vai"
+ở `V1b`. Đã dính 28/09/2026, tim-phong-sua: ba sắc đỏ (`#e61e25` token, `#ef4444`,
+`#dc2626`), bốn sắc xanh (`#0068ff` token, `#2563eb`, `#3b82f6`, `#4f46e5`), viền card đậm
+hơn đường kẻ sidebar; từng khối đúng brand mà ghép lại không ăn nhập.
+
 Đã dính 28/09/2026 ở lần dựng lại đầu tiên của dự án mồi: mục đang chọn ở sidebar từ đỏ
 đặc thành viền xám, badge "Mới" từ nền đỏ thành chữ xám, link đăng nhập xanh thành nút
 viền. Bản mới gọn hơn, nhưng mất nhận diện.
@@ -159,10 +168,11 @@ sang hạng theo bảng này. Những mục xếp Hỏng thì probe đã tự go
 
 | Mục probe | Hạng |
 | --- | --- |
-| Trang tự cuộn khi vừa tải, cuộn ngang, lớp nổi lòi khỏi màn, lớp nổi mở bằng nút bị vỡ, rê chuột làm nhảy bố cục, tab tới mà không thấy gì đổi, tương phản chữ dưới ngưỡng, khung giấu mất chữ, chữ cắt còn quá ngắn, chữ trong nút xuống dòng, nhãn số đè lên đường biểu đồ, khối bị bóp chiều cao, chữ cắt nuốt mất số | Hỏng |
+| Trang tự cuộn khi vừa tải, cuộn ngang, lớp nổi lòi khỏi màn, lớp nổi mở bằng nút bị vỡ, rê chuột làm nhảy bố cục, tab tới mà không thấy gì đổi, tương phản chữ dưới ngưỡng, khung giấu mất chữ, chữ cắt còn quá ngắn, chữ trong nút xuống dòng, nhãn số đè lên đường biểu đồ, khối bị bóp chiều cao, chữ cắt nuốt mất số, rê ra đúng màu mục đang chọn, scale / translate / rotate không chạy chuyển động (`W10`), đường ngăn thẳng hàng mà khác màu (một đường nửa nhạt nửa đậm, sai với mọi brand) | Hỏng |
 | Chỗ bấm dưới 32px | Mục có ghi "(dưới 24px)" là Hỏng, còn lại (24 tới 31px) là Gu |
 | Hàng trong header / nav rớt dòng | Hỏng khi đè hay đẩy lệch khối khác, không thì Lệch hệ (so với cách hàng đó ở khổ khác). Xem ảnh mới quyết |
-| Cao gần bằng mà không bằng, đường ngăn hai cột kề nhau lệch, chữ cùng cột lệch mép, dấu ngăn cách không đều, control còn kiểu mặc định của trình duyệt, khung khai viền mà viền không thấy, khối con biến mất lúc rê, lớp nổi có dải trống | Lệch hệ |
+| Hàng nút trên header không đồng cỡ | Lệch hệ. Chế độ dựng lại thì vào dòng Gọn của header (`V1c`), theo "Nhóm nút bên phải thanh header" trong `layouts/app.md` |
+| Vạch chia trong menu đậm hơn viền khung, vạch trái bị bo góc khung cắt, khung hộp thoại mờ lồng trong lớp nền mờ, cao gần bằng mà không bằng, đường ngăn hai cột kề nhau lệch, chữ cùng cột lệch mép, dấu ngăn cách không đều, control còn kiểu mặc định của trình duyệt, khung khai viền mà viền không thấy, khối con biến mất lúc rê, lớp nổi có dải trống | Lệch hệ |
 | Nền rê gần như không thấy, nền rê tan vào nền khác, viền đổi màu lúc rê, rê / focus khác hình mục đang chọn, bấm xong còn dấu thừa, vòng focus không bọc hết link, bảng cuộn ngang mất cột, nhóm lựa chọn xếp lưới, số tiền ngắt dòng, số không thẳng hàng, nhãn số lòi ra ngoài vùng vẽ, dấu câu rơi xuống đầu dòng, chữ dưới 12px (gộp một dòng, ghi cỡ nhỏ nhất và chỗ; sửa lên ít nhất 12px), cột dính mà cuộn riêng, nội dung trôi giữa màn rộng (`layouts/app.md`) | Gu |
 | Select gốc đã tô trên desktop | Chế độ soi: không vào bảng. Hai chế độ dựng lại: Lệch hệ, thay bằng Select dựng (từ 8 mục có ô tìm) |
 | Lỗi console | Không vào bảng. Ghi một dòng dưới bảng |
@@ -179,7 +189,7 @@ sai loại. Probe không đo được mấy thứ này, phải soi ảnh và đ�
 | --- | --- | --- |
 | Tín hiệu tranh nhau (`N3`) | Trong một khối có từ ba thứ cùng dùng tín hiệu đắt (màu nhấn, tô đặc, chữ lớn đậm), hoặc hai nút cùng mức nhấn đứng cạnh nhau | Giữ một thứ nổi nhất. Hai nút thì một nút chính, một nút phụ (`I1`). **Hạ mức nhấn, không đổi màu** |
 | Hai chỗ một việc | Hai nút dẫn tới cùng một việc, một thông tin hiện hai lần trong cùng khối. Ở mức cả màn: cùng một bộ điều hướng hiện hai lần (menu bên và lưới ô danh mục), tên trang lặp ở header, tiêu đề và mục đang chọn, cùng một lời mời ở hai chỗ | Giữ một |
-| Thông tin không phân biệt được gì | Mọi mục trong danh sách mang cùng một nhãn, số 0 hiện ra như một thông tin | Chỉ hiện ở mục khác đi. Số 0 ẩn hoặc nói bằng chữ |
+| Thông tin không phân biệt được gì | Mọi mục trong danh sách mang cùng một nhãn, số 0 hiện ra như một thông tin, giá trị thiếu in thành chữ ("Chưa rõ ngày đăng", "Không có mô tả") | Chỉ hiện ở mục khác đi. Số 0 ẩn hoặc nói bằng chữ. Giá trị thiếu thì ẩn cả mẩu đó |
 | Khối quá tải | Card trong lưới có hơn khoảng sáu mẩu thông tin, dòng phụ bị cắt "…" ngay ở khổ thường | Giữ thứ dùng để chọn giữa các mục. Phần còn lại để trang chi tiết |
 | Control sai loại | Ô to cho lựa chọn nhanh, select cho hai lựa chọn, control tự chế có phần không làm gì | Theo bảng mẫu ở "Ba chế độ" (chip, segmented, `range-slider`…) |
 | Đặt sai chỗ | Control nằm xa thứ nó điều khiển (sắp xếp, lọc tách khỏi danh sách), nhãn cùng hàng lệch cao, một khung trộn nhiều kiểu bố trí | Đặt sát thứ nó điều khiển. Cùng hàng thì cùng mép trên |

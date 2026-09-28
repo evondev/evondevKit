@@ -182,6 +182,20 @@ Chủ dự án chốt 23/09/2026 sau khi thử hết các cách tách nền, và
 Muốn hai trạng thái tách nhau thì tách bằng checkbox, không bằng thêm một bậc xám. Vạch
 trái để dành cho **một** mục đang mở trong cột điều hướng (sidebar, cây thư mục).
 
+**Mục đang mở không có checkbox thì nền của nó khác nền rê.** Danh sách bên trái của bố cục
+danh sách + chi tiết, hộp thư, cây thư mục: không có dấu nào khác ngoài nền, nên rê ra đúng
+nền đó là rê qua mục nào cũng trông như vừa chọn nó (đã dính 28/09/2026, hai lần). Luật
+"cùng nền mờ" ở trên chỉ cho dòng bảng tick checkbox.
+
+- **Danh sách chọn một mục nằm trong card thì dòng thụt vào**, không tràn mép: khung `p-2`,
+  dòng `rounded-xl`, rê `hover:bg-background`, đang mở một bậc đậm hơn `bg-secondary` (màu nhấn
+  có sắc thì nền nhạt của màu nhấn, như `bg-primary/8`). Dòng tràn mép phải dùng `surface-hover`
+  (`#f8f8fa`), trên card trắng chỉ chênh 7 mức, gần như không thấy, còn đang mở và đang rê thì
+  không còn bậc nào để tách (đã dính 28/09/2026).
+- **Không vạch trái ở dòng nằm trong khung bo góc `overflow-hidden`**: dòng đầu và dòng cuối,
+  bo góc khung cắt vạch thành một mảnh cong. Vạch trái chỉ cho cột điều hướng không bo góc
+  (sidebar, cây thư mục).
+
 **Nút và ô bấm được nằm trong dòng có nền rê thì nền rê của nó là `bg-foreground/8`**,
 không `/5` như nút đứng ngoài (`components/button.md`). Chuột đang ở trên nút thì cũng
 đang ở trên dòng, nên nút luôn chồng lên nền dòng `#f8f8fa`: `/5` ra `#ededef`, chỉ hơn nền

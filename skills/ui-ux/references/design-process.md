@@ -71,6 +71,11 @@ dòng đó."* Dừng chờ.
   thật sẽ lại thành hai nút tranh nhau (`V1b`).
 - **Nội dung thật**: chữ lấy từ dữ liệu của dự án, cả ca dài nhất và ca trống. Wireframe chữ
   "Lorem" thì không thấy được card quá tải.
+- **Đúng hình dạng dữ liệu**: mỗi mục có mấy ảnh, trường nào hay trống, danh sách dài bao
+  nhiêu. Dữ liệu chỉ có một ảnh mỗi tin mà wireframe vẽ lưới ba ảnh là hứa thứ dữ liệu
+  không có: người dùng chọn vì lưới ảnh, bản dựng ra một ảnh to quá khổ (đã dính
+  28/09/2026). Muốn phương án cần thêm dữ liệu thì vẽ đúng cái đang có và ghi *"đẹp hơn khi
+  có X"* ở dòng đánh đổi.
 - Mỗi phương án ghi **ba dòng**: việc chính giờ thấy ở đâu, đổi gì so với bản cũ, đánh đổi.
   Phương án cần dữ liệu hay logic chưa có (khoảng cách, chế độ xem mới) thì ghi rõ
   *"cần dữ liệu X, logic do bạn nối"* (`N10`).
@@ -95,7 +100,18 @@ Kết bằng *"Chọn A, B hay C, hoặc trộn (ví dụ `B, lấy card của A
   thanh dưới, menu thông báo): người dùng nhìn cả màn, không chỉ phần mới dựng. Khung app lỗi
   thì sửa luôn, sửa ở component dùng chung và nói nó đổi cả các màn khác. Đã dính 28/09/2026:
   trang dựng lại đúng bố cục mà header vẫn bị bóp, người xem vẫn chấm "xấu".
-- **Dựng xong chạy một lượt làm gọn** trên các khối mới: `V1b` và `V1c` trong `review.md`
+- **Wireframe vẽ khung app (header, sidebar) thì khung app cũng là phương án**: dựng lại
+  component dùng chung theo wireframe (số mục, mục nào nút đặc, mục nào chỉ icon), dáng theo
+  gu, màu theo vai màu. Không để nguyên header cũ rồi chỉ vá cho khỏi rớt dòng. Đã dính
+  28/09/2026: wireframe header năm mục một nút đặc, bản dựng giữ sáu mục cũ lệch cỡ; chủ dự
+  án hỏi "wireframe vẽ chuẩn rồi mà sao không ai sửa".
+- **Đối chiếu wireframe từng khối trước khi giao.** Mở ảnh wireframe đã chọn cạnh ảnh 1440
+  của bản dựng, đi từng khối (header, sidebar, hàng lọc, danh sách, panel): số mục, thứ tự,
+  mục nào nút đặc, mục nào chỉ icon, thứ gì wireframe đã bỏ. Khác chỗ nào thì sửa, hoặc ghi
+  một dòng vì sao lệch (thiếu dữ liệu, người dùng dặn). Màu thì theo "Mỗi vai đúng một mã
+  màu" trong `review.md`: wireframe xám không nói màu, nhưng bản dựng phải ăn nhập từ viền
+  tới brand.
+- **Dựng xong chạy một lượt làm gọn** trên các khối mới **và khung app của route**: `V1b` và `V1c` trong `review.md`
   (card cao thấp theo dòng có dòng không, link trông như chữ thường, nửa khối trống ở màn
   rộng). Sửa luôn, không đưa bảng: người dùng đã chọn phương án rồi.
 - **Tự soi bằng mắt trước khi giao, ghi ra.** Mở ảnh 375, 1440 và 1920 của probe, trả lời
