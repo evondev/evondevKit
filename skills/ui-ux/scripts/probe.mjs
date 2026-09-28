@@ -1233,6 +1233,35 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     }
   }
 
+  // 18j. Mục lặp dày chữ: card hay dòng lặp từ ba cái trở lên mà một cái có từ năm dòng chữ. Người dùng không tự
+  //      thấy "card chữ quá trời" (28/09/2026, wireframe danh sách + chi tiết năm dòng mỗi mục); đặt ra số dòng
+  //      thì thấy. Đếm dòng bằng các hộp dòng của chữ (Range), không bằng số thẻ.
+  const countTextLines = (element) => {
+    const tops = new Set();
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      if (!node.textContent.trim()) continue;
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      for (const rect of range.getClientRects()) if (rect.width > 2 && rect.height > 6) tops.add(Math.round(rect.top / 4));
+    }
+
+    return tops.size;
+  };
+  const denseItems = [];
+  for (const parent of allElements) {
+    if (denseItems.length >= 3) break;
+    const items = [...parent.children].filter((child) => isVisible(child) && child.getBoundingClientRect().height >= 48);
+    if (items.length < 3) continue;
+    // Cùng loại = cùng thẻ và cùng class đầu: mục đang chọn thêm class trạng thái (`sel`, `lg:bg-…`) vẫn cùng loại.
+    const signature = (child) => `${child.tagName}.${(child.getAttribute("class") || "").split(/\s+/)[0]}`;
+    const sameKind = items.filter((child) => signature(child) === signature(items[0]));
+    if (sameKind.length < 3) continue;
+    const lineCounts = sameKind.slice(0, 6).map(countTextLines);
+    const maxLines = Math.max(...lineCounts);
+    if (maxLines >= 5) denseItems.push(`${sameKind.length} mục, nhiều nhất ${maxLines} dòng chữ: ${describe(sameKind[lineCounts.indexOf(maxLines)])}`);
+  }
+
   // 19. Chữ dưới 12px: đọc khó ở mọi brand, hay gặp ở dòng phụ trong card và cột bên. Chữ trong biểu đồ
   //     (svg) và nhãn ngắn từ ba ký tự trở xuống ("Mới", "VIP") không tính.
   const tinyTexts = [];
@@ -1259,6 +1288,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     untransitionedMotion,
     heavySeparators,
     clippedBars,
+    denseItems,
     swallowedNumbers,
     floatingContent,
     tinyTexts,
@@ -1701,6 +1731,7 @@ function findHollowLayers() {
 async function probePopupLayers(page, isMobile) {
   const overflowingLayers = new Set();
   const hollowLayers = new Set();
+  const checkedHoverChanges = new Set();
   const hollowBefore = new Set(await page.evaluate(findHollowLayers));
   const triggerIds = await page.evaluate(({ popupLimit, tapLimit, isTouch }) => {
     const ids = [];
@@ -1730,11 +1761,13 @@ async function probePopupLayers(page, isMobile) {
     await page.waitForTimeout(250);
     for (const layer of await page.evaluate(findOverflowingLayers)) overflowingLayers.add(`${isTap ? "chạm chữ bị cắt" : "mở"}: ${layer}`);
     for (const layer of await page.evaluate(findHollowLayers)) if (!hollowBefore.has(layer)) hollowLayers.add(layer);
+    // Ô chọn trong lớp nổi (bộ lọc dạng popover) chỉ hiện lúc mở, nên đo rê vào ô đã chọn ở đây nữa.
+    if (!isTap && !isMobile) for (const change of await findCheckedHoverChanges(page)) checkedHoverChanges.add(change);
     await page.keyboard.press("Escape");
     await page.waitForTimeout(120);
   }
 
-  return { overflowing: [...overflowingLayers], hollow: [...hollowLayers] };
+  return { overflowing: [...overflowingLayers], hollow: [...hollowLayers], checkedHoverChanges: [...checkedHoverChanges] };
 }
 
 // Mở các khối đang đóng (accordion, mục thu gọn) để đo lại phần bên trong. Bỏ nút có popup (menu,
@@ -1951,6 +1984,53 @@ async function probeStateShapes(page) {
   return { shapeMismatches, stuckStates, hoverLikeSelected, groupCount: groups.length };
 }
 
+// Rê vào ô đã chọn (checkbox, radio) mà màu nhấn đổi sang xám: `hover:border-*` đứng sau `checked:` trong CSS
+// Tailwind v4 nên đè màu đã chọn (28/09/2026, radio lọc giá). Đo màu viền và nền trước, sau khi rê; màu trước
+// có sắc mà sau thành xám, hoặc đổi hẳn sắc, là lỗi.
+async function findCheckedHoverChanges(page) {
+  const ids = await page.evaluate(() => {
+    const controls = [...document.querySelectorAll("input[type='checkbox']:checked, input[type='radio']:checked, [role='checkbox'][aria-checked='true'], [role='radio'][aria-checked='true']")]
+      .filter((control) => {
+        const rect = control.getBoundingClientRect();
+
+        return rect.width > 0 && rect.height > 0 && !control.closest("[inert], [aria-hidden='true']") && getComputedStyle(control).visibility !== "hidden";
+      })
+      .slice(0, 4);
+    controls.forEach((control, index) => { control.dataset.evonCheckedId = String(index); });
+
+    return controls.map((_, index) => String(index));
+  });
+  const readPaint = (id) => page.evaluate((checkedId) => {
+    const control = document.querySelector(`[data-evon-checked-id="${checkedId}"]`);
+    const style = getComputedStyle(control);
+    const label = (control.closest("label")?.textContent || control.getAttribute("aria-label") || "").trim().replace(/\s+/g, " ").slice(0, 24);
+
+    return { border: style.borderTopColor, background: style.backgroundColor, label: `${control.getAttribute("type") || control.getAttribute("role")} "${label}"` };
+  }, id);
+  const parseRgb = (color) => (color.match(/[\d.]+/g) || []).slice(0, 3).map(Number);
+  const saturation = (rgb) => (rgb.length < 3 ? 0 : Math.max(...rgb) - Math.min(...rgb));
+  const changes = [];
+  for (const id of ids) {
+    const before = await readPaint(id);
+    const isHovered = await page.locator(`[data-evon-checked-id="${id}"]`).hover({ timeout: 800, force: true }).then(() => true, () => false);
+    if (!isHovered) continue;
+    await page.waitForTimeout(60);
+    const after = await readPaint(id);
+    for (const key of ["border", "background"]) {
+      const beforeRgb = parseRgb(before[key]);
+      const afterRgb = parseRgb(after[key]);
+      // Xám ngả xanh (`slate`) vẫn lệch kênh ~40, nên so tương đối: sắc tụt dưới 40% của lúc trước.
+      if (saturation(beforeRgb) >= 40 && saturation(afterRgb) < saturation(beforeRgb) * 0.4 && before[key] !== after[key]) {
+        changes.push(`${before.label}: rê vào ${key === "border" ? "viền" : "nền"} ${before[key]} → ${after[key]}`);
+        break;
+      }
+    }
+  }
+  await page.mouse.move(1, 1);
+
+  return changes;
+}
+
 function mergeMeasurements(base, extra) {
   const merged = { ...base };
   for (const [key, value] of Object.entries(extra)) {
@@ -2042,6 +2122,7 @@ async function probeWidth(browser, options, width) {
   const popupLayers = await probePopupLayers(page, isMobile);
   const overflowingLayers = [...new Set([...hoverStates.overflowingLayers, ...popupLayers.overflowing])];
   // Chạy sau cùng: bấm thử đổi lựa chọn trên trang (ngày, tab), các phép đo khác phải xong trước.
+  const pageCheckedHoverChanges = isMobile ? [] : await findCheckedHoverChanges(page);
   const stateShapes = isMobile ? { shapeMismatches: [], stuckStates: [], hoverLikeSelected: [], groupCount: 0 } : await probeStateShapes(page);
   // Sau cùng thật sự: mỗi lần bấm là một lần tải lại trang.
   const openerLayers = isMobile ? await probeOpenerLayers(page, options, width) : { problems: [], openedShots: [] };
@@ -2066,6 +2147,7 @@ async function probeWidth(browser, options, width) {
     overflowingLayers,
     shapeMismatches: stateShapes.shapeMismatches,
     hoverLikeSelected: stateShapes.hoverLikeSelected,
+    checkedHoverChanges: [...new Set([...pageCheckedHoverChanges, ...popupLayers.checkedHoverChanges])],
     stuckStates: stateShapes.stuckStates,
     stateGroupCount: stateShapes.groupCount,
   };
@@ -2315,6 +2397,7 @@ function listMustReportItems(results, sweepSteps) {
     for (const item of result.mismatchedRuleColors) addItem(width, `đường ngăn thẳng hàng mà khác màu: ${item}`);
     for (const item of result.swallowedNumbers) addItem(width, `chữ cắt nuốt mất số: ${item}`);
     for (const item of result.hoverLikeSelected || []) addItem(width, `rê ra đúng màu mục đang chọn: ${item}`);
+    for (const item of result.checkedHoverChanges || []) addItem(width, `rê vào ô đã chọn làm mất màu nhấn: ${item}`);
     for (const item of result.untransitionedMotion || []) addItem(width, `scale / translate / rotate không chạy chuyển động: ${item}`);
     for (const item of result.smallTapTargets.filter((target) => target.isBelowFloor)) addItem(width, `chỗ bấm dưới 24px: ${item.element}`);
   }
@@ -2468,6 +2551,10 @@ function formatReport(results) {
       problems.push(`LỚP NỔI LÒI KHỎI MÀN (${result.overflowingLayers.length} chỗ, tooltip / menu / popover mở ra phải nằm trong màn):`);
       for (const item of result.overflowingLayers.slice(0, 6)) problems.push(`  ${item}`);
     }
+    if (result.checkedHoverChanges?.length > 0) {
+      problems.push(`RÊ VÀO Ô ĐÃ CHỌN LÀM MẤT MÀU NHẤN (${result.checkedHoverChanges.length} ô, hover: đè checked:, dùng not-checked:hover:):`);
+      for (const item of result.checkedHoverChanges) problems.push(`  ${item}`);
+    }
     if (result.hoverLikeSelected?.length > 0) {
       problems.push(`RÊ RA ĐÚNG MÀU MỤC ĐANG CHỌN (${result.hoverLikeSelected.length} nhóm, rê qua mục nào cũng trông như đã chọn nó):`);
       for (const item of result.hoverLikeSelected) problems.push(`  ${item}`);
@@ -2503,6 +2590,10 @@ function formatReport(results) {
     if (result.heavySeparators?.length > 0) {
       problems.push(`VẠCH CHIA TRONG MENU ĐẬM HƠN VIỀN KHUNG (${result.heavySeparators.length} menu):`);
       for (const item of result.heavySeparators) problems.push(`  ${item}`);
+    }
+    if (result.denseItems?.length > 0) {
+      problems.push(`MỤC LẶP DÀY CHỮ (từ 5 dòng mỗi mục; danh sách + chi tiết thì mục trái tối đa 3 dòng, layouts/app.md):`);
+      for (const item of result.denseItems) problems.push(`  ${item}`);
     }
     if (result.clippedBars?.length > 0) {
       problems.push(`VẠCH TRÁI BỊ BO GÓC KHUNG CẮT (${result.clippedBars.length} chỗ):`);

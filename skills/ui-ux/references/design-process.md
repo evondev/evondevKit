@@ -82,11 +82,41 @@ dòng đó."* Dừng chờ.
 - **Tính cả khung app vào bề ngang.** App đã có sidebar điều hướng mà phương án thêm một cột
   lọc bên trái thì ghi rõ ở dòng đánh đổi: hai cột trái, nội dung còn lại bao nhiêu px ở 1280.
 - **Đánh dấu một phương án khuyên dùng**, kèm một câu vì sao (bám `U2`).
-- Một file HTML, các phương án cạnh nhau hoặc chuyển bằng tab. Chụp bằng probe ở 1280 và
-  375, gửi kèm đường dẫn ảnh. Chạy luật Cấu trúc (`V1b` trong `review.md`) lên từng phương án
-  trước khi gửi: wireframe còn card quá tải hay hai chỗ một việc thì sửa trước.
+- Một file HTML, các phương án chuyển bằng tham số (`?v=a`, `?v=b`…) để probe mở được từng cái.
+- **Wireframe có đủ trạng thái như bản thật**: một mục đang chọn đánh dấu `aria-current` (hay
+  `aria-selected`), có nền rê, có vòng focus. Wireframe tĩnh không có rê thì không ai thấy
+  "rê trùng nền đang chọn" cho tới khi đã dựng xong.
+- **Probe từng phương án trước khi gửi**, ở 1280 và 375, sửa tới khi sạch các mục: danh sách
+  `P`, rê ra đúng màu mục đang chọn, vạch trái bị bo góc cắt, mục lặp dày chữ, cột dính cuộn
+  riêng, nội dung trôi giữa màn rộng. Rồi chạy luật Cấu trúc (`V1b` trong `review.md`) bằng
+  mắt. Người dùng không tự thấy "card chữ quá trời" hay "vạch bị cắt" trên wireframe xám, họ
+  chọn theo bố cục rồi vấp lỗi ở bản dựng (đã dính 28/09/2026: wireframe C năm dòng mỗi mục,
+  vạch trái bị bo cắt, đang chọn và rê cùng một xám; probe đo ra cả hai lỗi đầu trên chính
+  file wireframe). Ghi một dòng khi gửi: *"Probe wireframe: A sạch, B sạch, C sạch"*.
+- **Hai biến thể nội dung, D và E, trên phương án khuyên dùng.** Cùng bố cục, chỉ khác nội
+  dung, để người dùng thấy cạnh nhau cái họ không tự nghĩ ra:
+  - **D, gọn chữ:** mỗi mục chỉ giữ thứ dùng để chọn ở cột "so sánh bằng gì" của `U2`, tối
+    đa ba dòng. Phần còn lại để trang hay panel chi tiết.
+  - **E, bỏ lặp:** mỗi thông tin một chỗ trên màn: không lặp giữa mục và panel chi tiết, giữa
+    header và sidebar, giữa tên trang và mục đang chọn (`V1b`, "Hai chỗ một việc").
 
-Kết bằng *"Chọn A, B hay C, hoặc trộn (ví dụ `B, lấy card của A`)."* Dừng chờ.
+  D và E cũng qua probe như các phương án bố cục.
+
+- **Gửi link bấm được cho từng phương án**, không chỉ đường dẫn ảnh. Chạy một server tĩnh nền
+  trên thư mục wireframe (`python3 -m http.server <cổng> -d "$TMPDIR/evon-design"`, chạy nền),
+  rồi liệt kê mỗi phương án một dòng dạng link đầy đủ, người dùng bấm hoặc chép vào trình
+  duyệt được ngay:
+
+  ```
+  - A · Lưới card + hàng lọc gọn (khuyên dùng): http://localhost:<cổng>/wireframe.html?v=a
+  - B · Danh sách + bản đồ: http://localhost:<cổng>/wireframe.html?v=b
+  - D · A gọn chữ: http://localhost:<cổng>/wireframe.html?v=d
+  ```
+
+  Mở thử từng link (probe đã mở là được) trước khi gửi. Không chạy được server thì ghi đường
+  dẫn tệp `file://…/wireframe.html` và nói tham số `?v=` chọn phương án.
+
+Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn (ví dụ `C + D`, `B + D + E`)."* Dừng chờ.
 
 ## U4. Dựng thật ⚑
 
@@ -105,12 +135,17 @@ Kết bằng *"Chọn A, B hay C, hoặc trộn (ví dụ `B, lấy card của A
   gu, màu theo vai màu. Không để nguyên header cũ rồi chỉ vá cho khỏi rớt dòng. Đã dính
   28/09/2026: wireframe header năm mục một nút đặc, bản dựng giữ sáu mục cũ lệch cỡ; chủ dự
   án hỏi "wireframe vẽ chuẩn rồi mà sao không ai sửa".
+- **Dựng đúng wireframe đã chọn, không bịa.** Wireframe là bản đặc tả: bản dựng chỉ được
+  thêm màu và dáng. **Không thêm** mục, dòng chữ, badge, nút, khối mà wireframe không có;
+  **không bỏ** thứ wireframe có; không đổi thứ tự. Thấy wireframe thiếu gì thì hỏi hoặc ghi
+  một dòng lúc giao, không tự chêm vào.
 - **Đối chiếu wireframe từng khối trước khi giao.** Mở ảnh wireframe đã chọn cạnh ảnh 1440
   của bản dựng, đi từng khối (header, sidebar, hàng lọc, danh sách, panel): số mục, thứ tự,
   mục nào nút đặc, mục nào chỉ icon, thứ gì wireframe đã bỏ. Khác chỗ nào thì sửa, hoặc ghi
   một dòng vì sao lệch (thiếu dữ liệu, người dùng dặn). Màu thì theo "Mỗi vai đúng một mã
   màu" trong `review.md`: wireframe xám không nói màu, nhưng bản dựng phải ăn nhập từ viền
-  tới brand.
+  tới brand. Tin giao có bảng *"Đối chiếu wireframe"*: khối, wireframe có gì, bản dựng có
+  gì, khớp hay lý do lệch. Kèm số dòng chữ mỗi mục ở hai bên (probe "mục lặp dày chữ").
 - **Dựng xong chạy một lượt làm gọn** trên các khối mới **và khung app của route**: `V1b` và `V1c` trong `review.md`
   (card cao thấp theo dòng có dòng không, link trông như chữ thường, nửa khối trống ở màn
   rộng). Sửa luôn, không đưa bảng: người dùng đã chọn phương án rồi.
