@@ -188,7 +188,7 @@ dựng qua cổng 3 bằng đọc code, lượt rà mở trang thật tìm ra n�
 
 0. [ ] **Chạy `scripts/probe.mjs`** (nằm cạnh `SKILL.md`) trên đúng route vừa dựng:
    `node <thư mục skill>/scripts/probe.mjs http://localhost:<cổng>/<route> --sweep`.
-   Script mở trang ở 375, 768, 1024, 1280, 1440px, chụp ảnh từng khổ, rồi kéo bề rộng từ
+   Script mở trang ở 375, 768, 1024, 1280, 1440, 1920px, chụp ảnh từng khổ, rồi kéo bề rộng từ
    1440 xuống 375 mỗi bước 20px để bắt lỗi nằm giữa hai khổ. Nó đo: cuộn ngang, lỗi
    console, tương phản chữ, khung giấu mất chữ, chữ trong nút xuống dòng, chữ bị cắt còn
    dưới 10 ký tự, phần tử cùng loại cao lệch nhau 1–4px, chữ cùng cột lệch mép, chỗ bấm

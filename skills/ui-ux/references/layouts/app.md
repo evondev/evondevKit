@@ -255,6 +255,14 @@ Nhóm thu gọn được: nút nhãn cùng khuôn mục con, trượt bằng `gr
 - **Tên mục bị cắt thì rê vào hiện đủ tên**, cả lúc sidebar đang mở: "Báo cáo tài chính theo q…" phải có tooltip "Báo cáo tài chính theo quý". Dùng lại tooltip của chế độ thu gọn, chỉ bật khi chữ **thật sự bị cắt** (đo theo `T14`: bề rộng chữ bằng `Range`, không bằng `scrollWidth`), mục ngắn không bật. Bản dựng 25/09/2026 chỉ bật tooltip lúc thu gọn, lúc mở thì tên dài cụt hẳn, không có cách nào đọc được.
 - **Dưới `lg`, sidebar là panel trượt từ TRÁI, cùng khuôn với panel trượt ở `overlay.md`, chỉ đổi phía**: lớp phủ `bg-black/15` (không `/30`, đó là của modal), vào **500ms** / ra **350ms** `cubic-bezier(0.32,0.72,0,1)`, lớp phủ cùng nhịp; chỉ `translate`, không `scale`, không `opacity` trên panel. Đầu sidebar có nút ✕ ở mép phải, Escape và bấm lớp phủ cũng đóng; bấm một link thì đóng. Mọi khối trượt từ mép trong app dùng **một** lớp phủ và **một** đường cong (`N5`). Bản dựng 25/09/2026 tự chọn `bg-black/30` + 200ms `ease-out` vì spec chỉ ghi "trượt từ trái".
 
+- **Màn rộng: nội dung bám sidebar, lấp bằng thêm cột.** Trang lưới hay danh sách trong khung
+  có sidebar không `mx-auto` giữa vùng nội dung: ở 1920px trở lên nó để một khoảng trống giữa
+  sidebar và nội dung, cả trang trông như trôi (đã dính 28/09/2026: `mx-auto max-w-300` hở
+  235px mỗi bên ở 1920). Dư bề ngang thì **thêm cột**: lưới card lên `2xl:grid-cols-4`, danh
+  sách card ngang thành hai cột khi vùng nội dung từ khoảng 1600px. Đừng kéo dài card: card
+  ngang rộng 1800px thì nửa phải trống. Cần trần thì đặt rộng (`max-w-[1600px]` trở lên) và vẫn
+  căn trái. Trang chữ, form, cài đặt giữ cột hẹp như mẫu của từng trang.
+
 ### Thu gọn sidebar (từ `lg` trở lên)
 
 ```
@@ -640,6 +648,12 @@ Tháng 9, 2026 ⌄   [Hôm nay] ‹ ›                          [+ Thêm việc
 
 Xem `../components/list-row.md` cho công thức từng dòng. Danh sách là **một khối
 chia đường kẻ**, không phải mỗi dòng một card.
+
+**Cột lọc bên trái dính theo khi cuộn, không cuộn riêng.** `sticky top-*` chỉ khi cột thấp
+hơn màn. Cột dài hơn màn thì để nó cuộn theo trang, đừng bó `max-h-[calc(100vh-…)]
+overflow-y-auto`: thanh cuộn riêng hiện thường trực, dài gần hết cột, dính sát viền khung
+(đã dính 28/09/2026). Nhóm dài (khu vực, tỉnh) thì hiện năm sáu mục kèm "Xem thêm N" dạng
+link, đừng cho cả cột thành khung cuộn.
 
 ---
 

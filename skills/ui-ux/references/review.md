@@ -159,11 +159,11 @@ sang hạng theo bảng này. Những mục xếp Hỏng thì probe đã tự go
 
 | Mục probe | Hạng |
 | --- | --- |
-| Trang tự cuộn khi vừa tải, cuộn ngang, lớp nổi lòi khỏi màn, lớp nổi mở bằng nút bị vỡ, rê chuột làm nhảy bố cục, tab tới mà không thấy gì đổi, tương phản chữ dưới ngưỡng, khung giấu mất chữ, chữ cắt còn quá ngắn, chữ trong nút xuống dòng, nhãn số đè lên đường biểu đồ, khối bị bóp chiều cao | Hỏng |
+| Trang tự cuộn khi vừa tải, cuộn ngang, lớp nổi lòi khỏi màn, lớp nổi mở bằng nút bị vỡ, rê chuột làm nhảy bố cục, tab tới mà không thấy gì đổi, tương phản chữ dưới ngưỡng, khung giấu mất chữ, chữ cắt còn quá ngắn, chữ trong nút xuống dòng, nhãn số đè lên đường biểu đồ, khối bị bóp chiều cao, chữ cắt nuốt mất số | Hỏng |
 | Chỗ bấm dưới 32px | Mục có ghi "(dưới 24px)" là Hỏng, còn lại (24 tới 31px) là Gu |
 | Hàng trong header / nav rớt dòng | Hỏng khi đè hay đẩy lệch khối khác, không thì Lệch hệ (so với cách hàng đó ở khổ khác). Xem ảnh mới quyết |
 | Cao gần bằng mà không bằng, đường ngăn hai cột kề nhau lệch, chữ cùng cột lệch mép, dấu ngăn cách không đều, control còn kiểu mặc định của trình duyệt, khung khai viền mà viền không thấy, khối con biến mất lúc rê, lớp nổi có dải trống | Lệch hệ |
-| Nền rê gần như không thấy, nền rê tan vào nền khác, viền đổi màu lúc rê, rê / focus khác hình mục đang chọn, bấm xong còn dấu thừa, vòng focus không bọc hết link, bảng cuộn ngang mất cột, nhóm lựa chọn xếp lưới, số tiền ngắt dòng, số không thẳng hàng, nhãn số lòi ra ngoài vùng vẽ, dấu câu rơi xuống đầu dòng, chữ dưới 12px (gộp một dòng, ghi cỡ nhỏ nhất và chỗ; sửa lên ít nhất 12px) | Gu |
+| Nền rê gần như không thấy, nền rê tan vào nền khác, viền đổi màu lúc rê, rê / focus khác hình mục đang chọn, bấm xong còn dấu thừa, vòng focus không bọc hết link, bảng cuộn ngang mất cột, nhóm lựa chọn xếp lưới, số tiền ngắt dòng, số không thẳng hàng, nhãn số lòi ra ngoài vùng vẽ, dấu câu rơi xuống đầu dòng, chữ dưới 12px (gộp một dòng, ghi cỡ nhỏ nhất và chỗ; sửa lên ít nhất 12px), cột dính mà cuộn riêng, nội dung trôi giữa màn rộng (`layouts/app.md`) | Gu |
 | Select gốc đã tô trên desktop | Chế độ soi: không vào bảng. Hai chế độ dựng lại: Lệch hệ, thay bằng Select dựng (từ 8 mục có ô tìm) |
 | Lỗi console | Không vào bảng. Ghi một dòng dưới bảng |
 
@@ -277,6 +277,7 @@ node <thư mục skill>/scripts/probe.mjs http://localhost:5173/<route> \
 | Tablet ngang | 1024 | Ngưỡng thu sidebar, drawer đè gần hết nội dung |
 | Laptop nhỏ | 1280 | Bảng nhiều cột cạnh sidebar, toolbar xuống dòng |
 | Desktop | 1440 | Nội dung kéo quá dài, dòng chữ quá rộng |
+| Màn rộng | 1920 | Nội dung căn giữa trôi khỏi sidebar, card kéo dài nửa trống |
 
 - **Chụp ở khổ cố định chưa đủ.** `--sweep` kéo bề rộng từ 1440 xuống 375, mỗi bước
   20px, rồi báo **khoảng bề rộng** có lỗi. Mở các ảnh ở mục "Khung đáng xem", và thêm
@@ -315,7 +316,7 @@ Cùng tinh thần `M20` (mặc định chỉ light), nhưng dự án đã có s�
 - **Chưa có (hoặc chỉ khai báo) thì không làm**: không chụp dark, không đề xuất dark,
   không thêm class `dark:` vào code sửa. Ghi tối đa một dòng "dự án chưa bật dark
   mode" ở phần mở đầu, không vào bảng.
-- **Có thì soi đủ hai chế độ.** Chạy probe thêm một lượt `--dark` ở đủ 5 khổ (không cần
+- **Có thì soi đủ hai chế độ.** Chạy probe thêm một lượt `--dark` ở đủ các khổ mặc định (không cần
   `--sweep`), ảnh "sau" cũng đủ hai bản. **Lượt tối có danh sách `P` riêng** và phải đối
   chiếu như lượt sáng (`V5`): màu nhấn giữ nguyên trên nền tối hay tụt dưới 4.5:1, và chỉ
   lượt tối đo ra điều đó. Dòng đếm tách hai phần: "sáng 78 mã, tối 41 mã". Màu dark lấy đúng token dark của dự án (khối `.dark`,

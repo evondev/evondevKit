@@ -2,7 +2,7 @@
 // Mở trang thật ở nhiều bề rộng, đo những lỗi máy đo được, chụp ảnh để mắt soi phần còn lại.
 // Dùng ở cổng 3 của checklist (references/checklist.md). Chỉ đọc trang, không sửa gì.
 //
-//   node probe.mjs <url> [--widths 375,768,1024,1280,1440] [--out <thư mục>] [--dark] [--wait 800] [--dpr 1]
+//   node probe.mjs <url> [--widths 375,768,1024,1280,1440,1920] [--out <thư mục>] [--dark] [--wait 800] [--dpr 1]
 //                        [--sweep [1440,375,20]]
 //
 // --sweep: đo xong các khổ cố định thì kéo bề rộng từ 1440 xuống 375, mỗi bước 20px, chụp từng bước và
@@ -19,7 +19,7 @@ import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const defaultWidths = [375, 768, 1024, 1280, 1440];
+const defaultWidths = [375, 768, 1024, 1280, 1440, 1920];
 const defaultSweep = [1440, 375, 20];
 const mobileWidthLimit = 640;
 // Sàn cỡ bấm của skill: nút h-8 trong bảng dày là nhỏ nhất được phép (list-row.md).
@@ -299,7 +299,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
       const isClamp = style.webkitLineClamp !== "none";
       const visibleRatio = isClamp ? element.clientHeight / element.scrollHeight : element.clientWidth / element.scrollWidth;
 
-      return { element: describe(element), fullText, visibleChars: Math.floor(fullText.length * visibleRatio), width: Math.round(element.clientWidth) };
+      return { element: describe(element), fullText, visibleChars: Math.floor(fullText.length * visibleRatio), width: Math.round(element.clientWidth), isSingleLine: !isClamp };
     });
   const tooShortTexts = truncatedTexts.filter((item) => item.visibleChars < 10 && item.fullText.length > item.visibleChars + 3);
 
@@ -1084,6 +1084,46 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     }
   }
 
+  // 18c. Cột dính mà cuộn riêng: `sticky` kèm `max-h-[calc(100vh-…)] overflow-y-auto` (cột lọc, mục lục).
+  //      Thanh cuộn riêng hiện thường trực, dính sát viền, màn càng cao thì càng dài gần hết cột
+  //      (28/09/2026). Cột dài hơn màn thì để cuộn theo trang. Khung cuộn chính của app không dính nên
+  //      không tính; danh sách trong lớp nổi là `fixed` / `absolute`, cũng không tính.
+  const stickyScrollColumns = [];
+  for (const element of allElements) {
+    if (stickyScrollColumns.length >= 4) break;
+    const style = getComputedStyle(element);
+    if (style.position !== "sticky" || !["auto", "scroll"].includes(style.overflowY) || !isVisible(element)) continue;
+    const { clientHeight, scrollHeight } = element;
+    if (clientHeight < 120 || scrollHeight <= clientHeight + 4) continue;
+    stickyScrollColumns.push(`khung cao ${clientHeight}px, nội dung ${scrollHeight}px: ${describe(element)}`);
+  }
+
+  // 18d. Chữ cắt nuốt mất số: dòng `truncate` một dòng mà phần bị giấu có số kèm đơn vị (m², triệu, đ, %).
+  //      Số thường là thứ người dùng dùng để so sánh ("Duplex gác xép… " nuốt "210m²", 28/09/2026).
+  const numberWithUnit = /\d+(?:[.,]\d+)?\s?(?:m²|m2|triệu|tr\b|đ\b|₫|%|km\b|người|phòng)/i;
+  const swallowedNumbers = truncatedTexts
+    .filter((item) => item.isSingleLine && numberWithUnit.test(item.fullText.slice(item.visibleChars)))
+    .slice(0, 6)
+    .map((item) => `giấu "${item.fullText.slice(item.visibleChars).trim().slice(0, 24)}": ${item.element}`);
+
+  // 18e. Nội dung trôi giữa màn rộng: khối nội dung chính có trần bề rộng và căn giữa, hở hai bên từ
+  //      120px. Cạnh sidebar thì thành khoảng trống giữa sidebar và nội dung (`mx-auto max-w-300`, 28/09/2026).
+  //      Chỉ xét khối rộng từ 900px: cột form, cài đặt hẹp căn giữa là mẫu riêng của từng trang.
+  const floatingContent = [];
+  if (viewportWidth >= 1600) {
+    for (const element of allElements) {
+      if (floatingContent.length >= 2) break;
+      const style = getComputedStyle(element);
+      if (style.maxWidth === "none" || !isVisible(element)) continue;
+      const marginLeft = parseFloat(style.marginLeft);
+      const marginRight = parseFloat(style.marginRight);
+      const width = element.getBoundingClientRect().width;
+      if (width >= 900 && marginLeft >= 120 && Math.abs(marginLeft - marginRight) <= 2) {
+        floatingContent.push(`rộng ${Math.round(width)}px, hở ${Math.round(marginLeft)}px mỗi bên: ${describe(element)}`);
+      }
+    }
+  }
+
   // 19. Chữ dưới 12px: đọc khó ở mọi brand, hay gặp ở dòng phụ trong card và cột bên. Chữ trong biểu đồ
   //     (svg) và nhãn ngắn từ ba ký tự trở xuống ("Mới", "VIP") không tính.
   const tinyTexts = [];
@@ -1103,6 +1143,9 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     brokenRules,
     squeezedBlocks,
     styledNativeSelects,
+    stickyScrollColumns,
+    swallowedNumbers,
+    floatingContent,
     tinyTexts,
     tinyTextCount,
     autoScrolledAreas,
@@ -2137,6 +2180,7 @@ function listMustReportItems(results, sweepSteps) {
     for (const element of result.wrappedRows) addItem(width, `hàng rớt dòng (xem ảnh để xếp hạng): ${element}`);
     for (const item of result.overlappedChartLabels) addItem(width, `nhãn số đè lên đường biểu đồ: ${item}`);
     for (const item of result.squeezedBlocks) addItem(width, `khối bị bóp chiều cao: ${item}`);
+    for (const item of result.swallowedNumbers) addItem(width, `chữ cắt nuốt mất số: ${item}`);
     for (const item of result.smallTapTargets.filter((target) => target.isBelowFloor)) addItem(width, `chỗ bấm dưới 24px: ${item.element}`);
   }
 
@@ -2304,6 +2348,18 @@ function formatReport(results) {
     if (result.brokenRules.length > 0) {
       problems.push(`ĐƯỜNG NGĂN HAI CỘT KỀ NHAU LỆCH (${result.brokenRules.length} cặp, nhìn thành một đường gãy):`);
       for (const item of result.brokenRules) problems.push(`  ${item}`);
+    }
+    if (result.stickyScrollColumns.length > 0) {
+      problems.push(`CỘT DÍNH MÀ CUỘN RIÊNG (${result.stickyScrollColumns.length} cột, thanh cuộn riêng hiện thường trực; cột dài hơn màn thì để cuộn theo trang):`);
+      for (const item of result.stickyScrollColumns) problems.push(`  ${item}`);
+    }
+    if (result.swallowedNumbers.length > 0) {
+      problems.push(`CHỮ CẮT NUỐT MẤT SỐ (${result.swallowedNumbers.length} chỗ, số kèm đơn vị nằm sau dấu …):`);
+      for (const item of result.swallowedNumbers) problems.push(`  ${item}`);
+    }
+    if (result.floatingContent.length > 0) {
+      problems.push(`NỘI DUNG TRÔI GIỮA MÀN RỘNG (khối chính căn giữa, hở hai bên):`);
+      for (const item of result.floatingContent) problems.push(`  ${item}`);
     }
     if (result.styledNativeSelects.length > 0) {
       problems.push(`SELECT GỐC ĐÃ TÔ TRÊN DESKTOP (${result.styledNativeSelects.length} ô; chế độ soi bỏ qua, dựng lại thì thay):`);

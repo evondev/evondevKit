@@ -66,12 +66,16 @@ dòng đó."* Dừng chờ.
   A giữ lưới card với thanh lọc gọn dính đầu trang; B chia đôi danh sách và panel chi tiết;
   C đặt ô tìm lên trước, lọc sau. Ba phương án chỉ khác bo góc hay màu là **một** phương án.
 - **Xám, không màu brand, không icon trang trí.** Ảnh là khối xám có tỉ lệ thật. Người dùng
-  chỉ được nhìn bố cục, không sa vào màu.
+  chỉ được nhìn bố cục, không sa vào màu. **Xám vẫn có mức nhấn**: nút chính tô xám đậm chữ
+  trắng, nút phụ viền. Hai nút cùng một kiểu trong wireframe là chưa quyết thứ bậc, lúc dựng
+  thật sẽ lại thành hai nút tranh nhau (`V1b`).
 - **Nội dung thật**: chữ lấy từ dữ liệu của dự án, cả ca dài nhất và ca trống. Wireframe chữ
   "Lorem" thì không thấy được card quá tải.
 - Mỗi phương án ghi **ba dòng**: việc chính giờ thấy ở đâu, đổi gì so với bản cũ, đánh đổi.
   Phương án cần dữ liệu hay logic chưa có (khoảng cách, chế độ xem mới) thì ghi rõ
   *"cần dữ liệu X, logic do bạn nối"* (`N10`).
+- **Tính cả khung app vào bề ngang.** App đã có sidebar điều hướng mà phương án thêm một cột
+  lọc bên trái thì ghi rõ ở dòng đánh đổi: hai cột trái, nội dung còn lại bao nhiêu px ở 1280.
 - **Đánh dấu một phương án khuyên dùng**, kèm một câu vì sao (bám `U2`).
 - Một file HTML, các phương án cạnh nhau hoặc chuyển bằng tab. Chụp bằng probe ở 1280 và
   375, gửi kèm đường dẫn ảnh. Chạy luật Cấu trúc (`V1b` trong `review.md`) lên từng phương án
@@ -87,7 +91,25 @@ Kết bằng *"Chọn A, B hay C, hoặc trộn (ví dụ `B, lấy card của A
 - **Sản phẩm mới:** đi tiếp câu 2 và 3 của mục 0 trong `SKILL.md`, rồi dựng theo phương án đã
   chọn thay cho bố cục mặc định của câu 4.
 - Ráp bằng mẫu của skill (`SKILL.md` mục 2). Chạy probe `--sweep` tới khi danh sách `P`
-  trống, tối đa ba vòng.
+  trống, tối đa ba vòng. **Danh sách `P` tính cả khung app trên route đó** (header, sidebar,
+  thanh dưới, menu thông báo): người dùng nhìn cả màn, không chỉ phần mới dựng. Khung app lỗi
+  thì sửa luôn, sửa ở component dùng chung và nói nó đổi cả các màn khác. Đã dính 28/09/2026:
+  trang dựng lại đúng bố cục mà header vẫn bị bóp, người xem vẫn chấm "xấu".
+- **Dựng xong chạy một lượt làm gọn** trên các khối mới: `V1b` và `V1c` trong `review.md`
+  (card cao thấp theo dòng có dòng không, link trông như chữ thường, nửa khối trống ở màn
+  rộng). Sửa luôn, không đưa bảng: người dùng đã chọn phương án rồi.
+- **Tự soi bằng mắt trước khi giao, ghi ra.** Mở ảnh 375, 1440 và 1920 của probe, trả lời
+  từng câu thành một dòng trong tin giao (câu nào có lỗi thì sửa trước, rồi mới ghi "không"):
+  1. Card, dòng cùng loại có cao thấp khác nhau vì có dòng thiếu một mẩu không?
+  2. Thứ bấm được (link "Xem thêm", nút chữ) có trông như chữ thường không?
+  3. Trong một màn có bao nhiêu khung viền đứng cạnh hay lồng nhau? Gộp được khung nào?
+  4. Ở 1920, chỗ nào trống mà không có lý do (nửa card, hai bên nội dung)?
+  5. Thứ nặng nhất màn (đậm nhất, màu nhất) có đúng là việc chính ở `U2` không?
+
+  Không ghi mấy dòng này thì coi như chưa soi. Người dùng tự phát hiện ra lỗi nằm trong năm
+  câu này là skill chưa làm xong việc (28/09/2026: thanh cuộn thường trực, chữ cắt nuốt diện
+  tích, nội dung trôi giữa màn rộng, đường kẻ header lệch, đều do chủ dự án tự thấy; bốn
+  thứ đó nay probe đo).
 - **Lúc giao** nói bằng ngôn ngữ trải nghiệm, không bằng class: việc chính giờ làm trong mấy
   bước, thấy ngay ở khổ nào; ảnh trước và sau ở 1280 và 375; danh sách thứ cần bạn nối logic
   hay thêm dữ liệu.
