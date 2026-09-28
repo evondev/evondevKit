@@ -21,7 +21,11 @@ chức**, hình thức vẫn theo skill. Gửi ảnh kèm câu "ảnh này chỉ
 đọc theo `S12` nhánh wireframe, không bám màu và bóng của ảnh.
 
 **Thứ tự lớn:** bậc 1 → 1b → 2 → 3 → rà hết `REVIEW.md` → phase 2 refactor
-(`BACKLOG.md`, mục "Phase 2") → dark mode → vòng tiếng Anh.
+(`BACKLOG.md`, mục "Phase 2") → phase 3 thiết kế từ đầu (`BACKLOG.md`, mục "Phase 3")
+→ dark mode → vòng tiếng Anh.
+
+- Phase 3 kéo lên trước dark mode (chốt 28/09/2026): bản dựng lại theo nhánh `V` sạch hết lỗi
+  đo được mà người xem vẫn nói "nhìn không khác gì bản cũ, vẫn cần người làm UX".
 
 - Phase 2 đi trước dark mode (chốt 27/09/2026): người dùng thật đang có UI sẵn mà nhìn
   rối, muốn dùng skill để tối ưu. Dark mode ít người cần hơn, để sau.

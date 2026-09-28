@@ -65,7 +65,7 @@ sách `P` trống (tối đa ba vòng). Nhánh `V` có ba chế độ (28/09/202
 trọng), dựng lại giữ brand (đề có "dựng lại", "theo skill"; Gu chọn sẵn, được thay control
 gốc bằng component của skill, giữ vai màu theo bảng ghi trước khi dựng), và dựng lại theo gu
 skill (đề có "hoàn toàn theo gu skill", "bỏ style cũ"; chỉ giữ logo và màu nhấn chính). Control gốc chưa có kiểu là Lệch hệ ở mọi chế
-độ. Chưa test chế độ dựng lại bằng đáp án: thử trên bản sao `tim-phong-sua`.
+độ. Chưa test chế độ dựng lại bằng đáp án: thử trên bản sao `tim-phong-sua`. probe đo thêm (28/09/2026): đường ngăn hai cột kề nhau lệch, khối khai chiều cao mà bị bóp (bắt được header bị bóp, lỗi sót ở mọi vòng), chữ dưới 12px. Hai chế độ dựng lại có thêm hạng Cấu trúc (`V1b`, 28/09/2026): tín hiệu tranh nhau, hai chỗ một việc, thông tin không phân biệt được gì, khối quá tải, control sai loại, đặt sai chỗ; sắp lại thì chọn sẵn, bỏ thông tin thì không.
 
 **Ý của chủ dự án:** skill tự chụp ảnh hoặc quay video UI hiện tại của dự án,
 chỉ ra lỗi, đưa bảng trước/sau rồi hỏi có muốn sửa không. User không tin phần tự
@@ -207,7 +207,7 @@ mấy chỗ sửa trước đó có dùng được ở chỗ khác không.
 
 | # | Dự án | Khác ở đâu | Test gì | Trạng thái |
 | --- | --- | --- | --- | --- |
-| 1 | `tim-phong` | Vite + React + Tailwind v4, chép từ một trang thật đang xấu, brand riêng, nhiều lỗi | Bắt lỗi, không báo nhầm brand, quét bề rộng, hai bản dark | Vòng 1 (27/09/2026, `master`, tự chụp): bắt 19/34, báo nhầm 1 (gom bo góc brand về thang), 1 lần đưa khối brand vào Gu. Probe đo ra mà model bỏ: nút 20px, nút bị card cắt. Probe không mở được lớp nổi mở bằng nút thường. Vòng 2: 16/37, không báo nhầm; probe vẫn đo ra mà bảng bỏ, vẫn chưa mở được lớp nổi (nút chỉ có icon, `div` bấm được). Đã sửa: probe in danh sách mã `P` phải đối chiếu, mở lớp nổi rộng hơn, đo trang tự cuộn, bỏ lớp che khi đo tương phản. Vòng 3: 26/37, không báo nhầm, không đưa brand vào Gu. Đã sửa tiếp: Tab không dừng ở body, lướt qua phần tử cùng kiểu; lệnh grep tìm Lệch hệ trong code; lỗi thật mà sửa rộng vẫn lên bảng. Vòng 4: 27/37, không báo nhầm, 77/77 mã P lên bảng. `master` dừng chỉnh ở đây (sửa tiếp dễ thành học thuộc riêng nó), chuyển sang `chore/ui-setup`, `feat/theme`. `chore/ui-setup` vòng 1: 28/37, không báo nhầm, qua bẫy dark (không bịa dark mode). `feat/theme` vòng 1: 33/43, đủ 6 lỗi dark, báo nhầm 1 (gom bo góc card khác loại). Đã sửa: lượt tối có danh sách `P` riêng phải đối chiếu, chạy đủ 5 khổ; "cùng vai" là cùng loại khối, không phải cùng là card. `feat/theme` vòng 2: 34/43, không báo nhầm, đủ 6 lỗi dark, đối chiếu cả P sáng (78) lẫn tối (93). Xong `tim-phong`, chuyển sang dự án 2. Luôn sót ở mọi vòng (máy chưa đo được): header bị bóp chiều cao, ảnh không phủ hết card, lệch mép ở ≥1400px, nút trong suốt không nhãn, focus ở mobile, vài lệch token lẻ. Chưa đo được: header bị bóp chiều cao, ảnh không phủ hết card, lệch mép ở ≥1400px, focus ở mobile |
+| 1 | `tim-phong` | Vite + React + Tailwind v4, chép từ một trang thật đang xấu, brand riêng, nhiều lỗi | Bắt lỗi, không báo nhầm brand, quét bề rộng, hai bản dark | Vòng 1 (27/09/2026, `master`, tự chụp): bắt 19/34, báo nhầm 1 (gom bo góc brand về thang), 1 lần đưa khối brand vào Gu. Probe đo ra mà model bỏ: nút 20px, nút bị card cắt. Probe không mở được lớp nổi mở bằng nút thường. Vòng 2: 16/37, không báo nhầm; probe vẫn đo ra mà bảng bỏ, vẫn chưa mở được lớp nổi (nút chỉ có icon, `div` bấm được). Đã sửa: probe in danh sách mã `P` phải đối chiếu, mở lớp nổi rộng hơn, đo trang tự cuộn, bỏ lớp che khi đo tương phản. Vòng 3: 26/37, không báo nhầm, không đưa brand vào Gu. Đã sửa tiếp: Tab không dừng ở body, lướt qua phần tử cùng kiểu; lệnh grep tìm Lệch hệ trong code; lỗi thật mà sửa rộng vẫn lên bảng. Vòng 4: 27/37, không báo nhầm, 77/77 mã P lên bảng. `master` dừng chỉnh ở đây (sửa tiếp dễ thành học thuộc riêng nó), chuyển sang `chore/ui-setup`, `feat/theme`. `chore/ui-setup` vòng 1: 28/37, không báo nhầm, qua bẫy dark (không bịa dark mode). `feat/theme` vòng 1: 33/43, đủ 6 lỗi dark, báo nhầm 1 (gom bo góc card khác loại). Đã sửa: lượt tối có danh sách `P` riêng phải đối chiếu, chạy đủ 5 khổ; "cùng vai" là cùng loại khối, không phải cùng là card. `feat/theme` vòng 2: 34/43, không báo nhầm, đủ 6 lỗi dark, đối chiếu cả P sáng (78) lẫn tối (93). Xong `tim-phong`, chuyển sang dự án 2. Luôn sót ở mọi vòng (máy chưa đo được): header bị bóp chiều cao, ảnh không phủ hết card, lệch mép ở ≥1400px, nút trong suốt không nhãn, focus ở mobile, vài lệch token lẻ. Chưa đo được: ảnh không phủ hết card, lệch mép ở ≥1400px, focus ở mobile |
 | 2 | Chưa dựng | Next + shadcn, hệ token gọn, **ít lỗi** (vài lỗi Hỏng nhỏ) | Skill có dám nói "gần như ổn, chỉ có N chỗ" không, hay bịa cho đủ bảng. Quan trọng nhất | |
 | 3 | Chưa dựng | Không Tailwind (CSS thuần hoặc CSS Module), phong cách glass hoặc nền tối | Chấm Lệch hệ khi không có utility, không kéo về flat, dark làm mặc định | |
 
@@ -225,6 +225,47 @@ Sau ba dự án mồi: chạy trên **một app thật** của chủ dự án, k
 - Tên brand giả phải khác hẳn tên thật, không chỉ đổi vài chữ.
 - Lượt "chỉ đưa ảnh" chạy trong một thư mục trống. Phiên test luôn là phiên mới, không
   dùng lại phiên đã cài lỗi.
+
+---
+
+## Phase 3: thiết kế từ đầu, như một designer
+
+Ý của chủ dự án (28/09/2026): có một nhánh làm việc như designer thật. Hiểu sản phẩm là
+gì, cho ai, đăng ký thế nào, rồi tới wireframe, rồi mới dựng thật. Bắt đầu sau phase 2,
+vì bước dựng thật dựa trên chính các luật đang chốt ở phase 2.
+
+**Đang làm (28/09/2026).** Kéo lên trước dark mode. Đã vào skill, chưa qua vòng test nào
+(⚑): nhánh `U` ở `skills/ui-ux/references/design-process.md` (`U1`–`U5`), câu 1 của mục 0
+có thêm dòng, câu 4 ghi vì sao wireframe phương án ở `U` không phải luật cũ sống lại. Hai
+cổng: duyệt brief cùng việc chính (`U1` + `U2`), chọn wireframe (`U3`). Đề test đầu tiên:
+trang danh sách của `tim-phong-sua`, sau khi bản dựng lại theo `V` bị chê "không khác gì".
+
+**Vì sao cần.** Qua các vòng phase 2, phần xấu nặng nhất là cấu trúc (card quá tải,
+điều hướng lặp hai lần, control sai loại, control đặt xa thứ nó điều khiển), không phải
+màu. Designer bắt mấy thứ này ở wireframe, lúc sửa gần như không tốn gì. Skill hiện chỉ
+bắt được sau khi đã có code (`V1b` trong `review.md`), lúc sửa đã đắt.
+
+**Không phải mặc định.** Chỉ bật khi dựng sản phẩm hay luồng mới, hoặc khi người dùng
+tự xin ("thiết kế từ đầu", "phân tích trước rồi mới dựng"). Một màn lẻ vẫn dựng luôn,
+không hỏi (mục 0 của `SKILL.md`).
+
+| Bước | Ra cái gì | Chặn |
+| --- | --- | --- |
+| 1. Brief | Một đoạn: sản phẩm gì, cho ai, việc chính, nền tảng. Đọc repo, README, route trước; chỉ hỏi phần không suy ra được, tối đa năm câu | Người dùng xác nhận |
+| 2. Luồng và sơ đồ màn | Danh sách màn, luồng chính: vào lần đầu (đăng ký, đăng nhập), việc chính, lỗi, trống | Người dùng xác nhận |
+| 3. Wireframe | HTML xám chỉ có bố cục, chạy qua luật Cấu trúc (`V1b`) trước khi đưa | Người dùng duyệt bố cục |
+| 4. Dựng thật | Code theo skill, probe tới khi danh sách `P` trống | Cổng 3 trong `checklist.md` |
+
+**Đã chốt khi bàn:**
+
+- Không bịa nghiên cứu người dùng. Model không phỏng vấn được ai, nên không viết persona
+  hay hành trình người dùng dài. Brief chỉ ghi điều đọc được từ code hoặc người dùng đã nói.
+- Không có bước hi-fi mock riêng: với skill này code là hi-fi. Mock rồi dựng lại là làm
+  hai lần.
+- Wireframe xám để người dùng chỉ nhìn bố cục, không sa vào màu.
+
+**Chưa chốt:** câu hỏi brief cụ thể; wireframe là một trang HTML nhiều màn hay mỗi màn một
+file; test bằng đề gì (cần đề "sản phẩm mới" có đáp án bố cục để chấm).
 
 ---
 

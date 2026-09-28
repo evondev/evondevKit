@@ -1032,9 +1032,79 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     if (hasDefaultBorder || isNativeSelect) browserDefaultControls.push(`${isNativeSelect ? "select gốc trình duyệt" : `viền ${style.borderTopWidth} ${style.borderTopStyle} ${style.borderTopColor}`}: ${describe(control)}`);
   }
 
+  // 17b. Select gốc đã tô ở khổ desktop: lúc đóng khớp app, bấm vào vẫn bung menu của hệ điều hành. Chế độ
+  //      soi bỏ qua, hai chế độ dựng lại thay bằng Select dựng (review.md V1, 28/09/2026).
+  const styledNativeSelects = isMobile ? [] : [...document.querySelectorAll("select")]
+    .filter((select) => isVisible(select) && !["auto", "menulist"].includes(getComputedStyle(select).appearance))
+    .slice(0, 6)
+    .map((select) => `${select.options.length} mục: ${describe(select)}`);
+
+  // 18. Đường ngăn ngang của hai cột kề nhau lệch vài px: vạch dưới khối logo ở sidebar với vạch dưới
+  //     header, nhìn thành một đường gãy (28/09/2026). Lệch lớn hơn 16px là hai tầng khác nhau, bỏ qua.
+  const horizontalRules = [];
+  for (const element of allElements) {
+    const style = getComputedStyle(element);
+    if (!isVisible(element)) continue;
+    const rect = element.getBoundingClientRect();
+    if (rect.width < 120) continue;
+    for (const [side, edgeY] of [["Bottom", rect.bottom], ["Top", rect.top]]) {
+      const isDrawn = parseFloat(style[`border${side}Width`]) > 0 && style[`border${side}Style`] !== "none" && readColor(style[`border${side}Color`]).alpha > 0.05;
+      if (isDrawn) horizontalRules.push({ element, edgeY, left: rect.left, right: rect.right });
+    }
+  }
+  const brokenRules = [];
+  for (const first of horizontalRules) {
+    for (const second of horizontalRules) {
+      if (brokenRules.length >= 6) break;
+      const isSideBySide = Math.abs(first.right - second.left) <= 4;
+      const offset = Math.abs(first.edgeY - second.edgeY);
+      // Hai khối cùng bắt đầu ở đỉnh trang (khối logo sidebar và header) là cùng một tầng, lệch bao nhiêu
+      // cũng là gãy: header bị bóp còn 35px lệch 46px với vạch dưới logo (28/09/2026).
+      const isTopBand = first.element.getBoundingClientRect().top <= 1 && second.element.getBoundingClientRect().top <= 1;
+      if (isSideBySide && offset >= 0.75 && (offset <= 16 || (isTopBand && offset <= 120))) {
+        brokenRules.push(`lệch ${offset.toFixed(1)}px: ${describe(first.element)} | ${describe(second.element)}`);
+      }
+    }
+  }
+
+  // 18b. Khối khai chiều cao cố định (`h-[70px]`, `h-16`) mà hiện ra thấp hơn: con của khung flex dọc
+  //      thiếu `shrink-0` bị nội dung dài bóp lại (header 70px còn 35px, 28/09/2026). Khối có biến thể
+  //      `md:h-…` hay `max-h-…` thì chiều cao đổi theo khổ là cố ý, bỏ qua.
+  const squeezedBlocks = [];
+  for (const element of allElements) {
+    if (squeezedBlocks.length >= 6) break;
+    const classNames = (element.getAttribute("class") || "").split(/\s+/);
+    if (classNames.some((className) => /:h-|^max-h-/.test(className))) continue;
+    const heightClass = classNames.map((className) => className.match(/^h-(?:\[(\d+(?:\.\d+)?)px\]|(\d+(?:\.\d+)?))$/)).find(Boolean);
+    if (!heightClass || !isVisible(element)) continue;
+    const declaredHeight = heightClass[1] ? Number(heightClass[1]) : Number(heightClass[2]) * 4;
+    const renderedHeight = element.getBoundingClientRect().height;
+    if (declaredHeight >= 24 && renderedHeight < declaredHeight - 2) {
+      squeezedBlocks.push(`khai ${declaredHeight}px, hiện ${Math.round(renderedHeight)}px: ${describe(element)}`);
+    }
+  }
+
+  // 19. Chữ dưới 12px: đọc khó ở mọi brand, hay gặp ở dòng phụ trong card và cột bên. Chữ trong biểu đồ
+  //     (svg) và nhãn ngắn từ ba ký tự trở xuống ("Mới", "VIP") không tính.
+  const tinyTexts = [];
+  let tinyTextCount = 0;
+  for (const element of allElements) {
+    const ownText = [...element.childNodes].filter((node) => node.nodeType === Node.TEXT_NODE).map((node) => node.textContent).join("").trim();
+    if (ownText.length <= 3 || element.closest("svg") || !isVisible(element)) continue;
+    const fontSize = parseFloat(getComputedStyle(element).fontSize);
+    if (fontSize >= 12) continue;
+    tinyTextCount += 1;
+    if (tinyTexts.length < 10) tinyTexts.push(`${fontSize}px "${ownText.slice(0, 32)}": ${describe(element)}`);
+  }
+
   return {
     invisibleFrames,
     browserDefaultControls,
+    brokenRules,
+    squeezedBlocks,
+    styledNativeSelects,
+    tinyTexts,
+    tinyTextCount,
     autoScrolledAreas,
     clippedBlocks,
     wrappedControls,
@@ -2066,6 +2136,7 @@ function listMustReportItems(results, sweepSteps) {
     for (const element of result.wrappedControls) addItem(width, `chữ trong nút xuống dòng: ${element}`);
     for (const element of result.wrappedRows) addItem(width, `hàng rớt dòng (xem ảnh để xếp hạng): ${element}`);
     for (const item of result.overlappedChartLabels) addItem(width, `nhãn số đè lên đường biểu đồ: ${item}`);
+    for (const item of result.squeezedBlocks) addItem(width, `khối bị bóp chiều cao: ${item}`);
     for (const item of result.smallTapTargets.filter((target) => target.isBelowFloor)) addItem(width, `chỗ bấm dưới 24px: ${item.element}`);
   }
 
@@ -2229,6 +2300,22 @@ function formatReport(results) {
     if (result.missingFocusRings.length > 0) {
       problems.push(`TAB TỚI MÀ KHÔNG THẤY GÌ ĐỔI (${result.missingFocusRings.length} chỗ):`);
       for (const element of result.missingFocusRings.slice(0, 8)) problems.push(`  ${element}`);
+    }
+    if (result.brokenRules.length > 0) {
+      problems.push(`ĐƯỜNG NGĂN HAI CỘT KỀ NHAU LỆCH (${result.brokenRules.length} cặp, nhìn thành một đường gãy):`);
+      for (const item of result.brokenRules) problems.push(`  ${item}`);
+    }
+    if (result.styledNativeSelects.length > 0) {
+      problems.push(`SELECT GỐC ĐÃ TÔ TRÊN DESKTOP (${result.styledNativeSelects.length} ô; chế độ soi bỏ qua, dựng lại thì thay):`);
+      for (const item of result.styledNativeSelects) problems.push(`  ${item}`);
+    }
+    if (result.squeezedBlocks.length > 0) {
+      problems.push(`KHỐI BỊ BÓP CHIỀU CAO (${result.squeezedBlocks.length} khối, thường thiếu shrink-0 trong khung flex dọc):`);
+      for (const item of result.squeezedBlocks) problems.push(`  ${item}`);
+    }
+    if (result.tinyTextCount > 0) {
+      problems.push(`CHỮ DƯỚI 12px (${result.tinyTextCount} chỗ):`);
+      for (const item of result.tinyTexts) problems.push(`  ${item}`);
     }
     if (result.browserDefaultControls.length > 0) {
       problems.push(`CONTROL CÒN KIỂU MẶC ĐỊNH CỦA TRÌNH DUYỆT (${result.browserDefaultControls.length} chỗ, dự án thiếu reset hay control chưa tự reset):`);

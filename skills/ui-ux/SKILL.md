@@ -1,6 +1,6 @@
 ---
 name: ui-ux
-description: Gu UI/UX cho hệ thống dashboard — dashboard, danh sách, bảng, form, cài đặt, modal. Ba nhánh - dựng màn mới, soi UI đang có rồi đề xuất sửa (bảng trước/sau, hỏi rồi mới sửa), và refactor codebase đã có mà không vỡ giao diện. Bám theo thư viện component và token sẵn có của dự án. Mặc định flat, làm được glassmorphism, gradient, nổi, nền tối khi được chọn. Dùng khi dựng hoặc sửa bất kỳ giao diện app nào, khi refactor CSS, khi người dùng gửi ảnh hay link app của họ nhờ xem, hoặc khi họ nhắc "làm UI cho đẹp", "xem giúp UI", "review UI", "chỗ nào chưa ổn", "nhìn rối", "đừng làm kiểu AI", "theo gu của mình", "ui-ux", "evon".
+description: Gu UI/UX cho hệ thống dashboard — dashboard, danh sách, bảng, form, cài đặt, modal. Bốn nhánh - dựng màn mới, soi UI đang có rồi đề xuất sửa (bảng trước/sau, hỏi rồi mới sửa), refactor codebase đã có mà không vỡ giao diện, và thiết kế lại trải nghiệm từ đầu như một designer (brief, việc chính của từng màn, wireframe vài phương án, rồi mới dựng). Bám theo thư viện component và token sẵn có của dự án. Mặc định flat, làm được glassmorphism, gradient, nổi, nền tối khi được chọn. Dùng khi dựng hoặc sửa bất kỳ giao diện app nào, khi refactor CSS, khi người dùng gửi ảnh hay link app của họ nhờ xem, hoặc khi họ nhắc "làm UI cho đẹp", "xem giúp UI", "review UI", "chỗ nào chưa ổn", "nhìn rối", "thiết kế từ đầu", "làm lại UX", "như một designer", "đừng làm kiểu AI", "theo gu của mình", "ui-ux", "evon".
 ---
 
 # UI/UX cho hệ thống dashboard
@@ -10,7 +10,8 @@ description: Gu UI/UX cho hệ thống dashboard — dashboard, danh sách, bả
 > Skill là bộ tiêu chí để làm trước: chỗ nào đề chưa rõ thì lấy mặc định, dựng
 > xong rồi **báo lúc giao** mình đã chọn gì. Người dùng muốn khác thì họ nói sau.
 > Ngoại lệ duy nhất: **soi UI đang có** (`references/review.md`) thì soi luôn không
-> hỏi, nhưng **sửa thì hỏi** — người dùng chọn dòng trong bảng rồi mới đụng code.
+> hỏi, nhưng **sửa thì hỏi** — người dùng chọn dòng trong bảng rồi mới đụng code. Và nhánh
+> **thiết kế từ đầu** (`references/design-process.md`) có hai cổng chờ: duyệt brief, chọn wireframe.
 
 Skill này không dạy "thế nào là đẹp" bằng tính từ. Nó làm ba việc: **đi đúng thứ
 tự** trước khi dựng, **cấm** những thói quen làm giao diện lộ ngay ra là AI dựng,
@@ -38,6 +39,7 @@ về thứ tự các bước, và về người phải duyệt.
 | Trả lời | Đi đâu |
 | --- | --- |
 | **Đã có UI, muốn biết chỗ nào chưa ổn / cho đẹp hơn** ("xem giúp", "review", "nhìn rối", gửi ảnh hay link app của họ) | Mở `references/review.md` và đi theo nhánh `V`: soi, lập bảng trước/sau, người dùng chọn dòng rồi mới sửa. Đề có "dựng lại", "làm lại giao diện", "theo skill" là **chế độ dựng lại giữ brand**: được thay control gốc bằng component của skill, giữ vai màu của dự án. Đề nói "hoàn toàn theo gu skill", "bỏ style cũ" thì đổi sang gu của skill, chỉ giữ logo và màu nhấn chính. **Dừng mục 0 tại đây**, lúc giao theo `V5` chứ không theo `S15` ⚑ |
+| **Muốn nghĩ lại trải nghiệm, không chỉ làm đẹp** ("thiết kế từ đầu", "làm lại UX", "như một designer", "phân tích rồi mới dựng", "vẫn chưa ổn về UX"), cho sản phẩm mới hay màn đã có | Mở `references/design-process.md` và đi theo nhánh `U`: brief và việc chính của từng màn, rồi 2–3 wireframe, người dùng chọn rồi mới dựng. **Dừng mục 0 tại đây** ⚑ |
 | **Đã có UI, muốn refactor / dọn code mà giữ nguyên hình** | Mở `references/refactor.md` và đi theo nhánh `L`. **Dừng mục 0 tại đây** — nhánh đó có bộ mặc định riêng, bắt đầu bằng "đo trước khi kết luận" |
 | **Dựng mới** | Đi tiếp câu 2 |
 
@@ -210,7 +212,9 @@ họ nói thì sửa theo, không hỏi lại.
 ⚠️ **Luật cũ đã bỏ (21/09/2026), đừng hồi sinh:** "đưa 2–3 phương án bố cục
 rồi DỪNG HẲN chờ chọn". Bỏ vì bắt người dùng chọn trước khi thấy gì, và buộc mỗi
 file layout phải nuôi nhiều phương án cho mọi loại màn. Bố cục mặc định cố định
-chặn được đúng lỗi bố cục bịa mà luật cũ nhắm tới.
+chặn được đúng lỗi bố cục bịa mà luật cũ nhắm tới. Nhánh `U` (`references/design-process.md`)
+có 2–3 wireframe để chọn, và đó không phải luật cũ sống lại: chỉ vào khi người dùng tự xin
+quy trình thiết kế, và họ chọn sau khi **đã thấy** wireframe có nội dung thật.
 
 | Loại màn hình | Mở |
 | --- | --- |
@@ -345,6 +349,7 @@ thì một trong hai chỗ là sai.
 | **D** | `references/system.md` | Đề nhiều hơn một màn: hợp đồng nguyên tố |
 | **V** | `references/review.md` | Soi UI đang có: ba hạng lỗi, quét bề rộng, dark mode của dự án, bảng trước/sau |
 | **L** | `references/refactor.md` | Refactor codebase đã có |
+| **U** | `references/design-process.md` | Thiết kế từ đầu: brief, việc chính của từng màn, wireframe phương án, dựng |
 | **W** | `references/tailwind-v4-traps.md` | Bẫy Tailwind v4 khi có CSS cũ |
 | **P** | `references/styles.md` | Phong cách thị giác: flat, nổi, glass, gradient, tối. Luật nào được đè, bẫy riêng, **tương phản** |
 
@@ -404,7 +409,7 @@ năm câu bằng mắt, lúc giao nói một dòng *"X chưa có mẫu đã duy�
 
 Rút gọn từ `references/checklist.md`. Chạy hết checklist đầy đủ trước khi báo xong.
 
-- [ ] Câu 1 của mục 0 đã trả lời chưa — đây là **soi UI**, **refactor** hay **dựng mới**.
+- [ ] Câu 1 của mục 0 đã trả lời chưa — đây là **soi UI**, **refactor**, **thiết kế từ đầu** hay **dựng mới**.
 - [ ] Đã grep codebase xem họ dùng Tailwind / shadcn / gì chưa, hay đang tự áp bộ của mình lên.
 - [ ] Đã dựng đúng **bố cục mặc định** trong file layout chưa, hay tự bịa. Lúc giao đã báo một dòng "muốn kiểu khác thì nói" chưa.
 - [ ] Có section nào tự thêm ngoài đề bài không.

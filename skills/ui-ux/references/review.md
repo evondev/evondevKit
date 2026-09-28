@@ -8,6 +8,10 @@ Khác nhánh `L` (`refactor.md`): `L` dọn code và **giữ nguyên hình**. `V
 **đề xuất đổi hình**, người dùng chọn dòng rồi mới sửa. Đề vừa muốn dọn code vừa muốn
 đẹp hơn thì soi theo `V` trước, dọn theo `L` sau.
 
+Khác nhánh `U` (`design-process.md`): cả ba chế độ của `V` giữ **khung trang**, chỉ sửa và
+làm gọn. Người dùng muốn nghĩ lại cái gì đứng đầu, lọc nằm đâu, có chế độ xem nào ("vẫn
+chưa ổn về UX", "thiết kế lại từ đầu") thì đi `U`.
+
 Ở nhánh này **skill chỉ là tham khảo**. Dự án có màu, bo góc, font riêng là hệ của
 họ, không phải lỗi.
 
@@ -19,9 +23,13 @@ Nhận chế độ từ đề, không hỏi, rồi nói một dòng ở phần m
 | --- | --- | --- | --- |
 | Nhận ra khi | "xem giúp", "review", "chỗ nào chưa ổn", "nhìn rối", gửi ảnh hay link nhờ xem | "dựng lại", "làm lại giao diện", "theo skill", "cho đẹp theo skill" | "**hoàn toàn** theo gu skill", "bỏ style cũ", "đổi sang gu của skill", "không cần giữ style cũ" |
 | Dòng Gu | chỉ nêu, mặc định không chọn | **chọn sẵn**, người dùng bỏ dòng nào thì bỏ | chọn sẵn |
+| Dòng Cấu trúc (`V1b`) | không có | có: sắp lại thì chọn sẵn, bỏ bớt thông tin thì không | như cột giữa |
+| Dòng Gọn (`V1c`) | không có | **có, chọn sẵn**: mỗi khối chính một dòng, làm gọn theo gu skill, giữ màu | như cột giữa |
+| Dáng: bóng, viền, nhịp, cỡ chữ, nhãn, lớp phủ trên ảnh | giữ | **theo gu skill** | theo gu skill |
+| Màu theo vai, logo, font | giữ | **giữ** | chỉ giữ logo và màu nhấn chính |
 | Component | không viết lại, sửa đúng chỗ lỗi | được thay control gốc và khối tự chế bằng mẫu của skill (bảng dưới) | như cột giữa |
 | Brand | giữ | **giữ theo bảng vai màu** (dưới): dựng theo cách làm của skill, tô bằng token và vai màu của dự án | **bỏ bảng vai màu**, dùng token và gu của skill (`tokens.css`, `principles.md`): nền trang xám nhạt, card trắng viền mảnh, mục chọn nền nhạt, badge nhạt. Chỉ giữ **logo** và **màu nhấn chính** của dự án làm màu nhấn duy nhất (`brand-tokens.md`). Lúc giao nói một dòng *"giữ đỏ làm màu nhấn, muốn đổi thì nói"* |
-| Logic, handler, dữ liệu | không đụng (`N10`) | không đụng: component mới nhận đúng props và state của cái cũ | như cột giữa |
+| Logic, handler, dữ liệu, câu chữ | không đụng (`N10`) | không đụng: component mới nhận đúng props và state của cái cũ. **Không thêm field vào type hay dữ liệu mẫu, không viết câu chữ mới** (khẩu hiệu, số %, số tiền, nhãn nút mới). Bố cục mới cần chữ chưa có thì dựng bằng chữ đang có, hoặc đưa lên bảng thành một dòng để người dùng tự viết | như cột giữa |
 | Hỏi trước khi sửa | có | có: bảng trước, người dùng trả lời rồi mới sửa | có |
 | Sửa xong | chụp lại, chạy lại probe route đó | chạy lại probe **tới khi danh sách `P` trống**, tối đa ba vòng, như cổng 3 (`checklist.md`) | như cột giữa |
 
@@ -40,7 +48,10 @@ chạy phải là người dùng tự nói ra, không suy từ chữ "theo skill
 | Giá, số nổi bật | ví dụ: chữ đỏ đậm |
 | Khối màu đậm, gradient | ví dụ: thẻ ví gradient navy |
 
-Chế độ giữ brand được đổi **bố cục, nhịp, cấu trúc component, cỡ chữ, cách đè lên ảnh**.
+Chế độ giữ brand được đổi **bố cục, nhịp, cấu trúc component, cỡ chữ, bóng, viền, cách đè
+lên ảnh**: nói gọn là số 2 = gu của số 3 trừ màu. Giữ màu mà giữ luôn mọi cái rườm của
+bản cũ thì bản dựng lại vẫn xấu y như cũ (đã dính 28/09/2026: card dựng lại đúng màu nhưng
+còn nhãn tiền tố, chân card hai tầng, bốn lớp phủ trên ảnh).
 Không được đổi **vai màu**: mục đang chọn đỏ đặc thì bản mới vẫn đỏ đặc, dù gu skill là nền
 xám nhạt. Dựng xong, đặt ảnh trước và sau cạnh nhau, đi lại từng dòng của bảng. Dòng nào
 đổi vai thì sửa lại cho khớp. Lúc giao ghi một dòng *"Vai màu giữ nguyên: …"*.
@@ -80,8 +91,8 @@ họ, chỉ sửa nó cho hết lỗi):
 3. **Báo nhầm tệ hơn bỏ sót.** Chỉ một dòng gọi màu brand là lỗi là người dùng hết
    tin cả bảng. Phân vân giữa hai hạng thì chọn hạng nhẹ hơn. Phân vân có phải lỗi
    không thì bỏ dòng đó.
-4. **Không làm thêm việc.** Không đề xuất dark mode khi dự án chưa có (`V4`), không
-   đề xuất đổi phong cách. Ở chế độ soi thì không viết lại component, mỗi dòng sửa đúng
+4. **Không làm thêm việc.** Không đề xuất dark mode khi dự án chưa có (`V4`). Chế độ soi
+   không đề xuất đổi phong cách; hai chế độ dựng lại thì có, qua dòng Gọn (`V1c`). Ở chế độ soi thì không viết lại component, mỗi dòng sửa đúng
    chỗ lỗi. Hai chế độ dựng lại được thay component, theo bảng ở trên.
 
 ---
@@ -109,7 +120,10 @@ họ, chỉ sửa nó cho hết lỗi):
   `<input type="range">` mặc định, ô nhập viền inset. Giữa một app đã có kiểu, chúng đọc
   ra là chỗ bị bỏ quên. Cột Sửa: dự án có component riêng thì dùng cái đó; chưa có thì
   dựng theo mẫu của skill (bảng "Ba chế độ"), tô bằng token của dự án. Select gốc đã
-  được tô (bo góc, viền token, `appearance-none` với chevron riêng) thì không phải lỗi.
+  được tô (bo góc, viền token, `appearance-none` với chevron riêng) thì ở chế độ soi không
+  phải lỗi. Ở hai chế độ dựng lại, select gốc đã tô mà **hiện trên desktop** vẫn phải thay:
+  bấm vào vẫn bung menu của hệ điều hành (`choice-controls.md`, Select). Probe liệt kê
+  chúng ở dòng "Select gốc đã tô trên desktop".
 - **Tìm Lệch hệ trong code bằng lệnh, đừng chỉ nhìn ảnh.** Hai màu đỏ gần giống nhau,
   bóng tự chế, bo góc lẻ trong một hộp thoại thì ảnh không cho thấy. Đọc token trong
   `@theme` hoặc `tailwind.config` trước, rồi grep:
@@ -133,8 +147,11 @@ họ, chỉ sửa nó cho hết lỗi):
   hay gradient của brand (thẻ ví, banner), icon và badge mỗi loại một màu. Mấy thứ này
   **cũng không đưa vào hạng Gu**: "thẻ ví navy nặng quá, đổi sang card trắng" hay "icon
   danh mục gom về một màu xám, badge còn hai tông" là đòi đổi nhận diện, không phải gu
-  (dính cả hai vòng đầu của dự án mồi, 27/09/2026).
-- **Gu tối đa năm dòng**, xếp cuối bảng.
+  (dính cả hai vòng đầu của dự án mồi, 27/09/2026). Ngoại lệ ở hai chế độ dựng lại:
+  màu **trang trí** theo `V1b`, và dáng (bóng, mật độ, viền) theo dòng Gọn `V1c`. Màu vai và
+  khối màu đậm của brand thì vẫn không.
+- **Gu tối đa năm dòng** ở chế độ soi, xếp cuối bảng. Hai chế độ dựng lại không giới hạn,
+  nhưng Gu của một khối chính thì gom vào dòng Gọn của khối đó (`V1c`).
 
 Probe báo không có nghĩa là lỗi Hỏng. Nhiều mục của probe đo theo gu skill, nên đổi
 sang hạng theo bảng này. Những mục xếp Hỏng thì probe đã tự gom thành danh sách `P1`,
@@ -142,12 +159,83 @@ sang hạng theo bảng này. Những mục xếp Hỏng thì probe đã tự go
 
 | Mục probe | Hạng |
 | --- | --- |
-| Trang tự cuộn khi vừa tải, cuộn ngang, lớp nổi lòi khỏi màn, lớp nổi mở bằng nút bị vỡ, rê chuột làm nhảy bố cục, tab tới mà không thấy gì đổi, tương phản chữ dưới ngưỡng, khung giấu mất chữ, chữ cắt còn quá ngắn, chữ trong nút xuống dòng, nhãn số đè lên đường biểu đồ | Hỏng |
+| Trang tự cuộn khi vừa tải, cuộn ngang, lớp nổi lòi khỏi màn, lớp nổi mở bằng nút bị vỡ, rê chuột làm nhảy bố cục, tab tới mà không thấy gì đổi, tương phản chữ dưới ngưỡng, khung giấu mất chữ, chữ cắt còn quá ngắn, chữ trong nút xuống dòng, nhãn số đè lên đường biểu đồ, khối bị bóp chiều cao | Hỏng |
 | Chỗ bấm dưới 32px | Mục có ghi "(dưới 24px)" là Hỏng, còn lại (24 tới 31px) là Gu |
 | Hàng trong header / nav rớt dòng | Hỏng khi đè hay đẩy lệch khối khác, không thì Lệch hệ (so với cách hàng đó ở khổ khác). Xem ảnh mới quyết |
-| Cao gần bằng mà không bằng, chữ cùng cột lệch mép, dấu ngăn cách không đều, control còn kiểu mặc định của trình duyệt, khung khai viền mà viền không thấy, khối con biến mất lúc rê, lớp nổi có dải trống | Lệch hệ |
-| Nền rê gần như không thấy, nền rê tan vào nền khác, viền đổi màu lúc rê, rê / focus khác hình mục đang chọn, bấm xong còn dấu thừa, vòng focus không bọc hết link, bảng cuộn ngang mất cột, nhóm lựa chọn xếp lưới, số tiền ngắt dòng, số không thẳng hàng, nhãn số lòi ra ngoài vùng vẽ, dấu câu rơi xuống đầu dòng | Gu |
+| Cao gần bằng mà không bằng, đường ngăn hai cột kề nhau lệch, chữ cùng cột lệch mép, dấu ngăn cách không đều, control còn kiểu mặc định của trình duyệt, khung khai viền mà viền không thấy, khối con biến mất lúc rê, lớp nổi có dải trống | Lệch hệ |
+| Nền rê gần như không thấy, nền rê tan vào nền khác, viền đổi màu lúc rê, rê / focus khác hình mục đang chọn, bấm xong còn dấu thừa, vòng focus không bọc hết link, bảng cuộn ngang mất cột, nhóm lựa chọn xếp lưới, số tiền ngắt dòng, số không thẳng hàng, nhãn số lòi ra ngoài vùng vẽ, dấu câu rơi xuống đầu dòng, chữ dưới 12px (gộp một dòng, ghi cỡ nhỏ nhất và chỗ; sửa lên ít nhất 12px) | Gu |
+| Select gốc đã tô trên desktop | Chế độ soi: không vào bảng. Hai chế độ dựng lại: Lệch hệ, thay bằng Select dựng (từ 8 mục có ô tìm) |
 | Lỗi console | Không vào bảng. Ghi một dòng dưới bảng |
+
+---
+
+## V1b. Hạng Cấu trúc, chỉ ở hai chế độ dựng lại ⚑
+
+Chế độ soi không có hạng này. Người dùng đã nói "dựng lại" thì ngoài control gốc, họ
+muốn biết màn **sắp xếp** có ổn không: khối nào quá tải, chỗ nào tranh nhau, control nào
+sai loại. Probe không đo được mấy thứ này, phải soi ảnh và đọc code.
+
+| Loại | Dấu hiệu | Sửa theo hướng |
+| --- | --- | --- |
+| Tín hiệu tranh nhau (`N3`) | Trong một khối có từ ba thứ cùng dùng tín hiệu đắt (màu nhấn, tô đặc, chữ lớn đậm), hoặc hai nút cùng mức nhấn đứng cạnh nhau | Giữ một thứ nổi nhất. Hai nút thì một nút chính, một nút phụ (`I1`). **Hạ mức nhấn, không đổi màu** |
+| Hai chỗ một việc | Hai nút dẫn tới cùng một việc, một thông tin hiện hai lần trong cùng khối. Ở mức cả màn: cùng một bộ điều hướng hiện hai lần (menu bên và lưới ô danh mục), tên trang lặp ở header, tiêu đề và mục đang chọn, cùng một lời mời ở hai chỗ | Giữ một |
+| Thông tin không phân biệt được gì | Mọi mục trong danh sách mang cùng một nhãn, số 0 hiện ra như một thông tin | Chỉ hiện ở mục khác đi. Số 0 ẩn hoặc nói bằng chữ |
+| Khối quá tải | Card trong lưới có hơn khoảng sáu mẩu thông tin, dòng phụ bị cắt "…" ngay ở khổ thường | Giữ thứ dùng để chọn giữa các mục. Phần còn lại để trang chi tiết |
+| Control sai loại | Ô to cho lựa chọn nhanh, select cho hai lựa chọn, control tự chế có phần không làm gì | Theo bảng mẫu ở "Ba chế độ" (chip, segmented, `range-slider`…) |
+| Đặt sai chỗ | Control nằm xa thứ nó điều khiển (sắp xếp, lọc tách khỏi danh sách), nhãn cùng hàng lệch cao, một khung trộn nhiều kiểu bố trí | Đặt sát thứ nó điều khiển. Cùng hàng thì cùng mép trên |
+| Màu trang trí tranh với màu vai | Icon, hình minh hoạ, nền ô icon mỗi cái một màu, nhiều tới mức nút chính và giá không còn là thứ nổi nhất | Gom màu trang trí về một hoặc hai tông của brand. **Chỉ màu ngoài bảng vai màu**, màu trong bảng giữ nguyên |
+| Khối quảng bá lấn nội dung | Banner chiếm quá nửa màn đầu, nói một ý hai lần (con số ở tiêu đề và trong hình), nhiều hơn một nút, chữ trong hình minh hoạ bị cắt | Thu chiều cao, một tiêu đề một nút, bỏ chỗ lặp. Hình minh hoạ là của họ: không vẽ lại, chỉ đổi khung và chữ quanh nó |
+
+- Mỗi dòng chỉ đúng chỗ (route, khối, `file:line`) và nói bằng cái người dùng cuối vấp.
+  "Card nhìn rối" chưa phải một dòng.
+- **Không phải lối vòng để đổi màu.** "Badge nhiều màu quá", "đổi đỏ sang xám" vẫn thuộc
+  "Không bao giờ là lỗi" (`V1`). Màu nhiều thì nói bằng thứ bậc: cái gì đang tranh nhau,
+  hạ cái nào xuống, màu giữ nguyên theo bảng vai màu.
+- **Chọn sẵn hay không.** Dòng chỉ sắp lại (hạ mức nhấn, đổi loại control, dời chỗ) thì
+  chọn sẵn ✓. Dòng bỏ, ẩn hay gộp thông tin, và dòng gom màu trang trí, thì **không chọn
+  sẵn**: đó là quyết định sản phẩm và nhận diện, người dùng tự thêm. Luật này chỉ cho
+  dòng Cấu trúc: dòng Gu ở chế độ dựng lại vẫn **chọn sẵn** như bảng "Ba chế độ".
+- **Một dòng một quyết định.** "Bỏ tên trang trên header, và đổi màu chip đang chọn" là hai
+  dòng: người dùng có thể muốn cái này mà không muốn cái kia.
+- **Đi đủ các loại trong bảng trên từng route đã soi**, không chỉ route nhiều control. Khối quảng bá
+  và điều hướng lặp hay nằm ở trang chủ, nơi probe ít đo ra gì.
+- Tối đa mười dòng, xếp sau Lệch hệ, trước Gu.
+- Định dạng dữ liệu (số lẻ dài, đơn vị lẫn lộn) nằm ở hàm của họ (`N10`): không lên bảng,
+  nhắc một dòng dưới bảng.
+
+---
+
+## V1c. Dòng Gọn, chỉ ở hai chế độ dựng lại ⚑
+
+Người dùng nói "dựng lại cho đẹp" là muốn **bản sau trông khác hẳn bản trước**, không phải
+bản cũ vá vài lỗi. Nên mỗi khối chính (card lặp trong lưới, khối lọc, header, panel bên,
+khối quảng bá) có **một dòng Gọn**: đặt khối đó cạnh mẫu gần nhất của skill (`card.md`,
+`list-row.md`, `input.md`, `small-controls.md`, `layouts/app.md`…) rồi ghi mọi chỗ khác,
+**trừ màu trong bảng vai màu, logo, font**. Chế độ 3 thì đổi cả màu.
+
+Hay gặp:
+
+| Rườm | Gọn theo hướng |
+| --- | --- |
+| Nhãn tiền tố trước giá trị tự hiểu ("Ngày: 12/09", "Tổng: 1.200.000đ") | Bỏ nhãn, thứ bậc bằng cỡ chữ và vị trí |
+| Chừa chỗ cho hai dòng tiêu đề, tiêu đề một dòng để lại khoảng trống | Chiều cao theo nội dung, chân card đẩy xuống đáy bằng flex |
+| Từ ba lớp phủ trên ảnh trở lên (badge, nhãn, số đếm, nút) | Tối đa hai: một badge và một nút. Còn lại xuống phần chữ |
+| Chân card hai tầng (dòng thời gian riêng, hàng nút riêng), nền khác màu thân card | Một hàng. Thời gian lên dòng meta |
+| Icon trước mỗi dòng meta | Chỉ giữ icon mang nghĩa (vị trí). Meta gom một dòng, ngăn bằng `·` |
+| Viền cộng bóng cộng nền khác, hai ba lần tách một ranh giới | Một cách tách: viền mảnh hoặc nền, bóng chỉ cho lớp nổi (`budgets.md`) |
+| Ô nhập mang viền màu nhấn khi chưa focus | Viền token thường, màu nhấn chỉ lúc focus |
+| Ba bốn sắc độ chữ phụ trong một khối | Hai: chữ chính và `text-muted` |
+| Khoảng cách lẻ, mỗi khối một nhịp | Thang của skill (`budgets.md`, Nhịp) |
+
+- Một dòng Gọn gom nhiều thay đổi của **cùng một khối**, cột Sửa liệt kê ngắn, và **bắt buộc
+  có ảnh trước / sau** (chèn CSS tạm, `V5`). Không có ảnh thì người dùng không hình dung
+  được "gọn" là gì.
+- Chọn sẵn ✓. Dòng Gọn không bỏ thông tin: bỏ nhãn tiền tố thì giá trị vẫn còn. Thứ phải
+  bỏ hẳn (một mẩu thông tin, một nút) thì tách ra thành dòng Cấu trúc, không chọn sẵn
+  (`V1b`).
+- Đường giữ brand: màu của nút, mục đang chọn, badge, giá không đổi. Bo góc giữ họ bo góc
+  của dự án (tròn vẫn tròn, vuông vẫn vuông), chỉ gom về một cỡ cho cùng vai.
+- Xếp sau Cấu trúc, trước Gu.
 
 ---
 
@@ -254,7 +342,8 @@ Cùng tinh thần `M20` (mặc định chỉ light), nhưng dự án đã có s�
 1. **Mở đầu**, mỗi thứ một dòng: dòng `Audit:` (stack, hệ token ở đâu, phong cách,
    dark mode: có / chỉ khai báo / không), đã soi route nào ở khổ nào, chỗ nào chưa soi
    được và vì sao.
-2. **Bảng**: xếp Hỏng trước, rồi Lệch hệ, Gu cuối.
+2. **Bảng**: xếp Hỏng trước, rồi Lệch hệ, Cấu trúc và Gọn (chỉ ở chế độ dựng lại, `V1b`,
+   `V1c`), Gu cuối.
 
    | # | Hạng | Chỗ | Lỗi | Sửa | Nguồn | Ảnh |
    | --- | --- | --- | --- | --- | --- | --- |
@@ -281,8 +370,9 @@ Cùng tinh thần `M20` (mặc định chỉ light), nhưng dự án đã có s�
 
    Hai vòng đầu của dự án mồi, nhiều lỗi probe đã đo ra mà bảng giao không có. Máy đo ra
    mà bảng không có thì người dùng không có cách nào biết đã bị bỏ.
-4. **Rà hạng Gu lần cuối**: dòng nào đề xuất bớt màu, đổi màu brand, làm nhạt khối màu
-   đậm của brand thì xoá (`V1`, "Không bao giờ là lỗi").
+4. **Rà hạng Gu và Cấu trúc lần cuối**: dòng nào đề xuất bớt màu, đổi màu brand, làm nhạt khối màu
+   đậm của brand thì xoá (`V1`, "Không bao giờ là lỗi"). Dòng Gọn cũng rà: đổi màu trong
+   bảng vai màu là sai chế độ 2.
 5. **Kết**: *"Trả lời số dòng muốn sửa, ví dụ `sửa 1, 3, 4`."* Chế độ soi: không tự đề
    nghị sửa hết. Hai chế độ dựng lại: dòng nào đã chọn sẵn thì đánh ✓ ở đầu dòng, kết bằng
    *"Mình sẽ sửa các dòng ✓. Trả lời `ok`, hoặc bỏ bớt, ví dụ `bỏ 7, 12`."*
