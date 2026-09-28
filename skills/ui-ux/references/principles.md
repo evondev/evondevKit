@@ -347,6 +347,34 @@ trong `components/` thì:
    theo việc của nó: trang chi tiết mượn hàng tên, ô số của panel xem nhanh, nhưng bộ
    tab phải có bản ghi con chính (đã dính 25/09/2026: trang khách chép nguyên tab
    Tin nhắn / Tệp / Hoạt động của panel, 24 đơn không có chỗ xem, `layouts/app.md`).
-2. **Liệt kê trạng thái và ca biên** (`N2`), mỗi cái một ví dụ tĩnh.
-3. **Chạy mười phép thử** ở trên trước khi báo xong.
-4. Lúc giao nói một dòng: *"X chưa có mẫu đã duyệt, mình mượn khuôn của Y"*.
+2. **Dựng luôn các ca biên vào trang**, không chỉ ca đẹp (`N2`, `S8`). Khối lặp (card,
+   dòng, ô) thì mỗi bản sao một ca: tên một dòng và tên rất dài, số `0` và số rất lớn,
+   thiếu ảnh, thiếu mô tả, một mục và nhiều mục. Không lặp được (một form, một panel)
+   thì mỗi trạng thái một ví dụ tĩnh cạnh nhau.
+3. **Chạy probe và tự sửa** như cổng 3 (`checklist.md`): `--sweep`, sửa tới khi danh
+   sách `P` trống, tối đa ba vòng.
+4. **Soi bằng mắt năm câu mà máy không đo được** ⚑. Mở ảnh 375px và một ảnh desktop,
+   nhìn đúng các ca biên vừa dựng:
+   - **Ca biên có trông cố ý không?** Số đếm bằng `0` ("0 ảnh", "0 bình luận") thì ẩn,
+     hoặc nói bằng chữ ("Chưa có ảnh"). Ảnh thiếu thì là trạng thái "chưa có ảnh", không
+     để badge đếm nằm trên ảnh giữ chỗ. Mô tả thiếu thì khối co lại, không để dòng trống.
+   - **Có khoảng trống nào chỉ để giữ chỗ không?** Giữ chỗ được khi nó làm thứ quan
+     trọng thẳng hàng trong lưới (giá, nút ở cùng độ cao giữa các card). Khi đó nói một
+     dòng lúc giao. Không làm được việc đó thì bỏ.
+   - **Các bản sao của khối lặp có cùng một cách viết không?** Cùng kiểu số và đơn vị
+     trong một danh sách ("4,5 triệu" với "0,85 triệu", không lẫn "850.000 đ"), cùng
+     thứ tự các dòng, cùng nhãn (`N5`).
+   - **Một vùng có bị đè quá nhiều thứ không?** Trên ảnh, trên header, trong một góc:
+     quá ba thứ chồng lên nhau thì gom hay dời bớt ra khỏi vùng đó (`N3`).
+   - **Thứ cần để quyết định còn nguyên ở ca dài nhất không?** Tên dài nhất, giá lớn
+     nhất, ở 375px (`N8`).
+
+   Câu nào ra "không" thì sửa, rồi quay lại bước 3.
+5. **Chạy mười phép thử** ở trên trước khi báo xong.
+6. Lúc giao nói một dòng: *"X chưa có mẫu đã duyệt, mình mượn khuôn của Y"*, cộng mỗi
+   lựa chọn đánh đổi một dòng (vd *"tên giữ chỗ hai dòng để giá thẳng hàng giữa các
+   card"*).
+
+Luồng này dùng cho cả dựng mới lẫn chế độ dựng lại của nhánh `V` (`review.md`). Phần tử
+lạ không có trong skill là chuyện thường, nên không cần mẫu cho mọi thứ: mượn khuôn gần
+nhất, dựng cả ca biên, để máy đo, rồi mắt soi năm câu trên.

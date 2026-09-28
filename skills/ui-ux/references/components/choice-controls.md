@@ -200,7 +200,7 @@ không `focus:`**: chọn bằng chuột xong, focus trả về nút, `focus:` l
 **Danh sách mở ra** theo khung dropdown ở `layouts/overlay.md` (`rounded-2xl`,
 `p-1`, mục `h-10 rounded-xl`, portal ra `body` theo `I22`):
 
-- Rộng **bằng nút mở** (Radix: `w-(--radix-select-trigger-width)`), cách nút `mt-2`.
+- Rộng **bằng nút mở** (Radix: `w-(--radix-select-trigger-width)`), cách nút `mt-2`. Nội dung bên trong (ô tìm, danh sách) rộng hết khung, **không chặn `max-w`** trên nó: khung đã rộng bằng nút mà nội dung dừng ở `24rem` thì bên phải còn một dải trống, thanh cuộn nằm lọt giữa (đã dính 27/09/2026 ở bản dựng lại của dự án mồi; probe báo "Lớp nổi có dải trống").
 - Cao tối đa **`max-h-76`** (304px), cuộn bên trong: lộ 7 mục rưỡi, mục thứ 8 bị cắt ngang để báo còn nữa (`I18`). `max-h-72` cũ cắt đúng sát ranh giới mục thứ 8 (chỉ lộ 4px), nhìn như danh sách hết ở mục 7. Mở ra thì cuộn sẵn tới mục đang chọn và chớp thanh cuộn một lần (`flashScrollbar`, `I18`). Danh sách chiếm cả khung `rounded-2xl` nên cả hai đầu rãnh chạm góc bo: `[&::-webkit-scrollbar-track]:my-4`, khe `p-1 pr-0 [scrollbar-gutter:stable]` (`I18`).
 - **Mục có mô tả** (vai trò, gói, quyền): hai tầng, tên `text-sm font-medium` + một câu `text-sm text-muted` nói **quyền làm được gì**, mục cao theo nội dung (`py-2.5`), không ép `h-10`. Ô đã đóng chỉ hiện tên, không hiện mô tả. Chọn quyền mà không có câu này thì người mời phải đoán "Thành viên" khác "Chỉ xem" chỗ nào.
 - **Mục đang chọn**: chữ `font-medium` + icon `check` `size-4` căn phải. Nền xám `bg-background` là của **mục đang sáng** (chuột hoặc phím mũi tên, `data-[highlighted]`), không phải của mục đang chọn; mở ra thì mục đang chọn sáng trước.

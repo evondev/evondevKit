@@ -391,9 +391,9 @@ thì một trong hai chỗ là sai.
 trong bảng trên thì mở đúng file đó và chép công thức, kể cả khi nó chỉ là một
 nút nhỏ ở góc. Không tự nặn biến thể "cho hợp trang này": cùng một badge mà bảng
 một kiểu, drawer một kiểu là hai app ghép lại (`D1`, `D2`). Trang cần một phần
-tử chưa có file thì mượn khuôn thứ gần nhất và chạy mười phép thử trong
-`references/principles.md`, lúc giao nói một dòng *"X chưa có mẫu đã duyệt, mình
-mượn khuôn của Y"*.
+tử chưa có file thì theo luồng **"Dựng một thứ chưa có mẫu"** ở cuối
+`references/principles.md`: mượn khuôn gần nhất, dựng cả ca biên, probe tự sửa, soi
+năm câu bằng mắt, lúc giao nói một dòng *"X chưa có mẫu đã duyệt, mình mượn khuôn của Y"*.
 
 **Code mẫu đã duyệt** (chỉ mở sau khi chốt loại màn hình, luật `S11`):
 `references/layouts/app-kanban.html`

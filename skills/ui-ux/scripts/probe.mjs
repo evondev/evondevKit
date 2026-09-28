@@ -1441,8 +1441,38 @@ async function probeHoverStates(page) {
 
 // Mở từng nút có popup (menu, listbox, lịch) và, ở màn chạm, chạm vào chữ bị cắt (nơi hay gắn
 // tooltip tên đầy đủ), xem lớp nổi vừa hiện có nằm trong màn không.
+// Lớp nổi mà nội dung bên trong hẹp hơn khung: khung rộng bằng nút mở, nội dung bị chặn `max-w` nên bên
+// phải còn một dải trống, thanh cuộn nằm lọt giữa (đã dính 27/09/2026, Select dựng lại ở dự án mồi).
+function findHollowLayers() {
+  const hollowLayers = [];
+
+  for (const node of document.querySelectorAll("body *")) {
+    const style = getComputedStyle(node);
+    const role = node.getAttribute("role") || "";
+    const isPositioned = style.position === "fixed" || style.position === "absolute";
+    const isLayer = ["listbox", "menu", "dialog"].includes(role) || (parseInt(style.zIndex, 10) || 0) >= 20;
+    if (!isPositioned || !isLayer || style.visibility === "hidden" || style.display === "none" || Number(style.opacity) === 0) continue;
+    const rect = node.getBoundingClientRect();
+    if (rect.width < 120 || rect.width > 640 || rect.height < 60) continue;
+
+    const children = [...node.children].filter((child) => child.getBoundingClientRect().width > 0);
+    if (children.length === 0) continue;
+    const innerRight = rect.right - parseFloat(style.paddingRight) - parseFloat(style.borderRightWidth);
+    const contentRight = Math.max(...children.map((child) => child.getBoundingClientRect().right));
+    const emptyWidth = innerRight - contentRight;
+    if (emptyWidth > 24) {
+      const label = `${role || node.tagName.toLowerCase()} "${node.textContent.trim().replace(/\s+/g, " ").slice(0, 30)}"`;
+      hollowLayers.push(`${label} rộng ${Math.round(rect.width)}px mà nội dung chừa trống ${Math.round(emptyWidth)}px bên phải`);
+    }
+  }
+
+  return hollowLayers;
+}
+
 async function probePopupLayers(page, isMobile) {
   const overflowingLayers = new Set();
+  const hollowLayers = new Set();
+  const hollowBefore = new Set(await page.evaluate(findHollowLayers));
   const triggerIds = await page.evaluate(({ popupLimit, tapLimit, isTouch }) => {
     const ids = [];
     const popupTriggers = [...document.querySelectorAll("[aria-haspopup]:not([aria-haspopup='false'])")].filter((element) => element.getBoundingClientRect().width > 0).slice(0, popupLimit);
@@ -1470,11 +1500,12 @@ async function probePopupLayers(page, isMobile) {
     if (!isDone) continue;
     await page.waitForTimeout(250);
     for (const layer of await page.evaluate(findOverflowingLayers)) overflowingLayers.add(`${isTap ? "chạm chữ bị cắt" : "mở"}: ${layer}`);
+    for (const layer of await page.evaluate(findHollowLayers)) if (!hollowBefore.has(layer)) hollowLayers.add(layer);
     await page.keyboard.press("Escape");
     await page.waitForTimeout(120);
   }
 
-  return [...overflowingLayers];
+  return { overflowing: [...overflowingLayers], hollow: [...hollowLayers] };
 }
 
 // Mở các khối đang đóng (accordion, mục thu gọn) để đo lại phần bên trong. Bỏ nút có popup (menu,
@@ -1765,7 +1796,7 @@ async function probeWidth(browser, options, width) {
   // Màn chạm không có rê chuột: chỉ đo nền rê ở khổ desktop.
   const hoverStates = isMobile ? { layoutShifts: [], vanishedChildren: [], weakHovers: [], blendedHovers: [], borderHovers: [], overflowingLayers: [] } : await probeHoverStates(page);
   const popupLayers = await probePopupLayers(page, isMobile);
-  const overflowingLayers = [...new Set([...hoverStates.overflowingLayers, ...popupLayers])];
+  const overflowingLayers = [...new Set([...hoverStates.overflowingLayers, ...popupLayers.overflowing])];
   // Chạy sau cùng: bấm thử đổi lựa chọn trên trang (ngày, tab), các phép đo khác phải xong trước.
   const stateShapes = isMobile ? { shapeMismatches: [], stuckStates: [], groupCount: 0 } : await probeStateShapes(page);
   // Sau cùng thật sự: mỗi lần bấm là một lần tải lại trang.
@@ -1780,6 +1811,7 @@ async function probeWidth(browser, options, width) {
     ...allMeasurements,
     expandedCount,
     missingFocusRings,
+    hollowLayers: popupLayers.hollow,
     openerLayerProblems: openerLayers.problems,
     openedLayerShots: openerLayers.openedShots,
     layoutShifts: hoverStates.layoutShifts,
@@ -2205,6 +2237,10 @@ function formatReport(results) {
     if (result.invisibleFrames.length > 0) {
       problems.push(`KHUNG KHAI VIỀN MÀ VIỀN KHÔNG THẤY (${result.invisibleFrames.length} khung, nền trong, viền, nền ngoài gần như một màu):`);
       for (const item of result.invisibleFrames) problems.push(`  ${item}`);
+    }
+    if (result.hollowLayers.length > 0) {
+      problems.push(`LỚP NỔI CÓ DẢI TRỐNG (${result.hollowLayers.length} chỗ, khung rộng hơn nội dung bên trong, thường do \`max-w\` chặn nội dung):`);
+      for (const item of result.hollowLayers) problems.push(`  ${item}`);
     }
     if (result.vanishedChildren.length > 0) {
       problems.push(`KHỐI CON BIẾN MẤT LÚC RÊ (${result.vanishedChildren.length} chỗ):`);
