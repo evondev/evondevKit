@@ -66,7 +66,7 @@ kế.
 </div>
 ```
 
-`shrink-0` để chip không bị bóp méo, `scrollbar-clean` để không lòi thanh cuộn ra.
+`shrink-0` để chip không bị bóp méo, `scrollbar-clean` để không lòi thanh cuộn ra. Ẩn thanh thì ở máy có chuột phải có nút mũi tên ở phía còn chip khuất (`responsive.md`, sau `R10`). Chip **đang lọc** (bấm để gỡ) thì khác: từ `sm` xuống dòng, "Xoá lọc" luôn thấy (`responsive.md`, sau `R6`).
 
 Lề thì đặt trên **hàng bên trong**, đừng đặt trên khung cuộn: `<div class="overflow-x-auto"><div
 class="flex gap-2 px-1">`. Padding bên phải của khung cuộn bị bỏ qua khi cuộn tới cuối, nên chip

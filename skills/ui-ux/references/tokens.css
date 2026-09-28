@@ -214,7 +214,8 @@
 /* ===================================================== */
 
 /* Ẩn HẲN, không bao giờ hiện: chỉ cho hàng chip / tab cuộn ngang, nơi thanh
-   cuộn dưới đáy hàng trông như lỗi. Vùng cuộn dọc (sidebar, danh sách, modal)
+   cuộn dưới đáy hàng trông như lỗi. Máy có chuột thì hàng đó phải có nút mũi
+   tên hai đầu (responsive.md, sau R10). Vùng cuộn dọc (sidebar, danh sách, modal)
    thì KHÔNG dùng, để thanh tự ẩn ở trên lo. */
 .scrollbar-clean {
   scrollbar-width: none;

@@ -199,7 +199,9 @@ thu rồi mở sidebar, bấm mở lại. Menu phải nằm sát nút cả hai l
   <div class="px-1">
     <button class="flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm outline-hidden hover:bg-background focus-visible:bg-background">…</button>
   </div>
-  <!-- Vạch chia cùng token với viền khung, không border-strong: đậm hơn viền là vạch nổi hơn khung -->
+  <!-- Vạch chia cùng token với viền khung, không border-strong: đậm hơn viền là vạch nổi hơn khung.
+       Khung cũng border-border: bóng shadow-lg đã tách khung khỏi trang. Khung và vạch cùng border-strong
+       thì menu kẻ ô như bảng (đã dính 28/09/2026, menu tài khoản) -->
   <hr class="my-1 border-border" />
   <div class="px-1">
     <!-- Mục nguy hiểm: lúc thường y như mục khác, rê vào mới đỏ (I4) -->

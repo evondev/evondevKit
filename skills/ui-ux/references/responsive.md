@@ -33,6 +33,8 @@ Và luôn giữ: **ngày tháng, nhãn phụ phải nhỏ hơn tiêu đề ít n
 
 **R6. Ngoại lệ của R1 và R2: thứ tự tuyến tính thì không được wrap.** Board trạng thái, các bước quy trình, dòng thời gian, hàng chip lọc, hàng tab đều thuộc loại này. Xếp thành hai hàng thì mắt đọc theo hình chữ Z và mất dòng chảy; bốn chip ở 375px thì ba cái một hàng và một cái rớt xuống đứng lẻ, nhìn như lỗi. Cho cuộn ngang trong khung, mỗi phần tử `shrink-0`, cột kanban `w-[248px] grow max-w-[320px]` (vì sao thì xem `layouts/app.md`).
 
+**Chip đang lọc (bấm để gỡ) không phải thứ tự tuyến tính**, nên không thuộc R6: từ `sm` trở lên cho `flex-wrap`, đặt thành một hàng riêng dưới thanh lọc, "Xoá lọc" nằm cuối và luôn thấy. Dưới `sm` mới cuộn ngang, và "Xoá lọc" đứng **ngoài** khung cuộn (`shrink-0`), không nằm cuối hàng cuộn. Nằm trong khung cuộn thì nhiều chip là "Xoá lọc" khuất theo, đúng nút cần nhất lại không thấy (đã dính 28/09/2026: hàng chip đang lọc cuộn ngang ẩn thanh ở desktop).
+
 **Lề của vùng cuộn đặt trên hàng bên trong, không đặt trên khung cuộn.** Padding bên phải của khung `overflow-x-auto` bị nhiều trình duyệt bỏ qua khi cuộn tới cuối, nên phần tử cuối dính sát mép trong khi phần tử đầu vẫn có lề.
 
 ```html
@@ -104,6 +106,28 @@ sidebar mở, quá 6 cột là bắt đầu chật (đã dính 23/09/2026: bản
 Đừng để `flex-wrap`, đó là cách duy nhất sai trong ba cách trên.
 
 **Hàng cuộn ngang thì mép mờ dần ở phía còn mục bị khuất**, cùng cách với vùng nav sidebar (`layouts/app.md`): `mask-image` 32px, mép trái mờ khi đã cuộn khỏi đầu, mép phải mờ khi còn mục phía sau, tính cờ từ `scrollLeft`/`scrollWidth`/`clientWidth`. Thanh cuộn đã ẩn (`scrollbar-clean`) nên mép cắt thẳng qua chữ không báo được gì: ở 375px hàng chip cắt ngang "Bán|", còn tab "Ngừng giao dịch 6" nằm hẳn ngoài khung, trông như chỉ có ba trạng thái (đã dính 25/09/2026, bảng khách hàng). Áp cho hàng tab, hàng chip, và khung bảng cuộn ngang (`R9`).
+
+**Ở máy có chuột, hàng cuộn ngang phải có nút mũi tên ở phía còn mục bị khuất.** Dựng sẵn, không hỏi. Chuột thường chỉ có bánh cuộn dọc; thanh cuộn đã ẩn (`scrollbar-clean`) thì người dùng chuột không có cách nào tới mục phía sau, mép mờ chỉ báo "còn", không cho kéo. Máy có trackpad hay chuột cuộn ngang thì kéo được nên người làm không thấy lỗi (đã dính 28/09/2026: hàng chip đang lọc, máy người làm kéo được, máy khác thì không). Hàng tab, chip, dải card ở desktop đều giống nhau:
+
+```tsx
+<div className="relative min-w-0">
+  <div ref={scrollerRef} className="scrollbar-clean overflow-x-auto …mask mép mờ…">{items}</div>
+  {canScrollLeft ? (
+    <div className="pointer-events-none absolute inset-y-0 left-0 hidden items-center any-pointer-fine:flex">
+      <IconButton label="Cuộn sang trái" onClick={() => scrollByPage(-1)}
+        className="pointer-events-auto size-8 rounded-full border border-border bg-surface">
+        <ChevronLeft className="size-4" />
+      </IconButton>
+    </div>
+  ) : null}
+  {/* canScrollRight: cùng khối, right-0, ChevronRight, scrollByPage(1) */}
+</div>
+```
+
+- **Cùng hai cờ với mép mờ** (`scrollLeft > 0`, `scrollLeft + clientWidth < scrollWidth - 1`): phía nào mờ thì phía đó có nút, cuộn tới đầu thì nút đó ẩn.
+- **Bấm cuộn khoảng 80% bề rộng khung**: `scroller.scrollBy({ left: direction * scroller.clientWidth * 0.8, behavior: "smooth" })`. Cuộn đúng một mục thì hàng dài phải bấm mãi; cuộn đủ 100% thì mất mục đang nhìn ở mép.
+- **Chỉ hiện ở máy có chuột** (`any-pointer-fine:`; không Tailwind v4 thì `@media (any-pointer: fine)`). Điện thoại vuốt được, thêm nút là che mất chip ở màn hẹp. Laptop màn cảm ứng có cả chuột nên vẫn hiện.
+- Nút nằm trên dải mờ 32px, căn giữa theo chiều dọc bằng `inset-y-0 flex items-center`, không `-translate-y-1/2` (`N11`). Không đổi bánh cuộn dọc thành cuộn ngang: cướp cuộn trang, người đang cuộn xuống bị kẹt ở hàng chip.
 
 **Vạch chỉ vị trí tự vẽ: KHÔNG dựng mặc định, đề xuất một dòng lúc giao.** Mặc định hàng cuộn
 ngang chỉ có mép mờ ở trên. Lúc giao màn có hàng tab/chip cuộn ngang ở màn hẹp thì báo một

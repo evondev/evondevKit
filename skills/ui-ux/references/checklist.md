@@ -226,7 +226,8 @@ Kiểm thêm ở 375px:
 
 - [ ] Flex và grid item chứa nội dung động đã có `min-w-0` chưa? (`T13` — nguyên nhân số một của cuộn ngang)
 - [ ] Lưới nào còn giữ 2 cột ở mobile không? Phải xuống 1 cột, **trừ hàng ô số liệu**: 2×2 ở mobile, số nào dài quá 138px (tiền đầy đủ hàng tỷ) thì rút gọn hoặc hàng đó về 1 cột; số ô lẻ thì 1 cột (`charts.md`).
-- [ ] Hàng chip có rớt xuống hàng dưới một cái lẻ không? Phải cho cuộn ngang.
+- [ ] Hàng chip có rớt xuống hàng dưới một cái lẻ không? Phải cho cuộn ngang. Trừ chip đang lọc (bấm để gỡ): từ `sm` xuống dòng, "Xoá lọc" luôn thấy.
+- [ ] Ở desktop, hàng cuộn ngang ẩn thanh cuộn có nút mũi tên ở phía còn mục khuất không? Chuột thường không cuộn ngang được.
 - [ ] Board hay dòng thời gian có bị wrap thành 2 hàng không? Phải cuộn ngang trong khung.
 - [ ] Bảng có bị bóp cột không? Từ `sm` trở lên thì cuộn ngang trong khung, có `min-w`, **cột đầu ghim**; dưới `sm` bảng quản lý thành danh sách dòng (tên + email, badge + số chính), không cuộn ngang. Hàng tab/chip cuộn ngang có mép mờ ở phía còn mục khuất (`R10`)?
 - [ ] Trang có **đúng một `<h1>`** không? Trang danh sách: tên trên thanh header là `<h1>`, vùng nội dung không lặp tên. Trang có đầu trang riêng: `<h1>` ở đầu trang, thanh header chỉ ghi cấp cha.

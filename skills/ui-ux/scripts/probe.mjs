@@ -1136,6 +1136,22 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     stickyScrollColumns.push(`khung cao ${clientHeight}px, nội dung ${scrollHeight}px: ${describe(element)}`);
   }
 
+  // 18k. Hàng cuộn ngang ẩn thanh cuộn mà không có nút mũi tên, ở desktop: chuột thường chỉ cuộn dọc,
+  //      nên mục phía sau (thường có cả "Xoá lọc") không tới được. Máy trackpad kéo được nên người làm
+  //      không thấy (hàng chip đang lọc, 28/09/2026). Nút mũi tên tìm trong hai tầng cha, ngoài khung cuộn.
+  const mouseUnreachableScrollers = [];
+  for (const element of isMobile ? [] : allElements) {
+    if (mouseUnreachableScrollers.length >= 4) break;
+    const style = getComputedStyle(element);
+    if (!["auto", "scroll"].includes(style.overflowX) || style.scrollbarWidth !== "none" || !isVisible(element)) continue;
+    if (element.scrollWidth <= element.clientWidth + 4) continue;
+    const scope = element.parentElement?.parentElement || element.parentElement;
+    const hasArrowButton = [...(scope?.querySelectorAll("button, [role='button']") || [])]
+      .some((button) => !element.contains(button) && isVisible(button) && button.getBoundingClientRect().width < 64);
+    if (hasArrowButton) continue;
+    mouseUnreachableScrollers.push(`khung ${element.clientWidth}px, nội dung ${element.scrollWidth}px, khuất ${element.scrollWidth - element.clientWidth}px: ${describe(element)}`);
+  }
+
   // 18d. Chữ cắt nuốt mất số: dòng `truncate` một dòng mà phần bị giấu có số kèm đơn vị (m², triệu, đ, %).
   //      Số thường là thứ người dùng dùng để so sánh ("Duplex gác xép… " nuốt "210m²", 28/09/2026).
   const numberWithUnit = /\d+(?:[.,]\d+)?\s?(?:m²|m2|triệu|tr\b|đ\b|₫|%|km\b|người|phòng)/i;
@@ -1284,6 +1300,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     squeezedBlocks,
     styledNativeSelects,
     stickyScrollColumns,
+    mouseUnreachableScrollers,
     nestedFadeDialogs,
     untransitionedMotion,
     heavySeparators,
@@ -1535,6 +1552,12 @@ function readHoverState(probeId) {
     // card như bị khuyết một mảng (đã dính 26/09/2026, FAQ trang giá).
     width: rect.width,
     height: rect.height,
+    isTableRow: element.tagName === "TR",
+    // Khai nền rê (kể cả sau biến thể như `not-checked:hover:bg-`) mà rê vào màu không đổi là nền rê trùng
+    // nền phía sau: rê không thấy gì (đã dính 28/09/2026, dòng danh sách rê `bg-muted` nằm trên khung
+    // `bg-muted`). Mục đang chọn thì bỏ qua: rê cùng nền đang chọn là đúng.
+    declaresHoverFill: /(^|[\s:])hover:bg-(?!transparent)/.test(element.getAttribute("class") || ""),
+    isSelected: element.matches("[aria-current]:not([aria-current='false']), [aria-selected='true'], [aria-pressed='true'], [data-state='active'], [data-state='on'], [data-state='checked']"),
     touchesCardEdge: behind.node !== document.documentElement && (Math.abs(rect.left - cardRect.left) <= 1 || Math.abs(rect.right - cardRect.right) <= 1),
   };
 }
@@ -1680,12 +1703,16 @@ async function probeHoverStates(page) {
       borderHovers.push(`${label}: viền ${formatColor(before.borderColor)} → ${formatColor(after.borderColor)}`);
     }
     const change = colorDistance(before.color, after.color);
+    if (change === 0 && before.declaresHoverFill && !before.isSelected) {
+      blendedHovers.push(`${label}: khai nền rê mà nền rê trùng nền phía sau ${formatColor(after.color)}, rê không thấy gì`);
+    }
     if (change === 0) continue;
 
-    // Chỉ xét phần tử cỡ nút: dòng bảng, dòng danh sách rộng thì nền rê nhạt (#f8f8fa trên card trắng,
-    // `I10`) vẫn thấy vì phủ cả một mảng rộng.
+    // Dòng bảng và dòng tràn mép khung được nền rê nhạt (#f8f8fa trên card trắng, bảng trong `I10`) vì phủ
+    // cả một dải dài. Nút, mục menu, dòng thụt vào thì chênh dưới 8 mức là rê gần như không thấy.
     const isButtonSized = before.width < 320 && before.height < 80;
-    if (change < 8 && isButtonSized) weakHovers.push(`${label}: ${formatColor(before.color)} → ${formatColor(after.color)} (chênh ${change} mức)`);
+    const isFullBleedRow = before.isTableRow || before.touchesCardEdge;
+    if (change < 8 && (isButtonSized || !isFullBleedRow)) weakHovers.push(`${label}: ${formatColor(before.color)} → ${formatColor(after.color)} (chênh ${change} mức)`);
     if (after.touchesCardEdge && colorDistance(after.color, after.outsideColor) <= 3) {
       blendedHovers.push(`${label}: nền rê ${formatColor(after.color)} gần như bằng nền ngoài khung ${formatColor(after.outsideColor)}, card như bị khuyết`);
     }
@@ -1728,10 +1755,60 @@ function findHollowLayers() {
   return hollowLayers;
 }
 
+// Khung và vạch chia của lớp nổi đang mở đậm hơn token `--border` của dự án: menu dựng bằng `border-strong`
+// cho cả khung lẫn vạch thì 18h (so vạch với khung) không thấy gì (đã dính 28/09/2026, menu tài khoản:
+// khung và hai vạch cùng #eaeaea, mẫu của skill là `border-border` #f7f7f8). Không có `--border` thì bỏ qua.
+function findHeavyLayerLines() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1;
+  canvas.height = 1;
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  const toLuminance = (cssColor) => {
+    context.clearRect(0, 0, 1, 1);
+    context.fillStyle = "rgba(0,0,0,0)";
+    context.fillStyle = cssColor;
+    context.fillRect(0, 0, 1, 1);
+    const [red, green, blue, alpha] = context.getImageData(0, 0, 1, 1).data;
+    if (alpha === 0) return null;
+    const opacity = alpha / 255;
+
+    // Viền nửa trong suốt vẽ lên nền trắng của khung.
+    return (0.2126 * (red * opacity + 255 * (1 - opacity)) + 0.7152 * (green * opacity + 255 * (1 - opacity)) + 0.0722 * (blue * opacity + 255 * (1 - opacity))) / 255;
+  };
+  const tokenColor = getComputedStyle(document.documentElement).getPropertyValue("--border").trim();
+  if (!tokenColor) return [];
+  const tokenLuminance = toLuminance(tokenColor);
+  if (tokenLuminance === null) return [];
+
+  const describeLayer = (element) => `${element.tagName.toLowerCase()}${element.getAttribute("role") ? `[role=${element.getAttribute("role")}]` : ""} "${(element.textContent || "").trim().replace(/\s+/g, " ").slice(0, 30)}"`;
+  const findings = [];
+  for (const layer of document.querySelectorAll("[role='menu'], [role='listbox'], [data-radix-popper-content-wrapper] > *, [popover]")) {
+    const rect = layer.getBoundingClientRect();
+    if (rect.width === 0 || getComputedStyle(layer).visibility === "hidden") continue;
+    const lines = [];
+    const layerStyle = getComputedStyle(layer);
+    if (parseFloat(layerStyle.borderTopWidth) > 0) lines.push({ what: "viền khung", color: layerStyle.borderTopColor });
+    const separator = layer.querySelector("hr, [role='separator']");
+    if (separator) {
+      const separatorStyle = getComputedStyle(separator);
+      lines.push({ what: "vạch chia", color: parseFloat(separatorStyle.borderTopWidth) > 0 ? separatorStyle.borderTopColor : separatorStyle.backgroundColor });
+    }
+    const heavy = lines.filter((line) => {
+      const luminance = toLuminance(line.color);
+
+      return luminance !== null && tokenLuminance - luminance > 0.02;
+    });
+    if (heavy.length > 0) findings.push(`${heavy.map((line) => `${line.what} ${line.color}`).join(", ")} đậm hơn --border ${tokenColor}: ${describeLayer(layer)}`);
+  }
+
+  return findings;
+}
+
 async function probePopupLayers(page, isMobile) {
   const overflowingLayers = new Set();
   const hollowLayers = new Set();
   const checkedHoverChanges = new Set();
+  const heavyLayerLines = new Set();
   const hollowBefore = new Set(await page.evaluate(findHollowLayers));
   const triggerIds = await page.evaluate(({ popupLimit, tapLimit, isTouch }) => {
     const ids = [];
@@ -1763,11 +1840,12 @@ async function probePopupLayers(page, isMobile) {
     for (const layer of await page.evaluate(findHollowLayers)) if (!hollowBefore.has(layer)) hollowLayers.add(layer);
     // Ô chọn trong lớp nổi (bộ lọc dạng popover) chỉ hiện lúc mở, nên đo rê vào ô đã chọn ở đây nữa.
     if (!isTap && !isMobile) for (const change of await findCheckedHoverChanges(page)) checkedHoverChanges.add(change);
+    if (!isTap) for (const line of await page.evaluate(findHeavyLayerLines)) heavyLayerLines.add(line);
     await page.keyboard.press("Escape");
     await page.waitForTimeout(120);
   }
 
-  return { overflowing: [...overflowingLayers], hollow: [...hollowLayers], checkedHoverChanges: [...checkedHoverChanges] };
+  return { overflowing: [...overflowingLayers], hollow: [...hollowLayers], checkedHoverChanges: [...checkedHoverChanges], heavyLayerLines: [...heavyLayerLines] };
 }
 
 // Mở các khối đang đóng (accordion, mục thu gọn) để đo lại phần bên trong. Bỏ nút có popup (menu,
@@ -2148,6 +2226,7 @@ async function probeWidth(browser, options, width) {
     shapeMismatches: stateShapes.shapeMismatches,
     hoverLikeSelected: stateShapes.hoverLikeSelected,
     checkedHoverChanges: [...new Set([...pageCheckedHoverChanges, ...popupLayers.checkedHoverChanges])],
+    heavyLayerLines: popupLayers.heavyLayerLines,
     stuckStates: stateShapes.stuckStates,
     stateGroupCount: stateShapes.groupCount,
   };
@@ -2398,6 +2477,10 @@ function listMustReportItems(results, sweepSteps) {
     for (const item of result.swallowedNumbers) addItem(width, `chữ cắt nuốt mất số: ${item}`);
     for (const item of result.hoverLikeSelected || []) addItem(width, `rê ra đúng màu mục đang chọn: ${item}`);
     for (const item of result.checkedHoverChanges || []) addItem(width, `rê vào ô đã chọn làm mất màu nhấn: ${item}`);
+    for (const item of result.mouseUnreachableScrollers || []) addItem(width, `hàng cuộn ngang chuột không tới được: ${item.replace(/, nội dung .*?: /, ": ")}`);
+    for (const item of result.weakHovers || []) addItem(width, `nền rê gần như không thấy: ${item}`);
+    // Nút viền rê thành nút đặc cùng màu viền là kiểu hay gặp, không vỡ gì: giữ ở Gu.
+    for (const item of (result.blendedHovers || []).filter((line) => !line.includes("trùng màu viền"))) addItem(width, `nền rê tan vào nền khác: ${item}`);
     for (const item of result.untransitionedMotion || []) addItem(width, `scale / translate / rotate không chạy chuyển động: ${item}`);
     for (const item of result.smallTapTargets.filter((target) => target.isBelowFloor)) addItem(width, `chỗ bấm dưới 24px: ${item.element}`);
   }
@@ -2587,6 +2670,10 @@ function formatReport(results) {
       problems.push(`SCALE / TRANSLATE / ROTATE KHÔNG CHẠY CHUYỂN ĐỘNG (${result.untransitionedMotion.length} chỗ, Tailwind v4: dùng transition-transform hoặc transition-[opacity,scale,translate], W10):`);
       for (const item of result.untransitionedMotion) problems.push(`  ${item}`);
     }
+    if (result.heavyLayerLines?.length > 0) {
+      problems.push(`KHUNG / VẠCH CỦA LỚP NỔI ĐẬM HƠN TOKEN VIỀN (${result.heavyLayerLines.length} lớp, dùng border-border như mẫu overlay.md):`);
+      for (const item of result.heavyLayerLines) problems.push(`  ${item}`);
+    }
     if (result.heavySeparators?.length > 0) {
       problems.push(`VẠCH CHIA TRONG MENU ĐẬM HƠN VIỀN KHUNG (${result.heavySeparators.length} menu):`);
       for (const item of result.heavySeparators) problems.push(`  ${item}`);
@@ -2602,6 +2689,10 @@ function formatReport(results) {
     if (result.nestedFadeDialogs?.length > 0) {
       problems.push(`KHUNG HỘP THOẠI MỜ LỒNG TRONG LỚP NỀN MỜ (${result.nestedFadeDialogs.length} chỗ, độ mờ nhân nhau, khung tan nhanh hơn nền):`);
       for (const item of result.nestedFadeDialogs) problems.push(`  ${item}`);
+    }
+    if (result.mouseUnreachableScrollers?.length > 0) {
+      problems.push(`HÀNG CUỘN NGANG CHUỘT KHÔNG TỚI ĐƯỢC (${result.mouseUnreachableScrollers.length} hàng, thanh cuộn ẩn, không nút mũi tên; responsive.md sau R10):`);
+      for (const item of result.mouseUnreachableScrollers) problems.push(`  ${item}`);
     }
     if (result.stickyScrollColumns.length > 0) {
       problems.push(`CỘT DÍNH MÀ CUỘN RIÊNG (${result.stickyScrollColumns.length} cột, thanh cuộn riêng hiện thường trực; cột dài hơn màn thì để cuộn theo trang):`);
