@@ -28,7 +28,7 @@ chỉ báo khi cả lượt tải kết thúc (xem mục Toast). Nút theo `butt
 ## Khung kéo thả
 
 ```html
-<label class="flex cursor-pointer flex-col items-center rounded-xl border border-dashed border-border-strong bg-background/60 px-6 py-8 text-center transition-colors hover:bg-background has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-foreground/50 has-[:focus-visible]:ring-offset-2">
+<label class="flex cursor-pointer flex-col items-center rounded-xl border border-dashed border-border-strong bg-background/60 px-6 py-8 text-center transition-colors hover:bg-background">
   <input type="file" multiple class="sr-only" />
   <!-- Máy cảm ứng không kéo thả được: ẩn câu này, còn dòng gợi ý và nút -->
   <p class="text-sm font-medium text-foreground [@media(hover:none)]:hidden">Kéo thả tài liệu vào đây</p>
@@ -38,7 +38,7 @@ chỉ báo khi cả lượt tải kết thúc (xem mục Toast). Nút theo `butt
 </label>
 ```
 
-- **Cả khung là chỗ bấm** (`<label>` bọc `input type="file"` ẩn), không chỉ cái nút. "Chọn tệp" là `<span>` mang hình nút viền: lồng một `<button>` thật vào `<label>` thì bấm nút mở hộp chọn tệp hai lần. Tab tới ô `input` ẩn thì cả khung hiện vòng focus (`has-[:focus-visible]`, `I13`).
+- **Cả khung là chỗ bấm** (`<label>` bọc `input type="file"` ẩn), không chỉ cái nút. "Chọn tệp" là `<span>` mang hình nút viền: lồng một `<button>` thật vào `<label>` thì bấm nút mở hộp chọn tệp hai lần.
 - **Viền đứt `border-border-strong`** (`F21` cho phép), nền `bg-background/60`, rê chuột thì nền đậm lên `bg-background`. Nền và viền đều nhạt: khung là chỗ chờ, không phải thứ nặng nhất màn.
 - **Đang kéo tệp vào**: viền đậm lên `border-foreground/40`, nền `bg-background`, tiêu đề đổi thành "Thả tệp để tải lên". **Không viền đen đặc** (`border-foreground`): một vòng nét đứt đen chạy quanh cả khung là thứ đậm nhất màn, chỉ để báo "thả được" (đã dính 24/09/2026). Nội dung giữ nguyên chỗ, chỉ đổi chữ tiêu đề (`N1`).
 - **Dòng gợi ý nói luật trước khi người dùng chọn**: loại tệp, cỡ tối đa. Đây là thứ họ chưa biết, không phải chữ thừa (`T20`).

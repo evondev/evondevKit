@@ -316,7 +316,7 @@ người dùng yêu cầu.
   - **Số đếm có HAI bản, chuyển bằng opacity**: số trơn cạnh chữ (`ml-auto`) mờ đi, chấm đè góc icon (`absolute`) hiện lên. Đừng di chuyển một badge từ chỗ này sang chỗ kia, nó sẽ bay chéo qua sidebar. **Cả hai bản `aria-hidden`**, số đọc cho trình đọc màn hình nằm trong một `<span className="sr-only">, 20 chưa đọc</span>` duy nhất: `opacity-0` không gỡ chữ khỏi cây truy cập, để nguyên thì nó đọc "Hộp thư 99+ 99+"; lúc thu, `aria-label` của link cũng phải kèm số.
   - **Nhãn nhóm mờ đi tại chỗ** (`opacity-0` + `inert` trên nút nhãn), không gỡ ra. Gỡ ra thì chiều cao nav đổi, icon và thanh cuộn nhảy.
 - Có nhớ trạng thái thu/mở hay không, có phím tắt hay không là việc của người dùng. Nếu đề có phím tắt thì ghi nó trong tooltip của nút toggle.
-- **Nút toggle ở đầu header vùng nội dung**, icon `PanelLeftClose` khi đang mở, `PanelLeftOpen` khi đang thu. Nút ghost `size-10 rounded-xl`, có `aria-label` và `aria-expanded`. Focus theo `I13`: `outline-hidden` + vòng mờ `focus-visible`. Viền xám dày hiện ra **ngay sau khi bấm chuột** là outline mặc định của trình duyệt lọt ra (dùng `focus` thay vì `focus-visible`), không phải thiết kế (đã dính 21/09/2026).
+- **Nút toggle ở đầu header vùng nội dung**, icon `PanelLeftClose` khi đang mở, `PanelLeftOpen` khi đang thu. Nút ghost `size-10 rounded-xl`, có `aria-label` và `aria-expanded`. `outline-hidden`, không vòng focus (`I13`). Viền xám dày hiện ra sau khi bấm là outline mặc định của trình duyệt lọt ra (thiếu `outline-hidden`), không phải thiết kế (đã dính 21/09/2026).
 
 ```tsx
 // MỘT link cho cả hai trạng thái. Không justify-center, không đổi padding:
@@ -504,7 +504,7 @@ So với 30 ngày liền trước, 30/07/2026 – 28/08/2026           <- kỳ s
   - Khoảng theo lịch ("Tháng này", "Quý này", "Năm nay", cả một tháng): **cùng kỳ của đơn vị trước**, tính tới cùng ngày. Tháng này tới 26/09 thì so 01/08 – 26/08 ("So với cùng kỳ tháng trước"); năm nay thì so 01/01 – 26/09/2025 ("So với cùng kỳ năm trước"). Lùi đúng số ngày ra những khoảng không ai nghĩ tới: đã dính 27/09/2026, "Từ đầu năm" ghi "So với 269 ngày liền trước, 07/04/2025 – 31/12/2025", "Cả tháng 9" ghi "so với 26 ngày liền trước, 06/08 – 31/08".
   Chọn kỳ nào là logic của người dùng (`N10`); skill lo câu chữ và mặc định khi đề để hở.
 - **Mỗi mốc của biểu đồ theo độ dài khoảng**, như trang doanh thu của các cổng thanh toán lớn: **1 ngày → theo giờ** (24 mốc), tới ~31 ngày → ngày, tới ~92 ngày → tuần, dài hơn → tháng. Tên card đổi theo: "Doanh thu theo giờ / ngày / tuần / tháng". Khoảng một ngày mà thay biểu đồ bằng khối chữ "87,6 tr đ · Chọn từ hai ngày trở lên để thấy xu hướng" là lặp đúng số ở ô "Doanh thu" ngay trên (`N3`) và bắt người dùng đổi khoảng mới thấy gì (đã dính 27/09/2026). Khối chữ "một điểm" chỉ dùng khi dữ liệu thật sự mới có một mốc.
-- **Biểu đồ chính có lưới ngang và nhãn mức** (ngoại lệ trong "Bỏ bớt đi" của `../components/charts.md`), số ở điểm đang xem **kèm mốc** ("13/09 · 70,9 tr đ", "Hôm nay · 44,4 tr đ"), đặt về phía không có đường, và Tab vào thì chấm có vòng focus. Kỳ chưa trọn (hôm nay, tuần này) nét đứt.
+- **Biểu đồ chính có lưới ngang và nhãn mức** (ngoại lệ trong "Bỏ bớt đi" của `../components/charts.md`), số ở điểm đang xem **kèm mốc** ("13/09 · 70,9 tr đ", "Hôm nay · 44,4 tr đ"), đặt về phía không có đường, và Tab vào thì số của mốc đó hiện ra. Kỳ chưa trọn (hôm nay, tuần này) nét đứt.
 - **Hai khối phân tích dưới biểu đồ**, hai cột từ `lg`, một cột ở màn hẹp: phần chia theo nhóm (kênh, khu vực) là danh sách thanh xếp lớn dần, mỗi dòng số + phần trăm (`../components/charts.md`, "Thanh tiến độ trong danh sách"); top mục (sản phẩm, khách hàng) là danh sách dòng tên + dòng phụ bên trái, số bên phải `tabular-nums`, 5 dòng.
 - **Trạng thái**: đang tải giữ khung từng khối với skeleton đúng chiều cao (ô khoảng ngày vẫn dùng được); tải hỏng một khung `ListError` thay phần dưới ô khoảng ngày; khoảng không có đơn nào thì một khung câu "Không có đơn nào từ … tới …" + link về khoảng mặc định. Khoảng ở tương lai không có ca rỗng riêng: ngày sau hôm nay đã khoá trong lịch.
 
@@ -584,7 +584,7 @@ Kéo thẻ sang cột khác là đổi trạng thái. Dựng đủ ba đường 
 - **Chỗ thả là khung viền đứt `border-foreground/40`, cao đúng bằng thẻ**, đứng đúng vị trí thẻ sẽ nằm theo khoá sắp xếp của cột (cột xếp theo hạn chót thì khung nằm giữa 28/09 và 05/10, không nằm dưới con trỏ). Đậm hơn khung cột rỗng (`foreground/15`): cột rỗng là "chỗ trống", khung này là "rơi vào đây" (`N2`). Số đếm ở đầu hai cột đổi ngay lúc kéo.
 - **Cả dải dọc của cột là vùng thả**, tính theo tọa độ ngang, không riêng phần có thẻ: cột ngắn thì thả vào khoảng trống bên dưới vẫn được.
 - **Kéo tới mép khung thì board tự cuộn ngang**, nhanh dần khi càng sát mép. Không có thì cột bị khuất không bao giờ thả tới được ở 375px.
-- **Nhấc bằng phím mà đổi sang cột đang khuất thì cuộn cả cột đích vào khung**, không chỉ cuộn cho có. Khung cuộn `scroll-px-8` (bằng bề rộng mép mờ `R10`), rồi **chỉ cuộn ngang** khung board: so mép `<section>` của cột với mép khung trừ `scroll-padding`, `scroller.scrollBy({ left })` phần hụt; sau đó `card.scrollIntoView({ block: "nearest", inline: "nearest" })` cho chiều dọc. Đừng `scrollIntoView` trên cả cột: cột cao hơn màn thì trình duyệt canh đỉnh cột, trang nhảy dọc mỗi lần bấm mũi tên (bên dựng bắt được 26/09/2026). Đã dính 26/09/2026 ở 1280px: sang cột Xong, board dừng ở 40 trên 64px, thẻ đang cầm mất vòng focus và mép phải, nằm dưới mép mờ.
+- **Nhấc bằng phím mà đổi sang cột đang khuất thì cuộn cả cột đích vào khung**, không chỉ cuộn cho có. Khung cuộn `scroll-px-8` (bằng bề rộng mép mờ `R10`), rồi **chỉ cuộn ngang** khung board: so mép `<section>` của cột với mép khung trừ `scroll-padding`, `scroller.scrollBy({ left })` phần hụt; sau đó `card.scrollIntoView({ block: "nearest", inline: "nearest" })` cho chiều dọc. Đừng `scrollIntoView` trên cả cột: cột cao hơn màn thì trình duyệt canh đỉnh cột, trang nhảy dọc mỗi lần bấm mũi tên (bên dựng bắt được 26/09/2026). Đã dính 26/09/2026 ở 1280px: sang cột Xong, board dừng ở 40 trên 64px, thẻ đang cầm mất mép phải, nằm dưới mép mờ.
 - **Thả xong bản sao bay về chỗ mới** 200ms, `cubic-bezier(0.32, 0.72, 0, 1)` như panel trượt (`overlay.md`), `motion-reduce` thì đặt thẳng. Kéo sang cột Xong thì dòng phụ đổi sang "xong dd/mm" ngay.
 
 **Code mẫu đã duyệt: `app-kanban.html`.** Chép cấu trúc từ đó, đừng dịch lại từ
@@ -650,10 +650,8 @@ Tháng 9, 2026 ⌄   [Hôm nay] ‹ ›                          [+ Thêm việc
 - **Lịch gọn: mọi trạng thái vẽ trên vòng quanh số, không trên cả ô.** Khác ô chọn ngày
   (`choice-controls.md` tô cả ô `rounded-xl`): ở đây chấm "có việc" nằm dưới số, ngoài vòng, như
   lịch điện thoại. Nút ngày `h-12 w-full` chỉ là vùng bấm, `hover:bg-transparent` và không ring;
-  số là `group-hover:bg-foreground/5` (ngày chưa chọn) và `group-focus-visible:ring-2
-  ring-foreground/50 ring-offset-2`. Đã dính 26/09/2026 (lượt hai): rê ra nền ô vuông 46×48 cạnh
-  vòng chọn 32px, bấm chuột xong ô vừa chọn giữ nền vuông chồng lên vòng đen, Tab tới thì vòng
-  focus vuông quanh vòng tròn: ba hình cho một ô ngày.
+  số là `group-hover:bg-foreground/5` (ngày chưa chọn), Tab tới không vòng (`I13`). Đã dính 26/09/2026 (lượt hai): rê ra nền ô vuông 46×48 cạnh
+  vòng chọn 32px, bấm chuột xong ô vừa chọn giữ nền vuông chồng lên vòng đen: hai hình cho một ô ngày.
 - **Dòng việc trong ô**: `h-6` icon trạng thái `size-3.5` (bảng `M7`) + tên `text-xs truncate`
   + `title` đủ tên; không nền màu, không viền (30 việc mỗi việc một khối màu là lịch loang).
   Xong: chữ `muted`. Quá hạn: chữ hổ phách như hạn chót quá hạn ở danh sách, không đỏ.
@@ -843,11 +841,8 @@ dựng được không:
   email là một khối: vừa một dòng thì xuống dòng nguyên cụm, không bẻ đôi sau `@`
   (`../components/description-list.md`). **"Đổi tài khoản" đứng một dòng riêng** dưới câu
   (`mx-auto mt-1 flex h-8 w-fit items-center px-1.5`), không nối sau email: nối sau thì dòng email + link rộng 448px, rộng
-  nhất khối (câu dẫn 439px, tiêu đề 310px), chân nặng hơn đầu; và vòng focus của link nở 4px, chùm
-  lên dấu chấm cuối email (đã dính 26/09/2026, lượt bốn, đo ở 1280px). Tách dòng thì chân còn
-  ~270px, vòng có chỗ đứng. `h-8` cho vùng bấm thì phải kèm `px-1.5`: không padding ngang thì
-  vòng focus hở 7px trên dưới mà sát chữ hai bên (đo 26/09/2026, lượt năm); link đứng giữa khối căn
-  giữa không có mép nào cần thẳng nên không cần `px-0` như link `I7`.
+  nhất khối (câu dẫn 439px, tiêu đề 310px), chân nặng hơn đầu (đã dính 26/09/2026, lượt bốn, đo ở
+  1280px). Tách dòng thì chân còn ~270px.
 - **403 đã gửi: đổi cả tiêu đề và câu dẫn, không nhét dòng chữ xanh vào chỗ nút.** Tiêu đề "Đã
   gửi yêu cầu", câu dẫn "Bạn sẽ nhận email khi **<tên>** chấp nhận yêu cầu.", hàng nút chỉ còn
   "Về trang tổng quan" (vẫn nút viền, giữ kiểu theo vai); dòng tài khoản giữ nguyên. Tiêu đề

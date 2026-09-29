@@ -44,7 +44,6 @@ Thứ tự vòng bấm là logic, component chỉ gọi `onSort` (`N10`). Khi đ
   cột cuối chạm mép card, sát màu nền trang `#f4f4f6`, card như bị khoét một góc. Quy ước chia đôi
   (tra 27/09/2026): có hệ thiết kế doanh nghiệp tô nền cả ô, có hệ chỉ hiện mũi tên và đậm chữ; skill
   chọn không nền vì ca đã dính ở trên.
-- **Vòng focus `ring-inset`**: ô chạm ô bên cạnh và mép khung cuộn, vòng vẽ ra ngoài bị cắt.
 
 ```tsx
 <th scope="col" aria-sort={direction ?? undefined} className="p-0">
@@ -55,7 +54,6 @@ Thứ tự vòng bấm là logic, component chỉ gọi `onSort` (`N10`). Khi đ
       "h-11 w-full justify-start gap-1 rounded-none px-4 py-0 text-xs whitespace-nowrap",
       // Không nền hover: ô cột đầu, cột cuối chạm mép card, --surface-hover sát màu nền trang.
       "text-muted hover:bg-transparent hover:text-foreground",
-      "focus-visible:ring-inset focus-visible:ring-offset-0",
       align === "right" && "flex-row-reverse",
       isSorted && "text-foreground",
     )}
@@ -86,4 +84,3 @@ Thứ tự vòng bấm là logic, component chỉ gọi `onSort` (`N10`). Khi đ
 - Mép trái chữ tiêu đề bằng mép trái chữ dữ liệu cột đó; cột số: mép phải chữ tiêu đề bằng mép
   phải con số (đo bằng `Range`).
 - Ở 375px: còn thấy tiêu đề (hoặc nút "Sắp xếp:") cho từng cột sắp được không?
-- Tab tới từng tiêu đề: vòng focus đủ bốn cạnh, không bị khung cuộn cắt.

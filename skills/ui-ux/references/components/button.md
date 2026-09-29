@@ -38,8 +38,8 @@ function getVariantClasses(variant: ButtonVariant): string {
     "px-4 py-2.5 text-sm font-medium transition-colors",
     // Nhãn tiếng Việt dài thì cho xuống dòng, đừng để tràn. Luật T15.
     "max-w-full text-center leading-tight [overflow-wrap:anywhere]",
-    // Focus bàn phím: vòng mờ, chỉ hiện khi Tab tới, bấm chuột không thấy (I13)
-    "outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface",
+    // Không vòng focus (I13). Dự án cần accessibility thì trả vòng lại đúng ở dòng này (I14)
+    "outline-hidden",
     "disabled:cursor-not-allowed disabled:not-aria-busy:opacity-50",
     getVariantClasses(variant),
   )}
@@ -73,13 +73,13 @@ function getVariantClasses(variant: ButtonVariant): string {
 - **`secondary` (nền xám, không viền)** dùng khi nút phụ cần có mặt rõ hơn `ghost` nhưng viền mảnh trông rỗng: nút rộng hết card (các gói thường trong bảng giá, `layouts/pricing.md`), hoặc nút phụ đứng cạnh nút `primary` trong footer. Không thay `outline` làm mặc định (chủ dự án chốt 21/09/2026).
 - **`ghost` đứng đầu hàng, thẳng cột với chữ phía trên.** Nền trong suốt nên mắt thấy mép của chữ chứ không thấy mép nút, để nguyên thì cả hàng trông lệch vào 16px so với tiêu đề và nhãn bên dưới. Nút có nền hoặc viền thì không bù. Bù theo thứ tự, không kéo nút ra bằng `-ml-*` / `-mr-*` (`N11`):
   1. **Nút nằm ở đầu hay cuối một hàng riêng** (header, dòng danh sách): **hàng bớt padding phía đó** đúng bằng `px` của nút, ví dụ header `pl-4 pr-3` khi nút cuối `h-8 px-3` trong hàng `px-6`. Chữ "Đánh dấu đã đọc" ở header panel thông báo thẳng cột với chấm chưa đọc bên dưới; lúc rê vào nền xám sát mép panel hơn tiêu đề bên trái là đúng ý. Đo 27/09/2026 header trang tổng quan (nút menu đầu hàng, avatar cuối hàng), dòng khách hàng và thành viên ở 375px: trùng từng pixel với bản số âm.
-  2. **Nút chỉ đổi màu chữ khi rê, không nền** (nút mở danh sách bước công cụ trong chat): bỏ `px`, chữ tự thẳng mép, vòng focus như link (`ring-offset-4`, `rules-state.md`).
+  2. **Nút chỉ đổi màu chữ khi rê, không nền** (nút mở danh sách bước công cụ trong chat): bỏ `px`, chữ tự thẳng mép.
   3. **Nút có nền rê nằm giữa một cột chữ** (hàng Sao chép / Tạo lại dưới câu trả lời): không có hàng riêng để bớt padding; chia padding từng khối thì mọi khối con phải tự nhớ `px-2` và `max-w` phải cộng bù (thử 27/09/2026 ở trợ lý AI: bong bóng `max-w-[80%]` và cột `55ch` lệch theo). Giữ `-ml-2` kèm comment lý do (`N11` bước 4).
 - Icon lucide **bên trái chữ**, `size-4`, `shrink-0` để nó không bị bóp khi nhãn dài. `aria-hidden` vì chữ đã nói rồi.
 - **Không `white-space: nowrap`.** Đo thật ở một dự án: hộp 140px, nút nowrap rộng 192px, tràn 60px ra ngoài. `leading-tight` để hai dòng không dính nhau. Luật `T15`.
 - **Không `shadow`.** Nút nằm trong trang (`M15`).
 - Chỉ `transition-colors`. Nút không phóng to, không nhấc lên, không đổ bóng thêm khi hover (`F22`).
-- **Focus bàn phím là vòng `ring-foreground/50` cách nút 2px**, chỉ hiện khi Tab tới (`focus-visible`), bấm chuột không bao giờ thấy. Mức thấp nhất đạt 3:1 (`I13`). Bản cũ "focus y như hover" gần như không thấy trên nút `primary` (1,28:1).
+- **Không vòng focus** (`I13`), kể cả khi Tab tới.
 - **Nút trong form hoặc footer modal** thêm `h-11 md:h-10` để cao đúng bằng ô nhập (`budgets.md`). Nút thường để `py-2.5` tự lo.
 - Không có prop `size`. Cần nút khác cỡ thì truyền `className` — đỡ đẻ ra ma trận variant nhân size (`I6`).
 - Logic class nằm trong `getVariantClasses()` ngoài JSX, không nhét ternary vào giữa markup.

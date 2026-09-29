@@ -689,26 +689,6 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     }
   }
 
-  // 9. Vòng focus vẽ trên một con (group-focus-visible:ring) mà không bọc hết thứ nhìn thấy của
-  //    link, nút: "‹ Bảo mật" có vòng quanh riêng chữ, dấu ‹ đứng ngoài (đo 26/09/2026). Đọc class
-  //    chứ không Tab, nên đo được cả màn hẹp, nơi bước Tab bị bỏ qua.
-  const partialFocusRings = [];
-  for (const ringNode of document.querySelectorAll("[class*='group-focus-visible:ring']")) {
-    const focusable = ringNode.parentElement?.closest("a, button, [tabindex]");
-    if (!focusable || !isVisible(focusable) || !isVisible(ringNode)) continue;
-
-    const ringRect = ringNode.getBoundingClientRect();
-    const visibleParts = [...focusable.querySelectorAll("svg, span, img")].filter(
-      (part) => isVisible(part) && !ringNode.contains(part) && !part.contains(ringNode),
-    );
-    const outsidePart = visibleParts.find((part) => {
-      const partRect = part.getBoundingClientRect();
-
-      return partRect.left < ringRect.left - 1 || partRect.right > ringRect.right + 1;
-    });
-
-    if (outsidePart) partialFocusRings.push(describe(focusable));
-  }
 
   // 10. Nhãn số đè lên đường biểu đồ: số ghi cạnh chấm mà đường đi xuyên qua chữ (đo 27/09/2026,
   //     báo cáo doanh thu: điểm cuối thấp hơn điểm kề, số đặt trên chấm nằm đúng trên đoạn nối).
@@ -1339,145 +1319,84 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     orphanPunctuation,
     misalignedFields: misalignedFields.slice(0, 10),
     unevenSeparatorRows: unevenSeparatorRows.slice(0, 10),
-    partialFocusRings: [...new Set(partialFocusRings)].slice(0, 10),
     overlappedChartLabels: [...new Set(overlappedChartLabels)].slice(0, 10),
     outsideChartLabels: [...new Set(outsideChartLabels)].slice(0, 10),
   };
 }
 
-// Chụp dấu hiệu nhìn thấy của một phần tử và hai cấp cha, để so lúc có và không có focus.
-function snapshotFocusStyles(element) {
-  const chain = [element, element.parentElement, element.parentElement?.parentElement].filter(Boolean);
+// Vòng focus vẽ trên phần tử và các con (chữ bọc `<span>` mang `group-focus-visible:ring`): outline thấy được,
+// hay bóng dạng vòng `0 0 0 Npx` có màu. Trả chuỗi để so lúc có và không có focus.
+function readFocusRingSignature(probeId) {
+  const element = document.querySelector(`[data-evon-probe-id="${probeId}"]`);
+  if (!element) return null;
+  const isVisibleColor = (color) => Boolean(color) && !/rgba\([^)]*,\s*0\)|transparent/.test(color);
+  const nodes = [element, ...element.querySelectorAll("span, div, svg")].slice(0, 20);
 
-  return chain
+  return nodes
     .map((node) => {
       const style = getComputedStyle(node);
-      // `outline-hidden` của Tailwind v4 là viền 2px trong suốt: đổi style mà mắt không thấy gì.
-      const isOutlineInvisible = style.outlineStyle === "none" || parseFloat(style.outlineWidth) === 0 || /rgba\(.*,\s*0\)|transparent/.test(style.outlineColor);
-      const outline = isOutlineInvisible ? "none" : [style.outlineStyle, style.outlineWidth, style.outlineColor].join(" ");
+      // `outline-hidden` của Tailwind v4 là viền 2px trong suốt: không tính.
+      const outline = style.outlineStyle !== "none" && parseFloat(style.outlineWidth) > 0 && isVisibleColor(style.outlineColor)
+        ? `outline ${style.outlineWidth} ${style.outlineColor}`
+        : "";
+      const rings = [...style.boxShadow.matchAll(/(rgba?\([^)]*\))\s+0px\s+0px\s+0px\s+([\d.]+)px/g)]
+        .filter((match) => parseFloat(match[2]) > 0 && isVisibleColor(match[1]))
+        .map((match) => `ring ${match[2]}px ${match[1]}`);
 
-      return [outline, style.boxShadow, style.borderColor, style.backgroundColor, style.color, style.textDecorationLine].join("|");
+      return [outline, ...rings].filter(Boolean).join(" ");
     })
-    .join("||");
+    .join("|");
 }
 
-// Chụp đúng vùng của phần tử (nới 8px cho vòng focus) để so điểm ảnh lúc có và không có focus.
-// Dấu focus có thể vẽ ở phần tử anh em (chấm của biểu đồ, nhãn bọc ngoài), đọc style không thấy,
-// nhìn ảnh thì thấy. Phần tử ra ngoài màn thì bỏ, trả null.
-async function captureFocusArea(page, probeId) {
-  const rect = await page.evaluate((id) => {
-    const element = document.querySelector(`[data-evon-probe-id="${id}"]`);
-    if (!element) return null;
-    let box = element.getBoundingClientRect();
-    // Ô ẩn `sr-only` (input file trong khung thả tệp) chỉ 1px: vòng focus vẽ trên <label> bọc ngoài,
-    // chụp đúng ô 1px thì không thấy gì đổi, báo nhầm (27/09/2026, /dashboard/projects/documents).
-    if (box.width <= 2 || box.height <= 2) {
-      const holder = element.closest("label") || element.parentElement;
-      if (holder) box = holder.getBoundingClientRect();
-    }
-
-    return { x: box.left, y: box.top, width: box.width, height: box.height };
-  }, probeId);
-  const viewport = page.viewportSize();
-  if (!rect || rect.width === 0 || rect.height === 0) return null;
-
-  const clip = {
-    x: Math.max(0, rect.x - 8),
-    y: Math.max(0, rect.y - 8),
-    width: Math.min(viewport.width, rect.x + rect.width + 8) - Math.max(0, rect.x - 8),
-    height: Math.min(viewport.height, rect.y + rect.height + 8) - Math.max(0, rect.y - 8),
-  };
-  if (clip.width <= 0 || clip.height <= 0) return null;
-
-  const scroll = await page.evaluate(() => ({ x: window.scrollX, y: window.scrollY }));
-
-  return { clip, scroll, pixels: await page.screenshot({ clip }) };
-}
-
-// Chụp lại vùng của phần tử vừa rời focus ở đúng chỗ cuộn lúc nó có focus. Tab sang phần tử sau
-// làm trang dài cuộn đi, vùng chụp lệch thì không so được (đã dính 27/09/2026, trang /states có
-// tám biểu đồ xếp dọc: báo nhầm cả tám).
-async function captureBlurredArea(page, probeId, focusedArea) {
-  const currentScroll = await page.evaluate(() => ({ x: window.scrollX, y: window.scrollY }));
-  await page.evaluate(({ x, y }) => window.scrollTo(x, y), focusedArea.scroll);
-  const blurredArea = await captureFocusArea(page, probeId);
-  await page.evaluate(({ x, y }) => window.scrollTo(x, y), currentScroll);
-
-  return blurredArea;
-}
-
-async function findMissingFocusRings(page) {
-  const missingFocusRings = [];
+// Tab qua trang, ghi phần tử còn vẽ vòng focus lúc Tab tới. Skill không vẽ vòng focus (`I13`, chủ dự án chốt
+// 28/09/2026). Ô nhập, textarea, select, combobox được viền + ring mờ; mục menu tô nền, không phải vòng.
+async function findDrawnFocusRings(page) {
+  const candidates = [];
   const checksByKind = new Map();
   let firstFocusedId = null;
-  let previous = null;
   let bodyStreak = 0;
 
   for (let tabIndex = 0; tabIndex < maxTabStops; tabIndex += 1) {
     await page.keyboard.press("Tab");
-
-    const current = await page.evaluate((snapshotSource) => {
-      const snapshot = new Function(`return (${snapshotSource})`)();
+    const current = await page.evaluate(() => {
       const element = document.activeElement;
       // Lớp báo lỗi của Next lúc dev (`nextjs-portal`) không phải của trang (báo nhầm 28/09/2026).
       if (!element || element === document.body || element.tagName.startsWith("NEXTJS")) return null;
       if (!element.dataset.evonProbeId) element.dataset.evonProbeId = String(Math.random()).slice(2);
-      const imageAlt = element.querySelector("img[alt]")?.getAttribute("alt") || "";
-      const iconName = (element.querySelector("svg")?.getAttribute("class") || "").match(/lucide-[a-z-]+/)?.[0] || "";
-      const label = (element.getAttribute("aria-label") || element.textContent.trim() || element.getAttribute("title") || imageAlt || element.getAttribute("placeholder") || (iconName && `icon ${iconName}`) || "").trim().replace(/\s+/g, " ").slice(0, 40);
+      const label = (element.getAttribute("aria-label") || element.textContent.trim() || element.getAttribute("title") || "").trim().replace(/\s+/g, " ").slice(0, 40);
+      const isField = element.matches("input:not([type='checkbox']):not([type='radio']):not([type='range']), textarea, select, [contenteditable='true'], [role='combobox']");
 
-      return {
-        id: element.dataset.evonProbeId,
-        kind: `${element.tagName}|${element.getAttribute("class") || ""}`,
-        element: `${element.tagName.toLowerCase()} "${label}"`,
-        focusedStyles: snapshot(element),
-      };
-    }, snapshotFocusStyles.toString());
-
-    if (previous) {
-      const blurredStyles = await page.evaluate(
-        ({ probeId, snapshotSource }) => {
-          const snapshot = new Function(`return (${snapshotSource})`)();
-          const element = document.querySelector(`[data-evon-probe-id="${probeId}"]`);
-
-          return element ? snapshot(element) : null;
-        },
-        { probeId: previous.id, snapshotSource: snapshotFocusStyles.toString() },
-      );
-      const blurredArea = previous.focusedArea ? await captureBlurredArea(page, previous.id, previous.focusedArea) : null;
-      const isSameArea = blurredArea && JSON.stringify(blurredArea.clip) === JSON.stringify(previous.focusedArea.clip);
-      const isStyleUnchanged = Boolean(blurredStyles) && blurredStyles === previous.focusedStyles;
-      // So được ảnh thì tin ảnh: dấu focus vẽ ở phần tử anh em (chấm biểu đồ) thì style của chính
-      // nó không đổi mà ảnh đổi. Không so được (cuộn đi, ra khỏi màn) mới dựa vào style.
-      const isMissing = isSameArea ? blurredArea.pixels.equals(previous.focusedArea.pixels) : isStyleUnchanged;
-
-      if (isMissing) missingFocusRings.push(previous.element);
-    }
+      return { id: element.dataset.evonProbeId, kind: `${element.tagName}|${element.getAttribute("class") || ""}`, element: `${element.tagName.toLowerCase()} "${label}"`, isField };
+    });
 
     // Focus rơi về body: đi hết cuối trang, Tab tiếp sẽ vòng lại đầu. Trang tự focus ô chat lúc tải thì vòng
     // Tab bắt đầu giữa trang; dừng ở body là không bao giờ tới header, sidebar (sót 27/09/2026, dự án mồi).
     if (!current) {
       bodyStreak += 1;
-      previous = null;
       if (bodyStreak >= 3) break;
       continue;
     }
     bodyStreak = 0;
     if (current.id === firstFocusedId) break;
     if (!firstFocusedId) firstFocusedId = current.id;
+    if (current.isField) continue;
 
     const checkCount = checksByKind.get(current.kind) ?? 0;
     checksByKind.set(current.kind, checkCount + 1);
-    if (checkCount >= maxFocusChecksPerKind) {
-      previous = null;
-      continue;
-    }
-
-    current.focusedArea = await captureFocusArea(page, current.id);
-    previous = current;
+    if (checkCount >= maxFocusChecksPerKind) continue;
+    const focusedSignature = await page.evaluate(readFocusRingSignature, current.id);
+    if (focusedSignature?.replace(/\|/g, "")) candidates.push({ ...current, focusedSignature });
   }
 
-  return missingFocusRings;
+  // So với lúc không focus: viền "đang chọn" vẽ bằng ring (card chọn, chip) có sẵn cả lúc thường, không tính.
+  const drawnRings = [];
+  for (const candidate of candidates) {
+    await page.evaluate(() => document.activeElement?.blur());
+    const blurredSignature = await page.evaluate(readFocusRingSignature, candidate.id);
+    if (blurredSignature !== candidate.focusedSignature) drawnRings.push(candidate.element);
+  }
+
+  return drawnRings;
 }
 
 // ---------- Trạng thái động: rê chuột, lớp nổi, khối đang đóng ----------
@@ -2024,21 +1943,10 @@ async function probeStateShapes(page) {
       hoverLikeSelected.push(`${group.label}: rê ra nền ${hoverShape.paint}, trùng nền mục đang chọn`);
     }
 
-    // Tab tới: phím vừa bấm làm focus bằng code cũng tính là focus bàn phím (`:focus-visible`).
-    await page.mouse.move(1, 1);
-    await page.keyboard.press("Shift");
-    await sibling.focus({ timeout: 800 }).catch(() => {});
-    await page.waitForTimeout(60);
-    const focusPaints = await page.evaluate(readStatePaints, siblingId);
-    const ringShape = focusPaints && pickLargestPaint(findNewPaints(focusPaints, restPaints, "ring"));
-    if (selectedShape && ringShape && isDifferentCover(ringShape, selectedShape)) {
-      shapeMismatches.push(`${group.label}: vòng focus ${describePaint(ringShape)}, đang chọn là nền ${describePaint(selectedShape)}`);
-    }
-    await page.evaluate(() => document.activeElement?.blur());
 
     if (!group.canClick) continue;
     // Bấm chuột rồi để chuột đứng yên trên mục vừa chọn: nền rê không được chồng lên nền chọn, và
-    // vòng focus không hiện vì đây là chuột (`I13`).
+    // không hiện vòng nào (`I13`).
     const isClicked = await sibling.click({ timeout: 800 }).then(() => true, () => false);
     if (!isClicked) continue;
     await page.waitForTimeout(150);
@@ -2053,7 +1961,7 @@ async function probeStateShapes(page) {
         }
       }
       const clickRing = pickLargestPaint(findNewPaints(clickedPaints, selectedPaints, "ring").filter((paint) => !restPaints.some((rest) => rest.kind === "ring" && rest.path === paint.path && rest.paint === paint.paint)));
-      if (clickRing) stuckStates.push(`${group.label}: bấm chuột mà hiện vòng ${describePaint(clickRing)} (vòng focus chỉ khi dùng bàn phím, I13)`);
+      if (clickRing) stuckStates.push(`${group.label}: bấm chuột mà hiện vòng ${describePaint(clickRing)} (skill không vẽ vòng focus, I13)`);
     }
     await page.keyboard.press("Escape");
   }
@@ -2188,7 +2096,7 @@ async function probeWidth(browser, options, width) {
   const screenshotPath = join(options.out, `${width}${options.isDark ? "-dark" : ""}.png`);
   await takeFullScreenshot(page, screenshotPath);
 
-  const missingFocusRings = isMobile ? [] : await findMissingFocusRings(page);
+  const drawnFocusRings = isMobile ? [] : await findDrawnFocusRings(page);
 
   // Mở khối đang đóng trước khi rê và chạm: cây thư mục nằm trong accordion đóng ở /components thì
   // tooltip tên tệp tràn màn chỉ lộ khi khối đã mở (27/09/2026).
@@ -2213,7 +2121,7 @@ async function probeWidth(browser, options, width) {
     consoleErrors: [...new Set(consoleErrors)],
     ...allMeasurements,
     expandedCount,
-    missingFocusRings,
+    drawnFocusRings,
     hollowLayers: popupLayers.hollow,
     openerLayerProblems: openerLayers.problems,
     openedLayerShots: openerLayers.openedShots,
@@ -2465,7 +2373,6 @@ function listMustReportItems(results, sweepSteps) {
     for (const layer of result.overflowingLayers) addItem(width, `lớp nổi lòi khỏi màn: ${layer.replace(/ lòi \d+px khỏi màn$/, "")}`);
     for (const problem of result.openerLayerProblems) addItem(width, `lớp nổi mở bằng nút bị vỡ: ${problem}`);
     for (const shift of result.layoutShifts) addItem(width, `rê chuột làm nhảy bố cục: ${shift.replace(/ dời \d+px$/, "")}`);
-    for (const element of result.missingFocusRings) addItem(width, `tab tới không thấy focus: ${element}`);
     for (const line of result.lowContrastTexts) addItem(width, `tương phản thấp: ${line}`);
     for (const item of result.clippedBlocks) addItem(width, `khung giấu mất chữ: ${item.element}`);
     for (const item of result.tooShortTexts) addItem(width, `chữ cắt còn quá ngắn: ${item.element}`);
@@ -2606,10 +2513,6 @@ function formatReport(results) {
       problems.push(`DẤU NGĂN CÁCH KHÔNG ĐỀU (${result.unevenSeparatorRows.length} hàng, nét dấu › tới nét chữ hay icon kế bên phải bằng nhau):`);
       for (const item of result.unevenSeparatorRows.slice(0, 5)) problems.push(`  khe ${item.gaps}: ${item.element}`);
     }
-    if (result.partialFocusRings.length > 0) {
-      problems.push(`VÒNG FOCUS KHÔNG BỌC HẾT LINK (${result.partialFocusRings.length} chỗ, icon hay chữ của cùng link nằm ngoài vòng):`);
-      for (const element of result.partialFocusRings.slice(0, 5)) problems.push(`  ${element}`);
-    }
     if (result.overlappedChartLabels.length > 0) {
       problems.push(`NHÃN SỐ ĐÈ LÊN ĐƯỜNG BIỂU ĐỒ (${result.overlappedChartLabels.length} chỗ, đặt nhãn về phía không có đường):`);
       for (const element of result.overlappedChartLabels.slice(0, 5)) problems.push(`  ${element}`);
@@ -2650,9 +2553,9 @@ function formatReport(results) {
       problems.push(`BẤM XONG CÒN DẤU THỪA (${result.stuckStates.length} chỗ, chuột đứng yên trên mục vừa chọn):`);
       for (const item of result.stuckStates.slice(0, 6)) problems.push(`  ${item}`);
     }
-    if (result.missingFocusRings.length > 0) {
-      problems.push(`TAB TỚI MÀ KHÔNG THẤY GÌ ĐỔI (${result.missingFocusRings.length} chỗ):`);
-      for (const element of result.missingFocusRings.slice(0, 8)) problems.push(`  ${element}`);
+    if (result.drawnFocusRings?.length > 0) {
+      problems.push(`TAB TỚI CÒN VẼ VÒNG FOCUS (${result.drawnFocusRings.length} chỗ, skill không vẽ vòng focus, I13):`);
+      for (const element of result.drawnFocusRings.slice(0, 8)) problems.push(`  ${element}`);
     }
     if (result.mismatchedRuleColors.length > 0) {
       problems.push(`ĐƯỜNG NGĂN HAI CỘT THẲNG HÀNG MÀ KHÁC MÀU (${result.mismatchedRuleColors.length} cặp, một đường mà nửa nhạt nửa đậm):`);

@@ -38,12 +38,7 @@ Khách hàng  ›  Công ty TNHH Minh Phát  ›  Đơn hàng       <- chỉ cá
   `text-sm` là khoảng 28 ký tự.
 - **Không xuống dòng** (`R6`): đường dẫn đọc theo một chiều, rớt nửa sau xuống hàng hai thì dấu
   › đầu hàng đọc như mục mới. Chật thì cắt tên và thu gọn theo mục dưới.
-- **Focus bàn phím: vòng bọc chữ, không bọc cả link.** Link cao 32px mà chữ 20px, vòng
-  `ring-offset-2` quanh link thì chữ cách vòng 2px hai bên, 8px trên dưới. Đặt vòng lên
-  `<span>` chữ (`group-focus-visible:`), `ring-offset-4`: chữ cách vòng đều 4px bốn phía, vòng
-  cao đúng 32px, không lấn xuống tên trang. Kèm `underline` theo `I13`. `ring-offset` theo màu
-  nền nơi đặt: `ring-offset-surface` trên thanh header, `ring-offset-background` ở đầu trang
-  trên nền xám. Đã dính 26/09/2026.
+- **Tab tới: chữ gạch chân**, không vòng (`I13`).
 
 ## Đường dài
 
@@ -62,8 +57,7 @@ Tài liệu  ›  …  ›  Hợp đồng 2026  ›  Quý 3                <- 5 
 - **Nút "…" trông như một mục chữ, không phải icon button.** Hộp ôm sát icon (`h-5 w-4 p-0`,
   icon `MoreHorizontal size-4`), không nền, `text-muted` rê vào `text-foreground`, đang mở giữ
   `text-foreground`. Vùng bấm nới bằng `before:` (`before:absolute before:-inset-x-1.5
-  before:-inset-y-1.5`, 28×32px, cùng cách tay cầm ở `range-slider.md`). Vòng focus như chữ:
-  `ring-offset-4`. Đã dính 26/09/2026: nút `ghost size-8` có padding 8px mỗi bên, nét "…"
+  before:-inset-y-1.5`, 28×32px, cùng cách tay cầm ở `range-slider.md`). Đã dính 26/09/2026: nút `ghost size-8` có padding 8px mỗi bên, nét "…"
   cách dấu › 22px trong khi chữ cách dấu 12px, và rê vào hiện một ô nền xám giữa hàng chữ
   chỉ đổi màu.
 
@@ -77,10 +71,6 @@ Tài liệu  ›  …  ›  Hợp đồng 2026  ›  Quý 3                <- 5 
   đường dẫn thu nhỏ. 375px không đủ chỗ cho ba mục cắt còn "Khách…", "Công t…". Các cấp xa
   hơn vẫn tới được qua sidebar.
 - **Vùng bấm `h-10`** (`h-10 sm:h-8`): trên điện thoại đây là nút quay lại, bấm bằng ngón cái.
-- **Vòng focus bọc cả ‹ lẫn chữ**: cả cụm là một link. Icon vào trong `<span>` mang vòng
-  (`inline-flex items-center gap-1 pr-1.5`), chữ nằm ở `<span>` con `truncate`. `pr-1.5` bù
-  6px trống bên trái nét ‹ trong hộp icon, nên nét ‹ và cuối chữ cách vòng bằng nhau. Đã dính
-  26/09/2026: vòng chỉ bọc "Bảo mật", dấu ‹ đứng ngoài vòng, cách vòng chưa tới 4px.
 - Tên cấp cha vẫn `max-w-48 truncate`, không bị ép chung hàng với mục khác nên hiếm khi cắt.
 - Tên bị cắt có dấu "…" thì khe tới dấu › có thể rộng hơn vài px: trình duyệt cắt ở ký tự cuối
   còn vừa, phần thừa để trống. Không sửa được bằng CSS, đừng đuổi theo.
@@ -99,14 +89,13 @@ interface BreadcrumbProps {
   className?: string;
 }
 
-// Link cao 32px để dễ bấm; vòng focus nằm trên <span> chữ bên trong (breadcrumbTextClass).
+// Link cao 32px để dễ bấm; Tab tới thì <span> chữ bên trong gạch chân (breadcrumbTextClass).
 const breadcrumbLinkClass =
   "group inline-flex h-8 max-w-48 items-center text-muted outline-hidden transition-colors hover:text-foreground";
 
 const breadcrumbTextClass = cn(
   "truncate rounded-sm",
-  "group-focus-visible:underline group-focus-visible:ring-2 group-focus-visible:ring-foreground/50",
-  "group-focus-visible:ring-offset-4 group-focus-visible:ring-offset-background",
+  "group-focus-visible:underline",
 );
 
 export default function Breadcrumb({ items, className }: BreadcrumbProps) {
@@ -152,7 +141,6 @@ export default function Breadcrumb({ items, className }: BreadcrumbProps) {
                   className={cn(
                     "group relative h-5 w-4 rounded-sm p-0 text-muted hover:bg-transparent hover:text-foreground",
                     "before:absolute before:-inset-x-1.5 before:-inset-y-1.5",
-                    "focus-visible:ring-offset-4 focus-visible:ring-offset-background",
                     "aria-expanded:text-foreground",
                   )}
                 >
@@ -208,8 +196,6 @@ export default function BreadcrumbCrumb({ item, hasSeparator }: BreadcrumbCrumbP
 - Bấm từng mục: tên trang đích có đúng chữ trên mục không?
 - Ở 1280px với 5 cấp cha: một hàng, có "…" mở menu, Tab tới "…" rồi Enter mở được?
 - Nét dấu › tới nét chữ hai bên bằng nhau, kể cả quanh "…" (probe đo: "dấu ngăn cách không đều").
-- Ở 375px: chỉ còn "‹ Cấp cha", cao 40px, không có mục nào bị cắt còn vài chữ. Tab tới: vòng
-  bọc cả dấu ‹, nét ‹ và cuối chữ cách vòng bằng nhau.
-- Rê vào mục và vào "…": chỉ đổi màu, không hiện ô nền. Tab tới: vòng bọc chữ cách đều 4px, có
-  gạch chân, không đè dấu ›.
+- Ở 375px: chỉ còn "‹ Cấp cha", cao 40px, không có mục nào bị cắt còn vài chữ. Tab tới: chữ gạch chân.
+- Rê vào mục và vào "…": chỉ đổi màu, không hiện ô nền. Tab tới: chỉ gạch chân, không vòng.
 - Trình đọc màn hình: `nav` có tên "Đường dẫn", mục trong `ol`, dấu › không bị đọc.

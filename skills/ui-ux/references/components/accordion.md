@@ -38,7 +38,7 @@ export default function AccordionItem({ title, children }: AccordionItemProps) {
           aria-controls={panelId}
           onClick={() => setIsOpen(!isOpen)}
           // py-4 CỐ ĐỊNH ở cả hai trạng thái: chữ luôn cách đều hai mép nút.
-          className="group flex w-full cursor-pointer items-center justify-between gap-4 px-5 py-4 text-left text-pretty text-sm font-medium text-foreground outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-foreground/50"
+          className="group flex w-full cursor-pointer items-center justify-between gap-4 px-5 py-4 text-left text-pretty text-sm font-medium text-foreground outline-hidden"
         >
           {title}
           <ChevronDown
@@ -117,7 +117,6 @@ dòng tràn hết bề ngang, `rounded-none`, và **tắt nền hover của vari
     khung, hàng như bị khoét; mục đang mở thì nửa trên xám nửa dưới trắng;
   - nền phủ cả mục (`has-[]`): vẫn là mảng gần màu nền trang chạm mép khung;
   - hàng thụt vào có bo góc: một ô xám gần màu nền trang nằm trong card, như lỗ khoét.
-- **Vòng focus `ring-inset`**: khung `overflow-hidden` cắt mất vòng vẽ ra ngoài.
 
 **Khung và chữ**
 - **Một khung trắng, `divide-y divide-border`** (`M13`). Không để vạch kẻ thẳng trên nền
@@ -164,10 +163,7 @@ export default function FormDisclosure({ title, isOpen, onOpenChange, children }
           onClick={() => onOpenChange(!isOpen)}
           // px-0: chữ thẳng mép trái với nhãn các ô. w-fit: vùng bấm là chữ + chevron,
           // không phải cả hàng. Không nền hover, rê vào thì chevron đậm lên như accordion.
-          // Vòng focus vẽ ra ngoài (nút không nằm trong khối cắt), rounded-md ring-offset-4
-          // như link không padding ngang (rules-state.md): offset 2px của Button thì vòng ôm
-          // sát chữ và chevron hai bên.
-          className="group h-11 w-fit gap-1.5 rounded-md px-0 py-0 text-sm font-medium text-foreground hover:bg-transparent focus-visible:ring-offset-4 md:h-10"
+          className="group h-11 w-fit gap-1.5 rounded-md px-0 py-0 text-sm font-medium text-foreground hover:bg-transparent md:h-10"
         >
           {title}
           <ChevronDown
@@ -221,7 +217,6 @@ window.setTimeout(() => focusFieldById(fieldId), accordionDurationMs);
   - ô bên trong thụt 21px, hẹp hơn ô "Tên dự án" 42px (580 so với 622px ở 1280px): form
     có hai mép trái;
   - mở ra thì đáy khung và vạch trên hàng nút là hai đường kẻ cách nhau 24px;
-  - vòng focus `ring-inset` của nút bị góc bo của khung cắt vuông.
 - **Chevron liền sau chữ (`gap-1.5`)**, không đẩy ra mép phải. Chevron ở mép phải của một
   hàng rộng bằng ô nhập là dấu hiệu của select.
 - **Các ô bên trong như mọi ô khác của form**: cùng mép trái, cùng bề rộng, cùng `gap-5`.

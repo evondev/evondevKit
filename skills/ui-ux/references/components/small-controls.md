@@ -11,7 +11,7 @@ isActive && "bg-primary text-primary-foreground"
 // IconButton: hành động phụ trong dòng hoặc header
 "inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg text-muted transition-colors"
 "hover:bg-background hover:text-foreground"
-"outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+"outline-hidden"
 "disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted"
 ```
 
@@ -54,7 +54,7 @@ kế.
 
 ```html
 <!-- Khối bọc hàng có lề ngang ít hơn 4px so với các khối khác (card px-5 thì khối này px-4, R6):
-     hàng bên trong px-1 đưa chip đầu về thẳng cột, và chừa 4px cho vòng focus chip đầu/cuối. -->
+     hàng bên trong px-1 đưa chip đầu về thẳng cột. -->
 <div class="scrollbar-clean overflow-x-auto py-0.5">
   <div class="flex items-center gap-2 px-1">
     <button type="button" aria-pressed="true" class="shrink-0 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">Tất cả</button>
@@ -144,7 +144,7 @@ Icon trước chữ **không bắt buộc**, xem mặc định ở trên. Có th
 ```
 
 - **Mọi tab cùng `font-medium`**, kể cả tab chưa chọn. Đổi độ đậm lúc chọn làm chữ nở ra và cả hàng xô ngang.
-- Tab chưa chọn chữ `foreground/70`. Hover dùng nền `foreground/5` (riêng `underline` thì chỉ đậm chữ, không nền, xem dưới); focus bàn phím là vòng mờ như mọi nút (`I13`), **không bao giờ là nền xám**. Không dùng `--background` làm nền hover: tab hay nằm thẳng trên nền trang xám, tô `--background` ở đó thì rê vào không thấy gì.
+- Tab chưa chọn chữ `foreground/70`. Hover dùng nền `foreground/5` (riêng `underline` thì chỉ đậm chữ, không nền, xem dưới); focus bàn phím không vòng (`I13`), **không bao giờ là nền xám**. Không dùng `--background` làm nền hover: tab hay nằm thẳng trên nền trang xám, tô `--background` ở đó thì rê vào không thấy gì.
 - Bàn phím theo WAI-ARIA: chỉ tab đang chọn nằm trong vòng Tab, mũi tên trái/phải chuyển và chọn luôn, Home/End về hai đầu.
 - Số đếm là số trơn `text-foreground/70`, không pill, không màu. **Không `text-muted`**: tab `boxed` đang chọn có nền `--secondary`, `--muted` trên đó chỉ 4.04 : 1 (`styles.md`). Trên tab đang chọn (chữ `--foreground`) số vẫn nhạt hơn nhãn một bậc; trên tab chưa chọn thì số và nhãn cùng màu, vậy là đủ. Không có số thì bỏ, đừng dựng số giả.
 - Hàng tab không bao giờ wrap, màn hẹp thì cuộn ngang trong khung `scrollbar-clean` (`R6`). Từ 6 tab trở lên thì gom phần dư vào tab "Thêm" mở dropdown (`R10`).
@@ -178,12 +178,11 @@ isSelected && "text-foreground after:bg-foreground"
 ```
 
 - **Hàng tab nằm chung hàng với ô tìm và nút (toolbar trên bảng) thì bỏ đường kẻ hết hàng, chỉ giữ vạch 2px dưới tab đang chọn.** Đường kẻ chạy nửa hàng rồi cụt ở mép ô tìm trông dở dang, và vì khung cuộn rộng hơn cột nội dung 8px mỗi bên (để chữ tab đầu thẳng cột) nên đầu trái của nó còn thò ra ngoài mép card bên dưới 8px (đã dính 23/09/2026). Đường kẻ hết hàng chỉ dùng khi hàng tab đứng riêng một hàng, như trang chi tiết.
-- **Focus bàn phím của tab `underline` là vòng quanh chữ, không quanh cả tab.** Vòng quanh cả tab `h-10` thì mép dưới vòng nằm sát vạch 2px, đọc thành hai đường gạch chồng nhau (đã dính 24/09/2026); vẽ ra ngoài tab thì khung cuộn cắt mất mép. Tab thêm `group outline-hidden`, chữ bọc trong `<span class="rounded-md px-1.5 py-0.5 group-focus-visible:ring-2 group-focus-visible:ring-foreground/50">`: span cao 24px giữa tab 40px, vòng cách vạch ~8px. Các variant có nền (`boxed`, `solid`, `segmented`) giữ vòng quanh cả tab theo `I13`.
 - Vạch màu `--foreground`, không màu nhấn có sắc: nhấn đã có ở nút chính của trang (`M3`).
 - **Vạch không kéo xuống bằng `after:-bottom-px`** (`N11`). Bản cũ: hàng `border-b`, vạch `-bottom-px` đè lên viền. Khung cuộn `overflow-x-auto` cũng cắt theo chiều dọc, nên khi đường kẻ nằm ở khối bọc ngoài khung cuộn (khu cài đặt) thì mép dưới vạch bị cắt, vạch chỉ còn 1px trên đường kẻ (đo 27/09/2026 ở `/dashboard/settings/notifications` 375 và 768px). Bản `box-content pb-px` + `bottom-0` trùng từng pixel với bản cũ ở hàng tab trang chi tiết khách và panel xem nhanh, và ở khu cài đặt thì vạch hiện đủ 2px.
 - Khối bọc hàng tab lùi lề ít hơn 8px (`R6`), khung cuộn không `-mx-2` (`N11`): chữ tab đầu thẳng cột với nội dung bên dưới.
 - Tab đang chọn không tô nền, không đổi nền lúc hover. Vạch là tín hiệu duy nhất.
-- **Không tab nào có nền, kể cả lúc focus.** Tab bàn phím tới thì vòng mờ `I13`. Tab là `Button variant="ghost"` mà `Button` dự án còn kiểu cũ "focus trông như hover" (nền xám) thì hàng tab dính theo: tab đang focus có nền xám, tab đang rê chuột đậm chữ, **hai tab cùng sáng** và không đọc ra tab nào đang chọn (đã dính 24/09/2026, panel khách hàng). Sửa ở `Button` dùng chung, không vá riêng từng tab.
+- **Không tab nào có nền, kể cả lúc focus.** Tab bàn phím tới thì không đổi gì (`I13`). Tab là `Button variant="ghost"` mà `Button` dự án còn kiểu cũ "focus trông như hover" (nền xám) thì hàng tab dính theo: tab đang focus có nền xám, tab đang rê chuột đậm chữ, **hai tab cùng sáng** và không đọc ra tab nào đang chọn (đã dính 24/09/2026, panel khách hàng). Sửa ở `Button` dùng chung, không vá riêng từng tab.
 - Hàng tab nằm được cả trên card trắng lẫn trên dải header xám: đường kẻ `--border-strong` đủ nhìn ở cả hai.
 
 ### `solid`: pill tô đặc (chỉ khi người dùng chọn)

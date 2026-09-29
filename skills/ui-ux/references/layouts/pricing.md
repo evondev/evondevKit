@@ -117,9 +117,9 @@ cao ~520px dưới con số 30px: nút 40px trông mỏng, như nút phụ trong
    bg-primary-foreground/15 text-primary-foreground`, chữ nói lý do ("Phổ biến nhất").
    Không emoji, không ngôi sao (`T21`).
 3. **Nút đảo theo card**: nền trắng chữ tối,
-   `bg-surface text-foreground hover:bg-surface/90`, vòng focus
-   `focus-visible:ring-primary-foreground/60 focus-visible:ring-offset-primary`
-   (offset mặc định là màu `--surface`, trên card tối thành một viền trắng thừa).
+   `bg-surface text-foreground hover:bg-surface/90`. Dự án trả vòng focus lại (`I14`) thì
+   `focus-visible:ring-primary-foreground/60 focus-visible:ring-offset-primary`: offset mặc định
+   là màu `--surface`, trên card tối thành một viền trắng thừa.
 
 ```html
 <article class="… rounded-2xl border border-primary bg-primary py-7 text-primary-foreground *:px-7">

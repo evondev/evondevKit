@@ -74,7 +74,7 @@ phải, xem cuối file.
 ```html
 <label class="inline-flex w-fit cursor-pointer items-center gap-3 text-sm">
   <span class="relative inline-flex shrink-0">
-    <input type="checkbox" class="peer size-5 cursor-pointer appearance-none rounded-md border-[1.5px] border-border-strong bg-surface outline-hidden transition-colors not-checked:not-indeterminate:hover:border-foreground checked:border-primary checked:bg-primary indeterminate:border-primary indeterminate:bg-primary focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:cursor-not-allowed disabled:opacity-50" />
+    <input type="checkbox" class="peer size-5 cursor-pointer appearance-none rounded-md border-[1.5px] border-border-strong bg-surface outline-hidden transition-colors not-checked:not-indeterminate:hover:border-foreground checked:border-primary checked:bg-primary indeterminate:border-primary indeterminate:bg-primary disabled:cursor-not-allowed disabled:opacity-50" />
     <i data-lucide="check" class="pointer-events-none absolute inset-0 m-auto size-3.5 stroke-[3] text-primary-foreground opacity-0 peer-checked:opacity-100"></i>
     <i data-lucide="minus" class="pointer-events-none absolute inset-0 m-auto size-3.5 stroke-[3] text-primary-foreground opacity-0 peer-indeterminate:opacity-100"></i>
   </span>
@@ -92,10 +92,10 @@ phải, xem cuối file.
 
 ```html
 <!-- filled: viền dày 6px màu nhấn, lõi trắng 8px chính là chấm -->
-<input type="radio" name="shipping" class="size-5 cursor-pointer appearance-none rounded-full border-[1.5px] border-border-strong bg-surface outline-hidden transition-[border-color,border-width] not-checked:hover:border-foreground checked:border-[6px] checked:border-primary focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:cursor-not-allowed disabled:opacity-50" />
+<input type="radio" name="shipping" class="size-5 cursor-pointer appearance-none rounded-full border-[1.5px] border-border-strong bg-surface outline-hidden transition-[border-color,border-width] not-checked:hover:border-foreground checked:border-[6px] checked:border-primary disabled:cursor-not-allowed disabled:opacity-50" />
 
 <!-- outline: nền chỉ tô phần lõi (bg-clip-content), padding 3px là khe trắng -->
-<input type="radio" name="shipping" class="size-5 cursor-pointer appearance-none rounded-full border-[1.5px] border-border-strong bg-clip-content p-[3px] outline-hidden not-checked:hover:border-foreground checked:border-2 checked:border-primary checked:bg-primary focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:cursor-not-allowed disabled:opacity-50" />
+<input type="radio" name="shipping" class="size-5 cursor-pointer appearance-none rounded-full border-[1.5px] border-border-strong bg-clip-content p-[3px] outline-hidden not-checked:hover:border-foreground checked:border-2 checked:border-primary checked:bg-primary disabled:cursor-not-allowed disabled:opacity-50" />
 ```
 
 Cả hai không cần phần tử phụ, không cần icon. Cỡ nhỏ `size-4`: `filled` dùng
@@ -110,14 +110,14 @@ Cả hai không cần phần tử phụ, không cần icon. Cỡ nhỏ `size-4`:
 ## Card chọn
 
 Đang chọn: **viền `--border-focus` + ring `--ring-focus`**, y như ô nhập đang
-focus (`I13`). Chỉ viền mà không ring thì hai card cạnh nhau khó thấy cái nào đang
+focus. Chỉ viền mà không ring thì hai card cạnh nhau khó thấy cái nào đang
 chọn; chỉ tô nền thì cả card đổi màu, quá nặng.
 
 ```html
 <fieldset class="space-y-3">
   <legend class="mb-3 text-sm font-medium">Ai được đăng bài</legend>
 
-  <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-border-strong bg-surface p-4 transition-colors hover:bg-surface-hover has-checked:border-focus has-checked:ring-2 has-checked:ring-focus has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-foreground/50">
+  <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-border-strong bg-surface p-4 transition-colors hover:bg-surface-hover has-checked:border-focus has-checked:ring-2 has-checked:ring-focus">
     <input type="radio" name="post" checked class="mt-0.5 size-5 shrink-0 cursor-pointer appearance-none rounded-full border-[1.5px] border-border-strong bg-surface outline-hidden checked:border-[6px] checked:border-primary" />
     <span class="min-w-0">
       <span class="block text-sm font-medium">Mọi thành viên</span>
@@ -128,8 +128,7 @@ chọn; chỉ tô nền thì cả card đổi màu, quá nặng.
 </fieldset>
 ```
 
-- **Tab tới là vòng như nút, khác hẳn dấu đang chọn** (`I13`): `outline-2 outline-offset-2 outline-foreground/50`, không lặp viền `border-focus` + ring mờ. Tab vào nhóm radio luôn rơi vào đúng card **đang chọn**, mà card đó đã mang sẵn viền + ring mờ: focus cùng kiểu thì không có gì đổi, người dùng bàn phím không biết mình đang ở đâu. Đã dính 27/09/2026: hộp tạo khoá API, ảnh card "Chỉ đọc" lúc Tab tới và lúc không focus trùng từng điểm ảnh. Dùng `outline` chứ không `ring`: `ring` cùng lớp bóng với ring mờ của trạng thái chọn, hai cái đè nhau (`tailwind-v4-traps.md`).
-- **Vòng đặt trên card, không đặt trên ô tròn.** Ô bên trong không có `focus-visible:ring`: hai vòng lồng nhau là thừa.
+- **Tab tới không thêm gì** (`I13`): không vòng quanh card, không vòng quanh ô tròn.
 - `has-checked:` là Tailwind v4. Tailwind v3.4 viết `has-[:checked]:`.
 - `mt-0.5` để ô 20px thẳng hàng với dòng đầu `text-sm`, không căn giữa cả card.
 - Card chưa chọn viền `--border-strong` như ô nhập.
@@ -144,7 +143,7 @@ Công tắc = **có hiệu lực ngay**, không chờ nút Lưu (`layouts/app.md
 
 ```html
 <button type="button" role="switch" aria-checked="false" aria-labelledby="notify-label"
-  class="group relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full bg-muted/40 p-0.5 outline-hidden before:absolute before:-inset-2 transition-colors hover:bg-muted/60 aria-checked:bg-primary aria-checked:hover:bg-primary-hover focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:cursor-not-allowed disabled:opacity-50">
+  class="group relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full bg-muted/40 p-0.5 outline-hidden before:absolute before:-inset-2 transition-colors hover:bg-muted/60 aria-checked:bg-primary aria-checked:hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-50">
   <span class="size-5 rounded-full bg-surface shadow-sm transition-transform group-aria-checked:translate-x-5 group-aria-checked:bg-primary-foreground motion-reduce:transition-none"></span>
 </button>
 ```
@@ -190,7 +189,7 @@ không `focus:`**: chọn bằng chuột xong, focus trả về nút, `focus:` l
 
 ```html
 <button type="button" role="combobox" aria-haspopup="listbox" aria-expanded="false"
-  class="group flex h-11 w-full md:h-10 cursor-pointer items-center justify-between gap-2 rounded-xl border border-border-strong bg-surface px-4 text-left text-base outline-hidden transition-colors md:text-sm focus-visible:border-focus focus-visible:ring-2 focus-visible:ring-focus aria-expanded:border-focus aria-expanded:ring-2 aria-expanded:ring-focus">
+  class="group flex h-11 w-full md:h-10 cursor-pointer items-center justify-between gap-2 rounded-xl border border-border-strong bg-surface px-4 text-left text-base outline-hidden transition-colors md:text-sm focus-visible:border-focus aria-expanded:border-focus aria-expanded:ring-2 aria-expanded:ring-focus">
   <span class="truncate">An Giang</span>
   <i data-lucide="chevron-down" class="size-4 shrink-0 text-muted transition-transform group-aria-expanded:rotate-180"></i>
 </button>
@@ -362,17 +361,11 @@ nó). Radix: `side="bottom"` + `avoidCollisions`, không bật `sticky="always"`
 | --- | --- | --- | --- |
 | Thường | viền `--border-strong` | track `muted/40` | viền `--border-strong` |
 | Rê vào | chưa chọn: viền `--foreground`; đã chọn: giữ nguyên màu nhấn | track `muted/60` / `--primary-hover` | giữ nguyên, `cursor-pointer` |
-| Tab tới | vòng `I13` quanh ô (card: quanh card) | vòng `I13` quanh track | viền `--border-focus` + ring |
+| Tab tới | không đổi (`I13`) | không đổi (`I13`) | viền `--border-focus` |
 | Đã chọn / bật / đang mở | tô nhấn theo kiểu | track nhấn, núm sang phải | viền + ring, chevron xoay |
 | Một phần | icon `minus` (chỉ checkbox) | — | — |
 | Lỗi | viền `red-500` + câu lỗi | — | viền `red-500` + ring đỏ |
 | Khoá | `opacity-50`, `cursor-not-allowed`, **cả nhãn** | như trái | như trái |
-
-**Vòng `I13`** = `focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface`.
-Checkbox, radio, công tắc không có viền để đổi màu, nên **không dùng `--ring-focus`** (màu nhấn
-10%, chỉ là vầng sáng phụ cho ô đã đổi viền). Bảng này bản cũ ghi "ring `--ring-focus`", dự án
-chép theo: Tab tới công tắc chỉ có quầng 2px `#e8e8e8` quanh track đen, gần như không thấy mình
-đang ở đâu (đã dính 26/09/2026, trang cài đặt thông báo).
 
 Khoá thì mờ cả nhãn đi cùng ô (`peer-disabled:` hoặc `has-disabled:` trên
 `<label>`). Ô mờ mà nhãn vẫn đen thì người dùng bấm vào nhãn, không có gì xảy ra.

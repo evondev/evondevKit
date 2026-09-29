@@ -173,25 +173,13 @@ thuộc.
 
 ---
 
-## W8. `ring-*` chỉ có một, vòng focus đã dùng nó
+## W8. `ring-*` chỉ có một lớp bóng
 
-`ring-1`, `ring-2`, `ring-inset` cùng ghi vào **một** lớp bóng (`--tw-ring-shadow`).
-Nút, chip đã có vòng focus bàn phím `focus-visible:ring-2` (`I13`). Dùng thêm `ring-*`
-để vẽ viền "đang chọn" thì Tab tới là vòng focus **thay** viền chọn, không cộng vào;
-kèm `ring-inset` thì vòng focus cũng bị kéo vào trong nút.
-
-**Luật:** viền trạng thái (đang chọn, đang bật) trên phần tử đã có vòng focus thì vẽ
-bằng `inset-ring-*` (lớp bóng riêng của v4), hoặc `border`. Đã dính 26/09/2026: chip
-mức ưu tiên trong popover Lọc theo mẫu `ring-1 ring-inset` của skill, Tab tới chip đang
-chọn là mất viền chọn.
-
-**Card chọn được cũng vậy, không có ngoại lệ:** trạng thái chọn là `has-checked:ring-2` mờ, nên
-vòng focus vẽ bằng `outline` (`components/choice-controls.md`). Skill từng cho hai cái dùng chung
-một vòng vì "card đã có viền đi kèm"; đã dính 27/09/2026: Tab vào nhóm radio rơi đúng card đang
-chọn, trông y như lúc không focus.
-
-**Cách phát hiện:** grep `aria-pressed:ring-\|isSelected.*ring-\|ring-inset` trên phần tử
-có `focus-visible:ring`.
+`ring-1`, `ring-2`, `ring-inset` cùng ghi vào **một** lớp bóng (`--tw-ring-shadow`). Skill
+không vẽ vòng focus (`I13`) nên thường không đụng nhau. Dự án trả vòng focus lại (`I14`) thì
+viền trạng thái (đang chọn, đang bật) vẽ bằng `inset-ring-*` (lớp bóng riêng của v4), `border`
+hay `outline`, không `ring-*`: Tab tới là vòng focus **thay** viền chọn, không cộng vào (đã
+dính 26/09/2026: chip mức ưu tiên `ring-1 ring-inset`, Tab tới chip đang chọn là mất viền chọn).
 
 ## W9. Dự án không nạp preflight thì control nào cũng giữ kiểu của trình duyệt ⚑
 

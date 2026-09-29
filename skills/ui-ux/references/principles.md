@@ -255,7 +255,7 @@ còn đọc được hết không?
 **N9. Mọi thao tác đi được bằng chuột, bằng phím, và bằng tay trên điện thoại.**
 
 Bấm được thì có hover và `cursor-pointer` trên đúng phần tử bấm, vùng bấm rộng
-hết hàng (`I9`, `I29`). Tab tới được, focus trông như hover (`I13`). Không có
+hết hàng (`I9`, `I29`). Tab tới được; không vẽ vòng focus (`I13`, chủ dự án chốt). Không có
 hover trên màn chạm thì thứ ẩn-hiện-khi-rê phải luôn hiện (`I11`). Thứ chọn được
 thì chọn được bằng nhiều đường, không chỉ một cử chỉ. `aria-*` cho thứ chỉ nói
 bằng hình (`aria-pressed`, `aria-current`, `role="progressbar"`).

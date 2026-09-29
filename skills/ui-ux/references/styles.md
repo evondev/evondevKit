@@ -16,7 +16,7 @@ Ba ca, chọn đúng một:
 | --- | --- |
 | **Người dùng tự nêu phong cách** ("làm trang giá kiểu glassmorphism") | Làm theo phong cách đó, **không hỏi lại** |
 | **Audit thấy dự án có phong cách khác flat** (`P4`) | **Theo phong cách dự án**, dựng luôn, báo một dòng lúc giao (mẫu bên dưới) |
-| **Dự án flat hoặc trống**, người dùng không nêu gì | Flat (`P6`). Không hỏi về phong cách |
+| **Dự án flat hoặc trống**, người dùng không nêu gì | Flat (`P6`). Không hỏi về phong cách. Riêng nhánh thiết kế từ đầu: đưa F (flat) và G (`P12`) ra ở bước wireframe, người dùng chọn cùng bố cục |
 
 Vì sao theo dự án chứ không theo flat: một màn flat giữa app glass là màn lạc
 loài, người dùng thấy ngay. Nhất quán thắng gu.
@@ -249,6 +249,38 @@ cùng lý do với ngoại lệ avatar của `M12`. Khung (card, nút, ô nhập
 cách nền của dự án. Đừng tự dựng nút 3D vì thấy dự án có icon 3D.
 
 ---
+
+### P12. Có màu — dải thương hiệu, mục nổi bật, chữ đậm hơn
+
+Cho trang người dùng cuối lướt để chọn (tìm việc, tìm phòng, sản phẩm, khoá học): flat thuần ở
+đây đọc ra "buồn màu", trang nào cũng như trang quản trị (chủ dự án thấy 29/09/2026, trang tìm
+việc so với trang tìm việc lớn cùng loại). Nhánh thiết kế từ đầu đưa nó ra thành biến thể `G`
+(`design-process.md`, `U3`); ngoài nhánh đó thì theo `P1`.
+
+- **Nhận ra từ ảnh:** đầu trang là một dải màu đậm (đặc hoặc chuyển màu) ôm header và ô tìm,
+  chân trang cùng màu; vài mục trong danh sách có nền nhạt màu nhấn kèm nhãn "Gấp", "Hot";
+  tiêu đề mục đậm.
+- **Được đè:** `M2` (tỉ lệ 95/5), `M12` (chỉ ở dải). Nguyên tắc `P2` giữ nguyên, nhất là `M3`
+  một màu nhấn và `P3` tương phản.
+
+Công thức, đúng năm chỗ, không thêm chỗ thứ sáu:
+
+| Chỗ | Làm gì |
+| --- | --- |
+| Dải đầu trang | Khối bọc header + ô tìm (hay hàng tên trang) nền màu nhấn đậm: `bg-primary`, hoặc `bg-linear-to-r from-primary to-primary-hover` (hai điểm gần nhau, `P9`). Chữ, link header trắng; ô tìm nền trắng; nút Tìm đảo màu (`bg-surface text-foreground`, `P9`). Dải hết ở dưới hàng tìm, nội dung bắt đầu trên nền trang như cũ, không kéo card lấn lên dải bằng số âm (`N11`) |
+| Chân trang | Cùng màu dải, chữ trắng. Trang không có chân thì bỏ |
+| Mục nổi bật | **Chỉ khi dữ liệu có trường đó** (gấp, hot, được tài trợ): nền `bg-primary/5`, viền `border-primary/25`, nhãn đặc `bg-primary text-primary-foreground` ở góc. Không có trường thì không bịa, lúc giao ghi "cần trường … để làm mục nổi bật" |
+| Chữ | Tiêu đề mục `font-semibold`; tên trang giữ `text-xl` (luật đã chốt 11) mà lên `font-semibold`, từ khoá hay con số trong tên trang tô `text-primary`; tiêu đề khối trong panel chi tiết `text-lg font-semibold`. Giá, lương giữ `font-semibold` như cũ |
+| Điểm nhỏ | Chấm đầu dòng danh sách trong chi tiết `marker:text-primary`; ô chữ viết tắt thay logo nền `bg-primary/10 text-primary` thay cho xám |
+
+**Bẫy**
+
+- **Chip lọc đang chọn không đặc màu nhấn** khi đã có dải: sáu chip đặc cam dưới một dải cam là
+  hai mảng cùng nặng tranh nhau. Chip theo `layouts/overlay.md` (nền `foreground/10` + `inset-ring`).
+- **Nổi bật tối đa khoảng một phần năm danh sách.** Mục nào cũng hot thì không mục nào hot (`M2`).
+- **Mục nổi bật vẫn khác mục đang chọn**: đang chọn giữ nền của `I10`, không trùng `bg-primary/5`.
+- Tương phản chữ trắng trên dải đo ở đầu nhạt nhất (`P3`); màu nhấn nhạt (vàng, cam sáng) thì dải
+  dùng `primary-hover` hay một bậc đậm hơn, chữ vẫn trắng.
 
 ## Không có trong bảng
 

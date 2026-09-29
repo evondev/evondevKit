@@ -123,7 +123,7 @@ Nó dẫn sang màn khác và là hành động phụ của khối: phải trôn
 được nặng ngang tiêu đề. Các app lớn đều để nó nhẹ ở góc header, và phần lớn dựng
 nó là link chữ.
 
-- **Dẫn sang màn khác thì là link, nhìn cũng là link**: `<Link>` `inline-flex h-8 items-center text-sm font-medium text-foreground/70`, **không padding ngang, không nền**; rê vào thì `text-foreground underline underline-offset-4`; `focus-visible` vòng mờ bo `rounded-md` (`I13`), **`ring-offset-4`, không `-2`**: link không có padding ngang nên offset 2px thì vòng ôm sát chữ, chữ "X" gần chạm vòng (đã dính 26/09/2026, thử 4px trên trang thì chữ có khoảng thở, vòng vẫn nằm trong padding card). `h-8` là vùng bấm dọc. Không icon mũi tên, không tô màu nhấn.
+- **Dẫn sang màn khác thì là link, nhìn cũng là link**: `<Link>` `inline-flex h-8 items-center text-sm font-medium text-foreground/70`, **không padding ngang, không nền**; rê vào thì `text-foreground underline underline-offset-4`. Không vòng focus (`I13`). `h-8` là vùng bấm dọc. Không icon mũi tên, không tô màu nhấn.
 - **Vì sao không còn là nút `ghost`** (đổi 26/09/2026, chủ dự án hỏi): (1) rê vào mà hiện nền xám bo góc là ngôn ngữ của nút làm một việc tại chỗ, trong khi cùng card các tên việc, tên dự án là link rê vào gạch chân: hai kiểu cho cùng một việc "sang trang khác" (`N5`); (2) `px-3` của nút đẩy chữ lệch vào trong 12px so với mép phải nội dung (số % của hàng bên dưới); bỏ padding thì chữ thẳng mép, đo trên `/dashboard`: 1235 = 1235.
 - **Nạp thêm tại chỗ thì vẫn là nút `ghost`**: "Xem hoạt động cũ hơn" nối thêm hàng ngay bên dưới, không đổi trang (`components/timeline.md`). Phân theo việc nó làm, không theo chữ trên nó.
 - Bản cũ hơn nữa dùng `secondary` nền xám cao 40px ở đầu mọi card, card nào cũng có một khối xám kéo mắt (bỏ 23/09/2026).
@@ -132,7 +132,7 @@ nó là link chữ.
 ```tsx
 <Link
   to={href}
-  className="inline-flex h-8 items-center rounded-md text-sm font-medium whitespace-nowrap text-foreground/70 underline-offset-4 outline-hidden transition-colors hover:text-foreground hover:underline focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
+  className="inline-flex h-8 items-center rounded-md text-sm font-medium whitespace-nowrap text-foreground/70 underline-offset-4 outline-hidden transition-colors hover:text-foreground hover:underline"
 >
   Xem tất cả
 </Link>
@@ -225,37 +225,30 @@ Thiết bị không có chuột thì không có hover: nút ẩn-hiện-khi-rê 
 `transition-all`. Khối nổi **mở và đóng** (modal, dropdown, panel, toast) thì có chuyển
 động vào ra riêng, số ở mục "Chuyển động" cuối `layouts/overlay.md`.
 
-**I13. Focus bàn phím là một vòng mờ, chỉ hiện khi dùng bàn phím.**
+**I13. Không vẽ vòng focus.** Chủ dự án chốt 28/09/2026.
 
-`focus-visible` **không bao giờ hiện khi bấm chuột**, chỉ khi Tab tới. Vì vậy vòng
-focus không làm giao diện nặng lên với người dùng chuột, mà người dùng bàn phím
-thì thấy rõ mình đang đứng ở đâu. Các app lớn đều làm vậy.
+Nút (mọi dạng), link, link sidebar, tab, chip, checkbox, radio, công tắc, card chọn, dòng
+danh sách, tay cầm thanh trượt: chỉ `outline-hidden`, **không** `focus-visible:ring-*`,
+`focus-visible:outline-*`, `ring-offset-*`. Tab hay Shift+Tab tới thì không có vòng bao
+ngoài. Đánh đổi đã biết: người dùng bàn phím không thấy mình đang đứng ở nút nào. **Đừng
+thêm lại khi thấy Tab tới không có dấu gì**, và đừng báo nó là lỗi lúc soi (`V1`). Dự án
+cần đạt chuẩn tiếp cận thì xem `I14`.
 
-| Phần tử | Focus bàn phím |
+Lý do chốt: vòng xám 2px vẽ chồng lên dấu đang chọn, vạch trái, gạch chân thành ba bốn dấu
+trên một dòng; bấm phím (Shift, phím tắt) trong lúc đang đứng trên phần tử cũng làm nó hiện,
+nên người dùng chuột vẫn gặp (đã dính 28/09/2026, danh sách việc làm và nút tài khoản).
+
+Vẫn giữ, vì không phải vòng bao ngoài:
+
+| Phần tử | Lúc focus |
 | --- | --- |
-| Nút (mọi dạng), link sidebar, tab, chip, checkbox, radio, công tắc, tay cầm thanh trượt | `outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface` |
-| Mục trong menu, dropdown, listbox, lệnh trong command palette | **tô nền như hover** (`data-[highlighted]:bg-background`): phím mũi tên dời đúng một chỗ sáng, vòng ring ở đây thừa |
+| Mục trong menu, dropdown, listbox, lệnh trong command palette | **tô nền như hover** (`data-[highlighted]:bg-background`): phím mũi tên dời đúng một chỗ sáng, thiếu nó là menu không đi bằng phím được |
 | Ô nhập, textarea | viền + ring mờ: `focus:border-focus focus:ring-2 focus:ring-focus`, xem dưới bảng |
-| Ô chọn dạng card | vòng như nút nhưng vẽ bằng `outline` (`has-focus-visible:outline-2 outline-offset-2 outline-foreground/50`): viền + ring mờ đã là dấu **đang chọn**, Tab vào nhóm radio rơi đúng card đó (`components/choice-controls.md`) |
-| Nút mở của select, ô chọn ngày, ô chọn giờ (là `<button>`, không gõ được) | viền + ring mờ như ô nhập, nhưng **`focus-visible:`** và `aria-expanded:`, không `focus:` |
-| Link chữ | `focus-visible:underline` + vòng như nút |
+| Nút mở select, ô chọn ngày, ô chọn giờ (là `<button>`, không gõ được) | viền `focus-visible:border-focus`; viền + ring mờ chỉ khi đang mở (`aria-expanded:`), không `focus:` |
+| Card chọn (radio dạng card) | chỉ dấu **đang chọn** (viền + ring mờ); Tab tới không thêm gì |
 
-- **`ring-foreground/50` là mức thấp nhất đạt 3:1 trên nền trắng** (WCAG 1.4.11). `/40` là 2,3:1, trượt. Nền tối dùng `ring-white/50`.
-- **`ring-offset-2`** tách vòng khỏi mép nút một khe 2px, để vòng không dính vào viền nút thành một viền dày.
-- **Link chữ nằm giữa câu: vòng chạm dấu câu bên cạnh là chuyện không tránh được, đừng chữa bằng
-  đổi offset.** Vòng nở 4px, một dấu cách của chữ 14px chỉ ~3,5px. Thử 26/09/2026 cả `ring-offset-0`,
-  `-1`, `-2` trên "Chưa có tài khoản? Đăng ký" và "…studio.com. Đổi tài khoản": mức nào cũng dính sát
-  "?" hay ".", offset 0 thì vòng ôm sát dấu tiếng Việt, chật hơn. Giữ vòng như nút. Chỉ khi link
-  nối sau một giá trị dài (email, mã) ở khối căn giữa thì cho link một dòng riêng (`layouts/app.md`,
-  "Trang lỗi"); link ngắn trong câu thường ("Chưa có tài khoản? Đăng ký") để nguyên.
-- **Link đứng riêng có `h-8` (vùng bấm) thì chữ phải cách đều bốn mép khung vòng**: thêm `px-1.5`,
-  khe ngang 6px ngang khe dọc 7px. Chỉ link `I7` ở góc header giữ `px-0` để chữ thẳng mép card.
-  Đã dính 26/09/2026: "Đổi tài khoản" ở trang 403, vòng sát "Đ" và "n" mà hở trên dưới.
-- **Đổi sang vòng thì dọn luôn chỗ ghi đè cũ**, không hỏi: grep `focus-visible:bg-`, `focus:bg-`, `focus-visible:ring-0` trên nút, tab, chip và bỏ, vì còn sót là vừa vòng vừa nền, hai tín hiệu một ý (`N3`). Chỉ giữ nền lúc focus ở chỗ đi bằng mũi tên theo bảng trên: mục menu, listbox, ô lịch (đã dính 24/09/2026: sửa `Button` xong còn bảy chỗ tự đè nền).
-- Đã thử và bỏ (21–23/09/2026): **focus y như hover**. Nền `--background` trên nút trắng chỉ 1,1:1, nút `primary` đổi sang `primary-hover` chỉ 1,28:1, checkbox và radio chỉ có ring 10%: Tab qua cả form gần như không thấy mình ở đâu. Ba lượt rà skill độc lập cùng chỉ ra lỗi này.
-
-**`focus-visible`, không phải `focus`**, trừ ô nhập. Ô nhập dùng `focus` vì người dùng
-cần thấy mình đang gõ vào ô nào, dù vào bằng chuột hay bàn phím.
+**Ô nhập dùng `focus`**, vì người dùng cần thấy mình đang gõ vào ô nào, dù vào bằng chuột
+hay bàn phím.
 
 **Nút mở select trông như ô nhập nhưng không phải ô nhập**: chọn xong một mục, focus
 trả về nút (đúng, cho bàn phím), và nếu nút dùng `focus:` thì nó giữ viền đậm + ring y
@@ -288,15 +281,17 @@ dùng **`data-[highlighted]`** thay cho cả `hover:` lẫn `focus:`:
 `data-[highlighted]` đi theo cả chuột lẫn phím mũi tên, nên luôn chỉ có một mục
 sáng. Không dùng Radix thì khi chuột vào mục nào, gọi `.focus()` cho mục đó.
 
-**I14. Bỏ luôn cả dấu hiệu thay thế là một quyết định, không phải một mặc định.**
+**I14. Trả lại vòng focus chỉ khi chủ dự án yêu cầu.**
 
-Mặc định của skill là **vòng mờ chỉ hiện khi dùng bàn phím** (`I13`). Bỏ luôn cả
-vòng đó, tức bấm Tab không thấy gì, thì người dùng bàn phím không còn biết mình đang
-đứng ở nút nào. Đã có dự án làm vậy (16/09/2026) và ghi rõ đánh đổi. Nếu làm
-thì:
+Đề nói "cần accessibility", "đạt WCAG", dự án nhà nước, ngân hàng, giáo dục có yêu cầu
+tiếp cận thì trả vòng lại, **ở đúng một chỗ** (class gốc của `Button`, của chip, của tab),
+để muốn bỏ thì sửa một dòng:
 
-- Ghi lý do ngay tại chỗ, kèm câu **"đừng sửa lại khi thấy bấm Tab không có dấu hiệu gì"**.
-- Để rule ở **đúng một chỗ**, để muốn trả lại thì sửa một dòng.
+`outline-hidden focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface`
+
+- `ring-foreground/50` là mức thấp nhất đạt 3:1 trên nền trắng (WCAG 1.4.11); nền tối `ring-white/50`.
+- Dòng trong khung `overflow-hidden` (accordion, tiêu đề cột bảng) thì `ring-inset`, không thì bị cắt.
+- Vòng không chồng lên dấu đang chọn: phần tử có viền "đang chọn" bằng `ring-*` thì vẽ vòng focus bằng `outline` (`W8`).
 
 **I15. Sidebar: mục đang chọn tô nền xám, không tô màu nhấn, không viền.** Mục
 chưa chọn thì không nền. Sidebar nền trắng thì hover và đang chọn **cùng một nền
@@ -483,7 +478,7 @@ Ba thứ đi liền nhau, thiếu một cái là lỗi:
 là phải xoá hết gõ lại, và đó là lý do rời form phổ biến nhất ở màn đăng nhập.
 
 - Nút **chỉ có icon**, `absolute` trong ô, căn phải. Icon `Eye` / `EyeOff` theo `F15`.
-- **Nút `size-10`, `right-1` căn giữa dọc** (`inset-y-0 my-auto`, không `-translate-y-1/2`: `N11`), icon `size-4` giữa nút. Icon đứng đúng chỗ cũ, chỉ vùng bấm to ra; vừa khít `pr-11` (4 + 40 = 44px). Nút ôm sát icon (`p-1`, 24px) thì trên điện thoại bấm trượt vào ô, bàn phím bật lên thay vì hiện mật khẩu (đã dính 25/09/2026). Focus bàn phím là vòng như mọi nút (`I13`).
+- **Nút `size-10`, `right-1` căn giữa dọc** (`inset-y-0 my-auto`, không `-translate-y-1/2`: `N11`), icon `size-4` giữa nút. Icon đứng đúng chỗ cũ, chỉ vùng bấm to ra; vừa khít `pr-11` (4 + 40 = 44px). Nút ôm sát icon (`p-1`, 24px) thì trên điện thoại bấm trượt vào ô, bàn phím bật lên thay vì hiện mật khẩu (đã dính 25/09/2026). Không vòng focus (`I13`).
 - **`type="button"`.** Quên thì nó mặc định là `submit` — bấm xem mật khẩu hoá ra gửi form.
 - `aria-label` đổi theo trạng thái: "Hiện mật khẩu" / "Ẩn mật khẩu". Không phải một nhãn cố định.
 - Chừa chỗ cho nút bằng padding phải trên chính ô (`pr-11`), đừng để chữ gõ dài chui xuống dưới icon.

@@ -72,7 +72,7 @@
 
   /* Ring rất mờ theo màu nhấn, dày 2px (ring-2). Cho ô điền lúc focus (input, textarea,
      select) và ô chọn dạng card đang chọn, đi cùng viền --border-focus. Nút,
-     menu, tab KHÔNG dùng. Luật I13. */
+     menu, tab KHÔNG dùng, và không có vòng focus. Luật I13. */
   --ring-focus: rgba(24, 24, 24, 0.1);
 
   /* Viền lúc focus. Ở nền sáng thì chính là màu nhấn. Ở nền tối thì KHÔNG

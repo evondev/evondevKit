@@ -22,7 +22,7 @@ chỉ vào khi họ tự xin.
 | --- | --- | --- |
 | `U1` Brief | Một khối ngắn: sản phẩm, người dùng, việc chính, nền tảng | Gộp với `U2`, **cổng 1** |
 | `U2` Việc chính của từng màn | Bảng: đến để làm gì, so sánh bằng gì, hành động cuối, quy ước loại sản phẩm | **Cổng 1**: người dùng sửa hoặc trả lời `ok` |
-| `U3` Wireframe | 2–3 phương án bố cục khác nhau thật, xám, nội dung thật, có ảnh | **Cổng 2**: người dùng chọn |
+| `U3` Wireframe | 2–3 phương án bố cục khác nhau thật, xám, nội dung thật, có ảnh; biến thể nội dung D, E; hai mức màu F, G | **Cổng 2**: người dùng chọn |
 | `U4` Dựng thật | Code theo phương án đã chọn, probe tới khi danh sách `P` trống | Như cổng 3 của `checklist.md` |
 
 Chưa qua cổng 2 thì **không đụng file nào của dự án**. Wireframe và ảnh để ở
@@ -84,7 +84,7 @@ dòng đó."* Dừng chờ.
 - **Đánh dấu một phương án khuyên dùng**, kèm một câu vì sao (bám `U2`).
 - Một file HTML, các phương án chuyển bằng tham số (`?v=a`, `?v=b`…) để probe mở được từng cái.
 - **Wireframe có đủ trạng thái như bản thật**: một mục đang chọn đánh dấu `aria-current` (hay
-  `aria-selected`), có nền rê, có vòng focus. Wireframe tĩnh không có rê thì không ai thấy
+  `aria-selected`), có nền rê. Wireframe tĩnh không có rê thì không ai thấy
   "rê trùng nền đang chọn" cho tới khi đã dựng xong.
 - **Probe từng phương án trước khi gửi**, ở 1280 và 375, sửa tới khi sạch các mục: danh sách
   `P`, rê ra đúng màu mục đang chọn, vạch trái bị bo góc cắt, mục lặp dày chữ, cột dính cuộn
@@ -102,6 +102,17 @@ dòng đó."* Dừng chờ.
 
   D và E cũng qua probe như các phương án bố cục.
 
+- **Hai mức màu, F và G, trên phương án khuyên dùng.** Đây là chỗ duy nhất wireframe có màu
+  brand, để người dùng chọn độ đậm màu trước khi dựng, không phải chờ dựng xong mới thấy
+  "buồn màu":
+  - **F, phẳng:** mặc định của skill (`P6`): màu nhấn chỉ ở nút chính và mục đang chọn.
+  - **G, có màu:** `P12` trong `styles.md`: dải màu ở đầu và chân trang, mục nổi bật theo dữ
+    liệu, tiêu đề đậm hơn, chấm đầu dòng màu nhấn.
+
+  Trang người dùng cuối lướt để chọn (tìm việc, tìm phòng, sản phẩm) thì **khuyên G**; trang
+  làm việc trong app (bảng, cài đặt, quản trị) thì khuyên F. Dự án đã có phong cách khác flat
+  (`P4`) thì bỏ F, G, theo dự án. F và G cũng qua probe (tương phản chữ trắng trên dải).
+
 - **Gửi link bấm được cho từng phương án**, không chỉ đường dẫn ảnh. Chạy một server tĩnh nền
   trên thư mục wireframe (`python3 -m http.server <cổng> -d "$TMPDIR/evon-design"`, chạy nền),
   rồi liệt kê mỗi phương án một dòng dạng link đầy đủ, người dùng bấm hoặc chép vào trình
@@ -111,12 +122,14 @@ dòng đó."* Dừng chờ.
   - A · Lưới card + hàng lọc gọn (khuyên dùng): http://localhost:<cổng>/wireframe.html?v=a
   - B · Danh sách + bản đồ: http://localhost:<cổng>/wireframe.html?v=b
   - D · A gọn chữ: http://localhost:<cổng>/wireframe.html?v=d
+  - G · A có màu (khuyên dùng cho trang này): http://localhost:<cổng>/wireframe.html?v=g
   ```
 
   Mở thử từng link (probe đã mở là được) trước khi gửi. Không chạy được server thì ghi đường
   dẫn tệp `file://…/wireframe.html` và nói tham số `?v=` chọn phương án.
 
-Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn (ví dụ `C + D`, `B + D + E`)."* Dừng chờ.
+Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn, và F hay G cho màu (ví dụ `C + D + G`, `B + E + F`)."*
+Không ghi F hay G thì dựng theo mức đã khuyên. Dừng chờ.
 
 ## U4. Dựng thật ⚑
 
@@ -125,6 +138,8 @@ Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn (ví dụ `C + D`, `B +
   thứ cần dữ liệu mới thì để prop và handler rỗng, lúc giao liệt kê.
 - **Sản phẩm mới:** đi tiếp câu 2 và 3 của mục 0 trong `SKILL.md`, rồi dựng theo phương án đã
   chọn thay cho bố cục mặc định của câu 4.
+- **Chọn G thì phong cách là `P12`** cho route đó và các màn người dùng cuối cùng loại, ghi một
+  dòng lúc giao như mẫu của `P1`. Màu vẫn từ màu nhấn của dự án.
 - Ráp bằng mẫu của skill (`SKILL.md` mục 2). Chạy probe `--sweep` tới khi danh sách `P`
   trống, tối đa ba vòng. **Danh sách `P` tính cả khung app trên route đó** (header, sidebar,
   thanh dưới, menu thông báo): người dùng nhìn cả màn, không chỉ phần mới dựng. Khung app lỗi

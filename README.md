@@ -22,7 +22,7 @@ Gõ đúng vài chữ khoá là skill đi đúng việc:
 | Biết UI đang sai chỗ nào | `/evon:ui-ux Xem giúp trang này chỗ nào chưa ổn: http://localhost:3000/orders` | Đưa bảng lỗi có ảnh trước/sau. Bạn trả lời `sửa 1, 3` rồi mới sửa |
 | Làm đẹp lại, giữ màu brand | `/evon:ui-ux Dựng lại giao diện app này theo skill cho đẹp.` | Thay control, làm gọn card, giữ màu của bạn. Trả lời `ok` hoặc `bỏ 7` |
 | Đổi hẳn sang dáng của skill | `/evon:ui-ux Dựng lại hoàn toàn theo gu skill, bỏ style cũ.` | Như trên, đổi cả màu, chỉ giữ logo và màu nhấn |
-| Nghĩ lại trải nghiệm | `/evon:ui-ux Trang này vẫn chưa ổn về UX. Thiết kế lại từ đầu như một designer.` | Brief → bạn duyệt → 2–3 wireframe → bạn chọn → dựng |
+| Nghĩ lại trải nghiệm | `/evon:ui-ux Trang này vẫn chưa ổn về UX. Thiết kế lại từ đầu như một designer.` | Brief → bạn duyệt → 2–3 wireframe, kèm bản gọn chữ và bản có màu → bạn chọn → dựng |
 | Dọn code, giữ nguyên hình | `/evon:ui-ux Refactor CSS trang /settings sang Tailwind, giữ nguyên giao diện.` | Đổi class, xoá CSS cũ, so ảnh trước và sau |
 
 Dựng lại giữ nguyên khung trang, chỉ sạch hơn. Làm xong mà thấy "nhìn vẫn như cũ" thì

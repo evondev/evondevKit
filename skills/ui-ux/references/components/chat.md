@@ -15,7 +15,7 @@ file đã có (`N5`): danh sách bước dùng công cụ mượn đường dọ
       <!-- Câu trả lời: không bong bóng, không avatar, thẳng mép trái cột -->
       <div class="max-w-[55ch] space-y-3">
         <!-- Không nền rê nên không px: chữ tự thẳng mép cột, không -ml-2 (button.md, N11) -->
-        <button class="flex h-8 cursor-pointer items-center gap-2 rounded-md text-sm text-muted outline-hidden hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/50 focus-visible:ring-offset-4 focus-visible:ring-offset-background" aria-expanded="false">
+        <button class="flex h-8 cursor-pointer items-center gap-2 rounded-md text-sm text-muted outline-hidden hover:text-foreground" aria-expanded="false">
           <!-- ô đầu size-4: ChevronRight (xoay 90° khi mở), hoặc LoaderCircle khi chưa có bước nào -->
           Đã dùng 3 công cụ
         </button>
