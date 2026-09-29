@@ -23,6 +23,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Đề bài có từ nào mơ hồ không (bảng, thẻ, danh sách, khung, trang, lịch)?
 - [ ] Đề để hở: đã dựng **đủ bộ khối mặc định** trong file layout chưa, hay làm mỏng dính (`S5`)? Không hỏi phạm vi.
 - [ ] Nhánh `U`: đã dựng đúng **phương án wireframe đã chọn** chưa, hay tự bịa (`U4`)? Lối dựng luôn: dựng theo phương án sẽ khuyên, báo một dòng "Bố cục: … vì …". Việc nhỏ hơn một màn: **bố cục mặc định** trong file layout, báo một dòng "muốn kiểu khác thì nói".
+- [ ] Dự án đã có UI (nhánh `U` hay dựng lại): tin giao có dòng **`Dáng:`** đi qua bảng "Dáng lấy từ skill, không từ CSS cũ" (`review.md`) chưa? Dropdown, checkbox, viền card, thanh cuộn, nút header lấy theo mẫu của skill, hay còn CSS cũ của dự án?
 - [ ] Đề nhiều hơn một màn? Đã chốt **hợp đồng nguyên tố** (`system.md` `D1`) ở `U4`, trước màn đầu tiên chưa?
 - [ ] Người dùng nói "chưa biết muốn UI thế nào" → đã dựng hướng A và báo còn B, C chưa?
 

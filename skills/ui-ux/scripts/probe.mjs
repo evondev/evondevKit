@@ -1021,6 +1021,15 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     if (hasDefaultBorder || isNativeSelect) browserDefaultControls.push(`${isNativeSelect ? "select gốc trình duyệt" : `viền ${style.borderTopWidth} ${style.borderTopStyle} ${style.borderTopColor}`}: ${describe(control)}`);
   }
 
+  // 17a. Checkbox, radio gốc, kể cả khi chỉ tô `accent-color`: skill dựng trên `appearance-none`
+  //      (components/choice-controls.md). Ô `sr-only` hay trong suốt nằm dưới ô tự vẽ thì không tính.
+  for (const choice of document.querySelectorAll("input[type='checkbox'], input[type='radio']")) {
+    if (browserDefaultControls.length >= 8 || !isVisible(choice)) continue;
+    const style = getComputedStyle(choice);
+    if (style.appearance === "none" || Number(style.opacity) <= 0.1) continue;
+    browserDefaultControls.push(`${choice.type} gốc trình duyệt${style.accentColor !== "auto" ? " (chỉ tô accent-color)" : ""}: ${describe(choice)}`);
+  }
+
   // 17b. Select gốc đã tô ở khổ desktop: lúc đóng khớp app, bấm vào vẫn bung menu của hệ điều hành. Chế độ
   //      soi bỏ qua, hai chế độ dựng lại thay bằng Select dựng (review.md V1, 28/09/2026).
   const styledNativeSelects = isMobile ? [] : [...document.querySelectorAll("select")]
@@ -1799,10 +1808,28 @@ function findHeavyLayerLines() {
     // Viền nửa trong suốt vẽ lên nền trắng của khung.
     return (0.2126 * (red * opacity + 255 * (1 - opacity)) + 0.7152 * (green * opacity + 255 * (1 - opacity)) + 0.0722 * (blue * opacity + 255 * (1 - opacity))) / 255;
   };
-  const tokenColor = getComputedStyle(document.documentElement).getPropertyValue("--border").trim();
-  if (!tokenColor) return [];
-  const tokenLuminance = toLuminance(tokenColor);
-  if (tokenLuminance === null) return [];
+  // Tương phản của đường kẻ trên nền trắng. Viền trang trí của skill ~1.07:1; token viền của dự án cỡ
+  // `#e2e8f0` (~1.23:1) cũng là đậm (M14), nên so thêm ngưỡng tuyệt đối, không chỉ so với token.
+  const toContrastOnWhite = (cssColor) => {
+    context.clearRect(0, 0, 1, 1);
+    context.fillStyle = "rgba(0,0,0,0)";
+    context.fillStyle = cssColor;
+    context.fillRect(0, 0, 1, 1);
+    const [red, green, blue, alpha] = context.getImageData(0, 0, 1, 1).data;
+    if (alpha === 0) return null;
+    const opacity = alpha / 255;
+    const toLinear = (channel) => {
+      const value = (channel * opacity + 255 * (1 - opacity)) / 255;
+
+      return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+    };
+    const luminance = 0.2126 * toLinear(red) + 0.7152 * toLinear(green) + 0.0722 * toLinear(blue);
+
+    return 1.05 / (luminance + 0.05);
+  };
+  const rootStyle = getComputedStyle(document.documentElement);
+  const tokenColor = rootStyle.getPropertyValue("--border").trim() || rootStyle.getPropertyValue("--color-border").trim();
+  const tokenLuminance = tokenColor ? toLuminance(tokenColor) : null;
 
   const describeLayer = (element) => `${element.tagName.toLowerCase()}${element.getAttribute("role") ? `[role=${element.getAttribute("role")}]` : ""} "${(element.textContent || "").trim().replace(/\s+/g, " ").slice(0, 30)}"`;
   const findings = [];
@@ -1819,13 +1846,58 @@ function findHeavyLayerLines() {
     }
     const heavy = lines.filter((line) => {
       const luminance = toLuminance(line.color);
+      const contrast = toContrastOnWhite(line.color);
+      const isDarkerThanToken = luminance !== null && tokenLuminance !== null && tokenLuminance - luminance > 0.02;
 
-      return luminance !== null && tokenLuminance - luminance > 0.02;
+      return isDarkerThanToken || (contrast !== null && contrast >= 1.15);
     });
-    if (heavy.length > 0) findings.push(`${heavy.map((line) => `${line.what} ${line.color}`).join(", ")} đậm hơn --border ${tokenColor}: ${describeLayer(layer)}`);
+    if (heavy.length > 0) findings.push(`${heavy.map((line) => `${line.what} ${line.color} (~${toContrastOnWhite(line.color).toFixed(2)}:1 trên trắng)`).join(", ")}, viền trang trí nên ~1.1:1${tokenColor ? `, token --border ${tokenColor}` : ""}: ${describeLayer(layer)}`);
   }
 
   return findings;
+}
+
+// Lớp nổi vừa mở: có chuyển động mở không (overlay.md, "Chuyển động"), và có checkbox, radio gốc bên trong
+// không. Menu bật tắt bằng `{isOpen && …}` hay `display` hiện ra tức thì; checkbox gốc chỉ lộ khi menu mở
+// nên phép đo ở trang không thấy (đã dính 29/09/2026, tim-phong-sua: menu "Khu khác").
+function findPopupDetails(freezeCss) {
+  // Probe tắt mọi transition để chụp ổn định (freezeMotionCss); lớp nổi gắn vào DOM sau lúc ghi
+  // `data-evon-transition`, nên tạm tắt khối đóng băng để đọc style thật, đọc xong bật lại.
+  const freezeTags = [...document.querySelectorAll("style")].filter((tag) => tag.textContent === freezeCss);
+  for (const tag of freezeTags) tag.media = "not all";
+  const describeLayer = (element) => `${element.tagName.toLowerCase()}${element.getAttribute("role") ? `[role=${element.getAttribute("role")}]` : ""} "${(element.textContent || "").trim().replace(/\s+/g, " ").slice(0, 30)}"`;
+  const motionProperties = ["all", "opacity", "transform", "scale", "translate"];
+  const motionless = [];
+  const nativeChoices = [];
+  for (const layer of document.querySelectorAll("[role='menu'], [role='listbox'], [role='dialog'], [data-radix-popper-content-wrapper] > *, [popover]")) {
+    const rect = layer.getBoundingClientRect();
+    // Lớp đã hiện sẵn trước khi bấm (listbox nằm trong trang, không phải lớp nổi) không tính.
+    if (rect.width === 0 || layer.dataset.evonSeenLayer || getComputedStyle(layer).visibility === "hidden") continue;
+    // Lớp nằm trong một lớp khác (listbox trong khung popover của Select) thì khung ngoài mới là lớp nổi.
+    if (layer.parentElement?.closest("[role='menu'], [role='listbox'], [role='dialog'], [popover]")) continue;
+    // Chuyển động có thể nằm ở khung bọc ngoài: đi ngược lên tới khung nổi (fixed / absolute) gần nhất.
+    let hasMotion = false;
+    for (let node = layer, depth = 0; node && node !== document.body && depth < 8; node = node.parentElement, depth += 1) {
+      const style = getComputedStyle(node);
+      const durations = style.transitionDuration.split(",").map((duration) => parseFloat(duration));
+      const hasTransition = style.transitionProperty.split(",").some((property, index) => motionProperties.includes(property.trim()) && (durations[index] ?? durations[0]) > 0);
+      if (style.animationName !== "none" || hasTransition) {
+        hasMotion = true;
+        break;
+      }
+      if (["fixed", "absolute"].includes(style.position)) break;
+    }
+    if (!hasMotion) motionless.push(describeLayer(layer));
+    for (const choice of layer.querySelectorAll("input[type='checkbox'], input[type='radio']")) {
+      const style = getComputedStyle(choice);
+      if (style.appearance === "none" || Number(style.opacity) <= 0.1 || choice.getBoundingClientRect().width <= 2) continue;
+      nativeChoices.push(`${choice.type} gốc${style.accentColor !== "auto" ? " (chỉ tô accent-color)" : ""} trong ${describeLayer(layer)}`);
+      break;
+    }
+  }
+  for (const tag of freezeTags) tag.media = "all";
+
+  return { motionless, nativeChoices };
 }
 
 async function probePopupLayers(page, isMobile) {
@@ -1833,6 +1905,8 @@ async function probePopupLayers(page, isMobile) {
   const hollowLayers = new Set();
   const checkedHoverChanges = new Set();
   const heavyLayerLines = new Set();
+  const motionlessLayers = new Set();
+  const nativeChoices = new Set();
   const hollowBefore = new Set(await page.evaluate(findHollowLayers));
   const triggerIds = await page.evaluate(({ popupLimit, tapLimit, isTouch }) => {
     const ids = [];
@@ -1857,6 +1931,11 @@ async function probePopupLayers(page, isMobile) {
   for (const triggerId of triggerIds) {
     const locator = page.locator(`[data-evon-popup-id="${triggerId}"]`);
     const isTap = triggerId.startsWith("tap-");
+    await page.evaluate(() => {
+      for (const layer of document.querySelectorAll("[role='menu'], [role='listbox'], [role='dialog'], [popover]")) {
+        if (layer.getBoundingClientRect().width > 0 && Number(getComputedStyle(layer).opacity) > 0.5) layer.dataset.evonSeenLayer = "1";
+      }
+    });
     const isDone = await (isTap ? locator.tap({ timeout: 800, force: true }) : locator.click({ timeout: 800, force: true })).then(() => true, () => false);
     if (!isDone) continue;
     await page.waitForTimeout(250);
@@ -1865,11 +1944,23 @@ async function probePopupLayers(page, isMobile) {
     // Ô chọn trong lớp nổi (bộ lọc dạng popover) chỉ hiện lúc mở, nên đo rê vào ô đã chọn ở đây nữa.
     if (!isTap && !isMobile) for (const change of await findCheckedHoverChanges(page)) checkedHoverChanges.add(change);
     if (!isTap) for (const line of await page.evaluate(findHeavyLayerLines)) heavyLayerLines.add(line);
+    if (!isTap) {
+      const details = await page.evaluate(findPopupDetails, freezeMotionCss);
+      for (const layer of details.motionless) motionlessLayers.add(layer);
+      for (const choice of details.nativeChoices) nativeChoices.add(choice);
+    }
     await page.keyboard.press("Escape");
     await page.waitForTimeout(120);
   }
 
-  return { overflowing: [...overflowingLayers], hollow: [...hollowLayers], checkedHoverChanges: [...checkedHoverChanges], heavyLayerLines: [...heavyLayerLines] };
+  return {
+    overflowing: [...overflowingLayers],
+    hollow: [...hollowLayers],
+    checkedHoverChanges: [...checkedHoverChanges],
+    heavyLayerLines: [...heavyLayerLines],
+    motionless: [...motionlessLayers],
+    nativeChoices: [...nativeChoices],
+  };
 }
 
 // Mở các khối đang đóng (accordion, mục thu gọn) để đo lại phần bên trong. Bỏ nút có popup (menu,
@@ -2211,6 +2302,8 @@ async function probeWidth(browser, options, width) {
   // Màn chạm không có rê chuột: chỉ đo nền rê ở khổ desktop.
   const hoverStates = isMobile ? { layoutShifts: [], vanishedChildren: [], weakHovers: [], blendedHovers: [], borderHovers: [], overflowingLayers: [] } : await probeHoverStates(page);
   const popupLayers = await probePopupLayers(page, isMobile);
+  const heavyDecorativeBorders = options.isDark ? [] : await page.evaluate(findHeavyDecorativeBorders);
+  const scrollbarStyles = await page.evaluate(findScrollbarStyles);
   const overflowingLayers = [...new Set([...hoverStates.overflowingLayers, ...popupLayers.overflowing])];
   // Chạy sau cùng: bấm thử đổi lựa chọn trên trang (ngày, tab), các phép đo khác phải xong trước.
   const pageCheckedHoverChanges = isMobile ? [] : await findCheckedHoverChanges(page);
@@ -2240,9 +2333,86 @@ async function probeWidth(browser, options, width) {
     hoverLikeSelected: stateShapes.hoverLikeSelected,
     checkedHoverChanges: [...new Set([...pageCheckedHoverChanges, ...popupLayers.checkedHoverChanges])],
     heavyLayerLines: popupLayers.heavyLayerLines,
+    motionlessLayers: popupLayers.motionless,
+    popupNativeChoices: popupLayers.nativeChoices,
+    heavyDecorativeBorders,
+    scrollbarStyles,
     stuckStates: stateShapes.stuckStates,
     stateGroupCount: stateShapes.groupCount,
   };
+}
+
+// Viền trang trí đậm (M14): card, khung bo góc có viền 1px mà đường viền ≥ 1.21:1 trên trắng. Skill ~1.07:1,
+// `--border-strong` #eaeaea ~1.20:1 (khung bảng ở dự án mồi, chủ dự án duyệt); token viền kiểu `#e2e8f0`
+// (~1.23:1) là mức đã chê đậm, chỉ cho ô nhập, nút viền. Khung bọc ô nhập (ô tìm có icon) không tính.
+function findHeavyDecorativeBorders() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1;
+  canvas.height = 1;
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  const toContrastOnWhite = (cssColor) => {
+    context.clearRect(0, 0, 1, 1);
+    context.fillStyle = "rgba(0,0,0,0)";
+    context.fillStyle = cssColor;
+    context.fillRect(0, 0, 1, 1);
+    const [red, green, blue, alpha] = context.getImageData(0, 0, 1, 1).data;
+    if (alpha === 0) return null;
+    const opacity = alpha / 255;
+    const toLinear = (channel) => {
+      const value = (channel * opacity + 255 * (1 - opacity)) / 255;
+
+      return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+    };
+
+    return 1.05 / (0.2126 * toLinear(red) + 0.7152 * toLinear(green) + 0.0722 * toLinear(blue) + 0.05);
+  };
+  const findings = new Map();
+  for (const element of document.querySelectorAll("body *")) {
+    if (findings.size >= 6) break;
+    if (element.matches("input, textarea, select, button, a, label, [role='button'], [role='textbox'], [role='combobox']")) continue;
+    const style = getComputedStyle(element);
+    const widths = [style.borderTopWidth, style.borderRightWidth, style.borderBottomWidth, style.borderLeftWidth];
+    if (style.borderTopStyle !== "solid" || widths.some((borderWidth) => borderWidth !== "1px") || parseFloat(style.borderTopLeftRadius) < 6) continue;
+    const rect = element.getBoundingClientRect();
+    if (rect.width < 120 || rect.height < 60 || style.visibility === "hidden") continue;
+    const field = element.querySelector("input:not([type='checkbox']):not([type='radio']):not([type='hidden']), textarea, select");
+    if (field && field.getBoundingClientRect().height >= rect.height * 0.6) continue;
+    const contrast = toContrastOnWhite(style.borderTopColor);
+    if (contrast === null || contrast < 1.21 || findings.has(style.borderTopColor)) continue;
+    const label = `${element.tagName.toLowerCase()}.${String(element.className).trim().split(/\s+/).slice(0, 4).join(".")}`;
+    findings.set(style.borderTopColor, `${style.borderTopColor} (~${contrast.toFixed(2)}:1 trên trắng): ${label} "${(element.textContent || "").trim().replace(/\s+/g, " ").slice(0, 30)}"`);
+  }
+
+  return [...findings.values()];
+}
+
+// Thanh cuộn khác khối scrollbar của tokens.css: rộng quá 4px, hoặc thumb tô màu đặc lúc đứng yên (luôn
+// hiện). Đọc luật CSS vì pseudo-element `::-webkit-scrollbar` không đọc được bằng getComputedStyle.
+function findScrollbarStyles() {
+  const findings = new Set();
+  const isOpaque = (value) => Boolean(value) && !/transparent|var\(|rgba\([^)]*,\s*0\)|0 0/.test(value);
+  const walk = (rules) => {
+    for (const rule of rules) {
+      const selector = rule.selectorText || "";
+      if (selector.includes("::-webkit-scrollbar")) {
+        const isBar = /::-webkit-scrollbar(?![-\w])/.test(selector);
+        const width = parseFloat(rule.style.getPropertyValue("width"));
+        if (isBar && width > 4) findings.add(`thanh rộng ${width}px (\`${selector}\`)`);
+        const background = rule.style.getPropertyValue("background") || rule.style.getPropertyValue("background-color");
+        if (selector.includes("-thumb") && !selector.includes(":hover") && isOpaque(background)) findings.add(`thumb luôn hiện màu ${background} (\`${selector}\`)`);
+      }
+      if (rule.cssRules) walk(rule.cssRules);
+    }
+  };
+  for (const sheet of document.styleSheets) {
+    try {
+      walk(sheet.cssRules);
+    } catch {
+      // Stylesheet khác origin không đọc được luật, bỏ qua.
+    }
+  }
+
+  return [...findings].slice(0, 4);
 }
 
 // ---------- Lớp nổi mở bằng nút thường, ở màn hẹp ----------
@@ -2681,6 +2851,22 @@ function formatReport(results) {
     if (result.heavyLayerLines?.length > 0) {
       problems.push(`KHUNG / VẠCH CỦA LỚP NỔI ĐẬM HƠN TOKEN VIỀN (${result.heavyLayerLines.length} lớp, dùng border-border như mẫu overlay.md):`);
       for (const item of result.heavyLayerLines) problems.push(`  ${item}`);
+    }
+    if (result.motionlessLayers?.length > 0) {
+      problems.push(`LỚP NỔI BẬT TẮT KHÔNG CHUYỂN ĐỘNG (${result.motionlessLayers.length} lớp, \`{isOpen && …}\` hay \`display\` thì hiện tức thì; nhịp theo "Chuyển động" ở layouts/overlay.md):`);
+      for (const item of result.motionlessLayers) problems.push(`  ${item}`);
+    }
+    if (result.popupNativeChoices?.length > 0) {
+      problems.push(`CHECKBOX / RADIO GỐC TRONG LỚP NỔI (${result.popupNativeChoices.length} lớp, dựng theo components/choice-controls.md):`);
+      for (const item of result.popupNativeChoices) problems.push(`  ${item}`);
+    }
+    if (result.heavyDecorativeBorders?.length > 0) {
+      problems.push(`VIỀN TRANG TRÍ ĐẬM (${result.heavyDecorativeBorders.length} màu, card và khung nhạt hơn #e4e4e7, bậc xám nhạt nhất của dự án, M14):`);
+      for (const item of result.heavyDecorativeBorders) problems.push(`  ${item}`);
+    }
+    if (result.scrollbarStyles?.length > 0) {
+      problems.push(`THANH CUỘN KHÁC MẪU (${result.scrollbarStyles.length} luật, dùng khối scrollbar của tokens.css: 4px, ẩn tới khi rê hay cuộn):`);
+      for (const item of result.scrollbarStyles) problems.push(`  ${item}`);
     }
     if (result.heavySeparators?.length > 0) {
       problems.push(`VẠCH CHIA TRONG MENU ĐẬM HƠN VIỀN KHUNG (${result.heavySeparators.length} menu):`);

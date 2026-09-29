@@ -78,18 +78,33 @@ Khối không có mẫu trong skill (card tin đăng, card sản phẩm, khối 
 lại theo luồng "Dựng một thứ chưa có mẫu" ở cuối `principles.md`: mượn khuôn gần nhất,
 dựng cả ca biên, probe tự sửa, rồi soi năm câu bằng mắt.
 
-Mẫu để thay ở chế độ dựng lại (dự án đã có component riêng cho thứ đó thì dùng cái của
-họ, chỉ sửa nó cho hết lỗi):
+**Dáng lấy từ skill, không từ CSS cũ** ⚑. Áp cho hai chế độ dựng lại và cho `U4` ở dự án
+đã có UI. "Tô bằng token của dự án" chỉ nói **màu theo vai**. Viền xám, scrollbar, chiều
+cao control, checkbox, chuyển động của lớp nổi là dáng: CSS cũ của dự án có sẵn thì vẫn
+thay. Dự án đã có component riêng cho thứ đó thì **sửa chính component đó** theo mẫu, không
+dựng bản thứ hai (`S9`); chưa có thì dựng mới theo mẫu, không tự chế:
 
 | Thứ đang có | Thay theo |
 | --- | --- |
 | `<select>` gốc, select tự chế | `components/choice-controls.md` (Select; từ khoảng 8 mục thì có ô tìm) |
 | `<input type="range">` gốc, thanh trượt giá | `components/range-slider.md` |
-| Menu, dropdown, popover tự chế | `layouts/overlay.md` |
-| Checkbox, radio, công tắc, ô chọn ngày | `components/choice-controls.md` |
+| Menu, dropdown, popover tự chế: khung, mục, **chuyển động mở đóng** | `layouts/overlay.md` (khung ở "Dropdown", nhịp ở "Chuyển động"). Bật tắt bằng `{isOpen && …}` hay `display` là không có chuyển động |
+| Checkbox, radio, công tắc, ô chọn ngày | `components/choice-controls.md`. `accent-color` trên `<input>` gốc không tính là đã tô |
 | Tab, chip lọc, phân trang | `components/small-controls.md` |
 | Ô nhập, ô tìm | `components/input.md` |
-| Nút | `components/button.md` |
+| Nút, **hàng nút trên header** | `components/button.md`; hàng nút header theo "Nhóm nút bên phải thanh header" ở `layouts/app.md` |
+| Viền card, khung lớp nổi, vạch chia | `M14`: bậc xám nhạt nhất của dự án; token viền cỡ `#e2e8f0` chỉ cho ô nhập, nút viền |
+| Thanh cuộn (`::-webkit-scrollbar`) | khối scrollbar của `tokens.css`: 4px, ẩn tới khi rê hay cuộn |
+| Vòng focus | `I13` |
+
+Lúc giao có một dòng **"Dáng:"** đi qua đủ các dòng trên mà trang có, mỗi dòng ghi đã thay
+theo file nào (*"Dáng: dropdown theo overlay.md, checkbox theo choice-controls.md, viền
+card `--color-border-light`, scrollbar theo tokens.css"*). Như dòng `Audit:`, dòng này làm
+cho việc bỏ qua **nhìn thấy được**. Đã dính 29/09/2026, tim-phong-sua qua nhánh `U`: đúng bố
+cục wireframe C, đúng màu đỏ, nhưng dropdown tự chế bật tắt không chuyển động, checkbox gốc
+`accent-color`, viền card và khung menu `#e2e8f0`, scrollbar 6px xám đặc của CSS cũ, nút
+header cao 30–34px lệch nhau. Chủ dự án tưởng do "giữ brand" nên hỏi *"không giống skill
+một chút nào"*.
 
 ---
 
@@ -177,7 +192,7 @@ sang hạng theo bảng này. Những mục xếp Hỏng thì probe đã tự go
 | Chỗ bấm dưới 32px | Mục có ghi "(dưới 24px)" là Hỏng, còn lại (24 tới 31px) là Gu |
 | Hàng trong header / nav rớt dòng | Hỏng khi đè hay đẩy lệch khối khác, không thì Lệch hệ (so với cách hàng đó ở khổ khác). Xem ảnh mới quyết |
 | Hàng nút trên header không đồng cỡ | Lệch hệ. Chế độ dựng lại thì vào dòng Gọn của header (`V1c`), theo "Nhóm nút bên phải thanh header" trong `layouts/app.md` |
-| Hàng control lệch trên dưới, placeholder dài hơn ô, khối trông như ô nhập mà chữ xuống dòng, phân trang chỉ có nút chữ, thanh header trong suốt trên nền xám, vạch chia trong menu đậm hơn viền khung, khung / vạch lớp nổi đậm hơn token `--border`, vạch trái bị bo góc khung cắt, khung hộp thoại mờ lồng trong lớp nền mờ, cao gần bằng mà không bằng, đường ngăn hai cột kề nhau lệch, chữ cùng cột lệch mép, dấu ngăn cách không đều, control còn kiểu mặc định của trình duyệt, khung khai viền mà viền không thấy, khối con biến mất lúc rê, lớp nổi có dải trống | Lệch hệ |
+| Hàng control lệch trên dưới, placeholder dài hơn ô, khối trông như ô nhập mà chữ xuống dòng, phân trang chỉ có nút chữ, thanh header trong suốt trên nền xám, vạch chia trong menu đậm hơn viền khung, khung / vạch lớp nổi đậm hơn token `--border`, vạch trái bị bo góc khung cắt, khung hộp thoại mờ lồng trong lớp nền mờ, cao gần bằng mà không bằng, đường ngăn hai cột kề nhau lệch, chữ cùng cột lệch mép, dấu ngăn cách không đều, control còn kiểu mặc định của trình duyệt, khung khai viền mà viền không thấy, khối con biến mất lúc rê, lớp nổi có dải trống, lớp nổi bật tắt không chuyển động, checkbox / radio gốc trong lớp nổi, viền trang trí đậm, thanh cuộn khác mẫu | Lệch hệ |
 | Nền rê trùng màu viền của chính nút, viền đổi màu lúc rê, rê khác hình mục đang chọn, bấm xong còn dấu thừa, Tab tới còn vẽ vòng focus (`I13`: chế độ soi ghi một dòng Gu, hai chế độ dựng lại thì gỡ), bảng cuộn ngang mất cột, nhóm lựa chọn xếp lưới, số tiền ngắt dòng, số không thẳng hàng, nhãn số lòi ra ngoài vùng vẽ, dấu câu rơi xuống đầu dòng, chữ dưới 12px (gộp một dòng, ghi cỡ nhỏ nhất và chỗ; sửa lên ít nhất 12px), cột dính mà cuộn riêng, nội dung trôi giữa màn rộng (`layouts/app.md`), mục lặp dày chữ | Gu |
 | Select gốc đã tô trên desktop | Chế độ soi: không vào bảng. Hai chế độ dựng lại: Lệch hệ, thay bằng Select dựng (từ 8 mục có ô tìm) |
 | Lỗi console | Không vào bảng. Ghi một dòng dưới bảng |

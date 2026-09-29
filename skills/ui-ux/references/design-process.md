@@ -350,7 +350,9 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
 ## U4. Dựng thật ⚑
 
 - **Dự án đã có UI:** giữ brand theo bảng vai màu (`review.md`, chế độ dựng lại giữ brand),
-  dáng theo gu skill. Khung trang theo phương án đã chọn. Logic, handler, dữ liệu không đụng;
+  dáng theo gu skill: đi hết bảng **"Dáng lấy từ skill, không từ CSS cũ"** trong `review.md`
+  (dropdown, checkbox, viền, scrollbar, nút header…), lúc giao có dòng `Dáng:`. Giữ brand
+  chỉ là giữ màu theo vai, logo, font. Khung trang theo phương án đã chọn. Logic, handler, dữ liệu không đụng;
   thứ cần dữ liệu mới thì để prop và handler rỗng, lúc giao liệt kê.
 - **Sản phẩm mới:** audit câu 2 đã chạy ở `U1`; đi tiếp câu 3 của mục 0 trong `SKILL.md`,
   rồi dựng theo phương án đã chọn thay cho bố cục mặc định của câu 4.
@@ -359,7 +361,11 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
 - **Chọn `có màu` thì phong cách là `P12`** cho route đó và các màn người dùng cuối cùng loại, ghi một
   dòng lúc giao như mẫu của `P1`. Màu vẫn từ màu nhấn của dự án.
 - Ráp bằng mẫu của skill (`SKILL.md` mục 2). Chạy probe `--sweep` tới khi danh sách `P`
-  trống, tối đa ba vòng. **Danh sách `P` tính cả khung app trên route đó** (header, sidebar,
+  trống, tối đa ba vòng. **Mục probe về dáng cũng sửa**, dù không nằm trong `P`: hàng nút
+  header không đồng cỡ, vòng focus, control gốc, lớp nổi không chuyển động, viền trang trí
+  đậm, thanh cuộn. Ở `U4` dáng là của skill, nên đó không phải "Lệch hệ để tuỳ" như lúc soi
+  (đã dính 29/09/2026: probe báo nút header 30–34px lệch nhau, bản dựng bỏ qua vì không
+  phải `P`). **Danh sách `P` tính cả khung app trên route đó** (header, sidebar,
   thanh dưới, menu thông báo): người dùng nhìn cả màn, không chỉ phần mới dựng. Khung app lỗi
   thì sửa luôn, sửa ở component dùng chung và nói nó đổi cả các màn khác. Đã dính 28/09/2026:
   trang dựng lại đúng bố cục mà header vẫn bị bóp, người xem vẫn chấm "xấu".
