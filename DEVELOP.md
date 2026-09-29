@@ -24,7 +24,7 @@ skills/
         ├── rules-form.md           F — khối, lưới, bo góc, khoảng thở, icon
         ├── rules-state.md          I — nút, hover, focus, danh sách, modal
         ├── responsive.md           R — màn hẹp, ngưỡng 375px
-        ├── system.md               D — đề nhiều hơn một màn
+        ├── system.md               D — đề nhiều hơn một màn, dựng design system trước (D9)
         ├── refactor.md             L — refactor codebase đã có
         ├── tailwind-v4-traps.md    W — bẫy Tailwind v4 khi có CSS cũ
         ├── styles.md               P — phong cách: flat, nổi, glass, gradient, tối; tương phản
@@ -106,6 +106,6 @@ Ba chỗ đã đảo luật so với bản cũ, mỗi chỗ có khối ⚠️ tr
 - Nhánh refactor (`L`) mới viết, chưa chạy vòng test nào ở dạng skill.
 - Nhánh soi (`V`) mới test trên một dự án mồi. Còn hai dự án mồi nữa (`BACKLOG.md`, "Phase 2").
 - Nhánh thiết kế từ đầu (`U`) mới chạy một vòng (`BACKLOG.md`, "Phase 3").
-- `system.md` (`D`) chưa chạy đề nhiều màn.
+- `system.md` (`D`) chưa chạy đề nhiều màn. Lối dựng design system trước (`D9`) mới viết, chưa test.
 - Chưa có thư viện ảnh đối chiếu (`BACKLOG.md`).
 - Mọi vòng test mới chạy trên Claude. Codex, Antigravity chưa thử.

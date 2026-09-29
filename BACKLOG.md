@@ -267,6 +267,14 @@ không hỏi (mục 0 của `SKILL.md`).
 **Chưa chốt:** câu hỏi brief cụ thể; wireframe là một trang HTML nhiều màn hay mỗi màn một
 file; test bằng đề gì (cần đề "sản phẩm mới" có đáp án bố cục để chấm).
 
+**Lối dựng design system trước (`D9` trong `system.md`, 29/09/2026).** Người dùng hỏi "muốn
+xây design system trước (component, spacing, typography) thì skill làm được không": nguyên
+liệu đã có (`tokens.css`, `budgets.md`, mẫu component, `D1`) nhưng câu 1 không có dòng nào
+cho đề đó, nên nó rơi vào nhánh `U` và bị ép vẽ wireframe. Test cùng đợt với nhánh `U`: một
+dự án trống ("Dựng design system cho app quản lý phòng khám trước, chưa cần màn nào") và một
+dự án có shadcn (phải xếp lại bộ đang có, không đẻ bộ thứ hai). Soi: có vào `D9` không, trang
+`/design-system` dùng chính component hay vẽ lại, có dựng thừa mẫu không, cổng có dừng.
+
 ---
 
 ## Thư viện ảnh đối chiếu

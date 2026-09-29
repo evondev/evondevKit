@@ -1,6 +1,7 @@
 # Nhiều màn hình — luật D
 
-Mở file này khi đề bài **nhiều hơn một bề mặt**. Một câu như *"dựng kanban board
+Mở file này khi đề bài **nhiều hơn một bề mặt**, hoặc đề đòi dựng design system trước
+(`D9`). Một câu như *"dựng kanban board
 quản lý công việc và table quản lý project, có đủ CRUD"* không phải hai màn, mà
 là khoảng **tám bề mặt**: board, thẻ, cột rỗng, bảng, dòng bảng, form tạo, form
 sửa, hộp xác nhận xoá, bộ lọc.
@@ -145,3 +146,51 @@ và cột phải. Ba chỗ đó mà ba lần viết thì chắc chắn ba lần 
 Tách thành một component nhận prop, rồi mỗi chỗ chỉ đổi kích thước qua
 `className`. Cỡ chữ tên thẻ phải **giống nhau ở mọi breakpoint và mọi chỗ đặt** —
 xem `T8`, vì tiêu đề khối được tính theo nó.
+
+---
+
+## D9. Đề "dựng design system trước": nền trước, màn sau ⚑
+
+Đề nói **"design system"**, "dựng component trước", "UI kit", "chốt token, spacing,
+typography rồi mới dựng màn", "build a design system", "component library first" thì vào
+đây (`SKILL.md` câu 1), **không vào nhánh `U`**: design system không có bố cục để vẽ
+wireframe, thứ cần duyệt là hình của từng nguyên tố. Hợp đồng `D1` ở lối này không còn là
+bảy dòng chữ trong lượt trả lời, mà thành code thật và một trang xem được.
+
+1. **Audit câu 2 như mọi lối.** Dự án đã có token hay thư viện component (shadcn, MUI, bộ
+   nội bộ) thì design system là **xếp lại cái đang có**: token của họ vào hai vai viền
+   `M14`, component của họ chỉnh token cho khớp (`S9`). Không dựng bộ thứ hai cạnh bộ cũ.
+2. **Brief một khối, không dừng**: sản phẩm, người dùng, màu nhấn, font, phong cách (`P1`),
+   chỉ sáng hay có tối (`M20`), ngôn ngữ của copy (`T24`). Đề không nói thì lấy mặc định
+   của `brand-tokens.md` (gần đen, Inter, flat, chỉ sáng) và ghi vào brief. Dự án chưa có
+   màu brand thì trang design system có nhóm ba màu gợi ý, như nhóm Nhấn trên thanh
+   wireframe (`design-process.md`, `U3`).
+3. **Token**: chép `tokens.css` vào file token của dự án theo `brand-tokens.md`, chỉ sửa
+   khối font và màu nhấn. Thang cỡ chữ, nhịp, chiều cao control lấy từ `budgets.md`; bo
+   góc theo `F1`, `M19`. **Không đẻ thang hay token mới** (`M14`, `M16`): bộ của skill đã
+   qua test, nghĩ lại từ đầu là mất phần đó.
+4. **Component: bảy nguyên tố của `D1`** (nút, badge trạng thái, ô nhập, card, dòng danh
+   sách, modal, trạng thái rỗng), **cộng những gì đề nêu tên**. Mỗi cái chép công thức từ
+   file mẫu của nó (bảng "Mở khi dựng đúng khối đó", mục 2 của `SKILL.md`), đặt theo quy
+   ước thư mục của dự án. Không dựng hết các mẫu cho "đủ bộ" (`S1`); lúc giao liệt kê
+   những mẫu còn sẵn, cần cái nào thì gọi tên.
+5. **Một trang xem design system**: route `/design-system` (dự án có Storybook thì viết
+   story thay cho trang; không có app thì một file HTML). Thứ tự khối:
+   - **Màu**: ô màu kèm tên token và mã; cặp chữ trên nền chính kèm tỉ lệ tương phản.
+   - **Chữ**: từng bậc của thang cỡ chữ, viết bằng câu thật theo ngôn ngữ của dự án (tiếng
+     Việt thì có đủ dấu, `T5`), ghi cỡ và độ đậm.
+   - **Khoảng cách, bo góc, viền, bóng**: các bậc đang dùng, hai vai viền đặt cạnh nhau,
+     bóng của lớp nổi.
+   - **Từng component**, mỗi trạng thái một ví dụ tĩnh đặt cạnh nhau (thường, rê, focus,
+     khoá, đang tải, lỗi), không bắt bấm mới thấy. Trang dùng **chính component vừa
+     dựng**, không vẽ lại cho đẹp: trang đẹp mà component lệch thì duyệt nhầm.
+
+   Trang là công cụ để duyệt: flat như gu skill, không hero, không lời quảng cáo.
+6. **Probe trang đó** (`--sweep`) tới khi danh sách `P` trống, tối đa ba vòng.
+7. **Cổng duy nhất của lối này**: gửi link, kèm một dòng *"Duyệt thì trả lời `ok`. Muốn đổi
+   màu nhấn, font, bo góc thì nói: đổi ở token, mọi component đổi theo."* Dừng chờ.
+
+Duyệt xong thì màn sau đi lối bình thường (mặc định nhánh `U`). `U4` ráp từ đúng các
+component đã duyệt; bảng `D1` coi như đã chốt, không khai lại. Đề vừa đòi design system vừa
+đòi màn ("dựng design system rồi dựng màn đơn hàng") thì làm hết lối này, qua cổng, rồi mới
+vào `U1` cho màn.
