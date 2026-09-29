@@ -179,6 +179,14 @@ một chút nào"*.
   (dính cả hai vòng đầu của dự án mồi, 27/09/2026). Ngoại lệ ở hai chế độ dựng lại:
   màu **trang trí** theo `V1b`, và dáng (bóng, mật độ, viền) theo dòng Gọn `V1c`. Màu vai và
   khối màu đậm của brand thì vẫn không.
+  **Màu badge không phải lỗi, nhưng số lượng và thứ bậc của badge thì được nêu**, ở mọi chế
+  độ (soi: hạng Gu; dựng lại: Cấu trúc `V1b`). Hai ca: badge có ở gần hết các mục, nên
+  không còn phân biệt được gì ("Thông tin không phân biệt được gì" trong `V1b`); badge nặng
+  hơn thông tin chính, mắt dừng ở badge trước giá. Nói bằng số lượng và vị trí, giữ nguyên
+  màu: *"8/8 thẻ có badge, 4 thẻ là 'Mới', mắt dừng ở badge trước giá. Chỉ giữ badge ở
+  phòng khác đi (giảm giá, đã xác thực)."* Không viết "gom badge về hai tông". Đã dính
+  29/09/2026, tim-phong-sua: 8 thẻ đều có badge, năm màu đè lên ảnh, bảng soi không có dòng
+  nào, chủ dự án tự thấy.
 - **Gu tối đa năm dòng** ở chế độ soi, xếp cuối bảng. Hai chế độ dựng lại không giới hạn,
   nhưng Gu của một khối chính thì gom vào dòng Gọn của khối đó (`V1c`).
 

@@ -274,6 +274,13 @@ Nhóm thu gọn được: nút nhãn cùng khuôn mục con, trượt bằng `gr
   sách card ngang thành hai cột khi vùng nội dung từ khoảng 1600px. Đừng kéo dài card: card
   ngang rộng 1800px thì nửa phải trống. Cần trần thì đặt rộng (`max-w-[1600px]` trở lên) và vẫn
   căn trái. Trang chữ, form, cài đặt giữ cột hẹp như mẫu của từng trang.
+  **Mọi khối trong cột chung một mép phải.** Ô tìm, khối lọc, hàng kết quả, lưới: trần (nếu có)
+  đặt ở khung bọc cả cột, không đặt riêng từng khối. Bó riêng ô tìm và khối lọc
+  (`max-w-3xl`) trong khi lưới bên dưới trải hết thì cạnh khối lọc trống nửa màn, mép phải so
+  le giữa các khối. Ô tìm dài ở 1920 vẫn đỡ hơn khoảng trống đó; muốn ô ngắn lại thì đặt nó
+  cùng hàng với control khác (nút Tìm, sắp xếp), đừng co cả khối. Đã dính 29/09/2026,
+  tim-phong-sua: bảng soi đề xuất `max-w-3xl` cho ô tìm và khối lọc vì "ô tìm dài 1550px",
+  sửa xong thì nửa phải trống, lưới 8 cột vẫn chạy hết mép, chủ dự án hỏi sao không cho full.
 
 ### Thu gọn sidebar (từ `lg` trở lên)
 
