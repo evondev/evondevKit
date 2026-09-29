@@ -2304,6 +2304,8 @@ async function probeWidth(browser, options, width) {
   const popupLayers = await probePopupLayers(page, isMobile);
   const heavyDecorativeBorders = options.isDark ? [] : await page.evaluate(findHeavyDecorativeBorders);
   const scrollbarStyles = await page.evaluate(findScrollbarStyles);
+  const heavyNavLinks = await page.evaluate(findHeavyNavLinks);
+  const brokenImages = await page.evaluate(findBrokenImages);
   const overflowingLayers = [...new Set([...hoverStates.overflowingLayers, ...popupLayers.overflowing])];
   // Chạy sau cùng: bấm thử đổi lựa chọn trên trang (ngày, tab), các phép đo khác phải xong trước.
   const pageCheckedHoverChanges = isMobile ? [] : await findCheckedHoverChanges(page);
@@ -2337,6 +2339,8 @@ async function probeWidth(browser, options, width) {
     popupNativeChoices: popupLayers.nativeChoices,
     heavyDecorativeBorders,
     scrollbarStyles,
+    heavyNavLinks,
+    brokenImages,
     stuckStates: stateShapes.stuckStates,
     stateGroupCount: stateShapes.groupCount,
   };
@@ -2384,6 +2388,41 @@ function findHeavyDecorativeBorders() {
   }
 
   return [...findings.values()];
+}
+
+// Mục điều hướng dọc (sidebar) chữ đậm: mẫu của skill là chữ thường 400 cho mục thường, chỉ mục đang chọn
+// `font-medium` (layouts/app.md). Cả cột 600 thì mục đang chọn không còn khác gì ngoài nền, cột nặng hơn nội
+// dung (đã dính 29/09/2026, tim-phong-sua: dựng lại theo nhánh U mà sidebar giữ chữ 600 của CSS cũ).
+function findHeavyNavLinks() {
+  // Cột điều hướng nhận bằng hình, không bằng thẻ (sidebar hay dựng bằng div): từ 4 link cùng mép trái, cùng
+  // bề rộng 150–360px, xếp dọc.
+  const columns = new Map();
+  for (const link of document.querySelectorAll("a[href], button")) {
+    const rect = link.getBoundingClientRect();
+    if (rect.width < 150 || rect.width > 360 || rect.height === 0 || rect.height > 64 || (link.textContent || "").trim().length < 2) continue;
+    const key = `${Math.round(rect.left / 2)}-${Math.round(rect.width / 2)}`;
+    if (!columns.has(key)) columns.set(key, []);
+    columns.get(key).push(link);
+  }
+  const findings = [];
+  for (const links of columns.values()) {
+    const plainLinks = links.filter((link) => link.getAttribute("aria-current") !== "page");
+    if (plainLinks.length < 4) continue;
+    const heavyLinks = plainLinks.filter((link) => parseFloat(getComputedStyle(link).fontWeight) >= 600);
+    if (heavyLinks.length / plainLinks.length < 0.6) continue;
+    findings.push(`${heavyLinks.length}/${plainLinks.length} mục chữ ${getComputedStyle(heavyLinks[0]).fontWeight}: "${heavyLinks.slice(0, 3).map((link) => link.textContent.trim()).join('", "')}"`);
+  }
+
+  return findings.slice(0, 3);
+}
+
+// Ảnh không tải được: link Unsplash hay avatar bịa `id`, host chưa khai trong `next.config` (SKILL.md `S16`).
+// Chỉ tính ảnh đã tải xong (`complete`), ảnh `loading="lazy"` ngoài màn thì chưa tải, không tính.
+function findBrokenImages() {
+  return [...document.images]
+    .filter((image) => image.complete && image.naturalWidth === 0 && (image.currentSrc || image.src))
+    .slice(0, 6)
+    .map((image) => (image.currentSrc || image.src).slice(0, 120));
 }
 
 // Thanh cuộn khác khối scrollbar của tokens.css: rộng quá 4px, hoặc thumb tô màu đặc lúc đứng yên (luôn
@@ -2867,6 +2906,14 @@ function formatReport(results) {
     if (result.scrollbarStyles?.length > 0) {
       problems.push(`THANH CUỘN KHÁC MẪU (${result.scrollbarStyles.length} luật, dùng khối scrollbar của tokens.css: 4px, ẩn tới khi rê hay cuộn):`);
       for (const item of result.scrollbarStyles) problems.push(`  ${item}`);
+    }
+    if (result.brokenImages?.length > 0) {
+      problems.push(`ẢNH KHÔNG TẢI ĐƯỢC (${result.brokenImages.length} ảnh, thay link khác hoặc khai host trong next.config, SKILL.md S16):`);
+      for (const item of result.brokenImages) problems.push(`  ${item}`);
+    }
+    if (result.heavyNavLinks?.length > 0) {
+      problems.push(`SIDEBAR CHỮ ĐẬM (${result.heavyNavLinks.length} cột, mục thường chữ 400 text-foreground/70, chỉ mục đang chọn font-medium, layouts/app.md):`);
+      for (const item of result.heavyNavLinks) problems.push(`  ${item}`);
     }
     if (result.heavySeparators?.length > 0) {
       problems.push(`VẠCH CHIA TRONG MENU ĐẬM HƠN VIỀN KHUNG (${result.heavySeparators.length} menu):`);

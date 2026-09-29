@@ -95,6 +95,7 @@ dựng bản thứ hai (`S9`); chưa có thì dựng mới theo mẫu, không t�
 | Nút, **hàng nút trên header** | `components/button.md`; hàng nút header theo "Nhóm nút bên phải thanh header" ở `layouts/app.md` |
 | Viền card, khung lớp nổi, vạch chia | `M14`: bậc xám nhạt nhất của dự án; token viền cỡ `#e2e8f0` chỉ cho ô nhập, nút viền |
 | Thanh cuộn (`::-webkit-scrollbar`) | khối scrollbar của `tokens.css`: 4px, ẩn tới khi rê hay cuộn |
+| Link sidebar, nhãn nhóm | `layouts/app.md`, mục Sidebar: mục thường chữ thường (400) `text-foreground/70`, chỉ mục đang chọn `font-medium`; nhãn nhóm IN HOA `text-muted`. Màu nền mục đang chọn theo bảng vai màu |
 | Vòng focus | `I13` |
 
 Lúc giao có một dòng **"Dáng:"** đi qua đủ các dòng trên mà trang có, mỗi dòng ghi đã thay
@@ -182,9 +183,25 @@ một chút nào"*.
   **Màu badge không phải lỗi, nhưng số lượng và thứ bậc của badge thì được nêu**, ở mọi chế
   độ (soi: hạng Gu; dựng lại: Cấu trúc `V1b`). Hai ca: badge có ở gần hết các mục, nên
   không còn phân biệt được gì ("Thông tin không phân biệt được gì" trong `V1b`); badge nặng
-  hơn thông tin chính, mắt dừng ở badge trước giá. Nói bằng số lượng và vị trí, giữ nguyên
+  hơn thông tin chính, mắt dừng ở badge trước giá, hay tranh với mục đang chọn (hai pill đỏ
+  đặc "Mới" trong sidebar cạnh mục đang chọn đỏ đặc: ba khối đỏ trên một cột, `N3`). Hướng sửa
+  giữ màu mà hạ mức nhấn: pill đặc thành chữ đỏ không nền, hay chấm nhỏ. Nói bằng số lượng và vị trí, giữ nguyên
   màu: *"8/8 thẻ có badge, 4 thẻ là 'Mới', mắt dừng ở badge trước giá. Chỉ giữ badge ở
-  phòng khác đi (giảm giá, đã xác thực)."* Không viết "gom badge về hai tông". Đã dính
+  phòng khác đi (giảm giá, đã xác thực)."* Không viết "gom badge về hai tông".
+  **Dáng của badge và font thì được gợi ý**, cũng ở mọi chế độ, không chọn sẵn ⚑ (chủ dự án
+  chốt 29/09/2026, nới phần "font" và "badge" của câu "Không bao giờ là lỗi" trên; màu thì
+  vẫn giữ):
+  - **Dáng badge**: cỡ chữ, độ đậm, bo góc, padding, cách đè lên ảnh, so với badge của skill
+    (`M7` trong `rules-color.md`). Dựng lại hay nhánh `U` thì dáng tự sửa theo bảng "Dáng lấy
+    từ skill"; chế độ soi thì một dòng Gu kèm ảnh trước / sau.
+  - **Font**: tối đa **một** dòng, chỉ khi nói ra được lý do gắn với sản phẩm: thiếu hay
+    gãy dấu tiếng Việt (`T5`), không có `tnum` mà trang nhiều cột tiền (`T16`), font trang
+    trí dùng cho chữ thân của app làm việc, hai ba font lẫn nhau không vai rõ. Kèm một hai
+    font cụ thể đã kiểm có subset `vietnamese`, và ảnh trước / sau. "Font trông cũ" không
+    phải lý do.
+  Ở nhánh `U`, dòng font đi vào mục "Còn thấy" (`design-process.md`, `U4`). Đã dính
+  29/09/2026, tim-phong-sua: badge xấu, font chưa hợp, không lượt nào nêu vì câu "Không
+  bao giờ là lỗi" chặn cả hai. Đã dính
   29/09/2026, tim-phong-sua: 8 thẻ đều có badge, năm màu đè lên ảnh, bảng soi không có dòng
   nào, chủ dự án tự thấy.
 - **Gu tối đa năm dòng** ở chế độ soi, xếp cuối bảng. Hai chế độ dựng lại không giới hạn,
@@ -200,7 +217,7 @@ sang hạng theo bảng này. Những mục xếp Hỏng thì probe đã tự go
 | Chỗ bấm dưới 32px | Mục có ghi "(dưới 24px)" là Hỏng, còn lại (24 tới 31px) là Gu |
 | Hàng trong header / nav rớt dòng | Hỏng khi đè hay đẩy lệch khối khác, không thì Lệch hệ (so với cách hàng đó ở khổ khác). Xem ảnh mới quyết |
 | Hàng nút trên header không đồng cỡ | Lệch hệ. Chế độ dựng lại thì vào dòng Gọn của header (`V1c`), theo "Nhóm nút bên phải thanh header" trong `layouts/app.md` |
-| Hàng control lệch trên dưới, placeholder dài hơn ô, khối trông như ô nhập mà chữ xuống dòng, phân trang chỉ có nút chữ, thanh header trong suốt trên nền xám, vạch chia trong menu đậm hơn viền khung, khung / vạch lớp nổi đậm hơn token `--border`, vạch trái bị bo góc khung cắt, khung hộp thoại mờ lồng trong lớp nền mờ, cao gần bằng mà không bằng, đường ngăn hai cột kề nhau lệch, chữ cùng cột lệch mép, dấu ngăn cách không đều, control còn kiểu mặc định của trình duyệt, khung khai viền mà viền không thấy, khối con biến mất lúc rê, lớp nổi có dải trống, lớp nổi bật tắt không chuyển động, checkbox / radio gốc trong lớp nổi, viền trang trí đậm, thanh cuộn khác mẫu | Lệch hệ |
+| Hàng control lệch trên dưới, placeholder dài hơn ô, khối trông như ô nhập mà chữ xuống dòng, phân trang chỉ có nút chữ, thanh header trong suốt trên nền xám, vạch chia trong menu đậm hơn viền khung, khung / vạch lớp nổi đậm hơn token `--border`, vạch trái bị bo góc khung cắt, khung hộp thoại mờ lồng trong lớp nền mờ, cao gần bằng mà không bằng, đường ngăn hai cột kề nhau lệch, chữ cùng cột lệch mép, dấu ngăn cách không đều, control còn kiểu mặc định của trình duyệt, khung khai viền mà viền không thấy, khối con biến mất lúc rê, lớp nổi có dải trống, lớp nổi bật tắt không chuyển động, checkbox / radio gốc trong lớp nổi, viền trang trí đậm, thanh cuộn khác mẫu, sidebar chữ đậm | Lệch hệ |
 | Nền rê trùng màu viền của chính nút, viền đổi màu lúc rê, rê khác hình mục đang chọn, bấm xong còn dấu thừa, Tab tới còn vẽ vòng focus (`I13`: chế độ soi ghi một dòng Gu, hai chế độ dựng lại thì gỡ), bảng cuộn ngang mất cột, nhóm lựa chọn xếp lưới, số tiền ngắt dòng, số không thẳng hàng, nhãn số lòi ra ngoài vùng vẽ, dấu câu rơi xuống đầu dòng, chữ dưới 12px (gộp một dòng, ghi cỡ nhỏ nhất và chỗ; sửa lên ít nhất 12px), cột dính mà cuộn riêng, nội dung trôi giữa màn rộng (`layouts/app.md`), mục lặp dày chữ | Gu |
 | Select gốc đã tô trên desktop | Chế độ soi: không vào bảng. Hai chế độ dựng lại: Lệch hệ, thay bằng Select dựng (từ 8 mục có ô tìm) |
 | Lỗi console | Không vào bảng. Ghi một dòng dưới bảng |

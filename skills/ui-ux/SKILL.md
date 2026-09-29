@@ -340,6 +340,28 @@ không. Mặc định đặt **lên đầu**, vì đó là chỗ duy nhất có 
 Nói bằng tiếng người dùng đang viết, kể cả khi skill và nhãn trên UI là tiếng
 Việt (`T27`).
 
+**S16. Dữ liệu giả có ảnh thì dùng ảnh chụp thật, không khối xám hay hình vẽ** ⚑. Mục mà
+sản phẩm thật sẽ có ảnh (phòng, sản phẩm, bài viết, ảnh bìa công ty, avatar người) thì
+mockup và wireframe dùng ảnh thật, trang mới trông như sản phẩm đang chạy:
+
+- **Ảnh cảnh, vật**: Unsplash, dạng
+  `https://images.unsplash.com/photo-<id>?w=800&q=80&auto=format&fit=crop`, đúng chủ đề của
+  mục (phòng trọ là nội thất phòng, tin tuyển dụng là văn phòng). Không tự bịa `<id>`: tìm
+  trên Unsplash, rồi `curl -sI` từng link, không ra 200 thì thay. Mỗi mục một ảnh khác nhau.
+- **Avatar người**: ảnh chân dung (`https://randomuser.me/api/portraits/women/<0-99>.jpg`,
+  `.../men/<0-99>.jpg`), khớp giới của tên giả. Ảnh vẫn theo khuôn của `components/avatar.md`.
+- **Logo công ty giả**: ô chữ cái theo `components/avatar.md` (hình vuông bo góc), không lấy
+  logo thương hiệu thật gắn cho công ty giả.
+- **Vẫn giữ ca biên của `S8`**: ít nhất một mục không ảnh, một người không avatar, để thấy
+  chỗ rơi về chữ cái hay khung "Chưa có ảnh".
+- Next.js thì thêm hai host vào `images.remotePatterns` trong `next.config`; dự án có ảnh
+  riêng (thư mục `public/`, CDN của họ) thì dùng ảnh của họ trước.
+- Lúc giao, dòng "số liệu giả" của `S15` nói luôn: ảnh từ Unsplash và randomuser là ảnh
+  mẫu, thay bằng ảnh thật trước khi chạy thật.
+
+Đã dính 29/09/2026: trang phòng trọ dùng tám hình vẽ giường gần giống nhau, chủ dự án thấy
+"nhìn chán" dù bố cục đã đúng.
+
 ---
 
 ## 2. Mở doc nào khi nào
