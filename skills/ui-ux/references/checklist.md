@@ -32,7 +32,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 
 ## Cổng 2 — dựng xong, trước khi báo
 
-- [ ] **Mười một phép thử `N1`–`N11`** (`principles.md`) đã chạy chưa? Thứ không có dòng riêng trong checklist này thì bám chúng.
+- [ ] **Mười hai phép thử `N1`–`N12`** (`principles.md`) đã chạy chưa? Thứ không có dòng riêng trong checklist này thì bám chúng.
 
 ### Phạm vi
 
@@ -206,7 +206,7 @@ dựng qua cổng 3 bằng đọc code, lượt rà mở trang thật tìm ra n�
      **ba vòng**. Các mục khác probe in ra (theo gu của skill) cũng sửa, vì đây là bản mình
      dựng. Mã `P` nào còn lại sau ba vòng, hay để lại có chủ ý (vd chỗ bấm nhỏ trong bảng
      dày), thì lúc giao ghi từng mã và lý do. Không mã nào được biến mất im lặng.
-   - **Mở từng ảnh chụp ra xem**, soi theo mười một phép thử (`principles.md`). Script chỉ đo
+   - **Mở từng ảnh chụp ra xem**, soi theo mười hai phép thử (`principles.md`). Script chỉ đo
      được thứ đo được: "hôm nay đậm hơn ngày đang chọn", "nút Hôm nay tách khỏi ‹ ›" chỉ
      mắt mới thấy.
    - Không mở được trang (không có dev server, không chạy được trình duyệt) thì lúc giao

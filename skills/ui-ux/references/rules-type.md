@@ -143,7 +143,8 @@ lưới nở theo, cả trang tràn ngang.
 
 **T14. Tiêu đề một dòng thì cắt, câu giải thích thì xuống dòng.**
 
-Chữ trong danh sách dày dùng `truncate` kèm `min-w-0`. Nhưng dòng mô tả thì cho
+Chữ trong danh sách dày (dòng bảng, sidebar) dùng `truncate` kèm `min-w-0`. Tên mục trong
+card lưới thì `line-clamp-2`, không cắt một dòng (`N12`). Nhưng dòng mô tả thì cho
 xuống dòng, đừng cắt — mô tả bị cắt thì mất luôn lý do nó tồn tại.
 
 **Tên file cắt giữa, giữ đuôi**: "Bao-cao-doanh…thu-quy-3.xlsx", vì đuôi file nói loại

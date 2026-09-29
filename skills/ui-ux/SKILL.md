@@ -375,7 +375,7 @@ thì một trong hai chỗ là sai.
 | Nhóm | File | Dùng cho |
 | --- | --- | --- |
 | **S** | `SKILL.md` mục 1 | Phạm vi: được làm gì, không được tự thêm gì |
-| **N** | `references/principles.md` | **Mười một nguyên tắc đứng sau mọi luật khác**, mỗi cái một phép thử. Chỗ nào không có spec thì bám nó |
+| **N** | `references/principles.md` | **Mười hai nguyên tắc đứng sau mọi luật khác**, mỗi cái một phép thử. Chỗ nào không có spec thì bám nó |
 | **M** | `references/rules-color.md` | Màu, viền, bóng, dark mode, token |
 | **T** | `references/rules-type.md` | Chữ, font, xuống dòng, cắt chữ, copy, ngôn ngữ trả lời và copy tiếng Anh |
 | **F** | `references/rules-form.md` | Khối, lưới, bo góc, khoảng thở, icon, hiệu ứng |
@@ -449,7 +449,7 @@ Rút gọn từ `references/checklist.md`. Chạy hết checklist đầy đủ t
 - [ ] Đã dựng đúng **phương án wireframe đã chọn** chưa (nhánh `U`), hay tự bịa. Việc nhỏ hoặc lối dựng luôn thì đúng bố cục mặc định trong file layout, lúc giao báo một dòng "muốn kiểu khác thì nói".
 - [ ] Có section nào tự thêm ngoài đề bài không.
 - [ ] **Đã mở trang thật bằng `scripts/probe.mjs` và xem ảnh chụp chưa** (cổng 3), hay trả lời checklist bằng đọc lại code. Trang cuộn ngang ở 375px là hỏng.
-- [ ] Đã chạy **mười một phép thử** trong `references/principles.md` chưa, nhất là với thứ chưa có mẫu.
+- [ ] Đã chạy **mười hai phép thử** trong `references/principles.md` chưa, nhất là với thứ chưa có mẫu.
 
 ---
 

@@ -1,6 +1,6 @@
 # Nguyên tắc chung — luật N
 
-Mười một nguyên tắc **đứng sau** các luật M, T, F, I, R và các file component. Đây
+Mười hai nguyên tắc **đứng sau** các luật M, T, F, I, R và các file component. Đây
 **không phải luật mới**: mỗi dòng gom từ những lỗi đã dính ở nhiều component
 khác nhau, và dẫn về luật gốc. Đọc file này **trước khi dựng bất kỳ thứ gì**,
 nhất là thứ chưa có file mẫu trong `components/`: không skill nào viết đủ spec
@@ -10,7 +10,7 @@ Mỗi nguyên tắc có một **phép thử**: câu hỏi tự trả lời đư�
 dựng. Trả lời "không" là đang vi phạm, dù chưa có luật cụ thể nào cho component
 đó.
 
-**Đứng trên cả mười một nguyên tắc: theo quy ước số đông.** Chỗ nào đã có một cách làm
+**Đứng trên cả mười hai nguyên tắc: theo quy ước số đông.** Chỗ nào đã có một cách làm
 mà hầu hết app đều làm và người dùng đã quen (dấu `*` đỏ cho trường bắt buộc, logo
 góc trái về trang chủ, ✕ góc phải để đóng, Huỷ bên trái nút chính), thì làm đúng
 như thế, **kể cả khi một cách khác trông gọn hơn**. Người dùng không nên phải dừng lại
@@ -20,7 +20,7 @@ tự hỏi. Gu của skill (nhạt, ít tín hiệu) chỉ quyết những chỗ
 *Phép thử:* người dùng lần đầu mở màn này có chỗ nào phải hỏi "cái này nghĩa là
 gì" hay "bấm đâu để…" không? Có thì đang phá cách ở đó.
 
-**Cũng đứng trên mười một nguyên tắc: dự án đã có ngôn ngữ màu thì theo dự án.** Gu ít
+**Cũng đứng trên mười hai nguyên tắc: dự án đã có ngôn ngữ màu thì theo dự án.** Gu ít
 màu của skill (xám + một màu nhấn, `M4`, `M5`, biểu đồ đậm nhạt một màu) là **mặc
 định cho dự án trống**, không phải bộ lọc để chạy qua dự án có sẵn. Dự án đã tô chip
 bằng màu nhấn nhạt, khối bước nền xanh nhạt, nhãn nhỏ đầu mục dạng pill tím, nút chính
@@ -334,6 +334,34 @@ quả phải có comment giải thích vì sao không làm bằng cách 1–3 đ
 
 ---
 
+**N12. Chữ trong một khối có thứ bậc, có nhịp, và tên không bị cắt cụt** ⚑.
+
+Áp cho **mọi khối lặp**: card tin đăng, card việc làm, card sản phẩm, dòng danh sách, ô
+lưới, kể cả kiểu chưa có mẫu. Không cần mẫu riêng cho từng kiểu, ba câu này là đủ:
+
+1. **Thang chữ trong khối chênh nhau một bậc.** Tối đa ba cỡ chữ, thứ to nhất chỉ hơn tên
+   mục một bậc của thang (`budgets.md`): tên `text-sm` thì giá, số chính `text-base`
+   `font-semibold`, không nhảy lên `text-lg`, `text-xl`. Thứ bậc còn lại nói bằng độ đậm
+   và màu. Giá to gấp rưỡi tên thì card đọc như bảng giá, tên thành chữ phụ. Ngoại lệ: card
+   số liệu, nơi con số chính là cả khối (`components/charts.md`).
+2. **Nhịp theo nhóm: trong nhóm gần, giữa nhóm xa.** Gom chữ thành nhóm theo nghĩa (giá +
+   tên; diện tích · khu vực · mốc gần; thời gian đăng). Dòng trong một nhóm cách 2–4px, giữa
+   các nhóm 8–12px, khoảng từ chữ tới mép khối không nhỏ hơn khoảng giữa nhóm. Mọi dòng cách
+   đều 4px là không có nhóm, mắt đọc thành một cục chữ sát nhau.
+3. **Tên để nhận ra mục không cắt cụt.** Khối lặp mà mỗi mục là một khối riêng (card trong
+   lưới) thì tên `line-clamp-2`; `truncate` một dòng chỉ cho danh sách dày (dòng bảng,
+   sidebar, `T14`). Tên cắt sau hai mươi mấy ký tự ("Cho thuê phòng trọ khép kín …") là
+   mất đúng thứ người dùng đọc để chọn (`N8`).
+
+Đã dính 29/09/2026, tim-phong-sua: card phòng giá 18px trên tên 14px, ba nhóm chữ cách đều
+4–5px, tên cắt một dòng. Không lượt nào nêu, vì skill chỉ có mẫu cho khối đã biết; chủ dự án
+chốt: đừng viết thêm mẫu cho từng kiểu, viết phép thử chung.
+
+*Phép thử:* probe mục "KHỐI LẶP" (card có ảnh: chữ to nhất so với tên, khoảng giữa các dòng,
+tên cắt một dòng). Khối không ảnh thì tự soi ba câu trên bằng ảnh chụp.
+
+---
+
 ## Dựng một thứ chưa có mẫu
 
 Stepper dọc, dòng thời gian, cây thư mục, bình luận lồng nhau… không có file
@@ -374,7 +402,7 @@ trong `components/` thì:
      nhất, ở 375px (`N8`).
 
    Câu nào ra "không" thì sửa, rồi quay lại bước 3.
-5. **Chạy mười một phép thử** ở trên trước khi báo xong.
+5. **Chạy mười hai phép thử** ở trên trước khi báo xong.
 6. Lúc giao nói một dòng: *"X chưa có mẫu đã duyệt, mình mượn khuôn của Y"*, cộng mỗi
    lựa chọn đánh đổi một dòng (vd *"tên giữ chỗ hai dòng để giá thẳng hàng giữa các
    card"*).

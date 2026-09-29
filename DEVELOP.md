@@ -15,7 +15,7 @@ skills/
     │   ├── probe.mjs     mở trang thật ở 6 bề rộng, đo lỗi đo được, chụp ảnh, quét bề rộng
     │   └── lint-skill.mjs soát câu chữ của skill trước khi commit
     └── references/
-        ├── principles.md           N — mười nguyên tắc đứng sau mọi luật, phép thử cho thứ chưa có mẫu
+        ├── principles.md           N — mười hai nguyên tắc đứng sau mọi luật, phép thử cho thứ chưa có mẫu
         ├── review.md               V — soi UI đang có, ba chế độ, bảng trước/sau
         ├── design-process.md       U — thiết kế từ đầu: brief, việc chính, wireframe, dựng
         ├── locked-rules.md         luật chủ dự án đã chốt, lý lẽ đã bị bác

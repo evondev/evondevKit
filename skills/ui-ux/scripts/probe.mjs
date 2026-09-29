@@ -1271,6 +1271,52 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     if (maxLines >= 5) denseItems.push(`${sameKind.length} mục, nhiều nhất ${maxLines} dòng chữ: ${describe(densest)}`);
   }
 
+  // 18j2. Khối lặp có ảnh (card tin đăng, sản phẩm, việc làm): ba câu của `N12`. Chữ to nhất so với tên mục
+  //       (tên = dòng chữ dài nhất), khoảng giữa các dòng chữ (không có khoảng nào từ 6px là không tách nhóm),
+  //       tên cắt một dòng. Card số liệu không có ảnh nên không vào đây (con số to là cả khối).
+  const repeatedCardIssues = [];
+  const checkedCardGroups = new Set();
+  for (const parent of allElements) {
+    if (repeatedCardIssues.length >= 4) break;
+    const items = [...parent.children].filter((child) => isVisible(child) && child.getBoundingClientRect().height >= 120);
+    if (items.length < 3) continue;
+    const signature = (child) => `${child.tagName}.${(child.getAttribute("class") || "").split(/\s+/)[0]}`;
+    const sameKind = items.filter((child) => signature(child) === signature(items[0]));
+    const card = sameKind[0];
+    const image = card?.querySelector("img");
+    if (sameKind.length < 3 || checkedCardGroups.has(signature(card)) || !image || image.getBoundingClientRect().height < 60) continue;
+    checkedCardGroups.add(signature(card));
+    const lines = [];
+    const walker = document.createTreeWalker(card, NodeFilter.SHOW_TEXT);
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      const text = node.textContent.trim();
+      if (!text || !isVisible(node.parentElement)) continue;
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      const style = getComputedStyle(node.parentElement);
+      for (const rect of range.getClientRects()) {
+        // Chữ đè trên ảnh (badge, số ảnh) không phải phần chữ của card.
+        if (rect.width > 2 && rect.top >= image.getBoundingClientRect().bottom - 1) lines.push({ top: rect.top, bottom: rect.bottom, size: parseFloat(style.fontSize), text, element: node.parentElement });
+      }
+    }
+    if (lines.length < 2) continue;
+    const title = lines.reduce((longest, line) => (line.text.length > longest.text.length ? line : longest));
+    const largest = lines.reduce((biggest, line) => (line.size > biggest.size ? line : biggest));
+    const problems = [];
+    if (title.text.length >= 15 && largest.size / title.size >= 1.25) problems.push(`"${largest.text.slice(0, 16)}" ${largest.size}px trên tên ${title.size}px, chênh quá một bậc`);
+    const rows = [...lines].sort((first, second) => first.top - second.top)
+      .filter((line, index, sorted) => index === 0 || line.top - sorted[index - 1].top > 3);
+    const gaps = rows.slice(1).map((row, index) => row.top - rows[index].bottom);
+    if (rows.length >= 3 && Math.max(...gaps) < 6) problems.push(`${rows.length} dòng chữ cách đều ${Math.round(Math.min(...gaps))}–${Math.round(Math.max(...gaps))}px, không tách nhóm`);
+    const titleStyle = getComputedStyle(title.element);
+    if (titleStyle.textOverflow === "ellipsis" && titleStyle.whiteSpace === "nowrap") {
+      const titleRange = document.createRange();
+      titleRange.selectNodeContents(title.element);
+      if (titleRange.getBoundingClientRect().width > title.element.getBoundingClientRect().width + 1) problems.push(`tên "${title.text.slice(0, 24)}…" cắt một dòng`);
+    }
+    if (problems.length > 0) repeatedCardIssues.push(`${sameKind.length} card: ${problems.join("; ")}: ${describe(card)}`);
+  }
+
   // 18l. Hàng control lệch trên dưới: hàng flex ngang chứa nút / ô nhập khác chiều cao mà không `items-center`,
   //      control thấp hơn dính lên đỉnh hàng. Nút "View companies" 32px cạnh nút ⋯ 36px trong ô cuối dòng
   //      bảng: trên 8px, dưới 12px (29/09/2026, wireframe báo cáo). Chỉ xét hàng thấp (một hàng control).
@@ -1394,6 +1440,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     heavySeparators,
     clippedBars,
     denseItems,
+    repeatedCardIssues,
     misalignedControlRows,
     missingWireframeParts,
     overlongPlaceholders,
@@ -2941,6 +2988,10 @@ function formatReport(results) {
     if (result.misalignedControlRows?.length > 0) {
       problems.push(`HÀNG CONTROL LỆCH TRÊN DƯỚI (${result.misalignedControlRows.length} hàng, thêm items-center; nút cạnh nhau cùng chiều cao):`);
       for (const item of result.misalignedControlRows) problems.push(`  ${item}`);
+    }
+    if (result.repeatedCardIssues?.length > 0) {
+      problems.push(`KHỐI LẶP: THỨ BẬC, NHỊP, TÊN BỊ CẮT (${result.repeatedCardIssues.length} nhóm, N12 trong principles.md):`);
+      for (const item of result.repeatedCardIssues) problems.push(`  ${item}`);
     }
     if (result.denseItems?.length > 0) {
       problems.push(`MỤC LẶP DÀY CHỮ (từ 5 dòng mỗi mục; danh sách + chi tiết thì mục trái tối đa 3 dòng, layouts/app.md):`);
