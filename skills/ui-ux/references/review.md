@@ -411,9 +411,34 @@ Cùng tinh thần `M20` (mặc định chỉ light), nhưng dự án đã có s�
   Chưa đụng file nào của dự án.
 - Chỉ có ảnh: dựng lại vùng bị lỗi thành HTML tĩnh, dùng màu hút từ ảnh của họ,
   không dùng màu skill. Ghi rõ "mô phỏng".
-- Dòng Gu không cần ảnh "sau".
+- Dòng Gu không cần ảnh "sau", trừ dòng có phương án để chọn (kiểu A / B / C): chụp đủ.
 
-**Bảng giao là bảng markdown trong chat**, không dựng trang HTML. Thứ tự:
+**Ảnh là link bấm được, không phải đường dẫn tệp** ⚑. `$TMPDIR/evon-review/…/hien-tai.png`
+trong chat thì người dùng không mở được, gợi ý hay mấy cũng như không (đã dính 29/09/2026,
+tim-phong-sua: bốn kiểu badge A / B / C chỉ ghi tên tệp).
+
+- Chạy server tĩnh nền trên thư mục ảnh: `python3 -m http.server <cổng> -d "$TMPDIR/evon-review"`.
+  Mọi ô Ảnh là link đầy đủ `http://localhost:<cổng>/<route>/fix/1-truoc.png`.
+- **Có dòng nào mang ảnh thì dựng thêm `so-sanh.html`** cùng thư mục: mỗi dòng bảng một khối,
+  số dòng và tên lỗi làm tiêu đề, ảnh trước / sau hay các phương án đặt cạnh nhau cùng chiều
+  cao, chú thích ngắn dưới mỗi ảnh, phương án khuyên dùng ghi rõ. Đầu tin giao một dòng
+  *"Xem ảnh so sánh: http://localhost:<cổng>/<route>/so-sanh.html"*.
+- `curl -s -o /dev/null -w "%{http_code}"` từng link trước khi gửi. Không chạy được server thì
+  ghi `file://` kèm đường dẫn tuyệt đối đã mở rộng, không để `$TMPDIR`.
+
+```html
+<!doctype html><meta charset="utf-8"><title>So sánh</title>
+<style>body{font:14px/1.5 system-ui;margin:24px;background:#f4f4f6;color:#2c2c2c}
+section{margin-bottom:32px}h2{font-size:16px;margin:0 0 12px}
+.row{display:flex;gap:16px;flex-wrap:wrap}figure{margin:0;background:#fff;border:1px solid #eaeaea;border-radius:12px;padding:8px}
+figure img{display:block;height:320px;width:auto;border-radius:8px}figcaption{padding:8px 4px 0;color:#707070}</style>
+<section><h2>6 · Badge đè lên ảnh (Gu)</h2><div class="row">
+  <figure><img src="badge/hien-tai.png" alt=""><figcaption>Hiện tại</figcaption></figure>
+  <figure><img src="badge/canh-gia.png" alt=""><figcaption><b>A · Cạnh giá (khuyên dùng)</b></figcaption></figure>
+</div></section>
+```
+
+**Bảng giao là bảng markdown trong chat**; ảnh thì qua link và trang so sánh ở trên. Thứ tự:
 
 1. **Mở đầu**, mỗi thứ một dòng: dòng `Audit:` (stack, hệ token ở đâu, phong cách,
    dark mode: có / chỉ khai báo / không), đã soi route nào ở khổ nào, chỗ nào chưa soi
@@ -446,9 +471,9 @@ Cùng tinh thần `M20` (mặc định chỉ light), nhưng dự án đã có s�
 
    Hai vòng đầu của dự án mồi, nhiều lỗi probe đã đo ra mà bảng giao không có. Máy đo ra
    mà bảng không có thì người dùng không có cách nào biết đã bị bỏ.
-4. **Rà hạng Gu và Cấu trúc lần cuối**: dòng nào đề xuất bớt màu, đổi màu brand, làm nhạt khối màu
-   đậm của brand thì xoá (`V1`, "Không bao giờ là lỗi"). Dòng Gọn cũng rà: đổi màu trong
-   bảng vai màu là sai chế độ 2.
+4. **Rà hạng Gu và Cấu trúc lần cuối**: dòng đề xuất đổi màu brand, font, logo là dòng
+   **nhận diện** (`V1`): phải có lý do người dùng cuối thấy, ảnh trước / sau, không chọn
+   sẵn; thiếu lý do thì xoá. Dòng Gọn cũng rà: đổi màu trong bảng vai màu là sai chế độ 2.
 5. **Kết**: *"Trả lời số dòng muốn sửa, ví dụ `sửa 1, 3, 4`."* Chế độ soi: không tự đề
    nghị sửa hết. Hai chế độ dựng lại: dòng nào đã chọn sẵn thì đánh ✓ ở đầu dòng, kết bằng
    *"Mình sẽ sửa các dòng ✓. Trả lời `ok`, hoặc bỏ bớt, ví dụ `bỏ 7, 12`."*

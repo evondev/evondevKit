@@ -414,7 +414,8 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
   tích, nội dung trôi giữa màn rộng, đường kẻ header lệch, đều do chủ dự án tự thấy; bốn
   thứ đó nay probe đo).
 - **Lúc giao** nói bằng ngôn ngữ trải nghiệm, không bằng class: việc chính giờ làm trong mấy
-  bước, thấy ngay ở khổ nào; ảnh trước và sau ở 1280 và 375; danh sách thứ cần bạn nối logic
+  bước, thấy ngay ở khổ nào; ảnh trước và sau ở 1280 và 375, là link bấm được và một trang
+  `so-sanh.html` như `V5` trong `review.md` (cả ảnh của mục "Còn thấy"); danh sách thứ cần bạn nối logic
   hay thêm dữ liệu. Cuối tin một dòng **Muốn chỉnh thì nhắn** với 3–4 câu ngắn chọn theo bản vừa
   dựng, như khung lý do của `U3` (*"Thêm màu ở header"*, *"Tiêu đề đậm hơn"*, *"Thoáng hơn"*,
   *"Đổi font"*). Người dùng thường chỉ thấy "chưa đã" mà không gọi được tên.
