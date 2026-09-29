@@ -172,18 +172,31 @@ dòng đó."* Dừng chờ.
     khung lý do nên dùng cái nào: app dùng hằng ngày, chuyển mục liên tục thì thanh dưới; app
     quản trị ít mở trên điện thoại thì ☰. Từ 6 mục thì chỉ ☰.
 
-- **Thanh công cụ ở đỉnh trang, bắt buộc, một dòng**, nằm ngoài bản thiết kế: dải tối cao 44px,
-  dính đỉnh. Trái là các phương án (chữ cái kèm tên ngắn, phương án khuyên dùng ghi "khuyên
-  dùng"); phải là các nhóm nút Màu, Nhấn (dự án chưa có brand), Khổ, Nav (mobile, ít mục),
-  Trạng thái. Nút đang bật `aria-current="page"` nền trắng.
+- **Thanh công cụ ở đỉnh trang, bắt buộc, một dòng**, nằm ngoài bản thiết kế: dải **sáng** cao
+  56px, nền trắng, viền dưới xám nhạt, dính đỉnh, chữ 14px. Các nhóm xếp liền từ trái, cách nhau
+  24px, theo thứ tự: **Phương án** · Màu · Nhấn (dự án chưa có brand) · Khổ · Nav (mobile, ít mục)
+  · **Trạng thái**.
+  - **Mỗi nhóm là một segmented control**: rãnh xám nhạt bo 10px, nút trong rãnh không nền, nút
+    đang bật (`aria-current="page"`) nền trắng, bóng mảnh, chữ đậm đen; nút khác chữ xám. Không
+    dải tối, không nút chữ trắng rời rạc: dải tối nặng hơn chính bản thiết kế, kéo mắt khỏi thứ
+    cần xem, và mười mấy nút cùng hình đọc không ra nhóm nào (đã dính 29/09/2026).
+  - **Phương án chỉ ghi chữ cái** `A B C D E`, có nhãn "Phương án" xám đứng trước; tên đầy đủ ở
+    `title` và ở đầu khung lý do. Phương án khuyên dùng có chấm nhỏ màu nhấn cạnh chữ cái. Tên
+    dài trên thanh ("A · Báo cáo một trang (khuyên dùng)") đẩy cả thanh phải cuộn ngang ở 1280.
+  - **Khổ có icon**: màn hình trước Desktop, điện thoại trước Mobile (icon 16px, nét 2).
+  - **Trạng thái là menu thả**, nhãn xám "Trạng thái:" kèm giá trị đang xem đậm và mũi tên nhỏ;
+    bấm thì ra bốn link. Bốn trạng thái ít đổi, không đáng chiếm bốn nút trên thanh.
+  - Nhóm Màu, Nhấn, Nav không cần nhãn: chữ trong nút đã tự nói.
+
   Mỗi nút là link giữ nguyên các lựa chọn khác, chỉ đổi đúng tham số của nó. Màn hẹp thì thanh
   cuộn ngang, không xuống dòng. Mở không tham số thì: phương án khuyên dùng, Xám, Desktop, Có
   dữ liệu. Đã dính 29/09/2026: có lượt wireframe có thanh, có lượt không, người dùng phải tự
   gõ `?v=`.
 
-- **Khung lý do ngay dưới thanh**, không modal (modal che mất bản thiết kế đúng lúc cần nhìn):
-  một dòng *"A khuyên dùng: người dùng đến để so lương, nên lương đứng đầu mỗi dòng"* (bám việc
-  chính ở `U2`, không viết "gọn gàng, hiện đại"), bấm mở ra đủ:
+- **Khung lý do ngay dưới thanh**, không modal (modal che mất bản thiết kế đúng lúc cần nhìn),
+  nền xám rất nhạt, chữ 13px xám, tên phương án đậm đen đứng đầu: *"**A · Lưới card** · khuyên
+  dùng — người dùng đến để so lương, nên lương đứng đầu mỗi dòng"* (bám việc chính ở `U2`,
+  không viết "gọn gàng, hiện đại"), bấm mở ra đủ:
   - **Ưu** 2–3 dòng, **Nhược** 1–2 dòng, **Hợp khi** một dòng. Đổi theo phương án đang xem.
   - **Gợi ý góp ý**: 3–4 câu ngắn người dùng chép gửi lại cho AI, mỗi câu một nút Chép. Chọn
     theo chính trang này, bằng ngôn ngữ của đề: trang đang Xám nhạt thì *"Thêm màu brand ở header
@@ -193,36 +206,71 @@ dòng đó."* Dừng chờ.
 
   ```html
   <nav class="wf-bar" aria-label="Wireframe">
-    <div class="wf-set" data-wf-param="v">
-      <a data-value="a">A · Lưới card (khuyên dùng)</a><a data-value="b">B · Danh sách + chi tiết</a>
-      <a data-value="d">D · A gọn chữ</a>
+    <div class="wf-group">
+      <span class="wf-label">Phương án</span>
+      <span class="wf-set" data-wf-param="v">
+        <a data-value="a" title="A · Lưới card (khuyên dùng)" data-recommended>A</a><a data-value="b" title="B · Danh sách + chi tiết">B</a><a data-value="d" title="D · A gọn chữ">D</a>
+      </span>
     </div>
-    <div class="wf-set wf-right">
-      <span class="wf-set" data-wf-param="mau"><a data-value="xam">Xám</a><a data-value="mau">Màu</a><a data-value="co-mau">Có màu</a></span>
-      <span class="wf-set" data-wf-param="nhan"><a data-value="cham" aria-label="Chàm">●</a><a data-value="ngoc" aria-label="Xanh ngọc">●</a><a data-value="cam" aria-label="Cam">●</a></span>
-      <span class="wf-set" data-wf-param="kho"><a data-value="desktop">Desktop</a><a data-value="mobile">Mobile</a></span>
-      <span class="wf-set" data-wf-param="nav"><a data-value="menu">☰</a><a data-value="duoi">Thanh dưới</a></span>
-      <span class="wf-set" data-wf-param="tt"><a data-value="du-lieu">Dữ liệu</a><a data-value="dang-tai">Đang tải</a><a data-value="rong">Rỗng</a><a data-value="loi">Lỗi</a></span>
-    </div>
+    <span class="wf-set" data-wf-param="mau"><a data-value="xam">Xám</a><a data-value="mau">Màu</a><a data-value="co-mau">Có màu</a></span>
+    <span class="wf-set" data-wf-param="nhan"><a data-value="cham" aria-label="Chàm"><i></i></a><a data-value="ngoc" aria-label="Xanh ngọc"><i></i></a><a data-value="cam" aria-label="Cam"><i></i></a></span>
+    <span class="wf-set" data-wf-param="kho">
+      <a data-value="desktop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Desktop</a>
+      <a data-value="mobile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg>Mobile</a>
+    </span>
+    <span class="wf-set" data-wf-param="nav"><a data-value="menu">☰ Menu</a><a data-value="duoi">Thanh dưới</a></span>
+    <details class="wf-menu">
+      <summary><span>Trạng thái:</span><b data-wf-current="tt"></b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+      <div class="wf-popover" data-wf-param="tt"><a data-value="du-lieu">Có dữ liệu</a><a data-value="dang-tai">Đang tải</a><a data-value="rong">Rỗng</a><a data-value="loi">Lỗi</a></div>
+    </details>
   </nav>
   <details class="wf-reason" data-wf-reason>
-    <summary><b>A khuyên dùng:</b> … <span>Ưu, nhược, gợi ý góp ý</span></summary>
+    <summary><b>A · Lưới card</b> · khuyên dùng — … <span>Ưu, nhược, gợi ý góp ý</span></summary>
     <div>… <button type="button" data-copy="Tiêu đề đậm hơn">Chép</button> …</div>
   </details>
   <main id="wf-design">…khối có data-wf-block="1", "2"…</main>
   <style>
-    .wf-bar { position: sticky; top: 0; z-index: 50; display: flex; gap: 12px; height: 44px; overflow-x: auto;
-      white-space: nowrap; align-items: center; padding: 0 12px; background: #1f1f1f; color: #d4d4d4; font-size: 12px; }
-    .wf-set { display: flex; gap: 2px; align-items: center; } .wf-right { margin-left: auto; gap: 12px; }
-    .wf-set a { display: inline-flex; align-items: center; height: 32px; padding: 0 10px; border-radius: 6px; flex-shrink: 0; }
-    .wf-set a[aria-current="page"] { background: #fff; color: #111; }
+    .wf-bar { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: 24px; height: 56px;
+      padding: 0 16px; overflow-x: auto; white-space: nowrap; background: #fff; border-bottom: 1px solid #e5e5e5;
+      color: #737373; font: 14px/1 system-ui, -apple-system, sans-serif; }
+    .wf-bar *, .wf-reason * { box-sizing: border-box; }
+    .wf-group { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .wf-set { display: flex; align-items: center; gap: 2px; flex-shrink: 0; padding: 3px; border-radius: 10px; background: #f4f4f5; }
+    .wf-set a { position: relative; display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px;
+      border-radius: 7px; color: #737373; text-decoration: none; }
+    .wf-set a:hover { color: #171717; }
+    .wf-set a[aria-current="page"] { background: #fff; color: #171717; font-weight: 500;
+      box-shadow: 0 1px 2px rgb(0 0 0 / .08), 0 0 0 1px rgb(0 0 0 / .04); }
+    .wf-bar svg { width: 16px; height: 16px; flex-shrink: 0; }
+    [data-wf-param="v"] a { justify-content: center; min-width: 32px; padding: 0 10px; }
+    [data-wf-param="v"] a[data-recommended]::after { content: ""; position: absolute; top: 5px; right: 5px;
+      width: 5px; height: 5px; border-radius: 50%; background: #4f46e5; }
+    [data-wf-param="nhan"] a { padding: 0 8px; }
+    [data-wf-param="nhan"] i { width: 14px; height: 14px; border-radius: 50%; background: currentColor; }
+    [data-wf-param="nhan"] a[data-value="cham"] { color: #4f46e5; } [data-wf-param="nhan"] a[data-value="ngoc"] { color: #0d9488; }
+    [data-wf-param="nhan"] a[data-value="cam"] { color: #ea580c; }
+    .wf-menu { flex-shrink: 0; }
+    .wf-menu summary { display: flex; align-items: center; gap: 6px; height: 36px; padding: 0 10px; border-radius: 8px;
+      cursor: pointer; list-style: none; }
+    .wf-menu summary::-webkit-details-marker { display: none; }
+    .wf-menu summary:hover, .wf-menu[open] summary { background: #f4f4f5; }
+    .wf-menu b { color: #171717; font-weight: 500; }
+    .wf-popover { position: fixed; z-index: 60; display: grid; min-width: 168px; padding: 4px; background: #fff;
+      border: 1px solid #e5e5e5; border-radius: 10px; box-shadow: 0 8px 24px rgb(0 0 0 / .08); }
+    .wf-popover a { display: flex; align-items: center; height: 34px; padding: 0 10px; border-radius: 6px; color: #404040; text-decoration: none; }
+    .wf-popover a:hover, .wf-popover a[aria-current="page"] { background: #f4f4f5; color: #171717; }
+    .wf-popover a[aria-current="page"] { font-weight: 500; }
+    .wf-reason { border-bottom: 1px solid #e5e5e5; background: #fafafa; color: #737373; font: 13px/1.5 system-ui, -apple-system, sans-serif; }
+    .wf-reason summary { padding: 10px 16px; cursor: pointer; list-style: none; }
+    .wf-reason summary::-webkit-details-marker { display: none; }
+    .wf-reason summary b { color: #171717; font-weight: 600; }
+    .wf-reason summary span { display: inline-block; margin-left: 8px; white-space: nowrap; color: #525252; text-decoration: underline; text-underline-offset: 3px; }
+    .wf-reason > div { padding: 0 16px 14px; }
     [data-wf-block] { position: relative; }
     [data-wf-block]::before { content: attr(data-wf-block); position: absolute; top: 4px; left: 4px; z-index: 5;
       display: grid; place-items: center; width: 18px; height: 18px; border-radius: 9px; background: #1f1f1f; color: #fff; font-size: 11px; }
     body[data-frame] .wf-bar, body[data-frame] .wf-reason { display: none; }
     body:not([data-kho="mobile"]) [data-wf-param="nav"] { display: none; }
-    [data-wf-param="nhan"] a[data-value="cham"] { color: #4f46e5; } [data-wf-param="nhan"] a[data-value="ngoc"] { color: #0d9488; }
-    [data-wf-param="nhan"] a[data-value="cam"] { color: #ea580c; }
     body[data-mau="xam"] { --primary: #2c2c2c; } /* nấc Xám: bỏ màu nhấn, cả màu trạng thái */
     body:not([data-mau="xam"])[data-nhan="cham"] { --primary: #4f46e5; } /* …ngoc, cam tương tự */
     .wf-drawer { position: fixed; inset: 0 auto 0 0; width: 280px; translate: -100% 0; transition: translate .35s; }
@@ -238,9 +286,19 @@ dòng đó."* Dừng chờ.
     for (const set of document.querySelectorAll("[data-wf-param]")) {
       for (const link of set.querySelectorAll("a")) {
         link.href = `?${new URLSearchParams({ ...state, [set.dataset.wfParam]: link.dataset.value })}`;
-        if (state[set.dataset.wfParam] === link.dataset.value) link.setAttribute("aria-current", "page");
+        if (state[set.dataset.wfParam] !== link.dataset.value) continue;
+        link.setAttribute("aria-current", "page");
+        const currentLabel = document.querySelector(`[data-wf-current="${set.dataset.wfParam}"]`);
+        if (currentLabel) currentLabel.textContent = link.textContent;
       }
     }
+    // Menu Trạng thái: thanh cuộn ngang cắt mất khối absolute, nên menu là fixed, đặt ngay dưới nút.
+    const statusMenu = document.querySelector(".wf-menu");
+    statusMenu?.addEventListener("toggle", () => {
+      const summaryRect = statusMenu.querySelector("summary").getBoundingClientRect();
+      Object.assign(statusMenu.querySelector(".wf-popover").style, { top: `${summaryRect.bottom + 6}px`, left: `${summaryRect.left}px` });
+    });
+    document.addEventListener("click", (event) => { if (statusMenu && !statusMenu.contains(event.target)) statusMenu.open = false; });
     if (state.kho === "mobile" && !params.has("frame")) {
       const frameSource = `?${new URLSearchParams({ ...state, kho: "desktop", frame: "1" })}`;
       document.getElementById("wf-design").innerHTML =
@@ -250,7 +308,11 @@ dòng đó."* Dừng chờ.
     for (const toggle of document.querySelectorAll("[data-wf-menu]")) {
       toggle.addEventListener("click", () => document.body.toggleAttribute("data-menu-open"));
     }
-    document.addEventListener("keydown", (event) => { if (event.key === "Escape") document.body.removeAttribute("data-menu-open"); });
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      document.body.removeAttribute("data-menu-open");
+      if (statusMenu) statusMenu.open = false;
+    });
     for (const button of document.querySelectorAll("[data-copy]")) {
       button.addEventListener("click", () => navigator.clipboard.writeText(button.dataset.copy));
     }
