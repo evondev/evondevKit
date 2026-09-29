@@ -1,8 +1,9 @@
 # Thiết kế từ đầu như một designer — luật U
 
-Mở file này khi người dùng muốn **nghĩ lại trải nghiệm**, không chỉ làm đẹp: đề có "thiết
-kế từ đầu", "làm lại UX", "như một designer", "phân tích rồi mới dựng", "trang này vẫn
-chưa ổn về UX", "cần người làm UX". Áp được cho sản phẩm mới lẫn một màn đã có.
+**Nhánh mặc định** (chủ dự án chốt 29/09/2026): mọi đề dựng hay làm lại một màn trở lên đều
+vào đây, tiếng Việt hay tiếng Anh, sản phẩm mới hay màn đã có. Chỉ không vào khi đề nói rõ lối
+khác (bảng câu 1 của `SKILL.md`): soi, giữ brand, refactor, dựng luôn, hoặc việc nhỏ hơn
+một màn.
 
 Khác nhánh `V` (`review.md`): `V` giữ khung trang, sửa lỗi và làm gọn. Kết quả là bản hi-fi
 sạch hơn của **đúng wireframe cũ**. Nhánh `U` bắt đầu từ câu *"người dùng đến màn này để
@@ -10,9 +11,10 @@ làm gì"*, nên được đổi cả khung: cái gì đứng đầu, lọc nằ
 nào. Đã dính 28/09/2026: bản dựng lại theo `V` sạch hết lỗi đo được, người xem vẫn nói
 "nhìn không khác gì bản cũ, vẫn cần người làm UX".
 
-**Không phải mặc định.** Đề chỉ nói "dựng màn X" thì vẫn đi mục 0 bình thường, một bố cục
-mặc định, không hỏi (câu 4 của `SKILL.md`). Nhánh này có hai lần dừng chờ người dùng, nên
-chỉ vào khi họ tự xin.
+Hai cổng chờ của nhánh này là hai chỗ duy nhất skill dừng hỏi. Đề ghi sẵn đủ cho cổng nào
+(brief đã rõ, "chọn A luôn") thì qua cổng đó không dừng. Người dùng thấy chậm thì lần sau ghi
+"dựng luôn". Lúc gửi brief ở cổng 1, thêm một dòng cuối: *"Muốn bỏ wireframe, dựng luôn thì
+trả lời `dựng luôn`."* (tiếng Anh: *"Reply `just build it` to skip the wireframes."*)
 
 ---
 

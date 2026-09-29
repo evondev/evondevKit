@@ -14,19 +14,20 @@ Gọi bằng `/evon:ui-ux`. Lấy bản mới: `/plugin marketplace update evond
 
 ## Dùng
 
-Gõ đúng vài chữ khoá là skill đi đúng việc:
+Mặc định skill làm như một designer: **brief → bạn duyệt → 2–3 wireframe → bạn chọn → dựng**.
+Viết đề tiếng Việt hay tiếng Anh đều vậy. Muốn đi lối khác thì nói rõ trong đề:
 
 | Bạn muốn | Gõ | Skill làm |
 | --- | --- | --- |
-| Dựng màn mới | `/evon:ui-ux Dựng màn danh sách đơn hàng: bảng mã đơn, khách, tổng tiền, trạng thái; lọc theo trạng thái.` | Dựng luôn, không hỏi. Lúc giao báo đã chọn gì |
+| Dựng hay làm lại một màn (mặc định) | `/evon:ui-ux Dựng màn danh sách đơn hàng: mã đơn, khách, tổng tiền, trạng thái.` hoặc `/evon:ui-ux Redesign the jobs page.` | Brief → bạn duyệt → 2–3 wireframe, kèm bản gọn chữ và bản có màu → bạn chọn (ví dụ `C + D + G`) → dựng |
+| Dựng luôn, không wireframe | `/evon:ui-ux Dựng luôn màn cài đặt thông báo.` hoặc `… just build it` | Dựng một bố cục mặc định, không hỏi. Lúc giao báo đã chọn gì |
 | Biết UI đang sai chỗ nào | `/evon:ui-ux Xem giúp trang này chỗ nào chưa ổn: http://localhost:3000/orders` | Đưa bảng lỗi có ảnh trước/sau. Bạn trả lời `sửa 1, 3` rồi mới sửa |
-| Làm đẹp lại, giữ màu brand | `/evon:ui-ux Dựng lại giao diện app này theo skill cho đẹp.` | Thay control, làm gọn card, giữ màu của bạn. Trang lướt để chọn thì có thêm dòng bản có màu. Trả lời `ok` hoặc `bỏ 7` |
+| Làm gọn, giữ brand và khung trang | `/evon:ui-ux Dựng lại trang này giữ brand.` | Thay control, làm gọn card, giữ màu của bạn. Trang lướt để chọn thì có thêm dòng bản có màu. Trả lời `ok` hoặc `bỏ 7` |
 | Đổi hẳn sang dáng của skill | `/evon:ui-ux Dựng lại hoàn toàn theo gu skill, bỏ style cũ.` | Như trên, đổi cả màu, chỉ giữ logo và màu nhấn |
-| Nghĩ lại trải nghiệm | `/evon:ui-ux Trang này vẫn chưa ổn về UX. Thiết kế lại từ đầu như một designer.` | Brief → bạn duyệt → 2–3 wireframe, kèm bản gọn chữ và bản có màu → bạn chọn → dựng |
 | Dọn code, giữ nguyên hình | `/evon:ui-ux Refactor CSS trang /settings sang Tailwind, giữ nguyên giao diện.` | Đổi class, xoá CSS cũ, so ảnh trước và sau |
 
-Dựng lại giữ nguyên khung trang, chỉ sạch hơn. Làm xong mà thấy "nhìn vẫn như cũ" thì
-dùng **thiết kế lại từ đầu**, lối này được đổi cả khung trang.
+Việc nhỏ hơn một màn (sửa một component, thêm một dropdown, sửa một lỗi) thì skill làm luôn,
+không qua wireframe.
 
 ## Mẹo
 

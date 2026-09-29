@@ -1,8 +1,9 @@
 # Soi UI đang có — luật V
 
-Mở file này khi người dùng muốn biết **UI đang có trông ổn chưa**: đề có chữ "xem
-giúp", "review", "chỗ nào chưa ổn", "sao trông kỳ", "nhìn rối", "cho đẹp hơn", họ gửi
-ảnh chụp app của chính họ, hoặc gửi link localhost của một app đang chạy.
+Mở file này khi đề nói rõ một trong hai việc (bảng câu 1 của `SKILL.md`): muốn biết **UI
+đang có trông ổn chưa** ("xem giúp", "review", "chỗ nào chưa ổn", "sao trông kỳ", "nhìn rối",
+gửi ảnh hay link app của chính họ nhờ xem), hoặc muốn **làm lại mà giữ brand / giữ giao diện**.
+Đề chỉ nói "làm lại cho đẹp", "dựng lại theo skill" thì là nhánh `U` mặc định, không phải đây.
 
 Khác nhánh `L` (`refactor.md`): `L` dọn code và **giữ nguyên hình**. `V` soi hình,
 **đề xuất đổi hình**, người dùng chọn dòng rồi mới sửa. Đề vừa muốn dọn code vừa muốn
@@ -21,7 +22,7 @@ Nhận chế độ từ đề, không hỏi, rồi nói một dòng ở phần m
 
 | | **Soi** (mặc định) | **Dựng lại, giữ brand** | **Dựng lại theo gu skill** |
 | --- | --- | --- | --- |
-| Nhận ra khi | "xem giúp", "review", "chỗ nào chưa ổn", "nhìn rối", gửi ảnh hay link nhờ xem | "dựng lại", "làm lại giao diện", "theo skill", "cho đẹp theo skill" | "**hoàn toàn** theo gu skill", "bỏ style cũ", "đổi sang gu của skill", "không cần giữ style cũ" |
+| Nhận ra khi | "xem giúp", "review", "chỗ nào chưa ổn", "nhìn rối", gửi ảnh hay link nhờ xem | "dựng lại **giữ brand**", "giữ màu", "giữ giao diện hiện tại", "chỉ làm gọn", "keep the brand" | "**hoàn toàn** theo gu skill", "bỏ style cũ", "đổi sang gu của skill", "không cần giữ style cũ" |
 | Dòng Gu | chỉ nêu, mặc định không chọn | **chọn sẵn**, người dùng bỏ dòng nào thì bỏ | chọn sẵn |
 | Dòng Cấu trúc (`V1b`) | không có | có: sắp lại thì chọn sẵn, bỏ bớt thông tin thì không | như cột giữa |
 | Dòng Gọn (`V1c`) | không có | **có, chọn sẵn**: mỗi khối chính một dòng, làm gọn theo gu skill, giữ màu | như cột giữa |
@@ -34,8 +35,9 @@ Nhận chế độ từ đề, không hỏi, rồi nói một dòng ở phần m
 | Hỏi trước khi sửa | có | có: bảng trước, người dùng trả lời rồi mới sửa | có |
 | Sửa xong | chụp lại, chạy lại probe route đó | chạy lại probe **tới khi danh sách `P` trống**, tối đa ba vòng, như cổng 3 (`checklist.md`) | như cột giữa |
 
-Đề chỉ nói "dựng lại theo skill" là **giữ brand**: đổi nhận diện của một sản phẩm đang
-chạy phải là người dùng tự nói ra, không suy từ chữ "theo skill".
+Chế độ dựng lại chỉ vào khi đề nói giữ brand hay giữ giao diện; đề chỉ nói "dựng lại theo
+skill" thì đi nhánh `U` (chủ dự án chốt 29/09/2026), và nhánh đó vẫn giữ brand theo bảng vai
+màu dưới đây (`U4`). Chế độ theo gu skill thì đổi nhận diện, phải là người dùng tự nói ra.
 
 **Bảng vai màu, ghi trước khi dựng lại** ⚑. Brand không chỉ là màu nút chính mà là
 **cách dự án dùng màu cho từng vai**. Mở ảnh "trước" và code, ghi một bảng ngắn:
