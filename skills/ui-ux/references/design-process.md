@@ -389,8 +389,9 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
   (card cao thấp theo dòng có dòng không, link trông như chữ thường, nửa khối trống ở màn
   rộng). Sửa luôn, không đưa bảng: người dùng đã chọn phương án rồi.
 - **Thứ không được tự sửa thì nêu ra, đừng giữ im lặng** ⚑ (dự án đã có UI). Lượt làm gọn chỉ
-  sửa dáng và sắp lại. Các dòng `V1b` loại bỏ, ẩn, gộp thông tin, gom màu trang trí, và chỗ
-  vai màu tranh nhau (badge nhiều màu nặng hơn giá) là quyết định sản phẩm và nhận diện: bản
+  sửa dáng và sắp lại. Các dòng `V1b` loại bỏ, ẩn, gộp thông tin, gom màu trang trí, chỗ
+  vai màu tranh nhau (badge nhiều màu nặng hơn giá), và mọi chỗ **nhận diện** trông xấu theo
+  `V1` trong `review.md` (màu vai, font, logo, khối màu đậm) là quyết định sản phẩm và nhận diện: bản
   dựng giữ nguyên, nhưng tin giao có mục **"Còn thấy"**, tối đa năm dòng đánh số. Mỗi dòng
   một vấn đề người dùng cuối vấp kèm hướng sửa, nói bằng thứ bậc chứ không bằng màu
   (`V1b`, "Không phải lối vòng để đổi màu"): *"1. Card nào cũng có badge, năm màu đè trên

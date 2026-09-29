@@ -174,36 +174,35 @@ một chút nào"*.
 - **Không bao giờ là lỗi**, trừ khi phạm luật đọc được ở hạng Hỏng: màu nhấn và màu
   brand, bo góc lớn hay nhỏ, font, bóng / gradient / glass dùng đều khắp dự án, mật
   độ dày hay thoáng, dự án nhiều màu hơn gu skill (đầu `principles.md`), khối màu đậm
-  hay gradient của brand (thẻ ví, banner), icon và badge mỗi loại một màu. Mấy thứ này
-  **cũng không đưa vào hạng Gu**: "thẻ ví navy nặng quá, đổi sang card trắng" hay "icon
-  danh mục gom về một màu xám, badge còn hai tông" là đòi đổi nhận diện, không phải gu
-  (dính cả hai vòng đầu của dự án mồi, 27/09/2026). Ngoại lệ ở hai chế độ dựng lại:
-  màu **trang trí** theo `V1b`, và dáng (bóng, mật độ, viền) theo dòng Gọn `V1c`. Màu vai và
-  khối màu đậm của brand thì vẫn không.
-  **Màu badge không phải lỗi, nhưng số lượng và thứ bậc của badge thì được nêu**, ở mọi chế
-  độ (soi: hạng Gu; dựng lại: Cấu trúc `V1b`). Hai ca: badge có ở gần hết các mục, nên
-  không còn phân biệt được gì ("Thông tin không phân biệt được gì" trong `V1b`); badge nặng
-  hơn thông tin chính, mắt dừng ở badge trước giá, hay tranh với mục đang chọn (hai pill đỏ
-  đặc "Mới" trong sidebar cạnh mục đang chọn đỏ đặc: ba khối đỏ trên một cột, `N3`). Hướng sửa
-  giữ màu mà hạ mức nhấn: pill đặc thành chữ đỏ không nền, hay chấm nhỏ. Nói bằng số lượng và vị trí, giữ nguyên
-  màu: *"8/8 thẻ có badge, 4 thẻ là 'Mới', mắt dừng ở badge trước giá. Chỉ giữ badge ở
-  phòng khác đi (giảm giá, đã xác thực)."* Không viết "gom badge về hai tông".
-  **Dáng của badge và font thì được gợi ý**, cũng ở mọi chế độ, không chọn sẵn ⚑ (chủ dự án
-  chốt 29/09/2026, nới phần "font" và "badge" của câu "Không bao giờ là lỗi" trên; màu thì
-  vẫn giữ):
-  - **Dáng badge**: cỡ chữ, độ đậm, bo góc, padding, cách đè lên ảnh, so với badge của skill
-    (`M7` trong `rules-color.md`). Dựng lại hay nhánh `U` thì dáng tự sửa theo bảng "Dáng lấy
-    từ skill"; chế độ soi thì một dòng Gu kèm ảnh trước / sau.
-  - **Font**: tối đa **một** dòng, chỉ khi nói ra được lý do gắn với sản phẩm: thiếu hay
-    gãy dấu tiếng Việt (`T5`), không có `tnum` mà trang nhiều cột tiền (`T16`), font trang
-    trí dùng cho chữ thân của app làm việc, hai ba font lẫn nhau không vai rõ. Kèm một hai
-    font cụ thể đã kiểm có subset `vietnamese`, và ảnh trước / sau. "Font trông cũ" không
-    phải lý do.
-  Ở nhánh `U`, dòng font đi vào mục "Còn thấy" (`design-process.md`, `U4`). Đã dính
-  29/09/2026, tim-phong-sua: badge xấu, font chưa hợp, không lượt nào nêu vì câu "Không
-  bao giờ là lỗi" chặn cả hai. Đã dính
-  29/09/2026, tim-phong-sua: 8 thẻ đều có badge, năm màu đè lên ảnh, bảng soi không có dòng
-  nào, chủ dự án tự thấy.
+  hay gradient của brand (thẻ ví, banner), icon và badge mỗi loại một màu. "Không phải lỗi"
+  nghĩa là **không xếp Hỏng hay Lệch hệ, không tự sửa, không chọn sẵn**. Không có nghĩa là
+  im lặng: trông xấu thì vẫn đề xuất, theo mục dưới.
+- **Chỗ nào trông xấu thì đề xuất, dù là dáng hay nhận diện** ⚑ (chủ dự án chốt 29/09/2026).
+  Soi từng khối bằng mắt, đặt cạnh mẫu gần nhất của skill: badge, font, nút, card, icon, ảnh,
+  khoảng thở, bóng, gradient, màu trang trí, sidebar, header… Khối nào trông xấu thì có một
+  dòng, chia theo loại:
+  - **Dáng** (cỡ, độ đậm, bo góc, padding, viền, bóng, vị trí, mật độ): nhánh `U` và hai chế
+    độ dựng lại **tự sửa** theo bảng "Dáng lấy từ skill" và dòng Gọn `V1c`; chế độ soi thì
+    một dòng Gu kèm ảnh trước / sau.
+  - **Nhận diện** (màu vai, font, logo, khối màu đậm của brand): không tự sửa, không chọn
+    sẵn. Đề xuất một dòng (soi: Gu; dựng lại: dòng không chọn sẵn; nhánh `U`: mục "Còn
+    thấy" của `U4`) kèm hướng cụ thể và ảnh trước / sau. Font thì nêu tên một hai font đã
+    kiểm có subset `vietnamese` (`T5`). Màu thì ưu tiên hạ mức nhấn mà giữ sắc (pill đặc
+    thành chữ màu không nền, chấm nhỏ) trước khi đề xuất đổi màu.
+  - **Số lượng và thứ bậc** (cùng một thứ lặp ở mọi mục, thứ phụ nặng hơn thứ chính): nêu
+    bằng số và vị trí, như "Thông tin không phân biệt được gì" và "Tín hiệu tranh nhau" ở
+    `V1b`: *"8/8 thẻ có badge, 4 thẻ là 'Mới', mắt dừng ở badge trước giá. Chỉ giữ badge ở
+    phòng khác đi."*
+
+  **Lý do phải là thứ người dùng cuối vấp hoặc thấy**: đọc khó, mắt dừng sai chỗ, trông
+  như bản nháp, lệch với phần còn lại của trang, gãy dấu tiếng Việt. "Không giống gu skill"
+  hay "trông cũ" chưa phải lý do. Chấm dự án mồi: dòng đề xuất có lý do, không chọn sẵn,
+  **không tính là báo nhầm**; xếp brand vào Hỏng / Lệch hệ hay tự sửa brand thì vẫn là báo nhầm.
+
+  ⚠️ **Đảo luật 29/09/2026, đừng hồi sinh bản cũ:** bản 27/09 ghi mấy thứ trên "cũng không
+  đưa vào hạng Gu", để chặn các dòng đòi đổi nhận diện ở dự án mồi. Nó chặn luôn thứ đáng nói:
+  ở tim-phong-sua, 8/8 thẻ có badge, năm màu đè lên ảnh; badge, font, sidebar chữ đậm đều xấu
+  mà không lượt soi hay dựng lại nào nêu, chủ dự án tự thấy rồi hỏi sao skill không đề xuất.
 - **Gu tối đa năm dòng** ở chế độ soi, xếp cuối bảng. Hai chế độ dựng lại không giới hạn,
   nhưng Gu của một khối chính thì gom vào dòng Gọn của khối đó (`V1c`).
 
@@ -243,9 +242,10 @@ sai loại. Probe không đo được mấy thứ này, phải soi ảnh và đ�
 
 - Mỗi dòng chỉ đúng chỗ (route, khối, `file:line`) và nói bằng cái người dùng cuối vấp.
   "Card nhìn rối" chưa phải một dòng.
-- **Không phải lối vòng để đổi màu.** "Badge nhiều màu quá", "đổi đỏ sang xám" vẫn thuộc
-  "Không bao giờ là lỗi" (`V1`). Màu nhiều thì nói bằng thứ bậc: cái gì đang tranh nhau,
-  hạ cái nào xuống, màu giữ nguyên theo bảng vai màu.
+- **Không phải lối vòng để đổi màu.** Dòng Cấu trúc nói bằng thứ bậc: cái gì đang tranh
+  nhau, hạ cái nào xuống, màu giữ nguyên theo bảng vai màu. Muốn đổi hẳn màu ("badge nhiều
+  màu quá", "đổi đỏ sang xám") thì đó là dòng **nhận diện** theo `V1`: không chọn sẵn, có lý
+  do và ảnh trước / sau, không nhét vào dòng Cấu trúc.
 - **Chọn sẵn hay không.** Dòng chỉ sắp lại (hạ mức nhấn, đổi loại control, dời chỗ) thì
   chọn sẵn ✓. Dòng bỏ, ẩn hay gộp thông tin, và dòng gom màu trang trí, thì **không chọn
   sẵn**: đó là quyết định sản phẩm và nhận diện, người dùng tự thêm. Luật này chỉ cho
