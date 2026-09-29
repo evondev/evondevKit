@@ -388,6 +388,18 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
 - **Dựng xong chạy một lượt làm gọn** trên các khối mới **và khung app của route**: `V1b` và `V1c` trong `review.md`
   (card cao thấp theo dòng có dòng không, link trông như chữ thường, nửa khối trống ở màn
   rộng). Sửa luôn, không đưa bảng: người dùng đã chọn phương án rồi.
+- **Thứ không được tự sửa thì nêu ra, đừng giữ im lặng** ⚑ (dự án đã có UI). Lượt làm gọn chỉ
+  sửa dáng và sắp lại. Các dòng `V1b` loại bỏ, ẩn, gộp thông tin, gom màu trang trí, và chỗ
+  vai màu tranh nhau (badge nhiều màu nặng hơn giá) là quyết định sản phẩm và nhận diện: bản
+  dựng giữ nguyên, nhưng tin giao có mục **"Còn thấy"**, tối đa năm dòng đánh số. Mỗi dòng
+  một vấn đề người dùng cuối vấp kèm hướng sửa, nói bằng thứ bậc chứ không bằng màu
+  (`V1b`, "Không phải lối vòng để đổi màu"): *"1. Card nào cũng có badge, năm màu đè trên
+  ảnh, mắt dừng ở badge trước giá. Chỉ giữ badge ở phòng khác đi (giảm giá, đã xác thực)."*
+  Kết bằng *"Muốn sửa dòng nào thì trả lời số, ví dụ `sửa 1, 3`."* Không thấy gì thì ghi
+  "Còn thấy: không". Đây không phải cổng: bản dựng đã giao xong, người dùng trả lời hay không
+  tuỳ họ. Đã dính 29/09/2026, tim-phong-sua: năm badge năm màu (Mới, Hot, Giảm giá, VIP,
+  Xác thực) giữ nguyên theo vai màu mà không nói gì, chủ dự án tự thấy "badge chưa đẹp" rồi
+  hỏi sao không ai đề xuất.
 - **Tự soi bằng mắt trước khi giao, ghi ra.** Mở ảnh 375, 1440 và 1920 của probe, trả lời
   từng câu thành một dòng trong tin giao (câu nào có lỗi thì sửa trước, rồi mới ghi "không"):
   1. Card, dòng cùng loại có cao thấp khác nhau vì có dòng thiếu một mẩu không?
