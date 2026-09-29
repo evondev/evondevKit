@@ -24,7 +24,7 @@ trả lời `dựng luôn`."* (tiếng Anh: *"Reply `just build it` to skip the 
 | --- | --- | --- |
 | `U1` Brief | Một khối ngắn: sản phẩm, người dùng, việc chính, nền tảng | Gộp với `U2`, **cổng 1** |
 | `U2` Việc chính của từng màn | Bảng: đến để làm gì, so sánh bằng gì, hành động cuối, quy ước loại sản phẩm | **Cổng 1**: người dùng sửa hoặc trả lời `ok` |
-| `U3` Wireframe | 2–3 phương án bố cục khác nhau thật, xám, nội dung thật, có ảnh; biến thể nội dung D, E; hai mức màu F, G | **Cổng 2**: người dùng chọn |
+| `U3` Wireframe | 2–3 phương án bố cục khác nhau thật, nội dung thật, có ảnh; biến thể nội dung D, E; một thanh công cụ: phương án, màu, desktop / mobile, trạng thái, khung lý do | **Cổng 2**: người dùng chọn |
 | `U4` Dựng thật | Code theo phương án đã chọn, probe tới khi danh sách `P` trống | Như cổng 3 của `checklist.md` |
 
 Chưa qua cổng 2 thì **không đụng file nào của dự án**. Wireframe và ảnh để ở
@@ -67,8 +67,8 @@ dòng đó."* Dừng chờ.
 - **Khác ở chiến lược bố cục, không khác ở trang trí.** Ví dụ cho một trang danh sách:
   A giữ lưới card với thanh lọc gọn dính đầu trang; B chia đôi danh sách và panel chi tiết;
   C đặt ô tìm lên trước, lọc sau. Ba phương án chỉ khác bo góc hay màu là **một** phương án.
-- **Xám, không màu brand, không icon trang trí.** Ảnh là khối xám có tỉ lệ thật. Người dùng
-  chỉ được nhìn bố cục, không sa vào màu. **Xám vẫn có mức nhấn**: nút chính tô xám đậm chữ
+- **Mặc định xám, không icon trang trí.** Ảnh là khối xám có tỉ lệ thật. Mở ra người dùng
+  nhìn bố cục trước, không sa vào màu; màu chỉ bật bằng nút Màu trên thanh công cụ (dưới). **Xám vẫn có mức nhấn**: nút chính tô xám đậm chữ
   trắng, nút phụ viền. Hai nút cùng một kiểu trong wireframe là chưa quyết thứ bậc, lúc dựng
   thật sẽ lại thành hai nút tranh nhau (`V1b`).
 - **Nội dung thật**: chữ lấy từ dữ liệu của dự án, cả ca dài nhất và ca trống. Wireframe chữ
@@ -79,12 +79,21 @@ dòng đó."* Dừng chờ.
   28/09/2026). Muốn phương án cần thêm dữ liệu thì vẽ đúng cái đang có và ghi *"đẹp hơn khi
   có X"* ở dòng đánh đổi.
 - Mỗi phương án ghi **ba dòng**: việc chính giờ thấy ở đâu, đổi gì so với bản cũ, đánh đổi.
+  Ba dòng đó cũng là nội dung khung lý do trên trang wireframe (dưới), hai chỗ cùng một chữ.
   Phương án cần dữ liệu hay logic chưa có (khoảng cách, chế độ xem mới) thì ghi rõ
   *"cần dữ liệu X, logic do bạn nối"* (`N10`).
 - **Tính cả khung app vào bề ngang.** App đã có sidebar điều hướng mà phương án thêm một cột
   lọc bên trái thì ghi rõ ở dòng đánh đổi: hai cột trái, nội dung còn lại bao nhiêu px ở 1280.
 - **Đánh dấu một phương án khuyên dùng**, kèm một câu vì sao (bám `U2`).
-- Một file HTML, các phương án chuyển bằng tham số (`?v=a`, `?v=b`…) để probe mở được từng cái.
+- Một file HTML, mọi lựa chọn nằm trên tham số (`?v=a&mau=xam&kho=desktop&tt=du-lieu`) để probe
+  mở được từng cái, và người dùng chép link gửi đi thì mở ra đúng cái đang xem.
+- **Đánh số từng khối chính** (header, hàng lọc, danh sách, panel, chân trang…): `data-wf-block="1"`,
+  số hiện nhỏ ở góc trên trái khối. Người dùng góp ý bằng số (*"bỏ khối 3"*, *"đưa khối 2 lên
+  đầu"*), không phải tả "cái thanh chữ nhỏ ở trên bảng". Cùng một khối ở các phương án giữ cùng
+  số; khối chỉ phương án đó có thì số mới.
+- **Đủ bốn trạng thái của `I19`**: có dữ liệu, đang tải, rỗng, lỗi, chuyển bằng nút Trạng thái.
+  Màn rỗng có câu và nút của `components/empty-state.md`, đang tải là khung chờ đúng hình dòng
+  thật. Người dùng góp ý màn rỗng từ lúc wireframe, không đợi dựng xong mới thấy.
 - **Wireframe có đủ trạng thái như bản thật**: một mục đang chọn đánh dấu `aria-current` (hay
   `aria-selected`), có nền rê. Wireframe tĩnh không có rê thì không ai thấy
   "rê trùng nền đang chọn" cho tới khi đã dựng xong.
@@ -104,16 +113,95 @@ dòng đó."* Dừng chờ.
 
   D và E cũng qua probe như các phương án bố cục.
 
-- **Hai mức màu, F và G, trên phương án khuyên dùng.** Đây là chỗ duy nhất wireframe có màu
-  brand, để người dùng chọn độ đậm màu trước khi dựng, không phải chờ dựng xong mới thấy
-  "buồn màu":
-  - **F, phẳng:** mặc định của skill (`P6`): màu nhấn chỉ ở nút chính và mục đang chọn.
-  - **G, có màu:** `P12` trong `styles.md`: dải màu ở đầu và chân trang, mục nổi bật theo dữ
-    liệu, tiêu đề đậm hơn, chấm đầu dòng màu nhấn.
+- **Nút Màu: Xám · Màu · Có màu**, áp cho mọi phương án, không phải bản riêng:
+  - **Xám:** mặc định lúc mở, chỉ xem bố cục.
+  - **Màu:** như bản dựng sẽ ra theo mặc định: màu nhấn của dự án ở nút chính và mục đang chọn,
+    chữ, viền, nền theo token (`P6`). Dự án đã có phong cách khác flat (`P4`) thì Màu là phong
+    cách đó.
+  - **Có màu:** `P12` trong `styles.md` (dải màu đầu và chân trang, mục nổi bật theo dữ liệu, tiêu
+    đề đậm hơn). **Chỉ trang người dùng cuối lướt để chọn** (tìm việc, tìm phòng, sản phẩm, khoá
+    học) mới có nấc này, và khuyên nó. Trang làm việc trong app (dashboard, báo cáo, bảng, form,
+    cài đặt, quản trị) không có: dải màu và mục "hot" ở trang báo cáo thì lạc loài (đã dính
+    29/09/2026, wireframe báo cáo khách truy cập).
 
-  Trang người dùng cuối lướt để chọn (tìm việc, tìm phòng, sản phẩm) thì **khuyên G**; trang
-  làm việc trong app (bảng, cài đặt, quản trị) thì khuyên F. Dự án đã có phong cách khác flat
-  (`P4`) thì bỏ F, G, theo dự án. F và G cũng qua probe (tương phản chữ trắng trên dải).
+  Đổi màu bằng một bộ biến CSS trên `body[data-mau]`, không vẽ lại. Probe cả nấc Màu và Có màu
+  (tương phản chữ trắng trên dải).
+
+- **Nút Khổ: Desktop · Mobile.** Mobile hiện chính trang đó trong một khung 375 × 812 giữa màn
+  (iframe cùng link, thêm `frame=1` để trong khung không có thanh công cụ), nên media query chạy
+  thật. Người dùng hầu như không tự thu cửa sổ, nên không thấy bảng thành danh sách, lọc thành
+  nút ra sao ở điện thoại.
+
+- **Thanh công cụ ở đỉnh trang, bắt buộc, một dòng**, nằm ngoài bản thiết kế: dải tối cao 44px,
+  dính đỉnh. Trái là các phương án (chữ cái kèm tên ngắn, phương án khuyên dùng ghi "khuyên
+  dùng"); phải là ba nhóm nút Màu, Khổ, Trạng thái. Nút đang bật `aria-current="page"` nền trắng.
+  Mỗi nút là link giữ nguyên các lựa chọn khác, chỉ đổi đúng tham số của nó. Màn hẹp thì thanh
+  cuộn ngang, không xuống dòng. Mở không tham số thì: phương án khuyên dùng, Xám, Desktop, Có
+  dữ liệu. Đã dính 29/09/2026: có lượt wireframe có thanh, có lượt không, người dùng phải tự
+  gõ `?v=`.
+
+- **Khung lý do ngay dưới thanh**, không modal (modal che mất bản thiết kế đúng lúc cần nhìn):
+  một dòng *"A khuyên dùng: người dùng đến để so lương, nên lương đứng đầu mỗi dòng"* (bám việc
+  chính ở `U2`, không viết "gọn gàng, hiện đại"), bấm mở ra đủ:
+  - **Ưu** 2–3 dòng, **Nhược** 1–2 dòng, **Hợp khi** một dòng. Đổi theo phương án đang xem.
+  - **Gợi ý góp ý**: 3–4 câu ngắn người dùng chép gửi lại cho AI, mỗi câu một nút Chép. Chọn
+    theo chính trang này, bằng ngôn ngữ của đề: trang đang Xám nhạt thì *"Thêm màu brand ở header
+    và hàng lọc"*; tiêu đề mảnh thì *"Tiêu đề đậm hơn"*; khối sát nhau thì *"Thoáng hơn, tăng
+    khoảng cách giữa các khối"*; *"Font khác hợp sản phẩm hơn"*; *"Bỏ khối 3"*. Không gợi ý
+    thứ trang đã có (đã nhiều màu thì không "thêm màu").
+
+  ```html
+  <nav class="wf-bar" aria-label="Wireframe">
+    <div class="wf-set" data-wf-param="v">
+      <a data-value="a">A · Lưới card (khuyên dùng)</a><a data-value="b">B · Danh sách + chi tiết</a>
+      <a data-value="d">D · A gọn chữ</a>
+    </div>
+    <div class="wf-set wf-right">
+      <span class="wf-set" data-wf-param="mau"><a data-value="xam">Xám</a><a data-value="mau">Màu</a><a data-value="co-mau">Có màu</a></span>
+      <span class="wf-set" data-wf-param="kho"><a data-value="desktop">Desktop</a><a data-value="mobile">Mobile</a></span>
+      <span class="wf-set" data-wf-param="tt"><a data-value="du-lieu">Dữ liệu</a><a data-value="dang-tai">Đang tải</a><a data-value="rong">Rỗng</a><a data-value="loi">Lỗi</a></span>
+    </div>
+  </nav>
+  <details class="wf-reason" data-wf-reason>
+    <summary><b>A khuyên dùng:</b> … <span>Ưu, nhược, gợi ý góp ý</span></summary>
+    <div>… <button type="button" data-copy="Tiêu đề đậm hơn">Chép</button> …</div>
+  </details>
+  <main id="wf-design">…khối có data-wf-block="1", "2"…</main>
+  <style>
+    .wf-bar { position: sticky; top: 0; z-index: 50; display: flex; gap: 12px; height: 44px; overflow-x: auto;
+      white-space: nowrap; align-items: center; padding: 0 12px; background: #1f1f1f; color: #d4d4d4; font-size: 12px; }
+    .wf-set { display: flex; gap: 2px; align-items: center; } .wf-right { margin-left: auto; gap: 12px; }
+    .wf-set a { display: inline-flex; align-items: center; height: 32px; padding: 0 10px; border-radius: 6px; flex-shrink: 0; }
+    .wf-set a[aria-current="page"] { background: #fff; color: #111; }
+    [data-wf-block] { position: relative; }
+    [data-wf-block]::before { content: attr(data-wf-block); position: absolute; top: 4px; left: 4px; z-index: 5;
+      display: grid; place-items: center; width: 18px; height: 18px; border-radius: 9px; background: #1f1f1f; color: #fff; font-size: 11px; }
+    body[data-frame] .wf-bar, body[data-frame] .wf-reason { display: none; }
+  </style>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const state = { v: "a", mau: "xam", kho: "desktop", tt: "du-lieu" }; // phương án khuyên dùng đứng ở v
+    for (const key of Object.keys(state)) state[key] = params.get(key) || state[key];
+    Object.assign(document.body.dataset, state);
+    if (params.has("frame")) document.body.dataset.frame = "1";
+    for (const set of document.querySelectorAll("[data-wf-param]")) {
+      for (const link of set.querySelectorAll("a")) {
+        link.href = `?${new URLSearchParams({ ...state, [set.dataset.wfParam]: link.dataset.value })}`;
+        if (state[set.dataset.wfParam] === link.dataset.value) link.setAttribute("aria-current", "page");
+      }
+    }
+    if (state.kho === "mobile" && !params.has("frame")) {
+      const frameSource = `?${new URLSearchParams({ ...state, kho: "desktop", frame: "1" })}`;
+      document.getElementById("wf-design").innerHTML =
+        `<div style="display:grid;place-items:center;padding:24px"><iframe src="${frameSource}" title="Mobile" style="width:375px;height:812px;border:1px solid #ddd;border-radius:24px;background:#fff"></iframe></div>`;
+    }
+    for (const button of document.querySelectorAll("[data-copy]")) {
+      button.addEventListener("click", () => navigator.clipboard.writeText(button.dataset.copy));
+    }
+  </script>
+  ```
+
+  Nút Màu không có nấc Có màu (trang làm việc trong app) thì bỏ link đó khỏi nhóm.
 
 - **Gửi link bấm được cho từng phương án**, không chỉ đường dẫn ảnh. Chạy một server tĩnh nền
   trên thư mục wireframe (`python3 -m http.server <cổng> -d "$TMPDIR/evon-design"`, chạy nền),
@@ -124,14 +212,17 @@ dòng đó."* Dừng chờ.
   - A · Lưới card + hàng lọc gọn (khuyên dùng): http://localhost:<cổng>/wireframe.html?v=a
   - B · Danh sách + bản đồ: http://localhost:<cổng>/wireframe.html?v=b
   - D · A gọn chữ: http://localhost:<cổng>/wireframe.html?v=d
-  - G · A có màu (khuyên dùng cho trang này): http://localhost:<cổng>/wireframe.html?v=g
   ```
+
+  Kèm một dòng: *"Mỗi trang có thanh trên cùng: bật Màu, xem Mobile, xem Rỗng / Lỗi, và khung lý
+  do có sẵn câu góp ý để chép."*
 
   Mở thử từng link (probe đã mở là được) trước khi gửi. Không chạy được server thì ghi đường
   dẫn tệp `file://…/wireframe.html` và nói tham số `?v=` chọn phương án.
 
-Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn, và F hay G cho màu (ví dụ `C + D + G`, `B + E + F`)."*
-Không ghi F hay G thì dựng theo mức đã khuyên. Dừng chờ.
+Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn, và `có màu` nếu thích bản đó (ví dụ `C + D + có màu`,
+`B + E`). Góp ý theo số khối cũng được."* Trang không có nấc Có màu thì bỏ vế đó. Không ghi màu
+thì dựng theo nấc Màu, trừ khi nấc đã khuyên là Có màu. Dừng chờ.
 
 ## U4. Dựng thật ⚑
 
@@ -140,7 +231,7 @@ Không ghi F hay G thì dựng theo mức đã khuyên. Dừng chờ.
   thứ cần dữ liệu mới thì để prop và handler rỗng, lúc giao liệt kê.
 - **Sản phẩm mới:** đi tiếp câu 2 và 3 của mục 0 trong `SKILL.md`, rồi dựng theo phương án đã
   chọn thay cho bố cục mặc định của câu 4.
-- **Chọn G thì phong cách là `P12`** cho route đó và các màn người dùng cuối cùng loại, ghi một
+- **Chọn `có màu` thì phong cách là `P12`** cho route đó và các màn người dùng cuối cùng loại, ghi một
   dòng lúc giao như mẫu của `P1`. Màu vẫn từ màu nhấn của dự án.
 - Ráp bằng mẫu của skill (`SKILL.md` mục 2). Chạy probe `--sweep` tới khi danh sách `P`
   trống, tối đa ba vòng. **Danh sách `P` tính cả khung app trên route đó** (header, sidebar,
@@ -180,7 +271,9 @@ Không ghi F hay G thì dựng theo mức đã khuyên. Dừng chờ.
   thứ đó nay probe đo).
 - **Lúc giao** nói bằng ngôn ngữ trải nghiệm, không bằng class: việc chính giờ làm trong mấy
   bước, thấy ngay ở khổ nào; ảnh trước và sau ở 1280 và 375; danh sách thứ cần bạn nối logic
-  hay thêm dữ liệu.
+  hay thêm dữ liệu. Cuối tin một dòng **Muốn chỉnh thì nhắn** với 3–4 câu ngắn chọn theo bản vừa
+  dựng, như khung lý do của `U3` (*"Thêm màu ở header"*, *"Tiêu đề đậm hơn"*, *"Thoáng hơn"*,
+  *"Đổi font"*). Người dùng thường chỉ thấy "chưa đã" mà không gọi được tên.
 
 ---
 

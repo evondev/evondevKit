@@ -1255,8 +1255,59 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     if (sameKind.length < 3) continue;
     const lineCounts = sameKind.slice(0, 6).map(countTextLines);
     const maxLines = Math.max(...lineCounts);
-    if (maxLines >= 5) denseItems.push(`${sameKind.length} mục, nhiều nhất ${maxLines} dòng chữ: ${describe(sameKind[lineCounts.indexOf(maxLines)])}`);
+    const densest = sameKind[lineCounts.indexOf(maxLines)];
+    // Nhóm link điều hướng (gần như mỗi dòng một link, như nhóm mục sidebar) không phải mục dày chữ
+    // (báo nhầm 29/09/2026, sidebar của wireframe).
+    if (densest.querySelectorAll("a[href], button").length >= maxLines - 1) continue;
+    if (maxLines >= 5) denseItems.push(`${sameKind.length} mục, nhiều nhất ${maxLines} dòng chữ: ${describe(densest)}`);
   }
+
+  // 18l. Hàng control lệch trên dưới: hàng flex ngang chứa nút / ô nhập khác chiều cao mà không `items-center`,
+  //      control thấp hơn dính lên đỉnh hàng. Nút "View companies" 32px cạnh nút ⋯ 36px trong ô cuối dòng
+  //      bảng: trên 8px, dưới 12px (29/09/2026, wireframe báo cáo). Chỉ xét hàng thấp (một hàng control).
+  const misalignedControlRows = [];
+  const controlSelector = "button, a[href], input, select, textarea, [role='button'], [role='combobox']";
+  const seenControlRows = new Set();
+  for (const row of allElements) {
+    if (misalignedControlRows.length >= 4) break;
+    const rowKind = `${row.tagName}|${row.getAttribute("class") || ""}`;
+    if (seenControlRows.has(rowKind)) continue;
+    const style = getComputedStyle(row);
+    if (!/flex/.test(style.display) || !style.flexDirection.startsWith("row") || /center|baseline/.test(style.alignItems)) continue;
+    const rowRect = row.getBoundingClientRect();
+    if (rowRect.height > 72 || !isVisible(row)) continue;
+    const children = [...row.children].filter((child) => isVisible(child) && getComputedStyle(child).position !== "absolute");
+    if (children.length < 2 || !children.some((child) => child.matches(controlSelector))) continue;
+    const contentTop = rowRect.top + parseFloat(style.paddingTop) + parseFloat(style.borderTopWidth);
+    const contentBottom = rowRect.bottom - parseFloat(style.paddingBottom) - parseFloat(style.borderBottomWidth);
+    const contentCenter = (contentTop + contentBottom) / 2;
+    const offsets = children
+      .filter((child) => child.matches(controlSelector) && !/center|baseline/.test(getComputedStyle(child).alignSelf))
+      .map((child) => {
+        const rect = child.getBoundingClientRect();
+
+        return { child, offset: (rect.top + rect.bottom) / 2 - contentCenter, height: rect.height };
+      });
+    const worst = offsets.sort((first, second) => Math.abs(second.offset) - Math.abs(first.offset))[0];
+    if (!worst || Math.abs(worst.offset) < 2) continue;
+    seenControlRows.add(rowKind);
+    misalignedControlRows.push(`${describe(worst.child)} cao ${Math.round(worst.height)}px trong hàng ${Math.round(contentBottom - contentTop)}px, lệch ${Math.round(Math.abs(worst.offset) * 2)}px trên dưới: ${describe(row)}`);
+  }
+
+  // 18m. Trang wireframe thiếu phần nào của thanh công cụ (`design-process.md` U3): phương án, nút Màu, Khổ,
+  //      Trạng thái, khung lý do, số khối. Có lượt wireframe có thanh, có lượt không (29/09/2026). Trong khung
+  //      mobile (`frame=1`) thanh ẩn là đúng, không tính.
+  const wireframeParams = new URLSearchParams(location.search);
+  const countLinksWith = (param) => [...document.querySelectorAll("a[href*='?']")]
+    .filter((link) => new URL(link.href, location.href).searchParams.has(param)).length;
+  const missingWireframeParts = !/wireframe/i.test(location.pathname) || wireframeParams.has("frame") ? [] : [
+    countLinksWith("v") < 2 && "thanh phương án (?v=)",
+    countLinksWith("mau") < 2 && "nút Màu (mau=)",
+    countLinksWith("kho") < 2 && "nút Khổ desktop / mobile (kho=)",
+    countLinksWith("tt") < 2 && "nút Trạng thái (tt=)",
+    !document.querySelector("[data-wf-reason]") && "khung lý do (data-wf-reason)",
+    document.querySelectorAll("[data-wf-block]").length < 2 && "số khối (data-wf-block)",
+  ].filter(Boolean);
 
   // 19. Chữ dưới 12px: đọc khó ở mọi brand, hay gặp ở dòng phụ trong card và cột bên. Chữ trong biểu đồ
   //     (svg) và nhãn ngắn từ ba ký tự trở xuống ("Mới", "VIP") không tính.
@@ -1286,6 +1337,8 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     heavySeparators,
     clippedBars,
     denseItems,
+    misalignedControlRows,
+    missingWireframeParts,
     swallowedNumbers,
     floatingContent,
     tinyTexts,
@@ -2580,6 +2633,13 @@ function formatReport(results) {
     if (result.heavySeparators?.length > 0) {
       problems.push(`VẠCH CHIA TRONG MENU ĐẬM HƠN VIỀN KHUNG (${result.heavySeparators.length} menu):`);
       for (const item of result.heavySeparators) problems.push(`  ${item}`);
+    }
+    if (result.missingWireframeParts?.length > 0) {
+      problems.push(`WIREFRAME THIẾU PHẦN CỦA THANH CÔNG CỤ (design-process.md, U3): ${result.missingWireframeParts.join(", ")}`);
+    }
+    if (result.misalignedControlRows?.length > 0) {
+      problems.push(`HÀNG CONTROL LỆCH TRÊN DƯỚI (${result.misalignedControlRows.length} hàng, thêm items-center; nút cạnh nhau cùng chiều cao):`);
+      for (const item of result.misalignedControlRows) problems.push(`  ${item}`);
     }
     if (result.denseItems?.length > 0) {
       problems.push(`MỤC LẶP DÀY CHỮ (từ 5 dòng mỗi mục; danh sách + chi tiết thì mục trái tối đa 3 dòng, layouts/app.md):`);

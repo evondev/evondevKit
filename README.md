@@ -19,7 +19,7 @@ Viết đề tiếng Việt hay tiếng Anh đều vậy. Muốn đi lối khác
 
 | Bạn muốn | Gõ | Skill làm |
 | --- | --- | --- |
-| Dựng hay làm lại một màn (mặc định) | `/evon:ui-ux Dựng màn danh sách đơn hàng: mã đơn, khách, tổng tiền, trạng thái.` hoặc `/evon:ui-ux Redesign the jobs page.` | Brief → bạn duyệt → 2–3 wireframe, kèm bản gọn chữ và bản có màu → bạn chọn (ví dụ `C + D + G`) → dựng |
+| Dựng hay làm lại một màn (mặc định) | `/evon:ui-ux Dựng màn danh sách đơn hàng: mã đơn, khách, tổng tiền, trạng thái.` hoặc `/evon:ui-ux Redesign the jobs page.` | Brief → bạn duyệt → 2–3 wireframe → bạn chọn (ví dụ `C + D + có màu`) → dựng. Wireframe có thanh trên cùng: bật màu, xem mobile, xem màn rỗng / lỗi, đọc ưu nhược, chép câu góp ý |
 | Dựng luôn, không wireframe | `/evon:ui-ux Dựng luôn màn cài đặt thông báo.` hoặc `… just build it` | Dựng một bố cục mặc định, không hỏi. Lúc giao báo đã chọn gì |
 | Biết UI đang sai chỗ nào | `/evon:ui-ux Xem giúp trang này chỗ nào chưa ổn: http://localhost:3000/orders` | Đưa bảng lỗi có ảnh trước/sau. Bạn trả lời `sửa 1, 3` rồi mới sửa |
 | Làm gọn, giữ brand và khung trang | `/evon:ui-ux Dựng lại trang này giữ brand.` | Thay control, làm gọn card, giữ màu của bạn. Trang lướt để chọn thì có thêm dòng bản có màu. Trả lời `ok` hoặc `bỏ 7` |
@@ -37,6 +37,7 @@ không qua wireframe.
 - **Dựng mới thì nói dữ liệu thật**: cột, trường, trạng thái rỗng, lỗi.
 - **Có wireframe thì gửi kèm**, ghi "ảnh này chỉ là wireframe".
 - **Muốn skill tự tìm lỗi thì đừng liệt kê lỗi.**
+- **Góp ý wireframe theo số khối**: mỗi khối có số nhỏ ở góc, nhắn "bỏ khối 3", "đưa khối 2 lên đầu".
 - **Skill lo hình, bạn lo logic**: gọi API, lưu dữ liệu, định dạng số là việc của bạn.
 - **Dữ liệu mẫu nên giống thật.** Ảnh hoạt hình làm giao diện nào cũng trông như bản nháp.
 
