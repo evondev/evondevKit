@@ -19,7 +19,7 @@ Skill này chỉ lo **màn hình trong app** — dashboard, danh sách, bảng, 
 | Token viền | 2 | một cho đường tóc, tối đa một bậc đậm hơn. Cộng `--border-focus`. Xem `M16` |
 | Tầng lồng khối | 2 | |
 | Độ dài dòng chữ | 75 ký tự | |
-| Dạng nút | 5 | `outline` (mặc định; icon trái khi glyph gọi đúng hành động), `primary` nền nhấn, `secondary` nền xám, `ghost`, và nút nguy hiểm nền `rose` mờ (`I4`). Cộng nút chỉ-icon. Xem `I1`, `components/button.md` |
+| Dạng nút | 4 | `outline` (mặc định; icon trái khi glyph gọi đúng hành động), `primary` nền nhấn, `secondary` nền xám, `ghost`. Nút nguy hiểm là `ghost` phủ nền `rose` mờ (`I4`), không phải dạng thứ năm. Cộng nút chỉ-icon. Xem `I1`, `components/button.md` |
 | Bậc spacing | thang 4/8/12/16/20/24/32/40 cho khoảng cách giữa các khối | Bên trong control (nút, badge, danh sách dày) được dùng nửa bậc 2/6/10 (`py-0.5`, `gap-1.5`, `py-2.5`, `space-y-0.5`). Ngoài hai thang này thì không |
 
 ---
@@ -80,7 +80,7 @@ và ô điều khiển nhỏ.
 
 ## Thang cỡ chữ
 
-Tám tên, và tám tên đó là **hết**. Không inline pixel ngoài thang (`T7`).
+Bảy tên, và bảy tên đó là **hết**. Không inline pixel ngoài thang (`T7`).
 
 | Token | Dùng cho |
 | --- | --- |
@@ -88,18 +88,23 @@ Tám tên, và tám tên đó là **hết**. Không inline pixel ngoài thang (`
 | `sm` | **mặc định của app** (`T6`): chữ nội dung, dòng danh sách, mô tả |
 | `base` | tên thẻ, tiêu đề card |
 | `sm` + `font-medium` | nút (`button.md`). Tailwind không có `text-md` |
-| `lg` | tiêu đề khối (nhóm nhiều card), **tiêu đề trang chi tiết** |
+| `lg` | tiêu đề khối (nhóm nhiều card); tên bản ghi ở đầu trang chi tiết của app quản lý (khách hàng, đơn, dự án) |
 | `xl` | **tên của một trang**, ở mọi khổ màn |
-| `2xl` | chỉ cho hero của trang trình diễn, ở màn hẹp |
+| `2xl` | hero của trang trình diễn ở màn hẹp; con số trong card số liệu từ `sm` (`sm:text-2xl`) |
 | `3xl` | hero từ `sm`; giá trong bảng giá. Tên trang bảng giá đứng riêng là `text-2xl sm:text-3xl`, không nhỏ hơn giá (`layouts/pricing.md`) |
 
 Thứ bậc bắt buộc: **tên trang (`xl`) > tiêu đề khối (`lg`) > tên thẻ (`base`)**,
 mỗi bậc cách nhau đúng một nấc ở **mọi** breakpoint (luật `T8`).
 
+Tiêu đề trang chi tiết của nội dung lặp lại (bài viết, khoá học, sản phẩm) lấy **đúng cỡ
+nó có ở danh sách**, không nhảy lên một bậc (`T9`). Bản ghi của app quản lý (khách hàng, đơn,
+dự án) không thuộc `T9`: ở danh sách nó là một dòng bảng `text-sm`, lên trang chi tiết là tên
+đầu trang `lg`.
+
 ⚠️ Hai bẫy đã dính ở dự án thật:
 
 - `md` và `lg` lỡ cùng một giá trị, nên "8 size chuẩn" thực ra chỉ có **7**. Kiểm thang của dự án trước khi tin vào tên token.
-- Tên trang từng là `2xl` ở desktop, chủ dự án chốt hạ về `xl` ngày 16/09/2026 vì đọc ra **quá to so với nội dung bên dưới**. `2xl` chỉ còn cho hero.
+- Tên trang từng là `2xl` ở desktop, chủ dự án chốt hạ về `xl` ngày 16/09/2026 vì đọc ra **quá to so với nội dung bên dưới**. `2xl` chỉ còn cho hero và con số card số liệu.
 
 ---
 

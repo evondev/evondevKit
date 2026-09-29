@@ -177,9 +177,10 @@ thuộc.
 
 `ring-1`, `ring-2`, `ring-inset` cùng ghi vào **một** lớp bóng (`--tw-ring-shadow`). Skill
 không vẽ vòng focus (`I13`) nên thường không đụng nhau. Dự án trả vòng focus lại (`I14`) thì
-viền trạng thái (đang chọn, đang bật) vẽ bằng `inset-ring-*` (lớp bóng riêng của v4), `border`
-hay `outline`, không `ring-*`: Tab tới là vòng focus **thay** viền chọn, không cộng vào (đã
-dính 26/09/2026: chip mức ưu tiên `ring-1 ring-inset`, Tab tới chip đang chọn là mất viền chọn).
+viền trạng thái (đang chọn, đang bật) vẽ bằng `inset-ring-*` (lớp bóng riêng của v4) hoặc
+`border`, không `ring-*`; `ring-*` để dành cho vòng focus của `I14`. Viền chọn bằng `ring-*` thì
+Tab tới là vòng focus **thay** viền chọn, không cộng vào (đã dính 26/09/2026: chip mức ưu tiên
+`ring-1 ring-inset`, Tab tới chip đang chọn là mất viền chọn).
 
 ## W9. Dự án không nạp preflight thì control nào cũng giữ kiểu của trình duyệt ⚑
 

@@ -12,281 +12,285 @@
       rel="stylesheet"
     />
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind v4 bản chạy trong trình duyệt: cùng cú pháp với skill (outline-hidden, @theme inline). -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <style>
-      /* ===== KHỐI ĐỔI THƯƠNG HIỆU. Ngoài khối này không có mã màu nào khác. ===== */
+      /* ===== KHỐI ĐỔI THƯƠNG HIỆU, chép từ references/tokens.css (nền sáng).
+         Ngoài khối này không có mã màu nào khác. ===== */
       :root {
         /* ===== FONT, KHAI MỘT LẦN, DÙNG CHUNG =====
            Một font cho cả app. Phân vai bằng weight:
            heading 600, body 400, nhãn phụ 500 (T2). */
-        --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+        --app-font: "Inter", ui-sans-serif, system-ui, sans-serif;
         /* ========================================== */
 
         /* ===== MÀU NHẤN, NỀN SÁNG ===== */
         --primary: #181818;          /* mặc định gần đen. Màu riêng thì thay vào đây */
-        --primary-foreground: #ffffff;
         --primary-hover: #2e2e2e;    /* nhạt hơn --primary một bậc */
+        --primary-foreground: #ffffff;
         /* ============================== */
 
         --background: #f4f4f6;   /* nền trang, xám nhạt, không bao giờ trắng */
         --surface: #ffffff;      /* nền card, input, header */
         --foreground: #2c2c2c;   /* chữ chính */
         --muted: #707070;        /* chữ phụ, label, placeholder, icon phụ. 4.95:1 */
-        /* MỘT token cho mọi đường tóc: viền card, viền ô nhập, đường chia. */
+        /* Hai token viền, chia theo vai (M14). --border: đường tóc trang trí (viền card,
+           đường chia). --border-strong: viền ô nhập, nút outline, đường kẻ khung app
+           (dưới header), viền card khi hover. */
         --border: #f7f7f8;
-        --border-strong: #eaeaea;   /* đậm hơn đúng một bậc, dùng lúc hover */
+        --border-strong: #eaeaea;
 
-        --background-hover: #e7e7ea;
+        --secondary: #e7e8ec;        /* nút phụ, mục đang chọn; luôn chìm hơn --surface */
+        --secondary-hover: #dbdce2;
+        --background-hover: #e7e7ea; /* ô trạng thái nhỏ trong hàng có hover (M18) */
+        --surface-hover: #f8f8fa;    /* hover dòng tràn hết bề ngang khung trắng (I10) */
+        --button-hover: #f1f1f3;     /* hover nút viền: chỉ đổi nền, viền giữ nguyên */
+
         --ring-focus: rgba(24, 24, 24, 0.1);
         --border-focus: var(--primary);
-
-        --overdue: #b45309;      /* amber-700, chỉ dùng để báo quá hạn (list-row.md) */
-        --done: #059669;         /* chỉ dùng để báo đã xong */
       }
       /* ===== HẾT KHỐI ĐỔI THƯƠNG HIỆU ===== */
 
-      body {
-        font-family: var(--font-sans);
-      }
+      /* ===== THANH CUỘN TỰ ẨN (I18), chép từ tokens.css. Board dựa vào khối này:
+         đứng yên không thấy, rê vào vùng cuộn thì hiện 4px, người dùng chuột vẫn có chỗ kéo ngang. */
+      * { --scrollbar-thumb: transparent; }
+      *:hover { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 16%, transparent); }
+      .is-scrolling { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 28%, transparent); }
+      ::-webkit-scrollbar { width: 4px; height: 4px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 9999px; }
+      ::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--foreground) 40%, transparent); }
 
-      /* Ẩn hẳn scrollbar nhưng vẫn cuộn được. */
-      .scrollbar-clean {
-        scrollbar-width: none;
+      @supports not selector(::-webkit-scrollbar) {
+        * { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+        *:hover { scrollbar-color: color-mix(in srgb, var(--foreground) 18%, transparent) transparent; }
+        .is-scrolling { scrollbar-color: color-mix(in srgb, var(--foreground) 28%, transparent) transparent; }
       }
-      .scrollbar-clean::-webkit-scrollbar {
-        display: none;
-      }
+      /* ===================================================== */
     </style>
 
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: "var(--primary)",
-              "primary-hover": "var(--primary-hover)",
-              "primary-foreground": "var(--primary-foreground)",
-              background: "var(--background)",
-              "background-hover": "var(--background-hover)",
-              surface: "var(--surface)",
-              foreground: "var(--foreground)",
-              muted: "var(--muted)",
-              border: "var(--border)",
-              "border-strong": "var(--border-strong)",
-              overdue: "var(--overdue)",
-              done: "var(--done)",
-            },
-            ringColor: {
-              focus: "var(--ring-focus)",
-            },
-            borderColor: {
-              focus: "var(--border-focus)",
-            },
-          },
-        },
-      };
-    </script>
+    <style type="text/tailwindcss">
+      /* Map token sang class, như khối @theme inline của tokens.css. */
+      @theme inline {
+        --font-sans: var(--app-font);
+
+        --color-primary: var(--primary);
+        --color-primary-hover: var(--primary-hover);
+        --color-primary-foreground: var(--primary-foreground);
+
+        --color-background: var(--background);
+        --color-background-hover: var(--background-hover);
+        --color-surface: var(--surface);
+        --color-surface-hover: var(--surface-hover);
+        --color-foreground: var(--foreground);
+        --color-muted: var(--muted);
+        --color-border: var(--border);
+        --color-border-strong: var(--border-strong);
+        --color-secondary: var(--secondary);
+        --color-secondary-hover: var(--secondary-hover);
+        --color-button-hover: var(--button-hover);
+
+        --border-color-focus: var(--border-focus);
+        --ring-color-focus: var(--ring-focus);
+      }
+    </style>
   </head>
 
-  <body class="bg-background text-foreground antialiased">
-    <!-- Khung ngoài chỉ padding dọc: board cuộn ngang phải chạm hai mép màn, nên lề ngang nằm ở
-         từng khối (header, hàng lọc mx-3 sm:mx-5; hàng cột px-3 sm:px-5), không kéo board ra bằng -mx (N11). -->
-    <div class="flex min-h-screen w-full flex-col py-3 sm:py-5">
+  <body class="bg-background font-sans text-foreground antialiased">
+    <div class="flex min-h-screen w-full flex-col">
+      <!-- Thanh header theo layouts/app.md: h-16, nền trắng --surface, đường kẻ dưới --border-strong.
+           Trang không có đầu trang riêng nên tên trên thanh chính là <h1>, font-semibold (T2).
+           px-4 sm:px-6: tên trang thẳng mép icon đầu cột bên dưới (hàng cột px-3 + đầu cột px-1). -->
       <header
-        class="mx-3 mb-3 flex items-center justify-between gap-3 rounded-full bg-surface p-2 pl-4 pr-2 border border-border sm:mx-5 sm:pl-5"
+        class="flex h-16 shrink-0 items-center justify-between gap-3 border-b border-border-strong bg-surface px-4 sm:px-6"
       >
-        <div class="min-w-0">
-          <h1 class="truncate text-base font-semibold text-foreground">Bảng công việc</h1>
-        </div>
+        <h1 class="min-w-0 truncate text-base font-semibold text-foreground">Bảng công việc</h1>
 
+        <!-- Nút đặc duy nhất của thanh: h-9 rounded-lg, icon plus (app.md, "Nhóm nút bên phải thanh header"). -->
         <button
           type="button"
-          class="inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:bg-primary-hover"
+          class="inline-flex h-9 shrink-0 cursor-pointer items-center gap-2 rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground outline-hidden transition-colors hover:bg-primary-hover"
         >
+          <i data-lucide="plus" class="size-4 shrink-0" aria-hidden="true"></i>
           Thêm việc
         </button>
       </header>
 
-      <!-- Hàng lọc lề ít hơn 4px (mx-2 sm:mx-4) để hàng chip px-1 thẳng cột;
-           ô tìm bù lại mx-1 (small-controls.md, không -mx-1: N11). -->
-      <div class="mx-2 mb-4 flex flex-col gap-3 sm:mx-4 sm:flex-row sm:items-center sm:justify-between">
-        <div class="scrollbar-clean overflow-x-auto py-0.5">
-          <div class="flex items-center gap-2 px-1">
-            <button
-              type="button"
-              class="inline-flex h-9 shrink-0 cursor-pointer items-center rounded-full bg-primary px-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
-            >
+      <!-- Vùng nội dung chỉ padding dọc: board cuộn ngang phải chạm hai mép màn, nên lề ngang nằm ở
+           từng khối (hàng lọc mx-3 sm:mx-5; hàng cột px-3 sm:px-5), không kéo board ra bằng -mx (N11). -->
+      <div class="flex flex-1 flex-col py-3 sm:py-5">
+        <div class="mx-3 mb-4 flex flex-col gap-3 sm:mx-5 sm:flex-row sm:items-center sm:justify-between">
+          <!-- Chip lọc chính theo components/small-controls.md, có aria-pressed. Ba chip vừa 375px nên
+               hàng không cuộn, không scrollbar-clean. Thêm chip tới mức tràn thì theo R6 và R10
+               (responsive.md): khung cuộn scrollbar-clean + mép mờ + nút mũi tên ở máy có chuột. -->
+          <div class="flex items-center gap-2">
+            <button type="button" aria-pressed="true" class="inline-flex h-9 shrink-0 cursor-pointer items-center rounded-full bg-primary px-3.5 text-sm font-medium text-primary-foreground outline-hidden transition-colors">
               Tất cả
             </button>
-            <button
-              type="button"
-              class="inline-flex h-9 shrink-0 cursor-pointer items-center rounded-full bg-surface px-3.5 text-sm font-medium text-muted transition-colors hover:bg-background-hover hover:text-foreground"
-            >
+            <button type="button" aria-pressed="false" class="inline-flex h-9 shrink-0 cursor-pointer items-center rounded-full bg-foreground/5 px-3.5 text-sm font-medium text-foreground/70 outline-hidden transition-colors hover:bg-foreground/10 hover:text-foreground">
               Của tôi
             </button>
-            <button
-              type="button"
-              class="inline-flex h-9 shrink-0 cursor-pointer items-center rounded-full bg-surface px-3.5 text-sm font-medium text-muted transition-colors hover:bg-background-hover hover:text-foreground"
-            >
+            <button type="button" aria-pressed="false" class="inline-flex h-9 shrink-0 cursor-pointer items-center rounded-full bg-foreground/5 px-3.5 text-sm font-medium text-foreground/70 outline-hidden transition-colors hover:bg-foreground/10 hover:text-foreground">
               Quá hạn
             </button>
           </div>
+
+          <!-- Ô tìm theo components/input.md: h-11 md:h-10, text-base md:text-sm (R8). -->
+          <label class="relative block shrink-0 sm:w-64">
+            <span class="sr-only">Tìm việc</span>
+            <input
+              type="search"
+              placeholder="Tìm việc"
+              class="h-11 w-full rounded-xl border border-border-strong bg-surface px-4 text-base text-foreground outline-hidden transition-colors placeholder:text-muted focus:border-focus focus:ring-2 focus:ring-focus md:h-10 md:text-sm"
+            />
+          </label>
         </div>
 
-        <label class="relative mx-1 block shrink-0 sm:w-64">
-          <span class="sr-only">Tìm việc</span>
-          <input
-            type="search"
-            placeholder="Tìm việc"
-            class="h-10 w-full rounded-xl border border-border-strong bg-surface px-4 text-base text-foreground outline-none transition-colors placeholder:text-muted focus:border-focus focus:ring-2 focus:ring-focus sm:text-sm"
-          />
-        </label>
-      </div>
+        <!-- Board không scrollbar-clean: thanh cuộn tự ẩn (I18), người dùng chuột vẫn có chỗ kéo ngang. -->
+        <div class="flex-1 overflow-x-auto">
+          <!-- w-max giữ lề phải khi cuộn, min-w-full cho cột giãn khi còn chỗ (layouts/app.md). -->
+          <div class="flex w-max min-w-full items-start gap-4 px-3 pb-2 sm:px-5">
+            <section class="w-[248px] min-w-0 max-w-[320px] shrink-0 grow">
+              <header class="mb-3 flex items-center gap-2 px-1">
+                <i data-lucide="circle" class="size-4 shrink-0 text-zinc-500"></i>
+                <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Cần làm</h2>
+                <span class="text-xs font-medium text-muted">4</span>
+              </header>
 
-      <!-- Board không scrollbar-clean: thanh cuộn tự ẩn (I18), người dùng chuột vẫn có chỗ kéo ngang. -->
-      <div class="flex-1 overflow-x-auto">
-        <!-- w-max giữ lề phải khi cuộn, min-w-full cho cột giãn khi còn chỗ (layouts/app.md). -->
-        <div class="flex w-max min-w-full items-start gap-4 px-3 pb-2 sm:px-5">
-          <section class="w-[248px] min-w-0 max-w-[320px] shrink-0 grow">
-            <header class="mb-3 flex items-center gap-2 px-1">
-              <i data-lucide="circle" class="size-4 shrink-0 text-zinc-500"></i>
-              <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Cần làm</h2>
-              <span class="text-xs font-medium text-muted">4</span>
-            </header>
+              <ul class="flex flex-col gap-3">
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Viết lại nội dung trang giới thiệu theo bản brief mới
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Website · 22/08</p>
+                </li>
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Chuẩn bị số liệu doanh thu tháng 7 cho buổi họp
+                  </p>
+                  <p class="mt-2 text-xs"><span class="text-muted">Báo cáo · </span><span class="font-medium text-amber-700">Quá hạn 2 ngày</span></p>
+                </li>
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Dọn danh sách khách hàng trùng trong CRM
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Vận hành · 26/08</p>
+                </li>
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Đặt lịch phỏng vấn hai ứng viên vòng cuối
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Tuyển dụng · 29/08</p>
+                </li>
+              </ul>
+            </section>
 
-            <ul class="flex flex-col gap-3">
-              <li
-                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
-              >
-                <p class="line-clamp-2 text-sm font-medium text-foreground">
-                  Viết lại nội dung trang giới thiệu theo bản brief mới
-                </p>
-                <p class="mt-2 text-xs text-muted">Website · 22/08</p>
-              </li>
-              <li
-                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
-              >
-                <p class="line-clamp-2 text-sm font-medium text-foreground">
-                  Chuẩn bị số liệu doanh thu tháng 7 cho buổi họp
-                </p>
-                <p class="mt-2 text-xs"><span class="text-muted">Báo cáo · </span><span class="font-medium text-overdue">Quá hạn 2 ngày</span></p>
-              </li>
-              <li
-                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
-              >
-                <p class="line-clamp-2 text-sm font-medium text-foreground">
-                  Dọn danh sách khách hàng trùng trong CRM
-                </p>
-                <p class="mt-2 text-xs text-muted">Vận hành · 26/08</p>
-              </li>
-              <li
-                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
-              >
-                <p class="line-clamp-2 text-sm font-medium text-foreground">
-                  Đặt lịch phỏng vấn hai ứng viên vòng cuối
-                </p>
-                <p class="mt-2 text-xs text-muted">Tuyển dụng · 29/08</p>
-              </li>
-            </ul>
-          </section>
+            <section class="w-[248px] min-w-0 max-w-[320px] shrink-0 grow">
+              <header class="mb-3 flex items-center gap-2 px-1">
+                <i data-lucide="circle-dot" class="size-4 shrink-0 text-zinc-500"></i>
+                <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Đang làm</h2>
+                <span class="text-xs font-medium text-muted">3</span>
+              </header>
 
-          <section class="w-[248px] min-w-0 max-w-[320px] shrink-0 grow">
-            <header class="mb-3 flex items-center gap-2 px-1">
-              <i data-lucide="circle-dot" class="size-4 shrink-0 text-zinc-500"></i>
-              <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Đang làm</h2>
-              <span class="text-xs font-medium text-muted">3</span>
-            </header>
+              <ul class="flex flex-col gap-3">
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Dựng màn hình thanh toán cho gói năm
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Sản phẩm · 21/08</p>
+                </li>
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Chuyển kho ảnh sản phẩm sang CDN mới
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Hạ tầng · 25/08</p>
+                </li>
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Trả lời 18 phản hồi còn tồn trong hộp thư hỗ trợ
+                  </p>
+                  <p class="mt-2 text-xs"><span class="text-muted">Hỗ trợ · </span><span class="font-medium text-foreground">Hôm nay</span></p>
+                </li>
+              </ul>
+            </section>
 
-            <ul class="flex flex-col gap-3">
-              <li
-                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
-              >
-                <p class="line-clamp-2 text-sm font-medium text-foreground">
-                  Dựng màn hình thanh toán cho gói năm
-                </p>
-                <p class="mt-2 text-xs text-muted">Sản phẩm · 21/08</p>
-              </li>
-              <li
-                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
-              >
-                <p class="line-clamp-2 text-sm font-medium text-foreground">
-                  Chuyển kho ảnh sản phẩm sang CDN mới
-                </p>
-                <p class="mt-2 text-xs text-muted">Hạ tầng · 25/08</p>
-              </li>
-              <li
-                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
-              >
-                <p class="line-clamp-2 text-sm font-medium text-foreground">
-                  Trả lời 18 phản hồi còn tồn trong hộp thư hỗ trợ
-                </p>
-                <p class="mt-2 text-xs"><span class="text-muted">Hỗ trợ · </span><span class="font-medium text-foreground">Hôm nay</span></p>
-              </li>
-            </ul>
-          </section>
+            <section class="w-[248px] min-w-0 max-w-[320px] shrink-0 grow">
+              <header class="mb-3 flex items-center gap-2 px-1">
+                <i data-lucide="circle-ellipsis" class="size-4 shrink-0 text-amber-600"></i>
+                <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Chờ duyệt</h2>
+                <span class="text-xs font-medium text-muted">2</span>
+              </header>
 
-          <section class="w-[248px] min-w-0 max-w-[320px] shrink-0 grow">
-            <header class="mb-3 flex items-center gap-2 px-1">
-              <i data-lucide="circle-ellipsis" class="size-4 shrink-0 text-amber-600"></i>
-              <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Chờ duyệt</h2>
-              <span class="text-xs font-medium text-muted">2</span>
-            </header>
+              <ul class="flex flex-col gap-3">
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Bảng giá mới cho gói doanh nghiệp
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Kinh doanh · gửi 19/08</p>
+                </li>
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Hợp đồng gia hạn với nhà cung cấp máy chủ
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Pháp lý · gửi 20/08</p>
+                </li>
+              </ul>
+            </section>
 
-            <ul class="flex flex-col gap-3">
-              <li
-                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
-              >
-                <p class="line-clamp-2 text-sm font-medium text-foreground">
-                  Bảng giá mới cho gói doanh nghiệp
-                </p>
-                <p class="mt-2 text-xs text-muted">Kinh doanh · gửi 19/08</p>
-              </li>
-              <li
-                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
-              >
-                <p class="line-clamp-2 text-sm font-medium text-foreground">
-                  Hợp đồng gia hạn với nhà cung cấp máy chủ
-                </p>
-                <p class="mt-2 text-xs text-muted">Pháp lý · gửi 20/08</p>
-              </li>
-            </ul>
-          </section>
+            <section class="w-[248px] min-w-0 max-w-[320px] shrink-0 grow">
+              <header class="mb-3 flex items-center gap-2 px-1">
+                <i data-lucide="circle-check" class="size-4 shrink-0 text-emerald-600"></i>
+                <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Xong</h2>
+                <span class="text-xs font-medium text-muted">3</span>
+              </header>
 
-          <section class="w-[248px] min-w-0 max-w-[320px] shrink-0 grow">
-            <header class="mb-3 flex items-center gap-2 px-1">
-              <i data-lucide="circle-check" class="size-4 shrink-0 text-done"></i>
-              <h2 class="min-w-0 truncate text-base font-semibold text-foreground">Xong</h2>
-              <span class="text-xs font-medium text-muted">3</span>
-            </header>
-
-            <ul class="flex flex-col gap-3">
-              <li
-                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
-              >
-                <p class="line-clamp-2 text-sm font-medium text-foreground">
-                  Chốt bản thiết kế trang chủ với khách
-                </p>
-                <p class="mt-2 text-xs text-muted">Website · xong 18/08</p>
-              </li>
-              <li
-                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
-              >
-                <p class="line-clamp-2 text-sm font-medium text-foreground">
-                  Sao lưu cơ sở dữ liệu quý 2
-                </p>
-                <p class="mt-2 text-xs text-muted">Hạ tầng · xong 17/08</p>
-              </li>
-              <li
-                class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
-              >
-                <p class="line-clamp-2 text-sm font-medium text-foreground">
-                  Gửi hoá đơn tháng 7 cho 12 khách hàng
-                </p>
-                <p class="mt-2 text-xs text-muted">Kế toán · xong 15/08</p>
-              </li>
-            </ul>
-          </section>
+              <ul class="flex flex-col gap-3">
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Chốt bản thiết kế trang chủ với khách
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Website · xong 18/08</p>
+                </li>
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Sao lưu cơ sở dữ liệu quý 2
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Hạ tầng · xong 17/08</p>
+                </li>
+                <li
+                  class="cursor-grab rounded-2xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                >
+                  <p class="line-clamp-2 text-sm font-medium text-foreground">
+                    Gửi hoá đơn tháng 7 cho 12 khách hàng
+                  </p>
+                  <p class="mt-2 text-xs text-muted">Kế toán · xong 15/08</p>
+                </li>
+              </ul>
+            </section>
+          </div>
         </div>
       </div>
     </div>

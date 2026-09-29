@@ -1,13 +1,15 @@
 # Soi UI đang có — luật V
 
-Mở file này khi đề nói rõ một trong hai việc (bảng câu 1 của `SKILL.md`): muốn biết **UI
+Mở file này khi đề nói rõ một trong ba việc (bảng câu 1 của `SKILL.md`): muốn biết **UI
 đang có trông ổn chưa** ("xem giúp", "review", "chỗ nào chưa ổn", "sao trông kỳ", "nhìn rối",
-gửi ảnh hay link app của chính họ nhờ xem), hoặc muốn **làm lại mà giữ brand / giữ giao diện**.
+gửi ảnh hay link app của chính họ nhờ xem), muốn **làm lại mà giữ brand / giữ giao diện**,
+hoặc muốn **dựng lại theo gu skill, bỏ style cũ**.
 Đề chỉ nói "làm lại cho đẹp", "dựng lại theo skill" thì là nhánh `U` mặc định, không phải đây.
 
 Khác nhánh `L` (`refactor.md`): `L` dọn code và **giữ nguyên hình**. `V` soi hình,
 **đề xuất đổi hình**, người dùng chọn dòng rồi mới sửa. Đề vừa muốn dọn code vừa muốn
-đẹp hơn thì soi theo `V` trước, dọn theo `L` sau.
+đẹp hơn thì đi `U` trước, dọn theo `L` sau; chỉ khi đề nói soi hay giữ brand thì `V` thay
+chỗ `U` (`SKILL.md` câu 1).
 
 Khác nhánh `U` (`design-process.md`): cả ba chế độ của `V` giữ **khung trang**, chỉ sửa và
 làm gọn. Người dùng muốn nghĩ lại cái gì đứng đầu, lọc nằm đâu, có chế độ xem nào ("vẫn
@@ -26,7 +28,7 @@ Nhận chế độ từ đề, không hỏi, rồi nói một dòng ở phần m
 | Dòng Gu | chỉ nêu, mặc định không chọn | **chọn sẵn**, người dùng bỏ dòng nào thì bỏ | chọn sẵn |
 | Dòng Cấu trúc (`V1b`) | không có | có: sắp lại thì chọn sẵn, bỏ bớt thông tin thì không | như cột giữa |
 | Dòng Gọn (`V1c`) | không có | **có, chọn sẵn**: mỗi khối chính một dòng, làm gọn theo gu skill, giữ màu | như cột giữa |
-| Dòng Có màu (`V1d`) | không có | có ở trang lướt để chọn, **không chọn sẵn**: một dòng cho cả route, màu từ màu nhấn của dự án | như cột giữa |
+| Dòng Có màu (`V1d`) | không có | có ở trang lướt để chọn hoặc dashboard (công thức B của `P12`), **không chọn sẵn**: một dòng cho cả route, màu từ màu nhấn của dự án | như cột giữa |
 | Dáng: bóng, viền, nhịp, cỡ chữ, nhãn, lớp phủ trên ảnh | giữ | **theo gu skill** | theo gu skill |
 | Màu theo vai, logo, font | giữ | **giữ** | chỉ giữ logo và màu nhấn chính |
 | Component | không viết lại, sửa đúng chỗ lỗi | được thay control gốc và khối tự chế bằng mẫu của skill (bảng dưới) | như cột giữa |
@@ -94,9 +96,9 @@ họ, chỉ sửa nó cho hết lỗi):
 ## Bốn mặc định
 
 1. **Soi thì không hỏi, sửa thì hỏi.** Chụp, đo, lập bảng luôn. Nhưng **không đụng
-   file nào của dự án** cho tới khi người dùng chọn dòng. Đây là ngoại lệ duy nhất
-   của "mặc định hơn hỏi" ở đầu `SKILL.md`: dựng màn mới thì làm luôn, còn sửa sản
-   phẩm đang chạy thì hỏi.
+   file nào của dự án** cho tới khi người dùng chọn dòng. Ngoài hai cổng của nhánh `U`
+   (duyệt brief, chọn wireframe), đây là chỗ duy nhất hỏi trước khi sửa: sửa sản phẩm
+   đang chạy theo bảng soi thì hỏi.
 2. **Đọc hệ của dự án trước khi chấm.** Chạy audit câu 2 và tầng 3 trong `SKILL.md`,
    đọc `tailwind.config`, `globals.css` / `index.css`, file token, component dùng
    chung. Chấm theo hệ đó, **không theo `tokens.css` của skill**.
@@ -175,7 +177,7 @@ sang hạng theo bảng này. Những mục xếp Hỏng thì probe đã tự go
 | Chỗ bấm dưới 32px | Mục có ghi "(dưới 24px)" là Hỏng, còn lại (24 tới 31px) là Gu |
 | Hàng trong header / nav rớt dòng | Hỏng khi đè hay đẩy lệch khối khác, không thì Lệch hệ (so với cách hàng đó ở khổ khác). Xem ảnh mới quyết |
 | Hàng nút trên header không đồng cỡ | Lệch hệ. Chế độ dựng lại thì vào dòng Gọn của header (`V1c`), theo "Nhóm nút bên phải thanh header" trong `layouts/app.md` |
-| Hàng control lệch trên dưới, placeholder dài hơn ô, khối trông như ô nhập mà chữ xuống dòng, phân trang chỉ có nút chữ, vạch chia trong menu đậm hơn viền khung, khung / vạch lớp nổi đậm hơn token `--border`, vạch trái bị bo góc khung cắt, khung hộp thoại mờ lồng trong lớp nền mờ, cao gần bằng mà không bằng, đường ngăn hai cột kề nhau lệch, chữ cùng cột lệch mép, dấu ngăn cách không đều, control còn kiểu mặc định của trình duyệt, khung khai viền mà viền không thấy, khối con biến mất lúc rê, lớp nổi có dải trống | Lệch hệ |
+| Hàng control lệch trên dưới, placeholder dài hơn ô, khối trông như ô nhập mà chữ xuống dòng, phân trang chỉ có nút chữ, thanh header trong suốt trên nền xám, vạch chia trong menu đậm hơn viền khung, khung / vạch lớp nổi đậm hơn token `--border`, vạch trái bị bo góc khung cắt, khung hộp thoại mờ lồng trong lớp nền mờ, cao gần bằng mà không bằng, đường ngăn hai cột kề nhau lệch, chữ cùng cột lệch mép, dấu ngăn cách không đều, control còn kiểu mặc định của trình duyệt, khung khai viền mà viền không thấy, khối con biến mất lúc rê, lớp nổi có dải trống | Lệch hệ |
 | Nền rê trùng màu viền của chính nút, viền đổi màu lúc rê, rê khác hình mục đang chọn, bấm xong còn dấu thừa, Tab tới còn vẽ vòng focus (`I13`: chế độ soi ghi một dòng Gu, hai chế độ dựng lại thì gỡ), bảng cuộn ngang mất cột, nhóm lựa chọn xếp lưới, số tiền ngắt dòng, số không thẳng hàng, nhãn số lòi ra ngoài vùng vẽ, dấu câu rơi xuống đầu dòng, chữ dưới 12px (gộp một dòng, ghi cỡ nhỏ nhất và chỗ; sửa lên ít nhất 12px), cột dính mà cuộn riêng, nội dung trôi giữa màn rộng (`layouts/app.md`), mục lặp dày chữ | Gu |
 | Select gốc đã tô trên desktop | Chế độ soi: không vào bảng. Hai chế độ dựng lại: Lệch hệ, thay bằng Select dựng (từ 8 mục có ô tìm) |
 | Lỗi console | Không vào bảng. Ghi một dòng dưới bảng |
@@ -220,7 +222,7 @@ sai loại. Probe không đo được mấy thứ này, phải soi ảnh và đ�
 
 ## V1c. Dòng Gọn, chỉ ở hai chế độ dựng lại ⚑
 
-Người dùng nói "dựng lại cho đẹp" là muốn **bản sau trông khác hẳn bản trước**, không phải
+Người dùng nói "dựng lại giữ brand" là muốn **bản sau trông khác hẳn bản trước**, không phải
 bản cũ vá vài lỗi. Nên mỗi khối chính (card lặp trong lưới, khối lọc, header, panel bên,
 khối quảng bá) có **một dòng Gọn**: đặt khối đó cạnh mẫu gần nhất của skill (`card.md`,
 `list-row.md`, `input.md`, `small-controls.md`, `layouts/app.md`…) rồi ghi mọi chỗ khác,

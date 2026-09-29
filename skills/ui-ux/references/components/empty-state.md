@@ -45,7 +45,7 @@ Ngoại lệ của "không nút": danh sách rỗng **vì người dùng đang t
 <p className="py-6 text-center text-sm text-muted">
   Không có khách hàng nào khớp {quotedQuery}. Thử từ khoá khác.{" "}
   <Button variant="ghost" onClick={clearFilters}
-    className="inline h-auto p-0 align-baseline font-medium text-foreground underline-offset-4 hover:bg-transparent hover:underline">
+    className="inline h-auto min-h-0 p-0 align-baseline font-medium text-foreground underline-offset-4 hover:bg-transparent hover:underline">
     Xoá tìm kiếm
   </Button>
 </p>

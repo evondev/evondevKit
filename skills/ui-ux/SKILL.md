@@ -1,6 +1,6 @@
 ---
 name: ui-ux
-description: Gu UI/UX cho hệ thống app — dashboard, danh sách, bảng, form, cài đặt, modal, trang người dùng cuối lướt để chọn. Mặc định làm như một designer - brief, việc chính của từng màn, 2–3 wireframe có nội dung thật (kèm bản gọn chữ, bản có màu), người dùng chọn rồi mới dựng. Nhánh khác chỉ khi đề nói rõ - soi UI đang có rồi đề xuất sửa ("xem giúp", "review"), dựng lại giữ brand ("giữ brand", "keep the brand"), refactor giữ nguyên hình, dựng luôn không wireframe ("dựng luôn", "just build it"), sửa một component nhỏ. Bám thư viện component và token của dự án. Mặc định flat, làm được glassmorphism, gradient, nổi, nền tối, có màu khi được chọn. Dùng khi dựng, làm lại hay sửa bất kỳ giao diện app nào, tiếng Việt hay tiếng Anh, khi refactor CSS, khi người dùng gửi ảnh hay link app nhờ xem, hoặc khi họ nhắc "làm UI cho đẹp", "dựng màn", "thiết kế", "làm lại UX", "như một designer", "xem giúp UI", "review UI", "nhìn rối", "build a page", "design this screen", "redesign", "make it look good", "ui-ux", "evon".
+description: Gu UI/UX cho hệ thống app — dashboard, danh sách, bảng, form, cài đặt, modal, trang người dùng cuối lướt để chọn. Mặc định làm như một designer - brief, việc chính của từng màn, 2–3 wireframe có nội dung thật (kèm bản gọn chữ, nút Màu Xám / Màu / Có màu), người dùng chọn rồi mới dựng. Nhánh khác chỉ khi đề nói rõ - soi UI đang có rồi đề xuất sửa ("xem giúp", "review"), dựng lại giữ brand ("giữ brand", "keep the brand"), dựng lại theo gu skill ("bỏ style cũ"), refactor giữ nguyên hình, dựng luôn không wireframe ("dựng luôn", "just build it"), sửa một component nhỏ. Bám thư viện component và token của dự án. Mặc định flat, làm được glassmorphism, gradient, nổi, nền tối, có màu khi được chọn. Dùng khi dựng, làm lại hay sửa bất kỳ giao diện app nào, tiếng Việt hay tiếng Anh, khi refactor CSS, khi người dùng gửi ảnh hay link app nhờ xem, hoặc khi họ nhắc "làm UI cho đẹp", "dựng màn", "thiết kế", "làm lại UX", "như một designer", "xem giúp UI", "review UI", "nhìn rối", "build a page", "design this screen", "redesign", "make it look good", "ui-ux", "evon".
 ---
 
 # UI/UX cho hệ thống dashboard
@@ -12,8 +12,8 @@ description: Gu UI/UX cho hệ thống app — dashboard, danh sách, bảng, fo
 > duy nhất được dừng hỏi. Ngoài hai cổng thì **không hỏi**: chỗ nào đề chưa rõ thì lấy mặc
 > định, **báo lúc giao** mình đã chọn gì.
 > Các nhánh khác chỉ khi đề nói rõ (câu 1): **soi UI đang có** (`references/review.md`) thì
-> soi luôn, **sửa thì hỏi**; dựng lại giữ brand; refactor; dựng luôn không wireframe; sửa
-> một component nhỏ.
+> soi luôn, **sửa thì hỏi**; dựng lại giữ brand; dựng lại theo gu skill; refactor; dựng luôn
+> không wireframe; sửa một component nhỏ.
 
 Skill này không dạy "thế nào là đẹp" bằng tính từ. Nó làm ba việc: **đi đúng thứ
 tự** trước khi dựng, **cấm** những thói quen làm giao diện lộ ngay ra là AI dựng,
@@ -39,20 +39,21 @@ trạng thái một ví dụ tĩnh** cạnh nhau, không dựng bản bấm đư
 các bước, và về người phải duyệt.
 
 Đọc đề theo thứ tự bảng, gặp dòng đầu tiên khớp thì dừng. Chủ dự án chốt 29/09/2026: **dòng
-cuối là mặc định**, bốn dòng trên chỉ khi đề nói rõ (tiếng Việt hay tiếng Anh).
+cuối là mặc định**, sáu dòng trên chỉ khi đề nói rõ (tiếng Việt hay tiếng Anh).
 
 | Đề nói | Đi đâu |
 | --- | --- |
 | **Muốn biết UI đang có chỗ nào chưa ổn** ("xem giúp", "review", "chỗ nào chưa ổn", "nhìn rối", "check this UI", "what's wrong with", gửi ảnh hay link app của họ nhờ xem) | Mở `references/review.md`, nhánh `V` **chế độ soi**: lập bảng trước/sau, người dùng chọn dòng rồi mới sửa. **Dừng mục 0 tại đây**, lúc giao theo `V5` chứ không theo `S15` ⚑ |
-| **Làm lại mà giữ brand / giữ giao diện** ("giữ brand", "giữ màu", "giữ giao diện hiện tại", "chỉ làm gọn", "keep the brand", "keep the current look") | `references/review.md`, **chế độ dựng lại giữ brand**: giữ khung trang, thay control gốc bằng component của skill, giữ vai màu. Có thêm "hoàn toàn theo gu skill", "bỏ style cũ" thì chế độ dựng lại theo gu skill. **Dừng mục 0 tại đây** ⚑ |
+| **Làm lại mà giữ brand / giữ giao diện** ("giữ brand", "giữ màu", "giữ giao diện hiện tại", "chỉ làm gọn", "keep the brand", "keep the current look") | `references/review.md`, **chế độ dựng lại giữ brand**: giữ khung trang, thay control gốc bằng component của skill, giữ vai màu. Đề nói bỏ style cũ thì không phải dòng này, xem dòng dựng lại theo gu skill. **Dừng mục 0 tại đây** ⚑ |
 | **Refactor / dọn code mà giữ nguyên hình** ("refactor", "chuyển sang Tailwind", "dọn CSS") | Mở `references/refactor.md`, nhánh `L`. **Dừng mục 0 tại đây** — nhánh đó có bộ mặc định riêng, bắt đầu bằng "đo trước khi kết luận" |
-| **Dựng luôn, không wireframe** ("dựng luôn", "không cần wireframe", "just build it", "skip the wireframe") | Nhánh `U` **không vẽ wireframe**: làm `U1`, `U2`, chọn phương án sẽ khuyên dùng trong đầu, rồi dựng thẳng theo nó (`design-process.md`, đầu file). Không hỏi. **Dừng mục 0 tại đây** |
+| **Dựng luôn, không wireframe** ("dựng luôn", "không cần wireframe", "just build it", "skip the wireframe") | Nhánh `U` **không vẽ wireframe**: làm `U1`, `U2`, chọn phương án sẽ khuyên dùng trong đầu, rồi dựng thẳng theo nó (`design-process.md`, đầu file). Không hỏi. Audit câu 2 vẫn chạy, ở `U1`. **Dừng mục 0 tại đây** |
 | **Việc nhỏ hơn một màn**: sửa một component, thêm một dropdown, sửa một lỗi, đổi một màu | Đi tiếp câu 2, dựng theo bố cục mặc định (câu 4), không hỏi |
-| **Mọi đề dựng hay làm lại một màn trở lên** ("dựng màn danh sách đơn hàng", "làm lại trang này cho đẹp", "dựng lại theo skill", "thiết kế từ đầu", "build a settings page", "redesign this screen"), sản phẩm mới hay màn đã có | **Mặc định.** Mở `references/design-process.md`, nhánh `U`: brief và việc chính của từng màn, rồi 2–3 wireframe, người dùng chọn rồi mới dựng. **Dừng mục 0 tại đây** ⚑ |
+| **Dựng lại theo gu skill, bỏ style cũ** ("hoàn toàn theo gu skill", "bỏ style cũ", "đổi sang gu của skill", "không cần giữ style cũ") | `references/review.md`, **chế độ dựng lại theo gu skill**: giữ khung trang, đổi cả dáng lẫn vai màu theo gu skill. **Dừng mục 0 tại đây** ⚑ |
+| **Mọi đề dựng hay làm lại một màn trở lên** ("dựng màn danh sách đơn hàng", "làm lại trang này cho đẹp", "dựng lại theo skill", "thiết kế từ đầu", "build a settings page", "redesign this screen"), sản phẩm mới hay màn đã có | **Mặc định.** Mở `references/design-process.md`, nhánh `U`: brief và việc chính của từng màn, rồi 2–3 wireframe, người dùng chọn rồi mới dựng. **Dừng mục 0 tại đây**, trừ audit câu 2: vẫn chạy ở `U1`, trước khi viết brief, cho cả dự án đã có UI ⚑ |
 
 Đề có ảnh wireframe của chính họ thì đó đã là bước wireframe: vào nhánh `U` từ `U4`, dựng
 theo ảnh (`S13`–`S15`). Đề vừa muốn dọn code vừa muốn đổi hình thì đi `U` trước, dọn theo
-`L` sau.
+`L` sau. Đề nói soi hay giữ brand thì `V` thay chỗ `U`, `L` vẫn sau.
 
 ### Câu 2 — Dự án đang dùng gì? (TỰ TÌM, ĐỪNG HỎI)
 
@@ -231,7 +232,7 @@ probe, bấm mở được; mỗi file layout vẫn chỉ nuôi một bố cục
 | Đăng nhập, đăng ký, quên mật khẩu, form nhiều trường, form nhiều bước (thanh các bước), trạng thái lỗi | `references/layouts/form.md` |
 | Modal, panel trượt, dropdown, command palette, panel thông báo, toast, **chuyển động mở đóng của mọi khối nổi** (cả select, date picker) | `references/layouts/overlay.md` |
 | Bảng giá, trang chọn gói | `references/layouts/pricing.md` |
-| **Nhiều hơn một màn trong cùng một đề** | `references/system.md` — chốt hợp đồng nguyên tố trước, rồi dựng cả bộ theo bố cục mặc định |
+| **Nhiều hơn một màn trong cùng một đề** | Vào nhánh `U` như mọi đề dựng; `references/system.md` — hợp đồng nguyên tố chốt ở `U4`, trước màn đầu tiên. Bố cục mặc định chỉ dùng thẳng ở lối dựng luôn hoặc việc nhỏ |
 
 **Có wireframe rồi thì bỏ qua câu 4**, đi thẳng xuống mục 1 và bám ảnh theo luật
 `S13`, `S14`, `S15`.
@@ -262,11 +263,13 @@ nhớ đăng nhập thì không vì cần backend. **Báo một dòng** về nh�
 giao — đừng biến nó thành một bảng câu hỏi.
 
 **S4. Không hỏi lại nội dung.** Người dùng đã liệt kê rõ màn hình có những gì
-thì giữ nguyên đúng danh sách đó, và bày ra theo bố cục mặc định (câu 4).
+thì giữ nguyên đúng danh sách đó, và bày ra theo phương án wireframe đã chọn (bố cục mặc
+định của câu 4 ở việc nhỏ hoặc lối dựng luôn).
 
 Ví dụ: đề ghi "trang đăng nhập có ô email, ô mật khẩu, link quên mật khẩu, nút
-đăng nhập, nút đăng nhập bằng Google". Nội dung thế là chốt cứng, dựng luôn
-một cột giữa màn. Đừng hỏi lại có cần nút Google không.
+đăng nhập, nút đăng nhập bằng Google". Nội dung thế là chốt cứng: brief ở `U1` ghi
+đúng năm thứ đó, mọi phương án wireframe đều có đủ năm thứ đó (lối dựng luôn thì dựng
+thẳng một cột giữa màn). Đừng hỏi lại có cần nút Google không.
 
 **S5. Đề để hở phạm vi thì dựng phạm vi mặc định, không hỏi.**
 
@@ -318,7 +321,7 @@ kanban mẫu thì rất dễ đọc mọi thứ mơ hồ thành kanban.
 
 - **Mặc định là design ref**: bám bố cục, bảng màu, kiểu dáng.
 - **Là wireframe** khi đề gọi nó là wireframe / phác thảo / khung, hoặc ảnh chỉ có đen trắng xám, khối chữ nhật, chữ giả: chỉ lấy bố cục, màu và kiểu dáng theo skill.
-- **Là ảnh hiện trạng** khi đó là ảnh app của chính người dùng mà họ nhờ xem: đề có "xem giúp", "review", "chỗ nào chưa ổn", "sao trông kỳ", "nhìn rối", hoặc ảnh khớp với một route trong repo. Ảnh này là **thứ để soi lỗi, không phải mẫu để bám**. Đi nhánh `V` (`references/review.md`). ⚑
+- **Là ảnh hiện trạng** khi đó là ảnh app của chính người dùng mà họ nhờ xem: đề có "xem giúp", "review", "chỗ nào chưa ổn", "sao trông kỳ", "nhìn rối". Ảnh này là **thứ để soi lỗi, không phải mẫu để bám**. Đi nhánh `V` (`references/review.md`). Ảnh khớp một route trong repo mà đề không có từ soi, chỉ bảo dựng hay làm lại, thì đó là **ảnh "trước" của nhánh `U`**: đọc ở `U1`, đặt cạnh ảnh sau lúc giao, không xếp `V`. ⚑
 - Lúc giao nói một dòng: *"Mình dùng ảnh làm design ref (bám cả màu)"*, *"…làm wireframe (chỉ lấy bố cục)"*, hoặc *"…là ảnh hiện trạng app của bạn (soi lỗi)"*.
 
 **S13. Bố cục gồm cả vị trí, không chỉ danh sách phần tử.** Badge nằm giữa mép
@@ -349,7 +352,7 @@ thì một trong hai chỗ là sai.
 | Nhóm | File | Dùng cho |
 | --- | --- | --- |
 | **S** | `SKILL.md` mục 1 | Phạm vi: được làm gì, không được tự thêm gì |
-| **N** | `references/principles.md` | **Mười nguyên tắc đứng sau mọi luật khác**, mỗi cái một phép thử. Chỗ nào không có spec thì bám nó |
+| **N** | `references/principles.md` | **Mười một nguyên tắc đứng sau mọi luật khác**, mỗi cái một phép thử. Chỗ nào không có spec thì bám nó |
 | **M** | `references/rules-color.md` | Màu, viền, bóng, dark mode, token |
 | **T** | `references/rules-type.md` | Chữ, font, xuống dòng, cắt chữ, copy, ngôn ngữ trả lời và copy tiếng Anh |
 | **F** | `references/rules-form.md` | Khối, lưới, bo góc, khoảng thở, icon, hiệu ứng |
@@ -418,12 +421,12 @@ năm câu bằng mắt, lúc giao nói một dòng *"X chưa có mẫu đã duy�
 
 Rút gọn từ `references/checklist.md`. Chạy hết checklist đầy đủ trước khi báo xong.
 
-- [ ] Câu 1 của mục 0 đã trả lời chưa — **như một designer** (mặc định), **soi UI**, **dựng lại giữ brand**, **refactor** hay **dựng luôn**. Đề không nói rõ lối khác mà đã dựng thẳng, bỏ qua brief và wireframe, là sai câu 1.
+- [ ] Câu 1 của mục 0 đã trả lời chưa — **như một designer** (mặc định), **soi UI**, **dựng lại giữ brand**, **dựng lại theo gu skill**, **refactor** hay **dựng luôn**. Đề không nói rõ lối khác mà đã dựng thẳng, bỏ qua brief và wireframe, là sai câu 1.
 - [ ] Đã grep codebase xem họ dùng Tailwind / shadcn / gì chưa, hay đang tự áp bộ của mình lên.
-- [ ] Đã dựng đúng **bố cục mặc định** trong file layout chưa, hay tự bịa. Lúc giao đã báo một dòng "muốn kiểu khác thì nói" chưa.
+- [ ] Đã dựng đúng **phương án wireframe đã chọn** chưa (nhánh `U`), hay tự bịa. Việc nhỏ hoặc lối dựng luôn thì đúng bố cục mặc định trong file layout, lúc giao báo một dòng "muốn kiểu khác thì nói".
 - [ ] Có section nào tự thêm ngoài đề bài không.
 - [ ] **Đã mở trang thật bằng `scripts/probe.mjs` và xem ảnh chụp chưa** (cổng 3), hay trả lời checklist bằng đọc lại code. Trang cuộn ngang ở 375px là hỏng.
-- [ ] Đã chạy **mười phép thử** trong `references/principles.md` chưa, nhất là với thứ chưa có mẫu.
+- [ ] Đã chạy **mười một phép thử** trong `references/principles.md` chưa, nhất là với thứ chưa có mẫu.
 
 ---
 

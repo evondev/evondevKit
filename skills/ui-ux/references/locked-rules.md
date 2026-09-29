@@ -20,7 +20,7 @@ chuyển động. Sửa skill xong chạy `node skills/ui-ux/scripts/lint-skill.
 | 5 | Nút viền rê vào chỉ đổi nền `--button-hover` (`#f1f1f3`), viền giữ nguyên | 26/09/2026 | Viền đậm lên `foreground/20`. `hover:bg-background` (tan vào nền trang) | `components/button.md` |
 | 6 | Nút lọc dạng dropdown ngoài form không có hover, như ô Select | 25/09/2026 | Mượn hover nút viền: tô nền xám, rồi viền đậm lên | `components/choice-controls.md` |
 | 7 | Tab trạng thái dưới `sm` thành nút dropdown có nhãn "Trạng thái:" | 25/09/2026 | Nút chỉ ghi "Tất cả · 32", không nhãn | `layouts/app.md`, "Bảng dữ liệu" |
-| 8 | Dòng đã chọn và dòng đang rê cùng một nền mờ (`I10`) | 23/09/2026 | "Mỗi trạng thái phải một nền khác" | `principles.md` |
+| 8 | Dòng bảng tick checkbox: đã chọn và đang rê cùng một nền mờ (`I10`). Chỉ dòng bảng: sidebar và cây thư mục rê `hover:bg-background`, đang chọn `bg-secondary` + `font-medium`, không màu nhấn, không viền (đổi 29/09/2026) | 23/09, 29/09/2026 | "Mỗi trạng thái phải một nền khác" cho dòng bảng. Áp "cùng một nền" sang sidebar, cây thư mục. Tô màu nhấn mục sidebar đang chọn | `principles.md` `N2`, `layouts/app.md`, `components/tree.md` |
 | 9 | Focus ô nhập: viền `--border-focus` + `ring-2` mờ (`I13`) | 21/09/2026 | Tăng độ đậm ring thành vòng viền thứ hai | `components/input.md` |
 | 10 | Bo góc theo chiều cao: từ 40px trở lên tối thiểu 12px, dưới 40px thì 8px | 21/09/2026 | Chọn theo tên loại ("mục menu thì 8px") | `rules-form.md` |
 | 11 | Tên trang `xl`, `2xl` chỉ cho hero | 16/09/2026 | Tên trang `2xl` ở desktop | `budgets.md` |

@@ -1,6 +1,6 @@
 # Nguyên tắc chung — luật N
 
-Mười nguyên tắc **đứng sau** các luật M, T, F, I, R và các file component. Đây
+Mười một nguyên tắc **đứng sau** các luật M, T, F, I, R và các file component. Đây
 **không phải luật mới**: mỗi dòng gom từ những lỗi đã dính ở nhiều component
 khác nhau, và dẫn về luật gốc. Đọc file này **trước khi dựng bất kỳ thứ gì**,
 nhất là thứ chưa có file mẫu trong `components/`: không skill nào viết đủ spec
@@ -10,7 +10,7 @@ Mỗi nguyên tắc có một **phép thử**: câu hỏi tự trả lời đư�
 dựng. Trả lời "không" là đang vi phạm, dù chưa có luật cụ thể nào cho component
 đó.
 
-**Đứng trên cả mười nguyên tắc: theo quy ước số đông.** Chỗ nào đã có một cách làm
+**Đứng trên cả mười một nguyên tắc: theo quy ước số đông.** Chỗ nào đã có một cách làm
 mà hầu hết app đều làm và người dùng đã quen (dấu `*` đỏ cho trường bắt buộc, logo
 góc trái về trang chủ, ✕ góc phải để đóng, Huỷ bên trái nút chính), thì làm đúng
 như thế, **kể cả khi một cách khác trông gọn hơn**. Người dùng không nên phải dừng lại
@@ -20,7 +20,7 @@ tự hỏi. Gu của skill (nhạt, ít tín hiệu) chỉ quyết những chỗ
 *Phép thử:* người dùng lần đầu mở màn này có chỗ nào phải hỏi "cái này nghĩa là
 gì" hay "bấm đâu để…" không? Có thì đang phá cách ở đó.
 
-**Cũng đứng trên mười nguyên tắc: dự án đã có ngôn ngữ màu thì theo dự án.** Gu ít
+**Cũng đứng trên mười một nguyên tắc: dự án đã có ngôn ngữ màu thì theo dự án.** Gu ít
 màu của skill (xám + một màu nhấn, `M4`, `M5`, biểu đồ đậm nhạt một màu) là **mặc
 định cho dự án trống**, không phải bộ lọc để chạy qua dự án có sẵn. Dự án đã tô chip
 bằng màu nhấn nhạt, khối bước nền xanh nhạt, nhãn nhỏ đầu mục dạng pill tím, nút chính
@@ -82,10 +82,11 @@ phần tử vừa đổi. Có cái nào xê dịch dù 1px không?
 
 **N2. Mỗi trạng thái đều được dựng, và liếc là phân biệt được.**
 
-Liệt kê trạng thái trước khi dựng: thường, rê chuột, focus bàn phím, đang chọn,
-khoá, đang tải, rỗng, lỗi, xong, và **ca biên** (không có gì, một cái, rất dài,
-rất nhiều). Mỗi trạng thái một ví dụ tĩnh (`SKILL.md` phạm vi). Hai trạng thái
-khác nghĩa thì phải khác hình rõ ràng.
+Liệt kê trạng thái trước khi dựng: thường, rê chuột, focus bàn phím (chỉ ô nhập và
+mục menu; phần còn lại không vẽ vòng focus theo `I13`), đang chọn, khoá, đang tải,
+rỗng, lỗi, xong, và **ca biên** (không có gì, một cái, rất dài, rất nhiều). Mỗi trạng
+thái một ví dụ tĩnh (`SKILL.md` phạm vi). Hai trạng thái khác nghĩa thì phải khác hình rõ
+ràng.
 
 Đã dính: xong mà thanh vẫn đen đầy như đang chạy (xong là emerald); trang đang
 chọn trông như ô input; nút phụ trông như bị khoá (`I8`); hôm nay và ngày đang
@@ -96,7 +97,10 @@ lại đọc như thanh thiếu (đang làm là tầng thứ ba, nửa đậm).
 
 Ngoại lệ có tên: dòng bảng **đã chọn** và dòng **đang rê chuột** cùng một nền mờ, vì
 hai trạng thái đã tách bằng checkbox đã tick (chủ dự án chốt 23/09/2026, `I10`). Hình
-khác nhau không nhất thiết phải là nền khác nhau.
+khác nhau không nhất thiết phải là nền khác nhau. Ngoại lệ này **chỉ cho dòng bảng tick
+checkbox**. Sidebar và cây thư mục không có checkbox nên đang chọn đậm hơn rê một bậc: rê
+`hover:bg-background`, đang chọn `bg-secondary` + `font-medium`, không màu nhấn, không viền
+(chủ dự án chốt 29/09/2026).
 
 *Phép thử:* che chữ đi, chỉ nhìn hình. Còn nói được đây là trạng thái nào không?
 
@@ -370,7 +374,7 @@ trong `components/` thì:
      nhất, ở 375px (`N8`).
 
    Câu nào ra "không" thì sửa, rồi quay lại bước 3.
-5. **Chạy mười phép thử** ở trên trước khi báo xong.
+5. **Chạy mười một phép thử** ở trên trước khi báo xong.
 6. Lúc giao nói một dòng: *"X chưa có mẫu đã duyệt, mình mượn khuôn của Y"*, cộng mỗi
    lựa chọn đánh đổi một dòng (vd *"tên giữ chỗ hai dòng để giá thẳng hàng giữa các
    card"*).

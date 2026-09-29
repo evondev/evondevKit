@@ -90,7 +90,7 @@ Nút chỉ icon `ghost` `size-8`, có tooltip và `aria-label`: `Copy` "Sao ché
 ```html
 <div class="space-y-2">
   <p class="text-sm text-muted">Hỏi tiếp</p>
-  <button class="block w-fit max-w-full cursor-pointer rounded-xl border border-border-strong bg-surface px-3 py-2 text-left text-sm text-foreground hover:bg-button-hover">
+  <button class="block w-fit max-w-full cursor-pointer rounded-xl border border-border-strong bg-surface px-3 py-2 text-left text-sm text-foreground outline-hidden hover:bg-button-hover">
     Chi nhánh cửa hàng nào giảm nhiều nhất?
   </button>
 </div>
@@ -111,7 +111,7 @@ Nút chỉ icon `ghost` `size-8`, có tooltip và `aria-label`: `Copy` "Sao ché
 ```html
 <form class="mx-4 mb-4 flex items-end gap-2 rounded-3xl border border-border-strong bg-surface p-2 focus-within:border-focus focus-within:ring-2 focus-within:ring-focus">
   <textarea rows="1" class="max-h-60 min-h-10 flex-1 resize-none bg-transparent px-3 py-2 text-base outline-hidden placeholder:text-muted" placeholder="Hỏi về đơn hàng, doanh thu"></textarea>
-  <button class="grid size-10 shrink-0 cursor-pointer place-items-center rounded-2xl bg-primary text-primary-foreground hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-30" aria-label="Gửi" disabled>
+  <button class="grid size-10 shrink-0 cursor-pointer place-items-center rounded-2xl bg-primary text-primary-foreground outline-hidden hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-30" aria-label="Gửi" disabled>
     <!-- ArrowUp size-4. Đang chạy: Square size-3.5 fill-current, aria-label="Dừng trả lời", không disabled -->
   </button>
 </form>

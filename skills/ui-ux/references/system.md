@@ -87,10 +87,12 @@ hình (đã dính 24/09/2026).
 
 ## D4. Nhiều màn thì báo bố cục MỘT LẦN cho cả bộ
 
-`SKILL.md` mục 0 ngầm giả định một màn hình. Với đề nhiều màn, dựng cả bộ theo
-bố cục mặc định của từng loại màn, rồi báo **một** đoạn lúc giao: liệt kê các bề
-mặt đã dựng, màn chính theo bố cục nào, bề mặt phụ (form, hộp xác nhận, trạng
-thái rỗng) theo khuôn chung nào. Muốn đổi thì người dùng nói.
+Đề nhiều màn vào nhánh `U` như mọi đề dựng (`SKILL.md` câu 1): `U2` mỗi màn một dòng,
+wireframe cho cả bộ, rồi hợp đồng nguyên tố `D1` chốt ở `U4` trước khi dựng màn đầu tiên.
+Bố cục mặc định của từng loại màn chỉ dùng thẳng ở lối "dựng luôn" hoặc việc nhỏ hơn một
+màn. Lúc giao báo **một** đoạn: liệt kê các bề mặt đã dựng, màn chính theo phương án nào,
+bề mặt phụ (form, hộp xác nhận, trạng thái rỗng) theo khuôn chung nào. Muốn đổi thì người
+dùng nói.
 
 ---
 

@@ -3,7 +3,7 @@
 Nguồn: `speak-now/src/components/input/input.tsx`
 
 ```tsx
-const baseClasses = "outline-hidden transition-colors text-foreground placeholder-muted";
+const baseClasses = "outline-hidden transition-colors text-foreground placeholder:text-muted";
 
 const variantClasses = {
   // Viền và MÀU viền viết cùng một chỗ, đúng như nút outline: `border border-border-strong`.
@@ -22,7 +22,7 @@ const stateClasses = error
 - **Focus = viền `--border-focus` + ring mờ `--ring-focus` dày 2px (`ring-2`)** (`I13`, chủ dự án chốt 21/09/2026). Ring phải mờ tới mức là vầng sáng, không thành vòng viền thứ hai: đừng tăng độ đậm của `--ring-focus`. Ô lỗi cùng công thức, đổi sang đỏ. **Select, combobox dùng y hệt**, kể cả lúc đang mở (`components/choice-controls.md`).
 - **Viền dùng `--border-strong`, không phải `--border`.** Ô nhập cùng nền trắng với card, nên viền là thứ duy nhất báo "đây là chỗ gõ". Viền card và đường chia thì là trang trí, nhạt được; viền ô nhập thì không (`M14`). Viền này chỉ ~1.27:1, chưa đạt WCAG 1.4.11: đánh đổi có chủ ý, xem `P3` trong `styles.md`.
 - **Viền ô nhập và viền nút outline phải là CÙNG một class**, `border-border-strong`. Đặt ô nhập cạnh nút mà viền ô mờ hơn là đã lấy nhầm `border-border`. Đã dính 21/09/2026: helper chung cho ô nhập và textarea viết `border-border`, ô trông nhạt hơn hẳn nút đứng bên. Dựng xong thì grep `border-border\b` trong file ô nhập, textarea, select: phải ra 0.
-- Trạng thái lỗi cũng theo đúng công thức đó, chỉ đổi màu: viền đỏ đặc `red-500`, **quầng `red-500/10` chỉ khi ô đang focus**. Quầng cả lúc nghỉ thì mỗi ô lỗi mang ba tín hiệu đỏ (viền, quầng, câu), form có bốn ô lỗi là đỏ loang cả màn (sửa 23/09/2026). **Câu lỗi thì `red-600`**, không `red-500`: viền chỉ cần 3:1 nhưng chữ 14px cần 4.5:1, `red-500` trên nền trắng chỉ 3.8:1. Không Tailwind thì `--error`, `--error-ring`, `--error-text` trong `tokens.css`.
+- Trạng thái lỗi cũng theo đúng công thức đó, chỉ đổi màu: viền đỏ đặc `red-500`, **quầng `red-500/10` chỉ khi ô đang focus**. Quầng cả lúc nghỉ thì mỗi ô lỗi mang ba tín hiệu đỏ (viền, quầng, câu), form có bốn ô lỗi là đỏ loang cả màn (sửa 23/09/2026). **Câu lỗi thì `text-xs red-600`**, cùng cỡ với chữ gợi ý (`layouts/form.md`), không `red-500`: viền chỉ cần 3:1 nhưng chữ nhỏ cần 4.5:1, `red-500` trên nền trắng chỉ 3.8:1. Không Tailwind thì `--error`, `--error-ring`, `--error-text` trong `tokens.css`.
 - Bo `rounded-xl`, cùng bậc với nút, nên input và nút đứng cạnh nhau bằng vai.
 - **`text-base` trên mobile rồi thu về `md:text-sm`** — luật `R8`, áp cho cả `textarea` và `select`.
 - **`h-11 md:h-10`**: 40px trên desktop, bằng link sidebar và mục menu; 44px ở màn hẹp cho vừa ngón tay. Nút trong cùng form đổi theo y hệt (`budgets.md`). Form đăng nhập/đăng ký đứng riêng được lên `h-12`. Không dùng `h-12` làm mặc định trong app: thô, và lệch bậc với mọi thứ khác (đảo 22/09/2026).
@@ -40,7 +40,8 @@ Nhãn, ô, câu lỗi. Ba phần, và nhãn phải gắn vào ô theo `I26`:
     {label}
   </label>
   <input id={id} className={...} />
-  {error ? <p className="text-sm text-red-600 dark:text-red-400">{error}</p> : null}
+  {/* Dòng dưới ô luôn có mặt, min-h-4 bằng một dòng text-xs: lỗi hiện ra hay mất đi thì ô bên dưới không nhảy (form.md) */}
+  <p className="min-h-4 text-xs text-red-600 dark:text-red-400">{error}</p>
 </div>
 ```
 
@@ -69,7 +70,7 @@ const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     type="button"
     onClick={() => setIsPasswordVisible((isVisible) => !isVisible)}
     aria-label={isPasswordVisible ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
-    className="absolute inset-y-0 right-1 my-auto flex size-10 items-center justify-center rounded-lg text-muted hover:text-foreground"
+    className="absolute inset-y-0 right-1 my-auto flex size-10 cursor-pointer items-center justify-center rounded-lg text-muted outline-hidden hover:text-foreground"
   >
     {isPasswordVisible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
   </button>
@@ -126,7 +127,7 @@ một câu dài ở 375px không có cách xoá nhanh, chữ trôi khuất bên 
   {query ? (
     <Button variant="ghost" icon={X} aria-label="Xoá từ khoá"
       onClick={() => { clearQuery(); inputRef.current?.focus(); }}
-      className="absolute inset-y-0 right-1 my-auto size-8 rounded-lg p-0 text-muted hover:text-foreground" />
+      className="absolute inset-y-0 right-1 my-auto size-8 min-h-8 rounded-lg p-0 text-muted hover:text-foreground" />
   ) : null}
 </div>
 ```

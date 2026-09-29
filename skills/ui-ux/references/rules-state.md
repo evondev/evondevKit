@@ -132,7 +132,7 @@ nó là link chữ.
 ```tsx
 <Link
   to={href}
-  className="inline-flex h-8 items-center rounded-md text-sm font-medium whitespace-nowrap text-foreground/70 underline-offset-4 outline-hidden transition-colors hover:text-foreground hover:underline"
+  className="inline-flex h-8 items-center text-sm font-medium whitespace-nowrap text-foreground/70 underline-offset-4 outline-hidden transition-colors hover:text-foreground hover:underline"
 >
   Xem tất cả
 </Link>
@@ -187,8 +187,8 @@ danh sách + chi tiết, hộp thư, cây thư mục: không có dấu nào khá
 nền đó là rê qua mục nào cũng trông như vừa chọn nó (đã dính 28/09/2026, hai lần). Luật
 "cùng nền mờ" ở trên chỉ cho dòng bảng tick checkbox.
 
-- **Danh sách chọn một mục nằm trong card thì dòng thụt vào**, không tràn mép: khung `p-2`,
-  dòng `rounded-xl`, rê `hover:bg-background`, đang mở một bậc đậm hơn `bg-secondary` (màu nhấn
+- **Danh sách chọn một mục nằm trong card thì dòng thụt vào**, không tràn mép: khung `p-1`,
+  dòng `rounded-xl` (card 16 = 12 + 4, `M19`), rê `hover:bg-background`, đang mở một bậc đậm hơn `bg-secondary` (màu nhấn
   có sắc thì nền nhạt của màu nhấn, như `bg-primary/8`). Dòng tràn mép phải dùng `surface-hover`
   (`#f8f8fa`), trên card trắng chỉ chênh 7 mức, gần như không thấy, còn đang mở và đang rê thì
   không còn bậc nào để tách (đã dính 28/09/2026).
@@ -291,11 +291,14 @@ tiếp cận thì trả vòng lại, **ở đúng một chỗ** (class gốc c�
 
 - `ring-foreground/50` là mức thấp nhất đạt 3:1 trên nền trắng (WCAG 1.4.11); nền tối `ring-white/50`.
 - Dòng trong khung `overflow-hidden` (accordion, tiêu đề cột bảng) thì `ring-inset`, không thì bị cắt.
-- Vòng không chồng lên dấu đang chọn: phần tử có viền "đang chọn" bằng `ring-*` thì vẽ vòng focus bằng `outline` (`W8`).
+- Vòng không chồng lên dấu đang chọn: viền "đang chọn", "đang bật" vẽ bằng `inset-ring-*` hoặc `border`, không `ring-*`, vì `ring-*` chỉ có một lớp bóng và vòng focus sẽ thay mất viền chọn (`W8`).
 
 **I15. Sidebar: mục đang chọn tô nền xám, không tô màu nhấn, không viền.** Mục
-chưa chọn thì không nền. Sidebar nền trắng thì hover và đang chọn **cùng một nền
-mờ** `--background`; đang chọn thêm `font-medium`. Không `--secondary`, đậm quá. Hover hay đang chọn thì **icon và chữ cùng
+chưa chọn thì không nền. Rê vào `hover:bg-background`; đang chọn **đậm hơn một bậc**
+`bg-secondary` + `font-medium`. Cây thư mục cùng công thức. Bản trước cho rê và đang chọn
+cùng nền `--background` và cấm `--secondary` vì "đậm quá"; đổi 29/09/2026: mục đang chọn
+không có dấu nào khác ngoài nền nên phải khác nền rê (`I10`), probe xếp Hỏng. Luật "cùng
+nền mờ" chỉ còn cho dòng bảng tick checkbox. Hover hay đang chọn thì **icon và chữ cùng
 lên `--foreground`**; lúc thường cả hai `foreground/70`, không mờ tới `--muted`.
 Xem `layouts/app.md`.
 
@@ -537,13 +540,13 @@ khoảng trống là mũi tên. Nền vẫn sáng cả hàng, nên người dùn
 
 ```html
 <!-- Sai: hover ở <li>, vùng bấm chỉ bằng chữ -->
-<li class="rounded-lg px-3 py-2 hover:bg-background">
+<li class="flex h-10 items-center rounded-xl px-3 hover:bg-background">
   <a href="/ho-so">Hồ sơ của bạn</a>
 </li>
 
 <!-- Đúng: <li> trơn, mọi thứ dồn vào <a> -->
 <li>
-  <a href="/ho-so" class="flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 hover:bg-background">
+  <a href="/ho-so" class="flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 hover:bg-background">
     <i data-lucide="user" class="size-4 text-muted"></i>
     Hồ sơ của bạn
   </a>

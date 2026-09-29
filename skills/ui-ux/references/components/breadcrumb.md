@@ -139,7 +139,7 @@ export default function Breadcrumb({ items, className }: BreadcrumbProps) {
                   variant="ghost"
                   aria-label="Hiện các cấp bị ẩn"
                   className={cn(
-                    "group relative h-5 w-4 rounded-sm p-0 text-muted hover:bg-transparent hover:text-foreground",
+                    "group relative h-5 min-h-0 w-4 rounded-sm p-0 text-muted hover:bg-transparent hover:text-foreground",
                     "before:absolute before:-inset-x-1.5 before:-inset-y-1.5",
                     "aria-expanded:text-foreground",
                   )}

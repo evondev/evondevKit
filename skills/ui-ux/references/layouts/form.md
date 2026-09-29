@@ -125,7 +125,7 @@ nằm dưới nút submit.
   <label for="password" class="w-fit cursor-pointer text-sm font-medium">Mật khẩu</label>
   <div class="relative"><!-- ô mật khẩu + nút mắt --></div>
   <!-- Đứng SAU ô trong DOM, absolute lên hàng nhãn -->
-  <a href="/quen-mat-khau" class="absolute top-0 right-0 text-sm text-foreground hover:underline">Quên mật khẩu?</a>
+  <a href="/quen-mat-khau" class="absolute top-0 right-0 text-sm text-foreground outline-hidden hover:underline">Quên mật khẩu?</a>
 </div>
 ```
 
@@ -357,7 +357,7 @@ Email này đã có người dùng     <- chữ đỏ, text-xs, ngay dưới ô
 - **Câu lỗi không được trùng chữ với placeholder hay nhãn.** Trùng là dấu hiệu nó không mang thêm thông tin nào — xem mục dưới.
 - **Ô tự điền theo ô khác** (đường dẫn theo tên, mã theo tên sản phẩm): ô nguồn trống thì **chỉ ô nguồn báo lỗi**, ô phụ thuộc để yên, vì gõ ô nguồn là ô kia tự có. Ô phụ thuộc chỉ báo lỗi khi người dùng đã tự sửa nó, hoặc khi ô nguồn có chữ mà giá trị sinh ra vẫn sai (quá ngắn, trùng). Đã dính 26/09/2026, `/workspaces/new`: bấm Tiếp khi trống ra hai dòng đỏ "Chưa nhập tên workspace" và "Chưa nhập đường dẫn", mà chỉ cần gõ tên là hết cả hai (`N3`).
 - Gợi ý thời điểm (người dùng quyết): hiện lỗi sau khi rời ô hoặc bấm gửi, đừng hiện ngay ký tự đầu tiên. Skill chỉ lo lỗi **trông ra sao**, dựng nó như một trạng thái tĩnh của ô.
-- **Sửa xong một ô thì câu lỗi mất, nhưng chỗ của nó ở lại** tới lần bấm gửi sau (`min-h-5` trên dòng dưới ô). Rút câu lỗi đi ngay thì mọi ô bên dưới nhảy lên 20px đúng lúc người dùng đang đưa chuột xuống ô kế tiếp (`N1`, đã dính 23/09/2026 ở form tạo công việc). Ô nào có sẵn dòng gợi ý thì không cần: gợi ý quay về đúng chỗ câu lỗi vừa rời.
+- **Sửa xong một ô thì câu lỗi mất, nhưng chỗ của nó ở lại** tới lần bấm gửi sau (`min-h-4` trên dòng dưới ô, bằng một dòng `text-xs`). Rút câu lỗi đi ngay thì mọi ô bên dưới nhảy lên 16px đúng lúc người dùng đang đưa chuột xuống ô kế tiếp (`N1`, đã dính 23/09/2026 ở form tạo công việc). Ô nào có sẵn dòng gợi ý thì không cần: gợi ý quay về đúng chỗ câu lỗi vừa rời.
 - **Mặc định: chỉ lỗi tại chỗ, không banner tóm tắt.** Bấm gửi mà có lỗi thì cuộn tới và **focus ô lỗi đầu tiên**; mỗi ô sai viền đỏ + một câu dưới ô. Form trong sản phẩm (SaaS, công cụ làm việc) hầu hết làm vậy; hệ thiết kế cho dịch vụ công thì thêm hộp tóm tắt lỗi đầu trang có link tới từng ô, vì form của họ dài và người điền lần đầu, skill chỉ giữ ca đó cho form rất dài (ca 2 bên dưới; tra 27/09/2026). Banner liệt kê lỗi trên một form thường chỉ đọc lại đúng mấy câu đã nằm dưới từng ô: hai tín hiệu cho một ý (`N3`), và cả màn đỏ rực (đã dính 23/09/2026: form tạo công việc 6 trường, banner 4 dòng lặp y 4 câu lỗi; chủ dự án: "thực tế có ai làm mục đỏ ở trên đâu"). Luật cũ "form dài hơn một màn thì có banner" sai, vì ở 375px form nào cũng dài hơn một màn.
 - **Banner chỉ dùng cho hai ca:**
   1. **Lỗi không gắn với ô nào**: mất mạng, hết phiên, không có quyền, trùng dữ liệu phía máy chủ. Banner một dòng nói chuyện gì và làm gì tiếp, không liệt kê.
@@ -367,7 +367,7 @@ Email này đã có người dùng     <- chữ đỏ, text-xs, ngay dưới ô
 <div role="alert" class="mb-6 rounded-xl border border-red-200 bg-red-50 p-4">
   <p class="text-sm font-medium text-red-700">Chưa gửi được, còn 3 chỗ cần sửa</p>
   <ul class="mt-2 space-y-1 text-sm text-red-600">
-    <li><a href="#tieu-de" class="underline underline-offset-2">Tiêu đề</a>, chưa điền</li>
+    <li><a href="#tieu-de" class="underline underline-offset-2 outline-hidden">Tiêu đề</a>, chưa điền</li>
   </ul>
 </div>
 ```

@@ -109,7 +109,7 @@ Muốn chữ vẫn thẳng lề với các khối khác mà nền hover vẫn tr
 <section class="rounded-2xl bg-surface py-5">
   <h2 class="px-5">…</h2>
   <ul class="px-2">
-    <li class="rounded-lg px-3 py-3 hover:bg-background">…</li>
+    <li class="rounded-xl px-3 py-3 hover:bg-background">…</li>
   </ul>
 </section>
 ```
@@ -199,13 +199,13 @@ Chọn cách theo **nền hover của mục có thụt vào so với mép khung 
 ```html
 <!-- Cách 1 — menu, dropdown: mục hover thụt vào, cách mép khung một khe.
      Khung chỉ padding dọc; khe ngang nằm ở từng nhóm mục, vạch đứng giữa hai nhóm nên tự chạm mép. -->
-<div class="rounded-2xl py-2">
-  <div class="px-2">
-    <button class="w-full rounded-lg px-3 py-2">…</button>
+<div class="rounded-2xl py-1">
+  <div class="px-1">
+    <button class="flex h-10 w-full items-center rounded-xl px-3">…</button>
   </div>
-  <hr class="my-2 border-border" />
-  <div class="px-2">
-    <button class="w-full rounded-lg px-3 py-2">…</button>
+  <hr class="my-1 border-border" />
+  <div class="px-1">
+    <button class="flex h-10 w-full items-center rounded-xl px-3">…</button>
   </div>
 </div>
 

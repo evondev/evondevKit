@@ -43,6 +43,8 @@ công thức phần tử bên dưới, `small-controls.md`). Màu thứ hai ph�
 
 **M4. Màu để báo trạng thái, không để phân loại.**
 
+*Có màu công thức B — ô icon card số liệu, ô icon đầu dòng theo loại và chuỗi biểu đồ dashboard được tô màu phân loại, xem `P12` trong `references/styles.md`.*
+
 > `M4` và `M5` là **gu mặc định cho dự án chưa có ngôn ngữ màu**. Dự án đã tô màu
 > theo cách riêng (đếm ở `P4`) thì theo dự án; chỉ giữ các luật về nghĩa và đọc được
 > liệt kê ở đầu `principles.md` (đỏ cho lỗi và phá huỷ, một bảng trạng thái, màu không
@@ -207,11 +209,11 @@ Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu
 
 | Phần tử | Công thức |
 | --- | --- |
-| Thẻ / khung | trắng, viền 1px xám rất nhạt, bo ~12px, **không bóng** |
+| Thẻ / khung | trắng, viền 1px xám rất nhạt, bo 16px `rounded-2xl` (`F1`), **không bóng** |
 | Danh sách nhiều mục | MỘT khung, các dòng chia bằng `divide-y`. Dòng tiêu đề và dòng hành động cuối nằm TRONG khung |
 | Khối tóm tắt phụ | nền xám nhạt + viền, bo như thẻ |
-| Mục sidebar đang chọn | nền xám, **không viền**; mục chưa chọn không nền. Sidebar nền trắng: hover và đang chọn cùng nền mờ `--background` |
-| Tab ngang trên bảng / danh sách | tab đang chọn **nền `--surface-hover` + viền `--border-strong`** (không nền trắng: trên card trắng nó biến mất), mục chưa chọn `border-transparent`. Xem "Thanh tab" trong `components/small-controls.md` |
+| Mục sidebar, cây thư mục đang chọn | nền `--secondary` + `font-medium`, **không viền**, không màu nhấn; rê vào `--background`, mục chưa chọn không nền. Đang chọn đậm hơn nền rê một bậc (`I10`, `I15`) |
+| Tab ngang trên bảng / danh sách | tab đang chọn **nền `--secondary`, viền trong suốt** (không nền trắng, không `--surface-hover`: trên card trắng liếc không thấy), mọi tab có `border`, mục chưa chọn `border-transparent`. Xem "Thanh tab" trong `components/small-controls.md` |
 | Ô nhập | viền — đây là chỗ viền đúng vai nhất, người ta phải nhìn ra ranh giới vùng gõ được |
 
 **M14. Hai token viền, chia theo vai trò. Không có cái thứ ba.**
@@ -357,6 +359,11 @@ ra là hai thiết kế khác nhau.
 
 *Cách kiểm:* liệt kê ba màu bề mặt của mỗi theme rồi xếp theo độ sáng. Hai danh
 sách phải cùng thứ tự.
+
+Nền tối thì nền trang và card chỉ chênh 1.07:1, nên nút phụ chìm dưới nền trang gần
+như không tách khỏi nền trang (`tokens.css` đặt `--secondary` gần đen, sửa 29/09/2026).
+Nút secondary, tab boxed đang chọn đặt thẳng trên nền trang tối thì thêm viền
+`--border` (`M23`), không kéo nền sáng lên trên card.
 
 **M22. Ở nền tối, màu nhấn chỉ dùng làm nền, không dùng làm đường mảnh.**
 

@@ -129,7 +129,7 @@ cao ~520px dưới con số 30px: nút 40px trông mỏng, như nút phụ trong
   </div>
   <p class="mt-2 text-sm/6 text-primary-foreground/70">…</p>
   …
-  <button class="h-12 w-full rounded-xl bg-surface text-sm font-medium text-foreground hover:bg-surface/90">Đăng ký gói Pro</button>
+  <button class="h-12 w-full cursor-pointer rounded-xl bg-surface text-sm font-medium text-foreground outline-hidden hover:bg-surface/90">Đăng ký gói Pro</button>
 </article>
 ```
 

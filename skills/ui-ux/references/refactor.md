@@ -13,7 +13,7 @@ TS/TSX, 14.218 dòng CSS, 4,5 tháng tuổi, có tiền thật chạy qua.
 Không hỏi. Lấy mặc định dưới đây, **nói lại cả bốn ở đầu lúc giao**. Đề nói khác
 thì theo đề.
 
-1. **Mục tiêu mặc định là "chụp lại hiện trạng", không "đổi diện mạo".** Đề có chữ "làm lại giao diện", "cho đẹp hơn", "theo gu" thì mới là đổi diện mạo. Hai việc khác hẳn nhau về rủi ro. Đổi diện mạo thì soi theo nhánh `V` (`review.md`) trước: người dùng chọn dòng nào mới sửa dòng đó.
+1. **Mục tiêu mặc định là "chụp lại hiện trạng", không "đổi diện mạo".** Đề có chữ "làm lại giao diện", "cho đẹp hơn", "theo gu" thì mới là đổi diện mạo. Hai việc khác hẳn nhau về rủi ro. Đổi diện mạo thì đi nhánh `U` (`design-process.md`) trước, dọn theo `L` sau; đề nói soi hay giữ brand thì nhánh `V` (`review.md`) thay chỗ `U`, người dùng chọn dòng nào mới sửa dòng đó (`SKILL.md` câu 1).
 2. **Mặc định giữ pixel.** Mọi bước refactor không được đổi giao diện; thấy chỗ trái luật skill thì ghi vào danh sách "đề xuất sửa" lúc giao (chia hạng theo `V1` trong `review.md`), không tự sửa trong cùng đợt. **Dự án nhiều màu hơn gu của skill thì không phải trái luật**: không đề xuất rút về xám; chỉ đề xuất khi phạm luật về nghĩa hay đọc được (đầu `principles.md`: đỏ cho thứ không phải lỗi, chữ màu dưới 4.5:1, màu đứng một mình mang nghĩa). Đây là ràng buộc quyết định cách chọn token.
 3. **Người duyệt "trông vẫn đúng" mặc định là người giao việc.** Lúc giao đưa danh sách màn cần họ mở ra đối chiếu, kèm ảnh trước/sau nếu chụp được.
 4. **Tài liệu hiện có: không xoá, chỉ đánh dấu chỗ sai.** Ở dự án đó, `design-system.md` mô tả một sản phẩm khác chứ không mô tả chính nó — nhưng vẫn có một mục là kiến thức thật, xoá trắng là mất.

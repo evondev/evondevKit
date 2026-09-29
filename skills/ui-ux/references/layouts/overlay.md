@@ -152,7 +152,7 @@ Trượt từ phải, `w-full sm:w-[28rem]` (dưới `sm` phủ hết bề ngang
 cần nhìn thấy danh sách phía sau. Không dùng panel cho một câu xác nhận.
 
 - **Lớp phủ sau panel mờ: `bg-black/15`.** Panel tồn tại để người dùng **vẫn thấy danh sách phía sau**; lớp phủ đặc che kín danh sách là mất đúng lý do dùng panel (đã dính 23/09/2026: lớp phủ xám đục, nền trang biến thành một mảng xám chết). Modal thì `bg-black/30`, vì modal cần tách hẳn người dùng khỏi trang.
-- **Ba tầng: header, thân cuộn, footer.** Header `px-6 pt-5 pb-4 border-b` gồm tiêu đề, dòng trạng thái + thời gian, nút ⋯ và ✕ cùng hàng tiêu đề. Thân `flex-1 overflow-y-auto px-6 py-6`: **luôn có `pt` riêng**, không để tiêu đề mục đầu dính sát đường kẻ header. Footer `border-t px-6 py-4`, nút căn phải, luôn đứng đáy dù thân ngắn.
+- **Ba tầng: header, thân cuộn, footer.** Header `px-6 pt-5 pb-4 border-b border-border` gồm tiêu đề, dòng trạng thái + thời gian, nút ⋯ và ✕ cùng hàng tiêu đề. Thân `flex-1 overflow-y-auto px-6 py-6`: **luôn có `pt` riêng**, không để tiêu đề mục đầu dính sát đường kẻ header. Footer `border-t border-border px-6 py-4`, nút căn phải, luôn đứng đáy dù thân ngắn.
 - Nhãn và giá trị trong panel theo `components/description-list.md`, cột nhãn `7rem`.
 - **Nút ở footer giữ kiểu theo vai, không theo số lượng.** Đơn đã huỷ mất nút chính, footer chỉ còn "In hoá đơn": nó **vẫn `secondary`** như lúc đứng cạnh nút chính. Không đẩy lên `primary` (đơn đã huỷ không còn hành động chính, tô đen là giả làm việc quan trọng) và không đổi sang `outline` (cùng một nút mà mỗi đơn một kiểu, `N5`). Nút footer chỉ có chữ (`I1`).
 - Chuyển động theo mục "Chuyển động" cuối file: panel trượt từ mép phải vào.
@@ -324,7 +324,7 @@ trách, khoảng ngày, mức ưu tiên…) và nút xác nhận. Khác dropdown
 └──────────────────────────────────┘
 ```
 
-- **Khung** `w-96 max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-surface shadow-lg`, không `p-*`: thân `p-4 flex flex-col gap-4`, footer `border-t px-4 py-3 flex justify-between`. Neo mép phải nút Lọc (dưới `sm` nút đứng riêng hàng, căn trái, thì neo mép trái). Portal ra `body` (`I22`).
+- **Khung** `w-96 max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-surface shadow-lg`, không `p-*`: thân `p-4 flex flex-col gap-4`, footer `border-t border-border px-4 py-3 flex justify-between`. Neo mép phải nút Lọc (dưới `sm` nút đứng riêng hàng, căn trái, thì neo mép trái). Portal ra `body` (`I22`).
 - **Đổi gì trong khung chỉ sửa bản nháp**; bấm Áp dụng mới lọc danh sách. Esc, bấm ra ngoài là bỏ nháp. Mở lại thì nháp lấy lại bộ lọc đang áp. Đang lọc thì nút ghi "Lọc · 2" (số trường đang bật).
 - **"Xoá lọc" là link chữ, không phải nút `ghost` có padding**: `px-0`, chữ `text-muted`, rê vào `text-foreground` + gạch chân, không nền. Nút `ghost` `px-4` đặt trong footer `px-4` làm chữ "Xoá lọc" thụt vào 16px so với mép trái mọi nhãn phía trên, cả khung có một mép chữ lệch (đã dính 26/09/2026: nhãn ở x=754, chữ "Xoá lọc" ở x=770). Cùng chữ, cùng kiểu với "Xoá" ở hàng nhãn của một trường. Không còn gì để gỡ (nháp rỗng và danh sách không lọc) thì khoá `opacity-50`.
 - **Chip đang chọn trong khung KHÔNG tô `bg-primary`.** Footer đã có nút Áp dụng đặc `primary`; chip chọn cũng đặc đen thì khung nhỏ có ba bốn khối đen ngang nhau, mắt không biết đâu là hành động, và thứ nặng nhất khung là lựa chọn chứ không phải nút (cùng bài học với ô chọn giờ ở `../components/choice-controls.md`). Chip chọn trong khung: `bg-foreground/10 text-foreground inset-ring-1 inset-ring-foreground` (Tailwind v4). **Không `ring-1 ring-inset`**: dự án trả vòng focus lại (`I14`) thì vòng đó dùng chung biến với `ring-*`, Tab tới chip đang chọn là mất viền chọn (`W8`, đã dính 26/09/2026). `inset-ring` là lớp bóng riêng. Tailwind v3 không có `inset-ring`: dùng `shadow-[inset_0_0_0_1px_var(--foreground)]`; chưa chọn giữ `bg-foreground/5 text-foreground/70`, rê vào `bg-foreground/10`. Viền mới là tín hiệu chọn, nền chỉ đậm lên một bậc để chip chọn trông "bật" hơn chip rê. Đã thử và bỏ (26/09/2026): nền trắng + viền đậm (chip chọn nhạt hơn chip chưa chọn, đọc ngược); viền `1.5px` (chọn đủ bốn mức thì hàng chip thành bốn vòng đen dày, nặng ngang nút Áp dụng; đo lại ở 1px vẫn tách rõ chọn với chưa chọn). Hàng chip chính của màn (không có nút xác nhận bên cạnh) vẫn `bg-primary` như `../components/small-controls.md`.
@@ -338,7 +338,7 @@ Mục nào có phím tắt thì hiện ở **mép phải**, `text-xs text-muted`
 ngoặc giữa dòng.
 
 ```html
-<button class="flex h-10 w-full items-center gap-2.5 rounded-xl px-3 text-sm hover:bg-background">
+<button class="flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm outline-hidden hover:bg-background">
   <i data-lucide="user" class="h-4 w-4 shrink-0 text-muted"></i>
   <span class="min-w-0 flex-1 truncate text-left">Hồ sơ của bạn</span>
   <span class="shrink-0 text-xs text-muted">⌘1</span>
@@ -346,7 +346,8 @@ ngoặc giữa dòng.
 ```
 
 Ký hiệu viết thẳng bằng ký tự (`⌘`, `⇧`, `⌥`), không bọc `<kbd>` có viền. Viền
-quanh từng phím làm menu trông rối, và đây đúng chỗ M3d nói cần lắm mới dùng.
+quanh từng phím làm menu trông rối: ký tự `⌘` đã nói "đây là phím tắt", thêm khung
+là tín hiệu thứ hai cho cùng một ý (`N3`).
 
 Chỉ hiện phím tắt cho mục **thật sự có phím tắt**. Bịa ra cho đẹp thì người dùng
 bấm không ăn, mất lòng tin ngay.
@@ -509,7 +510,8 @@ lấy số ở bảng này.
 
 - **Viết `scale`, `translate` vào danh sách chuyển động.** Tailwind v4: `transition-[opacity,transform]`
   không chạy `scale-95` hay `translate-y-1`, khung nhảy cỡ rồi mới mờ (`W10`). Dùng
-  `transition-[opacity,scale,translate]` hoặc `transition-transform` + `transition-opacity`.
+  `transition-[opacity,scale,translate]`. Đừng ghép `transition-transform` với `transition-opacity`:
+  cả hai cùng ghi `transition-property`, class sau đè class trước, còn lại một thứ chạy.
 - **Khung hộp thoại không nằm trong lớp nền mờ đang chuyển `opacity`.** Lớp nền (`bg-black/30`) và
   khung là hai anh em trong một khối `fixed` đứng yên, mỗi cái tự mờ, cùng thời lượng. Khung là
   con của lớp nền thì độ mờ nhân nhau: lúc đóng khung tan nhanh hơn nền, nhìn giật (đã dính

@@ -282,7 +282,7 @@ Bấm năm    ──►   lưới 12 năm (2020–2031), ‹ › nhảy 12 năm
 - Câu lỗi nói **chuyện gì sai**, không lặp lời placeholder: "Chưa chọn ngày hết hạn", "Ngày hết hạn phải sau hôm nay". Không phải "Chọn ngày hết hạn".
 - **Mở từ một ô trong bảng (sửa tại chỗ, như hạn chót của công việc)** thì khác ô trong form ở ba chỗ:
   - **Bấm ngày là lưu và đóng**, không nút "Áp dụng". `Esc` hoặc bấm ra ngoài thì đóng, giữ giá trị cũ; tiêu điểm về lại ô.
-  - **Có đường gỡ giá trị.** Ô đang có hạn thì dưới lưới có một hàng gỡ: đường chia `border-t` tràn hết bề ngang popover (`F25`), dưới đó `p-1` rồi một **hàng kiểu mục menu rộng hết bề ngang**: `flex h-10 w-full items-center gap-2.5 rounded-xl px-3 text-sm text-foreground hover:bg-background`, icon `calendar-x` `size-4 text-muted` + "Xoá hạn", căn trái. Không có hàng này thì đặt hạn một lần là không bao giờ về lại `—` được (đã dính 24/09/2026: lịch mở từ "Quá hạn 3 ngày" chỉ có lưới).
+  - **Có đường gỡ giá trị.** Ô đang có hạn thì dưới lưới có một hàng gỡ: đường chia `border-t border-border` tràn hết bề ngang popover (`F25`), dưới đó `p-1` rồi một **hàng kiểu mục menu rộng hết bề ngang**: `flex h-10 w-full items-center gap-2.5 rounded-xl px-3 text-sm text-foreground hover:bg-background`, icon `calendar-x` `size-4 text-muted` + "Xoá hạn", căn trái. Không có hàng này thì đặt hạn một lần là không bao giờ về lại `—` được (đã dính 24/09/2026: lịch mở từ "Quá hạn 3 ngày" chỉ có lưới).
     - **Không dùng nút `ghost` co theo chữ.** Một nút nhỏ nằm một mình trong cả một hàng có đường chia trông lẻ loi, như thiếu nút còn lại (đã dính 24/09/2026). Hàng rộng hết bề ngang là ngôn ngữ của mục menu, đọc ra "một lựa chọn nữa của popover này", và mốc nhanh thêm sau này nằm cùng khuôn.
     - **Căn trái, không căn phải.** Mép phải của hàng cuối popover là chỗ của nút xác nhận ("Áp dụng"); ở đây bấm ngày là lưu nên không có nút đó, đặt "Xoá hạn" bên phải là trông như nút chính.
     - **Không đỏ, kể cả lúc rê.** Đỏ khi rê (`I4`) dành cho xoá **bản ghi**: mất một thứ. Gỡ hạn là đổi một giá trị về trống, đặt lại là có, không mất gì. Tô đỏ thì người ta ngần ngại bấm một việc vô hại, và làm nhạt nghĩa của đỏ ở mục "Xoá công việc" ngay trong menu ba chấm cùng dòng. Không hỏi xác nhận.
@@ -348,10 +348,10 @@ nó). Radix: `side="bottom"` + `avoidCollisions`, không bật `sticky="always"`
 └──────────────────────────────────────────────┘
 ```
 
-- **Lịch bên trái, bánh xe bên phải** từ `sm`, ngăn bằng `border-l`. Màn hẹp thì bánh xe xuống dưới lịch.
+- **Lịch bên trái, bánh xe bên phải** từ `sm`, ngăn bằng `border-l border-border`. Màn hẹp thì bánh xe xuống dưới lịch.
 - **Bánh xe cao bằng vùng lịch**, dải chọn ở giữa chiều cao đó. Bánh xe ngắn hơn lịch thì dưới nó trống một khoảng, cột bên phải trông như chưa dựng xong.
 - **Có nút Xong, nên giá trị chỉ ghi vào ô khi bấm Xong** (hoặc Enter). Trong lúc chọn, ô giữ nguyên giá trị cũ hoặc placeholder; mốc đang chọn hiện ở **dòng tóm tắt** bên trái footer (`text-sm text-muted tabular-nums`). Esc hay bấm ra ngoài là bỏ, ô không đổi. Đừng vừa có Xong vừa ghi vào ô ngay từng lần đổi: hai mô hình lẫn nhau, người dùng không biết Esc có hoàn lại không.
-- **Xong** là nút `primary` duy nhất của popover (`I3`), căn phải footer. Footer `border-t`, `px-4 py-3`.
+- **Xong** là nút `primary` duy nhất của popover (`I3`), căn phải footer. Footer `border-t border-border`, `px-4 py-3`.
 - Icon trong ô là `calendar-clock` (lucide), không phải `calendar`: nhìn ô là biết có cả giờ.
 - Ô hiển thị `23/09/2026 23:05`, ngày và giờ cách một dấu cách, `tabular-nums`. Có giây thì ô và khung rộng thêm cho cột giây.
 

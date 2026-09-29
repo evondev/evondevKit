@@ -16,7 +16,7 @@ Ba ca, chọn đúng một:
 | --- | --- |
 | **Người dùng tự nêu phong cách** ("làm trang giá kiểu glassmorphism") | Làm theo phong cách đó, **không hỏi lại** |
 | **Audit thấy dự án có phong cách khác flat** (`P4`) | **Theo phong cách dự án**, dựng luôn, báo một dòng lúc giao (mẫu bên dưới) |
-| **Dự án flat hoặc trống**, người dùng không nêu gì | Flat (`P6`). Không hỏi về phong cách. Riêng nhánh thiết kế từ đầu: nút Màu trên wireframe có nấc Có màu (`P12`) ở trang lướt để chọn; hai chế độ dựng lại: dòng Có màu (`V1d`), không chọn sẵn |
+| **Dự án flat hoặc trống**, người dùng không nêu gì | Flat (`P6`). Không hỏi về phong cách. Riêng nhánh thiết kế từ đầu: nút Màu trên wireframe có nấc Có màu (`P12`) ở trang lướt để chọn hoặc dashboard (công thức B của `P12`); hai chế độ dựng lại: dòng Có màu (`V1d`), không chọn sẵn |
 
 Vì sao theo dự án chứ không theo flat: một màn flat giữa app glass là màn lạc
 loài, người dùng thấy ngay. Nhất quán thắng gu.
@@ -43,7 +43,7 @@ Khác là phong cách, cứ theo. Tệ hơn là nguyên tắc, không được b
 | Loại | Luật | Phong cách đã chọn theo `P1` được đè không |
 | --- | --- | --- |
 | **Gu flat** | `M1` nền xám nhạt · `M2` tỉ lệ 95/5 · `M12` không gradient · `M13` tách bằng viền · `M15` bóng chỉ cho lớp nổi · `M20` mặc định sáng · `M23` tối là navy · `M29` card một mình không viền · `F19` không glass · `F20` không phát sáng · `F22` không animate hình khối | **Được**, theo đúng khối của phong cách đó bên dưới |
-| **Nguyên tắc** | Toàn bộ `N` `S` `T` `I` `R` · `M3` một màu nhấn · `M4` màu báo trạng thái · `M11` ba sắc độ chữ · `M19` bo lồng · `M24`–`M28` token · `M30` hai sắc đỏ · bố cục `F1`–`F18`, `F21`, `F23`–`F25` · **`P3` tương phản** | **Không bao giờ** |
+| **Nguyên tắc** | Toàn bộ `N` `S` `T` `I` `R` · `M3` một màu nhấn · `M4` màu báo trạng thái (ngoại lệ hẹp: `P12` công thức B đè chỉ ở ô icon card số liệu, ô icon đầu dòng theo loại và chuỗi biểu đồ) · `M11` ba sắc độ chữ · `M19` bo lồng · `M24`–`M28` token · `M30` hai sắc đỏ · bố cục `F1`–`F18`, `F21`, `F23`–`F25` · **`P3` tương phản** | **Không bao giờ** |
 
 Mỗi luật gu flat có dòng *"Gu flat"* ngay tại chỗ. Thấy dòng đó mà phong cách
 đã chọn không phải flat thì quay về đây.
@@ -281,11 +281,10 @@ ngoài hai chỗ đó thì theo `P1`.
 
 | Chỗ | Làm gì |
 | --- | --- |
-| Ô icon card số liệu | Ô `size-8 rounded-lg`, icon lucide `size-4`; mỗi card một sắc nhạt (`bg-indigo-50 text-indigo-600`, `bg-teal-50 text-teal-600`, `bg-amber-50 text-amber-600`, `bg-rose-50 text-rose-600`), tối đa bốn sắc một màn. Con số vẫn `text-foreground`, không tô |
+| Ô icon card số liệu | Ô `size-8 rounded-lg`, icon lucide `size-4`; mỗi card một sắc nhạt (`bg-indigo-50 text-indigo-600`, `bg-teal-50 text-teal-600`, `bg-violet-50 text-violet-600`, `bg-sky-50 text-sky-600`), tối đa bốn sắc một màn. Con số vẫn `text-foreground`, không tô |
 | Ô icon đầu dòng theo loại | Bộ phận, nhà cung cấp, loại giao dịch: cùng bộ sắc nhạt, **một loại một sắc cố định** trên mọi màn (Kỹ thuật luôn teal). Không có loại thì không ô |
 | Biểu đồ | Chuỗi chính màu nhấn; nhiều chuỗi thì lấy bộ sắc trên theo cùng thứ tự; kỳ chưa trọn nét đứt hay gạch (`charts.md`) |
 | Trạng thái | Như nấc Màu: `M4` trên thanh tiến độ, số vượt, quá hạn. Sắc phân loại không trùng sắc trạng thái trên cùng một thứ (thanh ngân sách không tô teal vì bộ phận là teal) |
-| Sidebar | Mục đang chọn nền `bg-primary/10 text-primary`, icon cùng màu; các mục khác giữ xám |
 
 **Bẫy**
 

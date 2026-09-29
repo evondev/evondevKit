@@ -6,6 +6,7 @@ trong các khối có comment đánh dấu:
 - **Font**: một khối ở `:root`, dùng chung cho cả sáng lẫn tối.
 - **Màu nhấn**: một khối ở `:root` cho nền sáng, và nếu có dark mode thì **một khối nữa ở `.dark`** cho nền tối. Phải sửa cả hai.
 - Không làm dark mode thì xoá hẳn khối `.dark` đi, đừng để đó cho rối.
+- Khối `@theme inline` map token sang class của Tailwind v4 (`bg-surface`, `text-muted`, `border-border-strong`, `ring-focus`…) và `--font-sans`. Chép luôn, không có nó thì các class đó không sinh ra; không dùng Tailwind thì xoá.
 
 Màu gần đen thì bản cho nền tối là gần trắng. Màu có sắc thì lấy bản sáng hơn
 chính nó khoảng hai bậc, đừng dùng nguyên màu của nền sáng.
@@ -35,8 +36,8 @@ Cách nạp thì tuỳ bối cảnh:
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 ```
 
-`700` chỉ để cho con số lớn (card số liệu, giá) và tên trang của trang trình diễn. Không
-nạp `800`: không luật nào dùng.
+`700` chỉ cho tiêu đề cấp trang và giá của trang trình diễn (`T2`); con số trong card số liệu là
+`font-semibold`. Không nạp `800`: không luật nào dùng.
 
 ---
 
@@ -62,7 +63,7 @@ không đọc được.
 
 Hai biến này tồn tại vì hai luật khác đòi:
 
-- Luật `I8` bắt nút phụ phải chênh đủ với nền cha, luật `I9` bắt hover phải nhìn thấy được. Mà `--border` còn nhạt hơn cả `--background`, hover bằng `--border` thì như không hover. Nên có `--background-hover` là một bậc xám thật.
+- Luật `M18` bắt phần tử con trong hàng có hover không trùng nền hover của hàng. Hàng rê vào về `--background` (`I10`), nên ô ngày, ô vuông chuỗi, ô rỗng trong hàng lấy `--background-hover`, đậm hơn một nấc, không tan vào nền. Hover của nút phụ là `--secondary-hover`, hover của dòng là `--background` hay `--surface-hover`, không phải biến này.
 - `--ring-focus` là ring rất mờ theo màu nhấn, tách thành biến chứ không viết `primary/10` rải khắp nơi. Dùng cho **ô điền lúc focus** (input, textarea, select) và **ô chọn dạng card đang chọn**, đi cùng viền `--border-focus` (`I13`). Nút, menu, tab không dùng.
 
 Đổi `--primary` sang màu khác thì nhớ đổi `--ring-focus` theo, vì nó là chính

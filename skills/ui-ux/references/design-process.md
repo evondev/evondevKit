@@ -2,8 +2,8 @@
 
 **Nhánh mặc định** (chủ dự án chốt 29/09/2026): mọi đề dựng hay làm lại một màn trở lên đều
 vào đây, tiếng Việt hay tiếng Anh, sản phẩm mới hay màn đã có. Chỉ không vào khi đề nói rõ lối
-khác (bảng câu 1 của `SKILL.md`): soi, giữ brand, refactor, dựng luôn, hoặc việc nhỏ hơn
-một màn.
+khác (bảng câu 1 của `SKILL.md`): soi, giữ brand, dựng lại theo gu skill, refactor, dựng
+luôn, hoặc việc nhỏ hơn một màn.
 
 Khác nhánh `V` (`review.md`): `V` giữ khung trang, sửa lỗi và làm gọn. Kết quả là bản hi-fi
 sạch hơn của **đúng wireframe cũ**. Nhánh `U` bắt đầu từ câu *"người dùng đến màn này để
@@ -39,6 +39,9 @@ Chưa qua cổng 2 thì **không đụng file nào của dự án**. Wireframe v
 
 ## U1. Brief: đọc trước, hỏi sau ⚑
 
+- **Chạy audit câu 2 của `SKILL.md` trước khi viết brief**, cho mọi dự án, sản phẩm mới hay
+  đã có UI: stack, component có sẵn, phong cách. Dòng `Audit:` đứng đầu tin cổng 1. Bỏ audit
+  thì wireframe vẽ control mà dự án đã có kiểu khác, `U4` dựng ra app thứ hai.
 - Đọc README, file route, kiểu dữ liệu (type, mock), chữ trên các màn đang có. Từ đó ghi
   một khối năm dòng: **sản phẩm gì**, **cho ai**, **một đến ba việc chính**, **nền tảng
   dùng nhiều** (điện thoại hay máy tính), **điểm khác biệt** (thứ sản phẩm bán mà nơi khác
@@ -162,7 +165,7 @@ dòng đó."* Dừng chờ.
   thật. Người dùng hầu như không tự thu cửa sổ, nên không thấy bảng thành danh sách, lọc thành
   nút ra sao ở điện thoại.
   - **Nút ☰ trong khung mobile bấm được**: mở panel trượt từ trái theo `layouts/app.md` (lớp
-    phủ, bấm ngoài hay Esc thì đóng), để người dùng thấy menu có bao nhiêu mục, mục nào đang
+    phủ, bấm ngoài hay Esc thì đóng, không nút ✕), để người dùng thấy menu có bao nhiêu mục, mục nào đang
     chọn. ☰ không bấm được thì mobile chỉ là ảnh chụp.
   - **App có từ 5 mục điều hướng chính trở xuống** thì thêm nhóm **Nav: ☰ · Thanh dưới** (chỉ
     hiện khi Khổ là Mobile), vẽ thêm thanh điều hướng dưới theo `layouts/app.md`, và ghi trong
@@ -287,8 +290,10 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
 - **Dự án đã có UI:** giữ brand theo bảng vai màu (`review.md`, chế độ dựng lại giữ brand),
   dáng theo gu skill. Khung trang theo phương án đã chọn. Logic, handler, dữ liệu không đụng;
   thứ cần dữ liệu mới thì để prop và handler rỗng, lúc giao liệt kê.
-- **Sản phẩm mới:** đi tiếp câu 2 và 3 của mục 0 trong `SKILL.md`, rồi dựng theo phương án đã
-  chọn thay cho bố cục mặc định của câu 4.
+- **Sản phẩm mới:** audit câu 2 đã chạy ở `U1`; đi tiếp câu 3 của mục 0 trong `SKILL.md`,
+  rồi dựng theo phương án đã chọn thay cho bố cục mặc định của câu 4.
+- **Đề nhiều hơn một màn:** chốt hợp đồng nguyên tố `D1` (`system.md`) ở đây, trước khi dựng
+  màn đầu tiên. Wireframe đã chọn nói khung, bảng `D1` nói control nào dùng kiểu nào cho cả bộ.
 - **Chọn `có màu` thì phong cách là `P12`** cho route đó và các màn người dùng cuối cùng loại, ghi một
   dòng lúc giao như mẫu của `P1`. Màu vẫn từ màu nhấn của dự án.
 - Ráp bằng mẫu của skill (`SKILL.md` mục 2). Chạy probe `--sweep` tới khi danh sách `P`

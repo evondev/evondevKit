@@ -8,7 +8,7 @@
      Một font cho cả app. Phân vai bằng weight, không bằng font thứ hai:
      heading 600, body 400, nhãn phụ 500. tracking-tight chỉ cho chữ có dấu từ
      text-3xl trở lên, xem T2 trong rules-type.md. */
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --app-font: "Inter", ui-sans-serif, system-ui, sans-serif;  /* Tailwind đọc qua --font-sans, khối @theme bên dưới */
   /* ============================================================== */
 
   /* ===== MÀU NHẤN, CHỖ 1 TRONG 2: NỀN SÁNG ===== */
@@ -40,16 +40,15 @@
   --border-strong: #eaeaea;   /* 23/09/2026: #f2f2f2 (1.1:1) mờ quá, radio gần như vô hình;
                                  #e4e4e7 (1.27:1) thì đường kẻ sidebar đậm. Chốt ở giữa. */
 
-  /* Bậc hover cho nút phụ và cho dòng danh sách. Cần biến riêng vì --border
-     và --background chênh nhau quá ít, hover bằng --border là gần như vô hình. */
   /* Bề mặt của nút phụ và vùng chìm trong card. Luôn CHÌM hơn --surface. */
   --secondary: #e7e8ec;
   --secondary-hover: #dbdce2;
 
+  /* Nền của ô trạng thái nhỏ nằm trong hàng có hover: ô ngày, ô vuông chuỗi, ô
+     rỗng. Đừng dùng --background cho chúng, vì hàng hover cũng về --background thì
+     con tan vào nền. Không phải hover của nút phụ (--secondary-hover) hay của dòng
+     (--background, --surface-hover, luật I10). Xem luật M18. */
   --background-hover: #e7e7ea;
-  /* Cũng là nền của ô trạng thái nhỏ nằm trong hàng có hover: ô ngày, ô vuông
-     chuỗi, ô rỗng. Đừng dùng --background cho chúng, vì hàng hover cũng về
-     --background thì con tan vào nền. Xem luật M18. */
 
   /* Hover và dòng đang chọn của BẢNG / danh sách tràn hết bề ngang khung trắng.
      Không dùng --background ở đây: dòng chạm hai mép khung mà tô đúng màu nền
@@ -129,15 +128,19 @@
   /* ============================================ */
 
   --background: #05060f;
-  /* Nút phụ vẫn phải CHÌM hơn card, y như ở nền sáng. Lấy chính nền trang.
-     Sáng hơn card là đảo ngược quan hệ, xem luật M21. */
-  --secondary: #1c202d;   /* KHÔNG trùng --background: trùng thì tab boxed đang chọn và nút
-                              secondary đặt trên nền trang tối biến mất (sửa 23/09/2026) */
-  --secondary-hover: #252a39;
+  /* Nút phụ vẫn phải CHÌM hơn card, y như ở nền sáng: chìm nhất, dưới cả nền trang (M21).
+     Bản #1c202d trước đây sáng hơn card, đảo quan hệ (sửa 29/09/2026).
+     Không vừa chìm vừa tách được khỏi nền trang: card và nền trang tối chỉ chênh 1.07:1,
+     bậc nào nằm dưới card cũng sát nền trang. Nên chọn gần đen ám navy, khác --background
+     (1.03:1 với nền trang, 1.10:1 với card, ngang nút phụ trên nền trang ở bản sáng 1.12:1).
+     Nút secondary, tab boxed đang chọn đặt THẲNG trên nền trang tối thì thêm viền --border
+     để không biến mất: ở nền tối viền tách khối, không phải nền (M23). */
+  --secondary: #010207;
+  --secondary-hover: #0b0d17;  /* sáng lên một bậc, vẫn dưới card; 1.07:1 với --secondary */
 
   --background-hover: #171a26;
   --surface-hover: #141722;  /* sáng hơn --surface một chút, luật I10 */
-  --button-hover: #1a1d29;   /* giữa --surface-hover và --secondary; chưa đo trên dự án tối */
+  --button-hover: #1a1d29;   /* sáng hơn --surface-hover một bậc; chưa đo trên dự án tối */
   /* Bóng đen vô hình trên nền tối: ô nổi nhờ viền và vệt sáng mép trên. */
   --shadow-segment-track: inset 0 0 0 1px var(--border), inset 0 1px 2px rgb(0 0 0 / 0.4);
   --shadow-segment-thumb: 0 0 0 1px var(--border-strong), inset 0 1px 0 rgb(255 255 255 / 0.06), 0 1px 2px rgb(0 0 0 / 0.5);
@@ -176,6 +179,42 @@
   --neutral-bg: rgb(113 113 123 / 0.15);
   --neutral: #9f9fa9;                      /* zinc-400, 6.2:1 */
 }
+
+/* ===== MAP TOKEN SANG CLASS CỦA TAILWIND V4 =====
+   Thiếu khối này thì `bg-surface`, `text-muted`, `border-border-strong`, `bg-primary/8`…
+   không sinh ra class nào, màn chép từ skill mất màu mà không báo lỗi. Đặt sau
+   `@import "tailwindcss"`. `inline` để class đọc thẳng biến ở :root / .dark, đổi theme
+   là class đổi theo. Tên bên trái KHÁC tên bên phải, không trỏ vào chính nó (W2).
+   Không dùng Tailwind thì xoá khối này; Tailwind v3 thì khai cùng bộ tên trong
+   `theme.extend.colors` của tailwind.config. Màu mang nghĩa không map: viết thẳng
+   class `rose-*`, `red-*`… như khối màu mang nghĩa ở trên. */
+@theme inline {
+  --font-sans: var(--app-font);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-light: var(--primary-light);
+
+  --color-background: var(--background);
+  --color-background-hover: var(--background-hover);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-secondary: var(--secondary);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-button-hover: var(--button-hover);
+
+  /* `border-focus` và `ring-focus` là hai màu khác nhau (viền đặc, ring 10%). Một
+     --color-focus thì hai class đọc chung một màu, nên tách theo namespace riêng
+     của từng loại: border-* đọc --border-color-* trước, ring-* đọc --ring-color-* trước. */
+  --border-color-focus: var(--border-focus);
+  --ring-color-focus: var(--ring-focus);
+}
+/* ================================================= */
 
 /* ===== THANH CUỘN TỰ ẨN, ÁP CHO CẢ APP. Luật I18. =====
    Đứng yên thì trong suốt; rê chuột vào vùng cuộn thì hiện mờ; đang cuộn thì

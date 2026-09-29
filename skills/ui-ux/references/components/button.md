@@ -35,7 +35,9 @@ function getVariantClasses(variant: ButtonVariant): string {
 <button
   className={cn(
     "inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl",
-    "px-4 py-2.5 text-sm font-medium transition-colors",
+    // Cao 40px cố định cho nhãn một dòng, viền hay không viền cũng vậy. min-h chứ không h:
+    // nhãn dài xuống dòng thì nút cao thêm (T15).
+    "min-h-10 px-4 py-2 text-sm font-medium transition-colors",
     // Nhãn tiếng Việt dài thì cho xuống dòng, đừng để tràn. Luật T15.
     "max-w-full text-center leading-tight [overflow-wrap:anywhere]",
     // Không vòng focus (I13). Dự án cần accessibility thì trả vòng lại đúng ở dòng này (I14)
@@ -80,8 +82,9 @@ function getVariantClasses(variant: ButtonVariant): string {
 - **Không `shadow`.** Nút nằm trong trang (`M15`).
 - Chỉ `transition-colors`. Nút không phóng to, không nhấc lên, không đổ bóng thêm khi hover (`F22`).
 - **Không vòng focus** (`I13`), kể cả khi Tab tới.
-- **Nút trong form hoặc footer modal** thêm `h-11 md:h-10` để cao đúng bằng ô nhập (`budgets.md`). Nút thường để `py-2.5` tự lo.
-- Không có prop `size`. Cần nút khác cỡ thì truyền `className` — đỡ đẻ ra ma trận variant nhân size (`I6`).
+- **Chiều cao đặt bằng `min-h-10`, không để `py` tự lo.** `py-2.5` + `leading-tight` thì nút đặc cao 38px, nút viền cao 40px vì cộng 2px viền: hai nút cạnh nhau lệch đáy (đã dính 29/09/2026). `min-h-10` gồm cả viền, nên nút nào cũng 40px; nhãn dài xuống dòng thì nút cao thêm, không tràn (`T15`). Nút chỉ icon `size-10`, cao bằng.
+- **Nút trong form hoặc footer modal** thêm `min-h-11 md:min-h-10` để cao đúng bằng ô nhập (`budgets.md`).
+- Không có prop `size`. Cần nút khác cỡ thì truyền `className` — đỡ đẻ ra ma trận variant nhân size (`I6`). **Nút thấp hơn 40px thì truyền cả `min-h-*`** (`size-8 min-h-8`, link chữ `h-auto min-h-0`): `h-8` hay `size-8` không đè được `min-h-10` của class gốc, nút vẫn cao 40px.
 - Logic class nằm trong `getVariantClasses()` ngoài JSX, không nhét ternary vào giữa markup.
 
 ---

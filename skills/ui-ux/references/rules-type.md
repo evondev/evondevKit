@@ -14,8 +14,8 @@ cả trang: chữ mảnh hơn, sạch hơn, bớt cái vẻ nặng nề của fo
 ```
 
 **T2. Một họ chữ cho cả app.** Phân vai bằng weight và cỡ, không bằng font thứ
-hai: tiêu đề `600`, body `400`, nhãn phụ `500`. `700` chỉ cho tên trang của trang
-trình diễn (giới thiệu, bảng giá). Phần lớn hệ thiết kế sản phẩm dùng 600 cho tiêu đề app (có
+hai: tiêu đề `600`, body `400`, nhãn phụ `500`. `700` chỉ cho tiêu đề cấp trang và giá
+của trang trình diễn (giới thiệu, bảng giá). Phần lớn hệ thiết kế sản phẩm dùng 600 cho tiêu đề app (có
 hệ dùng 650–700, tra 27/09/2026); skill chọn 600 vì 700 nặng hơn gu mờ của dự án (hạ ngày 23/09/2026).
 
 `tracking-tight` **cho chữ có dấu chỉ từ `text-3xl` trở lên** (nâng từ `2xl` ngày

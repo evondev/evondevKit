@@ -1327,6 +1327,21 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     textOnlyPagers.push(`${wordControls.map((control) => `"${control.textContent.trim()}" ${Math.round(control.getBoundingClientRect().width)}px`).join(", ")}: ${describe(group)}`);
   }
 
+  // 18o. Thanh header trong suốt nằm trên nền trang xám: các app để header nền trắng; trong suốt thì trông như
+  //      chưa xong, dính đỉnh thì nội dung cuộn lên lộ sau chữ (29/09/2026, wireframe khách truy cập).
+  const transparentHeaders = [];
+  for (const bar of document.querySelectorAll("header, [role='banner']")) {
+    if (transparentHeaders.length >= 2 || !isVisible(bar)) continue;
+    const rect = bar.getBoundingClientRect();
+    if (rect.height < 44 || rect.height > 96 || rect.width < window.innerWidth * 0.4 || rect.top > 8) continue;
+    if (readColor(getComputedStyle(bar).backgroundColor).alpha > 0.1) continue;
+    let behind = bar.parentElement;
+    while (behind && readColor(getComputedStyle(behind).backgroundColor).alpha < 0.9) behind = behind.parentElement;
+    const behindColor = readColor(getComputedStyle(behind || document.body).backgroundColor);
+    const isGrayBehind = behindColor.alpha > 0.9 && Math.min(behindColor.red, behindColor.green, behindColor.blue) < 250;
+    if (isGrayBehind) transparentHeaders.push(`nền sau rgb(${behindColor.red}, ${behindColor.green}, ${behindColor.blue}): ${describe(bar)}`);
+  }
+
   // 18m. Trang wireframe thiếu phần nào của thanh công cụ (`design-process.md` U3): phương án, nút Màu, Khổ,
   //      Trạng thái, khung lý do, số khối. Có lượt wireframe có thanh, có lượt không (29/09/2026). Trong khung
   //      mobile (`frame=1`) thanh ẩn là đúng, không tính.
@@ -1375,6 +1390,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     overlongPlaceholders,
     fakeFieldWraps,
     textOnlyPagers,
+    transparentHeaders,
     swallowedNumbers,
     floatingContent,
     tinyTexts,
@@ -2677,6 +2693,10 @@ function formatReport(results) {
     if (result.fakeFieldWraps?.length > 0) {
       problems.push(`KHỐI TRÔNG NHƯ Ô NHẬP MÀ CHỮ XUỐNG DÒNG (${result.fakeFieldWraps.length} khối, dùng <input> thật theo components/input.md):`);
       for (const item of result.fakeFieldWraps) problems.push(`  ${item}`);
+    }
+    if (result.transparentHeaders?.length > 0) {
+      problems.push(`THANH HEADER TRONG SUỐT TRÊN NỀN XÁM (${result.transparentHeaders.length} thanh, nền --surface theo layouts/app.md):`);
+      for (const item of result.transparentHeaders) problems.push(`  ${item}`);
     }
     if (result.textOnlyPagers?.length > 0) {
       problems.push(`PHÂN TRANG CHỈ CÓ NÚT CHỮ (${result.textOnlyPagers.length} chỗ, dựng ‹ 1 2 3 … › theo components/small-controls.md):`);

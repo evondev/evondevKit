@@ -4,13 +4,13 @@ Nguồn: chip và nút icon của một dự án thật.
 
 ```tsx
 // Chip: bộ lọc, tag chọn được. Luôn kèm aria-pressed={isActive}
-"inline-flex max-w-48 cursor-pointer items-center rounded-full px-3 py-1 text-xs font-medium transition-colors"
+"inline-flex max-w-48 cursor-pointer items-center rounded-full px-3 py-1 text-xs font-medium outline-hidden transition-colors"
 isActive && "bg-primary text-primary-foreground"
 !isActive && "bg-foreground/5 text-foreground/70 hover:bg-foreground/10 hover:text-foreground"
 
 // IconButton: hành động phụ trong dòng hoặc header
-"inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-lg text-muted transition-colors"
-"hover:bg-background hover:text-foreground"
+"inline-flex size-8 cursor-pointer items-center justify-center rounded-lg text-muted transition-colors"
+"hover:bg-foreground/5 hover:text-foreground"   // nằm trong dòng có nền rê: hover:bg-foreground/8
 "outline-hidden"
 "disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted"
 ```
@@ -40,7 +40,8 @@ chính.
 - **Nhãn dài thì cắt, không để chip phình.** Chip `max-w-48`, chữ bọc trong `<span class="truncate">`, và `title` mang đủ tên để rê vào vẫn đọc được. Một chip "Hội chợ Triển lãm Quốc tế 2026" rộng gấp bốn chip "VIP" là cả hàng lệch, mắt dồn hết vào cái dài nhất.
 - **Chip lọc là nút bật/tắt, phải có `aria-pressed={isActive}`.** Trạng thái chọn hiện chỉ bằng màu nền, trình đọc màn hình không thấy màu, nên thiếu `aria-pressed` thì chip nào cũng đọc ra "nút" như nhau. Chip chọn một (kiểu tab) thì dùng `role="radio"` + `aria-checked` trong `role="radiogroup"`, không dùng `aria-pressed`.
 - Chip là `rounded-full`, nút là `rounded-xl` (cao dưới 40px thì `rounded-lg`, `F1`). Khác hình để mắt biết ngay cái nào chọn được nhiều cái nào là hành động.
-- IconButton vuông `h-7 w-7`, chữ `text-muted` lúc thường, chỉ đen lên khi hover. Icon phụ không được đen bằng nội dung.
+- IconButton vuông `size-8`, chữ `text-muted` lúc thường, chỉ đen lên khi hover. Icon phụ không được đen bằng nội dung.
+- **Nền rê của IconButton là lớp phủ `bg-foreground/5`, không `bg-background`.** Nút hay nằm trong dòng rê `hover:bg-background` (`list-row.md`): rê vào nút thì nền nút trùng nền dòng, nút mất hẳn (đã dính 29/09/2026). Lớp phủ lấy màu nền phía sau nên đậm hơn nền quanh nó ở mọi chỗ. **Nằm trong dòng có nền rê thì lên `hover:bg-foreground/8`** (`I10`): `/5` chồng lên nền dòng đang rê gần như trùng.
 - Trạng thái disabled phải tắt luôn cả hover (`disabled:hover:bg-transparent`). Thiếu dòng đó thì nút chết vẫn sáng lên khi rê vào, người dùng bấm hoài không hiểu sao.
 - `aria-label` và `title` luôn nhận cùng một chuỗi `label`. Nút chỉ có icon thì bắt buộc.
 
@@ -57,9 +58,9 @@ kế.
      hàng bên trong px-1 đưa chip đầu về thẳng cột. -->
 <div class="scrollbar-clean overflow-x-auto py-0.5">
   <div class="flex items-center gap-2 px-1">
-    <button type="button" aria-pressed="true" class="shrink-0 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">Tất cả</button>
-    <button type="button" aria-pressed="false" class="shrink-0 rounded-full bg-foreground/5 px-3 py-1 text-xs font-medium text-foreground/70 hover:bg-foreground/10 hover:text-foreground">Quá hạn</button>
-    <button type="button" aria-pressed="false" title="Hội chợ Triển lãm Quốc tế 2026" class="max-w-48 shrink-0 rounded-full bg-foreground/5 px-3 py-1 text-xs font-medium text-foreground/70 hover:bg-foreground/10 hover:text-foreground">
+    <button type="button" aria-pressed="true" class="shrink-0 cursor-pointer rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground outline-hidden">Tất cả</button>
+    <button type="button" aria-pressed="false" class="shrink-0 cursor-pointer rounded-full bg-foreground/5 px-3 py-1 text-xs font-medium text-foreground/70 outline-hidden hover:bg-foreground/10 hover:text-foreground">Quá hạn</button>
+    <button type="button" aria-pressed="false" title="Hội chợ Triển lãm Quốc tế 2026" class="max-w-48 shrink-0 cursor-pointer rounded-full bg-foreground/5 px-3 py-1 text-xs font-medium text-foreground/70 outline-hidden hover:bg-foreground/10 hover:text-foreground">
       <span class="block truncate">Hội chợ Triển lãm Quốc tế 2026</span>
     </button>
   </div>
@@ -164,13 +165,13 @@ isSelected && "border-transparent bg-secondary text-foreground"
 - **Ô đang chọn phải chênh với nền NẰM DƯỚI nó**, không phải chênh với mấy tab anh em. Cùng một class mà đổi chỗ đặt (card trắng ↔ nền trang xám) là đổi luôn độ rõ, nên chọn bậc xám nào cũng phải thử ở cả hai nền (`N2`).
 - **Không đặt hàng `boxed` vào một khối xám riêng.** Nó nằm thẳng trên nền trang hoặc trên card. Bọc thêm khối xám là thành `segmented` hỏng: rãnh to, đậm, và ô trắng lọt thỏm.
 - **`h-9 rounded-lg`**, cao dưới 40px nên bo 8px (`F1`), không ngoại lệ. Đã thử 12px và bỏ (21/09/2026): tab 36px bo 12px là quá tròn so với chiều cao. Đứng cạnh ô tìm `h-10` là lệch đúng một bậc, chấp nhận được.
-- Bên phải cùng hàng: ô tìm, nút **Lọc** (mở popover cho các trường khác ngoài trạng thái), nút **Sắp xếp** nếu cần. Đều là nút viền `h-9` (`I1`).
+- Bên phải cùng hàng: ô tìm, nút **Lọc** (mở popover cho các trường khác ngoài trạng thái), nút **Sắp xếp** nếu cần. Đều là nút viền `h-10 rounded-xl` (`I1`), **cao bằng ô tìm `h-10`**: cả hàng công cụ một chiều cao, như bảng cỡ ở đầu file. Nút `h-9` đứng sát ô tìm `h-10` thì đáy lệch 4px, trông như hàng bị hỏng.
 
 ### `underline`: chia nội dung trang chi tiết
 
 ```ts
 // Hàng: đường kẻ chạy hết bề ngang, vẽ bên trong hàng (bóng inset 1px ở đáy), vạch của tab đang chọn đè lên nó.
-"flex min-w-full gap-2 px-2 shadow-[inset_0_-1px_0_var(--color-border-strong)]"
+"flex min-w-full gap-2 px-2 shadow-[inset_0_-1px_0_var(--border-strong)]"
 // Tab: vạch là ::after nên không đẩy chiều cao. box-content h-10 pb-px: tab cao 41px phủ cả dòng kẻ, vạch bottom-0 đè đúng lên nó.
 "relative box-content h-10 rounded-xl px-2 pb-px after:absolute after:inset-x-2 after:bottom-0 after:h-0.5 after:rounded-full"
 isSelected && "text-foreground after:bg-foreground"
@@ -247,21 +248,22 @@ Hai token bóng khai trong `tokens.css`, có bản nền tối riêng:
 Số việc chưa đọc, số mục trong nhóm, số thành viên. Xuất hiện ở sidebar, ở tab,
 ở tiêu đề cột.
 
-Mặc định là **pill trắng viền mảnh, chữ xám**. Muốn gọn hơn nữa thì bỏ khung,
-chỉ để số trơn.
+Mặc định là **số trơn, chữ xám**, không khung, không nền. Pill trắng viền mảnh chỉ
+khi người dùng chọn. Năm pill viền cạnh nhau trên một cột là năm khung nhỏ kéo mắt
+(sidebar bỏ pill ngày 23/09/2026, `../layouts/app.md`).
 
 ```html
-<!-- Mặc định: pill trắng, viền mảnh, chữ xám. -->
-<span class="ml-auto shrink-0 rounded-full border border-border-strong bg-surface px-2 py-0.5 text-xs font-medium tabular-nums text-muted">121</span>
-
-<!-- Gọn hơn: số trơn, không khung, không nền. -->
+<!-- Mặc định: số trơn. Dòng đang chọn thì số lên text-foreground cùng chữ. -->
 <span class="ml-auto shrink-0 text-xs tabular-nums text-muted">4</span>
+
+<!-- Chỉ khi người dùng chọn: pill trắng, viền mảnh, chữ xám. -->
+<span class="ml-auto shrink-0 rounded-full border border-border-strong bg-surface px-2 py-0.5 text-xs font-medium tabular-nums text-muted">121</span>
 ```
 
-- **Một danh sách chỉ MỘT kiểu.** Cả sidebar dùng pill thì mọi số đều là pill, kể cả số `4`. Đừng chia kiểu theo ý nghĩa con số (chưa đọc thì pill, số đếm thường thì trơn): đặt cạnh nhau thì chỉ thấy hai hàng lệch style, không ai đọc ra được ý nghĩa (đã dính 21/09/2026).
+- **Một danh sách chỉ MỘT kiểu.** Người dùng chọn pill thì mọi số đều là pill, kể cả số `4`. Đừng chia kiểu theo ý nghĩa con số (chưa đọc thì pill, số đếm thường thì trơn): đặt cạnh nhau thì chỉ thấy hai hàng lệch style, không ai đọc ra được ý nghĩa (đã dính 21/09/2026).
 - **Luôn căn phải**, cách nhãn bằng `ml-auto` hoặc `justify-between`.
 - **Không tô màu brand, không nền đặc.** Badge brand chữ trắng trông nặng và làm màu nhấn loang khắp sidebar (đã thử và bỏ 21/09/2026). Số đếm là thông tin, không phải hành động (`M2`, `M4`). Dự án muốn badge màu thì để họ tự đổi, skill không tự đề xuất.
-- **Nền pill là `--surface` (trắng)**, không phải `--secondary`. Pill trắng vẫn nổi rõ khi hàng đang hover hay đang chọn (nền `--background`), còn pill xám thì tan vào hàng.
+- **Có pill thì nền pill là `--surface` (trắng)**, không phải `--secondary`. Pill trắng vẫn nổi rõ trên hàng đang rê (`--background`) và hàng đang chọn (`--secondary`), còn pill xám thì tan vào hàng.
 - Chỉ tô màu khi con số là **cảnh báo thật**, kiểu số việc quá hạn: chữ hổ phách, vẫn không nền đặc.
 - `tabular-nums` để các hàng thẳng cột nhau.
 - Số lớn thì rút gọn: `99+`, đừng để `1.284` phá bề rộng sidebar.
@@ -270,7 +272,7 @@ chỉ để số trơn.
 
 ## Phân trang
 
-Nằm ở đáy khung bảng hoặc danh sách, cách thân bảng bằng `border-t`. Một hàng,
+Nằm ở đáy khung bảng hoặc danh sách, cách thân bảng bằng `border-t border-border`. Một hàng,
 hai cụm: **số đếm bên trái, mọi control bên phải**.
 
 ```
@@ -278,7 +280,7 @@ hai cụm: **số đếm bên trái, mọi control bên phải**.
 ```
 
 ```tsx
-<div className="flex items-center justify-between gap-4 border-t px-4 py-3">
+<div className="flex items-center justify-between gap-4 border-t border-border px-4 py-3">
   <p className="text-sm tabular-nums text-muted">1 tới 10 trong 1.284 đơn hàng</p>
   <div className="flex shrink-0 items-center gap-4">
     {/* "Mỗi trang" + select h-9 */}
@@ -289,7 +291,7 @@ hai cụm: **số đếm bên trái, mọi control bên phải**.
 
 ```ts
 // Nút số trang: vuông h-9, luôn có border để lúc chuyển trang không xô hàng
-"inline-flex h-9 min-w-9 items-center justify-center rounded-lg border px-2 text-sm font-medium tabular-nums"
+"inline-flex h-9 min-w-9 cursor-pointer items-center justify-center rounded-lg border px-2 text-sm font-medium tabular-nums outline-hidden"
 isCurrent && "border-transparent bg-secondary text-foreground"   // + aria-current="page"
 !isCurrent && "border-transparent text-foreground/70 hover:bg-foreground/5 hover:text-foreground"
 // Mũi tên ‹ ›: IconButton h-9 w-9, có aria-label "Trang trước" / "Trang sau"

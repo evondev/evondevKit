@@ -115,7 +115,7 @@ sidebar mở, quá 6 cột là bắt đầu chật (đã dính 23/09/2026: bản
   {canScrollLeft ? (
     <div className="pointer-events-none absolute inset-y-0 left-0 hidden items-center any-pointer-fine:flex">
       <IconButton label="Cuộn sang trái" onClick={() => scrollByPage(-1)}
-        className="pointer-events-auto size-8 rounded-full border border-border bg-surface">
+        className="pointer-events-auto size-8 rounded-full border border-border-strong bg-surface">
         <ChevronLeft className="size-4" />
       </IconButton>
     </div>
@@ -127,6 +127,7 @@ sidebar mở, quá 6 cột là bắt đầu chật (đã dính 23/09/2026: bản
 - **Cùng hai cờ với mép mờ** (`scrollLeft > 0`, `scrollLeft + clientWidth < scrollWidth - 1`): phía nào mờ thì phía đó có nút, cuộn tới đầu thì nút đó ẩn.
 - **Bấm cuộn khoảng 80% bề rộng khung**: `scroller.scrollBy({ left: direction * scroller.clientWidth * 0.8, behavior: "smooth" })`. Cuộn đúng một mục thì hàng dài phải bấm mãi; cuộn đủ 100% thì mất mục đang nhìn ở mép.
 - **Chỉ hiện ở máy có chuột** (`any-pointer-fine:`; không Tailwind v4 thì `@media (any-pointer: fine)`). Điện thoại vuốt được, thêm nút là che mất chip ở màn hẹp. Laptop màn cảm ứng có cả chuột nên vẫn hiện.
+- **Viền `--border-strong`** như mọi nút có viền (`M14`). **Bo tròn hẳn là ngoại lệ của `F1`**: nút mũi tên tròn nổi trên dải mờ là quy ước chung của hàng cuộn ngang, không đọc lẫn với nút trong hàng.
 - Nút nằm trên dải mờ 32px, căn giữa theo chiều dọc bằng `inset-y-0 flex items-center`, không `-translate-y-1/2` (`N11`). Không đổi bánh cuộn dọc thành cuộn ngang: cướp cuộn trang, người đang cuộn xuống bị kẹt ở hàng chip.
 
 **Vạch chỉ vị trí tự vẽ: KHÔNG dựng mặc định, đề xuất một dòng lúc giao.** Mặc định hàng cuộn
@@ -172,7 +173,7 @@ khít mép khung.
 | Padding card | `p-4`, tối đa `p-5` | xem `budgets.md` |
 | Chiều cao nút | `h-10` | xem `budgets.md` |
 | Tiêu đề trong card | `text-base` | `text-base` (không đổi theo breakpoint, `D8`) |
-| Mô tả trong card | `text-sm` | `text-sm` hoặc `text-base` tuỳ loại trang |
+| Mô tả trong card | `text-sm` | `text-sm`: tiêu đề card `text-base` nên chữ bên trong tối đa `text-sm` (`T8`) |
 | Ngày tháng, nhãn phụ | `text-xs`, luôn nhỏ hơn tiêu đề một bậc | như trên |
 | Ô nhập, textarea, select | **`text-base`, không hạ.** Dưới 16px thì iOS tự zoom | `md:text-sm` |
 
