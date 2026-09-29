@@ -25,6 +25,7 @@ Nhận chế độ từ đề, không hỏi, rồi nói một dòng ở phần m
 | Dòng Gu | chỉ nêu, mặc định không chọn | **chọn sẵn**, người dùng bỏ dòng nào thì bỏ | chọn sẵn |
 | Dòng Cấu trúc (`V1b`) | không có | có: sắp lại thì chọn sẵn, bỏ bớt thông tin thì không | như cột giữa |
 | Dòng Gọn (`V1c`) | không có | **có, chọn sẵn**: mỗi khối chính một dòng, làm gọn theo gu skill, giữ màu | như cột giữa |
+| Dòng Có màu (`V1d`) | không có | có ở trang lướt để chọn, **không chọn sẵn**: một dòng cho cả route, màu từ màu nhấn của dự án | như cột giữa |
 | Dáng: bóng, viền, nhịp, cỡ chữ, nhãn, lớp phủ trên ảnh | giữ | **theo gu skill** | theo gu skill |
 | Màu theo vai, logo, font | giữ | **giữ** | chỉ giữ logo và màu nhấn chính |
 | Component | không viết lại, sửa đúng chỗ lỗi | được thay control gốc và khối tự chế bằng mẫu của skill (bảng dưới) | như cột giữa |
@@ -247,6 +248,26 @@ Hay gặp:
   của dự án (tròn vẫn tròn, vuông vẫn vuông), chỉ gom về một cỡ cho cùng vai.
 - Xếp sau Cấu trúc, trước Gu.
 
+## V1d. Dòng Có màu, chỉ ở hai chế độ dựng lại ⚑
+
+Dựng lại cho gọn xong mà trang vẫn "buồn màu" là chuyện hay gặp ở trang người dùng cuối
+(chủ dự án thấy 29/09/2026). Nên hai chế độ dựng lại đưa thêm **một dòng Có màu** cho cả
+route, theo `P12` trong `styles.md`.
+
+- **Chỉ khi cả ba đúng**: trang người dùng cuối lướt để chọn (tìm việc, tìm phòng, sản phẩm,
+  khoá học, bài viết); dự án đang phẳng (`P4` ra flat, chưa có dải màu đầu trang); route chưa
+  có dòng nào ở trên đã đổi màu. Trang làm việc trong app (bảng, form, cài đặt, quản trị) thì
+  không có dòng này.
+- **Không chọn sẵn.** Đổi độ đậm màu cả trang là việc của người dùng quyết, khác dòng Gọn.
+- Cột Sửa liệt kê đúng năm chỗ của `P12` áp vào trang này (dải đầu trang, chân trang, mục nổi
+  bật, chữ, điểm nhỏ). Chỗ nào không áp được thì ghi vì sao, ví dụ *"mục nổi bật: dữ liệu chưa
+  có trường gấp / hot, bỏ"*. Không thêm field, không bịa nhãn (bảng ba chế độ, "Logic, handler,
+  dữ liệu, câu chữ").
+- **Bắt buộc ảnh trước / sau** như dòng Gọn (`V5`), chụp cả màn ở 1440 để thấy dải.
+- Chế độ giữ brand: màu dải là màu nhấn trong bảng vai màu, không đổi vai nào khác. Đã có
+  chip lọc đặc màu nhấn thì cột Sửa ghi luôn đổi chip sang kiểu nhạt (bẫy của `P12`).
+- Xếp sau Gọn, trước Gu.
+
 ---
 
 ## V2. Nguồn ảnh và độ tin ⚑
@@ -353,8 +374,8 @@ Cùng tinh thần `M20` (mặc định chỉ light), nhưng dự án đã có s�
 1. **Mở đầu**, mỗi thứ một dòng: dòng `Audit:` (stack, hệ token ở đâu, phong cách,
    dark mode: có / chỉ khai báo / không), đã soi route nào ở khổ nào, chỗ nào chưa soi
    được và vì sao.
-2. **Bảng**: xếp Hỏng trước, rồi Lệch hệ, Cấu trúc và Gọn (chỉ ở chế độ dựng lại, `V1b`,
-   `V1c`), Gu cuối.
+2. **Bảng**: xếp Hỏng trước, rồi Lệch hệ, Cấu trúc, Gọn và Có màu (chỉ ở chế độ dựng lại,
+   `V1b`, `V1c`, `V1d`), Gu cuối.
 
    | # | Hạng | Chỗ | Lỗi | Sửa | Nguồn | Ảnh |
    | --- | --- | --- | --- | --- | --- | --- |
