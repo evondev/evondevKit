@@ -255,6 +255,18 @@ Nhóm thu gọn được: nút nhãn cùng khuôn mục con, trượt bằng `gr
 - **Tên mục bị cắt thì rê vào hiện đủ tên**, cả lúc sidebar đang mở: "Báo cáo tài chính theo q…" phải có tooltip "Báo cáo tài chính theo quý". Dùng lại tooltip của chế độ thu gọn, chỉ bật khi chữ **thật sự bị cắt** (đo theo `T14`: bề rộng chữ bằng `Range`, không bằng `scrollWidth`), mục ngắn không bật. Bản dựng 25/09/2026 chỉ bật tooltip lúc thu gọn, lúc mở thì tên dài cụt hẳn, không có cách nào đọc được.
 - **Dưới `lg`, sidebar là panel trượt từ TRÁI, cùng khuôn với panel trượt ở `overlay.md`, chỉ đổi phía**: lớp phủ `bg-black/15` (không `/30`, đó là của modal), vào **500ms** / ra **350ms** `cubic-bezier(0.32,0.72,0,1)`, lớp phủ cùng nhịp; chỉ `translate`, không `scale`, không `opacity` trên panel. Đầu sidebar có nút ✕ ở mép phải, Escape và bấm lớp phủ cũng đóng; bấm một link thì đóng. Mọi khối trượt từ mép trong app dùng **một** lớp phủ và **một** đường cong (`N5`). Bản dựng 25/09/2026 tự chọn `bg-black/30` + 200ms `ease-out` vì spec chỉ ghi "trượt từ trái".
 
+- **Thanh điều hướng dưới thay ☰ khi app có từ 5 mục chính trở xuống** và người dùng chuyển mục
+  liên tục trên điện thoại (app dùng hằng ngày, app người dùng cuối). App quản trị nhiều nhóm menu,
+  ít mở trên điện thoại thì giữ ☰. Dưới `lg`:
+  - `fixed inset-x-0 bottom-0` nền `--surface`, viền trên `border-border`, cao `h-16` cộng
+    `pb-[env(safe-area-inset-bottom)]` (vạch home của iPhone), trang chừa `pb-20` để mục cuối
+    không bị che.
+  - 4–5 mục chia đều (`grid grid-cols-4`/`5`), mỗi mục icon lucide `size-5` trên chữ `text-xs`,
+    cả ô là vùng bấm. Đang chọn: icon và chữ `text-primary` (dự án gần đen thì `text-foreground
+    font-medium`), không nền, không vạch; mục khác `text-muted`. Link có `aria-current="page"`.
+  - Mục thứ 6 trở đi gom vào mục cuối **"Thêm"** mở sheet từ đáy, không nhồi 6 mục chữ bị cắt.
+  - Số đếm (việc chờ duyệt) là chấm hay badge nhỏ ở góc icon, không đẩy chữ.
+  - Có thanh dưới thì header mobile bỏ ☰; khối tài khoản vào "Thêm" hay avatar ở header.
 - **Màn rộng: nội dung bám sidebar, lấp bằng thêm cột.** Trang lưới hay danh sách trong khung
   có sidebar không `mx-auto` giữa vùng nội dung: ở 1920px trở lên nó để một khoảng trống giữa
   sidebar và nội dung, cả trang trông như trôi (đã dính 28/09/2026: `mx-auto max-w-300` hở

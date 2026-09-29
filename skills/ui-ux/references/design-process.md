@@ -12,8 +12,13 @@ nào. Đã dính 28/09/2026: bản dựng lại theo `V` sạch hết lỗi đo 
 "nhìn không khác gì bản cũ, vẫn cần người làm UX".
 
 Hai cổng chờ của nhánh này là hai chỗ duy nhất skill dừng hỏi. Đề ghi sẵn đủ cho cổng nào
-(brief đã rõ, "chọn A luôn") thì qua cổng đó không dừng. Người dùng thấy chậm thì lần sau ghi
-"dựng luôn". Lúc gửi brief ở cổng 1, thêm một dòng cuối: *"Muốn bỏ wireframe, dựng luôn thì
+(brief đã rõ, "chọn A luôn") thì qua cổng đó không dừng.
+
+**"Dựng luôn" thì không vẽ wireframe** (vẽ wireframe tốn nhiều token, chủ dự án chốt 29/09/2026).
+Đề có "dựng luôn", "just build it", hoặc người dùng trả lời `dựng luôn` ở cổng 1: vẫn làm `U1`,
+`U2` và chọn phương án `U3` sẽ khuyên dùng, **trong đầu, không gửi, không dừng**, rồi dựng thẳng
+theo phương án đó (`U4`), màu theo nấc sẽ khuyên. Lúc giao ghi một dòng: *"Bố cục: [phương án]
+vì [việc chính]. Muốn xem các hướng khác thì nhắn `vẽ wireframe`."* Lúc gửi brief ở cổng 1, thêm một dòng cuối: *"Muốn bỏ wireframe, dựng luôn thì
 trả lời `dựng luôn`."* (tiếng Anh: *"Reply `just build it` to skip the wireframes."*)
 
 ---
@@ -67,8 +72,15 @@ dòng đó."* Dừng chờ.
 - **Khác ở chiến lược bố cục, không khác ở trang trí.** Ví dụ cho một trang danh sách:
   A giữ lưới card với thanh lọc gọn dính đầu trang; B chia đôi danh sách và panel chi tiết;
   C đặt ô tìm lên trước, lọc sau. Ba phương án chỉ khác bo góc hay màu là **một** phương án.
-- **Mặc định xám, không icon trang trí.** Ảnh là khối xám có tỉ lệ thật. Mở ra người dùng
-  nhìn bố cục trước, không sa vào màu; màu chỉ bật bằng nút Màu trên thanh công cụ (dưới). **Xám vẫn có mức nhấn**: nút chính tô xám đậm chữ
+- **Mặc định xám.** Ảnh là khối xám có tỉ lệ thật. Mở ra người dùng nhìn bố cục trước, không
+  sa vào màu; màu chỉ bật bằng nút Màu trên thanh công cụ (dưới).
+- **Icon lucide thật ở đúng chỗ các app đều đặt**, không vẽ ô vuông giữ chỗ (ô vuông cạnh mục
+  sidebar đọc ra checkbox, đã dính 29/09/2026). Nạp `lucide` từ `cdn.jsdelivr.net`, gọi
+  `lucide.createIcons()`. Ba chỗ: **mỗi mục sidebar**; **ô icon 32px nền nhạt ở góc mỗi card số
+  liệu**; **ô icon hay avatar đầu dòng** khi dòng thuộc một loại (bộ phận, nhà cung cấp, loại
+  giao dịch). Tiêu đề khối, dòng meta thì không icon (`V1c`). Nấc Xám thì icon xám; ba icon
+  giống hệt nhau cho ba mục là thà bỏ (`F17`). Dashboard không icon trông "chán", người xem
+  nói ngay (29/09/2026). **Xám vẫn có mức nhấn**: nút chính tô xám đậm chữ
   trắng, nút phụ viền. Hai nút cùng một kiểu trong wireframe là chưa quyết thứ bậc, lúc dựng
   thật sẽ lại thành hai nút tranh nhau (`V1b`).
 - **Nội dung thật**: chữ lấy từ dữ liệu của dự án, cả ca dài nhất và ca trống. Wireframe chữ
@@ -91,6 +103,19 @@ dòng đó."* Dừng chờ.
   số hiện nhỏ ở góc trên trái khối. Người dùng góp ý bằng số (*"bỏ khối 3"*, *"đưa khối 2 lên
   đầu"*), không phải tả "cái thanh chữ nhỏ ở trên bảng". Cùng một khối ở các phương án giữ cùng
   số; khối chỉ phương án đó có thì số mới.
+- **Khối nào skill đã có mẫu thì wireframe vẽ đúng hình mẫu đó**, vì `U4` dựng đúng wireframe:
+  vẽ sai là bản dựng chép sai theo. Trước khi vẽ, liệt kê các khối của phương án rồi mở mẫu
+  tương ứng ở bảng mục 2 của `SKILL.md` (`components/`, `layouts/`): nút, ô nhập, select, ô
+  chọn ngày, checkbox, công tắc, tab, chip, phân trang, badge, avatar, dòng danh sách, card, card
+  số liệu, biểu đồ, khối rỗng, đường dẫn, header, sidebar, bảng. Chép **hình**: cỡ, số phần tử,
+  cách xếp, chữ nằm đâu; không cần chép code React. Control là thẻ thật (`<input>`, `<button>`,
+  `<select>` nếu mẫu dùng), không `div` giả. Khối chưa có mẫu mới tự vẽ. Đã dính 29/09/2026, hai
+  ví dụ trong một lượt: phân trang vẽ hai nút chữ "Trước / Sau" rộng khác nhau thay cho
+  `‹ 1 2 3 … ›`; ô tìm là `div` nên placeholder dài rớt xuống dòng hai.
+- **Tự đối chiếu trước khi probe**: mỗi khối có mẫu, so wireframe với mẫu một dòng ("phân trang:
+  khớp", "ô tìm: `<input>`, placeholder vừa"). Probe bắt được một phần (placeholder dài hơn ô,
+  khối trông như ô nhập mà chữ xuống dòng, phân trang chỉ có nút chữ, hàng control lệch), phần
+  còn lại là mắt.
 - **Đủ bốn trạng thái của `I19`**: có dữ liệu, đang tải, rỗng, lỗi, chuyển bằng nút Trạng thái.
   Màn rỗng có câu và nút của `components/empty-state.md`, đang tải là khung chờ đúng hình dòng
   thật. Người dùng góp ý màn rỗng từ lúc wireframe, không đợi dựng xong mới thấy.
@@ -115,26 +140,39 @@ dòng đó."* Dừng chờ.
 
 - **Nút Màu: Xám · Màu · Có màu**, áp cho mọi phương án, không phải bản riêng:
   - **Xám:** mặc định lúc mở, chỉ xem bố cục.
-  - **Màu:** như bản dựng sẽ ra theo mặc định: màu nhấn của dự án ở nút chính và mục đang chọn,
-    chữ, viền, nền theo token (`P6`). Dự án đã có phong cách khác flat (`P4`) thì Màu là phong
-    cách đó.
-  - **Có màu:** `P12` trong `styles.md` (dải màu đầu và chân trang, mục nổi bật theo dữ liệu, tiêu
-    đề đậm hơn). **Chỉ trang người dùng cuối lướt để chọn** (tìm việc, tìm phòng, sản phẩm, khoá
-    học) mới có nấc này, và khuyên nó. Trang làm việc trong app (dashboard, báo cáo, bảng, form,
-    cài đặt, quản trị) không có: dải màu và mục "hot" ở trang báo cáo thì lạc loài (đã dính
-    29/09/2026, wireframe báo cáo khách truy cập).
+  - **Màu:** như bản dựng sẽ ra theo mặc định (`P6`): màu nhấn ở nút chính, mục đang chọn, link,
+    biểu đồ; **và màu trạng thái của `M4` trên mọi dữ liệu có trạng thái**: vượt ngân sách,
+    quá hạn đỏ hay hổ phách, đã xong xanh, thanh tiến độ tô theo ngưỡng. Nấc Màu mà thanh 103%
+    vẫn đen thì người xem hỏi *"chọn màu mà sao vẫn trắng đen"* (đã dính 29/09/2026). Dự án đã
+    có phong cách khác flat (`P4`) thì Màu là phong cách đó.
+  - **Có màu:** `P12` trong `styles.md`, **công thức theo loại trang**: trang lướt để chọn thì
+    dải màu đầu và chân trang, mục nổi bật; dashboard và trang làm việc trong app thì ô icon màu
+    nhạt ở card số liệu, biểu đồ nhiều sắc, **không dải màu, không mục "hot"** (dải màu đặt lên
+    trang báo cáo thì lạc loài, đã dính 29/09/2026).
 
-  Đổi màu bằng một bộ biến CSS trên `body[data-mau]`, không vẽ lại. Probe cả nấc Màu và Có màu
-  (tương phản chữ trắng trên dải).
+  **Dự án chưa có màu brand** (màu nhấn là gần đen mặc định, `brand-tokens.md`) thì thêm nhóm
+  **Nhấn: ● ● ●** gồm ba màu gợi ý (chàm `#4f46e5`, xanh ngọc `#0d9488`, cam `#ea580c`), đổi
+  `--primary` tại chỗ. Không có nhóm này thì nấc Màu của dự án mới vẫn đen trắng. Màu người dùng
+  chọn thành màu nhấn lúc dựng (`brand-tokens.md`); không chọn thì dựng màu đầu, báo một dòng.
+  Đổi màu bằng biến CSS trên `body[data-mau]`, `body[data-nhan]`, không vẽ lại. Probe cả nấc
+  Màu và Có màu (tương phản chữ trắng trên dải, trên ô màu).
 
 - **Nút Khổ: Desktop · Mobile.** Mobile hiện chính trang đó trong một khung 375 × 812 giữa màn
   (iframe cùng link, thêm `frame=1` để trong khung không có thanh công cụ), nên media query chạy
   thật. Người dùng hầu như không tự thu cửa sổ, nên không thấy bảng thành danh sách, lọc thành
   nút ra sao ở điện thoại.
+  - **Nút ☰ trong khung mobile bấm được**: mở panel trượt từ trái theo `layouts/app.md` (lớp
+    phủ, bấm ngoài hay Esc thì đóng), để người dùng thấy menu có bao nhiêu mục, mục nào đang
+    chọn. ☰ không bấm được thì mobile chỉ là ảnh chụp.
+  - **App có từ 5 mục điều hướng chính trở xuống** thì thêm nhóm **Nav: ☰ · Thanh dưới** (chỉ
+    hiện khi Khổ là Mobile), vẽ thêm thanh điều hướng dưới theo `layouts/app.md`, và ghi trong
+    khung lý do nên dùng cái nào: app dùng hằng ngày, chuyển mục liên tục thì thanh dưới; app
+    quản trị ít mở trên điện thoại thì ☰. Từ 6 mục thì chỉ ☰.
 
 - **Thanh công cụ ở đỉnh trang, bắt buộc, một dòng**, nằm ngoài bản thiết kế: dải tối cao 44px,
   dính đỉnh. Trái là các phương án (chữ cái kèm tên ngắn, phương án khuyên dùng ghi "khuyên
-  dùng"); phải là ba nhóm nút Màu, Khổ, Trạng thái. Nút đang bật `aria-current="page"` nền trắng.
+  dùng"); phải là các nhóm nút Màu, Nhấn (dự án chưa có brand), Khổ, Nav (mobile, ít mục),
+  Trạng thái. Nút đang bật `aria-current="page"` nền trắng.
   Mỗi nút là link giữ nguyên các lựa chọn khác, chỉ đổi đúng tham số của nó. Màn hẹp thì thanh
   cuộn ngang, không xuống dòng. Mở không tham số thì: phương án khuyên dùng, Xám, Desktop, Có
   dữ liệu. Đã dính 29/09/2026: có lượt wireframe có thanh, có lượt không, người dùng phải tự
@@ -158,7 +196,9 @@ dòng đó."* Dừng chờ.
     </div>
     <div class="wf-set wf-right">
       <span class="wf-set" data-wf-param="mau"><a data-value="xam">Xám</a><a data-value="mau">Màu</a><a data-value="co-mau">Có màu</a></span>
+      <span class="wf-set" data-wf-param="nhan"><a data-value="cham" aria-label="Chàm">●</a><a data-value="ngoc" aria-label="Xanh ngọc">●</a><a data-value="cam" aria-label="Cam">●</a></span>
       <span class="wf-set" data-wf-param="kho"><a data-value="desktop">Desktop</a><a data-value="mobile">Mobile</a></span>
+      <span class="wf-set" data-wf-param="nav"><a data-value="menu">☰</a><a data-value="duoi">Thanh dưới</a></span>
       <span class="wf-set" data-wf-param="tt"><a data-value="du-lieu">Dữ liệu</a><a data-value="dang-tai">Đang tải</a><a data-value="rong">Rỗng</a><a data-value="loi">Lỗi</a></span>
     </div>
   </nav>
@@ -177,10 +217,18 @@ dòng đó."* Dừng chờ.
     [data-wf-block]::before { content: attr(data-wf-block); position: absolute; top: 4px; left: 4px; z-index: 5;
       display: grid; place-items: center; width: 18px; height: 18px; border-radius: 9px; background: #1f1f1f; color: #fff; font-size: 11px; }
     body[data-frame] .wf-bar, body[data-frame] .wf-reason { display: none; }
+    body:not([data-kho="mobile"]) [data-wf-param="nav"] { display: none; }
+    [data-wf-param="nhan"] a[data-value="cham"] { color: #4f46e5; } [data-wf-param="nhan"] a[data-value="ngoc"] { color: #0d9488; }
+    [data-wf-param="nhan"] a[data-value="cam"] { color: #ea580c; }
+    body[data-mau="xam"] { --primary: #2c2c2c; } /* nấc Xám: bỏ màu nhấn, cả màu trạng thái */
+    body:not([data-mau="xam"])[data-nhan="cham"] { --primary: #4f46e5; } /* …ngoc, cam tương tự */
+    .wf-drawer { position: fixed; inset: 0 auto 0 0; width: 280px; translate: -100% 0; transition: translate .35s; }
+    body[data-menu-open] .wf-drawer { translate: 0 0; }
   </style>
   <script>
     const params = new URLSearchParams(location.search);
-    const state = { v: "a", mau: "xam", kho: "desktop", tt: "du-lieu" }; // phương án khuyên dùng đứng ở v
+    // Mặc định: phương án khuyên dùng, Xám, màu nhấn gợi ý đầu, Desktop, ☰, Có dữ liệu.
+    const state = { v: "a", mau: "xam", nhan: "cham", kho: "desktop", nav: "menu", tt: "du-lieu" };
     for (const key of Object.keys(state)) state[key] = params.get(key) || state[key];
     Object.assign(document.body.dataset, state);
     if (params.has("frame")) document.body.dataset.frame = "1";
@@ -195,13 +243,20 @@ dòng đó."* Dừng chờ.
       document.getElementById("wf-design").innerHTML =
         `<div style="display:grid;place-items:center;padding:24px"><iframe src="${frameSource}" title="Mobile" style="width:375px;height:812px;border:1px solid #ddd;border-radius:24px;background:#fff"></iframe></div>`;
     }
+    // ☰ trong khung mobile mở panel trượt; bấm lớp phủ hay Esc thì đóng.
+    for (const toggle of document.querySelectorAll("[data-wf-menu]")) {
+      toggle.addEventListener("click", () => document.body.toggleAttribute("data-menu-open"));
+    }
+    document.addEventListener("keydown", (event) => { if (event.key === "Escape") document.body.removeAttribute("data-menu-open"); });
     for (const button of document.querySelectorAll("[data-copy]")) {
       button.addEventListener("click", () => navigator.clipboard.writeText(button.dataset.copy));
     }
   </script>
   ```
 
-  Nút Màu không có nấc Có màu (trang làm việc trong app) thì bỏ link đó khỏi nhóm.
+  Dự án đã có màu brand thì bỏ nhóm Nhấn; app từ 6 mục chính thì bỏ nhóm Nav. Thanh dưới vẽ
+  sẵn trong trang, chỉ hiện khi `body[data-kho="mobile"][data-nav="duoi"]` (trong khung là
+  `frame=1` kèm `nav=duoi`).
 
 - **Gửi link bấm được cho từng phương án**, không chỉ đường dẫn ảnh. Chạy một server tĩnh nền
   trên thư mục wireframe (`python3 -m http.server <cổng> -d "$TMPDIR/evon-design"`, chạy nền),
@@ -223,6 +278,9 @@ dòng đó."* Dừng chờ.
 Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn, và `có màu` nếu thích bản đó (ví dụ `C + D + có màu`,
 `B + E`). Góp ý theo số khối cũng được."* Trang không có nấc Có màu thì bỏ vế đó. Không ghi màu
 thì dựng theo nấc Màu, trừ khi nấc đã khuyên là Có màu. Dừng chờ.
+
+Người dùng trả lời `ok`, `dựng luôn` mà không ghi chữ cái nào thì dựng **phương án khuyên dùng**,
+màu và nhấn theo mức đã khuyên, không hỏi lại.
 
 ## U4. Dựng thật ⚑
 

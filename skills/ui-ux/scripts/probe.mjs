@@ -1294,6 +1294,39 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     misalignedControlRows.push(`${describe(worst.child)} cao ${Math.round(worst.height)}px trong hàng ${Math.round(contentBottom - contentTop)}px, lệch ${Math.round(Math.abs(worst.offset) * 2)}px trên dưới: ${describe(row)}`);
   }
 
+  // 18n. Khối không theo mẫu control của skill (29/09/2026, wireframe quản lý chi phí): placeholder dài hơn ô
+  //      (ô thật cắt mất đuôi), khối trông như ô nhập mà là `div` nên chữ xuống dòng, phân trang chỉ có nút
+  //      chữ "Trước / Sau" không số trang (`components/small-controls.md`).
+  const textMeasurer = document.createElement("canvas").getContext("2d");
+  const overlongPlaceholders = [];
+  for (const input of document.querySelectorAll("input[placeholder]")) {
+    if (overlongPlaceholders.length >= 4 || !isVisible(input) || /hidden|checkbox|radio|range|file/.test(input.type)) continue;
+    const style = getComputedStyle(input);
+    textMeasurer.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+    const available = input.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+    const needed = textMeasurer.measureText(input.placeholder).width;
+    if (needed > available + 1) overlongPlaceholders.push(`"${input.placeholder}" cần ${Math.round(needed)}px, ô còn ${Math.round(available)}px: ${describe(input)}`);
+  }
+  const fakeFieldWraps = [];
+  for (const element of allElements) {
+    if (fakeFieldWraps.length >= 4) break;
+    if (element.matches("input, textarea, select, [contenteditable='true']") || !isVisible(element)) continue;
+    if (!/(^|[-_\s])(input|search|field|searchbox)([-_\s]|$)/i.test(element.getAttribute("class") || "")) continue;
+    const style = getComputedStyle(element);
+    const rect = element.getBoundingClientRect();
+    if (!(parseFloat(style.borderTopWidth) > 0) || rect.height > 72 || element.querySelector("input, textarea")) continue;
+    if (countTextLines(element) >= 2) fakeFieldWraps.push(`cao ${Math.round(rect.height)}px, chữ ${countTextLines(element)} dòng: ${describe(element)}`);
+  }
+  const textOnlyPagers = [];
+  const pagerWords = /^(‹\s*)?(trước|sau|previous|prev|next|trang trước|trang sau)(\s*›)?$/i;
+  for (const group of document.querySelectorAll("nav, div, footer")) {
+    if (textOnlyPagers.length >= 2 || !isVisible(group)) continue;
+    const controls = [...group.children].filter((child) => child.matches("a, button"));
+    const wordControls = controls.filter((control) => pagerWords.test(control.textContent.trim()));
+    if (wordControls.length < 2 || controls.some((control) => /^\d+$/.test(control.textContent.trim()))) continue;
+    textOnlyPagers.push(`${wordControls.map((control) => `"${control.textContent.trim()}" ${Math.round(control.getBoundingClientRect().width)}px`).join(", ")}: ${describe(group)}`);
+  }
+
   // 18m. Trang wireframe thiếu phần nào của thanh công cụ (`design-process.md` U3): phương án, nút Màu, Khổ,
   //      Trạng thái, khung lý do, số khối. Có lượt wireframe có thanh, có lượt không (29/09/2026). Trong khung
   //      mobile (`frame=1`) thanh ẩn là đúng, không tính.
@@ -1339,6 +1372,9 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     denseItems,
     misalignedControlRows,
     missingWireframeParts,
+    overlongPlaceholders,
+    fakeFieldWraps,
+    textOnlyPagers,
     swallowedNumbers,
     floatingContent,
     tinyTexts,
@@ -2633,6 +2669,18 @@ function formatReport(results) {
     if (result.heavySeparators?.length > 0) {
       problems.push(`VẠCH CHIA TRONG MENU ĐẬM HƠN VIỀN KHUNG (${result.heavySeparators.length} menu):`);
       for (const item of result.heavySeparators) problems.push(`  ${item}`);
+    }
+    if (result.overlongPlaceholders?.length > 0) {
+      problems.push(`PLACEHOLDER DÀI HƠN Ô (${result.overlongPlaceholders.length} ô, rút chữ cho vừa, ô thật cắt mất đuôi):`);
+      for (const item of result.overlongPlaceholders) problems.push(`  ${item}`);
+    }
+    if (result.fakeFieldWraps?.length > 0) {
+      problems.push(`KHỐI TRÔNG NHƯ Ô NHẬP MÀ CHỮ XUỐNG DÒNG (${result.fakeFieldWraps.length} khối, dùng <input> thật theo components/input.md):`);
+      for (const item of result.fakeFieldWraps) problems.push(`  ${item}`);
+    }
+    if (result.textOnlyPagers?.length > 0) {
+      problems.push(`PHÂN TRANG CHỈ CÓ NÚT CHỮ (${result.textOnlyPagers.length} chỗ, dựng ‹ 1 2 3 … › theo components/small-controls.md):`);
+      for (const item of result.textOnlyPagers) problems.push(`  ${item}`);
     }
     if (result.missingWireframeParts?.length > 0) {
       problems.push(`WIREFRAME THIẾU PHẦN CỦA THANH CÔNG CỤ (design-process.md, U3): ${result.missingWireframeParts.join(", ")}`);

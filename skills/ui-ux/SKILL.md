@@ -46,7 +46,8 @@ cuối là mặc định**, bốn dòng trên chỉ khi đề nói rõ (tiếng 
 | **Muốn biết UI đang có chỗ nào chưa ổn** ("xem giúp", "review", "chỗ nào chưa ổn", "nhìn rối", "check this UI", "what's wrong with", gửi ảnh hay link app của họ nhờ xem) | Mở `references/review.md`, nhánh `V` **chế độ soi**: lập bảng trước/sau, người dùng chọn dòng rồi mới sửa. **Dừng mục 0 tại đây**, lúc giao theo `V5` chứ không theo `S15` ⚑ |
 | **Làm lại mà giữ brand / giữ giao diện** ("giữ brand", "giữ màu", "giữ giao diện hiện tại", "chỉ làm gọn", "keep the brand", "keep the current look") | `references/review.md`, **chế độ dựng lại giữ brand**: giữ khung trang, thay control gốc bằng component của skill, giữ vai màu. Có thêm "hoàn toàn theo gu skill", "bỏ style cũ" thì chế độ dựng lại theo gu skill. **Dừng mục 0 tại đây** ⚑ |
 | **Refactor / dọn code mà giữ nguyên hình** ("refactor", "chuyển sang Tailwind", "dọn CSS") | Mở `references/refactor.md`, nhánh `L`. **Dừng mục 0 tại đây** — nhánh đó có bộ mặc định riêng, bắt đầu bằng "đo trước khi kết luận" |
-| **Dựng luôn, không wireframe** ("dựng luôn", "không cần wireframe", "just build it", "skip the wireframe"), hoặc **việc nhỏ hơn một màn**: sửa một component, thêm một dropdown, sửa một lỗi, đổi một màu | Đi tiếp câu 2, dựng theo bố cục mặc định (câu 4), không hỏi |
+| **Dựng luôn, không wireframe** ("dựng luôn", "không cần wireframe", "just build it", "skip the wireframe") | Nhánh `U` **không vẽ wireframe**: làm `U1`, `U2`, chọn phương án sẽ khuyên dùng trong đầu, rồi dựng thẳng theo nó (`design-process.md`, đầu file). Không hỏi. **Dừng mục 0 tại đây** |
+| **Việc nhỏ hơn một màn**: sửa một component, thêm một dropdown, sửa một lỗi, đổi một màu | Đi tiếp câu 2, dựng theo bố cục mặc định (câu 4), không hỏi |
 | **Mọi đề dựng hay làm lại một màn trở lên** ("dựng màn danh sách đơn hàng", "làm lại trang này cho đẹp", "dựng lại theo skill", "thiết kế từ đầu", "build a settings page", "redesign this screen"), sản phẩm mới hay màn đã có | **Mặc định.** Mở `references/design-process.md`, nhánh `U`: brief và việc chính của từng màn, rồi 2–3 wireframe, người dùng chọn rồi mới dựng. **Dừng mục 0 tại đây** ⚑ |
 
 Đề có ảnh wireframe của chính họ thì đó đã là bước wireframe: vào nhánh `U` từ `U4`, dựng
@@ -214,7 +215,7 @@ layout. Không bịa, cũng không bày phương án.
 Skill lo **cái mặc định đơn giản, chuẩn nhất**. Biến thể là việc của người dùng:
 họ nói thì sửa theo, không hỏi lại.
 
-Câu 4 chỉ chạy ở lối "dựng luôn" và việc nhỏ hơn một màn (câu 1). Mặc định là nhánh `U`,
+Câu 4 chỉ chạy ở lối việc nhỏ hơn một màn (câu 1). Mặc định là nhánh `U`,
 nơi bố cục mặc định ở đây là **một trong các phương án wireframe**, thường là phương án khuyên
 dùng.
 

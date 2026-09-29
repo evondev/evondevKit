@@ -250,21 +250,23 @@ cách nền của dự án. Đừng tự dựng nút 3D vì thấy dự án có 
 
 ---
 
-### P12. Có màu — dải thương hiệu, mục nổi bật, chữ đậm hơn
+### P12. Có màu — hai công thức: trang lướt để chọn, và dashboard
 
-Cho trang người dùng cuối lướt để chọn (tìm việc, tìm phòng, sản phẩm, khoá học): flat thuần ở
-đây đọc ra "buồn màu", trang nào cũng như trang quản trị (chủ dự án thấy 29/09/2026, trang tìm
-việc so với trang tìm việc lớn cùng loại). Nhánh thiết kế từ đầu đưa nó ra thành nấc Có màu
+Flat thuần đọc ra "buồn màu" ở hai chỗ: trang người dùng cuối lướt để chọn (tìm việc, tìm
+phòng, sản phẩm, khoá học), trang nào cũng như trang quản trị (chủ dự án thấy 29/09/2026, trang
+tìm việc so với trang tìm việc lớn cùng loại); và dashboard dự án mới chưa có brand, màu nhấn
+gần đen nên chọn "Màu" vẫn trắng đen (29/09/2026, wireframe quản lý chi phí khách sạn). Nhánh thiết kế từ đầu đưa nó ra thành nấc Có màu
 của nút Màu trên wireframe (`design-process.md`, `U3`), hai chế độ dựng lại đưa nó thành dòng Có màu (`review.md`, `V1d`);
 ngoài hai chỗ đó thì theo `P1`.
 
 - **Nhận ra từ ảnh:** đầu trang là một dải màu đậm (đặc hoặc chuyển màu) ôm header và ô tìm,
   chân trang cùng màu; vài mục trong danh sách có nền nhạt màu nhấn kèm nhãn "Gấp", "Hot";
   tiêu đề mục đậm.
-- **Được đè:** `M2` (tỉ lệ 95/5), `M12` (chỉ ở dải). Nguyên tắc `P2` giữ nguyên, nhất là `M3`
-  một màu nhấn và `P3` tương phản.
+- **Được đè:** `M2` (tỉ lệ 95/5), `M12` (chỉ ở dải), `M4` (chỉ ô icon và chuỗi biểu đồ của
+  công thức B). Nguyên tắc `P2` giữ nguyên, nhất là `M3` một màu nhấn cho hành động và `P3`
+  tương phản.
 
-Công thức, đúng năm chỗ, không thêm chỗ thứ sáu:
+**Công thức A, trang lướt để chọn**, đúng năm chỗ, không thêm chỗ thứ sáu:
 
 | Chỗ | Làm gì |
 | --- | --- |
@@ -274,8 +276,21 @@ Công thức, đúng năm chỗ, không thêm chỗ thứ sáu:
 | Chữ | Tiêu đề mục `font-semibold`; tên trang giữ `text-xl` (luật đã chốt 11) mà lên `font-semibold`, từ khoá hay con số trong tên trang tô `text-primary`; tiêu đề khối trong panel chi tiết `text-lg font-semibold`. Giá, lương giữ `font-semibold` như cũ |
 | Điểm nhỏ | Chấm đầu dòng danh sách trong chi tiết `marker:text-primary`; ô chữ viết tắt thay logo nền `bg-primary/10 text-primary` thay cho xám |
 
+**Công thức B, dashboard và trang làm việc trong app**: không dải màu, không mục "hot" (lạc loài
+ở trang báo cáo). Đè thêm `M4` (màu để phân loại) **chỉ ở ô icon và chuỗi biểu đồ**:
+
+| Chỗ | Làm gì |
+| --- | --- |
+| Ô icon card số liệu | Ô `size-8 rounded-lg`, icon lucide `size-4`; mỗi card một sắc nhạt (`bg-indigo-50 text-indigo-600`, `bg-teal-50 text-teal-600`, `bg-amber-50 text-amber-600`, `bg-rose-50 text-rose-600`), tối đa bốn sắc một màn. Con số vẫn `text-foreground`, không tô |
+| Ô icon đầu dòng theo loại | Bộ phận, nhà cung cấp, loại giao dịch: cùng bộ sắc nhạt, **một loại một sắc cố định** trên mọi màn (Kỹ thuật luôn teal). Không có loại thì không ô |
+| Biểu đồ | Chuỗi chính màu nhấn; nhiều chuỗi thì lấy bộ sắc trên theo cùng thứ tự; kỳ chưa trọn nét đứt hay gạch (`charts.md`) |
+| Trạng thái | Như nấc Màu: `M4` trên thanh tiến độ, số vượt, quá hạn. Sắc phân loại không trùng sắc trạng thái trên cùng một thứ (thanh ngân sách không tô teal vì bộ phận là teal) |
+| Sidebar | Mục đang chọn nền `bg-primary/10 text-primary`, icon cùng màu; các mục khác giữ xám |
+
 **Bẫy**
 
+- **Sắc phân loại không mang nghĩa trạng thái**: đỏ, hổ phách, xanh lá để dành cho `M4`. Ô icon
+  "Chờ duyệt" không tô hổ phách chỉ vì "chờ"; tô theo bộ sắc phân loại.
 - **Chip lọc đang chọn không đặc màu nhấn** khi đã có dải: sáu chip đặc cam dưới một dải cam là
   hai mảng cùng nặng tranh nhau. Chip theo `layouts/overlay.md` (nền `foreground/10` + `inset-ring`).
 - **Nổi bật tối đa khoảng một phần năm danh sách.** Mục nào cũng hot thì không mục nào hot (`M2`).

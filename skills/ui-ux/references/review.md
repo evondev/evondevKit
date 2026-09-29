@@ -175,7 +175,7 @@ sang hạng theo bảng này. Những mục xếp Hỏng thì probe đã tự go
 | Chỗ bấm dưới 32px | Mục có ghi "(dưới 24px)" là Hỏng, còn lại (24 tới 31px) là Gu |
 | Hàng trong header / nav rớt dòng | Hỏng khi đè hay đẩy lệch khối khác, không thì Lệch hệ (so với cách hàng đó ở khổ khác). Xem ảnh mới quyết |
 | Hàng nút trên header không đồng cỡ | Lệch hệ. Chế độ dựng lại thì vào dòng Gọn của header (`V1c`), theo "Nhóm nút bên phải thanh header" trong `layouts/app.md` |
-| Hàng control lệch trên dưới, vạch chia trong menu đậm hơn viền khung, khung / vạch lớp nổi đậm hơn token `--border`, vạch trái bị bo góc khung cắt, khung hộp thoại mờ lồng trong lớp nền mờ, cao gần bằng mà không bằng, đường ngăn hai cột kề nhau lệch, chữ cùng cột lệch mép, dấu ngăn cách không đều, control còn kiểu mặc định của trình duyệt, khung khai viền mà viền không thấy, khối con biến mất lúc rê, lớp nổi có dải trống | Lệch hệ |
+| Hàng control lệch trên dưới, placeholder dài hơn ô, khối trông như ô nhập mà chữ xuống dòng, phân trang chỉ có nút chữ, vạch chia trong menu đậm hơn viền khung, khung / vạch lớp nổi đậm hơn token `--border`, vạch trái bị bo góc khung cắt, khung hộp thoại mờ lồng trong lớp nền mờ, cao gần bằng mà không bằng, đường ngăn hai cột kề nhau lệch, chữ cùng cột lệch mép, dấu ngăn cách không đều, control còn kiểu mặc định của trình duyệt, khung khai viền mà viền không thấy, khối con biến mất lúc rê, lớp nổi có dải trống | Lệch hệ |
 | Nền rê trùng màu viền của chính nút, viền đổi màu lúc rê, rê khác hình mục đang chọn, bấm xong còn dấu thừa, Tab tới còn vẽ vòng focus (`I13`: chế độ soi ghi một dòng Gu, hai chế độ dựng lại thì gỡ), bảng cuộn ngang mất cột, nhóm lựa chọn xếp lưới, số tiền ngắt dòng, số không thẳng hàng, nhãn số lòi ra ngoài vùng vẽ, dấu câu rơi xuống đầu dòng, chữ dưới 12px (gộp một dòng, ghi cỡ nhỏ nhất và chỗ; sửa lên ít nhất 12px), cột dính mà cuộn riêng, nội dung trôi giữa màn rộng (`layouts/app.md`), mục lặp dày chữ | Gu |
 | Select gốc đã tô trên desktop | Chế độ soi: không vào bảng. Hai chế độ dựng lại: Lệch hệ, thay bằng Select dựng (từ 8 mục có ô tìm) |
 | Lỗi console | Không vào bảng. Ghi một dòng dưới bảng |
@@ -257,12 +257,12 @@ Dựng lại cho gọn xong mà trang vẫn "buồn màu" là chuyện hay gặp
 route, theo `P12` trong `styles.md`.
 
 - **Chỉ khi cả ba đúng**: trang người dùng cuối lướt để chọn (tìm việc, tìm phòng, sản phẩm,
-  khoá học, bài viết); dự án đang phẳng (`P4` ra flat, chưa có dải màu đầu trang); route chưa
-  có dòng nào ở trên đã đổi màu. Trang làm việc trong app (bảng, form, cài đặt, quản trị) thì
-  không có dòng này.
+  khoá học, bài viết) theo công thức A của `P12`, **hoặc dashboard** theo công thức B (ô icon
+  màu nhạt ở card số liệu, biểu đồ nhiều sắc); dự án đang phẳng (`P4` ra flat); route chưa có
+  dòng nào ở trên đã đổi màu. Form, cài đặt, bảng quản lý thuần thì không có dòng này.
 - **Không chọn sẵn.** Đổi độ đậm màu cả trang là việc của người dùng quyết, khác dòng Gọn.
-- Cột Sửa liệt kê đúng năm chỗ của `P12` áp vào trang này (dải đầu trang, chân trang, mục nổi
-  bật, chữ, điểm nhỏ). Chỗ nào không áp được thì ghi vì sao, ví dụ *"mục nổi bật: dữ liệu chưa
+- Cột Sửa liệt kê đúng các chỗ của công thức `P12` áp vào trang này (A: dải đầu trang, chân
+  trang, mục nổi bật, chữ, điểm nhỏ; B: ô icon, ô đầu dòng, biểu đồ, trạng thái, sidebar). Chỗ nào không áp được thì ghi vì sao, ví dụ *"mục nổi bật: dữ liệu chưa
   có trường gấp / hot, bỏ"*. Không thêm field, không bịa nhãn (bảng ba chế độ, "Logic, handler,
   dữ liệu, câu chữ").
 - **Bắt buộc ảnh trước / sau** như dòng Gọn (`V5`), chụp cả màn ở 1440 để thấy dải.
