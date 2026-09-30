@@ -22,6 +22,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] **Copy sắp viết bằng tiếng gì** — đã grep i18n và nhãn hiện có chưa (`T24`)? Người dùng đang viết tiếng gì, để trả lời bằng tiếng đó (`T27`)?
 - [ ] Đề bài có từ nào mơ hồ không (bảng, thẻ, danh sách, khung, trang, lịch)?
 - [ ] Đề để hở: đã dựng **đủ bộ khối mặc định** trong file layout chưa, hay làm mỏng dính (`S5`)? Không hỏi phạm vi.
+- [ ] Nhánh `U`, wireframe: dữ liệu mẫu có mục ở trạng thái suy từ giờ (trễ, quá hạn) không; số khối có đè chữ không; sidebar, panel `sticky` còn dính khi cuộn không; thanh công cụ vừa một dòng ở 1280 không (`U3`)?
 - [ ] Nhánh `U`: đã dựng đúng **phương án wireframe đã chọn** chưa, hay tự bịa (`U4`)? Lối dựng luôn: dựng theo phương án sẽ khuyên, báo một dòng "Bố cục: … vì …". Việc nhỏ hơn một màn: **bố cục mặc định** trong file layout, báo một dòng "muốn kiểu khác thì nói".
 - [ ] Dự án đã có UI (nhánh `U` hay dựng lại): tin giao có dòng **`Dáng:`** đi qua bảng "Dáng lấy từ skill, không từ CSS cũ" (`review.md`) chưa? Dropdown, checkbox, viền card, thanh cuộn, nút header lấy theo mẫu của skill, hay còn CSS cũ của dự án?
 - [ ] Cùng ca đó: tin giao có mục **"Còn thấy"** (`U4`) chưa? Thứ bản dựng không được tự sửa (bớt thông tin, gom màu trang trí, badge nhiều màu tranh với giá) đã nêu thành dòng đánh số, hay giữ nguyên mà im lặng?
@@ -230,6 +231,7 @@ Kiểm thêm ở 375px:
 - [ ] Hàng chip có rớt xuống hàng dưới một cái lẻ không? Phải cho cuộn ngang. Trừ chip đang lọc (bấm để gỡ): từ `sm` xuống dòng, "Xoá lọc" luôn thấy.
 - [ ] Ở desktop, hàng cuộn ngang ẩn thanh cuộn có nút mũi tên ở phía còn mục khuất không? Chuột thường không cuộn ngang được.
 - [ ] Board hay dòng thời gian có bị wrap thành 2 hàng không? Phải cuộn ngang trong khung.
+- [ ] Ở 375px, mọi hành động chính của dòng (nút trên dòng, panel chi tiết) còn lối vào không, hay bị ẩn cùng lúc (`R11`)?
 - [ ] Bảng có bị bóp cột không? Từ `sm` trở lên thì cuộn ngang trong khung, có `min-w`, **cột đầu ghim**; dưới `sm` bảng quản lý thành danh sách dòng (tên + email, badge + số chính), không cuộn ngang. Hàng tab/chip cuộn ngang có mép mờ ở phía còn mục khuất (`R10`)?
 - [ ] Trang có **đúng một `<h1>`** không? Trang danh sách: tên trên thanh header là `<h1>`, vùng nội dung không lặp tên. Trang có đầu trang riêng: `<h1>` ở đầu trang, thanh header chỉ ghi cấp cha.
 - [ ] **Ô số lượng − +**: rê vào nút thì nền là ô vuông bo thụt vào, hay một mảng phủ kín từ viền tới viền cắt ngang lưng chừng khung? Giới hạn biết trước (tồn kho) đã là `max` để nút + mờ ở đó chưa, hay vẫn bấm được rồi mới báo lỗi? Dòng gợi ý nói giới hạn thật ("Còn 8 sản phẩm"), không phải "Từ 1 đến 99" (`components/quantity-input.md`).

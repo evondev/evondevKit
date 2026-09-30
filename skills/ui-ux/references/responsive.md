@@ -163,6 +163,14 @@ khít mép khung.
 - **Mục đang chọn bị khuất thì tự cuộn nó vào giữa hàng** lúc tải và khi đổi mục. Tự tính `scrollLeft` rồi `scroller.scrollTo`, **không `scrollIntoView`**: hàng có thể đang nằm dưới màn lúc tải, `scrollIntoView` kéo cả trang xuống theo. Lần đầu `behavior: "auto"`, các lần sau `"smooth"`.
 - Áp cho hàng chip, hàng tab còn cuộn ngang, dải card/carousel. **Tab trạng thái của bảng ở màn hẹp mà có tab nằm hẳn ngoài khung thì vẫn thành dropdown** (`layouts/app.md`): vạch báo được "còn", không báo được còn trạng thái nào.
 
+**R11. Màn hẹp được ẩn cột phụ, không được mất hành động chính của dòng.** Ẩn badge, ẩn nút trên
+dòng (`hidden sm:inline-flex`) và ẩn panel chi tiết (`hidden lg:block`) cùng lúc thì ở 375px bấm
+dòng không ra gì, việc chính của màn không làm được trên điện thoại. Mỗi thứ ẩn đi phải có lối
+khác: bấm dòng mở panel thành trang hay sheet từ dưới, nút chính vào menu ⋯ của dòng, hay nút
+thu còn icon. Đã dính 30/09/2026, wireframe hàng chờ lịch hẹn: nút "Đã đến" ẩn dưới `sm`, panel
+ẩn dưới `lg`, lễ tân cầm điện thoại không tiếp đón được ai, trong khi khung lý do ghi "đọc tốt
+trên điện thoại".
+
 ---
 
 ## Bảng hạ bậc ở mobile, đừng bê nguyên nhịp desktop xuống

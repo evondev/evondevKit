@@ -185,7 +185,10 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     return [...paths].sort().join("|");
   }
 
-  const allElements = [...document.body.querySelectorAll("*")].filter((element) => !["SCRIPT", "STYLE", "svg", "path"].includes(element.tagName));
+  // Thanh công cụ và khung lý do của trang wireframe (`design-process.md` U3) nằm ngoài bản thiết kế: không đo.
+  //  Đã báo nhầm 30/09/2026, wireframe nha khoa: "hàng nút header không đồng cỡ", chỗ bấm nhỏ, vạch lệch với thanh.
+  const isWireframeChrome = (element) => Boolean(element.closest(".wf-bar, .wf-reason, [data-wf-reason]"));
+  const allElements = [...document.body.querySelectorAll("*")].filter((element) => !["SCRIPT", "STYLE", "svg", "path"].includes(element.tagName) && !isWireframeChrome(element));
 
   // 1. Cuộn ngang: trang rộng hơn màn, và phần tử nào lòi ra ngoài mép phải.
   const pageScrollWidth = document.documentElement.scrollWidth;
@@ -279,6 +282,20 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     const shortestHeight = Math.min(...children.map((rect) => rect.height));
     const topSpread = Math.max(...children.map((rect) => rect.top)) - Math.min(...children.map((rect) => rect.top));
     if (topSpread > shortestHeight / 2) wrappedRows.push(describe(row));
+  }
+  // 1d2. Hàng nút ở bất kỳ đâu (footer panel, card) mà nút chỉ icon (⋯) rớt xuống dòng dưới một mình: nhìn
+  //      như một nút lạc (30/09/2026, panel chi tiết 352px của wireframe lịch hẹn: "Bắt đầu khám", "Mở hồ sơ"
+  //      một dòng, ⋯ dòng dưới). Sửa: nút không `flex-1`, rút nhãn, hoặc ⋯ lên header panel.
+  for (const row of document.querySelectorAll("div, footer, section")) {
+    if (wrappedRows.length >= 6) break;
+    const style = getComputedStyle(row);
+    if (!style.display.includes("flex") || !style.flexDirection.startsWith("row") || style.flexWrap !== "wrap" || !isVisible(row)) continue;
+    const children = [...row.children].filter(isVisible);
+    if (children.length < 2 || !children.every((child) => child.matches("button, a[href], [role='button']"))) continue;
+    const lastChild = children.at(-1);
+    const lastTop = lastChild.getBoundingClientRect().top;
+    const isAlone = children.slice(0, -1).every((child) => child.getBoundingClientRect().bottom <= lastTop + 1);
+    if (isAlone && !lastChild.textContent.trim()) wrappedRows.push(`nút chỉ icon rớt dòng một mình: ${describe(lastChild)} trong ${describe(row)}`);
   }
 
   if (isSweep) {
@@ -459,7 +476,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     const interactiveElements = [...document.querySelectorAll('button, a[href], input:not([type="hidden"]), select, textarea, [role="button"], [role="tab"], [role="checkbox"], [role="switch"], [role="menuitem"]')];
 
     for (const element of interactiveElements) {
-      if (!isVisible(element) || element.closest("[inert], [aria-hidden='true']")) continue;
+      if (!isVisible(element) || element.closest("[inert], [aria-hidden='true']") || isWireframeChrome(element)) continue;
       if (element.tagName === "A" && getComputedStyle(element).display === "inline") continue;
       // Không nhận chạm thì không phải chỗ bấm: input range chồng dưới thanh trượt hai đầu.
       if (getComputedStyle(element).pointerEvents === "none") continue;
@@ -1272,6 +1289,14 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     // Nhóm link điều hướng (gần như mỗi dòng một link, như nhóm mục sidebar) không phải mục dày chữ
     // (báo nhầm 29/09/2026, sidebar của wireframe).
     if (densest.querySelectorAll("a[href], button").length >= maxLines - 1) continue;
+    // Cột hay nhóm chứa mục (cột bác sĩ của lưới giờ, nhóm "Sắp tới" của hàng chờ, cột kanban): bên trong có từ
+    // hai mục cùng loại cao từ 40px, số dòng là của cả nhóm. Mục thật được xét riêng (báo nhầm 30/09/2026,
+    // wireframe lịch hẹn: cột 24 dòng, nhóm 25 dòng).
+    const hasNestedItems = [densest, ...densest.querySelectorAll("*")].some((node) => {
+      const tallSignatures = [...node.children].filter((child) => child.getBoundingClientRect().height >= 40).map(signature);
+      return tallSignatures.some((childSignature, index) => tallSignatures.indexOf(childSignature) !== index);
+    });
+    if (hasNestedItems) continue;
     if (maxLines >= 5) denseItems.push(`${sameKind.length} mục, nhiều nhất ${maxLines} dòng chữ: ${describe(densest)}`);
   }
 
@@ -1416,6 +1441,53 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     document.querySelectorAll("[data-wf-block]").length < 2 && "số khối (data-wf-block)",
   ].filter(Boolean);
 
+  // 18m2. Khung wireframe làm hỏng bản thiết kế (U3, 30/09/2026, wireframe lịch hẹn nha khoa):
+  //  - thanh công cụ tràn ngang ở desktop (thêm nhóm Màn, tên nhóm dài): "Trạng thái" bị cắt ở 1280;
+  //  - số khối đè chữ hay icon của khối không có padding ("Thứ Ba" thành "ThBa"), hoặc bị khung cuộn cắt mất;
+  //  - `[data-wf-block] { position: relative }` không nằm trong layer đè `sticky` của sidebar: sidebar trôi khi cuộn.
+  const wireframeChromeProblems = [];
+  const wireframeBar = document.querySelector(".wf-bar");
+  if (wireframeBar && viewportWidth >= 1280 && wireframeBar.scrollWidth > wireframeBar.clientWidth + 1) {
+    wireframeChromeProblems.push(`thanh công cụ tràn ${wireframeBar.scrollWidth - wireframeBar.clientWidth}px ở ${viewportWidth}px: rút nhãn (Màn một hai chữ, Phương án chỉ chữ cái)`);
+  }
+  const breakpointQueries = { sm: "(min-width: 40rem)", md: "(min-width: 48rem)", lg: "(min-width: 64rem)", xl: "(min-width: 80rem)", "2xl": "(min-width: 96rem)" };
+  const isRectOverlap = (first, second) => first.left < second.right && first.right > second.left && first.top < second.bottom && first.bottom > second.top;
+  for (const block of document.querySelectorAll("[data-wf-block]")) {
+    if (!isVisible(block)) continue;
+    const blockStyle = getComputedStyle(block);
+    const wantedPosition = (block.getAttribute("class") || "").split(/\s+/)
+      .map((token) => token.match(/^(?:(sm|md|lg|xl|2xl):)?(sticky|fixed|absolute)$/))
+      .filter((match) => match && (!match[1] || matchMedia(breakpointQueries[match[1]]).matches))
+      .map((match) => match[2]).pop();
+    if (wantedPosition && blockStyle.position !== wantedPosition) {
+      wireframeChromeProblems.push(`khối ${block.dataset.wfBlock} có class ${wantedPosition} mà ra ${blockStyle.position}: luật [data-wf-block] đè mất, đặt nó trong @layer base`);
+    }
+    const badge = getComputedStyle(block, "::before");
+    if (badge.content === "none" || badge.display === "none") continue;
+    const blockRect = block.getBoundingClientRect();
+    const badgeWidth = parseFloat(badge.width) || 18;
+    const badgeHeight = parseFloat(badge.height) || 18;
+    const badgeLeft = blockRect.left + (parseFloat(badge.left) || 0);
+    // Phần tử định vị trả `top` đã tính ra px kể cả khi CSS ghi `top: auto; bottom: 100%` (ra số âm).
+    const badgeTop = blockRect.top + (parseFloat(badge.top) || 0);
+    const badgeRect = { left: badgeLeft, top: badgeTop, right: badgeLeft + badgeWidth, bottom: badgeTop + badgeHeight };
+    const isOutside = badgeRect.top < blockRect.top - 1 || badgeRect.left < blockRect.left - 1;
+    if (isOutside && (blockStyle.overflowX !== "visible" || blockStyle.overflowY !== "visible")) {
+      wireframeChromeProblems.push(`số khối ${block.dataset.wfBlock} nằm ngoài khối mà khối cắt tràn (overflow ${blockStyle.overflowX}): số bị mất, đặt data-wf-block lên khối bọc không cuộn`);
+      continue;
+    }
+    const contentRects = [...block.querySelectorAll("svg, img")].map((node) => node.getBoundingClientRect());
+    const textWalker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT);
+    for (let node = textWalker.nextNode(); node; node = textWalker.nextNode()) {
+      if (!node.textContent.trim()) continue;
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      contentRects.push(...range.getClientRects());
+    }
+    const coveredRect = contentRects.find((rect) => rect.width > 0 && isRectOverlap(rect, badgeRect));
+    if (coveredRect) wireframeChromeProblems.push(`số khối ${block.dataset.wfBlock} đè chữ hay icon của khối: dời số lên trên mép khối (data-wf-block-out)`);
+  }
+
   // 19. Chữ dưới 12px: đọc khó ở mọi brand, hay gặp ở dòng phụ trong card và cột bên. Chữ trong biểu đồ
   //     (svg) và nhãn ngắn từ ba ký tự trở xuống ("Mới", "VIP") không tính.
   const tinyTexts = [];
@@ -1447,6 +1519,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     repeatedCardIssues,
     misalignedControlRows,
     missingWireframeParts,
+    wireframeChromeProblems,
     overlongPlaceholders,
     fakeFieldWraps,
     textOnlyPagers,
@@ -2133,10 +2206,14 @@ async function probeStateShapes(page) {
       if (found.length >= limit || !isVisible(selected)) continue;
       const group = selected.closest("[role='group'], [role='grid'], [role='tablist'], [role='listbox'], [role='radiogroup'], nav, ul, ol, table") || selected.parentElement?.parentElement;
       if (!group || seenGroups.has(group)) continue;
+      // Mục cùng loại mang cùng thuộc tính trạng thái: chip `aria-pressed` so với chip, không với nút "Hôm nay"
+      // cạnh đó (báo nhầm 30/09/2026, hàng chip bác sĩ trong wireframe lịch hẹn, nhóm rơi về ông của chip).
+      const stateAttribute = ["aria-pressed", "aria-selected"].find((attribute) => selected.hasAttribute(attribute));
       const sibling = [...group.querySelectorAll(selected.tagName)].find(
         (candidate) =>
           candidate !== selected &&
           candidate.getAttribute("role") === selected.getAttribute("role") &&
+          (!stateAttribute || candidate.hasAttribute(stateAttribute)) &&
           !candidate.matches(selectedSelector) &&
           !candidate.matches(":disabled, [aria-disabled='true']") &&
           !candidate.contains(selected) &&
@@ -3011,6 +3088,10 @@ function formatReport(results) {
     if (result.missingWireframeParts?.length > 0) {
       problems.push(`WIREFRAME THIẾU PHẦN CỦA THANH CÔNG CỤ (design-process.md, U3): ${result.missingWireframeParts.join(", ")}`);
     }
+    if (result.wireframeChromeProblems?.length > 0) {
+      problems.push(`KHUNG WIREFRAME LÀM HỎNG BẢN THIẾT KẾ (design-process.md, U3):`);
+      for (const item of result.wireframeChromeProblems.slice(0, 8)) problems.push(`  ${item}`);
+    }
     if (result.misalignedControlRows?.length > 0) {
       problems.push(`HÀNG CONTROL LỆCH TRÊN DƯỚI (${result.misalignedControlRows.length} hàng, thêm items-center; nút cạnh nhau cùng chiều cao):`);
       for (const item of result.misalignedControlRows) problems.push(`  ${item}`);
@@ -3100,7 +3181,7 @@ function formatReport(results) {
       for (const item of result.wrappedControls) problems.push(`  ${item}`);
     }
     if (result.wrappedRows.length > 0) {
-      problems.push(`HÀNG TRONG HEADER / NAV / THANH TAB RỚT DÒNG (${result.wrappedRows.length} hàng):`);
+      problems.push(`HÀNG RỚT DÒNG (header, nav, thanh tab, hàng nút) (${result.wrappedRows.length} hàng):`);
       for (const item of result.wrappedRows) problems.push(`  ${item}`);
     }
 

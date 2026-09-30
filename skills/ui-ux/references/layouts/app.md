@@ -697,6 +697,24 @@ Tháng 9, 2026 ⌄   [Hôm nay] ‹ ›                          [+ Thêm việc
 - **Màn hẹp, nút thêm nằm ở đầu danh sách ngày đang chọn** (nút viền "+ Thêm" trong slot
   action của card), mở form với hạn chót là ngày đó.
 
+### Lưới giờ trong ngày (cột theo người, ghế, phòng)
+
+Lịch hẹn trong ngày của phòng khám, salon, phòng họp: giờ là trục dọc, mỗi bác sĩ (ghế, phòng)
+một cột, ô hẹn cao theo thời lượng. Rà lần đầu 30/09/2026 ở wireframe lịch hẹn nha khoa.
+
+- **Hàng tên cột dính đầu khung khi cuộn dọc** (`sticky top-0` trong khung lưới), cột nhãn giờ
+  dính trái khi cuộn ngang. Lưới 08:00–17:00 cao hơn một màn: hàng tên trôi đi thì cuộn tới
+  buổi chiều là không biết cột nào của ai.
+- **Mở ra cuộn sẵn tới giờ hiện tại**, vạch "bây giờ" nằm khoảng một phần ba từ trên. Đây là
+  cuộn có chủ ý của màn, không phải trang tự trôi (probe mục 0 chỉ bắt cửa sổ, không bắt khung lưới).
+- **Trạng thái suy từ giờ phải có mặt**: quá giờ hẹn mà chưa đến là "Trễ N phút", hổ phách
+  như việc quá hạn (`M4`), đứng đầu hàng đếm trạng thái; quá lâu thì lễ tân tự chuyển "Không
+  đến". Dữ liệu chỉ lưu "Đã xác nhận", nên phải tính ra, và wireframe phải có ít nhất một ca
+  (`design-process.md`, U3). Đã dính 30/09/2026: không ai trễ, việc chính của lễ tân lúc 10:40 vắng mặt.
+- **Nút đổi trạng thái trên ô hay dòng là động từ** ("Tiếp đón", "Bắt đầu khám", "Hoàn tất"),
+  không phải tên trạng thái đích (`rules-state.md`, bảng nút).
+- **Ô ngắn 30 phút chỉ giữ ba dòng**: giờ + trạng thái, tên, dịch vụ. Ghi chú để panel hay hồ sơ.
+
 ---
 
 ## Danh sách có bộ lọc

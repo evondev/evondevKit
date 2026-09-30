@@ -88,6 +88,14 @@ dòng đó."* Dừng chờ.
   thật sẽ lại thành hai nút tranh nhau (`V1b`).
 - **Nội dung thật**: chữ lấy từ dữ liệu của dự án, cả ca dài nhất và ca trống. Wireframe chữ
   "Lorem" thì không thấy được card quá tải.
+- **Dữ liệu mẫu có đủ mọi trạng thái, nhất là trạng thái suy từ giờ.** Màn có mốc "bây giờ"
+  (lịch hẹn, hạn chót, đơn đang giao) thì thứ người dùng cần thấy nhất thường là thứ **đã quá
+  mốc mà chưa xong**: khách trễ giờ hẹn chưa đến, việc quá hạn, đơn giao chậm. Nó không nằm
+  trong danh sách trạng thái lưu trong dữ liệu (chỉ có "Đã xác nhận"), mà tính từ giờ, nên
+  hay bị quên. Đặt giờ "bây giờ" của wireframe sao cho có ít nhất một mục như vậy, vẽ nó thành
+  trạng thái riêng (`M4`: hổ phách hay đỏ ở nấc Màu), và ghi vào `U2` là thứ phải nổi. Đã dính
+  30/09/2026, lịch hẹn nha khoa: 10:40, mọi lịch trước đó đều đã đến, đang khám hoặc không
+  đến, không có ai "trễ": việc chính của lễ tân lúc đó (gọi người trễ) không có trên wireframe.
 - **Đúng hình dạng dữ liệu**: mỗi mục có mấy ảnh, trường nào hay trống, danh sách dài bao
   nhiêu. Dữ liệu chỉ có một ảnh mỗi tin mà wireframe vẽ lưới ba ảnh là hứa thứ dữ liệu
   không có: người dùng chọn vì lưới ảnh, bản dựng ra một ảnh to quá khổ (đã dính
@@ -106,6 +114,12 @@ dòng đó."* Dừng chờ.
   số hiện nhỏ ở góc trên trái khối. Người dùng góp ý bằng số (*"bỏ khối 3"*, *"đưa khối 2 lên
   đầu"*), không phải tả "cái thanh chữ nhỏ ở trên bảng". Cùng một khối ở các phương án giữ cùng
   số; khối chỉ phương án đó có thì số mới.
+  **Số không được đè chữ hay icon của khối.** Khối không có padding (hàng công cụ, hàng chữ đếm
+  trạng thái) có chữ ngay góc trên trái: số đè thành "ThBa". Sau mỗi lần vẽ, `placeBlockNumbers()`
+  (mẫu dưới) đo chữ và icon dưới số, đè thì gắn `data-wf-block-out` để số lên ngay trên mép khối.
+  **`data-wf-block` đặt trên khối bọc không cuộn**: khối `overflow-x-auto` (hàng chip) cắt mất số
+  nằm ngoài mép, bọc thêm một `div` rồi đánh số lên đó. Đã dính 30/09/2026, lịch hẹn nha khoa:
+  số 3 đè "Thứ Ba", số 4 đè icon "Đang khám", số hàng chip bị khung cuộn nuốt mất.
 - **Khối nào skill đã có mẫu thì wireframe vẽ đúng hình mẫu đó**, vì `U4` dựng đúng wireframe:
   vẽ sai là bản dựng chép sai theo. Trước khi vẽ, liệt kê các khối của phương án rồi mở mẫu
   tương ứng ở bảng mục 2 của `SKILL.md` (`components/`, `layouts/`): nút, ô nhập, select, ô
@@ -127,7 +141,8 @@ dòng đó."* Dừng chờ.
   "rê trùng nền đang chọn" cho tới khi đã dựng xong.
 - **Probe từng phương án trước khi gửi**, ở 1280 và 375, sửa tới khi sạch các mục: danh sách
   `P`, rê ra đúng màu mục đang chọn, vạch trái bị bo góc cắt, mục lặp dày chữ, cột dính cuộn
-  riêng, nội dung trôi giữa màn rộng. Rồi chạy luật Cấu trúc (`V1b` trong `review.md`) bằng
+  riêng, nội dung trôi giữa màn rộng, hàng nút rớt một nút lẻ (`R3`), "khung wireframe làm hỏng
+  bản thiết kế" (số đè chữ, `sticky` mất, thanh tràn). Rồi chạy luật Cấu trúc (`V1b` trong `review.md`) bằng
   mắt. Người dùng không tự thấy "card chữ quá trời" hay "vạch bị cắt" trên wireframe xám, họ
   chọn theo bố cục rồi vấp lỗi ở bản dựng (đã dính 28/09/2026: wireframe C năm dòng mỗi mục,
   vạch trái bị bo cắt, đang chọn và rê cùng một xám; probe đo ra cả hai lỗi đầu trên chính
@@ -181,9 +196,15 @@ dòng đó."* Dừng chờ.
     quản trị ít mở trên điện thoại thì ☰. Từ 6 mục thì chỉ ☰.
 
 - **Thanh công cụ ở đỉnh trang, bắt buộc, một dòng**, nằm ngoài bản thiết kế: dải **sáng** cao
-  56px, nền trắng, viền dưới xám nhạt, dính đỉnh, chữ 14px. Các nhóm xếp liền từ trái, cách nhau
-  24px, theo thứ tự: **Phương án** · **Màu** (công tắc) · Nhấn (dự án chưa có brand) · Khổ · Nav (mobile, ít mục)
+  56px, nền trắng, viền dưới xám nhạt, chữ 14px, **không dính đỉnh**: thanh dính đè lên sidebar,
+  header, panel `sticky top-0` của chính bản thiết kế, người xem thấy sidebar mất logo khi cuộn và
+  tưởng bản dựng sẽ vậy. Các nhóm xếp liền từ trái, cách nhau
+  24px, theo thứ tự: Màn (đề nhiều màn) · **Phương án** · **Màu** (công tắc) · Nhấn (dự án chưa có brand) · Khổ · Nav (mobile, ít mục)
   · **Trạng thái**.
+  - **Đề nhiều màn** (lịch và hồ sơ, danh sách và chi tiết) thì một file, nhóm **Màn** đứng đầu
+    (`?man=`), nhãn một hai chữ ("Lịch", "Hồ sơ"); mỗi màn có A, B, C riêng. **Ở 1280 thanh phải
+    vừa một dòng không cuộn** (probe đo): đã dính 30/09/2026, nhãn "Lịch trong ngày", "Hồ sơ bệnh
+    nhân" cộng nấc Màu cũ đẩy thanh tràn 60px, "Trạng thái" bị cắt mất.
   - **Mỗi nhóm là một segmented control**: rãnh xám nhạt bo 10px, nút trong rãnh không nền, nút
     đang bật (`aria-current="page"`) nền trắng, bóng mảnh, chữ đậm đen; nút khác chữ xám. Không
     dải tối, không nút chữ trắng rời rạc: dải tối nặng hơn chính bản thiết kế, kéo mắt khỏi thứ
@@ -239,7 +260,7 @@ dòng đó."* Dừng chờ.
   </details>
   <main id="wf-design">…khối có data-wf-block="1", "2"…</main>
   <style>
-    .wf-bar { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: 24px; height: 56px;
+    .wf-bar { position: relative; z-index: 50; display: flex; align-items: center; gap: 24px; height: 56px;
       padding: 0 16px; overflow-x: auto; white-space: nowrap; background: #fff; border-bottom: 1px solid #e5e5e5;
       color: #737373; font: 14px/1 system-ui, -apple-system, sans-serif; }
     .wf-bar *, .wf-reason * { box-sizing: border-box; }
@@ -281,9 +302,12 @@ dòng đó."* Dừng chờ.
     .wf-reason summary b { color: #171717; font-weight: 600; }
     .wf-reason summary span { display: inline-block; margin-left: 8px; white-space: nowrap; color: #525252; text-decoration: underline; text-underline-offset: 3px; }
     .wf-reason > div { padding: 0 16px 14px; }
-    [data-wf-block] { position: relative; }
+    /* Trong layer: rule ngoài layer thắng mọi utility Tailwind, `sticky` của sidebar thành `relative`, sidebar
+       trôi khi cuộn (đã dính 30/09/2026). Không Tailwind thì class `sticky` của dự án vẫn thắng rule trong layer. */
+    @layer base { [data-wf-block] { position: relative; } }
     [data-wf-block]::before { content: attr(data-wf-block); position: absolute; top: 4px; left: 4px; z-index: 5;
       display: grid; place-items: center; width: 18px; height: 18px; border-radius: 9px; background: #1f1f1f; color: #fff; font-size: 11px; }
+    [data-wf-block][data-wf-block-out]::before { top: auto; bottom: 100%; } /* số đè chữ thì lên trên mép khối */
     body[data-frame] .wf-bar, body[data-frame] .wf-reason { display: none; }
     body:not([data-kho="mobile"]) [data-wf-param="nav"] { display: none; }
     body[data-mau="xam"] { --primary: #2c2c2c; } /* nấc Xám: bỏ màu nhấn, cả màu trạng thái */
@@ -338,6 +362,26 @@ dòng đó."* Dừng chờ.
     for (const button of document.querySelectorAll("[data-copy]")) {
       button.addEventListener("click", () => navigator.clipboard.writeText(button.dataset.copy));
     }
+    // Số khối đè chữ hay icon thì lên trên mép khối. Gọi sau mỗi lần vẽ lại, sau hai khung hình: Tailwind bản
+    // trình duyệt dựng CSS sau khi HTML vào trang, đo ngay thì mọi khối chưa có layout, số nào cũng "đè".
+    function placeBlockNumbers() {
+      const isOverlap = (first, second) => first.left < second.right && first.right > second.left && first.top < second.bottom && first.bottom > second.top;
+      for (const block of document.querySelectorAll("[data-wf-block]")) {
+        const blockRect = block.getBoundingClientRect();
+        const numberRect = { left: blockRect.left + 4, top: blockRect.top + 4, right: blockRect.left + 22, bottom: blockRect.top + 22 };
+        const contentRects = [...block.querySelectorAll("svg, img")].map((node) => node.getBoundingClientRect());
+        const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT);
+        for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+          if (!node.textContent.trim()) continue;
+          const range = document.createRange();
+          range.selectNodeContents(node);
+          contentRects.push(...range.getClientRects());
+        }
+        block.toggleAttribute("data-wf-block-out", contentRects.some((rect) => rect.width > 0 && isOverlap(rect, numberRect)));
+      }
+    }
+    requestAnimationFrame(() => requestAnimationFrame(placeBlockNumbers));
+    addEventListener("resize", placeBlockNumbers);
   </script>
   ```
 
