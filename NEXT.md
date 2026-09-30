@@ -170,7 +170,7 @@ Mỗi dự án chạy **hai lượt**: một lượt skill tự mở trang, mộ
 
 **5a. Dự án mồi 2: `~/dev/audit-skills/lich-kham` (xong vòng 1, 30/09/2026)**
 
-Tự mở trang 5/8, chỉ đưa ảnh 6/6, mỗi lượt báo nhầm 1. Chi tiết và các chỗ đã sửa ở dòng dự án 2
+Tự mở trang 5/8 (báo nhầm 3), chỉ đưa ảnh 6/6 (báo nhầm 1). Chi tiết và các chỗ đã sửa ở dòng dự án 2
 trong `BACKLOG.md`. Muốn chạy vòng 2 (kiểm probe đã sửa) thì làm lại bước 3, lưu ra
 `ket-qua-vong-2.md`.
 

@@ -231,14 +231,21 @@ sang hạng theo bảng này. Những mục xếp Hỏng thì probe đã tự go
 
 | Mục probe | Hạng |
 | --- | --- |
-| Trang tự cuộn khi vừa tải, cuộn ngang, lớp nổi lòi khỏi màn, lớp nổi mở bằng nút bị vỡ, rê chuột làm nhảy bố cục, tương phản chữ dưới ngưỡng, khung giấu mất chữ, chữ cắt còn quá ngắn, chữ trong nút xuống dòng, nhãn số đè lên đường biểu đồ, badge đè mất icon, khối bị bóp chiều cao, chữ cắt nuốt mất số, rê ra đúng màu mục đang chọn, nền rê gần như không thấy, nền rê tan vào nền ngoài khung hay trùng nền phía sau, rê vào ô đã chọn làm mất màu nhấn, scale / translate / rotate không chạy chuyển động (`W10`), hàng cuộn ngang chuột không tới được (`responsive.md`, sau `R10`), đường ngăn thẳng hàng mà khác màu (một đường nửa nhạt nửa đậm, sai với mọi brand) | Hỏng |
+| Trang tự cuộn khi vừa tải, cuộn ngang, lớp nổi lòi khỏi màn, lớp nổi mở bằng nút bị vỡ, rê chuột làm nhảy bố cục, tương phản chữ dưới ngưỡng, khung giấu mất chữ, chữ cắt còn quá ngắn, chữ trong nút xuống dòng, nhãn số đè lên đường biểu đồ, badge đè mất icon, khối bị bóp chiều cao, chữ cắt nuốt mất số, rê ra đúng màu mục đang chọn, rê vào ô đã chọn làm mất màu nhấn, scale / translate / rotate không chạy chuyển động (`W10`), hàng cuộn ngang chuột không tới được (`responsive.md`, sau `R10`), đường ngăn thẳng hàng mà khác màu (một đường nửa nhạt nửa đậm, sai với mọi brand) | Hỏng |
 | Chỗ bấm dưới 32px | Mục có ghi "(dưới 24px)" là Hỏng, còn lại (24 tới 31px) là Gu |
 | Hàng trong header / nav rớt dòng | Hỏng khi đè hay đẩy lệch khối khác, không thì Lệch hệ (so với cách hàng đó ở khổ khác). Xem ảnh mới quyết |
 | Hàng nút trên header không đồng cỡ | Lệch hệ. Chế độ dựng lại thì vào dòng Gọn của header (`V1c`), theo "Nhóm nút bên phải thanh header" trong `layouts/app.md` |
 | Hàng control lệch trên dưới, placeholder dài hơn ô, khối trông như ô nhập mà chữ xuống dòng, phân trang chỉ có nút chữ, thanh header trong suốt trên nền xám, vạch chia trong menu đậm hơn viền khung, khung / vạch lớp nổi đậm hơn token `--border`, vạch trái bị bo góc khung cắt, khung hộp thoại mờ lồng trong lớp nền mờ, cao gần bằng mà không bằng, đường ngăn hai cột kề nhau lệch, chữ cùng cột lệch mép, dấu ngăn cách không đều, control còn kiểu mặc định của trình duyệt, khung khai viền mà viền không thấy, khối cùng component bo góc khác nhau, Tab tới không thấy gì trong khi dự án vẽ vòng focus ở chỗ khác (ngoại lệ của `I13`), khối con biến mất lúc rê, lớp nổi có dải trống, lớp nổi bật tắt không chuyển động, checkbox / radio gốc trong lớp nổi, viền trang trí đậm, thanh cuộn khác mẫu, sidebar chữ đậm hay mục sát nhau, số viết sai kiểu tiếng Việt | Lệch hệ |
-| Nền rê trùng màu viền của chính nút, viền đổi màu lúc rê, rê khác hình mục đang chọn, bấm xong còn dấu thừa, Tab tới còn vẽ vòng focus (`I13`: chế độ soi ghi một dòng Gu, hai chế độ dựng lại thì gỡ), bảng cuộn ngang mất cột, nhóm lựa chọn xếp lưới, số tiền ngắt dòng, số không thẳng hàng, nhãn số lòi ra ngoài vùng vẽ, dấu câu rơi xuống đầu dòng, chữ dưới 12px (gộp một dòng, ghi cỡ nhỏ nhất và chỗ; sửa lên ít nhất 12px), cột dính mà cuộn riêng, nội dung trôi giữa màn rộng (`layouts/app.md`), mục lặp dày chữ | Gu |
+| Nền rê gần như không thấy, nền rê tan vào nền ngoài khung hay trùng nền phía sau (gộp một dòng, ghi các nút; hai chế độ dựng lại thì tự sửa theo `components/button.md`), nền rê trùng màu viền của chính nút, viền đổi màu lúc rê, rê khác hình mục đang chọn, bấm xong còn dấu thừa, Tab tới còn vẽ vòng focus (`I13`: chế độ soi ghi một dòng Gu, hai chế độ dựng lại thì gỡ), bảng cuộn ngang mất cột, nhóm lựa chọn xếp lưới, số tiền ngắt dòng, số không thẳng hàng, nhãn số lòi ra ngoài vùng vẽ, dấu câu rơi xuống đầu dòng, chữ dưới 12px (gộp một dòng, ghi cỡ nhỏ nhất và chỗ; sửa lên ít nhất 12px), cột dính mà cuộn riêng, nội dung trôi giữa màn rộng (`layouts/app.md`), mục lặp dày chữ | Gu |
 | Select gốc đã tô trên desktop | Chế độ soi: không vào bảng. Hai chế độ dựng lại: Lệch hệ, thay bằng Select dựng (từ 8 mục có ô tìm) |
 | Lỗi console | Không vào bảng. Ghi một dòng dưới bảng |
+
+Nền rê yếu là Gu ở chế độ soi (chủ dự án chốt 30/09/2026): rê nhạt không làm hỏng việc gì, người
+dùng vẫn bấm được, và đó là mặc định của shadcn. Chỉ rê làm **sai trạng thái** mới là Hỏng: rê ra
+đúng màu mục đang chọn, rê vào ô đã chọn làm mất màu nhấn, rê làm nhảy bố cục. Probe vẫn đưa nền rê
+yếu vào danh sách `P` (nhãn có "soi: Gu") vì lúc dựng, cổng 3 phải sửa hết. Ở bảng soi, mã đó lên
+dòng Gu. ⚠️ Bản 28/09 xếp Hỏng; vòng 1 lịch khám ra ba dòng Hỏng chỉ vì nút ghost và dòng bảng
+shadcn rê nhạt.
 
 ---
 
