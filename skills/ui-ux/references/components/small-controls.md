@@ -65,10 +65,11 @@ là **nút bỏ lọc**, không phải nút bật / tắt như chip lọc. Khác
   `--border-strong` như nút viền (`M14`): đọc ra "bấm được, bấm là bỏ".
 - **Cả chip là nút bỏ lọc**, không chỉ dấu ×; `aria-label` nói rõ bỏ lọc gì.
 - Nhãn ghi đủ nghĩa khi đứng một mình ("Gần bệnh viện", "Dưới 8 triệu"), không chỉ "Bệnh viện".
-- **"Xoá lọc"** là nút ghost chữ cuối hàng, hiện khi có ít nhất một lọc.
-- Hàng này có ích khi có lọc nằm trong dropdown (khu vực, giá), thứ người dùng không thấy từ
-  ngoài. Mọi lọc đều là chip hiện sẵn ở trên thì hàng tóm tắt là "Hai chỗ một việc" (`V1b`):
-  chỉ giữ "Xoá lọc" cạnh số kết quả.
+- **Chỉ hiện lọc không nhìn thấy từ ngoài**: lọc chọn trong dropdown, popover, panel (khu vực,
+  giá thuê, dạng phòng). Lọc là chip hiện sẵn trên trang thì chip đang chọn đã nói rồi, không
+  lặp ở hàng tóm tắt ("Hai chỗ một việc", `V1b`; chủ dự án chốt 30/09/2026).
+- **"Xoá lọc"** là nút ghost chữ cuối hàng, hiện khi có ít nhất một lọc, **kể cả lọc là chip**
+  ở trên: nó bỏ hết một lần. Không có lọc ẩn nào thì hàng chỉ còn số kết quả và "Xoá lọc".
 
 Đã dính 30/09/2026, tim-phong-sua: chip tóm tắt nền xám y như chip chưa chọn ở hàng "Gần" ngay
 trên, chủ dự án hỏi nên cùng màu hay để viền.
