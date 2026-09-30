@@ -345,9 +345,10 @@ lưới, kể cả kiểu chưa có mẫu. Không cần mẫu riêng cho từng 
    và màu. Giá to gấp rưỡi tên thì card đọc như bảng giá, tên thành chữ phụ. Ngoại lệ: card
    số liệu, nơi con số chính là cả khối (`components/charts.md`).
 2. **Nhịp theo nhóm: trong nhóm gần, giữa nhóm xa.** Gom chữ thành nhóm theo nghĩa (giá +
-   tên; diện tích · khu vực · mốc gần; thời gian đăng). Dòng trong một nhóm cách 2–4px, giữa
-   các nhóm 8–12px, khoảng từ chữ tới mép khối không nhỏ hơn khoảng giữa nhóm. Mọi dòng cách
-   đều 4px là không có nhóm, mắt đọc thành một cục chữ sát nhau.
+   tên; diện tích · khu vực · mốc gần; thời gian đăng). Dòng trong một nhóm cách **4px
+   (`gap-1`)**, không `gap-0.5`: 2px thì hai dòng dính nhau, nhất là dòng có dấu tiếng Việt
+   (chủ dự án chốt 30/09/2026). Giữa các nhóm 8–12px, khoảng từ chữ tới mép khối không nhỏ
+   hơn khoảng giữa nhóm. Mọi dòng cách đều nhau là không có nhóm, mắt đọc thành một cục chữ.
 3. **Tên để nhận ra mục không cắt cụt.** Khối lặp mà mỗi mục là một khối riêng (card trong
    lưới) thì tên `line-clamp-2`; `truncate` một dòng chỉ cho danh sách dày (dòng bảng,
    sidebar, `T14`). Tên cắt sau hai mươi mấy ký tự ("Cho thuê phòng trọ khép kín …") là
