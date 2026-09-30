@@ -196,6 +196,14 @@ bảy dòng chữ trong lượt trả lời, mà thành code thật và một tr
      30/09/2026, khối Ô nhập: nút có nhãn trạng thái ở trên, ô nhập thì nhãn nằm dưới ô,
      hàng cách nhau 10px).
 
+   **Ví dụ ép trạng thái** (nút tô sẵn nền rê, ô vẽ sẵn viền focus, select và modal mở sẵn trong
+   khung tĩnh, nút nhãn dài trong khung hẹp) bọc trong `<div inert data-demo-state="hover">` (giá
+   trị là tên trạng thái). `inert`: Tab không dừng ở ô giả focus, rê vào không đổi gì. Probe bỏ
+   qua các khối này ở phép đo rê, lớp nổi, viền trang trí, nút xuống dòng; không bọc thì mỗi
+   ví dụ thành một mục Hỏng giả (đã dính 30/09/2026: bản shadcn 14 trên 15 mục Hỏng là ví dụ
+   mẫu, bản không shadcn có viền focus mẫu và nút nhãn dài). Ví dụ "Thường" thì **không** bọc,
+   đó là component thật để probe đo.
+
    Trang là công cụ để duyệt: flat như gu skill, không hero, không lời quảng cáo.
 6. **Probe trang đó** (`--sweep`) tới khi danh sách `P` trống, tối đa ba vòng.
 7. **Cổng duy nhất của lối này**: gửi link, kèm một dòng *"Duyệt thì trả lời `ok`. Muốn đổi

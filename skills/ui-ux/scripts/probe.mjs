@@ -261,6 +261,9 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   for (const control of document.querySelectorAll("a, button, [role='tab'], [role='menuitem']")) {
     if (wrappedControls.length >= 8) break;
     if (!isVisible(control) || getComputedStyle(control).display === "inline") continue;
+    // Nút "nhãn dài" cố ý đặt trong khung hẹp trên trang design system (`D9`, `data-demo-state`): báo mãi ở
+    // cả 4a lẫn 4b ngày 30/09/2026.
+    if (control.closest("[data-demo-state]")) continue;
     // Ô dạng icon trên chữ dưới (ô danh mục cao từ 56px) thì nhãn hai dòng là thiết kế, không phải nút bị
     // bóp (báo nhầm 27/09/2026, ô danh mục ở dự án mồi phase 2).
     const controlStyle = getComputedStyle(control);
@@ -495,7 +498,12 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
 
     for (const element of interactiveElements) {
       if (!isVisible(element) || element.closest("[inert], [aria-hidden='true']") || isWireframeChrome(element)) continue;
-      if (element.tagName === "A" && getComputedStyle(element).display === "inline") continue;
+      // Chỗ bấm nằm trong câu (link, nút `inline` như "Xoá tìm kiếm" cuối câu rỗng, `empty-state.md`) được
+      // WCAG 2.5.8 miễn cỡ. Trước chỉ miễn thẻ <a>: báo nhầm 30/09/2026, design system phòng khám bản shadcn.
+      // Nút `inline` thì trình duyệt tính ra `inline-block`, nên nhận bằng chữ trơn đứng cạnh trong cùng cha.
+      const elementDisplay = getComputedStyle(element).display;
+      const isInSentence = elementDisplay === "inline-block" && [...element.parentElement.childNodes].some((node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 1);
+      if (elementDisplay === "inline" || isInSentence) continue;
       // Không nhận chạm thì không phải chỗ bấm: input range chồng dưới thanh trượt hai đầu.
       if (getComputedStyle(element).pointerEvents === "none") continue;
 
