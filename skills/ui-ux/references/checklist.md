@@ -175,10 +175,12 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 ```bash
 grep -nE "gradient|backdrop-blur|shadow-(xl|2xl)|scale-1|text-transparent|border-dashed|<details|<summary" <file>
 grep -nE "(^|[\" '`:])-(m[trblxy]?|space-[xy]|translate-[xy]|inset|top|left|right|bottom)-" <file>
+# Dự án viết CSS thuần / CSS Modules / styled: số âm nằm trong giá trị, dòng trên không bắt được
+grep -nE "(margin[a-z-]*|inset[a-z-]*|top|left|right|bottom|translate|transform)\s*:[^;]*(\s|\(|:)-[0-9.]" <file.css>
 ```
 
 Phải sạch, trừ ngoại lệ đã ghi trong luật. `<details>` / `<summary>` không có ngoại lệ: mở/đóng tức thì, không animate được (`I30`).
-Dòng grep thứ hai (số âm, `N11`): mỗi kết quả phải có comment lý do ngay trên, không có thì làm lại bằng padding, `gap`, căn hàng.
+Dòng grep thứ hai và thứ ba (số âm, `N11`): mỗi kết quả phải có comment lý do ngay trên, không có thì làm lại bằng padding, `gap`, căn hàng. Chỉ grep file mình vừa viết hay sửa; số âm có sẵn của dự án không phải việc của lượt dựng. Đã dính 30/09/2026 (`kho-hang`, CSS Modules): bản dựng thêm `margin: -4px -8px 0 0` cho nút đóng dialog, `margin: 0 -20px` cho danh sách, `translate: -50% 0` cho chấm hôm nay, không comment, vì grep chỉ bắt class Tailwind.
 
 ---
 

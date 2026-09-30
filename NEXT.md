@@ -205,6 +205,12 @@ Muốn kiểm bản sửa thì chạy vòng 3 y như 5a bước 1–3, đổi t�
 
 **5c. Làm lại có wireframe trên dự án có sẵn: `kho-hang`, trang `/nhap-xuat`**
 
+Xong 30/09/2026 (nhánh `lam-lai`): đạt cả năm ý soi. Wireframe và bản dựng giữ nền tối, kính, màu
+chanh; chỉ CSS Modules + token (thêm một token `--surface-hover-strong`), dùng lại `GlassCard`,
+`StatusBadge`, `SegmentedTabs`, `Dialog`; H4, H5, L3, G2 sạch; không đề xuất chế độ sáng; probe
+không ra mục Hỏng nào. Sót một chỗ: thêm ba số âm không comment (`N11`) vì lệnh grep ở cổng 3 chỉ
+bắt class Tailwind, đã thêm dòng grep cho CSS vào `checklist.md`.
+
 Nhánh `U` trên app đã có UI mới chạy ở `tim-phong-sua` (Tailwind, nền sáng). Ở đây app nền tối kiểu
 kính, CSS Modules, không Tailwind: xem wireframe và bản dựng có bám hệ của app không, hay kéo về flat
 nền sáng, chèn class Tailwind. Đề **không** ghi "giữ brand" (chữ đó đi chế độ dựng lại giữ brand, không
@@ -226,6 +232,33 @@ có wireframe).
      thấy vòng focus (H5), badge bảng phiếu dùng `StatusBadge` (L3), chỉ một nút chính (G2).
    - Không đề xuất chế độ sáng.
 4. Gửi link cho Claude ở evondevKit rà. Xong thì `git checkout main` để bản soi còn nguyên.
+
+**5d. Dựng mới có wireframe, người dùng chọn phong cách shadow (`P7`)**
+
+Một lượt, không dự án mồi, không đáp án. Test: người dùng tự nêu phong cách thì skill theo luôn
+(`P1`), từ wireframe tới bản dựng, không kéo về flat.
+
+1. Tạo dự án:
+
+   ```bash
+   cd ~/dev/audit-skills
+   npx create-next-app@latest lop-hoc --ts --tailwind --app --eslint --use-npm --yes
+   cd lop-hoc && npm run dev
+   ```
+
+2. Phiên Claude Code mới trong `lop-hoc`, gõ:
+
+   ```
+   Đọc ~/dev/evondevKit/skills/ui-ux/SKILL.md rồi dựng dashboard quản lý trung tâm ngoại ngữ: tổng quan, danh sách học viên, lớp học. Phong cách shadow: card nổi bằng bóng, không viền.
+   ```
+
+   Qua hai cổng như thường: duyệt brief, chọn wireframe.
+3. Soi:
+   - Không hỏi lại phong cách.
+   - Wireframe đã là card nổi bằng bóng, không phải card viền flat.
+   - Bản dựng có thang bóng tăng dần: card < card khi rê < dropdown < modal. Dialog nổi hơn card.
+   - Card không viền (được có `ring-1 ring-black/5`), rê chuột thì tăng bóng, không phóng to.
+4. Gửi link cho Claude ở evondevKit rà.
 
 ### [ ] 6. Dark mode (0/7)
 
