@@ -101,6 +101,14 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   for (const container of document.querySelectorAll("body *")) {
     const overflowY = getComputedStyle(container).overflowY;
     if (!["auto", "scroll"].includes(overflowY) || container.scrollTop <= 0 || container.clientHeight < window.innerHeight * 0.6) continue;
+    // Lưới giờ cuộn sẵn tới vạch "bây giờ" (`data-now`, `layouts/app.md` "Lưới giờ trong ngày") là cố ý: vạch
+    // nằm trong phần đang thấy của khung thì không tính (báo nhầm 30/09/2026, lịch hẹn nha khoa).
+    const containerRect = container.getBoundingClientRect();
+    const isScrolledToNow = [...container.querySelectorAll("[data-now]")].some((marker) => {
+      const markerRect = marker.getBoundingClientRect();
+      return markerRect.top >= containerRect.top && markerRect.bottom <= containerRect.bottom;
+    });
+    if (isScrolledToNow) continue;
     const classes = (container.getAttribute("class") || "").trim().split(/\s+/).slice(0, 5).join(".");
     autoScrolledAreas.push(`${container.tagName.toLowerCase()}${classes ? "." + classes : ""} đã cuộn ${Math.round(container.scrollTop)}px`);
   }
@@ -1441,6 +1449,28 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     document.querySelectorAll("[data-wf-block]").length < 2 && "số khối (data-wf-block)",
   ].filter(Boolean);
 
+  // 18m1. Vạch "bây giờ" của lưới giờ (`data-now`) bị ô hẹn đè: ô nằm trên vạch thì lúc đông lịch vạch chỉ lộ ở
+  //       khe giữa các ô (đo 30/09/2026, lịch hẹn nha khoa 10:40: hiện 2% bề ngang), không còn là mốc để đọc
+  //       "ai đang trễ, ai sắp tới". Đo bằng hit-test dọc vạch, tạm bật pointer-events.
+  const coveredNowLines = [];
+  for (const marker of document.querySelectorAll("[data-now]")) {
+    if (!isVisible(marker) && marker.getBoundingClientRect().width < 40) continue;
+    const markerRect = marker.getBoundingClientRect();
+    if (markerRect.width < 40 || markerRect.bottom < 0 || markerRect.top > window.innerHeight) continue;
+    const touched = [marker, ...marker.querySelectorAll("*")].map((node) => [node, node.style.pointerEvents]);
+    for (const [node] of touched) node.style.pointerEvents = "auto";
+    const sampleY = markerRect.top + markerRect.height / 2;
+    let visibleCount = 0;
+    let sampleCount = 0;
+    for (let sampleX = markerRect.left + 2; sampleX < markerRect.right - 2; sampleX += 4) {
+      sampleCount++;
+      if (marker.contains(document.elementFromPoint(sampleX, sampleY))) visibleCount++;
+    }
+    for (const [node, value] of touched) node.style.pointerEvents = value;
+    const visiblePercent = sampleCount ? Math.round((visibleCount / sampleCount) * 100) : 100;
+    if (visiblePercent < 60) coveredNowLines.push(`chỉ thấy ${visiblePercent}% bề ngang: ${describe(marker)}`);
+  }
+
   // 18m2. Khung wireframe làm hỏng bản thiết kế (U3, 30/09/2026, wireframe lịch hẹn nha khoa):
   //  - thanh công cụ tràn ngang ở desktop (thêm nhóm Màn, tên nhóm dài): "Trạng thái" bị cắt ở 1280;
   //  - số khối đè chữ hay icon của khối không có padding ("Thứ Ba" thành "ThBa"), hoặc bị khung cuộn cắt mất;
@@ -1520,6 +1550,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     misalignedControlRows,
     missingWireframeParts,
     wireframeChromeProblems,
+    coveredNowLines,
     overlongPlaceholders,
     fakeFieldWraps,
     textOnlyPagers,
@@ -3087,6 +3118,10 @@ function formatReport(results) {
     }
     if (result.missingWireframeParts?.length > 0) {
       problems.push(`WIREFRAME THIẾU PHẦN CỦA THANH CÔNG CỤ (design-process.md, U3): ${result.missingWireframeParts.join(", ")}`);
+    }
+    if (result.coveredNowLines?.length > 0) {
+      problems.push(`VẠCH "BÂY GIỜ" BỊ Ô ĐÈ (layouts/app.md, "Lưới giờ trong ngày": vạch vẽ trên ô):`);
+      for (const item of result.coveredNowLines) problems.push(`  ${item}`);
     }
     if (result.wireframeChromeProblems?.length > 0) {
       problems.push(`KHUNG WIREFRAME LÀM HỎNG BẢN THIẾT KẾ (design-process.md, U3):`);

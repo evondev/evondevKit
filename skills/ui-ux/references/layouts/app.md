@@ -705,8 +705,16 @@ một cột, ô hẹn cao theo thời lượng. Rà lần đầu 30/09/2026 ở 
 - **Hàng tên cột dính đầu khung khi cuộn dọc** (`sticky top-0` trong khung lưới), cột nhãn giờ
   dính trái khi cuộn ngang. Lưới 08:00–17:00 cao hơn một màn: hàng tên trôi đi thì cuộn tới
   buổi chiều là không biết cột nào của ai.
-- **Mở ra cuộn sẵn tới giờ hiện tại**, vạch "bây giờ" nằm khoảng một phần ba từ trên. Đây là
-  cuộn có chủ ý của màn, không phải trang tự trôi (probe mục 0 chỉ bắt cửa sổ, không bắt khung lưới).
+- **Mở ra cuộn sẵn tới giờ hiện tại**, vạch "bây giờ" nằm khoảng một phần ba từ trên. Vạch mang
+  `data-now`: probe thấy vạch trong phần đang hiện của khung thì hiểu là cuộn có chủ ý, không báo
+  "trang tự cuộn".
+- **Vạch "bây giờ" vẽ trên ô hẹn** (`z-index` cao hơn ô), mảnh 1px, chấm tròn ở đầu; chấp nhận vạch
+  cắt ngang chữ trong ô. Vạch nằm dưới ô thì đúng lúc đông lịch nhất nó chỉ lộ ở khe giữa các ô:
+  đo 30/09/2026, lịch hẹn nha khoa 10:40, vạch hiện 2% bề ngang, không còn là mốc để đọc ai trễ, ai
+  sắp tới. Probe đo phần thấy được của `[data-now]`.
+- **Số đếm trạng thái cần xử lý bấm được.** "Trễ 1" trong hàng đếm là nút: bấm thì cuộn tới ô đó
+  và mở chi tiết; màn hẹp chỉ hiện một cột thì chuyển sang cột của người đó trước. Ô trễ nằm ở cột
+  đang ẩn mà số đếm không bấm được thì lễ tân cầm điện thoại không thấy ai trễ.
 - **Trạng thái suy từ giờ phải có mặt**: quá giờ hẹn mà chưa đến là "Trễ N phút", hổ phách
   như việc quá hạn (`M4`), đứng đầu hàng đếm trạng thái; quá lâu thì lễ tân tự chuyển "Không
   đến". Dữ liệu chỉ lưu "Đã xác nhận", nên phải tính ra, và wireframe phải có ít nhất một ca
