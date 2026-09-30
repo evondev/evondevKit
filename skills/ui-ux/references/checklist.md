@@ -105,7 +105,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Tailwind v4: `<button>` có `cursor-pointer` chưa, hoặc base CSS đã trả lại chưa (`W7`)?
 - [ ] **Bấm Tab qua các nút, tab, checkbox**: không có vòng bao ngoài nào (`I13`)? **Trong menu** thì mục đang focus đổi nền như hover.
 - [ ] **Bấm Tab qua ô nhập, select**: có viền `--border-focus` **và** ring mờ `--ring-focus` `ring-2` chưa? `ring-4` là quá dày (`F20`). Select đang mở cũng giữ viền + ring.
-- [ ] **Select, ô ngày trên desktop là bản dựng** (`components/choice-controls.md`), kể cả trong dialog, kể cả khi app cũ đang dùng `<select>` / `<input type="date">` gốc đã tô? Chỉ ô chỉ hiện trên mobile mới được để gốc.
+- [ ] **Không còn control gốc của trình duyệt** (select, ô ngày / giờ, checkbox, radio, thanh trượt, ô chọn tệp), kể cả trong dialog, sheet, popover đang đóng, kể cả khi app cũ đang dùng bản gốc đã tô? Chỉ select, ô ngày chỉ hiện trên mobile mới được để gốc.
 - [ ] **Checkbox / radio / công tắc** (`components/choice-controls.md`): cỡ mặc định 20px (công tắc 24×44), không phải 16px? Card chọn: đang chọn có viền + ring, Tab tới không thêm vòng? Khoá thì nhãn mờ theo? Nhóm radio có sẵn một lựa chọn và có `<legend>`? Nhóm xếp một hàng hoặc một cột, không lưới 2×2 (thang Thấp → Khẩn cấp đọc chữ Z)? Ở 375px mỗi lựa chọn là dòng cao 44px bấm được cả dòng?
 - [ ] Vừa Tab vừa rê chuột trong menu: có **hai mục sáng cùng lúc** không? Chỉ được một (`data-[highlighted]`).
 - [ ] Rê chuột lên **nút chính**: có đổi màu không? Nút `primary` là chỗ hay quên hover nhất (`I9`).

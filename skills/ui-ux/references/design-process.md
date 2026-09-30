@@ -148,10 +148,10 @@ dòng đó."* Dừng chờ.
   `<select>` nếu mẫu dùng), không `div` giả. Khối chưa có mẫu mới tự vẽ. Đã dính 29/09/2026, hai
   ví dụ trong một lượt: phân trang vẽ hai nút chữ "Trước / Sau" rộng khác nhau thay cho
   `‹ 1 2 3 … ›`; ô tìm là `div` nên placeholder dài rớt xuống dòng hai.
-  **App đang có mà dùng `<select>` gốc hay `<input type="date">` gốc thì wireframe không chép
-  theo**, kể cả khi app đã tô viền, bo góc: bấm vào vẫn bung menu và lịch của hệ điều hành. Vẽ
-  Select dựng và ô chọn ngày có popover lịch theo `components/choice-controls.md`, tô bằng
-  token của app. Chỉ giữ control gốc khi nó chỉ hiện trên mobile (luật `<select>` gốc cho màn
+  **App đang có mà dùng control gốc của trình duyệt thì wireframe không chép theo**, kể cả khi
+  app đã tô viền, bo góc: `<select>`, ô ngày / giờ bấm vào vẫn bung menu và lịch của hệ điều hành;
+  checkbox, radio, thanh trượt, ô chọn tệp gốc lạc dáng giữa app. Vẽ theo mẫu tương ứng của skill
+  (`components/choice-controls.md`, `range-slider.md`, `file-upload.md`), tô bằng token của app. Chỉ giữ control gốc khi nó chỉ hiện trên mobile (luật `<select>` gốc cho màn
   cảm ứng ở đó); ô nằm trong dialog dùng cho cả hai khổ thì dựng. Khối trong lớp nổi (dialog,
   sheet, popover) cũng đối chiếu mẫu, mở ra rồi xem, không chỉ phần trang đang hiện. Đã dính
   30/09/2026, wireframe làm lại trang nhập – xuất của app kho nền tối: dialog "Tạo phiếu" giữ

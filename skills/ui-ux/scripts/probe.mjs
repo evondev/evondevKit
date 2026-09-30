@@ -1260,18 +1260,12 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
 
   // 17b. Select gốc đã tô ở khổ desktop: lúc đóng khớp app, bấm vào vẫn bung menu của hệ điều hành. Chế độ
   //      soi bỏ qua, hai chế độ dựng lại thay bằng Select dựng (review.md V1, 28/09/2026).
-  //      Ô ngày, giờ gốc cùng lý do: bấm vào ra lịch của hệ điều hành. Control nằm trong `<dialog>` đang
-  //      đóng cũng tính, vì mở ra là hiện (sót select và ô ngày gốc trong dialog "Tạo phiếu" của wireframe
-  //      kho hàng, 30/09/2026).
-  const isInClosedDialog = (control) => Boolean(control.closest("dialog:not([open])"));
+  //      Ô ngày, giờ gốc cùng lý do: bấm vào ra lịch của hệ điều hành. Control trong lớp nổi đang ẩn
+  //      thì `findNativeControls` đo riêng.
   const styledNativeSelects = isMobile ? [] : [...document.querySelectorAll("select, input[type='date'], input[type='time'], input[type='datetime-local'], input[type='month'], input[type='week']")]
-    .filter((control) => (isVisible(control) || isInClosedDialog(control)) && (control.tagName !== "SELECT" || !["auto", "menulist"].includes(getComputedStyle(control).appearance)))
+    .filter((control) => isVisible(control) && (control.tagName !== "SELECT" || !["auto", "menulist"].includes(getComputedStyle(control).appearance)))
     .slice(0, 6)
-    .map((control) => {
-      const kind = control.tagName === "SELECT" ? `${control.options.length} mục` : `ô ${control.type} gốc`;
-
-      return `${kind}${isInClosedDialog(control) ? ", trong dialog đang đóng" : ""}: ${describe(control)}`;
-    });
+    .map((control) => `${control.tagName === "SELECT" ? `${control.options.length} mục` : `ô ${control.type} gốc`}: ${describe(control)}`);
 
   // 18. Đường ngăn ngang của hai cột kề nhau lệch vài px: vạch dưới khối logo ở sidebar với vạch dưới
   //     header, nhìn thành một đường gãy (28/09/2026). Lệch lớn hơn 16px là hai tầng khác nhau, bỏ qua.
@@ -2275,9 +2269,51 @@ function findHeavyLayerLines() {
   return findings;
 }
 
-// Lớp nổi vừa mở: có chuyển động mở không (overlay.md, "Chuyển động"), và có checkbox, radio gốc bên trong
-// không. Menu bật tắt bằng `{isOpen && …}` hay `display` hiện ra tức thì; checkbox gốc chỉ lộ khi menu mở
-// nên phép đo ở trang không thấy (đã dính 29/09/2026, tim-phong-sua: menu "Khu khác").
+// Control gốc của trình duyệt nằm trong lớp nổi: select, ô ngày / giờ, checkbox, radio, thanh trượt, ô chọn
+// tệp, ô chọn màu. Phép đo ở trang chỉ thấy thứ đang hiện, nên lớp nổi phải đo riêng (đã dính 29/09/2026,
+// checkbox gốc trong menu "Khu khác"; 30/09/2026, select và ô ngày gốc trong dialog "Tạo phiếu" của wireframe
+// kho hàng). Hai cách gọi:
+// - "hidden": lớp đang ẩn mà vẫn nằm trong DOM (`<dialog>` đóng, popover, `[hidden]`, role dialog / menu /
+//   listbox bị ẩn). Style vẫn đọc được dù đang `display: none`.
+// - "opened": lớp vừa mở sau cú bấm (modal gắn vào DOM lúc mở). Lớp đã hiện trước khi bấm mang
+//   `data-evon-seen-layer` hoặc `data-evon-before`, không tính.
+function findNativeControls(mode) {
+  const layerSelector = "dialog, [popover], [role='dialog'], [role='menu'], [role='listbox'], [data-radix-popper-content-wrapper], [hidden]";
+  const describeLayer = (layer) => `${layer.tagName.toLowerCase()}${layer.getAttribute("role") ? `[role=${layer.getAttribute("role")}]` : ""} "${(layer.textContent || "").trim().replace(/\s+/g, " ").slice(0, 30)}"`;
+  const isShown = (element) => element.getClientRects().length > 0 && getComputedStyle(element).visibility !== "hidden";
+
+  function kindOf(control) {
+    const style = getComputedStyle(control);
+    // Input tự vẽ đè lên (sr-only, trong suốt, pointer-events-none) thì không phải control gốc đang lộ.
+    if (Number(style.opacity) <= 0.1 || parseFloat(style.width) <= 2 || style.clip === "rect(0px, 0px, 0px, 0px)") return null;
+    if (control.tagName === "SELECT") return ["auto", "menulist"].includes(style.appearance) ? "select gốc chưa tô" : `select gốc đã tô (${control.options.length} mục)`;
+    if (["date", "time", "datetime-local", "month", "week"].includes(control.type)) return `ô ${control.type} gốc`;
+    if (["checkbox", "radio"].includes(control.type)) return style.appearance === "none" ? null : `${control.type} gốc${style.accentColor !== "auto" ? " (chỉ tô accent-color)" : ""}`;
+    if (control.type === "range") return style.appearance === "none" || style.pointerEvents === "none" ? null : "thanh trượt gốc";
+    if (control.type === "file") return "ô chọn tệp gốc";
+    if (control.type === "color") return "ô chọn màu gốc";
+
+    return null;
+  }
+
+  const found = new Map();
+  for (const control of document.querySelectorAll("select, input")) {
+    const layer = control.closest(layerSelector);
+    if (!layer) continue;
+    const outerLayer = [...document.querySelectorAll(layerSelector)].find((candidate) => candidate.contains(layer) && !candidate.parentElement?.closest(layerSelector)) || layer;
+    if (mode === "hidden" && isShown(control)) continue;
+    if (mode === "opened" && (!isShown(control) || outerLayer.dataset.evonSeenLayer || outerLayer.dataset.evonBefore)) continue;
+    const kind = kindOf(control);
+    if (!kind) continue;
+    const key = describeLayer(outerLayer);
+    found.set(key, [...new Set([...(found.get(key) || []), kind])]);
+  }
+
+  return [...found].slice(0, 6).map(([layer, kinds]) => `${kinds.join(", ")} trong ${layer}${mode === "hidden" ? " (đang ẩn)" : ""}`);
+}
+
+// Lớp nổi vừa mở: có chuyển động mở không (overlay.md, "Chuyển động"). Menu bật tắt bằng `{isOpen && …}`
+// hay `display` hiện ra tức thì. Control gốc bên trong thì `findNativeControls` đo.
 function findPopupDetails(freezeCss) {
   // Probe tắt mọi transition để chụp ổn định (freezeMotionCss); lớp nổi gắn vào DOM sau lúc ghi
   // `data-evon-transition`, nên tạm tắt khối đóng băng để đọc style thật, đọc xong bật lại.
@@ -2286,7 +2322,6 @@ function findPopupDetails(freezeCss) {
   const describeLayer = (element) => `${element.tagName.toLowerCase()}${element.getAttribute("role") ? `[role=${element.getAttribute("role")}]` : ""} "${(element.textContent || "").trim().replace(/\s+/g, " ").slice(0, 30)}"`;
   const motionProperties = ["all", "opacity", "transform", "scale", "translate"];
   const motionless = [];
-  const nativeChoices = [];
   for (const layer of document.querySelectorAll("[role='menu'], [role='listbox'], [role='dialog'], [data-radix-popper-content-wrapper] > *, [popover]")) {
     const rect = layer.getBoundingClientRect();
     // Lớp đã hiện sẵn trước khi bấm (listbox nằm trong trang, không phải lớp nổi) không tính.
@@ -2306,16 +2341,10 @@ function findPopupDetails(freezeCss) {
       if (["fixed", "absolute"].includes(style.position)) break;
     }
     if (!hasMotion) motionless.push(describeLayer(layer));
-    for (const choice of layer.querySelectorAll("input[type='checkbox'], input[type='radio']")) {
-      const style = getComputedStyle(choice);
-      if (style.appearance === "none" || Number(style.opacity) <= 0.1 || choice.getBoundingClientRect().width <= 2) continue;
-      nativeChoices.push(`${choice.type} gốc${style.accentColor !== "auto" ? " (chỉ tô accent-color)" : ""} trong ${describeLayer(layer)}`);
-      break;
-    }
   }
   for (const tag of freezeTags) tag.media = "all";
 
-  return { motionless, nativeChoices };
+  return { motionless };
 }
 
 async function probePopupLayers(page, isMobile) {
@@ -2365,7 +2394,7 @@ async function probePopupLayers(page, isMobile) {
     if (!isTap) {
       const details = await page.evaluate(findPopupDetails, freezeMotionCss);
       for (const layer of details.motionless) motionlessLayers.add(layer);
-      for (const choice of details.nativeChoices) nativeChoices.add(choice);
+      for (const control of await page.evaluate(findNativeControls, "opened")) nativeChoices.add(control);
     }
     await page.keyboard.press("Escape");
     await page.waitForTimeout(120);
@@ -2734,7 +2763,8 @@ async function probeWidth(browser, options, width) {
   const pageCheckedHoverChanges = isMobile ? [] : await findCheckedHoverChanges(page);
   const stateShapes = isMobile ? { shapeMismatches: [], stuckStates: [], hoverLikeSelected: [], groupCount: 0 } : await probeStateShapes(page);
   // Sau cùng thật sự: mỗi lần bấm là một lần tải lại trang.
-  const openerLayers = isMobile ? await probeOpenerLayers(page, options, width) : { problems: [], openedShots: [] };
+  const hiddenNativeControls = isMobile ? [] : await page.evaluate(findNativeControls, "hidden");
+  const openerLayers = isMobile ? await probeOpenerLayers(page, options, width) : { problems: [], openedShots: [], nativeControls: [] };
 
   await context.close();
 
@@ -2760,7 +2790,7 @@ async function probeWidth(browser, options, width) {
     checkedHoverChanges: [...new Set([...pageCheckedHoverChanges, ...popupLayers.checkedHoverChanges])],
     heavyLayerLines: popupLayers.heavyLayerLines,
     motionlessLayers: popupLayers.motionless,
-    popupNativeChoices: popupLayers.nativeChoices,
+    popupNativeChoices: [...new Set([...popupLayers.nativeChoices, ...hiddenNativeControls, ...openerLayers.nativeControls])],
     heavyDecorativeBorders,
     scrollbarStyles,
     heavyNavLinks,
@@ -3057,6 +3087,7 @@ async function probeOpenerLayers(page, options, width) {
   const openerLabels = await page.evaluate(markOpenerButtons, markArgs);
   const problems = [];
   const openedShots = [];
+  const nativeControls = new Set();
 
   for (const [index, triggerLabel] of openerLabels.entries()) {
     await reloadForProbe(page, options);
@@ -3068,6 +3099,7 @@ async function probeOpenerLayers(page, options, width) {
 
     const opened = await page.evaluate(findOpenedLayerProblems, triggerLabel);
     if (opened.openedCount === 0) continue;
+    for (const control of await page.evaluate(findNativeControls, "opened")) nativeControls.add(`bấm "${triggerLabel}": ${control}`);
     const shotPath = join(options.out, `${width}${options.isDark ? "-dark" : ""}-mo-${index}.png`);
     await page.screenshot({ path: shotPath });
     openedShots.push(`"${triggerLabel}": ${shotPath}`);
@@ -3076,7 +3108,7 @@ async function probeOpenerLayers(page, options, width) {
 
   if (openerLabels.length > 0) await reloadForProbe(page, options);
 
-  return { problems, openedShots };
+  return { problems, openedShots, nativeControls: [...nativeControls] };
 }
 
 // Kéo bề rộng từ lớn xuống nhỏ trên cùng một trang, đo nhẹ và chụp ở từng bước. Cửa sổ desktop suốt
@@ -3380,7 +3412,7 @@ function formatReport(results) {
       for (const item of result.motionlessLayers) problems.push(`  ${item}`);
     }
     if (result.popupNativeChoices?.length > 0) {
-      problems.push(`CHECKBOX / RADIO GỐC TRONG LỚP NỔI (${result.popupNativeChoices.length} lớp, dựng theo components/choice-controls.md):`);
+      problems.push(`CONTROL GỐC TRONG LỚP NỔI (${result.popupNativeChoices.length} lớp: select, ô ngày, checkbox, thanh trượt…; chế độ soi: select, ô ngày gốc đã tô thì bỏ qua như trên trang; wireframe và dựng lại: dựng theo components/choice-controls.md, select gốc chỉ giữ khi lớp đó chỉ có trên mobile):`);
       for (const item of result.popupNativeChoices) problems.push(`  ${item}`);
     }
     if (result.heavyDecorativeBorders?.length > 0) {
