@@ -231,7 +231,7 @@ sang hạng theo bảng này. Những mục xếp Hỏng thì probe đã tự go
 
 | Mục probe | Hạng |
 | --- | --- |
-| Trang tự cuộn khi vừa tải, cuộn ngang, lớp nổi lòi khỏi màn, lớp nổi mở bằng nút bị vỡ, rê chuột làm nhảy bố cục, tương phản chữ dưới ngưỡng, khung giấu mất chữ, chữ cắt còn quá ngắn, chữ trong nút xuống dòng, nhãn số đè lên đường biểu đồ, khối bị bóp chiều cao, chữ cắt nuốt mất số, rê ra đúng màu mục đang chọn, nền rê gần như không thấy, nền rê tan vào nền ngoài khung hay trùng nền phía sau, rê vào ô đã chọn làm mất màu nhấn, scale / translate / rotate không chạy chuyển động (`W10`), hàng cuộn ngang chuột không tới được (`responsive.md`, sau `R10`), đường ngăn thẳng hàng mà khác màu (một đường nửa nhạt nửa đậm, sai với mọi brand) | Hỏng |
+| Trang tự cuộn khi vừa tải, cuộn ngang, lớp nổi lòi khỏi màn, lớp nổi mở bằng nút bị vỡ, rê chuột làm nhảy bố cục, tương phản chữ dưới ngưỡng, khung giấu mất chữ, chữ cắt còn quá ngắn, chữ trong nút xuống dòng, nhãn số đè lên đường biểu đồ, badge đè mất icon, khối bị bóp chiều cao, chữ cắt nuốt mất số, rê ra đúng màu mục đang chọn, nền rê gần như không thấy, nền rê tan vào nền ngoài khung hay trùng nền phía sau, rê vào ô đã chọn làm mất màu nhấn, scale / translate / rotate không chạy chuyển động (`W10`), hàng cuộn ngang chuột không tới được (`responsive.md`, sau `R10`), đường ngăn thẳng hàng mà khác màu (một đường nửa nhạt nửa đậm, sai với mọi brand) | Hỏng |
 | Chỗ bấm dưới 32px | Mục có ghi "(dưới 24px)" là Hỏng, còn lại (24 tới 31px) là Gu |
 | Hàng trong header / nav rớt dòng | Hỏng khi đè hay đẩy lệch khối khác, không thì Lệch hệ (so với cách hàng đó ở khổ khác). Xem ảnh mới quyết |
 | Hàng nút trên header không đồng cỡ | Lệch hệ. Chế độ dựng lại thì vào dòng Gọn của header (`V1c`), theo "Nhóm nút bên phải thanh header" trong `layouts/app.md` |
@@ -347,6 +347,11 @@ route, theo `P12` trong `styles.md`.
   nút chỉ icon, nút trong hàng bảng, nút đóng. Chiều nào dưới 24px là Hỏng, nguồn
   *đo trên ảnh 1x*. Đã sót 30/09/2026: lượt chỉ đưa ảnh có nhìn công tắc 32×18 (còn chê rãnh
   chìm vào nền) mà không đo cỡ.
+  **Trừ checkbox và radio vẽ 16–20px**: đó là cỡ vẽ quen dùng, vùng bấm thật thường nới ra
+  bằng padding, giả phần tử hay nhãn bấm được, ảnh không cho thấy. Không lên bảng, không
+  hạng nào; chỉ vào bảng khi ô vẽ dưới 16px. Công tắc, nút chỉ icon, nút đóng thì phần vẽ
+  thường chính là vùng bấm, nên vẫn đo như trên. Đã báo nhầm 30/09/2026, lịch khám: checkbox
+  shadcn ô vẽ 18px, vùng bấm 24px, lượt ảnh xếp Hỏng.
 - **Video**: model không xem video được. Tách khung ra rồi chọn các khung quanh lúc
   chuyển động: `ffmpeg -i quay.mp4 -vf fps=4 "$TMPDIR/evon-review/khung/%03d.png"`.
 - **Mỗi dòng ghi nguồn**: *đo*, *thấy trong ảnh*, *đọc code*, hay *đoán*. Ảnh tĩnh

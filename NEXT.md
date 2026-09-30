@@ -168,7 +168,11 @@ cụ tách hai, ‹ › ghost, badge có màu sắc cách ~45°; probe bắt n�
 Quy tắc chung ở `BACKLOG.md`, mục "Test cho phase 2" và "Vệ sinh khi dựng dự án mồi".
 Mỗi dự án chạy **hai lượt**: một lượt skill tự mở trang, một lượt chỉ đưa ảnh.
 
-**5a. Dự án mồi 2: `~/dev/audit-skills/lich-kham` (đã dựng, chưa chạy)**
+**5a. Dự án mồi 2: `~/dev/audit-skills/lich-kham` (xong vòng 1, 30/09/2026)**
+
+Tự mở trang 5/8, chỉ đưa ảnh 6/6, mỗi lượt báo nhầm 1. Chi tiết và các chỗ đã sửa ở dòng dự án 2
+trong `BACKLOG.md`. Muốn chạy vòng 2 (kiểm probe đã sửa) thì làm lại bước 3, lưu ra
+`ket-qua-vong-2.md`.
 
 Next + shadcn, **ít lỗi** (8 chỗ: 5 Hỏng, 3 Lệch hệ). Đáp án ở
 `~/dev/phase2-dapan/lich-kham/dap-an.md`. Test chính: skill có dám nói "gần như ổn, chỉ có
@@ -278,7 +282,7 @@ không gộp vào `ui-ux` vì luật hai bên đá nhau. Cách thêm plugin th�
 
 ## Việc lặt vặt, lúc nào rảnh
 
-### [ ] Sửa chữ trên landing page
+### [x] Sửa chữ trên landing page
 
 Mở Claude Code ở `~/dev/evondev-kit-landingpage`, gõ:
 
@@ -292,7 +296,7 @@ Sửa trang /ui-ux cho khớp skill ở ~/dev/evondevKit:
 Sửa cả bản tiếng Anh.
 ```
 
-Tự xác nhận thêm hai chỗ: câu "Không chỉnh tay sau khi dựng" ở showcase có đúng không, và
+Xong 30/09/2026: các mục trên đã có trên trang; thêm lối design system (D9), roadmap tiếng Anh 0/2, menu header hiện từ 1280px (bản tiếng Anh gãy chữ ở 1024). Còn tự xác nhận hai chỗ: câu "Không chỉnh tay sau khi dựng" ở showcase có đúng không, và
 đường dẫn cài trên Codex / Antigravity (bước 8).
 
 ### [x] Thêm file `LICENSE`
@@ -309,6 +313,8 @@ Claude Code ở `ui-ux-dashboard`, gõ:
 ```
 
 ### [ ] Ra bản mới cho người đã cài
+
+30/09/2026: lên `0.2.0` (thêm D9) trước đợt quảng bá.
 
 Khi một đợt test ổn (chạy lại vài đề ✅ không vỡ):
 

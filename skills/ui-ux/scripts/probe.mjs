@@ -9,7 +9,8 @@
 // chữ nào đổi hay thiếu, cỡ chữ, độ đậm nào khác; link có mau=mau thì so cả màu chữ, màu icon, nền. Ghi vào danh sách P.
 //
 // --sweep: đo xong các khổ cố định thì kéo bề rộng từ 1440 xuống 375, mỗi bước 20px, chụp từng bước và
-// báo khoảng bề rộng có lỗi (cuộn ngang, khung giấu chữ, chữ trong nút xuống dòng, hàng rớt dòng). Bắt
+// báo khoảng bề rộng có lỗi (cuộn ngang, khung giấu chữ, chữ trong nút xuống dòng, hàng rớt dòng, chữ cắt
+// nuốt mất số hay còn quá ngắn). Bắt
 // lỗi nằm giữa hai khổ cố định, ví dụ nav xuống dòng ở 900px. Dùng ở nhánh soi UI (references/review.md).
 //
 // Playwright tìm theo thứ tự: --pw <thư mục có node_modules/playwright>, thư mục đang đứng, thư mục script.
@@ -332,19 +333,6 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     if (children.length >= 3 && isShortItems) wrappedRows.push(`mục rớt dòng một mình (R3): ${describe(lastChild)} trong ${describe(row)}`);
   }
 
-  if (isSweep) {
-    return {
-      autoScrolledAreas,
-      viewportWidth,
-      pageScrollWidth,
-      hasHorizontalScroll: pageScrollWidth > viewportWidth + 1,
-      overflowingElements: overflowingElements.slice(0, 3),
-      clippedBlocks,
-      wrappedControls,
-      wrappedRows,
-    };
-  }
-
   // 2. Chữ bị cắt còn quá ngắn: ô chỉ đọc được vài ký tự thì như không có chữ.
   const truncatedTexts = allElements
     .filter((element) => {
@@ -362,6 +350,33 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
       return { element: describe(element), fullText, visibleChars: Math.floor(fullText.length * visibleRatio), width: Math.round(element.clientWidth), isSingleLine: !isClamp };
     });
   const tooShortTexts = truncatedTexts.filter((item) => item.visibleChars < 10 && item.fullText.length > item.visibleChars + 3);
+
+  // 18d. Chữ cắt nuốt mất số: dòng `truncate` một dòng mà phần bị giấu có số kèm đơn vị (m², triệu, đ, %).
+  //      Số thường là thứ người dùng dùng để so sánh ("Duplex gác xép… " nuốt "210m²", 28/09/2026).
+  //      Ô chỉ có một con số (số liệu, giá) mà bị cắt thì cắt ở đâu cũng đọc thành số khác: "1.284.500.…"
+  //      của "1.284.500.000 ₫", thẻ số liệu hẹp ở 816–989px (sót 30/09/2026, lịch khám: phần giấu "000 ₫"
+  //      không lọt phép cũ vì lượt quét chưa đo chữ cắt).
+  const numberWithUnit = /\d+(?:[.,]\d+)?\s?(?:m²|m2|triệu|tr\b|đ\b|₫|%|km\b|người|phòng)/i;
+  const numberOnlyValue = /^[\s\d.,:+\-–%$€£¥₫]*\d[\s\d.,:+\-–%$€£¥₫]*(?:đ|vnđ|vnd|tr|triệu|tỷ|k)?$/i;
+  const swallowedNumbers = truncatedTexts
+    .filter((item) => item.isSingleLine && (numberWithUnit.test(item.fullText.slice(item.visibleChars)) || numberOnlyValue.test(item.fullText)))
+    .slice(0, 6)
+    .map((item) => `giấu "${item.fullText.slice(item.visibleChars).trim().slice(0, 24)}" của "${item.fullText.slice(0, 32)}": ${item.element}`);
+
+  if (isSweep) {
+    return {
+      autoScrolledAreas,
+      viewportWidth,
+      pageScrollWidth,
+      hasHorizontalScroll: pageScrollWidth > viewportWidth + 1,
+      overflowingElements: overflowingElements.slice(0, 3),
+      clippedBlocks,
+      wrappedControls,
+      wrappedRows,
+      tooShortTexts,
+      swallowedNumbers,
+    };
+  }
 
   // 3. Anh em cùng loại cao gần bằng mà không bằng (lệch 1-4px): thường là khe baseline của
   //    inline-block, viền thừa, padding lệch. Lệch lớn là nội dung khác, bỏ qua.
@@ -804,6 +819,30 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
         (point) => point.x > textRect.left + 1 && point.x < textRect.right - 1 && point.y > textRect.top + 1 && point.y < textRect.bottom - 1,
       );
       if (hitPoint) overlappedChartLabels.push(`"${labelNode.textContent.trim().slice(0, 24)}": ${describe(labelNode)}`);
+    }
+  }
+
+  // 10b. Badge đếm đè mất icon: chấm hay số `absolute` trên nút chỉ có icon (chuông, giỏ hàng) phủ từ 40%
+  //      icon trở lên thì icon không còn nhận ra (sót 30/09/2026, lịch khám: số "3" size-4 đặt top-1.5
+  //      right-1.5 phủ gần nửa chuông 20px, chỉ còn thấy quả lắc; lượt chỉ đưa ảnh bắt được bằng mắt).
+  const iconCoveringBadges = [];
+  for (const button of document.querySelectorAll("button, a[href], [role='button']")) {
+    if (iconCoveringBadges.length >= 4 || !isVisible(button)) continue;
+    const icon = [...button.querySelectorAll("svg")].find((svg) => svg.getBoundingClientRect().width >= 12);
+    if (!icon) continue;
+    const iconRect = icon.getBoundingClientRect();
+    const badge = [...button.querySelectorAll("span, div")].find((node) => {
+      const rect = node.getBoundingClientRect();
+
+      return getComputedStyle(node).position === "absolute" && !node.contains(icon) && rect.width > 0 && rect.width <= 28 && rect.height <= 28 && isVisible(node);
+    });
+    if (!badge) continue;
+    const badgeRect = badge.getBoundingClientRect();
+    const overlapWidth = Math.max(0, Math.min(iconRect.right, badgeRect.right) - Math.max(iconRect.left, badgeRect.left));
+    const overlapHeight = Math.max(0, Math.min(iconRect.bottom, badgeRect.bottom) - Math.max(iconRect.top, badgeRect.top));
+    const coveredRatio = (overlapWidth * overlapHeight) / (iconRect.width * iconRect.height);
+    if (coveredRatio >= 0.4) {
+      iconCoveringBadges.push(`badge ${Math.round(badgeRect.width)}×${Math.round(badgeRect.height)}px phủ ${Math.round(coveredRatio * 100)}% icon ${Math.round(iconRect.width)}px: ${describe(button)}`);
     }
   }
 
@@ -1334,14 +1373,6 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     mouseUnreachableScrollers.push(`khung ${element.clientWidth}px, nội dung ${element.scrollWidth}px, khuất ${element.scrollWidth - element.clientWidth}px: ${describe(element)}`);
   }
 
-  // 18d. Chữ cắt nuốt mất số: dòng `truncate` một dòng mà phần bị giấu có số kèm đơn vị (m², triệu, đ, %).
-  //      Số thường là thứ người dùng dùng để so sánh ("Duplex gác xép… " nuốt "210m²", 28/09/2026).
-  const numberWithUnit = /\d+(?:[.,]\d+)?\s?(?:m²|m2|triệu|tr\b|đ\b|₫|%|km\b|người|phòng)/i;
-  const swallowedNumbers = truncatedTexts
-    .filter((item) => item.isSingleLine && numberWithUnit.test(item.fullText.slice(item.visibleChars)))
-    .slice(0, 6)
-    .map((item) => `giấu "${item.fullText.slice(item.visibleChars).trim().slice(0, 24)}": ${item.element}`);
-
   // 18e. Nội dung trôi giữa màn rộng: khối nội dung chính có trần bề rộng và căn giữa, hở hai bên từ
   //      120px. Cạnh sidebar thì thành khoảng trống giữa sidebar và nội dung (`mx-auto max-w-300`, 28/09/2026).
   //      Chỉ xét khối rộng từ 900px: cột form, cài đặt hẹp căn giữa là mẫu riêng của từng trang.
@@ -1748,6 +1779,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     misalignedFields: misalignedFields.slice(0, 10),
     unevenSeparatorRows: unevenSeparatorRows.slice(0, 10),
     overlappedChartLabels: [...new Set(overlappedChartLabels)].slice(0, 10),
+    iconCoveringBadges,
     outsideChartLabels: [...new Set(outsideChartLabels)].slice(0, 10),
   };
 }
@@ -1757,7 +1789,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
 function readFocusRingSignature(probeId) {
   const element = document.querySelector(`[data-evon-probe-id="${probeId}"]`);
   if (!element) return null;
-  const isVisibleColor = (color) => Boolean(color) && !/rgba\([^)]*,\s*0\)|transparent/.test(color);
+  const isVisibleColor = (color) => Boolean(color) && !/rgba\([^)]*,\s*0\)|\/\s*0\)|transparent/.test(color);
   const nodes = [element, ...element.querySelectorAll("span, div, svg")].slice(0, 20);
 
   return nodes
@@ -1767,7 +1799,9 @@ function readFocusRingSignature(probeId) {
       const outline = style.outlineStyle !== "none" && parseFloat(style.outlineWidth) > 0 && isVisibleColor(style.outlineColor)
         ? `outline ${style.outlineWidth} ${style.outlineColor}`
         : "";
-      const rings = [...style.boxShadow.matchAll(/(rgba?\([^)]*\))\s+0px\s+0px\s+0px\s+([\d.]+)px/g)]
+      // Tailwind v4 trả màu vòng dạng `oklab(… / 0.5)`: chỉ đọc `rgba()` thì không thấy vòng nào, probe tưởng dự
+      // án không vẽ vòng ở đâu nên bỏ luôn phép "Tab tới không thấy gì" (sót 30/09/2026, lịch khám: link sidebar).
+      const rings = [...style.boxShadow.matchAll(/((?:rgba?|hsla?|oklab|oklch|lab|lch|color)\([^)]*\))\s+0px\s+0px\s+0px\s+([\d.]+)px/g)]
         .filter((match) => parseFloat(match[2]) > 0 && isVisibleColor(match[1]))
         .map((match) => `ring ${match[2]}px ${match[1]}`);
 
@@ -1789,7 +1823,11 @@ function readFocusLookSignature(probeId) {
 
       const after = getComputedStyle(node, "::after");
 
-      return [style.outlineStyle, style.outlineWidth, style.outlineColor, style.boxShadow, style.backgroundColor, style.borderColor, style.color, style.textDecorationLine, after.boxShadow, after.outlineStyle, after.opacity, after.borderColor].join(" ");
+      // `outline-none` vẫn để `outline-width` đổi theo `focus-visible:` (1px → 3px) mà không vẽ gì: chỉ so outline
+      // khi có vẽ (sót 30/09/2026, lịch khám: link sidebar Tab tới không thấy gì mà probe tưởng có đổi).
+      const drawnOutline = style.outlineStyle === "none" ? "none" : `${style.outlineStyle} ${style.outlineWidth} ${style.outlineColor}`;
+
+      return [drawnOutline, style.boxShadow, style.backgroundColor, style.borderColor, style.color, style.textDecorationLine, after.boxShadow, after.outlineStyle, after.opacity, after.borderColor].join(" ");
     })
     .join("|");
 }
@@ -1941,7 +1979,14 @@ function readHoverState(probeId) {
     // Khai nền rê (kể cả sau biến thể như `not-checked:hover:bg-`) mà rê vào màu không đổi là nền rê trùng
     // nền phía sau: rê không thấy gì (đã dính 28/09/2026, dòng danh sách rê `bg-muted` nằm trên khung
     // `bg-muted`). Mục đang chọn thì bỏ qua: rê cùng nền đang chọn là đúng.
-    declaresHoverFill: /(^|[\s:])hover:bg-(?!transparent)/.test(element.getAttribute("class") || ""),
+    // `dark:hover:bg-` chỉ chạy khi trang đang tối: ô Select của shadcn chỉ khai nền rê cho dark, ở light rê
+    // không đổi là đúng mẫu (luật khoá 6, báo nhầm 30/09/2026, lịch khám: mọi Select lên danh sách P).
+    declaresHoverFill: (element.getAttribute("class") || "").split(/\s+/).some((token) => {
+      const variants = token.split(":");
+      const utility = variants.pop();
+
+      return variants.includes("hover") && /^bg-(?!transparent)/.test(utility) && (!variants.includes("dark") || document.documentElement.classList.contains("dark"));
+    }),
     isSelected: element.matches("[aria-current]:not([aria-current='false']), [aria-selected='true'], [aria-pressed='true'], [data-state='active'], [data-state='on'], [data-state='checked']"),
     touchesCardEdge: behind.node !== document.documentElement && (Math.abs(rect.left - cardRect.left) <= 1 || Math.abs(rect.right - cardRect.right) <= 1),
   };
@@ -1964,9 +2009,10 @@ function findOverflowingLayers() {
     if (!isLayer) return false;
     const rect = node.getBoundingClientRect();
 
-    // Lớp phủ toàn màn (phủ kín cả hai chiều) không phải lớp nổi cần đo. Tooltip rộng hơn màn thì
-    // vẫn đo: đó chính là lỗi (tooltip tên tệp 765px ở 375px, 27/09/2026).
-    const isFullScreen = rect.width >= viewportWidth - 1 && rect.height >= viewportHeight - 1;
+    // Lớp phủ toàn màn (phủ kín cả hai chiều, nằm gọn trong màn) không phải lớp nổi cần đo. Tooltip rộng hơn
+    // màn thì vẫn đo: đó chính là lỗi (tooltip tên tệp 765px ở 375px, 27/09/2026). Sheet cao hết màn mà rộng
+    // hơn màn cũng vậy: `min-w-[400px]` ở 375px lòi 25px mép trái (sót 30/09/2026, lịch khám, sheet bộ lọc).
+    const isFullScreen = rect.left >= -1 && rect.right <= viewportWidth + 1 && rect.width >= viewportWidth - 1 && rect.height >= viewportHeight - 1;
     // Khung nằm hẳn ngoài màn (sidebar đang đóng chờ trượt vào) không phải lớp nổi đang mở: lớp nổi
     // tràn thật luôn còn một phần trong màn (báo nhầm 27/09/2026, sidebar ở 375px).
     const isPartlyVisible = rect.right > 0 && rect.left < viewportWidth && rect.bottom > 0 && rect.top < viewportHeight;
@@ -2035,6 +2081,8 @@ async function probeHoverStates(page) {
       const rect = element.getBoundingClientRect();
       if (rect.width < 8 || rect.height < 8 || element.closest("[inert], [aria-hidden='true'], [data-demo-state]")) continue;
       if (getComputedStyle(element).visibility === "hidden") continue;
+      // Nút đang vô hiệu ("Trang trước" ở trang 1) không rê được: không đổi nền là đúng (báo nhầm 30/09/2026).
+      if (element.matches(":disabled, [aria-disabled='true']")) continue;
       // Gộp theo loại: cùng thẻ + cùng class là cùng một kiểu hover, đo một cái là đủ.
       const signature = `${element.tagName}|${element.getAttribute("class") || ""}`;
       if (seenSignatures.has(signature)) continue;
@@ -3083,11 +3131,13 @@ function listMustReportItems(results, sweepSteps) {
     for (const element of result.wrappedControls) addItem(width, `chữ trong nút xuống dòng: ${element}`);
     for (const element of result.wrappedRows) addItem(width, `hàng rớt dòng (xem ảnh để xếp hạng): ${element}`);
     for (const item of result.overlappedChartLabels) addItem(width, `nhãn số đè lên đường biểu đồ: ${item}`);
+    for (const item of result.iconCoveringBadges || []) addItem(width, `badge đè mất icon: ${item}`);
     for (const item of result.squeezedBlocks) addItem(width, `khối bị bóp chiều cao: ${item}`);
     for (const item of result.squeezedTableColumns || []) addItem(width, `cột chữ của bảng bị ép: ${item.replace(/ rộng \d+px, \d+\/\d+ dòng/, "")}`);
     for (const item of result.crampedDescriptionLists || []) addItem(width, `nhãn–giá trị hai cột trong khối hẹp: ${item.replace(/^<dl> \d+px, .*?: /, "")}`);
     for (const item of result.mismatchedRuleColors) addItem(width, `đường ngăn thẳng hàng mà khác màu: ${item}`);
-    for (const item of result.swallowedNumbers) addItem(width, `chữ cắt nuốt mất số: ${item}`);
+    // Khoá theo phần tử: hẹp dần thì phần bị giấu đổi, ô vẫn là một.
+    for (const item of result.swallowedNumbers) addItem(width, `chữ cắt nuốt mất số: ${item.replace(/^giấu ".*?" của /, "")}`);
     for (const item of result.hoverLikeSelected || []) addItem(width, `rê ra đúng màu mục đang chọn: ${item}`);
     for (const item of result.checkedHoverChanges || []) addItem(width, `rê vào ô đã chọn làm mất màu nhấn: ${item}`);
     for (const item of result.mouseUnreachableScrollers || []) addItem(width, `hàng cuộn ngang chuột không tới được: ${item.replace(/, nội dung .*?: /, ": ")}`);
@@ -3103,6 +3153,8 @@ function listMustReportItems(results, sweepSteps) {
     for (const item of step.clippedBlocks) addItem(step.width, `khung giấu mất chữ: ${item.element}`);
     for (const element of step.wrappedControls) addItem(step.width, `chữ trong nút xuống dòng: ${element}`);
     for (const element of step.wrappedRows) addItem(step.width, `hàng rớt dòng (xem ảnh để xếp hạng): ${element}`);
+    for (const item of step.tooShortTexts) addItem(step.width, `chữ cắt còn quá ngắn: ${item.element}`);
+    for (const item of step.swallowedNumbers) addItem(step.width, `chữ cắt nuốt mất số: ${item.replace(/^giấu ".*?" của /, "")}`);
   }
 
   return [...itemsByKey.entries()].map(([text, widths]) => ({ text, widths }));
@@ -3127,6 +3179,8 @@ function listSweepSignals(step) {
   for (const item of step.clippedBlocks) signals.push(`khung giấu mất chữ: ${item.element}`);
   for (const item of step.wrappedControls) signals.push(`chữ trong nút xuống dòng: ${item}`);
   for (const item of step.wrappedRows) signals.push(`hàng rớt dòng: ${item}`);
+  for (const item of step.tooShortTexts) signals.push(`chữ cắt còn quá ngắn: ${item.element}`);
+  for (const item of step.swallowedNumbers) signals.push(`chữ cắt nuốt mất số: ${item.replace(/^giấu ".*?" của /, "")}`);
 
   return signals;
 }
@@ -3226,6 +3280,10 @@ function formatReport(results) {
     if (result.unevenSeparatorRows.length > 0) {
       problems.push(`DẤU NGĂN CÁCH KHÔNG ĐỀU (${result.unevenSeparatorRows.length} hàng, nét dấu › tới nét chữ hay icon kế bên phải bằng nhau):`);
       for (const item of result.unevenSeparatorRows.slice(0, 5)) problems.push(`  khe ${item.gaps}: ${item.element}`);
+    }
+    if ((result.iconCoveringBadges || []).length > 0) {
+      problems.push(`BADGE ĐÈ MẤT ICON (${result.iconCoveringBadges.length} chỗ, dời badge ra góc, cỡ nhỏ lại, hoặc dùng icon đã khoét chỗ như BellDot):`);
+      for (const item of result.iconCoveringBadges) problems.push(`  ${item}`);
     }
     if (result.overlappedChartLabels.length > 0) {
       problems.push(`NHÃN SỐ ĐÈ LÊN ĐƯỜNG BIỂU ĐỒ (${result.overlappedChartLabels.length} chỗ, đặt nhãn về phía không có đường):`);
