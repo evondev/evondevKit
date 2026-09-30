@@ -113,6 +113,12 @@ Test nhánh bỏ wireframe.
 
 ### [ ] 4. Design system trước (`D9`)
 
+Đang làm 30/09/2026. Đã rà trang `/design-system` của cả hai bản (4a cổng 3002, 4b cổng 3005), sửa skill:
+card chứa dòng có nền rê (`isFlushList`), nhãn trạng thái một chỗ, bảng tương phản chỉ đánh dấu cặp trượt, ví dụ
+ép trạng thái bọc `inert data-demo-state`; probe bỏ ba kiểu báo nhầm. 4b: không `Button` thứ hai, `Audit:` có
+shadcn. **Còn:** hai phiên chưa giao nên chưa chấm "dừng đúng một lần"; 4a chưa làm bước 4–5 (đổi màu nhấn, dựng
+màn lịch hẹn). Hai bản dựng bằng skill cũ, chạy lại đề mới thấy luật mới.
+
 **4a. Dự án trống**
 
 1. Tạo dự án như bước 2, tên `phong-kham-ds`.
