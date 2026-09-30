@@ -28,7 +28,7 @@ chuyển động. Sửa skill xong chạy `node skills/ui-ux/scripts/lint-skill.
 | 13 | Thanh cuộn ẩn bằng màu trong suốt, giữ bề rộng 4px | 08/09/2026 | `scrollbar-width: none` (nội dung bị đẩy ngang khi thanh hiện) | `tokens.css` |
 | 14 | Hàng tab cuộn ngang ở màn hẹp: chỉ gợi ý cho người dùng chọn cách báo "còn nữa", không áp sẵn | 25/09/2026 | Tự áp dropdown hoặc thanh cuộn luôn hiện | `responsive.md` |
 | 15 | Dấu `*` trường bắt buộc tô đỏ | 25/09/2026 | Dấu `*` xám cho "đỡ ồn" | `rules-color.md`, `principles.md` |
-| 16 | Không vẽ vòng focus ở nút, link, tab, chip, checkbox, card, dòng; chỉ trả lại khi đề yêu cầu accessibility (`I14`) | 28/09/2026 | "Thiếu vòng focus là trượt WCAG 2.4.7", thêm lại khi soi thấy Tab tới không có dấu | `rules-state.md` `I13` |
+| 16 | Không vẽ vòng focus ở nút, link, tab, chip, checkbox, card, dòng; chỉ trả lại khi đề yêu cầu accessibility (`I14`). Ngoại lệ lúc soi: dự án tự vẽ vòng focus mà một chỗ Tab tới không thấy gì thì báo Lệch hệ, sửa theo vòng của họ | 28/09, 30/09/2026 | "Thiếu vòng focus là trượt WCAG 2.4.7", thêm lại khi soi thấy Tab tới không có dấu | `rules-state.md` `I13` |
 | 17 | Mặc định là nhánh `U` (brief, wireframe, chọn, dựng) cho mọi đề dựng hay làm lại một màn, tiếng Việt hay tiếng Anh; lối khác chỉ khi đề nói rõ | 29/09/2026 | "Dựng luôn một bố cục mặc định, không hỏi" cho đề chỉ nói "dựng màn X" | `SKILL.md` câu 1, `design-process.md` |
 
 Chủ dự án chốt thêm luật nào thì thêm một dòng ở đây, cùng lúc với chỗ sửa ở luật gốc.

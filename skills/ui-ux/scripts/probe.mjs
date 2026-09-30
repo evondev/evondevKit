@@ -292,11 +292,20 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     const style = getComputedStyle(row);
     if (!style.display.includes("flex") || !style.flexDirection.startsWith("row") || style.flexWrap !== "wrap" || !isVisible(row)) continue;
 
-    const children = [...row.children].filter(isVisible).map((child) => child.getBoundingClientRect());
+    const visibleChildren = [...row.children].filter(isVisible);
+    const children = visibleChildren.map((child) => child.getBoundingClientRect());
     if (children.length < 2) continue;
     const shortestHeight = Math.min(...children.map((rect) => rect.height));
     const topSpread = Math.max(...children.map((rect) => rect.top)) - Math.min(...children.map((rect) => rect.top));
-    if (topSpread > shortestHeight / 2) wrappedRows.push(describe(row));
+    if (topSpread <= shortestHeight / 2) continue;
+    // Chỉ dòng chữ (không có control) tách lên dòng riêng, các control vẫn chung một hàng: phân trang
+    // "1–8 trên 34" nằm trên dãy số trang ở màn hẹp là cố ý (báo nhầm hai lần 30/09/2026, dự án mồi kho hàng).
+    const interactiveSelector = "a[href], button, input, select, textarea, [role='button'], [role='tab'], [tabindex]";
+    const controlTops = visibleChildren
+      .filter((child) => child.matches(interactiveSelector) || child.querySelector(interactiveSelector))
+      .map((child) => Math.round(child.getBoundingClientRect().top));
+    const isCaptionOnlyWrap = controlTops.length > 0 && controlTops.length < visibleChildren.length && Math.max(...controlTops) - Math.min(...controlTops) <= shortestHeight / 2;
+    if (!isCaptionOnlyWrap) wrappedRows.push(describe(row));
   }
   // 1d2. Hàng nút ở bất kỳ đâu (footer panel, card) mà nút chỉ icon (⋯) rớt xuống dòng dưới một mình: nhìn
   //      như một nút lạc (30/09/2026, panel chi tiết 352px của wireframe lịch hẹn: "Bắt đầu khám", "Mở hồ sơ"
@@ -949,7 +958,8 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
 
   // 15. Tương phản chữ: màu chữ trộn lên nền thật phía sau nó. Màu đọc qua canvas nên oklch của
   //     Tailwind v4 cũng ra rgb. Nền lấy ở lớp nằm ngay dưới chữ (elementsFromPoint), rồi đi ngược lên
-  //     các cha tới lớp nền đặc. Chữ trên ảnh, video hay gradient không đo được, chỉ đếm. Chữ trong
+  //     các cha tới lớp nền đặc. Cha có gradient thì chấm theo điểm dừng tệ nhất; chữ trên ảnh, video,
+  //     hay lớp phủ gradient không phải cha thì không đo được, chỉ đếm. Chữ trong
   //     control đang khoá thì WCAG không tính, bỏ qua.
   const colorCanvas = document.createElement("canvas");
   colorCanvas.width = 1;
@@ -1011,29 +1021,65 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     return layers.reverse().reduce((bottom, top) => blendColors(top, bottom), whiteCanvas);
   }
 
+  // Màu các điểm dừng của nền chỉ có gradient; nền có ảnh thì null. Computed style đã đổi màu sang rgb().
+  function readGradientStops(backgroundImage) {
+    if (backgroundImage === "none") return [];
+    if (/url\(|image-set\(|element\(|cross-fade\(/.test(backgroundImage)) return null;
+
+    return [...backgroundImage.matchAll(/(?:rgba?|hsla?|oklch|oklab|lab|lch|color)\([^()]*\)/g)].map((match) => readColor(match[0]));
+  }
+
+  // Như `readAncestorBackdrop` nhưng đi qua lớp cha nền gradient: mỗi điểm dừng trộn lên màu nền của
+  // chính lớp đó là một nền có thể nằm dưới chữ, trả hết để chấm theo nền tệ nhất. Trước đây gặp
+  // gradient là bỏ đo: app nền tối có quầng sáng trên `body` thì không chữ nào được đo, sót chữ giờ
+  // 2.91:1 (30/09/2026, dự án mồi kho hàng, lượt tự mở trang; lượt chỉ đưa ảnh lại bắt được).
+  function readAncestorBackdrops(element) {
+    const layers = [];
+
+    for (let node = element; node; node = node.parentElement) {
+      const style = getComputedStyle(node);
+      const stops = readGradientStops(style.backgroundImage);
+      if (!stops) return null;
+      const color = readColor(style.backgroundColor);
+      const variants = stops.length > 0 ? [color, ...stops.map((stop) => blendColors(stop, color))] : [color];
+      if (variants.some((variant) => variant.alpha > 0)) layers.push(variants);
+      if (variants.every((variant) => variant.alpha >= 0.99)) break;
+    }
+
+    let backdrops = [whiteCanvas];
+    for (const variants of layers.reverse()) {
+      const blended = backdrops.flatMap((bottom) => variants.map((top) => blendColors(top, bottom)));
+      backdrops = [...new Map(blended.map((backdrop) => [toHex(backdrop), backdrop])).values()].slice(0, 24);
+    }
+
+    return backdrops;
+  }
+
   // Nền thật dưới chữ: lớp phủ định vị tuyệt đối (panel, ảnh bìa) không phải cha trong DOM của chữ.
+  // Trả danh sách nền có thể có (nhiều hơn một khi cha có gradient), hoặc null khi không đo được.
   function readBackdrop(element) {
     const rect = element.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
     const isInViewport = centerX >= 0 && centerY >= 0 && centerX < innerWidth && centerY < innerHeight;
-    if (!isInViewport) return readAncestorBackdrop(element);
+    if (!isInViewport) return readAncestorBackdrops(element);
 
     // Lớp đứng TRÊN chữ (thanh điều hướng cố định che mất chữ lúc chụp) không phải nền của chữ: chỉ
     // xét các lớp nằm sau chữ trong chồng. Đã đo nhầm một nút nền xanh ra 1:1 vì thanh dưới đáy màu trắng che nút
     // (27/09/2026, dự án mồi phase 2). Chữ bị che hẳn thì đi theo các cha trong DOM.
     const stack = document.elementsFromPoint(centerX, centerY);
     const textIndex = stack.findIndex((layer) => layer === element || element.contains(layer));
-    if (textIndex === -1) return readAncestorBackdrop(element);
+    if (textIndex === -1) return readAncestorBackdrops(element);
 
+    // Lớp không phải cha mà có gradient (lớp phủ trên ảnh bìa) vẫn bỏ đo: ảnh nằm cạnh nó, không phải cha.
     for (const layer of stack.slice(textIndex)) {
       if (layer === element || element.contains(layer)) continue;
       if (layer.contains(element)) break;
       if (["IMG", "VIDEO", "CANVAS", "svg"].includes(layer.tagName) || getComputedStyle(layer).backgroundImage !== "none") return null;
-      if (readColor(getComputedStyle(layer).backgroundColor).alpha > 0) return readAncestorBackdrop(layer);
+      if (readColor(getComputedStyle(layer).backgroundColor).alpha > 0) return readAncestorBackdrops(layer);
     }
 
-    return readAncestorBackdrop(element);
+    return readAncestorBackdrops(element);
   }
 
   function readOpacityChain(element) {
@@ -1047,8 +1093,8 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   let unmeasuredContrastCount = 0;
 
   function checkContrast(element, cssColor, sample) {
-    const backdrop = readBackdrop(element);
-    if (!backdrop) {
+    const backdrops = readBackdrop(element);
+    if (!backdrops) {
       unmeasuredContrastCount++;
       return;
     }
@@ -1056,11 +1102,17 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     const style = getComputedStyle(element);
     const textColor = readColor(cssColor);
     textColor.alpha *= readOpacityChain(element);
-    const shownColor = blendColors(textColor, backdrop);
     const fontSize = parseFloat(style.fontSize);
     const isLargeText = fontSize >= 24 || (fontSize >= 18.66 && Number(style.fontWeight) >= 700);
     const requiredRatio = isLargeText ? 3 : 4.5;
-    const ratio = readContrastRatio(shownColor, backdrop);
+    // Nền gradient cho nhiều nền có thể có: chấm theo nền tệ nhất.
+    const [{ backdrop, shownColor, ratio }] = backdrops
+      .map((candidate) => {
+        const blendedText = blendColors(textColor, candidate);
+
+        return { backdrop: candidate, shownColor: blendedText, ratio: readContrastRatio(blendedText, candidate) };
+      })
+      .sort((first, second) => first.ratio - second.ratio);
     if (ratio >= requiredRatio) return;
 
     const key = `${toHex(shownColor)}|${toHex(backdrop)}|${element.tagName}.${element.getAttribute("class") || ""}`;
@@ -1099,6 +1151,40 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     const border = blendColors(readColor(style.borderTopColor), outside);
     if (channelDistance(inside, outside) <= 4 && channelDistance(border, outside) <= 4 && channelDistance(border, inside) <= 4) {
       invisibleFrames.push(`viền ${toHex(border)}, nền trong ${toHex(inside)}, nền ngoài ${toHex(outside)}: ${describe(element)}`);
+    }
+  }
+
+  // 16b. Khối cùng component mà bo góc khác nhau (Lệch hệ, `V1` "cùng vai"): gom khối có nền / viền / bóng theo
+  //      component, nhận ra bằng `data-slot` (shadcn) hoặc class CSS Module có hash (`_card_x1y2z`,
+  //      `glass-card-module__card__AbC12`). Một khối bo khác số đông của chính component đó là bị đè riêng.
+  //      Card "Ngưỡng cảnh báo" bo 8px giữa các card kính 20px, lượt tự mở trang sót, lượt chỉ đưa ảnh bắt
+  //      bằng mắt (30/09/2026, dự án mồi kho hàng).
+  const isModuleClass = (token) => /__/.test(token) || /^_[A-Za-z][\w-]*_[A-Za-z0-9-]{5}(_\d+)?$/.test(token);
+  const surfacesByComponent = new Map();
+  for (const element of allElements) {
+    const style = getComputedStyle(element);
+    const hasSurface = readColor(style.backgroundColor).alpha > 0 || parseFloat(style.borderTopWidth) > 0 || style.boxShadow !== "none";
+    if (!hasSurface || !isVisible(element)) continue;
+    const rect = element.getBoundingClientRect();
+    if (rect.width * rect.height < 20000) continue;
+    const keys = [element.dataset.slot && `slot:${element.dataset.slot}`, ...[...element.classList].filter(isModuleClass)].filter(Boolean);
+    for (const key of keys) {
+      if (!surfacesByComponent.has(key)) surfacesByComponent.set(key, []);
+      surfacesByComponent.get(key).push({ element, radius: Math.round(parseFloat(style.borderTopLeftRadius) || 0) });
+    }
+  }
+  const mismatchedRadii = [];
+  const reportedRadiusElements = new Set();
+  for (const [key, surfaces] of surfacesByComponent) {
+    if (surfaces.length < 3 || mismatchedRadii.length >= 6) continue;
+    const radiusCounts = new Map();
+    for (const surface of surfaces) radiusCounts.set(surface.radius, (radiusCounts.get(surface.radius) ?? 0) + 1);
+    const [commonRadius, commonCount] = [...radiusCounts].sort((first, second) => second[1] - first[1])[0];
+    if (commonCount < 2 || commonCount === surfaces.length) continue;
+    for (const surface of surfaces) {
+      if (Math.abs(surface.radius - commonRadius) < 4 || reportedRadiusElements.has(surface.element)) continue;
+      reportedRadiusElements.add(surface.element);
+      mismatchedRadii.push(`bo ${surface.radius}px, ${commonCount} khối cùng component (${key.replace(/^slot:/, "data-slot ")}) bo ${commonRadius}px: ${describe(surface.element)}`);
     }
   }
 
@@ -1603,6 +1689,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
 
   return {
     invisibleFrames,
+    mismatchedRadii,
     browserDefaultControls,
     brokenRules,
     mismatchedRuleColors,
@@ -1689,6 +1776,24 @@ function readFocusRingSignature(probeId) {
     .join("|");
 }
 
+// Cả dáng thấy được của phần tử lúc đó: vòng, nền, viền, màu chữ, gạch chân của nó và vài con. Lúc Tab
+// tới mà chuỗi này y như lúc không focus thì Tab tới không thấy gì.
+function readFocusLookSignature(probeId) {
+  const element = document.querySelector(`[data-evon-probe-id="${probeId}"]`);
+  if (!element) return null;
+  const nodes = [element, ...element.querySelectorAll("span, div, svg")].slice(0, 20);
+
+  return nodes
+    .map((node) => {
+      const style = getComputedStyle(node);
+
+      const after = getComputedStyle(node, "::after");
+
+      return [style.outlineStyle, style.outlineWidth, style.outlineColor, style.boxShadow, style.backgroundColor, style.borderColor, style.color, style.textDecorationLine, after.boxShadow, after.outlineStyle, after.opacity, after.borderColor].join(" ");
+    })
+    .join("|");
+}
+
 // Tab qua trang, ghi phần tử còn vẽ vòng focus lúc Tab tới. Skill không vẽ vòng focus (`I13`, chủ dự án chốt
 // 28/09/2026). Ô nhập, textarea, select, combobox được viền + ring mờ; mục menu tô nền, không phải vòng.
 async function findDrawnFocusRings(page) {
@@ -1726,18 +1831,37 @@ async function findDrawnFocusRings(page) {
     checksByKind.set(current.kind, checkCount + 1);
     if (checkCount >= maxFocusChecksPerKind) continue;
     const focusedSignature = await page.evaluate(readFocusRingSignature, current.id);
-    if (focusedSignature?.replace(/\|/g, "")) candidates.push({ ...current, focusedSignature });
+    const focusedLook = await page.evaluate(readFocusLookSignature, current.id);
+    candidates.push({ ...current, focusedSignature, focusedLook });
   }
 
   // So với lúc không focus: viền "đang chọn" vẽ bằng ring (card chọn, chip) có sẵn cả lúc thường, không tính.
   const drawnRings = [];
+  const unmarkedStops = [];
   for (const candidate of candidates) {
     await page.evaluate(() => document.activeElement?.blur());
     const blurredSignature = await page.evaluate(readFocusRingSignature, candidate.id);
-    if (blurredSignature !== candidate.focusedSignature) drawnRings.push(candidate.element);
+    const blurredLook = await page.evaluate(readFocusLookSignature, candidate.id);
+    if (candidate.focusedSignature?.replace(/\|/g, "") && blurredSignature !== candidate.focusedSignature) drawnRings.push(candidate.element);
+    else if (blurredLook === candidate.focusedLook) unmarkedStops.push(candidate);
   }
 
-  return drawnRings;
+  // Vòng có chuyển động thì lúc vừa Tab tới có thể chưa kịp hiện: focus lại (vẫn đang ở chế độ bàn phím nên
+  // khớp `:focus-visible`), chờ hết chuyển động rồi so lần nữa.
+  const confirmedUnmarked = [];
+  for (const candidate of drawnRings.length >= 2 ? unmarkedStops : []) {
+    await page.evaluate((probeId) => document.querySelector(`[data-evon-probe-id="${probeId}"]`)?.focus({ focusVisible: true }), candidate.id);
+    await page.waitForTimeout(350);
+    const settledLook = await page.evaluate(readFocusLookSignature, candidate.id);
+    await page.evaluate(() => document.activeElement?.blur());
+    const blurredLook = await page.evaluate(readFocusLookSignature, candidate.id);
+    if (settledLook === blurredLook) confirmedUnmarked.push(candidate.element);
+  }
+
+  // Ngoại lệ của `I13` (chủ dự án chốt 30/09/2026): dự án tự vẽ vòng ở từ hai chỗ thì chỗ Tab tới không thấy
+  // gì là bị đè mất trong hệ của họ (tab đang chọn đặt `box-shadow` viền trong, đè vòng của Button). Dự án
+  // không vẽ vòng ở đâu thì theo `I13`, không báo.
+  return { drawnRings, unmarkedFocusStops: confirmedUnmarked };
 }
 
 // ---------- Trạng thái động: rê chuột, lớp nổi, khối đang đóng ----------
@@ -2534,7 +2658,7 @@ async function probeWidth(browser, options, width) {
   const screenshotPath = join(options.out, `${width}${options.isDark ? "-dark" : ""}.png`);
   await takeFullScreenshot(page, screenshotPath);
 
-  const drawnFocusRings = isMobile ? [] : await findDrawnFocusRings(page);
+  const { drawnRings: drawnFocusRings, unmarkedFocusStops } = isMobile ? { drawnRings: [], unmarkedFocusStops: [] } : await findDrawnFocusRings(page);
 
   // Mở khối đang đóng trước khi rê và chạm: cây thư mục nằm trong accordion đóng ở /components thì
   // tooltip tên tệp tràn màn chỉ lộ khi khối đã mở (27/09/2026).
@@ -2565,6 +2689,7 @@ async function probeWidth(browser, options, width) {
     ...allMeasurements,
     expandedCount,
     drawnFocusRings,
+    unmarkedFocusStops,
     hollowLayers: popupLayers.hollow,
     openerLayerProblems: openerLayers.problems,
     openedLayerShots: openerLayers.openedShots,
@@ -3142,6 +3267,10 @@ function formatReport(results) {
       problems.push(`BẤM XONG CÒN DẤU THỪA (${result.stuckStates.length} chỗ, chuột đứng yên trên mục vừa chọn):`);
       for (const item of result.stuckStates.slice(0, 6)) problems.push(`  ${item}`);
     }
+    if (result.unmarkedFocusStops?.length > 0) {
+      problems.push(`TAB TỚI KHÔNG THẤY GÌ (${result.unmarkedFocusStops.length} chỗ, trong khi dự án vẽ vòng focus ở ${result.drawnFocusRings.length} chỗ khác; Lệch hệ, ngoại lệ của I13):`);
+      for (const element of result.unmarkedFocusStops.slice(0, 8)) problems.push(`  ${element}`);
+    }
     if (result.drawnFocusRings?.length > 0) {
       problems.push(`TAB TỚI CÒN VẼ VÒNG FOCUS (${result.drawnFocusRings.length} chỗ, skill không vẽ vòng focus, I13):`);
       for (const element of result.drawnFocusRings.slice(0, 8)) problems.push(`  ${element}`);
@@ -3276,6 +3405,10 @@ function formatReport(results) {
     if (result.browserDefaultControls.length > 0) {
       problems.push(`CONTROL CÒN KIỂU MẶC ĐỊNH CỦA TRÌNH DUYỆT (${result.browserDefaultControls.length} chỗ, dự án thiếu reset hay control chưa tự reset):`);
       for (const item of result.browserDefaultControls) problems.push(`  ${item}`);
+    }
+    if (result.mismatchedRadii?.length > 0) {
+      problems.push(`KHỐI CÙNG COMPONENT BO GÓC KHÁC NHAU (${result.mismatchedRadii.length} khối, Lệch hệ: bị đè bo góc riêng):`);
+      for (const item of result.mismatchedRadii) problems.push(`  ${item}`);
     }
     if (result.invisibleFrames.length > 0) {
       problems.push(`KHUNG KHAI VIỀN MÀ VIỀN KHÔNG THẤY (${result.invisibleFrames.length} khung, nền trong, viền, nền ngoài gần như một màu):`);

@@ -235,6 +235,13 @@ ngoài. Đánh đổi đã biết: người dùng bàn phím không thấy mình
 thêm lại khi thấy Tab tới không có dấu gì**, và đừng báo nó là lỗi lúc soi (`V1`). Dự án
 cần đạt chuẩn tiếp cận thì xem `I14`.
 
+**Ngoại lệ lúc soi** (chủ dự án chốt 30/09/2026): dự án **tự vẽ** vòng focus ở các control
+khác mà một chỗ Tab tới không thấy gì, thì đó là chỗ bị đè mất trong hệ của họ, không phải
+gu. Báo Lệch hệ, sửa bằng đúng vòng của họ (token `--focus-ring`, class focus của component
+dùng chung). Dự án không vẽ vòng ở đâu cả thì vẫn theo luật trên: không báo. Đã sót
+30/09/2026 ở dự án mồi: tab đang chọn đặt `box-shadow` viền trong, đè mất vòng focus của
+`Button`, trong khi mọi nút khác có vòng.
+
 Lý do chốt: vòng xám 2px vẽ chồng lên dấu đang chọn, vạch trái, gạch chân thành ba bốn dấu
 trên một dòng; bấm phím (Shift, phím tắt) trong lúc đang đứng trên phần tử cũng làm nó hiện,
 nên người dùng chuột vẫn gặp (đã dính 28/09/2026, danh sách việc làm và nút tài khoản).

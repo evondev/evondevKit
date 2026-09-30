@@ -167,10 +167,29 @@ một chút nào"*.
     src app components --include='*.tsx' --include='*.jsx' 2>/dev/null | head -60
   ```
 
+  Dự án CSS thuần, CSS Modules, SCSS thì hai lệnh trên không ra gì. Chạy thêm, bỏ qua file
+  token:
+
+  ```bash
+  # mã màu và bo góc viết cứng trong CSS, ngoài file token
+  grep -rnE "#[0-9a-fA-F]{3,8}\b|rgba?\([0-9]|border-radius:\s*[0-9]" src \
+    --include='*.css' --include='*.scss' --include='*.less' 2>/dev/null | grep -vE "tokens?\.|variables\.|theme\." | head -60
+  # bảng màu viết cứng trong file TS / JS (map trạng thái → mã hex)
+  grep -rnoE "['\"]#[0-9a-fA-F]{3,8}['\"]" src --include='*.ts' --include='*.tsx' --include='*.js' 2>/dev/null | head -30
+  ```
+
   Kết quả trùng giá trị token (viết cứng `#2563eb` khi đã có token đó), hay lệch token
   một chút cho cùng vai (`#3b82f6` cạnh token xanh `#2563eb`), là Lệch hệ. Ghi vai và
   `file:line`, cùng gốc thì gộp. Giá trị lạ mà dùng đều cho một vai thì không (mục
-  trên).
+  trên). Đã sót 30/09/2026 ở dự án mồi CSS Modules: nút chính một trang đè `#a3e635` thay
+  token `#c6f432`, một card đè `border-radius: 8px` giữa các card 20px. Lượt tự mở trang chỉ
+  chạy lệnh Tailwind nên không ra; lượt chỉ đưa ảnh lại bắt được cả hai bằng mắt.
+- **Thứ bậc nút là Gu ở chế độ soi, không phải Lệch hệ.** Hai nút chính cạnh nhau trên một
+  header, dù trang khác để một nút phụ: mỗi nút đúng token, đúng component, chọn nút nào là
+  chính là quyết định sản phẩm. Ghi một dòng Gu (*"hai nút cùng nổi, không biết đâu là việc
+  chính"*). Lệch hệ là **cùng vai mà khác giá trị** (màu, bo góc, cỡ, kiểu badge), không phải
+  khác lựa chọn biến thể. Hai chế độ dựng lại thì vào dòng Cấu trúc "Tín hiệu tranh nhau"
+  (`V1b`). Đã xếp nhầm Lệch hệ ở cả hai lượt, 30/09/2026.
 - **Không bao giờ là lỗi**, trừ khi phạm luật đọc được ở hạng Hỏng: màu nhấn và màu
   brand, bo góc lớn hay nhỏ, font, bóng / gradient / glass dùng đều khắp dự án, mật
   độ dày hay thoáng, dự án nhiều màu hơn gu skill (đầu `principles.md`), khối màu đậm
@@ -216,7 +235,7 @@ sang hạng theo bảng này. Những mục xếp Hỏng thì probe đã tự go
 | Chỗ bấm dưới 32px | Mục có ghi "(dưới 24px)" là Hỏng, còn lại (24 tới 31px) là Gu |
 | Hàng trong header / nav rớt dòng | Hỏng khi đè hay đẩy lệch khối khác, không thì Lệch hệ (so với cách hàng đó ở khổ khác). Xem ảnh mới quyết |
 | Hàng nút trên header không đồng cỡ | Lệch hệ. Chế độ dựng lại thì vào dòng Gọn của header (`V1c`), theo "Nhóm nút bên phải thanh header" trong `layouts/app.md` |
-| Hàng control lệch trên dưới, placeholder dài hơn ô, khối trông như ô nhập mà chữ xuống dòng, phân trang chỉ có nút chữ, thanh header trong suốt trên nền xám, vạch chia trong menu đậm hơn viền khung, khung / vạch lớp nổi đậm hơn token `--border`, vạch trái bị bo góc khung cắt, khung hộp thoại mờ lồng trong lớp nền mờ, cao gần bằng mà không bằng, đường ngăn hai cột kề nhau lệch, chữ cùng cột lệch mép, dấu ngăn cách không đều, control còn kiểu mặc định của trình duyệt, khung khai viền mà viền không thấy, khối con biến mất lúc rê, lớp nổi có dải trống, lớp nổi bật tắt không chuyển động, checkbox / radio gốc trong lớp nổi, viền trang trí đậm, thanh cuộn khác mẫu, sidebar chữ đậm hay mục sát nhau, số viết sai kiểu tiếng Việt | Lệch hệ |
+| Hàng control lệch trên dưới, placeholder dài hơn ô, khối trông như ô nhập mà chữ xuống dòng, phân trang chỉ có nút chữ, thanh header trong suốt trên nền xám, vạch chia trong menu đậm hơn viền khung, khung / vạch lớp nổi đậm hơn token `--border`, vạch trái bị bo góc khung cắt, khung hộp thoại mờ lồng trong lớp nền mờ, cao gần bằng mà không bằng, đường ngăn hai cột kề nhau lệch, chữ cùng cột lệch mép, dấu ngăn cách không đều, control còn kiểu mặc định của trình duyệt, khung khai viền mà viền không thấy, khối cùng component bo góc khác nhau, Tab tới không thấy gì trong khi dự án vẽ vòng focus ở chỗ khác (ngoại lệ của `I13`), khối con biến mất lúc rê, lớp nổi có dải trống, lớp nổi bật tắt không chuyển động, checkbox / radio gốc trong lớp nổi, viền trang trí đậm, thanh cuộn khác mẫu, sidebar chữ đậm hay mục sát nhau, số viết sai kiểu tiếng Việt | Lệch hệ |
 | Nền rê trùng màu viền của chính nút, viền đổi màu lúc rê, rê khác hình mục đang chọn, bấm xong còn dấu thừa, Tab tới còn vẽ vòng focus (`I13`: chế độ soi ghi một dòng Gu, hai chế độ dựng lại thì gỡ), bảng cuộn ngang mất cột, nhóm lựa chọn xếp lưới, số tiền ngắt dòng, số không thẳng hàng, nhãn số lòi ra ngoài vùng vẽ, dấu câu rơi xuống đầu dòng, chữ dưới 12px (gộp một dòng, ghi cỡ nhỏ nhất và chỗ; sửa lên ít nhất 12px), cột dính mà cuộn riêng, nội dung trôi giữa màn rộng (`layouts/app.md`), mục lặp dày chữ | Gu |
 | Select gốc đã tô trên desktop | Chế độ soi: không vào bảng. Hai chế độ dựng lại: Lệch hệ, thay bằng Select dựng (từ 8 mục có ô tìm) |
 | Lỗi console | Không vào bảng. Ghi một dòng dưới bảng |
@@ -323,6 +342,11 @@ route, theo `P12` trong `styles.md`.
   là thứ họ thật sự thấy (đã đăng nhập, dữ liệu thật). Khác nhau thì nói ra một dòng.
 - **Chỉ có ảnh, không có code**: vẫn làm. Hạng Lệch hệ chỉ dựa trên cái thấy trong ảnh
   (hai nút cùng loại hai kiểu bo góc), không nói tới token.
+- **Ảnh cũng đo được vùng bấm.** Ảnh rộng đúng bằng khổ màn (ảnh 1280px của khổ 1280) là tỉ
+  lệ 1x; ảnh gấp đôi thì chia 2. Đo từng control nhỏ bằng pixel: công tắc, checkbox, radio,
+  nút chỉ icon, nút trong hàng bảng, nút đóng. Chiều nào dưới 24px là Hỏng, nguồn
+  *đo trên ảnh 1x*. Đã sót 30/09/2026: lượt chỉ đưa ảnh có nhìn công tắc 32×18 (còn chê rãnh
+  chìm vào nền) mà không đo cỡ.
 - **Video**: model không xem video được. Tách khung ra rồi chọn các khung quanh lúc
   chuyển động: `ffmpeg -i quay.mp4 -vf fps=4 "$TMPDIR/evon-review/khung/%03d.png"`.
 - **Mỗi dòng ghi nguồn**: *đo*, *thấy trong ảnh*, *đọc code*, hay *đoán*. Ảnh tĩnh

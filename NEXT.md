@@ -200,7 +200,11 @@ N chỗ" không, hay bịa lỗi cho đủ bảng.
 
 6. Cập nhật dòng dự án 2 trong `BACKLOG.md` (hiện vẫn ghi "Chưa dựng").
 
-**5b. Dự án mồi 3: chưa dựng**
+**5b. Dự án mồi 3: `~/dev/audit-skills/kho-hang`**
+
+Vòng 1 xong 30/09/2026: tự mở trang 5/9, chỉ đưa ảnh 6/7, báo nhầm 1 mỗi lượt (hai nút chính xếp
+Lệch hệ). Đã sửa probe và `review.md` (chi tiết ở `BACKLOG.md`, dự án 3). Còn: chạy lại lượt tự
+mở trang để thấy luật mới.
 
 Không dùng Tailwind (CSS thuần hoặc CSS Module), phong cách glass hoặc nền tối.
 
