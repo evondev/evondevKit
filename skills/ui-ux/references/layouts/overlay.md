@@ -179,6 +179,14 @@ nó trùm qua hàng phân trang và lòi khỏi card (đã dính 23/09/2026). Kh
 thì lật lên trên nút, sát mép phải thì canh phải. Dùng thư viện popover có sẵn của dự án
 thì bật `collisionPadding`, tự dựng thì đo `getBoundingClientRect` trước khi mở.
 
+**Lớp nổi không có thanh cuộn, trừ danh sách dài.** Menu, lịch, popover lọc co theo nội dung;
+đừng gõ tay `width` / `height` nhỏ hơn thứ bên trong. Hụt 1–2px là lòi thanh cuộn cả hai chiều,
+máy bật "luôn hiện thanh cuộn" thì thành hai vệt xám to đè lên nội dung. Thẻ `[popover]` gốc
+trình duyệt đặt sẵn `overflow: auto`, nên khung cố định nào hụt cũng ra cuộn. Chỉ listbox, menu
+dài quá `max-h` mới cuộn dọc, và không lớp nổi nào cuộn ngang. Cần giữ khung cố định (lịch đổi
+tầng, `choice-controls.md`) thì lấy cỡ từ nội dung to nhất, không đoán số. Đã dính 30/09/2026,
+wireframe làm lại trang nhập – xuất: lịch khung cao 272px mà lưới ngày cần 288px, rộng hụt 2px.
+
 **Tự dựng: có đủ bề rộng rồi mới đo chiều cao, và menu đổi cỡ thì đo lại.** Menu
 mở lên (`top = đỉnh nút − chiều cao menu`) mà rộng theo nút đọc từ state thì lần mở
 đầu state còn `width: 0`. Menu rộng 0 nên chữ xuống dòng từng từ, cao hàng trăm px,

@@ -80,7 +80,13 @@ dòng đó."* Dừng chờ.
   còn lại vẫn là token và component thật (dòng "Wireframe dựng bằng chính token…" dưới).
 - **Icon lucide thật ở đúng chỗ các app đều đặt**, không vẽ ô vuông giữ chỗ (ô vuông cạnh mục
   sidebar đọc ra checkbox, đã dính 29/09/2026). Nạp `lucide` từ `cdn.jsdelivr.net`, gọi
-  `lucide.createIcons()`. Ba chỗ: **mỗi mục sidebar**; **ô icon 32px nền nhạt ở góc mỗi card số
+  `lucide.createIcons()`. **Mỗi lần ghi lại `innerHTML` là phải vẽ lại icon**: `createIcons()`
+  chỉ thay các `<i data-lucide>` có lúc gọi, thẻ mới ghi sau đó nằm trống. Gắn một lần ở đầu
+  script `new MutationObserver(() => { if (document.querySelector("i[data-lucide]")) lucide.createIcons(); }).observe(document.body, { childList: true, subtree: true })`
+  thay vì gọi tay sau từng lần render. **Phải có điều kiện `i[data-lucide]`**: svg vẽ xong vẫn mang
+  `data-lucide`, gọi thẳng `createIcons()` trong observer thì nó thay svg mãi, trang treo. Đã dính
+  30/09/2026: chọn xong một mục thì ô select và ô ngày mất icon (svg thành `<i data-lucide>` trống),
+  phải mở lại mới thấy. Ba chỗ: **mỗi mục sidebar**; **ô icon 32px nền nhạt ở góc mỗi card số
   liệu**; **ô icon hay avatar đầu dòng** khi dòng thuộc một loại (bộ phận, nhà cung cấp, loại
   giao dịch). Tiêu đề khối, dòng meta thì không icon (`V1c`). Nấc Xám thì icon xám; ba icon
   giống hệt nhau cho ba mục là thà bỏ (`F17`). Dashboard không icon trông "chán", người xem

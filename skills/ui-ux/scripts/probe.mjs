@@ -2322,6 +2322,7 @@ function findPopupDetails(freezeCss) {
   const describeLayer = (element) => `${element.tagName.toLowerCase()}${element.getAttribute("role") ? `[role=${element.getAttribute("role")}]` : ""} "${(element.textContent || "").trim().replace(/\s+/g, " ").slice(0, 30)}"`;
   const motionProperties = ["all", "opacity", "transform", "scale", "translate"];
   const motionless = [];
+  const scrollyLayers = [];
   for (const layer of document.querySelectorAll("[role='menu'], [role='listbox'], [role='dialog'], [data-radix-popper-content-wrapper] > *, [popover]")) {
     const rect = layer.getBoundingClientRect();
     // Lớp đã hiện sẵn trước khi bấm (listbox nằm trong trang, không phải lớp nổi) không tính.
@@ -2341,10 +2342,22 @@ function findPopupDetails(freezeCss) {
       if (["fixed", "absolute"].includes(style.position)) break;
     }
     if (!hasMotion) motionless.push(describeLayer(layer));
+    // Thanh cuộn thừa: lớp nổi cuộn ngang, hay cuộn dọc mà chỉ hụt dưới một hàng (khung gõ tay nhỏ hơn
+    // nội dung; `[popover]` gốc có sẵn `overflow: auto`). Listbox dài hụt nhiều hàng thì cuộn là đúng.
+    for (const box of [layer, ...layer.querySelectorAll("*")]) {
+      const style = getComputedStyle(box);
+      const overflowX = box.scrollWidth - box.clientWidth;
+      const overflowY = box.scrollHeight - box.clientHeight;
+      const isScrollableX = ["auto", "scroll"].includes(style.overflowX) && overflowX > 1;
+      const isScrollableY = ["auto", "scroll"].includes(style.overflowY) && overflowY > 1 && overflowY < 40;
+      if (!isScrollableX && !isScrollableY) continue;
+      scrollyLayers.push(`${describeLayer(layer)}: ${isScrollableX ? `cuộn ngang hụt ${overflowX}px` : ""}${isScrollableX && isScrollableY ? ", " : ""}${isScrollableY ? `cuộn dọc hụt ${overflowY}px` : ""}`);
+      break;
+    }
   }
   for (const tag of freezeTags) tag.media = "all";
 
-  return { motionless };
+  return { motionless, scrollyLayers };
 }
 
 async function probePopupLayers(page, isMobile) {
@@ -2354,6 +2367,8 @@ async function probePopupLayers(page, isMobile) {
   const heavyLayerLines = new Set();
   const motionlessLayers = new Set();
   const nativeChoices = new Set();
+  const scrollyLayers = new Set();
+  const lostTriggerIcons = new Set();
   const hollowBefore = new Set(await page.evaluate(findHollowLayers));
   const triggerIds = await page.evaluate(({ popupLimit, tapLimit, isTouch }) => {
     const ids = [];
@@ -2374,10 +2389,33 @@ async function probePopupLayers(page, isMobile) {
 
     return ids;
   }, { popupLimit: maxPopupTriggers, tapLimit: maxTruncatedTaps, isTouch: isMobile });
+  // Nút mở nằm trong `<dialog>` đang đóng (select, ô ngày của form tạo mới) thì mở dialog rồi thử luôn:
+  // lịch có thanh cuộn, chọn xong mất icon chỉ lộ ở đó (đã dính 30/09/2026, wireframe kho hàng).
+  const dialogTriggerIds = await page.evaluate((limit) => {
+    const ids = [];
+    [...document.querySelectorAll("dialog:not([open])")].slice(0, 2).forEach((dialog, dialogIndex) => {
+      for (const element of [...dialog.querySelectorAll("[aria-haspopup]:not([aria-haspopup='false'])")].slice(0, limit)) {
+        element.dataset.evonPopupId = `dialog${dialogIndex}-${ids.length}`;
+        ids.push(element.dataset.evonPopupId);
+      }
+    });
 
-  for (const triggerId of triggerIds) {
+    return ids;
+  }, maxPopupTriggers);
+
+  for (const triggerId of [...triggerIds, ...dialogTriggerIds]) {
     const locator = page.locator(`[data-evon-popup-id="${triggerId}"]`);
     const isTap = triggerId.startsWith("tap-");
+    if (triggerId.startsWith("dialog")) {
+      await page.evaluate((id) => {
+        const dialog = document.querySelector(`[data-evon-popup-id="${id}"]`)?.closest("dialog");
+        if (!dialog || dialog.open) return;
+        dialog.showModal();
+        dialog.dataset.evonSeenLayer = "1";
+        dialog.dataset.evonProbeOpened = "1";
+      }, triggerId);
+      await page.waitForTimeout(200);
+    }
     await page.evaluate(() => {
       for (const layer of document.querySelectorAll("[role='menu'], [role='listbox'], [role='dialog'], [popover]")) {
         if (layer.getBoundingClientRect().width > 0 && Number(getComputedStyle(layer).opacity) > 0.5) layer.dataset.evonSeenLayer = "1";
@@ -2395,9 +2433,46 @@ async function probePopupLayers(page, isMobile) {
       const details = await page.evaluate(findPopupDetails, freezeMotionCss);
       for (const layer of details.motionless) motionlessLayers.add(layer);
       for (const control of await page.evaluate(findNativeControls, "opened")) nativeChoices.add(control);
+      for (const layer of details.scrollyLayers) scrollyLayers.add(layer);
+    }
+    // Ô chọn (select, ô ngày): chọn thử một mục hay một ngày rồi xem nút mở còn icon không. Vẽ lại nút
+    // sau khi chọn mà quên vẽ icon (wireframe ghi lại `innerHTML` mà không gọi `lucide.createIcons()`) thì
+    // chevron / icon lịch mất tới lần mở sau (đã dính 30/09/2026, wireframe kho hàng, cả select lẫn ô ngày).
+    if (!isTap) {
+      const pickedTrigger = await page.evaluate((id) => {
+        const trigger = document.querySelector(`[data-evon-popup-id="${id}"]`);
+        const isPicker = trigger?.getAttribute("role") === "combobox" || ["listbox", "dialog", "grid"].includes(trigger?.getAttribute("aria-haspopup"));
+        if (!isPicker) return null;
+        const isInOpenedLayer = (element) => {
+          const layer = element.closest("[role='listbox'], [role='dialog'], [role='grid'], [popover], [data-radix-popper-content-wrapper]");
+
+          return Boolean(layer) && !layer.dataset.evonSeenLayer && element.getClientRects().length > 0;
+        };
+        const options = [...document.querySelectorAll("[role='option']:not([aria-selected='true']):not([aria-disabled='true'])")].filter(isInOpenedLayer);
+        // Ô ngày: nút chỉ có một con số 1–31, chưa chọn, không thuộc tháng khác.
+        const days = [...document.querySelectorAll("button:not([disabled])")]
+          .filter((button) => isInOpenedLayer(button) && /^\d{1,2}$/.test((button.textContent || "").trim()) && button.getAttribute("aria-selected") !== "true" && !button.closest("[aria-selected='true']") && !/outside/.test(`${button.className} ${button.parentElement?.className || ""}`));
+        const pick = options[0] || days[days.length > 15 ? 15 : 0];
+        if (!pick) return null;
+        pick.click();
+
+        return { label: `${trigger.tagName.toLowerCase()} "${(trigger.textContent || "").trim().slice(0, 30)}"`, iconCount: trigger.querySelectorAll("svg").length };
+      }, triggerId);
+      if (pickedTrigger) {
+        await page.waitForTimeout(250);
+        // Mất icon: trước có svg mà giờ không còn, hay còn `<i data-lucide>` chưa vẽ (dấu của wireframe
+        // ghi lại innerHTML mà quên `createIcons()`).
+        const after = await locator.evaluate((trigger) => ({ iconCount: trigger.querySelectorAll("svg").length, placeholderCount: trigger.querySelectorAll("i[data-lucide]").length })).catch(() => ({ iconCount: 1, placeholderCount: 0 }));
+        if (after.placeholderCount > 0 || (pickedTrigger.iconCount > 0 && after.iconCount === 0)) lostTriggerIcons.add(`chọn xong ở ${pickedTrigger.label} thì nút mở mất icon (chevron, lịch) tới lần mở sau${after.placeholderCount > 0 ? ", còn thẻ <i data-lucide> chưa vẽ" : ""}`);
+      }
     }
     await page.keyboard.press("Escape");
     await page.waitForTimeout(120);
+  }
+  if (dialogTriggerIds.length > 0) {
+    await page.evaluate(() => {
+      for (const dialog of document.querySelectorAll("dialog[data-evon-probe-opened]")) if (dialog.open) dialog.close();
+    });
   }
 
   return {
@@ -2407,6 +2482,8 @@ async function probePopupLayers(page, isMobile) {
     heavyLayerLines: [...heavyLayerLines],
     motionless: [...motionlessLayers],
     nativeChoices: [...nativeChoices],
+    scrollyLayers: [...scrollyLayers],
+    lostTriggerIcons: [...lostTriggerIcons],
   };
 }
 
@@ -2791,6 +2868,8 @@ async function probeWidth(browser, options, width) {
     heavyLayerLines: popupLayers.heavyLayerLines,
     motionlessLayers: popupLayers.motionless,
     popupNativeChoices: [...new Set([...popupLayers.nativeChoices, ...hiddenNativeControls, ...openerLayers.nativeControls])],
+    scrollyLayers: popupLayers.scrollyLayers,
+    lostTriggerIcons: popupLayers.lostTriggerIcons,
     heavyDecorativeBorders,
     scrollbarStyles,
     heavyNavLinks,
@@ -3410,6 +3489,14 @@ function formatReport(results) {
     if (result.motionlessLayers?.length > 0) {
       problems.push(`LỚP NỔI BẬT TẮT KHÔNG CHUYỂN ĐỘNG (${result.motionlessLayers.length} lớp, \`{isOpen && …}\` hay \`display\` thì hiện tức thì; nhịp theo "Chuyển động" ở layouts/overlay.md):`);
       for (const item of result.motionlessLayers) problems.push(`  ${item}`);
+    }
+    if (result.scrollyLayers?.length > 0) {
+      problems.push(`LỚP NỔI CÓ THANH CUỘN THỪA (${result.scrollyLayers.length} lớp, khung nhỏ hơn nội dung; co theo nội dung, layouts/overlay.md):`);
+      for (const item of result.scrollyLayers) problems.push(`  ${item}`);
+    }
+    if (result.lostTriggerIcons?.length > 0) {
+      problems.push(`CHỌN XONG MẤT ICON (${result.lostTriggerIcons.length} ô, vẽ lại nút phải vẽ lại icon):`);
+      for (const item of result.lostTriggerIcons) problems.push(`  ${item}`);
     }
     if (result.popupNativeChoices?.length > 0) {
       problems.push(`CONTROL GỐC TRONG LỚP NỔI (${result.popupNativeChoices.length} lớp: select, ô ngày, checkbox, thanh trượt…; chế độ soi: select, ô ngày gốc đã tô thì bỏ qua như trên trang; wireframe và dựng lại: dựng theo components/choice-controls.md, select gốc chỉ giữ khi lớp đó chỉ có trên mobile):`);
