@@ -3,7 +3,10 @@
 // Dùng ở cổng 3 của checklist (references/checklist.md). Chỉ đọc trang, không sửa gì.
 //
 //   node probe.mjs <url> [--widths 375,768,1024,1280,1440,1920] [--out <thư mục>] [--dark] [--wait 800] [--dpr 1]
-//                        [--sweep [1440,375,20]]
+//                        [--sweep [1440,375,20]] [--wireframe <link phương án đã chọn>]
+//
+// --wireframe: so bản dựng với wireframe đã chọn (design-process.md, U4) ở 1440 và 375: khoảng nào cao thấp khác,
+// chữ nào đổi hay thiếu, cỡ chữ, độ đậm nào khác; link có mau=mau thì so cả màu chữ, màu icon, nền. Ghi vào danh sách P.
 //
 // --sweep: đo xong các khổ cố định thì kéo bề rộng từ 1440 xuống 375, mỗi bước 20px, chụp từng bước và
 // báo khoảng bề rộng có lỗi (cuộn ngang, khung giấu chữ, chữ trong nút xuống dòng, hàng rớt dòng). Bắt
@@ -30,7 +33,7 @@ const maxTabStops = 160;
 const maxFocusChecksPerKind = 2;
 
 function parseArgs(argv) {
-  const options = { url: "", widths: defaultWidths, out: "", isDark: false, waitMs: 800, dpr: 1, playwrightDir: "", sweep: null };
+  const options = { url: "", widths: defaultWidths, out: "", isDark: false, waitMs: 800, dpr: 1, playwrightDir: "", sweep: null, wireframeUrl: "" };
   const rest = [...argv];
 
   while (rest.length > 0) {
@@ -46,6 +49,7 @@ function parseArgs(argv) {
     else if (arg === "--wait") options.waitMs = Number(rest.shift());
     else if (arg === "--dpr") options.dpr = Number(rest.shift());
     else if (arg === "--pw") options.playwrightDir = rest.shift();
+    else if (arg === "--wireframe") options.wireframeUrl = rest.shift();
     else if (!arg.startsWith("--")) options.url = arg;
   }
 
@@ -3327,6 +3331,296 @@ function formatReport(results) {
   return lines.join("\n");
 }
 
+// ---------- So bản dựng với wireframe đã chọn (--wireframe) ----------
+// Wireframe là bản đặc tả tới từng px (design-process.md, U4): khoảng cách, cỡ, chữ. Neo theo chữ: mỗi đoạn chữ và
+// placeholder có ở cả hai trang là một điểm neo. Một khoảng phía trên sai thì mọi neo phía dưới lệch cùng một số, nên
+// không so toạ độ tuyệt đối mà so khoảng giữa mỗi neo với neo gần nhất phía trên cùng cột (bên trái cùng dòng): khoảng
+// nào khác là đúng chỗ phải sửa. Đã dính 30/09/2026, tìm phòng: ô tìm của bản dựng thấp hơn wireframe 17px, hàng chip
+// thêm 3px, lưới card thêm 1px; kéo thanh so sánh qua lại thì mọi khối nhảy.
+const wireframeCompareWidths = [1440, 375];
+const wireframeTolerancePx = 2;
+const maxWireframeDiffLines = 15;
+
+async function collectLayoutAnchors(page) {
+  return page.evaluate(() => {
+    // Thanh công cụ và khung lý do của trang wireframe nằm ngoài bản thiết kế.
+    for (const chrome of document.querySelectorAll(".wf-bar, .wf-reason, [data-wf-reason]")) chrome.remove();
+
+    const anchors = [];
+    const countsByText = new Map();
+    // Màu đọc qua canvas để oklch, hex, rgb cùng ra một dạng so được.
+    const colorContext = document.createElement("canvas").getContext("2d", { willReadFrequently: true });
+    function normalizeColor(color) {
+      colorContext.clearRect(0, 0, 1, 1);
+      colorContext.fillStyle = "#000";
+      colorContext.fillStyle = color;
+      colorContext.fillRect(0, 0, 1, 1);
+      const [red, green, blue, alpha] = colorContext.getImageData(0, 0, 1, 1).data;
+
+      return alpha === 0 ? "transparent" : `rgb(${red} ${green} ${blue}${alpha < 255 ? ` / ${(alpha / 255).toFixed(2)}` : ""})`;
+    }
+    function findBackground(element) {
+      for (let current = element; current; current = current.parentElement) {
+        const background = normalizeColor(getComputedStyle(current).backgroundColor);
+        if (background !== "transparent") return background;
+      }
+
+      return "transparent";
+    }
+
+    function addAnchor(text, rect, fontSize, style = {}) {
+      if (rect.width === 0 || rect.height === 0) return;
+
+      const occurrence = (countsByText.get(text) ?? 0) + 1;
+      countsByText.set(text, occurrence);
+      anchors.push({
+        key: `${text}#${occurrence}`,
+        text,
+        x: Math.round(rect.left + scrollX),
+        y: Math.round(rect.top + scrollY),
+        width: Math.round(rect.width),
+        height: Math.round(rect.height),
+        fontSize,
+        ...style,
+      });
+    }
+
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    const range = document.createRange();
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      const text = node.textContent.replace(/\s+/g, " ").trim();
+      const parent = node.parentElement;
+      if (!text || !parent || parent.closest("script, style, noscript, template")) continue;
+      if (getComputedStyle(parent).visibility === "hidden") continue;
+
+      range.selectNodeContents(node);
+      const parentStyle = getComputedStyle(parent);
+      addAnchor(text, range.getBoundingClientRect(), parentStyle.fontSize, {
+        color: normalizeColor(parentStyle.color),
+        fontWeight: parentStyle.fontWeight,
+        background: findBackground(parent),
+      });
+    }
+    for (const field of document.querySelectorAll("input[placeholder], textarea[placeholder]")) {
+      addAnchor(`placeholder "${field.placeholder.trim()}"`, field.getBoundingClientRect(), getComputedStyle(field).fontSize, {
+        color: normalizeColor(getComputedStyle(field, "::placeholder").color),
+        background: findBackground(field),
+      });
+    }
+    // Icon không có chữ nên neo theo tên lucide (cả lucide CDN lẫn lucide-react gắn class lucide-<tên>). Bắt icon
+    // wireframe có mà bản dựng bỏ, như nút tim trên header (30/09/2026). Cỡ icon so bằng bề rộng, không bằng cỡ chữ.
+    for (const icon of document.querySelectorAll("svg[class*='lucide-']")) {
+      const iconName = [...icon.classList].find((className) => className.startsWith("lucide-") && className !== "lucide-icon");
+      if (!iconName) continue;
+
+      const iconRect = icon.getBoundingClientRect();
+      addAnchor(`icon ${iconName.replace(/^lucide-|-icon$/g, "")}`, iconRect, `${Math.round(iconRect.width)}px icon`, {
+        color: normalizeColor(getComputedStyle(icon).color),
+      });
+    }
+
+    return anchors;
+  });
+}
+
+function isSameColumn(first, second) {
+  return first.x < second.x + second.width && second.x < first.x + first.width;
+}
+
+function isSameLine(first, second) {
+  return first.y < second.y + second.height && second.y < first.y + first.height;
+}
+
+function quoteAnchor(text) {
+  return `«${text.length > 40 ? `${text.slice(0, 39)}…` : text}»`;
+}
+
+function parseRgb(color) {
+  const channels = color.match(/[\d.]+/g)?.map(Number) ?? [];
+
+  return color === "transparent" ? [0, 0, 0, 0] : [channels[0], channels[1], channels[2], channels[3] ?? 1];
+}
+
+// Lệch vài đơn vị mỗi kênh là làm tròn khi đổi hệ màu, không phải hai màu khác nhau.
+function isSameColor(firstColor, secondColor) {
+  const firstChannels = parseRgb(firstColor);
+  const secondChannels = parseRgb(secondColor);
+
+  return firstChannels.slice(0, 3).every((channel, index) => Math.abs(channel - secondChannels[index]) <= 6)
+    && Math.abs(firstChannels[3] - secondChannels[3]) <= 0.05;
+}
+
+function diffLayoutAnchors(wireframeAnchors, buildAnchors, shouldCompareColors) {
+  const buildByKey = new Map(buildAnchors.map((anchor) => [anchor.key, anchor]));
+  const wireframeKeys = new Set(wireframeAnchors.map((anchor) => anchor.key));
+  const pairs = wireframeAnchors
+    .filter((anchor) => buildByKey.has(anchor.key))
+    .map((anchor) => ({ wireframe: anchor, build: buildByKey.get(anchor.key) }))
+    .sort((first, second) => first.wireframe.y - second.wireframe.y || first.wireframe.x - second.wireframe.x);
+
+  // Neo gần nhất phía trên cùng cột (bên trái cùng dòng) tìm trong mọi neo của wireframe. Neo đó không có ở bản dựng
+  // (chữ đổi, khối bị bỏ) thì bỏ qua khoảng này: lỗi đã nằm ở dòng "chữ wireframe có mà bản dựng không có", khoảng lệch
+  // chỉ là hệ quả (chữ mới ngắn hơn nên ít dòng hơn).
+  const pairByKey = new Map(pairs.map((pair) => [pair.wireframe.key, pair]));
+  function findNeighborPair(anchor, isNeighbor, farEdge) {
+    const neighbor = wireframeAnchors
+      .filter((other) => other !== anchor && isNeighbor(other, anchor))
+      .sort((first, second) => farEdge(second) - farEdge(first))[0];
+    if (!neighbor) return { isEdge: true };
+
+    return pairByKey.get(neighbor.key) ?? null;
+  }
+
+  const gapDiffs = [];
+  // Một token sai thì hàng chục chữ sai cùng một cặp màu: gom theo cặp, kèm vài chữ làm ví dụ.
+  const styleDiffsByKey = new Map();
+  function addStyleDiff(label, wireframeValue, buildValue, text) {
+    const key = `${label}|${wireframeValue}|${buildValue}`;
+    if (!styleDiffsByKey.has(key)) styleDiffsByKey.set(key, { label, wireframeValue, buildValue, texts: [] });
+    styleDiffsByKey.get(key).texts.push(text);
+  }
+  function checkVerticalGap(pair, abovePair) {
+    const wireframeGap = abovePair ? pair.wireframe.y - (abovePair.wireframe.y + abovePair.wireframe.height) : pair.wireframe.y;
+    const buildGap = abovePair ? pair.build.y - (abovePair.build.y + abovePair.build.height) : pair.build.y;
+    if (Math.abs(buildGap - wireframeGap) > wireframeTolerancePx) {
+      const fromLabel = abovePair ? quoteAnchor(abovePair.wireframe.text) : "mép trên trang";
+      gapDiffs.push(`dọc: ${fromLabel} → ${quoteAnchor(pair.wireframe.text)} bản dựng ${buildGap}px, wireframe ${wireframeGap}px (${buildGap > wireframeGap ? "+" : ""}${buildGap - wireframeGap})`);
+    }
+  }
+
+  function checkHorizontalGap(pair, leftPair) {
+    const wireframeLeftGap = leftPair ? pair.wireframe.x - (leftPair.wireframe.x + leftPair.wireframe.width) : pair.wireframe.x;
+    const buildLeftGap = leftPair ? pair.build.x - (leftPair.build.x + leftPair.build.width) : pair.build.x;
+    if (Math.abs(buildLeftGap - wireframeLeftGap) > wireframeTolerancePx) {
+      const fromLabel = leftPair ? quoteAnchor(leftPair.wireframe.text) : "mép trái trang";
+      gapDiffs.push(`ngang: ${fromLabel} → ${quoteAnchor(pair.wireframe.text)} bản dựng ${buildLeftGap}px, wireframe ${wireframeLeftGap}px (${buildLeftGap > wireframeLeftGap ? "+" : ""}${buildLeftGap - wireframeLeftGap})`);
+    }
+  }
+
+  for (const pair of pairs) {
+    const abovePair = findNeighborPair(
+      pair.wireframe,
+      (other, anchor) => other.y + other.height <= anchor.y + 1 && isSameColumn(other, anchor),
+      (other) => other.y + other.height,
+    );
+    if (abovePair) checkVerticalGap(pair, abovePair.isEdge ? null : abovePair);
+
+    const leftPair = findNeighborPair(
+      pair.wireframe,
+      (other, anchor) => other.x + other.width <= anchor.x + 1 && isSameLine(other, anchor),
+      (other) => other.x + other.width,
+    );
+    if (leftPair) checkHorizontalGap(pair, leftPair.isEdge ? null : leftPair);
+
+    if (pair.wireframe.fontWeight && pair.build.fontWeight !== pair.wireframe.fontWeight) {
+      addStyleDiff("độ đậm", pair.wireframe.fontWeight, pair.build.fontWeight, pair.wireframe.text);
+    }
+    if (shouldCompareColors && pair.wireframe.color && !isSameColor(pair.wireframe.color, pair.build.color)) {
+      addStyleDiff(pair.wireframe.text.startsWith("icon ") ? "màu icon" : "màu chữ", pair.wireframe.color, pair.build.color, pair.wireframe.text);
+    }
+    if (shouldCompareColors && pair.wireframe.background && !isSameColor(pair.wireframe.background, pair.build.background)) {
+      addStyleDiff("nền dưới chữ", pair.wireframe.background, pair.build.background, pair.wireframe.text);
+    }
+
+    if (pair.build.fontSize !== pair.wireframe.fontSize) {
+      const sizeLabel = pair.wireframe.text.startsWith("icon ") ? "cỡ icon" : "cỡ chữ";
+      gapDiffs.push(`${sizeLabel}: ${quoteAnchor(pair.wireframe.text)} bản dựng ${pair.build.fontSize.replace(" icon", "")}, wireframe ${pair.wireframe.fontSize.replace(" icon", "")}`);
+    }
+  }
+
+  const uniqueTexts = (anchors) => [...new Set(anchors.map((anchor) => anchor.text))];
+
+  return {
+    matchedCount: pairs.length,
+    wireframeCount: wireframeAnchors.length,
+    gapDiffs,
+    styleDiffs: [...styleDiffsByKey.values()].map(({ label, wireframeValue, buildValue, texts }) => {
+      const examples = [...new Set(texts)].slice(0, 3).map(quoteAnchor).join(", ");
+      return `${label}: bản dựng ${buildValue}, wireframe ${wireframeValue}, ${texts.length} chỗ (${examples})`;
+    }),
+    missingTexts: uniqueTexts(wireframeAnchors.filter((anchor) => !buildByKey.has(anchor.key))),
+    extraTexts: uniqueTexts(buildAnchors.filter((anchor) => !wireframeKeys.has(anchor.key))),
+  };
+}
+
+async function openForAnchors(browser, options, url, width, screenshotPath) {
+  const context = await browser.newContext({
+    viewport: { width, height: 900 },
+    deviceScaleFactor: 1,
+    colorScheme: options.isDark ? "dark" : "light",
+  });
+  const page = await context.newPage();
+
+  await page.goto(url, { waitUntil: "load" });
+  await page.addStyleTag({ content: freezeMotionCss });
+  await page.waitForTimeout(options.waitMs);
+  const anchors = await collectLayoutAnchors(page);
+  await takeFullScreenshot(page, screenshotPath);
+  await context.close();
+
+  return anchors;
+}
+
+async function compareWithWireframe(browser, options) {
+  const comparisons = [];
+  // Nấc Xám cố ý bỏ màu nhấn nên chỉ so màu khi link wireframe mở ở nấc Màu (U3, công tắc Màu).
+  const shouldCompareColors = new URL(options.wireframeUrl).searchParams.get("mau") === "mau";
+
+  for (const width of wireframeCompareWidths) {
+    const wireframeAnchors = await openForAnchors(browser, options, options.wireframeUrl, width, join(options.out, `wireframe-${width}.png`));
+    const buildAnchors = await openForAnchors(browser, options, options.url, width, join(options.out, `ban-dung-${width}.png`));
+    comparisons.push({ width, shouldCompareColors, ...diffLayoutAnchors(wireframeAnchors, buildAnchors, shouldCompareColors) });
+  }
+
+  return comparisons;
+}
+
+function formatWireframeReport(comparisons) {
+  const lines = ["\n# So với wireframe (design-process.md, U4: khoảng cách, cỡ, chữ chép nguyên từ wireframe)"];
+
+  for (const comparison of comparisons) {
+    lines.push(`\n## ${comparison.width}px: khớp ${comparison.matchedCount}/${comparison.wireframeCount} neo (chữ, placeholder, icon)`);
+    if (!comparison.shouldCompareColors) lines.push("Chưa so màu: link wireframe không có mau=mau (nấc Màu).");
+    if (comparison.gapDiffs.length === 0 && comparison.styleDiffs.length === 0 && comparison.missingTexts.length === 0 && comparison.extraTexts.length === 0) {
+      lines.push("Khớp wireframe.");
+      continue;
+    }
+
+    if (comparison.gapDiffs.length > 0) {
+      lines.push(`KHOẢNG KHÁC WIREFRAME (${comparison.gapDiffs.length} chỗ, lấy đúng class spacing của khối đó trong wireframe):`);
+      for (const item of comparison.gapDiffs.slice(0, maxWireframeDiffLines)) lines.push(`  ${item}`);
+      if (comparison.gapDiffs.length > maxWireframeDiffLines) lines.push(`  (còn ${comparison.gapDiffs.length - maxWireframeDiffLines} chỗ, thường do chỗ đầu tiên, sửa rồi chạy lại)`);
+    }
+    if (comparison.styleDiffs.length > 0) {
+      lines.push(`MÀU, ĐỘ ĐẬM KHÁC WIREFRAME (${comparison.styleDiffs.length} cặp, lấy đúng token và class của wireframe):`);
+      for (const item of comparison.styleDiffs.slice(0, maxWireframeDiffLines)) lines.push(`  ${item}`);
+    }
+    if (comparison.missingTexts.length > 0) {
+      lines.push(`CHỮ, ICON WIREFRAME CÓ MÀ BẢN DỰNG KHÔNG CÓ (${comparison.missingTexts.length}, chép nguyên chữ, hoặc ghi lý do lúc giao):`);
+      for (const text of comparison.missingTexts.slice(0, maxWireframeDiffLines)) lines.push(`  ${quoteAnchor(text)}`);
+    }
+    if (comparison.extraTexts.length > 0) {
+      lines.push(`CHỮ, ICON BẢN DỰNG CÓ MÀ WIREFRAME KHÔNG CÓ (${comparison.extraTexts.length}):`);
+      for (const text of comparison.extraTexts.slice(0, maxWireframeDiffLines)) lines.push(`  ${quoteAnchor(text)}`);
+    }
+  }
+
+  return lines.join("\n");
+}
+
+function listWireframeMustReportItems(comparisons) {
+  const items = [];
+
+  for (const comparison of comparisons) {
+    for (const item of comparison.gapDiffs.slice(0, maxWireframeDiffLines)) items.push({ widths: [comparison.width], text: `khác wireframe, ${item}` });
+    for (const item of comparison.styleDiffs.slice(0, maxWireframeDiffLines)) items.push({ widths: [comparison.width], text: `khác wireframe, ${item}` });
+    for (const text of comparison.missingTexts.slice(0, maxWireframeDiffLines)) items.push({ widths: [comparison.width], text: `wireframe có mà bản dựng không có: ${quoteAnchor(text)}` });
+    for (const text of comparison.extraTexts.slice(0, maxWireframeDiffLines)) items.push({ widths: [comparison.width], text: `bản dựng thêm thứ wireframe không có: ${quoteAnchor(text)}` });
+  }
+
+  return items;
+}
+
 async function main() {
   const options = parseArgs(process.argv.slice(2));
 
@@ -3352,10 +3646,12 @@ async function main() {
   mkdirSync(options.out, { recursive: true });
   const results = [];
   let sweepSteps = [];
+  let wireframeComparisons = [];
 
   try {
     for (const width of options.widths) results.push(await probeWidth(browser, options, width));
     if (options.sweep) sweepSteps = await sweepWidths(browser, options);
+    if (options.wireframeUrl) wireframeComparisons = await compareWithWireframe(browser, options);
   } catch (error) {
     console.error(`Không mở được ${options.url}: ${error.message.split("\n")[0]}. Dev server đã chạy chưa?`);
     process.exit(2);
@@ -3363,10 +3659,12 @@ async function main() {
     await browser.close();
   }
 
-  writeFileSync(join(options.out, "report.json"), JSON.stringify({ widths: results, sweep: sweepSteps }, null, 2));
+  writeFileSync(join(options.out, "report.json"), JSON.stringify({ widths: results, sweep: sweepSteps, wireframe: wireframeComparisons }, null, 2));
   console.log(formatReport(results));
   if (sweepSteps.length > 0) console.log(formatSweepReport(sweepSteps, options.sweep.step));
-  console.log(formatMustReportList(listMustReportItems(results, sweepSteps), options.sweep?.step ?? 20));
+  if (wireframeComparisons.length > 0) console.log(formatWireframeReport(wireframeComparisons));
+  const mustReportItems = [...listMustReportItems(results, sweepSteps), ...listWireframeMustReportItems(wireframeComparisons)];
+  console.log(formatMustReportList(mustReportItems, options.sweep?.step ?? 20));
   console.log(`\nChi tiết: ${join(options.out, "report.json")}`);
 }
 

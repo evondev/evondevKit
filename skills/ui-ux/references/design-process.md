@@ -76,7 +76,8 @@ dòng đó."* Dừng chờ.
   A giữ lưới card với thanh lọc gọn dính đầu trang; B chia đôi danh sách và panel chi tiết;
   C đặt ô tìm lên trước, lọc sau. Ba phương án chỉ khác bo góc hay màu là **một** phương án.
 - **Mặc định xám.** Ảnh là khối xám có tỉ lệ thật. Mở ra người dùng nhìn bố cục trước, không
-  sa vào màu; màu chỉ bật bằng nút Màu trên thanh công cụ (dưới).
+  sa vào màu; màu nhấn chỉ bật bằng nút Màu trên thanh công cụ (dưới). Xám chỉ là tắt màu nhấn,
+  còn lại vẫn là token và component thật (dòng "Wireframe dựng bằng chính token…" dưới).
 - **Icon lucide thật ở đúng chỗ các app đều đặt**, không vẽ ô vuông giữ chỗ (ô vuông cạnh mục
   sidebar đọc ra checkbox, đã dính 29/09/2026). Nạp `lucide` từ `cdn.jsdelivr.net`, gọi
   `lucide.createIcons()`. Ba chỗ: **mỗi mục sidebar**; **ô icon 32px nền nhạt ở góc mỗi card số
@@ -86,6 +87,24 @@ dòng đó."* Dừng chờ.
   nói ngay (29/09/2026). **Xám vẫn có mức nhấn**: nút chính tô xám đậm chữ
   trắng, nút phụ viền. Hai nút cùng một kiểu trong wireframe là chưa quyết thứ bậc, lúc dựng
   thật sẽ lại thành hai nút tranh nhau (`V1b`).
+- **Wireframe dựng bằng chính token, font, component mà bản dựng sẽ dùng** ⚑, vì `U4` chép
+  nguyên. Nấc Màu của wireframe phải **là** bản dựng, chỉ khác là file HTML: người dùng chọn thứ
+  họ thấy, dựng ra y hệt thì họ hài lòng; dựng ra khác là chọn nhầm.
+  - **Khung file như `layouts/app-kanban.html`**: nạp font, Tailwind v4 bản trình duyệt
+    (`@tailwindcss/browser@4`), rồi dán **nguyên** khối token vào `<style type="text/tailwindcss">`
+    (`:root` và `@theme inline`). Sản phẩm mới: `references/tokens.css`, màu nhấn theo nhóm Nhấn
+    (dưới). Dự án đã có UI: **file token của dự án** (`globals.css`, `index.css`, config theme),
+    màu xếp theo vai như `U4` sẽ làm (`review.md`, bảng vai màu), dáng theo bảng "Dáng lấy từ
+    skill". Không tự đặt mã màu, bo góc, bóng nào ngoài khối token.
+  - **Component viết đúng class bản dựng sẽ dùng**: dự án có thư viện component (shadcn, bộ nội
+    bộ) thì mở source `Button`, `Input`, `Badge`, `Card`… của dự án, chép chuỗi class của biến
+    thể sẽ dùng; chưa có thì chép công thức trong `components/*.md`. Không vẽ lại "cho giống".
+  - **Khoảng cách, cỡ viết thẳng bằng class** ở từng khối (padding khung trang, `gap`, chiều cao
+    control, cỡ chữ, cỡ icon), theo thang của dự án hay của skill, không để trình duyệt tự canh.
+    Người dùng chọn wireframe là chọn luôn độ thoáng.
+  - **Nấc Xám chỉ đổi màu nhấn và màu trạng thái sang xám** (ghi đè `--primary` và các token
+    trạng thái trên `body[data-mau="xam"]`); nền, viền, chữ, bo góc, bóng, font giữ nguyên token.
+    Bật Màu lên là thấy đúng bản dựng.
 - **Nội dung thật**: chữ lấy từ dữ liệu của dự án, cả ca dài nhất và ca trống. Wireframe chữ
   "Lorem" thì không thấy được card quá tải.
 - **Dữ liệu mẫu có đủ mọi trạng thái, nhất là trạng thái suy từ giờ.** Màn có mốc "bây giờ"
@@ -124,8 +143,8 @@ dòng đó."* Dừng chờ.
   vẽ sai là bản dựng chép sai theo. Trước khi vẽ, liệt kê các khối của phương án rồi mở mẫu
   tương ứng ở bảng mục 2 của `SKILL.md` (`components/`, `layouts/`): nút, ô nhập, select, ô
   chọn ngày, checkbox, công tắc, tab, chip, phân trang, badge, avatar, dòng danh sách, card, card
-  số liệu, biểu đồ, khối rỗng, đường dẫn, header, sidebar, bảng. Chép **hình**: cỡ, số phần tử,
-  cách xếp, chữ nằm đâu; không cần chép code React. Control là thẻ thật (`<input>`, `<button>`,
+  số liệu, biểu đồ, khối rỗng, đường dẫn, header, sidebar, bảng. Chép **hình và class**: cỡ, số phần tử,
+  cách xếp, chữ nằm đâu, chuỗi class của mẫu; không cần chép code React. Control là thẻ thật (`<input>`, `<button>`,
   `<select>` nếu mẫu dùng), không `div` giả. Khối chưa có mẫu mới tự vẽ. Đã dính 29/09/2026, hai
   ví dụ trong một lượt: phân trang vẽ hai nút chữ "Trước / Sau" rộng khác nhau thay cho
   `‹ 1 2 3 … ›`; ô tìm là `div` nên placeholder dài rớt xuống dòng hai.
@@ -224,15 +243,25 @@ dòng đó."* Dừng chờ.
   gõ `?v=`.
 
 - **Khung lý do ngay dưới thanh**, không modal (modal che mất bản thiết kế đúng lúc cần nhìn),
-  nền xám rất nhạt, chữ 13px xám, tên phương án đậm đen đứng đầu: *"**A · Lưới card** · khuyên
-  dùng — người dùng đến để so lương, nên lương đứng đầu mỗi dòng"* (bám việc chính ở `U2`,
-  không viết "gọn gàng, hiện đại"), bấm mở ra đủ:
-  - **Ưu** 2–3 dòng, **Nhược** 1–2 dòng, **Hợp khi** một dòng. Đổi theo phương án đang xem.
-  - **Gợi ý góp ý**: 3–4 câu ngắn người dùng chép gửi lại cho AI, mỗi câu một nút Chép. Chọn
+  nền xám rất nhạt. **Dòng đóng**: tên phương án đậm đen, nhãn "Khuyên dùng" (chỉ phương án khuyên
+  dùng), một câu lý do chữ `#525252` cắt một dòng, nút "Ưu, nhược ⌄" dạt phải: *"**A · Lưới card**
+  [Khuyên dùng] Người dùng đến để so lương, nên lương đứng đầu mỗi dòng"* (bám việc chính ở `U2`,
+  không viết "gọn gàng, hiện đại"). Dưới 768px câu lý do xuống dòng riêng, nút chỉ còn mũi tên để
+  tên và nhãn giữ một dòng. Bấm mở ra đủ:
+  - **Ba cột** Ưu (chấm xanh), Nhược (chấm hổ phách), Hợp khi (chấm xám): tiêu đề 12px đậm đen,
+    Ưu 2–3 gạch đầu dòng, Nhược 1–2, Hợp khi một câu, chữ `#404040`. Màn hẹp xếp chồng. Đổi theo
+    phương án đang xem.
+  - **Gợi ý góp ý**: hàng riêng dưới đường kẻ, 3–4 câu ngắn người dùng chép gửi lại cho AI, **mỗi
+    câu là một nút** (chữ cả câu kèm icon chép, không xuống dòng, bấm xong icon thành dấu ✓ xanh
+    1,5 giây). Chọn
     theo chính trang này, bằng ngôn ngữ của đề: trang đang Xám nhạt thì *"Thêm màu brand ở header
     và hàng lọc"*; tiêu đề mảnh thì *"Tiêu đề đậm hơn"*; khối sát nhau thì *"Thoáng hơn, tăng
     khoảng cách giữa các khối"*; *"Font khác hợp sản phẩm hơn"*; *"Bỏ khối 3"*. Không gợi ý
     thứ trang đã có (đã nhiều màu thì không "thêm màu").
+
+  Đã dính 30/09/2026, lịch hẹn nha khoa: khung lý do cũ viết mọi thứ thành chữ 13px xám `#737373`
+  liền một khối (Ưu, Nhược, Hợp khi nối đuôi, nút Chép chen giữa câu, một câu gợi ý gãy làm hai
+  dòng), chủ dự án: "màu chìm, cấu trúc loạn xạ".
 
   ```html
   <nav class="wf-bar" aria-label="Wireframe">
@@ -255,8 +284,24 @@ dòng đó."* Dừng chờ.
     </details>
   </nav>
   <details class="wf-reason" data-wf-reason>
-    <summary><b>A · Lưới card</b> · khuyên dùng — … <span>Ưu, nhược, gợi ý góp ý</span></summary>
-    <div>… <button type="button" data-copy="Tiêu đề đậm hơn">Chép</button> …</div>
+    <summary>
+      <span class="wf-reason-name">A · Lưới card</span>
+      <span class="wf-reason-tag">Khuyên dùng</span>
+      <span class="wf-reason-why">Người dùng đến để so lương, nên lương đứng đầu mỗi dòng.</span>
+      <span class="wf-reason-toggle"><span>Ưu, nhược</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span>
+    </summary>
+    <div class="wf-reason-body">
+      <div class="wf-reason-cols">
+        <section><h3><i data-tone="uu"></i>Ưu</h3><ul><li>…</li><li>…</li></ul></section>
+        <section><h3><i data-tone="nhuoc"></i>Nhược</h3><ul><li>…</li></ul></section>
+        <section><h3><i></i>Hợp khi</h3><p>…</p></section>
+      </div>
+      <div class="wf-reason-tips">
+        <h3>Gợi ý góp ý</h3>
+        <button type="button" data-copy="Tiêu đề đậm hơn">Tiêu đề đậm hơn<svg data-icon="chep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><svg data-icon="da-chep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+        …mỗi câu gợi ý một nút như trên…
+      </div>
+    </div>
   </details>
   <main id="wf-design">…khối có data-wf-block="1", "2"…</main>
   <style>
@@ -296,12 +341,45 @@ dòng đó."* Dừng chờ.
     .wf-popover a { display: flex; align-items: center; height: 34px; padding: 0 10px; border-radius: 6px; color: #404040; text-decoration: none; }
     .wf-popover a:hover, .wf-popover a[aria-current="page"] { background: #f4f4f5; color: #171717; }
     .wf-popover a[aria-current="page"] { font-weight: 500; }
-    .wf-reason { border-bottom: 1px solid #e5e5e5; background: #fafafa; color: #737373; font: 13px/1.5 system-ui, -apple-system, sans-serif; }
-    .wf-reason summary { padding: 10px 16px; cursor: pointer; list-style: none; }
+    .wf-reason { border-bottom: 1px solid #e5e5e5; background: #fafafa; color: #404040; font: 13px/1.5 system-ui, -apple-system, sans-serif; }
+    .wf-reason summary { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; min-height: 44px; padding: 8px 16px;
+      cursor: pointer; list-style: none; }
     .wf-reason summary::-webkit-details-marker { display: none; }
-    .wf-reason summary b { color: #171717; font-weight: 600; }
-    .wf-reason summary span { display: inline-block; margin-left: 8px; white-space: nowrap; color: #525252; text-decoration: underline; text-underline-offset: 3px; }
-    .wf-reason > div { padding: 0 16px 14px; }
+    .wf-reason-name { min-width: 0; overflow: hidden; color: #171717; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+    .wf-reason-tag { flex-shrink: 0; height: 20px; padding: 0 8px; border-radius: 10px; background: #eef2ff; color: #4338ca;
+      font-size: 12px; font-weight: 500; line-height: 20px; }
+    .wf-reason-why { flex: 1; min-width: 0; overflow: hidden; color: #525252; text-overflow: ellipsis; white-space: nowrap; }
+    .wf-reason[open] .wf-reason-why { white-space: normal; }
+    .wf-reason-toggle { display: inline-flex; flex-shrink: 0; align-items: center; gap: 4px; height: 28px; margin-left: auto;
+      padding: 0 8px; border-radius: 6px; color: #171717; font-weight: 500; }
+    .wf-reason summary:hover .wf-reason-toggle { background: #f0f0f0; }
+    .wf-reason-toggle svg { width: 16px; height: 16px; transition: rotate .15s; }
+    .wf-reason[open] .wf-reason-toggle svg { rotate: 180deg; }
+    /* minmax(0, 1fr) và min(240px, 100%): thiếu thì ở 375 lưới cột tính theo max-width, tràn ngang (đã dính 30/09/2026). */
+    .wf-reason-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; padding: 4px 16px 16px; }
+    .wf-reason-cols { display: grid; max-width: 1120px; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 16px 32px; }
+    .wf-reason h3 { display: flex; align-items: center; gap: 6px; margin: 0 0 4px; color: #171717; font-size: 12px; font-weight: 600; }
+    .wf-reason h3 i { width: 6px; height: 6px; border-radius: 50%; background: #a3a3a3; }
+    .wf-reason h3 i[data-tone="uu"] { background: #16a34a; }
+    .wf-reason h3 i[data-tone="nhuoc"] { background: #d97706; }
+    .wf-reason ul { display: grid; gap: 2px; margin: 0; padding-left: 16px; }
+    .wf-reason li::marker { color: #a3a3a3; }
+    .wf-reason p { margin: 0; }
+    .wf-reason-tips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-top: 12px; border-top: 1px solid #ebebeb; }
+    .wf-reason-tips h3 { margin: 0 4px 0 0; }
+    .wf-reason-tips button { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border: 1px solid #e5e5e5;
+      border-radius: 8px; background: #fff; color: #262626; font: inherit; white-space: nowrap; cursor: pointer; }
+    .wf-reason-tips button:hover { border-color: #d4d4d4; background: #f5f5f5; }
+    .wf-reason-tips button svg { width: 14px; height: 14px; color: #737373; }
+    .wf-reason-tips button [data-icon="da-chep"], .wf-reason-tips button[data-copied] [data-icon="chep"] { display: none; }
+    .wf-reason-tips button[data-copied] [data-icon="da-chep"] { display: block; color: #16a34a; }
+    .wf-reason :focus-visible { outline: 2px solid #4f46e5; outline-offset: 2px; }
+    @media (max-width: 767px) {
+      .wf-reason-why { order: 1; flex-basis: 100%; }
+      /* Chỉ còn mũi tên để tên và nhãn giữ một dòng; chữ vẫn còn cho trình đọc màn hình. */
+      .wf-reason-toggle span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+      .wf-reason-tips h3 { flex-basis: 100%; }
+    }
     /* Trong layer: rule ngoài layer thắng mọi utility Tailwind, `sticky` của sidebar thành `relative`, sidebar
        trôi khi cuộn (đã dính 30/09/2026). Không Tailwind thì class `sticky` của dự án vẫn thắng rule trong layer. */
     @layer base { [data-wf-block] { position: relative; } }
@@ -360,7 +438,11 @@ dòng đó."* Dừng chờ.
       if (statusMenu) statusMenu.open = false;
     });
     for (const button of document.querySelectorAll("[data-copy]")) {
-      button.addEventListener("click", () => navigator.clipboard.writeText(button.dataset.copy));
+      button.addEventListener("click", async () => {
+        await navigator.clipboard.writeText(button.dataset.copy);
+        button.setAttribute("data-copied", "");
+        setTimeout(() => button.removeAttribute("data-copied"), 1500);
+      });
     }
     // Số khối đè chữ hay icon thì lên trên mép khối. Gọi sau mỗi lần vẽ lại, sau hai khung hình: Tailwind bản
     // trình duyệt dựng CSS sau khi HTML vào trang, đo ngay thì mọi khối chưa có layout, số nào cũng "đè".
@@ -423,8 +505,8 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
   rồi dựng theo phương án đã chọn thay cho bố cục mặc định của câu 4.
 - **Đề nhiều hơn một màn:** chốt hợp đồng nguyên tố `D1` (`system.md`) ở đây, trước khi dựng
   màn đầu tiên. Wireframe đã chọn nói khung, bảng `D1` nói control nào dùng kiểu nào cho cả bộ.
-- Ráp bằng mẫu của skill (`SKILL.md` mục 2). Chạy probe `--sweep` tới khi danh sách `P`
-  trống, tối đa ba vòng. **Mục probe về dáng cũng sửa**, dù không nằm trong `P`: hàng nút
+- Ráp bằng mẫu của skill (`SKILL.md` mục 2). Chạy probe `--sweep --wireframe "<link phương án
+  đã chọn>&mau=mau"` tới khi danh sách `P` trống, tối đa ba vòng. **Mục probe về dáng cũng sửa**, dù không nằm trong `P`: hàng nút
   header không đồng cỡ, vòng focus, control gốc, lớp nổi không chuyển động, viền trang trí
   đậm, thanh cuộn. Ở `U4` dáng là của skill, nên đó không phải "Lệch hệ để tuỳ" như lúc soi
   (đã dính 29/09/2026: probe báo nút header 30–34px lệch nhau, bản dựng bỏ qua vì không
@@ -437,10 +519,35 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
   gu, màu theo vai màu. Không để nguyên header cũ rồi chỉ vá cho khỏi rớt dòng. Đã dính
   28/09/2026: wireframe header năm mục một nút đặc, bản dựng giữ sáu mục cũ lệch cỡ; chủ dự
   án hỏi "wireframe vẽ chuẩn rồi mà sao không ai sửa".
-- **Dựng đúng wireframe đã chọn, không bịa.** Wireframe là bản đặc tả: bản dựng chỉ được
-  thêm màu và dáng. **Không thêm** mục, dòng chữ, badge, nút, khối mà wireframe không có;
+- **Dựng đúng wireframe đã chọn, không bịa.** Wireframe ở nấc Màu là bản đặc tả, đã dùng token
+  và component của bản dựng (`U3`): bản dựng là nó viết lại bằng code dự án. **Không thêm** mục, dòng chữ, badge, nút, khối mà wireframe không có;
   **không bỏ** thứ wireframe có; không đổi thứ tự. Thấy wireframe thiếu gì thì hỏi hoặc ghi
   một dòng lúc giao, không tự chêm vào.
+- **Khoảng cách, cỡ, màu, chữ chép nguyên từ wireframe, tới từng px** ⚑. Padding của khung trang
+  và từng khối, `gap` giữa các khối và trong hàng, chiều cao header, ô tìm, nút, chip, bề rộng
+  sidebar, cỡ ảnh card, cỡ, độ đậm, dòng cao của chữ, cỡ icon; màu chữ, nền, viền theo token
+  wireframe đã dùng. Chữ cũng chép nguyên: tiêu đề, placeholder, câu đếm kết quả, dòng cuối danh
+  sách, nhãn nút. Cách làm: mở file wireframe, **với từng khối chép chuỗi class sang bản dựng**
+  (wireframe đã viết bằng class và token của dự án, `U3`), không viết lại theo trí nhớ hay theo
+  thói quen của dự án.
+  - **Khung trang có sẵn của dự án (container, layout, `PageShell`) padding khác wireframe thì
+    wireframe thắng**: đổi padding ở khung đó (dùng chung thì nói nó đổi các màn khác, như khung
+    app ở dòng trên), không để khung cũ đẩy cả trang lệch. Đây là chỗ lệch hay gặp nhất.
+  - Giá trị wireframe không có trong thang spacing của dự án thì dùng đúng px đó (`pt-[18px]`),
+    không làm tròn sang bậc gần nhất: làm tròn là lệch vài px ở mỗi khối, cộng dồn xuống cuối trang.
+  - **Chạy probe kèm `--wireframe "<link phương án đã chọn>&mau=mau"`** (link `U3`, server đã tắt
+    thì `file://$TMPDIR/evon-design/wireframe.html?v=<chữ cái>&mau=mau`). Probe mở cả hai ở 1440 và
+    375, neo theo chữ, placeholder, icon, báo **đúng khoảng lệch** (*"«Phòng trọ» → ô tìm: bản dựng
+    33px, wireframe 16px"*), cỡ chữ, độ đậm, cỡ icon khác, màu chữ, màu icon, nền khác (gom theo
+    cặp màu, một token sai là một dòng), chữ và icon thiếu hay thêm. Thiếu `mau=mau` thì probe
+    không so màu, vì nấc Xám cố ý tắt màu nhấn. Các mục đó vào danh sách
+    `P`, sửa tới khi trống như mọi mục `P`. Chỉ được lệch khi người dùng dặn hoặc dữ liệu thật khác
+    wireframe (chữ dài hơn nên thêm dòng); lúc giao ghi từng chỗ.
+
+  Đã dính 30/09/2026, tìm phòng: bản dựng giữ padding khung trang của dự án, ô tìm thấp hơn
+  wireframe 17px, hàng chip 20px, lưới card 21px; chữ đếm "8 phòng trọ ở Hà Nội" thành "8 kết
+  quả", placeholder đổi, mất dòng "Đã hiện hết 8 phòng" và nút tim trên header. Chủ dự án kéo
+  thanh so sánh wireframe với bản dựng qua lại thì mọi khối nhảy.
 - **Mục điều hướng trỏ tới màn ngoài đề** (sidebar có "Bệnh nhân" mà đề chỉ xin hồ sơ một người):
   màn đó chưa qua `U2`, chưa có wireframe, nên không tự nghĩ bố cục. Dựng tối giản theo khuôn mặc
   định của skill cho loại màn đó (danh sách thì "Danh sách có bộ lọc" trong `layouts/app.md`: ô tìm,
@@ -450,7 +557,8 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
   trống, không ô tìm, không lần khám gần nhất hay lịch hẹn tới.
 - **Đối chiếu wireframe từng khối trước khi giao.** Mở ảnh wireframe đã chọn cạnh ảnh 1440
   của bản dựng, đi từng khối (header, sidebar, hàng lọc, danh sách, panel): số mục, thứ tự,
-  mục nào nút đặc, mục nào chỉ icon, thứ gì wireframe đã bỏ. Khác chỗ nào thì sửa, hoặc ghi
+  mục nào nút đặc, mục nào chỉ icon, thứ gì wireframe đã bỏ. Khoảng cách và chữ thì đã có
+  phần so của probe `--wireframe` (trên), mắt lo phần probe không neo được: khối không chữ, ảnh. Khác chỗ nào thì sửa, hoặc ghi
   một dòng vì sao lệch (thiếu dữ liệu, người dùng dặn). Màu thì theo "Mỗi vai đúng một mã
   màu" trong `review.md`: wireframe xám không nói màu, nhưng bản dựng phải ăn nhập từ viền
   tới brand. Tin giao có bảng *"Đối chiếu wireframe"*: khối, wireframe có gì, bản dựng có

@@ -200,6 +200,9 @@ dựng qua cổng 3 bằng đọc code, lượt rà mở trang thật tìm ra n�
    hộp chọn, sheet rồi chụp và đo tràn mép, cao quá màn.
    - Dev server chưa chạy thì bật ở nền bằng lệnh dev của dự án. Chưa có playwright thì
      cài vào thư mục tạm theo lệnh script in ra, **không cài vào dự án**.
+   - **Dựng theo wireframe đã chọn** (nhánh `U`) thì thêm `--wireframe "<link phương án>&mau=mau"`:
+     probe so khoảng cách, cỡ và độ đậm chữ, cỡ icon, màu, chữ với wireframe ở 1440 và 375, lệch
+     thì vào danh sách `P` (`design-process.md`, `U4`).
    - Trạng thái nằm ở route khác (`/states`, trang rỗng) thì chạy thêm trên route đó. Dự án
      có dark mode thì chạy thêm `--dark`.
    - **Sửa rồi chạy lại cho tới khi mục "Việc phải đối chiếu" ở cuối báo cáo trống**
