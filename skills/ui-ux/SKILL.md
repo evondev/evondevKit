@@ -422,7 +422,7 @@ thì một trong hai chỗ là sai.
 | Ô nhập nhiều tag (email người nhận, nhãn) | `references/components/tag-input.md` |
 | Danh sách rỗng, đang tải (chữ hoặc khung chờ), lỗi tải | `references/components/empty-state.md` |
 | Thanh thông báo trong trang (thông tin, cần chú ý, lỗi) | `references/components/banner.md` |
-| Chip lọc, nút chỉ có icon, thanh tab (4 variant), phân trang | `references/components/small-controls.md` |
+| Chip lọc, chip lọc đang áp dụng (có ×), nút chỉ có icon, thanh tab (4 variant), phân trang | `references/components/small-controls.md` |
 | Avatar, nhóm avatar chồng nhau | `references/components/avatar.md` |
 | Biểu đồ cột, biểu đồ đường, số liệu, thanh tiến độ | `references/components/charts.md` |
 | Khung kéo thả tệp, danh sách tệp đang tải lên | `references/components/file-upload.md` |

@@ -47,6 +47,32 @@ chính.
 
 ---
 
+## Chip lọc đang áp dụng (có ×) ⚑
+
+Hàng tóm tắt lọc cạnh số kết quả (*8 kết quả · [Gần bệnh viện ×] [Gần cao đẳng ×] Xoá lọc*)
+là **nút bỏ lọc**, không phải nút bật / tắt như chip lọc. Khác vai thì khác hình:
+
+```html
+<button type="button" aria-label="Bỏ lọc Gần bệnh viện"
+  class="inline-flex h-8 shrink-0 cursor-pointer items-center gap-1 rounded-full border border-border-strong bg-surface pr-2 pl-3 text-sm text-foreground outline-hidden transition-colors hover:bg-button-hover">
+  Gần bệnh viện <i data-lucide="x" class="size-3.5 text-muted"></i>
+</button>
+```
+
+- **Viền, không nền xám, không tô màu nhấn.** Nền `bg-foreground/5` là hình của chip **chưa
+  chọn** ở hàng lọc: hàng tóm tắt dùng nền đó thì đọc thành "chưa chọn", ngược nghĩa. Tô
+  `bg-primary` thì thành khối màu thứ ba, thứ tư cạnh chip đang chọn phía trên (`N3`). Viền
+  `--border-strong` như nút viền (`M14`): đọc ra "bấm được, bấm là bỏ".
+- **Cả chip là nút bỏ lọc**, không chỉ dấu ×; `aria-label` nói rõ bỏ lọc gì.
+- Nhãn ghi đủ nghĩa khi đứng một mình ("Gần bệnh viện", "Dưới 8 triệu"), không chỉ "Bệnh viện".
+- **"Xoá lọc"** là nút ghost chữ cuối hàng, hiện khi có ít nhất một lọc.
+- Hàng này có ích khi có lọc nằm trong dropdown (khu vực, giá), thứ người dùng không thấy từ
+  ngoài. Mọi lọc đều là chip hiện sẵn ở trên thì hàng tóm tắt là "Hai chỗ một việc" (`V1b`):
+  chỉ giữ "Xoá lọc" cạnh số kết quả.
+
+Đã dính 30/09/2026, tim-phong-sua: chip tóm tắt nền xám y như chip chưa chọn ở hàng "Gần" ngay
+trên, chủ dự án hỏi nên cùng màu hay để viền.
+
 ## Hàng chip ở màn hẹp
 
 Hàng chip lọc **không bao giờ `flex-wrap`**. Bốn chip ở 375px sẽ thành ba cái
