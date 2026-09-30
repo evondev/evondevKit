@@ -35,7 +35,9 @@ Bố cục theo wireframe C đã xong. Bước này làm gọn phần còn chưa
 4. Nó sửa xong thì mở trang tự xem ở desktop và thu cửa sổ về cỡ điện thoại.
 5. Gửi link cho Claude ở evondevKit rà (quy ước ở đầu file).
 
-### [ ] 2. Dự án trống: đề phòng khám nha khoa
+### [x] 2. Dự án trống: đề phòng khám nha khoa
+
+Xong 30/09/2026 ở `~/dev/audit-skills/quan-ly-lich-hen`: lịch khớp 4/4 (wireframe thiếu "trễ", dặn thêm ở cổng 2), hồ sơ 2/3. Kết quả ở `~/dev/phase2-dapan/nha-khoa/dap-an.md`.
 
 Test skill tự nghĩ bố cục cho sản phẩm mới, không có UI cũ để bám.
 
