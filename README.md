@@ -3,6 +3,17 @@
 Skill **`ui-ux`** cho Claude Code: dựng và làm đẹp giao diện app (dashboard, danh sách,
 bảng, form, cài đặt, modal) theo đúng thư viện component và màu của dự án bạn.
 
+> **Bản beta.** Dùng tốt cho giao diện app nền sáng, đề tiếng Việt: đã qua 70 đề test trên dự
+> án thật. Đang test: thêm dark mode cho app đang có, đề tiếng Anh, Codex và Antigravity.
+> Skill còn được sửa liên tục từ các lượt test, lấy bản mới bằng
+> `/plugin marketplace update evondevkit`.
+>
+> Skill không hoàn hảo, nó làm tốt nhất có thể theo bộ luật của nó. Gu mỗi người một khác, dự án
+> nào cũng có cái riêng: dựng xong bạn chỉnh tay hay nhắn AI sửa đều được.
+>
+> Gặp chỗ chưa ổn thì [mở issue](https://github.com/evondev/evondevKit/issues), kèm link
+> hoặc ảnh màn đó và câu đề bạn đã gõ.
+
 ## Cài
 
 ```bash
@@ -19,7 +30,7 @@ Viết đề tiếng Việt hay tiếng Anh đều vậy. Muốn đi lối khác
 
 | Bạn muốn | Gõ | Skill làm |
 | --- | --- | --- |
-| Dựng hay làm lại một màn (mặc định) | `/evon:ui-ux Dựng màn danh sách đơn hàng: mã đơn, khách, tổng tiền, trạng thái.` hoặc `/evon:ui-ux Redesign the jobs page.` | Brief → bạn duyệt → 2–3 wireframe → bạn chọn (ví dụ `C + D + có màu`) → dựng. Wireframe có thanh trên cùng: bật màu, thử màu nhấn, xem mobile (bấm ☰ được, có thanh dưới nếu ít mục), xem màn rỗng / lỗi, đọc ưu nhược, chép câu góp ý. Trả lời `ok` là dựng phương án khuyên dùng |
+| Dựng hay làm lại một màn (mặc định) | `/evon:ui-ux Dựng màn danh sách đơn hàng: mã đơn, khách, tổng tiền, trạng thái.` hoặc `/evon:ui-ux Redesign the jobs page.` | Brief → bạn duyệt → 2–3 wireframe → bạn chọn (ví dụ `C + D`) → dựng. Wireframe có thanh trên cùng: bật màu, thử màu nhấn, xem mobile (bấm ☰ được, có thanh dưới nếu ít mục), xem màn rỗng / lỗi, đọc ưu nhược, chép câu góp ý. Trả lời `ok` là dựng phương án khuyên dùng |
 | Dựng luôn, không wireframe | `/evon:ui-ux Dựng luôn màn cài đặt thông báo.` hoặc `… just build it` | Không vẽ wireframe (đỡ tốn token): skill tự chọn phương án nó sẽ khuyên rồi dựng luôn. Lúc giao báo đã chọn bố cục nào, vì sao |
 | Biết UI đang sai chỗ nào | `/evon:ui-ux Xem giúp trang này chỗ nào chưa ổn: http://localhost:3000/orders` | Đưa bảng lỗi có ảnh trước/sau. Bạn trả lời `sửa 1, 3` rồi mới sửa |
 | Làm gọn, giữ brand và khung trang | `/evon:ui-ux Dựng lại trang này giữ brand.` | Thay control, làm gọn card, giữ màu của bạn. Trang lướt để chọn hoặc dashboard (công thức B của `P12`) thì có thêm dòng bản có màu. Trả lời `ok` hoặc `bỏ 7` |
@@ -61,4 +72,4 @@ gõ "dùng skill ui-ux" trong đề. Skill mới được test kỹ trên Claude
 
 ---
 
-Phát triển skill: xem [DEVELOP.md](DEVELOP.md).
+Phát triển skill: xem [DEVELOP.md](DEVELOP.md). Giấy phép [MIT](LICENSE).

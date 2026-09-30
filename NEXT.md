@@ -280,10 +280,9 @@ Sửa cả bản tiếng Anh.
 Tự xác nhận thêm hai chỗ: câu "Không chỉnh tay sau khi dựng" ở showcase có đúng không, và
 đường dẫn cài trên Codex / Antigravity (bước 8).
 
-### [ ] Thêm file `LICENSE`
+### [x] Thêm file `LICENSE`
 
-Mở Claude Code ở evondevKit, gõ: `Thêm file LICENSE MIT, tác giả Tuấn Trần, năm 2026.`
-Hiện giấy phép chỉ khai trong `plugin.json`.
+Xong 30/09/2026: `LICENSE` MIT, Tuấn Trần, 2026; README có link và khối "Bản beta".
 
 ### [ ] `ui-ux-dashboard`: Select chưa có chuyển động
 
