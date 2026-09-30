@@ -441,6 +441,13 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
   thêm màu và dáng. **Không thêm** mục, dòng chữ, badge, nút, khối mà wireframe không có;
   **không bỏ** thứ wireframe có; không đổi thứ tự. Thấy wireframe thiếu gì thì hỏi hoặc ghi
   một dòng lúc giao, không tự chêm vào.
+- **Mục điều hướng trỏ tới màn ngoài đề** (sidebar có "Bệnh nhân" mà đề chỉ xin hồ sơ một người):
+  màn đó chưa qua `U2`, chưa có wireframe, nên không tự nghĩ bố cục. Dựng tối giản theo khuôn mặc
+  định của skill cho loại màn đó (danh sách thì "Danh sách có bộ lọc" trong `layouts/app.md`: ô tìm,
+  dòng theo `components/list-row.md` có giá trị so sánh bên phải), rồi ghi một dòng lúc giao:
+  *"Màn [X] ngoài đề, dựng tạm để menu không dẫn vào trang trống; muốn làm thật thì nhắn."* Đã dính
+  30/09/2026, lịch hẹn nha khoa: `/benh-nhan` tự dựng thành cột tên + mã rộng 1500px, nửa phải
+  trống, không ô tìm, không lần khám gần nhất hay lịch hẹn tới.
 - **Đối chiếu wireframe từng khối trước khi giao.** Mở ảnh wireframe đã chọn cạnh ảnh 1440
   của bản dựng, đi từng khối (header, sidebar, hàng lọc, danh sách, panel): số mục, thứ tự,
   mục nào nút đặc, mục nào chỉ icon, thứ gì wireframe đã bỏ. Khác chỗ nào thì sửa, hoặc ghi

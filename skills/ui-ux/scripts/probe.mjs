@@ -294,16 +294,26 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   // 1d2. Hàng nút ở bất kỳ đâu (footer panel, card) mà nút chỉ icon (⋯) rớt xuống dòng dưới một mình: nhìn
   //      như một nút lạc (30/09/2026, panel chi tiết 352px của wireframe lịch hẹn: "Bắt đầu khám", "Mở hồ sơ"
   //      một dòng, ⋯ dòng dưới). Sửa: nút không `flex-1`, rút nhãn, hoặc ⋯ lên header panel.
-  for (const row of document.querySelectorAll("div, footer, section")) {
+  for (const row of document.querySelectorAll("div, footer, section, ul, ol, p")) {
     if (wrappedRows.length >= 6) break;
     const style = getComputedStyle(row);
     if (!style.display.includes("flex") || !style.flexDirection.startsWith("row") || style.flexWrap !== "wrap" || !isVisible(row)) continue;
     const children = [...row.children].filter(isVisible);
-    if (children.length < 2 || !children.every((child) => child.matches("button, a[href], [role='button']"))) continue;
+    if (children.length < 2) continue;
     const lastChild = children.at(-1);
     const lastTop = lastChild.getBoundingClientRect().top;
     const isAlone = children.slice(0, -1).every((child) => child.getBoundingClientRect().bottom <= lastTop + 1);
-    if (isAlone && !lastChild.textContent.trim()) wrappedRows.push(`nút chỉ icon rớt dòng một mình: ${describe(lastChild)} trong ${describe(row)}`);
+    if (!isAlone) continue;
+    const isButtonRow = children.every((child) => child.matches("button, a[href], [role='button']"));
+    if (isButtonRow && !lastChild.textContent.trim()) {
+      wrappedRows.push(`nút chỉ icon rớt dòng một mình: ${describe(lastChild)} trong ${describe(row)}`);
+      continue;
+    }
+    // `R3`: hàng mục ngắn (chú thích, số đếm, chip) từ ba mục mà dòng dưới chỉ còn một mục (30/09/2026, chú
+    // thích sơ đồ răng 375px: "Mất răng" rớt một mình). Lưới card (mục rộng quá nửa hàng) thì rớt là bình thường.
+    const rowWidth = row.getBoundingClientRect().width;
+    const isShortItems = children.every((child) => child.getBoundingClientRect().width < rowWidth / 2 && child.getBoundingClientRect().height < 48);
+    if (children.length >= 3 && isShortItems) wrappedRows.push(`mục rớt dòng một mình (R3): ${describe(lastChild)} trong ${describe(row)}`);
   }
 
   if (isSweep) {
@@ -2522,6 +2532,9 @@ function findHeavyDecorativeBorders() {
     context.fillRect(0, 0, 1, 1);
     const [red, green, blue, alpha] = context.getImageData(0, 0, 1, 1).data;
     if (alpha === 0) return null;
+    // Viền có sắc (đỏ nhạt của banner lỗi, hổ phách của banner chú ý: `components/banner.md`) là viền mang
+    // nghĩa, không phải viền trang trí xám. Đã báo nhầm 30/09/2026: `border-red-200` của khung cảnh báo y khoa.
+    if (Math.max(red, green, blue) - Math.min(red, green, blue) > 24) return null;
     const opacity = alpha / 255;
     const toLinear = (channel) => {
       const value = (channel * opacity + 255 * (1 - opacity)) / 255;
