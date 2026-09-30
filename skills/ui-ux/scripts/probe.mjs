@@ -1380,6 +1380,10 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     if (rowRect.height > 72 || !isVisible(row)) continue;
     const children = [...row.children].filter((child) => isVisible(child) && getComputedStyle(child).position !== "absolute");
     if (children.length < 2 || !children.some((child) => child.matches(controlSelector))) continue;
+    // Khối chữ nhiều dòng (tiêu đề + mô tả) cao hơn control: control bám dòng đầu là đúng (nút ✕
+    // header modal, `items-start`), không phải hàng control. Báo nhầm 30/09/2026, design system phòng khám.
+    const tallestControl = Math.max(...children.filter((child) => child.matches(controlSelector)).map((child) => child.getBoundingClientRect().height));
+    if (children.some((child) => !child.matches(controlSelector) && child.getBoundingClientRect().height > tallestControl + 8)) continue;
     const contentTop = rowRect.top + parseFloat(style.paddingTop) + parseFloat(style.borderTopWidth);
     const contentBottom = rowRect.bottom - parseFloat(style.paddingBottom) - parseFloat(style.borderBottomWidth);
     const contentCenter = (contentTop + contentBottom) / 2;

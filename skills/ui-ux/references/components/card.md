@@ -28,6 +28,37 @@
 
 ---
 
+## Card chứa dòng có nền rê: padding đặt ở từng khối, không ở card
+
+`p-5` trên card chỉ đúng khi thân card là chữ, số, form. Thân là danh sách có nền rê
+(`list-row.md`, dòng `px-2`/`px-3` để nền rê không ôm sát chữ, `F13`) thì chữ dòng thụt
+vào đúng bằng `px` của dòng, lệch mép tiêu đề card. Component `Card` dùng chung phải có sẵn
+cách thứ hai, không để từng chỗ tự vá:
+
+```tsx
+// isFlushList: thân là danh sách dòng có nền rê. Card không px, tiêu đề px-5, khối danh
+// sách px-2 (= 5 − 3), dòng px-3: chữ dòng thẳng mép chữ tiêu đề, nền rê vẫn tràn ra 12px.
+<section className={cn("flex flex-col rounded-2xl border border-border bg-surface", isFlushList ? "py-5" : "p-5")}>
+  <header className={cn("flex items-start justify-between gap-3", isFlushList ? "px-5" : "mb-4", isFlushList && !action && "mb-1.5")}>…</header>
+  <div className={cn("min-h-0 flex-1", isFlushList && "px-2")}>{children}</div>
+</section>
+```
+
+- Khối danh sách `px` = padding card − `px` của dòng: dòng `px-3` thì `px-2`, dòng `px-2` thì `px-3`.
+  Màn hẹp card `p-4` thì trừ từ 16.
+- **Bớt `mb-4` của header khi thân là danh sách**: dòng đã có `py-2.5` ở trên chữ. Header có
+  action thì `mb-0` (khối `min-h-10` đã dư ~10px dưới chữ tiêu đề), không action thì `mb-1.5`.
+  Chữ tiêu đề tới chữ dòng đầu khi đó ~20px, bằng khoảng giữa hai dòng. Giữ `mb-4` thì thành
+  36px, tiêu đề lơ lửng.
+- Không kéo danh sách ra bằng `-mx-3` (`N11`).
+
+Đã dính 30/09/2026, trang design system phòng khám, card "Lịch hẹn hôm nay": card `p-5`,
+dòng `px-2`, giờ "08:30" ở x=115 còn tiêu đề ở x=107 (lệch 8px, cả 375 và 1280px); chữ tiêu
+đề tới chữ dòng đầu 36px, giữa hai dòng 20px. Thử trên trang (card `py-5`, header `px-5 mb-0`,
+thân `px-3`): giờ thẳng tiêu đề x=107 (375px: x=33), tiêu đề tới dòng đầu 21px.
+
+---
+
 ## Khi nào dùng `ring` thay `border`
 
 `border` ăn vào hộp theo `box-sizing: border-box`, nên phần tử **cỡ cố định** sẽ

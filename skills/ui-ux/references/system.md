@@ -176,7 +176,11 @@ bảy dòng chữ trong lượt trả lời, mà thành code thật và một tr
    những mẫu còn sẵn, cần cái nào thì gọi tên.
 5. **Một trang xem design system**: route `/design-system` (dự án có Storybook thì viết
    story thay cho trang; không có app thì một file HTML). Thứ tự khối:
-   - **Màu**: ô màu kèm tên token và mã; cặp chữ trên nền chính kèm tỉ lệ tương phản.
+   - **Màu**: ô màu kèm tên token và mã; cặp chữ trên nền chính kèm tỉ lệ tương phản. Cột
+     tỉ lệ chỉ ghi số; **chỉ cặp trượt mới có nhãn** ("Dưới 4.5:1", màu cảnh báo), cặp đạt
+     để trống. Mười một dòng "Đạt AA" xanh giống nhau là một ý nói mười một lần, mắt phải dò
+     hết cột mới biết có cặp nào trượt không (đã dính 30/09/2026, trang design system phòng
+     khám).
    - **Chữ**: từng bậc của thang cỡ chữ, viết bằng câu thật theo ngôn ngữ của dự án (tiếng
      Việt thì có đủ dấu, `T5`), ghi cỡ và độ đậm.
    - **Khoảng cách, bo góc, viền, bóng**: các bậc đang dùng, hai vai viền đặt cạnh nhau,
@@ -184,6 +188,13 @@ bảy dòng chữ trong lượt trả lời, mà thành code thật và một tr
    - **Từng component**, mỗi trạng thái một ví dụ tĩnh đặt cạnh nhau (thường, rê, focus,
      khoá, đang tải, lỗi), không bắt bấm mới thấy. Trang dùng **chính component vừa
      dựng**, không vẽ lại cho đẹp: trang đẹp mà component lệch thì duyệt nhầm.
+     **Nhãn trạng thái ("Thường", "Rê", "Đang gõ", "Lỗi", "Khoá") nằm cùng một chỗ ở mọi
+     khối**: chữ nhỏ `text-xs text-muted` ngay trên ví dụ. Không đặt nhãn vào chỗ câu gợi ý
+     hay câu lỗi dưới ô nhập: "Đang gõ" nằm dưới ô trông y như câu gợi ý thật của ô đó. Ô
+     nhập bày cạnh nhau thì cách nhau như trong form thật (`gap-y-5` trở lên), không `gap-y-2`:
+     câu gợi ý của ô trên chỉ cách nhãn ô dưới 10px, đọc ra là nhãn của ô dưới (đã dính
+     30/09/2026, khối Ô nhập: nút có nhãn trạng thái ở trên, ô nhập thì nhãn nằm dưới ô,
+     hàng cách nhau 10px).
 
    Trang là công cụ để duyệt: flat như gu skill, không hero, không lời quảng cáo.
 6. **Probe trang đó** (`--sweep`) tới khi danh sách `P` trống, tối đa ba vòng.
