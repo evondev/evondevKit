@@ -16,7 +16,7 @@ Ba ca, chọn đúng một:
 | --- | --- |
 | **Người dùng tự nêu phong cách** ("làm trang giá kiểu glassmorphism") | Làm theo phong cách đó, **không hỏi lại** |
 | **Audit thấy dự án có phong cách khác flat** (`P4`) | **Theo phong cách dự án**, dựng luôn, báo một dòng lúc giao (mẫu bên dưới) |
-| **Dự án flat hoặc trống**, người dùng không nêu gì | Flat (`P6`). Không hỏi về phong cách. Riêng nhánh thiết kế từ đầu: nút Màu trên wireframe có nấc Có màu (`P12`) ở trang lướt để chọn hoặc dashboard (công thức B của `P12`); hai chế độ dựng lại: dòng Có màu (`V1d`), không chọn sẵn |
+| **Dự án flat hoặc trống**, người dùng không nêu gì | Flat (`P6`). Không hỏi về phong cách. Có màu (`P12`) chỉ khi người dùng tự xin trong đề; hai chế độ dựng lại: dòng Có màu (`V1d`), không chọn sẵn. Wireframe không còn nấc Có màu (bỏ 30/09/2026) |
 
 Vì sao theo dự án chứ không theo flat: một màn flat giữa app glass là màn lạc
 loài, người dùng thấy ngay. Nhất quán thắng gu.
@@ -255,9 +255,9 @@ cách nền của dự án. Đừng tự dựng nút 3D vì thấy dự án có 
 Flat thuần đọc ra "buồn màu" ở hai chỗ: trang người dùng cuối lướt để chọn (tìm việc, tìm
 phòng, sản phẩm, khoá học), trang nào cũng như trang quản trị (chủ dự án thấy 29/09/2026, trang
 tìm việc so với trang tìm việc lớn cùng loại); và dashboard dự án mới chưa có brand, màu nhấn
-gần đen nên chọn "Màu" vẫn trắng đen (29/09/2026, wireframe quản lý chi phí khách sạn). Nhánh thiết kế từ đầu đưa nó ra thành nấc Có màu
-của nút Màu trên wireframe (`design-process.md`, `U3`), hai chế độ dựng lại đưa nó thành dòng Có màu (`review.md`, `V1d`);
-ngoài hai chỗ đó thì theo `P1`.
+gần đen nên chọn "Màu" vẫn trắng đen (29/09/2026, wireframe quản lý chi phí khách sạn). Hai chế độ dựng lại đưa nó thành dòng Có màu
+(`review.md`, `V1d`); người dùng tự xin trong đề thì dựng theo công thức dưới; ngoài hai chỗ đó thì
+theo `P1`. Wireframe từng có nấc Có màu, bỏ 30/09/2026 (`design-process.md`, `U3`).
 
 - **Nhận ra từ ảnh:** đầu trang là một dải màu đậm (đặc hoặc chuyển màu) ôm header và ô tìm,
   chân trang cùng màu; vài mục trong danh sách có nền nhạt màu nhấn kèm nhãn "Gấp", "Hot";

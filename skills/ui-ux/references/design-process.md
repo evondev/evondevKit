@@ -141,24 +141,32 @@ dòng đó."* Dừng chờ.
 
   D và E cũng qua probe như các phương án bố cục.
 
-- **Nút Màu: Xám · Màu · Có màu**, áp cho mọi phương án, không phải bản riêng:
-  - **Xám:** mặc định lúc mở, chỉ xem bố cục.
-  - **Màu:** như bản dựng sẽ ra theo mặc định (`P6`): màu nhấn ở nút chính, mục đang chọn, link,
+- **Công tắc Màu** (tắt là Xám, bật là Màu), áp cho mọi phương án, không phải bản riêng:
+  - **Tắt, Xám:** mặc định lúc mở, chỉ xem bố cục.
+  - **Bật, Màu:** như bản dựng sẽ ra theo mặc định (`P6`): màu nhấn ở nút chính, mục đang chọn, link,
     biểu đồ; **và màu trạng thái của `M4` trên mọi dữ liệu có trạng thái**: vượt ngân sách,
     quá hạn đỏ hay hổ phách, đã xong xanh, thanh tiến độ tô theo ngưỡng. Nấc Màu mà thanh 103%
     vẫn đen thì người xem hỏi *"chọn màu mà sao vẫn trắng đen"* (đã dính 29/09/2026). Dự án đã
     có phong cách khác flat (`P4`) thì Màu là phong cách đó.
-  - **Có màu:** `P12` trong `styles.md`, **công thức theo loại trang**: trang lướt để chọn thì
-    dải màu đầu và chân trang, mục nổi bật; dashboard và trang làm việc trong app thì ô icon màu
-    nhạt ở card số liệu, biểu đồ nhiều sắc, **không dải màu, không mục "hot"** (dải màu đặt lên
-    trang báo cáo thì lạc loài, đã dính 29/09/2026).
+
+  ⚠️ **Nấc thứ ba "Có màu" đã bỏ khỏi wireframe (30/09/2026, chủ dự án: thêm vào cũng không
+  khác gì mấy).** Màu brand người dùng cần thấy nằm ở chỗ tương tác (control bấm được, dưới),
+  không ở dải màu trang trí. Người dùng tự xin "có màu" trong đề thì theo `P12` ở `styles.md`
+  lúc dựng, không vẽ thành nấc.
 
   **Dự án chưa có màu brand** (màu nhấn là gần đen mặc định, `brand-tokens.md`) thì thêm nhóm
   **Nhấn: ● ● ●** gồm ba màu gợi ý (chàm `#4f46e5`, xanh ngọc `#0d9488`, cam `#ea580c`), đổi
   `--primary` tại chỗ. Không có nhóm này thì nấc Màu của dự án mới vẫn đen trắng. Màu người dùng
   chọn thành màu nhấn lúc dựng (`brand-tokens.md`); không chọn thì dựng màu đầu, báo một dòng.
-  Đổi màu bằng biến CSS trên `body[data-mau]`, `body[data-nhan]`, không vẽ lại. Probe cả nấc
-  Màu và Có màu (tương phản chữ trắng trên dải, trên ô màu).
+  Đổi màu bằng biến CSS trên `body[data-mau]`, `body[data-nhan]`, không vẽ lại. Probe cả hai
+  nấc (tương phản chữ trắng trên nút chính, trên mục đang chọn).
+
+- **Control trong wireframe bấm được và hiện trạng thái như bản thật** ⚑: ô nhập, ô tìm focus
+  thì viền và ring màu nhấn (`I13`: `--border-focus`, `--ring-focus`); select, dropdown, nút lọc
+  bấm là xổ ra danh sách mục thật theo `layouts/overlay.md` (khung, chuyển động), bấm ngoài hay
+  Esc thì đóng. Mục đang chọn có badge thì badge đảo màu như bản dựng (`layouts/app.md`,
+  Sidebar). Bật Màu lên là người dùng thấy màu brand đúng ở chỗ họ sẽ bấm (chủ dự án chốt
+  30/09/2026: "cho user thấy còn hay hơn" nấc Có màu).
 
 - **Nút Khổ: Desktop · Mobile.** Mobile hiện chính trang đó trong một khung 375 × 812 giữa màn
   (iframe cùng link, thêm `frame=1` để trong khung không có thanh công cụ), nên media query chạy
@@ -174,7 +182,7 @@ dòng đó."* Dừng chờ.
 
 - **Thanh công cụ ở đỉnh trang, bắt buộc, một dòng**, nằm ngoài bản thiết kế: dải **sáng** cao
   56px, nền trắng, viền dưới xám nhạt, dính đỉnh, chữ 14px. Các nhóm xếp liền từ trái, cách nhau
-  24px, theo thứ tự: **Phương án** · Màu · Nhấn (dự án chưa có brand) · Khổ · Nav (mobile, ít mục)
+  24px, theo thứ tự: **Phương án** · **Màu** (công tắc) · Nhấn (dự án chưa có brand) · Khổ · Nav (mobile, ít mục)
   · **Trạng thái**.
   - **Mỗi nhóm là một segmented control**: rãnh xám nhạt bo 10px, nút trong rãnh không nền, nút
     đang bật (`aria-current="page"`) nền trắng, bóng mảnh, chữ đậm đen; nút khác chữ xám. Không
@@ -186,10 +194,11 @@ dòng đó."* Dừng chờ.
   - **Khổ có icon**: màn hình trước Desktop, điện thoại trước Mobile (icon 16px, nét 2).
   - **Trạng thái là menu thả**, nhãn xám "Trạng thái:" kèm giá trị đang xem đậm và mũi tên nhỏ;
     bấm thì ra bốn link. Bốn trạng thái ít đổi, không đáng chiếm bốn nút trên thanh.
-  - Nhóm Màu, Nhấn, Nav không cần nhãn: chữ trong nút đã tự nói.
+  - **Màu là công tắc** có nhãn "Màu" đứng trước, không phải segmented: chỉ còn hai nấc.
+    Nhóm Nhấn, Nav không cần nhãn: chữ trong nút đã tự nói.
 
   Mỗi nút là link giữ nguyên các lựa chọn khác, chỉ đổi đúng tham số của nó. Màn hẹp thì thanh
-  cuộn ngang, không xuống dòng. Mở không tham số thì: phương án khuyên dùng, Xám, Desktop, Có
+  cuộn ngang, không xuống dòng. Mở không tham số thì: phương án khuyên dùng, Màu tắt, Desktop, Có
   dữ liệu. Đã dính 29/09/2026: có lượt wireframe có thanh, có lượt không, người dùng phải tự
   gõ `?v=`.
 
@@ -212,7 +221,7 @@ dòng đó."* Dừng chờ.
         <a data-value="a" title="A · Lưới card (khuyên dùng)" data-recommended>A</a><a data-value="b" title="B · Danh sách + chi tiết">B</a><a data-value="d" title="D · A gọn chữ">D</a>
       </span>
     </div>
-    <span class="wf-set" data-wf-param="mau"><a data-value="xam">Xám</a><a data-value="mau">Màu</a><a data-value="co-mau">Có màu</a></span>
+    <a class="wf-switch" data-wf-toggle="mau" data-on="mau" data-off="xam" role="switch">Màu <i></i></a>
     <span class="wf-set" data-wf-param="nhan"><a data-value="cham" aria-label="Chàm"><i></i></a><a data-value="ngoc" aria-label="Xanh ngọc"><i></i></a><a data-value="cam" aria-label="Cam"><i></i></a></span>
     <span class="wf-set" data-wf-param="kho">
       <a data-value="desktop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Desktop</a>
@@ -239,6 +248,12 @@ dòng đó."* Dừng chờ.
     .wf-set a { position: relative; display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px;
       border-radius: 7px; color: #737373; text-decoration: none; }
     .wf-set a:hover { color: #171717; }
+    .wf-switch { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; color: #737373; text-decoration: none; }
+    .wf-switch i { position: relative; width: 36px; height: 20px; border-radius: 10px; background: #e4e4e7; transition: background .15s; }
+    .wf-switch i::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%;
+      background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / .2); transition: translate .15s; }
+    .wf-switch[aria-checked="true"] i { background: #171717; }
+    .wf-switch[aria-checked="true"] i::after { translate: 16px 0; }
     .wf-set a[aria-current="page"] { background: #fff; color: #171717; font-weight: 500;
       box-shadow: 0 1px 2px rgb(0 0 0 / .08), 0 0 0 1px rgb(0 0 0 / .04); }
     .wf-bar svg { width: 16px; height: 16px; flex-shrink: 0; }
@@ -292,6 +307,13 @@ dòng đó."* Dừng chờ.
         if (currentLabel) currentLabel.textContent = link.textContent;
       }
     }
+    // Công tắc Màu: một link, bấm là sang nấc kia.
+    for (const toggle of document.querySelectorAll("[data-wf-toggle]")) {
+      const param = toggle.dataset.wfToggle;
+      const isOn = state[param] === toggle.dataset.on;
+      toggle.setAttribute("aria-checked", String(isOn));
+      toggle.href = `?${new URLSearchParams({ ...state, [param]: isOn ? toggle.dataset.off : toggle.dataset.on })}`;
+    }
     // Menu Trạng thái: thanh cuộn ngang cắt mất khối absolute, nên menu là fixed, đặt ngay dưới nút.
     const statusMenu = document.querySelector(".wf-menu");
     statusMenu?.addEventListener("toggle", () => {
@@ -340,9 +362,8 @@ dòng đó."* Dừng chờ.
   Mở thử từng link (probe đã mở là được) trước khi gửi. Không chạy được server thì ghi đường
   dẫn tệp `file://…/wireframe.html` và nói tham số `?v=` chọn phương án.
 
-Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn, và `có màu` nếu thích bản đó (ví dụ `C + D + có màu`,
-`B + E`). Góp ý theo số khối cũng được."* Trang không có nấc Có màu thì bỏ vế đó. Không ghi màu
-thì dựng theo nấc Màu, trừ khi nấc đã khuyên là Có màu. Dừng chờ.
+Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn (ví dụ `C + D`, `B + E`). Góp ý theo số khối
+cũng được."* Bản dựng theo nấc Màu. Dừng chờ.
 
 Người dùng trả lời `ok`, `dựng luôn` mà không ghi chữ cái nào thì dựng **phương án khuyên dùng**,
 màu và nhấn theo mức đã khuyên, không hỏi lại.
@@ -358,8 +379,6 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
   rồi dựng theo phương án đã chọn thay cho bố cục mặc định của câu 4.
 - **Đề nhiều hơn một màn:** chốt hợp đồng nguyên tố `D1` (`system.md`) ở đây, trước khi dựng
   màn đầu tiên. Wireframe đã chọn nói khung, bảng `D1` nói control nào dùng kiểu nào cho cả bộ.
-- **Chọn `có màu` thì phong cách là `P12`** cho route đó và các màn người dùng cuối cùng loại, ghi một
-  dòng lúc giao như mẫu của `P1`. Màu vẫn từ màu nhấn của dự án.
 - Ráp bằng mẫu của skill (`SKILL.md` mục 2). Chạy probe `--sweep` tới khi danh sách `P`
   trống, tối đa ba vòng. **Mục probe về dáng cũng sửa**, dù không nằm trong `P`: hàng nút
   header không đồng cỡ, vòng focus, control gốc, lớp nổi không chuyển động, viền trang trí

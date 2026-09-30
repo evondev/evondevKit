@@ -1105,8 +1105,12 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     const isFullRadius = (action) => parseFloat(getComputedStyle(action).borderTopLeftRadius) >= action.getBoundingClientRect().height / 2;
     const shapeCount = new Set(actions.map(isFullRadius)).size;
     const heightSpread = Math.max(...heights) - Math.min(...heights);
-    if (heightSpread >= 3 || fontSizes.size > 1 || shapeCount > 1) {
-      unevenHeaderActions.push(`${actions.length} nút, cao ${Math.min(...heights)}–${Math.max(...heights)}px, chữ ${[...fontSizes].join(" / ")}${shapeCount > 1 ? ", lẫn bo tròn hẳn với bo góc" : ""}: ${describe(bar)}`);
+    // Khoảng giữa hai nút kề nhau: dưới 6px thì nền rê dính nhau, hàng thành một cục (gap-2, 30/09/2026).
+    const sortedActions = [...actions].sort((first, second) => first.getBoundingClientRect().left - second.getBoundingClientRect().left);
+    const actionGaps = sortedActions.slice(1).map((action, index) => action.getBoundingClientRect().left - sortedActions[index].getBoundingClientRect().right);
+    const tightestGap = Math.min(...actionGaps);
+    if (heightSpread >= 3 || fontSizes.size > 1 || shapeCount > 1 || tightestGap < 6) {
+      unevenHeaderActions.push(`${actions.length} nút, cao ${Math.min(...heights)}–${Math.max(...heights)}px, chữ ${[...fontSizes].join(" / ")}${shapeCount > 1 ? ", lẫn bo tròn hẳn với bo góc" : ""}${tightestGap < 6 ? `, cách nhau ${Math.round(tightestGap)}px (gap-2)` : ""}: ${describe(bar)}`);
       break;
     }
   }
@@ -1405,7 +1409,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     .filter((link) => new URL(link.href, location.href).searchParams.has(param)).length;
   const missingWireframeParts = !/wireframe/i.test(location.pathname) || wireframeParams.has("frame") ? [] : [
     countLinksWith("v") < 2 && "thanh phương án (?v=)",
-    countLinksWith("mau") < 2 && "nút Màu (mau=)",
+    countLinksWith("mau") < 1 && "công tắc Màu (mau=)",
     countLinksWith("kho") < 2 && "nút Khổ desktop / mobile (kho=)",
     countLinksWith("tt") < 2 && "nút Trạng thái (tt=)",
     !document.querySelector("[data-wf-reason]") && "khung lý do (data-wf-reason)",
@@ -2455,6 +2459,10 @@ function findHeavyNavLinks() {
   for (const links of columns.values()) {
     const plainLinks = links.filter((link) => link.getAttribute("aria-current") !== "page");
     if (plainLinks.length < 4) continue;
+    // Mục sát nhau: khoảng giữa hai mục kề nhau (cùng nhóm, dưới 12px) nhỏ hơn 3px, nền rê gần dính (gap-1, 30/09/2026).
+    const sortedLinks = [...links].sort((first, second) => first.getBoundingClientRect().top - second.getBoundingClientRect().top);
+    const linkGaps = sortedLinks.slice(1).map((link, index) => link.getBoundingClientRect().top - sortedLinks[index].getBoundingClientRect().bottom).filter((gap) => gap >= 0 && gap < 12);
+    if (linkGaps.length >= 3 && Math.max(...linkGaps) < 3) findings.push(`${links.length} mục cách nhau ${Math.round(Math.max(...linkGaps))}px, cần gap-1 (4px): "${links[0].textContent.trim()}"…`);
     const heavyLinks = plainLinks.filter((link) => parseFloat(getComputedStyle(link).fontWeight) >= 600);
     if (heavyLinks.length / plainLinks.length < 0.6) continue;
     findings.push(`${heavyLinks.length}/${plainLinks.length} mục chữ ${getComputedStyle(heavyLinks[0]).fontWeight}: "${heavyLinks.slice(0, 3).map((link) => link.textContent.trim()).join('", "')}"`);
@@ -2959,7 +2967,7 @@ function formatReport(results) {
       for (const item of result.brokenImages) problems.push(`  ${item}`);
     }
     if (result.heavyNavLinks?.length > 0) {
-      problems.push(`SIDEBAR CHỮ ĐẬM (${result.heavyNavLinks.length} cột, mục thường chữ 400 text-foreground/70, chỉ mục đang chọn font-medium, layouts/app.md):`);
+      problems.push(`SIDEBAR CHỮ ĐẬM HAY MỤC SÁT NHAU (${result.heavyNavLinks.length} chỗ, mục thường chữ 400 text-foreground/70, chỉ mục đang chọn font-medium, các mục cách gap-1, layouts/app.md):`);
       for (const item of result.heavyNavLinks) problems.push(`  ${item}`);
     }
     if (result.heavySeparators?.length > 0) {

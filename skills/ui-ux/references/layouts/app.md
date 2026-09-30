@@ -190,6 +190,12 @@ dòng "1 / 5 bước".
   - Mặc định **mở hết**. Nhóm chứa trang đang xem thì **không được đóng lúc tải trang**, nếu không người ta không thấy mình đang ở đâu.
 - **Thanh cuộn của sidebar tự ẩn** theo `I18`: đứng yên không thấy, rê vào hoặc đang cuộn mới hiện, 4px. Thanh cuộn xám đứng yên chạy dọc sidebar trắng là thứ nặng nhất trên cột, nặng hơn cả chữ (đã dính 21/09/2026).
 - **Số đếm căn phải, là số trơn** `text-xs tabular-nums text-muted`, không pill, không viền. Năm pill viền cạnh nhau trên một cột là năm khung nhỏ kéo mắt (bỏ pill ngày 23/09/2026). Mục đang chọn thì số lên `text-foreground` cùng chữ. **Không badge màu brand**, xem `../components/small-controls.md`.
+- **Các link cách nhau `gap-1` (4px)**, không `gap-0.5`: 2px thì nền rê của hai mục kề nhau gần
+  như dính, cột đọc thành một khối (chủ dự án thấy 30/09/2026, tim-phong-sua).
+- **Dự án đã có badge màu brand trong sidebar** ("Mới" nền đỏ, vai màu, `review.md`) thì giữ,
+  nhưng **mục đang chọn tô nền màu nhấn thì badge của nó đảo**: nền `--primary-foreground`,
+  chữ `--primary`. Badge đỏ nằm trên nền đỏ thì tan mất, và cột có hai ba khối đỏ đặc tranh
+  nhau (`N3`). Wireframe vẽ luôn ca này (`design-process.md`, `U3`).
 
 ```tsx
 <Link
@@ -444,8 +450,10 @@ Phòng trọ                       ♡  🔔   Quản lý tin   Đăng nhập   
   đặt phòng lớn đều để tim và chuông chỉ icon (tra 28/09/2026). Mục có chữ tối đa khoảng ba.
 - **Chữ nút ghost không nặng hơn tên trang** bên trái: `font-medium`, màu chữ thường hoặc
   `--muted`. Năm mục cùng `font-semibold` màu chữ chính là năm thứ tranh với tên trang.
-- **Khoảng giữa các nút `gap-1`**: padding của nút ghost đã là khoảng thở. `gap-4` cộng
-  padding thì hàng trải ra nửa header, đọc như menu trang giới thiệu.
+- **Khoảng giữa các nút `gap-2`** (8px): padding của nút ghost đã là khoảng thở, `gap-2` tách
+  nền rê của hai nút cạnh nhau cho khỏi dính. `gap-4` cộng padding thì hàng trải ra nửa header,
+  đọc như menu trang giới thiệu. Bản cũ `gap-1` (4px), chủ dự án nâng 30/09/2026: bốn nút sát
+  nhau trông như một cục.
 - **Mục đã có trong sidebar thì không lặp trên header** (luật "Hai chỗ một việc", `V1b`).
   Bỏ bên nào là quyết định của người dùng: đưa lên bảng, không chọn sẵn.
 - **Liên hệ, hỗ trợ, tải app** không đứng cùng hàng với việc chính: để cuối sidebar hoặc
