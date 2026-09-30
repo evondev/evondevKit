@@ -165,14 +165,14 @@ có shadcn, dừng đúng một lần. 4a: dừng đúng một lần. **Còn:** 
 Quy tắc chung ở `BACKLOG.md`, mục "Test cho phase 2" và "Vệ sinh khi dựng dự án mồi".
 Mỗi dự án chạy **hai lượt**: một lượt skill tự mở trang, một lượt chỉ đưa ảnh.
 
-**5a. Dự án mồi 2: `~/dev/lich-kham` (đã dựng, chưa chạy)**
+**5a. Dự án mồi 2: `~/dev/audit-skills/lich-kham` (đã dựng, chưa chạy)**
 
 Next + shadcn, **ít lỗi** (8 chỗ: 5 Hỏng, 3 Lệch hệ). Đáp án ở
 `~/dev/phase2-dapan/lich-kham/dap-an.md`. Test chính: skill có dám nói "gần như ổn, chỉ có
 N chỗ" không, hay bịa lỗi cho đủ bảng.
 
-1. Kiểm `~/dev/lich-kham/.claude/settings.local.json`: nếu đang tắt skill thì xoá đi.
-2. `cd ~/dev/lich-kham && npm run dev`, xem cổng in ra (thường là 3000).
+1. Kiểm `~/dev/audit-skills/lich-kham/.claude/settings.local.json`: nếu đang tắt skill thì xoá đi.
+2. `cd ~/dev/audit-skills/lich-kham && npm run dev`, xem cổng in ra (thường là 3000).
 3. **Lượt tự mở trang:** phiên Claude Code mới trong `lich-kham`, gõ (đổi cổng nếu khác):
 
    ```
@@ -236,21 +236,16 @@ Chạy trên `~/dev/ui-ux-dashboard`. Danh sách mục ở `TESTS.md`, mục "Da
    `/verify-otp`.
 5. Tick từng mục trong `TESTS.md`.
 
-### [ ] 7. Vòng tiếng Anh (0/8)
+### [ ] 7. Vòng tiếng Anh (0/2)
 
-Mỗi đề một **dự án trống mới** (tạo như bước 2), gõ bằng tiếng Anh, rồi so ảnh với bản tiếng
-Việt đã ✅. Bố cục, màu, khoảng thở phải y hệt, chỉ chữ khác.
+Chỉ hai đề nhắm lỗi hay gặp: bảng (số, ngày, số nhiều, chữ cái avatar) và đề trộn. Đề
+thường đã test tay thấy đúng nên không chạy đủ.
 
 1. Đề, mỗi đề một phiên (thêm `Read ~/dev/evondevKit/skills/ui-ux/SKILL.md, then` ở đầu):
-   - `Build me a customer table with search, filters, pagination, and multi-select for bulk delete.`
-   - `Build me a create-task form that shows errors when input is invalid.`
-   - `Build me a right-side panel for a quick look at an order's details.`
-   - `Build me a regular card with a title and a button on the right, and a stat card showing this month's revenue compared to last month.`
-   - `Build me avatars: with image, with initials, and an overlapping avatar group.`
-   - `Build me a date picker, and a date range picker with presets for 7 days, 30 days, and this month.`
-   - `Build me a customer detail page.`
+   - Dự án trống mới (tạo như bước 2): `Build me a customer table with search, filters, pagination, and multi-select for bulk delete.`
+     So ảnh với bản tiếng Việt đã ✅: bố cục, màu, khoảng thở y hệt, chỉ chữ khác.
    - **Trộn**, chạy trong `ui-ux-dashboard` (nhãn tiếng Việt): `Add a notification panel that opens from the bell in the header.`
-2. Mỗi đề soi bốn thứ: câu trả lời toàn tiếng Anh; nhãn tiếng Anh quen dùng, viết hoa chữ
+2. Đề bảng soi bốn thứ: câu trả lời toàn tiếng Anh; nhãn tiếng Anh quen dùng, viết hoa chữ
    đầu câu; tiền, số, ngày theo kiểu tiếng Anh; không có dấu gạch dài trong câu. Đề trộn:
    trả lời tiếng Anh nhưng nhãn mới vẫn tiếng Việt, không hỏi.
 3. Tick trong `TESTS.md`, gửi link cho Claude rà.

@@ -184,10 +184,12 @@ Chốt xong thì ghi ngược vào skill như bậc 1: token vào `tokens.css`, 
 
 Làm sau cùng, sau phase 2.
 
-Chạy lại vài đề đã ✅, lần này **gõ đề bằng tiếng Anh, dự án trống**, rồi so ảnh
+Chỉ hai đề nhắm lỗi hay gặp, đề thường đã test tay thấy đúng.
+
+Chạy lại đề bảng đã ✅, lần này **gõ đề bằng tiếng Anh, dự án trống**, rồi so ảnh
 với bản tiếng Việt. Bố cục, màu, khoảng thở phải y như nhau. Chỉ chữ được khác.
 
-Mỗi đề kiểm bốn thứ:
+Kiểm bốn thứ:
 
 - Câu trả lời và câu giao toàn tiếng Anh, không lọt câu mẫu tiếng Việt nào (`T27`).
 - Nhãn là nhãn tiếng Anh quen dùng, sentence case, không dịch từng chữ (`T27`, `T29`).
@@ -198,10 +200,4 @@ Thêm một đề **trộn**: gõ tiếng Anh vào dự án đang có nhãn ti�
 lời tiếng Anh, nhãn mới vẫn tiếng Việt, không hỏi.
 
 - [ ] **Data table** — "Build me a customer table with search, filters, pagination, and multi-select for bulk delete."
-- [ ] **Form validation** — "Build me a create-task form that shows errors when input is invalid."
-- [ ] **Drawer** — "Build me a right-side panel for a quick look at an order's details."
-- [ ] **Card số liệu** — "Build me a regular card with a title and a button on the right, and a stat card showing this month's revenue compared to last month."
-- [ ] **Avatar** — "Build me avatars: with image, with initials, and an overlapping avatar group."
-- [ ] **Date picker** — "Build me a date picker, and a date range picker with presets for 7 days, 30 days, and this month."
-- [ ] **Trang chi tiết bản ghi** — "Build me a customer detail page."
 - [ ] **Trộn** — trong một dự án đã có nhãn tiếng Việt: "Add a notification panel that opens from the bell in the header."
