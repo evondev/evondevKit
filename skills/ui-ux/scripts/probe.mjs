@@ -2357,6 +2357,7 @@ async function probeWidth(browser, options, width) {
   const scrollbarStyles = await page.evaluate(findScrollbarStyles);
   const heavyNavLinks = await page.evaluate(findHeavyNavLinks);
   const brokenImages = await page.evaluate(findBrokenImages);
+  const misformattedNumbers = await page.evaluate(findMisformattedNumbers);
   const overflowingLayers = [...new Set([...hoverStates.overflowingLayers, ...popupLayers.overflowing])];
   // Chạy sau cùng: bấm thử đổi lựa chọn trên trang (ngày, tab), các phép đo khác phải xong trước.
   const pageCheckedHoverChanges = isMobile ? [] : await findCheckedHoverChanges(page);
@@ -2392,6 +2393,7 @@ async function probeWidth(browser, options, width) {
     scrollbarStyles,
     heavyNavLinks,
     brokenImages,
+    misformattedNumbers,
     stuckStates: stateShapes.stuckStates,
     stateGroupCount: stateShapes.groupCount,
   };
@@ -2478,6 +2480,18 @@ function findBrokenImages() {
     .filter((image) => image.complete && image.naturalWidth === 0 && (image.currentSrc || image.src))
     .slice(0, 6)
     .map((image) => (image.currentSrc || image.src).slice(0, 120));
+}
+
+// Số viết sai kiểu tiếng Việt (T28): dấu chấm làm dấu thập phân trước đơn vị ("4.5 triệu"), hay số chưa làm
+// tròn ("3.333333 triệu"). Chỉ đo trang tiếng Việt (có chữ có dấu). Đã dính 30/09/2026, tim-phong-sua.
+function findMisformattedNumbers() {
+  const bodyText = document.body.innerText;
+  if (!/[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]/i.test(bodyText)) return [];
+  const findings = new Set();
+  for (const match of bodyText.matchAll(/\d+[.,]\d{4,}(?:\s*(?:triệu|tỷ|nghìn|%|đ|₫))?/g)) findings.add(`chưa làm tròn: "${match[0]}"`);
+  for (const match of bodyText.matchAll(/\b\d{1,3}\.\d{1,2}\s*(?:triệu|tỷ|nghìn|tr\b|%)/g)) findings.add(`dấu chấm thập phân: "${match[0]}" (tiếng Việt viết "${match[0].replace(".", ",")}")`);
+
+  return [...findings].slice(0, 5);
 }
 
 // Thanh cuộn khác khối scrollbar của tokens.css: rộng quá 4px, hoặc thumb tô màu đặc lúc đứng yên (luôn
@@ -2961,6 +2975,10 @@ function formatReport(results) {
     if (result.scrollbarStyles?.length > 0) {
       problems.push(`THANH CUỘN KHÁC MẪU (${result.scrollbarStyles.length} luật, dùng khối scrollbar của tokens.css: 4px, ẩn tới khi rê hay cuộn):`);
       for (const item of result.scrollbarStyles) problems.push(`  ${item}`);
+    }
+    if (result.misformattedNumbers?.length > 0) {
+      problems.push(`SỐ VIẾT SAI KIỂU TIẾNG VIỆT (${result.misformattedNumbers.length} chỗ, dấu phẩy thập phân, làm tròn, T28 trong rules-type.md):`);
+      for (const item of result.misformattedNumbers) problems.push(`  ${item}`);
     }
     if (result.brokenImages?.length > 0) {
       problems.push(`ẢNH KHÔNG TẢI ĐƯỢC (${result.brokenImages.length} ảnh, thay link khác hoặc khai host trong next.config, SKILL.md S16):`);
