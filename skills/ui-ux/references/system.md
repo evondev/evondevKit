@@ -160,6 +160,10 @@ bảy dòng chữ trong lượt trả lời, mà thành code thật và một tr
 1. **Audit câu 2 như mọi lối.** Dự án đã có token hay thư viện component (shadcn, MUI, bộ
    nội bộ) thì design system là **xếp lại cái đang có**: token của họ vào hai vai viền
    `M14`, component của họ chỉnh token cho khớp (`S9`). Không dựng bộ thứ hai cạnh bộ cũ.
+   Với shadcn: **giữ tên token của shadcn, trỏ giá trị về token của skill**, để component shadcn
+   thêm sau vẫn đúng màu. Tên trùng mà khác nghĩa thì theo shadcn: `--muted` của shadcn là
+   *nền*, nên chữ phụ của skill (`text-muted`) viết thành `text-muted-foreground` trong cả dự
+   án. Bản 4b ngày 30/09/2026 tự làm đúng như vậy; ghi ra để lần sau không phải đoán.
 2. **Brief một khối, không dừng**: sản phẩm, người dùng, màu nhấn, font, phong cách (`P1`),
    chỉ sáng hay có tối (`M20`), ngôn ngữ của copy (`T24`). Đề không nói thì lấy mặc định
    của `brand-tokens.md` (gần đen, Inter, flat, chỉ sáng) và ghi vào brief. Dự án chưa có
