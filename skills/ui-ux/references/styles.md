@@ -285,6 +285,7 @@ theo `P1`. Wireframe từng có nấc Có màu, bỏ 30/09/2026 (`design-process
 | Ô icon đầu dòng theo loại | Bộ phận, nhà cung cấp, loại giao dịch: cùng bộ sắc nhạt, **một loại một sắc cố định** trên mọi màn (Kỹ thuật luôn teal). Không có loại thì không ô |
 | Biểu đồ | Chuỗi chính màu nhấn; nhiều chuỗi thì lấy bộ sắc trên theo cùng thứ tự; kỳ chưa trọn nét đứt hay gạch (`charts.md`) |
 | Trạng thái | Như nấc Màu: `M4` trên thanh tiến độ, số vượt, quá hạn. Sắc phân loại không trùng sắc trạng thái trên cùng một thứ (thanh ngân sách không tô teal vì bộ phận là teal) |
+| Badge trạng thái (người dùng xin "badge có màu") | Đỏ, hổ phách, xanh lá giữ nghĩa `M7`. Các trạng thái xám (đang chạy đúng luồng) mới được lấy sắc phân loại, và **các sắc trong một bảng trạng thái cách nhau từ ~45° trên vòng màu**, không lấy hai sắc kề nhau: `sky`–`blue` (~23°), `blue`–`indigo`, `indigo`–`violet`, `emerald`–`teal`. Không trùng sắc màu nhấn (nút chính teal thì không badge teal). Không đủ sắc cách xa thì trạng thái nhiều dòng nhất (thường là bước bình thường nhất, vd "Đã xác nhận") giữ xám: một danh sách toàn một màu badge là mảng màu, không còn phân biệt. Đã dính 30/09/2026, màn lịch hẹn: "Đã xác nhận" `sky-700` cạnh "Đang khám" `blue-700`, liếc ra một màu xanh |
 
 **Bẫy**
 

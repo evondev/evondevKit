@@ -491,6 +491,15 @@ Khách hàng từ 3/2024, 18 đơn hàng, doanh thu 1.284.500.000 đ
 - **Đường dẫn đặt ở MỘT chỗ.** App đã có đường dẫn trên thanh header `h-16` thì đầu trang không lặp lại, chỉ còn tên, mô tả, nút.
 - **Một trang đúng một `<h1>`, và tên trang chỉ ghi MỘT chỗ.** Hai `<h1>` thì trình đọc màn hình không biết trang này tên gì (đã dính 23/09/2026: "Việc của tôi" trên header và "Tạo công việc mới" cùng là `<h1>`); không `<h1>` nào thì cũng vậy (đã dính 25/09/2026: trang khách hàng bỏ đầu trang để khỏi lặp "Khách hàng", mất luôn `<h1>`). Chia theo loại trang:
   - **Trang không có đầu trang riêng** (danh sách, bảng quản lý, tổng quan, kanban): tên trên thanh header `h-16` **chính là `<h1>`**, giữ nguyên cỡ chữ của thanh (`text-base font-semibold`, cỡ chữ không đổi theo thẻ; 700 chỉ cho trang trình diễn, `T2`). Vùng nội dung không lặp lại tên; nút chính ("+ Thêm khách hàng") nằm cuối hàng công cụ cạnh ô tìm.
+    - **Hàng công cụ không vừa một hàng mà tách hai thì nút chính lên cuối hàng TRÊN** (`ml-auto`,
+      `shrink-0`), thẳng mép phải vùng nội dung; ô tìm, lọc xuống hàng dưới. Đừng để hàng dưới
+      `flex` trơn nối nút chính sau ô lọc: nút lơ lửng giữa hàng, không thẳng với khối nào (đã dính
+      30/09/2026, màn lịch hẹn: 1024–1535px "Tạo lịch hẹn" ở x=866 trong khi mép phải nội dung 1252px
+      ở 1280). Dưới `sm` giữ xếp dọc, nút chính rộng hết ở cuối: đưa lên hàng trên thì chữ ngày gãy dòng.
+    - **Có điều hướng ngày** (lịch, lịch hẹn, báo cáo theo ngày) thì cụm `‹ [Hôm nay] ›` theo đúng
+      mục "Lịch công việc" bên dưới: ‹ › là `ghost` chỉ icon, chỉ "Hôm nay" có viền. Ba ô viền
+      cạnh nhau là ba khối nặng cho một việc phụ (đã dính lại 30/09/2026 ở màn lịch hẹn theo ngày,
+      luật nằm trong mục lịch tháng nên bản dựng không đọc tới).
   - **Trang có đầu trang riêng** (chi tiết bản ghi, form tạo, trang có mô tả hay nút riêng cho bản ghi): `<h1>` là tên trong đầu trang; thanh header chỉ ghi **cấp cha** ("Khách hàng" là link), bằng `<p>`/`<nav>`, không ghi lại tên trang.
   - Khung app nhận tên trang từ route rồi tự chọn thẻ: có đầu trang riêng thì `<p>`, không thì `<h1>`. Đừng để mỗi trang tự nhớ.
 - **Tên trang `text-xl`**, trang chi tiết của một bản ghi (khách hàng, đơn, dự án) thì `text-lg` (`budgets.md`; `T9` chỉ cho nội dung lặp lại như bài viết, sản phẩm). Không `text-2xl`, `text-3xl`: đó là cỡ hero (`budgets.md`). `text-balance` để tên dài xuống dòng đều.

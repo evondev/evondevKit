@@ -1808,6 +1808,7 @@ function readHoverState(probeId) {
     borderColor: borderWidth > 0 ? blend(toRgba(style.borderTopColor), behind.color) : null,
     isBorderTransparent: borderWidth > 0 && toRgba(style.borderTopColor).alpha === 0,
     outsideColor: outside.color,
+    behindColor: behind.color,
     // Chạm mép khung đặc phía sau (dòng bảng tràn hai mép card): nền rê gần màu nền ngoài khung là
     // card như bị khuyết một mảng (đã dính 26/09/2026, FAQ trang giá).
     width: rect.width,
@@ -1978,6 +1979,13 @@ async function probeHoverStates(page) {
     if (change < 8 && (isButtonSized || !isFullBleedRow)) weakHovers.push(`${label}: ${formatColor(before.color)} → ${formatColor(after.color)} (chênh ${change} mức)`);
     if (after.touchesCardEdge && colorDistance(after.color, after.outsideColor) <= 3) {
       blendedHovers.push(`${label}: nền rê ${formatColor(after.color)} gần như bằng nền ngoài khung ${formatColor(after.outsideColor)}, card như bị khuyết`);
+    }
+    // Nút nổi khỏi nền phía sau lúc đứng yên (nút viền trắng trên nền trang xám) mà rê vào lại về gần đúng
+    // màu nền đó: nút như tan vào trang. Đã dính 30/09/2026, nút ‹ Hôm nay › #f1f1f3 trên nền trang #f4f4f6
+    // (chênh 3): phép "rê gần như không thấy" không bắt vì trắng → #f1f1f3 vẫn đổi 14 mức. So với nền phía
+    // sau LÚC ĐANG RÊ: nút trong dòng thì rê vào dòng cũng chìm về #f4f4f6 (nút "Tiếp đón" cùng màn).
+    if (colorDistance(before.color, after.behindColor) > 8 && colorDistance(after.color, after.behindColor) <= 4) {
+      blendedHovers.push(`${label}: nền rê ${formatColor(after.color)} gần bằng nền ngay sau nút ${formatColor(after.behindColor)}, nút tan vào nền`);
     }
     if (before.borderColor && colorDistance(after.color, before.borderColor) <= 3) {
       blendedHovers.push(`${label}: nền rê ${formatColor(after.color)} trùng màu viền ${formatColor(before.borderColor)}, nút thành mảng không viền`);

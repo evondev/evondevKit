@@ -56,12 +56,18 @@
      hơn --surface một chút. Xem luật I10. */
   --surface-hover: #f8f8fa;
 
-  /* Hover của nút viền (outline): CHỈ đổi nền, viền giữ nguyên. Màu ĐẶC, nằm giữa nền trang
-     (#f4f4f6) và viền (#eaeaea): trên card trắng thấy rõ, trên nền trang nút chìm nhẹ mà viền
-     vẫn còn. Không dùng --surface-hover (#f8f8fa: trên card gần như không đổi, trên nền trang
-     nút nhạt về màu trang), không dùng lớp phủ foreground/5 (trong suốt nên lấy màu nền phía
-     sau, trên nền trang ra #e9e9eb trùng viền). Chủ dự án chốt 26/09/2026. */
-  --button-hover: #f1f1f3;
+  /* Hover của nút viền (outline): CHỈ đổi nền, viền giữ nguyên (chủ dự án chốt 26/09/2026).
+     Màu ĐẶC, và **theo nền ngay sau nút**, không một màu cho mọi chỗ:
+     - trên card trắng (--button-hover-surface #f1f1f3): thấy rõ, viền vẫn còn;
+     - thẳng trên nền trang, hoặc trong dòng đang rê (dòng chìm về #f4f4f6)
+       (--button-hover-page #e4e4e7): #f1f1f3 ở đây chỉ lệch nền 3 mức, nút như tan vào trang
+       (đã dính 30/09/2026, nút ‹ Hôm nay › trên hàng công cụ màn lịch hẹn, chủ dự án chỉ ra).
+     Biến đổi tự động bằng khối "NỀN RÊ CỦA NÚT VIỀN" bên dưới, class vẫn là
+     `hover:bg-button-hover`. Không dùng --surface-hover (#f8f8fa: trên card gần như không đổi),
+     không dùng lớp phủ foreground/5 (trong suốt, trên nền trang ra #e9e9eb trùng viền). */
+  --button-hover-surface: #f1f1f3;
+  --button-hover-page: #e4e4e7;   /* đậm hơn viền #eaeaea 6 mức: #e7e7ea chỉ 3 mức, nút thành mảng không viền */
+  --button-hover: var(--button-hover-page);
 
   /* Tab segmented dạng phím nổi: rãnh CHÌM (bóng trong), ô đang chọn NỔI (bóng
      ngoài rất mờ + viền tóc). Ngoại lệ có tên của luật M15, chỉ dùng ở đây.
@@ -140,7 +146,9 @@
 
   --background-hover: #171a26;
   --surface-hover: #141722;  /* sáng hơn --surface một chút, luật I10 */
-  --button-hover: #1a1d29;   /* sáng hơn --surface-hover một bậc; chưa đo trên dự án tối */
+  /* sáng hơn --surface-hover một bậc; chưa đo trên dự án tối, nên hai nền cùng một màu */
+  --button-hover-surface: #1a1d29;
+  --button-hover-page: #1a1d29;
   /* Bóng đen vô hình trên nền tối: ô nổi nhờ viền và vệt sáng mép trên. */
   --shadow-segment-track: inset 0 0 0 1px var(--border), inset 0 1px 2px rgb(0 0 0 / 0.4);
   --shadow-segment-thumb: 0 0 0 1px var(--border-strong), inset 0 1px 0 rgb(255 255 255 / 0.06), 0 1px 2px rgb(0 0 0 / 0.5);
@@ -214,6 +222,18 @@
   --border-color-focus: var(--border-focus);
   --ring-color-focus: var(--ring-focus);
 }
+/* ================================================= */
+
+/* ===== NỀN RÊ CỦA NÚT VIỀN THEO NỀN PHÍA SAU (30/09/2026) =====
+   Mặc định (nền trang) là --button-hover-page. Mọi thứ nằm trong khối trắng lấy
+   --button-hover-surface; khối nền trang lồng trong card, và dòng đang rê chìm về nền
+   trang, lấy lại --button-hover-page. Chỉ đặt biến, không đặt màu, nên không đè utility.
+   Chọn con cháu (`*`), không đặt trên chính `.bg-surface`: nút viền cũng mang `bg-surface`,
+   đặt trên chính nó thì nút nào cũng thành bản của card.
+   Dòng dùng hover khác `hover:bg-background` thì thêm selector của nó vào dòng thứ hai. */
+.bg-surface * { --button-hover: var(--button-hover-surface); }
+.bg-surface .bg-background *,
+[class~="hover:bg-background"]:hover * { --button-hover: var(--button-hover-page); }
 /* ================================================= */
 
 /* ===== THANH CUỘN TỰ ẨN, ÁP CHO CẢ APP. Luật I18. =====
