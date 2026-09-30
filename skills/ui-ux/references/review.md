@@ -398,13 +398,18 @@ node <thư mục skill>/scripts/probe.mjs http://localhost:5173/<route> \
   vào bảng, hạng Hỏng, nguồn *đo*.
 - **Mở cả lớp nổi ở 375.** Probe tự mở nút có `aria-haspopup`, và ở màn hẹp còn bấm
   thử thứ **trông như nút mở**: có `aria-expanded`, nhãn "menu", "lọc", "thông báo",
-  "chọn"…, icon chuông, ba chấm, chevron, kể cả nút chỉ có icon và dòng `div` bấm được.
+  "chọn"…, icon chuông, ba chấm, chevron, kể cả nút chỉ có icon và dòng `div` bấm được,
+  và nút tạo mới ("Tạo…", "Thêm…", icon dấu cộng) vì nút này gần như luôn mở form.
   Nó chụp từng lớp vừa mở (`<khổ>-mo-<n>.png`) và đo tràn mép, cao quá màn. Thứ có
   nhãn hay icon hành động (xoá, lưu, tim, gửi, thanh toán) thì không bấm. Mở từng
-  ảnh ra xem. Lớp nổi nào probe không mở tới thì tự bấm bằng Playwright rồi chụp, hoặc
-  ghi rõ "chưa soi được X". Ảnh trang đang đóng không cho thấy menu tràn mép hay
-  dialog cao quá màn.
+  ảnh ra xem. Lớp nổi nào probe không mở tới thì **tự bấm** bằng Playwright ở 375 rồi
+  chụp. "Chưa soi được X" chỉ ghi khi đã bấm thử mà không mở được (cần đăng nhập,
+  cần chọn dòng trước, nút gọi API thật), không dùng để bỏ qua. Ảnh trang đang đóng
+  không cho thấy menu tràn mép hay dialog cao quá màn.
 - **Mỗi dòng ghi khổ màn hay khoảng bề rộng bị lỗi**, ví dụ "375px" hoặc "860–1000px".
+  Khoảng chép từ số probe đo, không suy từ breakpoint trong code: mốc `@media` chỉ nói
+  cột bật từ đâu, không nói bảng tràn tới đâu. Muốn biết mép chính xác thì đo thêm
+  từng bước nhỏ quanh mép đó.
 
 ---
 

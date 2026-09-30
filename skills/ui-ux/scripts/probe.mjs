@@ -2900,18 +2900,27 @@ function findScrollbarStyles() {
 // và dòng `div` bấm được (onClick) cũng tính, vì app thật hay viết vậy (nút chỉ có icon, dòng chọn có dấu ">" ở
 // vòng 2 dự án mồi). Bỏ mọi thứ có nhãn hay icon hành động để không lỡ tay xoá, lưu, gửi trên app thật. Link thì
 // không bấm. Bấm xong mỗi thứ thì tải lại trang cho sạch.
+// Nút tạo mới ("Tạo phiếu", "Thêm sản phẩm", icon dấu cộng) gần như luôn mở form trong dialog hay sheet, và
+// form chỉ ghi khi bấm nút gửi bên trong, nên cũng bấm (sót dialog tràn mép ở 375, 30/09/2026, dự án mồi kho
+// hàng vòng 2). Nút dấu cộng nằm trong hàng số lượng, giỏ hàng thì vẫn không bấm.
 const openerLabelSource = "menu|lọc|filter|thông báo|notification|chọn|select|sắp xếp|sort|tuỳ chọn|tùy chọn|option|more|tài khoản|account|ngôn ngữ|language";
+const createLabelSource = "^(tạo|thêm|new|create|add)\\b";
+const createIconSource = "lucide-(plus|circle-plus|square-plus)\\b";
+const skipCreateLabelSource = "giỏ|cart|số lượng|quantity|tăng|increase";
 const actionLabelSource = "xoá|xóa|delete|remove|huỷ|hủy|cancel|đăng xuất|logout|sign out|gửi|send|submit|thanh toán|pay|mua|buy|lưu|save|đặt|thích|like|theo dõi|follow";
 // Tên icon lucide (class `lucide-<tên>`): nhóm mở lớp nổi, và nhóm hành động không được bấm.
 const openerIconSource = "lucide-(bell|menu|ellipsis|more-|filter|list-filter|sliders|chevron-down|chevron-right|chevrons-up-down|circle-user|user-round|user\\b|settings|globe|languages|calendar)";
 const actionIconSource = "lucide-(trash|heart|star|bookmark|send|save|check|plus|x\\b|log-out|share|copy|download|upload|thumbs)";
 const maxOpenerButtons = 10;
 
-function markOpenerButtons({ limit, openerSource, actionSource, openerIconPattern, actionIconPattern }) {
+function markOpenerButtons({ limit, openerSource, actionSource, openerIconPattern, actionIconPattern, createSource, createIconPattern, skipCreateSource }) {
   const openerPattern = new RegExp(openerSource, "i");
   const actionPattern = new RegExp(actionSource, "i");
   const openerIcon = new RegExp(openerIconPattern);
   const actionIcon = new RegExp(actionIconPattern);
+  const createPattern = new RegExp(createSource, "i");
+  const createIcon = new RegExp(createIconPattern);
+  const skipCreatePattern = new RegExp(skipCreateSource, "i");
   const openers = [];
   const seenKeys = new Set();
 
@@ -2925,10 +2934,11 @@ function markOpenerButtons({ limit, openerSource, actionSource, openerIconPatter
 
     const label = `${candidate.getAttribute("aria-label") || ""} ${candidate.getAttribute("title") || ""} ${candidate.textContent || ""}`.replace(/\s+/g, " ").trim();
     const iconNames = [...candidate.querySelectorAll("svg")].map((icon) => icon.getAttribute("class") || "").join(" ");
-    if (actionPattern.test(label) || actionIcon.test(iconNames)) continue;
+    const isCreateButton = (createPattern.test(label) || (createIcon.test(iconNames) && label.length > 0)) && !actionPattern.test(label) && !skipCreatePattern.test(label);
+    if (!isCreateButton && (actionPattern.test(label) || actionIcon.test(iconNames))) continue;
 
     const hasOpenerIcon = openerIcon.test(iconNames) || /[▾▼⌄›>]\s*$/.test(label);
-    const looksLikeOpener = candidate.hasAttribute("aria-expanded") || candidate.hasAttribute("aria-controls") || hasOpenerIcon || openerPattern.test(label);
+    const looksLikeOpener = isCreateButton || candidate.hasAttribute("aria-expanded") || candidate.hasAttribute("aria-controls") || hasOpenerIcon || openerPattern.test(label);
     if (!looksLikeOpener) continue;
 
     const key = `${candidate.tagName}|${candidate.getAttribute("class") || ""}|${label.slice(0, 12)}`;
@@ -3032,6 +3042,9 @@ async function probeOpenerLayers(page, options, width) {
     actionSource: actionLabelSource,
     openerIconPattern: openerIconSource,
     actionIconPattern: actionIconSource,
+    createSource: createLabelSource,
+    createIconPattern: createIconSource,
+    skipCreateSource: skipCreateLabelSource,
   };
   const openerLabels = await page.evaluate(markOpenerButtons, markArgs);
   const problems = [];

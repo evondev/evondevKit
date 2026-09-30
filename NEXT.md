@@ -165,63 +165,41 @@ cụ tách hai, ‹ › ghost, badge có màu sắc cách ~45°; probe bắt n�
 
 ### [ ] 5. Nhánh soi: hai dự án mồi còn lại
 
-Quy tắc chung ở `BACKLOG.md`, mục "Test cho phase 2" và "Vệ sinh khi dựng dự án mồi".
-Mỗi dự án chạy **hai lượt**: một lượt skill tự mở trang, một lượt chỉ đưa ảnh.
+Quy tắc chung ở `BACKLOG.md`, mục "Test cho phase 2". Cả hai dự án đã xong vòng 1 (hai lượt:
+tự mở trang và chỉ đưa ảnh) và đã sửa skill theo kết quả. Còn **vòng 2, chỉ lượt tự mở trang**,
+để xem probe và luật mới có ăn không. Kết quả, chỗ đã sửa ở dòng dự án 2, 3 trong `BACKLOG.md`.
 
-**5a. Dự án mồi 2: `~/dev/audit-skills/lich-kham` (xong vòng 1, 30/09/2026)**
+Cả hai repo đang sạch, không có file tắt skill. Nếu phiên soi lỡ sửa code thì
+`git checkout .` trong repo đó trước khi chạy lại.
 
-Tự mở trang 5/8 (báo nhầm 3), chỉ đưa ảnh 6/6 (báo nhầm 1). Chi tiết và các chỗ đã sửa ở dòng dự án 2
-trong `BACKLOG.md`. Muốn chạy vòng 2 (kiểm probe đã sửa) thì làm lại bước 3, lưu ra
-`ket-qua-vong-2.md`.
+**5a. `~/dev/audit-skills/lich-kham`** (Next + shadcn, 8 lỗi: 5 Hỏng, 3 Lệch hệ)
 
-Next + shadcn, **ít lỗi** (8 chỗ: 5 Hỏng, 3 Lệch hệ). Đáp án ở
-`~/dev/phase2-dapan/lich-kham/dap-an.md`. Test chính: skill có dám nói "gần như ổn, chỉ có
-N chỗ" không, hay bịa lỗi cho đủ bảng.
+Vòng 1: tự mở trang 5/8 (báo nhầm 3), chỉ đưa ảnh 6/6 (báo nhầm 1). Test chính: skill có dám
+nói "gần như ổn, chỉ có N chỗ" không, hay bịa lỗi cho đủ bảng.
 
-1. Kiểm `~/dev/audit-skills/lich-kham/.claude/settings.local.json`: nếu đang tắt skill thì xoá đi.
-2. `cd ~/dev/audit-skills/lich-kham && npm run dev`, xem cổng in ra (thường là 3000).
-3. **Lượt tự mở trang:** phiên Claude Code mới trong `lich-kham`, gõ (đổi cổng nếu khác):
+1. `cd ~/dev/audit-skills/lich-kham && npm run dev`, xem cổng in ra (thường là 3000).
+2. Phiên Claude Code mới trong `lich-kham`, gõ (đổi cổng nếu khác):
 
    ```
    Đọc ~/dev/evondevKit/skills/ui-ux/SKILL.md rồi xem giúp app này chỗ nào chưa ổn: http://localhost:3000/, http://localhost:3000/lich-hen, http://localhost:3000/benh-nhan/bn-00123, http://localhost:3000/cai-dat
    ```
 
-   **Không** trả lời số dòng, chỉ lấy bảng. Chép bảng ra file
-   `~/dev/phase2-dapan/lich-kham/ket-qua-vong-1.md`.
-4. **Lượt chỉ đưa ảnh:** tạo một thư mục trống, mở phiên mới ở đó, kéo ảnh trong
-   `~/dev/phase2-dapan/lich-kham/anh/` vào, gõ:
+   **Không** trả lời số dòng, chỉ lấy bảng. Chép bảng ra
+   `~/dev/phase2-dapan/lich-kham/ket-qua-vong-2.md`.
+3. Mở Claude Code ở evondevKit, gõ:
 
    ```
-   Đọc ~/dev/evondevKit/skills/ui-ux/SKILL.md rồi xem giúp mấy màn này chỗ nào chưa ổn.
+   Chấm bảng soi vòng 2 của lich-kham: đáp án ~/dev/phase2-dapan/lich-kham/dap-an.md, kết quả ket-qua-vong-2.md cùng thư mục, so với vòng 1. Đếm bắt sót, báo nhầm, rồi sửa skill.
    ```
 
-   Chép bảng ra `ket-qua-vong-1-anh.md`.
-5. Mở Claude Code ở evondevKit, gõ:
+**5b. `~/dev/audit-skills/kho-hang`** (Vite + React + CSS Modules, nền tối kiểu kính, 9 lỗi: 6 Hỏng, 3 Lệch hệ)
 
-   ```
-   Chấm bảng soi của lich-kham: đáp án ~/dev/phase2-dapan/lich-kham/dap-an.md, kết quả ket-qua-vong-1.md và ket-qua-vong-1-anh.md cùng thư mục. Đếm bắt sót, báo nhầm, rồi sửa skill.
-   ```
+Vòng 1: tự mở trang 5/9, chỉ đưa ảnh 6/7, báo nhầm 1 mỗi lượt (hai nút chính xếp Lệch hệ).
+Test chính: chấm Lệch hệ khi không có utility, không kéo về flat, giữ nền tối.
 
-6. Cập nhật dòng dự án 2 trong `BACKLOG.md` (hiện vẫn ghi "Chưa dựng").
-
-**5b. Dự án mồi 3: `~/dev/audit-skills/kho-hang`**
-
-Vòng 1 xong 30/09/2026: tự mở trang 5/9, chỉ đưa ảnh 6/7, báo nhầm 1 mỗi lượt (hai nút chính xếp
-Lệch hệ). Đã sửa probe và `review.md` (chi tiết ở `BACKLOG.md`, dự án 3). Còn: chạy lại lượt tự
-mở trang để thấy luật mới.
-
-Không dùng Tailwind (CSS thuần hoặc CSS Module), phong cách glass hoặc nền tối.
-
-1. Tạo repo mới cùng cấp, ví dụ `~/dev/kho-hang`. **Tắt skill** trong phiên dựng như lúc
-   dựng `tim-phong` (`BACKLOG.md`, "Vệ sinh…"), thêm `.claude/settings.local.json` vào
-   `.gitignore` trước lần commit đầu.
-2. Phiên Claude Code mới ở đó, gõ:
-
-   ```
-   Dựng một app quản trị kho hàng nhỏ, 3–4 route, bằng Vite + React + TypeScript + CSS Modules, không dùng Tailwind. Phong cách nền tối kiểu glass, brand riêng (tên, màu nhấn, font tự chọn). Cài lẫn vào code khoảng 10 lỗi giao diện chia ba hạng: Hỏng (tương phản thấp, tràn ngang ở một khổ giữa 768 và 1280, nút quá nhỏ…), Lệch hệ (bo góc, màu lệch token của chính app), Gu. Ghi đáp án ở ~/dev/phase2-dapan/kho-hang/dap-an.md theo mẫu ~/dev/phase2-dapan/lich-kham/dap-an.md, chụp bộ ảnh vào thư mục anh/ cạnh đó. Commit message trung tính, không nhắc lỗi hay test.
-   ```
-
-3. Xong thì xoá file tắt skill rồi chạy hai lượt y như 5a (bước 3 đến 5).
+Vòng 2 xong (30/09/2026): 8/9, không báo nhầm. Sót H4 (dialog "Tạo phiếu" ở 375), đã sửa probe.
+Muốn kiểm bản sửa thì chạy vòng 3 y như 5a bước 1–3, đổi tên dự án, cổng 5173, route
+`/`, `/san-pham`, `/nhap-xuat`, `/cai-dat`.
 
 ### [ ] 6. Dark mode (0/7)
 
