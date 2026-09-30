@@ -174,6 +174,8 @@ Cả hai repo đang sạch, không có file tắt skill. Nếu phiên soi lỡ s
 
 **5a. `~/dev/audit-skills/lich-kham`** (Next + shadcn, 8 lỗi: 5 Hỏng, 3 Lệch hệ)
 
+Vòng 2 xong (30/09/2026): 8/8, không báo nhầm. Không cần chạy thêm.
+
 Vòng 1: tự mở trang 5/8 (báo nhầm 3), chỉ đưa ảnh 6/6 (báo nhầm 1). Test chính: skill có dám
 nói "gần như ổn, chỉ có N chỗ" không, hay bịa lỗi cho đủ bảng.
 
@@ -200,6 +202,30 @@ Test chính: chấm Lệch hệ khi không có utility, không kéo về flat, g
 Vòng 2 xong (30/09/2026): 8/9, không báo nhầm. Sót H4 (dialog "Tạo phiếu" ở 375), đã sửa probe.
 Muốn kiểm bản sửa thì chạy vòng 3 y như 5a bước 1–3, đổi tên dự án, cổng 5173, route
 `/`, `/san-pham`, `/nhap-xuat`, `/cai-dat`.
+
+**5c. Làm lại có wireframe trên dự án có sẵn: `kho-hang`, trang `/nhap-xuat`**
+
+Nhánh `U` trên app đã có UI mới chạy ở `tim-phong-sua` (Tailwind, nền sáng). Ở đây app nền tối kiểu
+kính, CSS Modules, không Tailwind: xem wireframe và bản dựng có bám hệ của app không, hay kéo về flat
+nền sáng, chèn class Tailwind. Đề **không** ghi "giữ brand" (chữ đó đi chế độ dựng lại giữ brand, không
+có wireframe).
+
+1. `cd ~/dev/audit-skills/kho-hang && git checkout -b lam-lai`, rồi `npm run dev`.
+2. Phiên Claude Code mới trong `kho-hang`, gõ:
+
+   ```
+   Đọc ~/dev/evondevKit/skills/ui-ux/SKILL.md rồi làm lại trang nhập – xuất cho đẹp: http://localhost:5173/nhap-xuat
+   ```
+
+   Qua hai cổng như thường: duyệt brief, chọn wireframe.
+3. Soi:
+   - Wireframe dùng nền tối, kính, màu chanh và font của app, không phải xám trắng flat.
+   - Bản dựng viết bằng CSS Modules và token ở `src/styles/tokens.css`, không thêm Tailwind hay
+     hex viết cứng; dùng lại `Button`, `StatusBadge`, `GlassCard`, `SegmentedTabs`, `Dialog`.
+   - Bốn lỗi đáp án của trang này sạch: dialog "Tạo phiếu" vừa màn 375 (H4), Tab tới tab đang chọn
+     thấy vòng focus (H5), badge bảng phiếu dùng `StatusBadge` (L3), chỉ một nút chính (G2).
+   - Không đề xuất chế độ sáng.
+4. Gửi link cho Claude ở evondevKit rà. Xong thì `git checkout main` để bản soi còn nguyên.
 
 ### [ ] 6. Dark mode (0/7)
 
