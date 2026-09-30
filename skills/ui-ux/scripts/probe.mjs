@@ -1260,10 +1260,18 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
 
   // 17b. Select gốc đã tô ở khổ desktop: lúc đóng khớp app, bấm vào vẫn bung menu của hệ điều hành. Chế độ
   //      soi bỏ qua, hai chế độ dựng lại thay bằng Select dựng (review.md V1, 28/09/2026).
-  const styledNativeSelects = isMobile ? [] : [...document.querySelectorAll("select")]
-    .filter((select) => isVisible(select) && !["auto", "menulist"].includes(getComputedStyle(select).appearance))
+  //      Ô ngày, giờ gốc cùng lý do: bấm vào ra lịch của hệ điều hành. Control nằm trong `<dialog>` đang
+  //      đóng cũng tính, vì mở ra là hiện (sót select và ô ngày gốc trong dialog "Tạo phiếu" của wireframe
+  //      kho hàng, 30/09/2026).
+  const isInClosedDialog = (control) => Boolean(control.closest("dialog:not([open])"));
+  const styledNativeSelects = isMobile ? [] : [...document.querySelectorAll("select, input[type='date'], input[type='time'], input[type='datetime-local'], input[type='month'], input[type='week']")]
+    .filter((control) => (isVisible(control) || isInClosedDialog(control)) && (control.tagName !== "SELECT" || !["auto", "menulist"].includes(getComputedStyle(control).appearance)))
     .slice(0, 6)
-    .map((select) => `${select.options.length} mục: ${describe(select)}`);
+    .map((control) => {
+      const kind = control.tagName === "SELECT" ? `${control.options.length} mục` : `ô ${control.type} gốc`;
+
+      return `${kind}${isInClosedDialog(control) ? ", trong dialog đang đóng" : ""}: ${describe(control)}`;
+    });
 
   // 18. Đường ngăn ngang của hai cột kề nhau lệch vài px: vạch dưới khối logo ở sidebar với vạch dưới
   //     header, nhìn thành một đường gãy (28/09/2026). Lệch lớn hơn 16px là hai tầng khác nhau, bỏ qua.
@@ -3463,7 +3471,7 @@ function formatReport(results) {
       for (const item of result.floatingContent) problems.push(`  ${item}`);
     }
     if (result.styledNativeSelects.length > 0) {
-      problems.push(`SELECT GỐC ĐÃ TÔ TRÊN DESKTOP (${result.styledNativeSelects.length} ô; chế độ soi bỏ qua, dựng lại thì thay):`);
+      problems.push(`SELECT, Ô NGÀY GỐC TRÊN DESKTOP (${result.styledNativeSelects.length} ô; chế độ soi bỏ qua, wireframe và dựng lại thì thay bằng mẫu choice-controls.md):`);
       for (const item of result.styledNativeSelects) problems.push(`  ${item}`);
     }
     if (result.squeezedBlocks.length > 0) {

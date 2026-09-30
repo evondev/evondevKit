@@ -148,6 +148,14 @@ dòng đó."* Dừng chờ.
   `<select>` nếu mẫu dùng), không `div` giả. Khối chưa có mẫu mới tự vẽ. Đã dính 29/09/2026, hai
   ví dụ trong một lượt: phân trang vẽ hai nút chữ "Trước / Sau" rộng khác nhau thay cho
   `‹ 1 2 3 … ›`; ô tìm là `div` nên placeholder dài rớt xuống dòng hai.
+  **App đang có mà dùng `<select>` gốc hay `<input type="date">` gốc thì wireframe không chép
+  theo**, kể cả khi app đã tô viền, bo góc: bấm vào vẫn bung menu và lịch của hệ điều hành. Vẽ
+  Select dựng và ô chọn ngày có popover lịch theo `components/choice-controls.md`, tô bằng
+  token của app. Chỉ giữ control gốc khi nó chỉ hiện trên mobile (luật `<select>` gốc cho màn
+  cảm ứng ở đó); ô nằm trong dialog dùng cho cả hai khổ thì dựng. Khối trong lớp nổi (dialog,
+  sheet, popover) cũng đối chiếu mẫu, mở ra rồi xem, không chỉ phần trang đang hiện. Đã dính
+  30/09/2026, wireframe làm lại trang nhập – xuất của app kho nền tối: dialog "Tạo phiếu" giữ
+  hai select gốc và ô ngày gốc của app cũ.
 - **Tự đối chiếu trước khi probe**: mỗi khối có mẫu, so wireframe với mẫu một dòng ("phân trang:
   khớp", "ô tìm: `<input>`, placeholder vừa"). Probe bắt được một phần (placeholder dài hơn ô,
   khối trông như ô nhập mà chữ xuống dòng, phân trang chỉ có nút chữ, hàng control lệch), phần
@@ -160,7 +168,8 @@ dòng đó."* Dừng chờ.
   "rê trùng nền đang chọn" cho tới khi đã dựng xong.
 - **Probe từng phương án trước khi gửi**, ở 1280 và 375, sửa tới khi sạch các mục: danh sách
   `P`, rê ra đúng màu mục đang chọn, vạch trái bị bo góc cắt, mục lặp dày chữ, cột dính cuộn
-  riêng, nội dung trôi giữa màn rộng, hàng nút rớt một nút lẻ (`R3`), "khung wireframe làm hỏng
+  riêng, nội dung trôi giữa màn rộng, hàng nút rớt một nút lẻ (`R3`), select và ô ngày gốc (kể cả
+  trong dialog đang đóng), "khung wireframe làm hỏng
   bản thiết kế" (số đè chữ, `sticky` mất, thanh tràn). Rồi chạy luật Cấu trúc (`V1b` trong `review.md`) bằng
   mắt. Người dùng không tự thấy "card chữ quá trời" hay "vạch bị cắt" trên wireframe xám, họ
   chọn theo bố cục rồi vấp lỗi ở bản dựng (đã dính 28/09/2026: wireframe C năm dòng mỗi mục,
