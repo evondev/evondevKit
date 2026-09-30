@@ -111,12 +111,15 @@ Test nhánh bỏ wireframe.
 
 ## Tiếp theo
 
-### [ ] 4. Design system trước (`D9`)
+### [x] 4. Design system trước (`D9`)
 
-Đang làm 30/09/2026. Đã rà trang `/design-system` của cả hai bản (4a cổng 3002, 4b cổng 3005), sửa skill:
-card chứa dòng có nền rê (`isFlushList`), nhãn trạng thái một chỗ, bảng tương phản chỉ đánh dấu cặp trượt, ví dụ
-ép trạng thái bọc `inert data-demo-state`; probe bỏ ba kiểu báo nhầm. 4b **xong**: không `Button` thứ hai, `Audit:`
-có shadcn, dừng đúng một lần. 4a: dừng đúng một lần. **Còn:** 4a bước 4–5 (đổi màu nhấn, dựng màn lịch hẹn). Hai bản dựng bằng skill cũ, chạy lại đề mới thấy luật mới.
+Xong 30/09/2026. 4a (`phong-kham-ds`, cổng 3002) và 4b (`phong-kham-shadcn`, cổng 3005) đều dừng đúng một lần,
+không wireframe. 4b không dựng `Button` thứ hai, `Audit:` có shadcn. 4a đổi màu nhấn sang xanh ngọc chỉ sửa khối
+"MÀU NHẤN", mọi component đổi theo; màn lịch hẹn sau đó đi nhánh U (brief, wireframe, chọn B) và ráp từ đúng
+component đã duyệt. Sửa skill: card chứa dòng có nền rê (`isFlushList`), nhãn trạng thái một chỗ, bảng tương phản
+chỉ đánh dấu cặp trượt, ví dụ ép trạng thái bọc `inert data-demo-state`, shadcn `--muted` là nền; nút viền rê theo
+nền phía sau (card `#f1f1f3`, nền trang `#e4e4e7`, chủ dự án chỉ ra), nút chính lên cuối hàng trên khi hàng công
+cụ tách hai, ‹ › ghost, badge có màu sắc cách ~45°; probe bắt nền rê gần bằng nền phía sau, bỏ bốn kiểu báo nhầm.
 
 **4a. Dự án trống**
 
