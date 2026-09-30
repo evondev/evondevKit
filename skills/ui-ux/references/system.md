@@ -213,7 +213,9 @@ bảy dòng chữ trong lượt trả lời, mà thành code thật và một tr
 7. **Cổng duy nhất của lối này**: gửi link, kèm một dòng *"Duyệt thì trả lời `ok`. Muốn đổi
    màu nhấn, font, bo góc thì nói: đổi ở token, mọi component đổi theo."* Dừng chờ.
 
-Duyệt xong thì màn sau đi lối bình thường (mặc định nhánh `U`). `U4` ráp từ đúng các
-component đã duyệt; bảng `D1` coi như đã chốt, không khai lại. Đề vừa đòi design system vừa
+Duyệt xong thì ghi màu nhấn đang hiện trên trang (màu người dùng chọn trong nhóm gợi ý, không
+chọn thì màu đầu) vào file token trước khi làm màn. Màn sau đi lối bình thường (mặc định nhánh
+`U`): wireframe `U3` dán file token của dự án, chép class từ component vừa duyệt, không hiện
+nhóm Nhấn; `U4` ráp từ đúng các component đó; bảng `D1` coi như đã chốt, không khai lại. Đề vừa đòi design system vừa
 đòi màn ("dựng design system rồi dựng màn đơn hàng") thì làm hết lối này, qua cổng, rồi mới
 vào `U1` cho màn.

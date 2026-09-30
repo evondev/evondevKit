@@ -102,6 +102,9 @@ dòng đó."* Dừng chờ.
     (dưới). Dự án đã có UI: **file token của dự án** (`globals.css`, `index.css`, config theme),
     màu xếp theo vai như `U4` sẽ làm (`review.md`, bảng vai màu), dáng theo bảng "Dáng lấy từ
     skill". Không tự đặt mã màu, bo góc, bóng nào ngoài khối token.
+    **Dự án đã qua `D9`** (có trang `/design-system` hay story design system, file token đã sửa)
+    tính là **dự án đã có UI** dù chưa có màn nào: dán file token của dự án, không dán
+    `tokens.css` của skill, không thì mất font và màu nhấn vừa duyệt.
   - **Component viết đúng class bản dựng sẽ dùng**: dự án có thư viện component (shadcn, bộ nội
     bộ) thì mở source `Button`, `Input`, `Badge`, `Card`… của dự án, chép chuỗi class của biến
     thể sẽ dùng; chưa có thì chép công thức trong `components/*.md`. Không vẽ lại "cho giống".
@@ -203,7 +206,8 @@ dòng đó."* Dừng chờ.
   không ở dải màu trang trí. Người dùng tự xin "có màu" trong đề thì theo `P12` ở `styles.md`
   lúc dựng, không vẽ thành nấc.
 
-  **Dự án chưa có màu brand** (màu nhấn là gần đen mặc định, `brand-tokens.md`) thì thêm nhóm
+  **Dự án chưa có màu brand** (màu nhấn là gần đen mặc định, `brand-tokens.md`; dự án đã qua
+  `D9` thì màu nhấn đã chốt ở cổng đó, kể cả khi chốt gần đen, không tính là chưa có) thì thêm nhóm
   **Nhấn: ● ● ●** gồm ba màu gợi ý (chàm `#4f46e5`, xanh ngọc `#0d9488`, cam `#ea580c`), đổi
   `--primary` tại chỗ. Không có nhóm này thì nấc Màu của dự án mới vẫn đen trắng. Màu người dùng
   chọn thành màu nhấn lúc dựng (`brand-tokens.md`); không chọn thì dựng màu đầu, báo một dòng.
