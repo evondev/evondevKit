@@ -18,7 +18,7 @@ Chi tiết từng đợt test ở `TESTS.md` và `BACKLOG.md`.
 
 ## Đang làm: test nhánh U (làm như một designer)
 
-### [ ] 1. `tim-phong-sua`: soi bản vừa dựng lại
+### [x] 1. `tim-phong-sua`: soi bản vừa dựng lại
 
 Bố cục theo wireframe C đã xong. Bước này làm gọn phần còn chưa đẹp (badge…).
 
