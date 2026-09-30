@@ -468,7 +468,10 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
   ảnh, mắt dừng ở badge trước giá. Chỉ giữ badge ở phòng khác đi (giảm giá, đã xác thực)."*
   Kết bằng *"Muốn sửa dòng nào thì trả lời số, ví dụ `sửa 1, 3`."* Không thấy gì thì ghi
   "Còn thấy: không". Đây không phải cổng: bản dựng đã giao xong, người dùng trả lời hay không
-  tuỳ họ. Đã dính 29/09/2026, tim-phong-sua: năm badge năm màu (Mới, Hot, Giảm giá, VIP,
+  tuỳ họ. **Lỗi dáng mà skill đã có luật thì sửa trước khi giao, không đẩy vào "Còn thấy"**:
+  mục chỉ dành cho thứ bản dựng không được tự quyết. Đã dính 30/09/2026, nha khoa dựng luôn: "hàng đếm
+  375px cắt mục cuối không mép mờ" (`R10`) và "email xuống dòng ở gạch nối tên miền" (`description-list.md`)
+  nằm trong "Còn thấy" thay vì được sửa. Đã dính 29/09/2026, tim-phong-sua: năm badge năm màu (Mới, Hot, Giảm giá, VIP,
   Xác thực) giữ nguyên theo vai màu mà không nói gì, chủ dự án tự thấy "badge chưa đẹp" rồi
   hỏi sao không ai đề xuất.
 - **Tự soi bằng mắt trước khi giao, ghi ra.** Mở ảnh 375, 1440 và 1920 của probe, trả lời

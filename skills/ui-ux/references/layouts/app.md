@@ -561,13 +561,27 @@ thanh header:  ☰  Khách hàng                                  🔔  (T)
 │ │ Xem tất cả 24 đơn →                       │   └──────────────────┘ │
 │ └───────────────────────────────────────────┘                        │
 └──────────────────────────────────────────────────────────────────────┘
-  từ xl: cột chính minmax(0,1fr) + cột phải 22rem; dưới xl một cột:
-  số liệu → hai card (md trở lên đứng cạnh nhau) → khối tab
+  khung nội dung từ 70rem (@container, không phải xl): cột chính minmax(0,1fr) + cột phải 22rem;
+  hẹp hơn một cột: số liệu → hai card (khung từ 40rem thì đứng cạnh nhau) → khối tab
 ```
 
 Đầu trang theo mục trên (`<h1>` `text-lg`, thanh header chỉ ghi cấp cha). Hàng số liệu theo
 `../components/charts.md`, card Liên hệ / Phân loại theo `../components/description-list.md`
 (xếp chồng, cột phải hẹp), dòng thời gian theo `../components/timeline.md`.
+
+- **Cột phải chỉ mở khi cột chính còn ≥ ~744px: khung nội dung (không phải màn) từ `@[70rem]`.** Khung
+  trang là `@container`, lưới `@[70rem]:grid-cols-[minmax(0,1fr)_22rem]`. Mở theo `xl:` thì ở 1280px, sidebar
+  mở, khung 992px trừ cột phải còn 616px cho bốn ô số và bảng: "14/10 · 09:00" gãy đôi trong ô số, nhãn ô
+  hai dòng, cột Dịch vụ 122px xuống hai ba dòng ở cả 11 dòng (đã dính 30/09/2026, hồ sơ bệnh nhân; cùng gốc
+  với "số ô số liệu lệch hàng" ở chi tiết khách hàng 27/09/2026). Một cột ở 1280px: ô số một dòng, bảng
+  không dòng nào gãy, hai card đứng cạnh nhau. 1366px (khung 1078px) vẫn một cột; 1440px mở cột phải
+  (cột chính 776px).
+- **Card cột phải xếp theo việc chính của trang, không chép thứ tự Liên hệ → Phân loại của khuôn khách
+  hàng.** Card phục vụ việc chính đứng đầu: hồ sơ bệnh nhân bác sĩ mở trước khi khám thì **Y tế** (bệnh
+  nền, thuốc đang dùng, lưu ý) trước **Liên hệ**; trang khách của bán hàng thì Liên hệ trước. Một cột
+  thì card đầu đứng trái / trên, nên thứ tự này quyết cái gì hiện ngay dưới hàng số ở điện thoại. Đã
+  dính 30/09/2026: "Sợ tiêm, giải thích từng bước trước khi gây tê" nằm cuối card Y tế, dưới cả địa chỉ
+  và người thân; ở 375px phải cuộn qua hết card Liên hệ mới tới.
 
 - **Trang chi tiết không phải panel xem nhanh phóng to.** Panel để liếc một khách giữa danh sách; trang để làm việc với khách đó, và việc chính là xem, mở **các bản ghi con**. Mượn khuôn của panel (hàng tên, ô số, danh sách mô tả) được, bê nguyên bộ tab của panel thì không (`../principles.md`, "Dựng một thứ chưa có mẫu").
 - **Tab đầu tiên là bản ghi con chính**: khách hàng → Đơn hàng, dự án → Công việc, công ty → Người liên hệ. Tiếp theo mới tới Tin nhắn, Tệp, Hoạt động. Đã dính 25/09/2026: trang khách chép tab Tin nhắn / Tệp / Hoạt động của panel, ô số ghi 24 đơn, nút chính là "Tạo đơn", mà muốn xem đơn phải lội tab Hoạt động, nơi 24 đơn chỉ là 24 dòng "Đơn đã giao" lẫn với "Gắn nhãn VIP", không lọc, không mở được đơn nào.
@@ -722,6 +736,14 @@ một cột, ô hẹn cao theo thời lượng. Rà lần đầu 30/09/2026 ở 
 - **Nút đổi trạng thái trên ô hay dòng là động từ** ("Tiếp đón", "Bắt đầu khám", "Hoàn tất"),
   không phải tên trạng thái đích (`rules-state.md`, bảng nút).
 - **Ô ngắn 30 phút chỉ giữ ba dòng**: giờ + trạng thái, tên, dịch vụ. Ghi chú để panel hay hồ sơ.
+- **Hiện hết các cột khi khung đủ, tính theo số cột, không theo một mốc cố định.** Cột cần **≥ 160px**
+  (giờ + "Trễ 25 phút" một dòng, tên đọc được). Khung lưới ≥ cột giờ + N × 160 thì hiện đủ N cột; không đủ
+  mới về một cột + hàng tab chọn người. Tính trong code (`ResizeObserver` trên khung, hoặc `@container` với
+  mốc ghi ra từ phép tính N × 160 + cột giờ, kèm comment), không khoá `@3xl` cho mọi phòng khám: bốn bác sĩ
+  cần 700px, sáu bác sĩ cần 1020px. Đã dính 30/09/2026, lịch nha khoa 768px: khung 720px, mốc `@3xl` (768px)
+  nên chỉ hiện một cột rộng 650px, hai người trễ nằm ở hai cột đang ẩn; bốn cột 166px đọc đủ tên, trạng thái,
+  "Trễ 25 phút". Cột hẹp dưới ~200px thì tên đầu cột dùng tên ngắn ("BS. Khoa", như hàng tab) thay vì cắt
+  "BS. Nguyễn …".
 
 ---
 

@@ -84,7 +84,13 @@ Test skill tự nghĩ bố cục cho sản phẩm mới, không có UI cũ để
    phương án đã chọn, có tự thêm thứ ngoài đề không.
 7. Ghi kết quả ngắn vào đáp án (khớp mấy ý, thiếu ý nào), rồi gửi link cho Claude rà.
 
-### [ ] 3. Lượt "dựng luôn"
+### [x] 3. Lượt "dựng luôn"
+
+Xong 30/09/2026 ở `~/dev/audit-skills/nha-khoa-dung-luon` (cổng 3003): không wireframe, không dừng hỏi, tin
+giao có "Muốn xem hướng khác thì nhắn `vẽ wireframe`". Lịch ra đúng lưới giờ theo bác sĩ như phương án A bước 2;
+hồ sơ theo khuôn trang chi tiết. Rà ra bốn lỗi skill (đã sửa): cột phải trang chi tiết mở theo `xl:` làm cột
+chính còn 616px ở 1280px; nhãn–giá trị hai cột trong cột phải 310px; card Liên hệ đứng trước Y tế; lưới giờ
+khoá một cột dưới `@3xl` dù bốn cột vừa ở 768px. Thêm: lỗi dáng có luật không được đẩy vào "Còn thấy".
 
 Test nhánh bỏ wireframe.
 

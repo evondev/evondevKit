@@ -816,6 +816,62 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     }
   }
 
+  // Số dòng chữ thật của một khối: đếm đỉnh các hộp dòng của chữ (Range), không suy từ chiều cao hay số thẻ.
+  // Khai báo function để 11b, 11c và 18j cùng dùng.
+  function countTextLines(element) {
+    const tops = new Set();
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      if (!node.textContent.trim()) continue;
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      for (const rect of range.getClientRects()) if (rect.width > 2 && rect.height > 6) tops.add(Math.round(rect.top / 4));
+    }
+
+    return tops.size;
+  }
+
+  // 11b. Cột chữ của bảng bị ép xuống dòng trong khi bảng không cuộn: các cột khác `nowrap` giữ chỗ, cột
+  //      tên / dịch vụ còn ~100px, nửa số dòng thành hai dòng, dòng cao thấp lởm chởm. Khung vừa phải ẩn cột
+  //      phụ theo `@container` của card (`layouts/app.md`, "Khung vừa thì ẩn cột phụ"), không theo viewport
+  //      (đã dính 30/09/2026, bảng Điều trị ở hồ sơ bệnh nhân 1280px: cột Điều trị 101px, 4/6 dòng hai dòng,
+  //      vì cột Bác sĩ ẩn theo `lg:` mà cột phải 22rem đã lấy mất chỗ).
+  const squeezedTableColumns = [];
+  for (const table of document.querySelectorAll("table")) {
+    if (!isVisible(table)) continue;
+    const bodyRows = [...table.querySelectorAll("tbody tr")].filter((row) => isVisible(row) && row.cells.length > 1);
+    if (bodyRows.length < 3) continue;
+    const visibleCellsPerRow = bodyRows.map((row) => [...row.cells].filter(isVisible));
+    const columnCount = visibleCellsPerRow[0].length;
+    if (columnCount < 4 || visibleCellsPerRow.some((cells) => cells.length !== columnCount)) continue;
+
+    for (let columnIndex = 0; columnIndex < columnCount; columnIndex++) {
+      const cells = visibleCellsPerRow.map((cells) => cells[columnIndex]);
+      if (!cells[0].textContent.trim() || getComputedStyle(cells[0]).whiteSpace === "nowrap") continue;
+      const wrappedCount = cells.filter((cell) => countTextLines(cell) > 1).length;
+      const columnWidth = Math.round(cells[0].getBoundingClientRect().width);
+      if (wrappedCount >= 2 && wrappedCount * 2 >= cells.length && columnWidth < 200) {
+        const header = table.querySelectorAll("thead th")[columnIndex]?.textContent.trim() || `cột ${columnIndex + 1}`;
+        squeezedTableColumns.push(`cột "${header.slice(0, 24)}" rộng ${columnWidth}px, ${wrappedCount}/${cells.length} dòng xuống hai dòng, bảng ${columnCount} cột: ${describe(table)}`);
+      }
+    }
+  }
+
+  // 11c. Cặp nhãn–giá trị đứng hai cột trong khối hẹp: cột nhãn ~7rem ăn mất một phần ba, email vỡ ba
+  //      dòng, địa chỉ bốn dòng. Khối dưới 384px thì nhãn trên, giá trị dưới; chuyển khuôn theo bề rộng
+  //      `<dl>` (`@container`), không theo viewport (`components/description-list.md`). Đã dính 30/09/2026,
+  //      card Liên hệ cột phải hồ sơ bệnh nhân: `<dl>` 310px, `sm:grid-cols-[7rem_…]` bật vì màn 1440px.
+  const crampedDescriptionLists = [];
+  for (const list of document.querySelectorAll("dl")) {
+    const listWidth = list.getBoundingClientRect().width;
+    if (!isVisible(list) || listWidth >= 384) continue;
+    const pairs = [...list.querySelectorAll("dt")].map((term) => [term, term.nextElementSibling]).filter(([, value]) => value?.tagName === "DD" && isVisible(value));
+    const sideBySidePairs = pairs.filter(([term, value]) => value.getBoundingClientRect().left >= term.getBoundingClientRect().right - 1 && Math.abs(value.getBoundingClientRect().top - term.getBoundingClientRect().top) < 8);
+    if (sideBySidePairs.length < 2) continue;
+    const longest = Math.max(...sideBySidePairs.map(([, value]) => countTextLines(value)));
+    if (longest >= 3) crampedDescriptionLists.push(`<dl> ${Math.round(listWidth)}px, ${sideBySidePairs.length} cặp nhãn cạnh giá trị, giá trị dài nhất ${longest} dòng: ${describe(list)}`);
+  }
+
   // 12. Nhóm radio / checkbox xếp lưới (vừa nhiều cột vừa nhiều hàng): đọc thành chữ Z, thang có thứ
   //     tự như mức ưu tiên ra "Thấp, Trung bình / Cao, Khẩn cấp" (đã dính 27/09/2026, form tạo công
   //     việc 375px). Một hàng hoặc một cột thì đúng.
@@ -1280,18 +1336,6 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   // 18j. Mục lặp dày chữ: card hay dòng lặp từ ba cái trở lên mà một cái có từ năm dòng chữ. Người dùng không tự
   //      thấy "card chữ quá trời" (28/09/2026, wireframe danh sách + chi tiết năm dòng mỗi mục); đặt ra số dòng
   //      thì thấy. Đếm dòng bằng các hộp dòng của chữ (Range), không bằng số thẻ.
-  const countTextLines = (element) => {
-    const tops = new Set();
-    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
-    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-      if (!node.textContent.trim()) continue;
-      const range = document.createRange();
-      range.selectNodeContents(node);
-      for (const rect of range.getClientRects()) if (rect.width > 2 && rect.height > 6) tops.add(Math.round(rect.top / 4));
-    }
-
-    return tops.size;
-  };
   const denseItems = [];
   for (const parent of allElements) {
     if (denseItems.length >= 3) break;
@@ -1583,6 +1627,8 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     viewportWidth,
     pageScrollWidth,
     unpinnedScrollTables,
+    squeezedTableColumns,
+    crampedDescriptionLists,
     unevenStatRows,
     brokenMoney: [...new Set(brokenMoney)].slice(0, 10),
     gridChoiceGroups,
@@ -1771,6 +1817,9 @@ function findOverflowingLayers() {
   const layers = [...document.querySelectorAll("[role='tooltip'], [role='menu'], [role='listbox'], [role='dialog'], dialog[open], body *")].filter((node) => {
     const style = getComputedStyle(node);
     if (style.visibility === "hidden" || style.display === "none" || parseFloat(style.opacity) === 0) return false;
+    // Ví dụ ép trạng thái trên trang design system (select, modal mở sẵn trong khung tĩnh, `D9`): không phải
+    // lớp nổi thật (báo nhầm 30/09/2026, design system phòng khám bản shadcn).
+    if (node.closest("[inert], [data-demo-state]")) return false;
     // Lớp nổi phải tự định vị (fixed / absolute): listbox của bảng lệnh dựng tĩnh làm mẫu trong trang
     // nằm trong dòng chảy, kéo xuống dưới mép màn là chuyện cuộn trang (báo nhầm 27/09/2026, /components).
     const isPositioned = style.position === "fixed" || style.position === "absolute";
@@ -1847,7 +1896,7 @@ async function probeHoverStates(page) {
 
     for (const element of candidates) {
       const rect = element.getBoundingClientRect();
-      if (rect.width < 8 || rect.height < 8 || element.closest("[inert], [aria-hidden='true']")) continue;
+      if (rect.width < 8 || rect.height < 8 || element.closest("[inert], [aria-hidden='true'], [data-demo-state]")) continue;
       if (getComputedStyle(element).visibility === "hidden") continue;
       // Gộp theo loại: cùng thẻ + cùng class là cùng một kiểu hover, đo một cái là đủ.
       const signature = `${element.tagName}|${element.getAttribute("class") || ""}`;
@@ -2552,6 +2601,8 @@ function findHeavyDecorativeBorders() {
   for (const element of document.querySelectorAll("body *")) {
     if (findings.size >= 6) break;
     if (element.matches("input, textarea, select, button, a, label, [role='button'], [role='textbox'], [role='combobox']")) continue;
+    // Ô bày viền focus trên trang design system là ví dụ trạng thái, không phải viền trang trí (`D9`, 30/09/2026).
+    if (element.closest("[data-demo-state]")) continue;
     const style = getComputedStyle(element);
     const widths = [style.borderTopWidth, style.borderRightWidth, style.borderBottomWidth, style.borderLeftWidth];
     if (style.borderTopStyle !== "solid" || widths.some((borderWidth) => borderWidth !== "1px") || parseFloat(style.borderTopLeftRadius) < 6) continue;
@@ -2888,6 +2939,8 @@ function listMustReportItems(results, sweepSteps) {
     for (const element of result.wrappedRows) addItem(width, `hàng rớt dòng (xem ảnh để xếp hạng): ${element}`);
     for (const item of result.overlappedChartLabels) addItem(width, `nhãn số đè lên đường biểu đồ: ${item}`);
     for (const item of result.squeezedBlocks) addItem(width, `khối bị bóp chiều cao: ${item}`);
+    for (const item of result.squeezedTableColumns || []) addItem(width, `cột chữ của bảng bị ép: ${item.replace(/ rộng \d+px, \d+\/\d+ dòng/, "")}`);
+    for (const item of result.crampedDescriptionLists || []) addItem(width, `nhãn–giá trị hai cột trong khối hẹp: ${item.replace(/^<dl> \d+px, .*?: /, "")}`);
     for (const item of result.mismatchedRuleColors) addItem(width, `đường ngăn thẳng hàng mà khác màu: ${item}`);
     for (const item of result.swallowedNumbers) addItem(width, `chữ cắt nuốt mất số: ${item}`);
     for (const item of result.hoverLikeSelected || []) addItem(width, `rê ra đúng màu mục đang chọn: ${item}`);
@@ -2976,6 +3029,14 @@ function formatReport(results) {
     if (result.unpinnedScrollTables.length > 0) {
       problems.push(`BẢNG CUỘN NGANG MẤT CỘT (${result.unpinnedScrollTables.length} bảng, R9):`);
       for (const item of result.unpinnedScrollTables.slice(0, 5)) problems.push(`  ${item}`);
+    }
+    if (result.squeezedTableColumns.length > 0) {
+      problems.push(`CỘT CHỮ CỦA BẢNG BỊ ÉP XUỐNG DÒNG (${result.squeezedTableColumns.length} cột; ẩn cột phụ theo @container của card, layouts/app.md "Bảng dữ liệu"):`);
+      for (const item of result.squeezedTableColumns.slice(0, 5)) problems.push(`  ${item}`);
+    }
+    if (result.crampedDescriptionLists.length > 0) {
+      problems.push(`NHÃN–GIÁ TRỊ HAI CỘT TRONG KHỐI HẸP (${result.crampedDescriptionLists.length} khối; dưới 384px nhãn trên giá trị dưới, @container, description-list.md):`);
+      for (const item of result.crampedDescriptionLists.slice(0, 5)) problems.push(`  ${item}`);
     }
     if (result.brokenMoney.length > 0) {
       problems.push(`SỐ TIỀN NGẮT DÒNG (${result.brokenMoney.length} chỗ, số + đơn vị phải nowrap, nhãn bên cạnh co lại, T16):`);

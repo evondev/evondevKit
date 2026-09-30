@@ -4,13 +4,14 @@ Khối thông tin của trang chi tiết: email, số điện thoại, trạng t
 Nằm trong card (`card.md`), mỗi hàng một cặp nhãn và giá trị, theo `T23`.
 
 ```html
-<dl class="space-y-3 text-sm">
-  <!-- Mỗi cặp một khối: màn hẹp nhãn trên giá trị dưới, từ sm hai cột -->
-  <div class="grid gap-1 sm:grid-cols-[10rem_minmax(0,1fr)] sm:items-baseline sm:gap-6">
+<dl class="@container space-y-3 text-sm">
+  <!-- Mỗi cặp một khối. Đổi khuôn theo bề rộng chính <dl>, không theo màn: dưới 384px nhãn trên giá trị
+       dưới, từ @sm (384px) hai cột nhãn 7rem, từ @xl (576px) nhãn 10rem -->
+  <div class="grid gap-1 @sm:grid-cols-[7rem_minmax(0,1fr)] @sm:items-baseline @sm:gap-6 @xl:grid-cols-[10rem_minmax(0,1fr)]">
     <dt class="text-muted">Email</dt>
     <dd class="min-w-0 font-medium text-foreground [overflow-wrap:anywhere]">minhanh.nguyen@lumen.vn</dd>
   </div>
-  <div class="grid gap-1 sm:grid-cols-[10rem_minmax(0,1fr)] sm:items-baseline sm:gap-6">
+  <div class="grid gap-1 @sm:grid-cols-[7rem_minmax(0,1fr)] @sm:items-baseline @sm:gap-6 @xl:grid-cols-[10rem_minmax(0,1fr)]">
     <dt class="text-muted">Trạng thái</dt>
     <dd><!-- badge M7, KHÔNG phải chữ trơn "Đang giao dịch" -->
       <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-black/5">
@@ -18,18 +19,18 @@ Nằm trong card (`card.md`), mỗi hàng một cặp nhãn và giá trị, theo
       </span>
     </dd>
   </div>
-  <div class="grid gap-1 sm:grid-cols-[10rem_minmax(0,1fr)] sm:items-baseline sm:gap-6">
+  <div class="grid gap-1 @sm:grid-cols-[7rem_minmax(0,1fr)] @sm:items-baseline @sm:gap-6 @xl:grid-cols-[10rem_minmax(0,1fr)]">
     <dt class="text-muted">Nhãn</dt>
     <dd class="flex flex-wrap gap-1.5"><!-- mỗi nhãn một pill, KHÔNG nối bằng dấu phẩy -->
       <span class="rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600">VIP</span>
       <span class="rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600">Khách quen</span>
     </dd>
   </div>
-  <div class="grid gap-1 sm:grid-cols-[10rem_minmax(0,1fr)] sm:items-baseline sm:gap-6">
+  <div class="grid gap-1 @sm:grid-cols-[7rem_minmax(0,1fr)] @sm:items-baseline @sm:gap-6 @xl:grid-cols-[10rem_minmax(0,1fr)]">
     <dt class="text-muted">Tổng doanh thu</dt>
     <dd class="font-medium tabular-nums text-foreground">1.284.500.000<span class="ml-1 text-muted">đ</span></dd>
   </div>
-  <div class="grid gap-1 sm:grid-cols-[10rem_minmax(0,1fr)] sm:items-baseline sm:gap-6">
+  <div class="grid gap-1 @sm:grid-cols-[7rem_minmax(0,1fr)] @sm:items-baseline @sm:gap-6 @xl:grid-cols-[10rem_minmax(0,1fr)]">
     <dt class="text-muted">Số điện thoại</dt>
     <dd class="text-muted">—</dd>
   </div>
@@ -37,10 +38,23 @@ Nằm trong card (`card.md`), mỗi hàng một cặp nhãn và giá trị, theo
 ```
 
 - **`<dl>` / `<dt>` / `<dd>`**, không dựng bằng `<div>`: trình đọc màn hình đọc ra đúng cặp nhãn và giá trị.
-- **`sm:items-baseline`** để chữ nhãn thẳng dòng chữ trong badge hay pill: badge có `py-1` nên cao hơn dòng chữ thường, căn đỉnh thì nhãn lệch lên vài px so với chữ trong badge.
-- **Cột nhãn rộng cố định** (`10rem`) để mọi giá trị thẳng một mép. Nhãn dài hơn cột thì cho xuống dòng trong cột, không nới cột theo nhãn dài nhất.
-- **Trong panel trượt hay cột hẹp (dưới ~480px) thì cột nhãn `7rem`**, không `10rem`. Panel 448px trừ lề chỉ còn ~400px: nhãn `10rem` chiếm gần nửa, nhãn dài nhất ("Số điện thoại") chỉ cần ~100px, còn giá trị bị ép xuống 3–4 dòng (đã dính 23/09/2026, địa chỉ giao trong panel xem nhanh đơn hàng).
-- **Màn hẹp dưới `sm` thì xếp chồng**: nhãn trên, giá trị ngay dưới (`gap-1`), giữa các cặp `space-y-3`. Khe trong cặp nhỏ hơn khe giữa các cặp thì mắt mới gom đúng nhãn với giá trị của nó. Hai cột ở 375px thì giá trị còn chưa tới 200px, email dài vỡ vụn.
+- **`@sm:items-baseline`** để chữ nhãn thẳng dòng chữ trong badge hay pill: badge có `py-1` nên cao hơn dòng chữ thường, căn đỉnh thì nhãn lệch lên vài px so với chữ trong badge.
+- **Cột nhãn rộng cố định** để mọi giá trị thẳng một mép. Nhãn dài hơn cột thì cho xuống dòng trong cột, không nới cột theo nhãn dài nhất.
+- **Khuôn đổi theo bề rộng `<dl>` (`@container`), không theo viewport.** Cùng một card Liên hệ nằm ở cột
+  phải 22rem, trong panel 448px, hay giữa khung rộng; `sm:` chỉ biết màn rộng 1440px, không biết khối
+  chỉ còn 310px. Ba bậc theo khối:
+  - **Dưới 384px: xếp chồng**, nhãn trên, giá trị ngay dưới (`gap-1`), giữa các cặp `space-y-3`. Khe trong
+    cặp nhỏ hơn khe giữa các cặp thì mắt mới gom đúng nhãn với giá trị của nó. Cột phải trang chi tiết,
+    màn điện thoại rơi vào đây.
+  - **384–575px: nhãn `7rem`** (panel trượt, card nửa khung). Panel 448px trừ lề còn ~400px: nhãn `10rem`
+    chiếm gần nửa, giá trị bị ép xuống 3–4 dòng (đã dính 23/09/2026, địa chỉ giao trong panel xem nhanh đơn hàng).
+  - **Từ 576px: nhãn `10rem`.**
+
+  Đã dính 30/09/2026, hồ sơ bệnh nhân: card Liên hệ ở cột phải, `<dl>` 310px, `sm:grid-cols-[7rem_…]` bật vì
+  màn 1440px; giá trị còn 174px, email vỡ ba dòng ("…thi@" / "quangtrung-" / "logistics.com.vn"), địa chỉ
+  bốn dòng, nhãn "Thuốc đang dùng" hai dòng. Xếp chồng cùng khối: email và địa chỉ hai dòng. `probe.mjs` báo
+  "nhãn–giá trị hai cột trong khối hẹp". Tailwind v3 cần plugin `@tailwindcss/container-queries`; không có
+  thì truyền prop bố cục từ chỗ đặt card (cột phải thì xếp chồng), đừng quay về `sm:`.
 - **Giá trị `font-medium text-foreground`, nhãn `text-muted`** (`T23`). Giá trị dài xuống dòng, bám mép trên cùng nhãn (`items-start`), không `truncate`: đây là chỗ để đọc đủ.
 - **Giá trị có avatar (người phụ trách) là `flex h-5 items-center gap-2`, không `inline-flex`.** `inline-flex` nằm trong dòng chữ nên cả cụm bị đẩy theo baseline: hàng cao 24px thay vì 20px, chữ tên thấp hơn chữ nhãn 1,5px, nhìn rõ nhãn "Phụ trách" nổi lên cao hơn tên (đã dính 27/09/2026, panel xem nhanh khách hàng; đổi avatar xuống `size-5` vẫn lệch). `h-5` giữ hàng đúng một dòng chữ, avatar `size-6` tràn 2px trên dưới vào khoảng cách giữa hai hàng.
 - **`[overflow-wrap:anywhere]` cho giá trị**: email, URL, mã dài không có dấu cách nên không tự xuống dòng, sẽ đẩy tràn card ở màn hẹp.

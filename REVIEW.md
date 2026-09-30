@@ -337,6 +337,11 @@ Lần đo lại 27/09/2026: 29 route, 25 mục đã theo kịp, còn công tắc
   `has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-foreground/50`. Hiện Tab vào
   nhóm "Quyền" ở hộp tạo khoá API (`/dashboard/settings/api-keys/states`) rơi đúng card đang chọn, trông y như lúc
   không focus. Kiểm cả `radio-group-showcase-row.tsx` ở `/components`.
+- Trang chi tiết khách (`customer-detail-view.tsx`, skill sửa 30/09/2026): cột phải đang mở theo
+  `xl:grid-cols-[minmax(0,1fr)_22rem]`; đổi sang `@container` trên khung trang và `@[70rem]:grid-cols-[…]`
+  (`layouts/app.md`, "Trang chi tiết bản ghi"): ở 1280px một cột. `detail-list.tsx` bỏ prop `isStacked` /
+  `isNarrow`, `<dl>` là `@container`, hàng `@sm:grid-cols-[7rem_…] @xl:grid-cols-[10rem_…]`
+  (`description-list.md`).
 - Bỏ số âm (`N11`, skill xong 27/09/2026): dự án còn ~114 dòng (đo lại 27/09/2026 chiều: còn 108, chưa sửa). Theo `principles.md` `N11` và từng file:
   icon / nút trong ô nhập `inset-y-0 my-auto` + cỡ cố định (khối bọc nút mắt thêm `size-10`); vạch chia menu
   (`action-menu-items`, `account-dropdown`, `select`, `date-picker-panel`, `date-time-picker-panel`,
