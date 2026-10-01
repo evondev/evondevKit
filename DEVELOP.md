@@ -60,14 +60,17 @@ Trước khi commit chạy `node skills/ui-ux/scripts/lint-skill.mjs` từ gốc
 Người đã cài chỉ nhận bản mới khi `version` trong `.claude-plugin/plugin.json` tăng. Push
 mà không tăng thì họ vẫn chạy bản cũ trong cache.
 
+Skill đã có người dùng (01/10/2026): **lần push nào cũng tăng `version`**, không gom đợt.
+
 | Thay đổi | Tăng | Ví dụ |
 | --- | --- | --- |
-| Sửa luật, thêm component, sửa lỗi | patch: `0.1.0 → 0.1.1` | thêm drawer, sửa dropdown |
-| Mốc lớn: nhánh mới, đổi cấu trúc skill | minor: `0.1.x → 0.2.0` | nhánh soi, nhánh thiết kế từ đầu |
+| Sửa luật, thêm component, sửa lỗi, thêm câu báo | patch: `0.2.1 → 0.2.2` | thêm drawer, sửa dropdown |
+| Mốc lớn: nhánh mới, cả một mảng mới, đổi cấu trúc skill | minor: `0.2.x → 0.3.0` | dark mode, nhánh soi, design system trước |
 
-1. Commit bình thường, không đụng `version`. Phần đang làm dở chưa tới tay người dùng.
-2. Một loạt thay đổi đã ổn (chạy lại vài đề ✅ trong `TESTS.md` không vỡ) thì tăng
-   `version` trong một commit riêng rồi push.
+1. Commit bình thường. Commit chưa push thì chưa tới tay người dùng.
+2. Trước khi push, tăng `version` một nấc theo bảng, tính cho **cả các commit chưa push**:
+   trong đó có một mốc lớn thì tăng minor. Commit tăng version kèm luôn commit cuối, hoặc
+   một commit riêng.
 3. Người dùng lấy bản mới bằng `/plugin marketplace update evondevkit`.
 
 Thêm plugin thứ hai thì tạo thư mục riêng cho nó, thêm một mục vào `plugins` trong

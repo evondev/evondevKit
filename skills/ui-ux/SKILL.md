@@ -1,6 +1,6 @@
 ---
 name: ui-ux
-description: Gu UI/UX cho hệ thống app — dashboard, danh sách, bảng, form, cài đặt, modal, trang người dùng cuối lướt để chọn. Mặc định làm như một designer - brief, việc chính của từng màn, 2–3 wireframe có nội dung thật (kèm bản gọn chữ, công tắc Màu, control bấm được), người dùng chọn rồi mới dựng. Nhánh khác chỉ khi đề nói rõ - soi UI đang có rồi đề xuất sửa ("xem giúp", "review"), dựng lại giữ brand ("giữ brand", "keep the brand"), dựng lại theo gu skill ("bỏ style cũ"), refactor giữ nguyên hình, dựng luôn không wireframe ("dựng luôn", "just build it"), dựng design system trước ("design system", "UI kit", "component library"), sửa một component nhỏ. Bám thư viện component và token của dự án. Mặc định flat, làm được glassmorphism, gradient, nổi, nền tối, có màu khi được chọn. Dùng khi dựng, làm lại hay sửa bất kỳ giao diện app nào, tiếng Việt hay tiếng Anh, khi refactor CSS, khi người dùng gửi ảnh hay link app nhờ xem, hoặc khi họ nhắc "làm UI cho đẹp", "dựng màn", "thiết kế", "làm lại UX", "như một designer", "xem giúp UI", "review UI", "nhìn rối", "build a page", "design this screen", "redesign", "make it look good", "ui-ux", "evon".
+description: Gu UI/UX cho hệ thống app — dashboard, danh sách, bảng, form, cài đặt, modal, trang người dùng cuối lướt để chọn. Mặc định làm như một designer - brief, việc chính của từng màn, 2–3 wireframe có nội dung thật (kèm bản gọn chữ, công tắc Màu, control bấm được), người dùng chọn rồi mới dựng. Nhánh khác chỉ khi đề nói rõ - soi UI đang có rồi đề xuất sửa ("xem giúp", "review"), dựng lại giữ brand ("giữ brand", "keep the brand"), dựng lại theo gu skill ("bỏ style cũ"), refactor giữ nguyên hình, dựng luôn không wireframe ("dựng luôn", "just build it"), dựng design system trước ("design system", "UI kit", "component library"), sửa một component nhỏ. Bám thư viện component và token của dự án. Mặc định flat, làm được glassmorphism, gradient, nổi, nền tối, có màu khi được chọn. Landing page, cửa hàng online, blog chưa được dạy: vẫn làm, báo trước một dòng. Dùng khi dựng, làm lại hay sửa bất kỳ giao diện app nào, tiếng Việt hay tiếng Anh, khi refactor CSS, khi người dùng gửi ảnh hay link app nhờ xem, hoặc khi họ nhắc "làm UI cho đẹp", "dựng màn", "thiết kế", "làm lại UX", "như một designer", "xem giúp UI", "review UI", "nhìn rối", "build a page", "design this screen", "redesign", "make it look good", "landing page", "ecommerce", "blog", "ui-ux", "evon".
 ---
 
 # UI/UX cho hệ thống dashboard
@@ -21,6 +21,21 @@ và **ràng buộc bằng con số** để phần còn lại tự sạch.
 
 Phạm vi: **màn hình trong app**. Dashboard, danh sách, bảng, form, cài đặt,
 modal. Không lo trang bán hàng, trừ bảng giá (`references/layouts/pricing.md`).
+
+**Đề là loại UI skill chưa được dạy thì báo trước một dòng, rồi vẫn làm.** Gồm: landing
+page, trang giới thiệu, trang chủ website; cửa hàng online phía người mua (trang chủ shop,
+trang sản phẩm, giỏ hàng, thanh toán); blog (trang chủ blog, trang đọc bài); và loại tương
+tự (portfolio, trang sự kiện). Phía quản trị của chúng (quản lý đơn, sản phẩm, bài viết) là
+màn trong app, không thuộc nhóm này. Câu báo nằm **đầu câu trả lời đầu tiên**, trước dòng
+audit, theo ngôn ngữ của đề:
+
+> Lưu ý: skill chưa được dạy cho landing page / cửa hàng online / blog, nên mình vẫn làm được
+> nhưng kết quả có thể chưa đẹp bằng màn trong app. Phần nào trùng màn app (bảng giá, danh
+> sách lướt để chọn, form) thì vẫn theo mẫu đã duyệt.
+
+Chỉ báo, **không phải cổng**: không dừng hỏi có làm tiếp không, đi tiếp câu 1 như mọi đề.
+Phần trang không có mẫu thì theo luồng "Dựng một thứ chưa có mẫu" (cuối
+`references/principles.md`). ⚑
 
 Skill lo **giao diện**: bố cục, style, và **mỗi trạng thái trông ra sao** (đang
 chọn, khoá, rỗng, đang tải, lỗi, một trang, không dòng nào). **Không tự viết
