@@ -375,6 +375,17 @@ Sửa cả bản tiếng Anh.
 Xong 30/09/2026: các mục trên đã có trên trang; thêm lối design system (D9), roadmap tiếng Anh 0/2, menu header hiện từ 1280px (bản tiếng Anh gãy chữ ở 1024). Còn tự xác nhận hai chỗ: câu "Không chỉnh tay sau khi dựng" ở showcase có đúng không, và
 đường dẫn cài trên Codex / Antigravity (bước 8).
 
+### [ ] Gỡ card "Thêm ca trước / sau từ dự án thật" trên landing page
+
+Chốt 01/10/2026: bỏ card "Sắp có" ở roadmap. Card chỉ báo là chưa có ("Đã có 1 dự án",
+ngay dưới ca 68Lane), lại hứa "kèm số đo code trước và sau" thì ca nào cũng phải đo. Bro tự
+sửa ở `~/dev/evondev-kit-landingpage`, gỡ cả bản tiếng Anh và đếm lại số mục roadmap.
+
+Không lên kế hoạch làm thêm ca. Sau này tình cờ có ca đẹp thì đưa thẳng lên cạnh 68Lane, không
+báo "sắp có". Ca đó phải là dự án đang chạy thật (không lấy đề ở `audit-skills`), hai ảnh cùng route, cùng dữ liệu, cùng
+bề rộng, ghi câu đề và chỗ đã chỉnh tay; ca của người khác thì xin phép và che dữ liệu thật.
+Hiện bằng hai tab Trước / Sau, không làm thanh kéo vì dễ đụng cuộn trang trên điện thoại.
+
 ### [x] Thêm file `LICENSE`
 
 Xong 30/09/2026: `LICENSE` MIT, Tuấn Trần, 2026; README có link và khối "Bản beta".
