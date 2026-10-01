@@ -328,6 +328,8 @@ dùng báo đã sửa (bước 7); mục nào đã theo kịp thì xoá khỏi d
 Lần đo lại 27/09/2026: 29 route, 25 mục đã theo kịp, còn công tắc và bỏ số âm (`N11`).
 Quét tối 01/10/2026 (`probe --dark`, 57 route, 375 và 1280px): mọi mục dark mode các lượt trước đã theo kịp
 (nền rê nút chính, viền đậm, `--chart-fill`, ô chọn, bảng lệnh, khung chờ, rãnh, dải khoảng ngày, `--secondary-hover`); 43 route sạch.
+Quét lại 01/10/2026 chiều: 14 route tối và 3 route sáng sạch; màu hổ phách, lớp phủ bản mẫu, sidebar đang chọn đã theo kịp.
+Dark mode của dự án test xong.
 
 - Công tắc ở `/dashboard/settings/notifications` (27/09/2026, probe 375px; đo lại cùng ngày vẫn còn): bảy công
   tắc 44×24 không có vùng bấm nới ra. Skill ghi `relative before:absolute before:-inset-2` trên nút
@@ -344,13 +346,6 @@ Quét tối 01/10/2026 (`probe --dark`, 57 route, 375 và 1280px): mọi mục d
   (`layouts/app.md`, "Trang chi tiết bản ghi"): ở 1280px một cột. `detail-list.tsx` bỏ prop `isStacked` /
   `isNarrow`, `<dl>` là `@container`, hàng `@sm:grid-cols-[7rem_…] @xl:grid-cols-[10rem_…]`
   (`description-list.md`).
-- Sidebar mục đang chọn, **bản sáng** (`sidebar-nav-link.tsx`; đo 01/10/2026): đang chọn vẫn `bg-background`, trùng nền
-  rê `hover:bg-item-hover` (bản sáng cùng `#f4f4f6`), rê qua mục nào cũng như vừa chọn. Bản tối đã vá `dark:bg-secondary`.
-  Theo `layouts/app.md`: đang chọn `bg-secondary font-medium` ở cả hai theme, bỏ hai class `dark:`.
-- Màu hổ phách tối (01/10/2026, skill đổi cùng ngày; `quét tối` 57 route báo 13 route): 14 chỗ `dark:text-amber-400` /
-  `dark:text-amber-300` (chữ "Quá hạn", "Khẩn cấp", icon, avatar amber) → `dark:text-orange-400`; `--warning` tối nếu dùng
-  → `#ff8904`. Lý do: `M7`, "Bản tối chọn theo sắc".
-- Bản mẫu hộp xác nhận ở `/components` (`confirm-dialog-preview.tsx`): lớp phủ `bg-foreground/40` → `bg-black/40` (hộp thật đã sửa).
 - Bỏ số âm (`N11`, skill xong 27/09/2026): dự án còn ~114 dòng (đo lại 27/09/2026 chiều: còn 108, chưa sửa). Theo `principles.md` `N11` và từng file:
   icon / nút trong ô nhập `inset-y-0 my-auto` + cỡ cố định (khối bọc nút mắt thêm `size-10`); vạch chia menu
   (`action-menu-items`, `account-dropdown`, `select`, `date-picker-panel`, `date-time-picker-panel`,
