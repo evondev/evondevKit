@@ -5,7 +5,7 @@
 A **`ui-ux`** skill for Claude Code: builds and polishes app UIs (dashboards, lists, tables,
 forms, settings, modals) using your project's own component library and colors.
 
-Overview: [evondev-uiux.vercel.app/ui-ux](https://evondev-uiux.vercel.app/ui-ux)
+Overview: [evondev-uiux.vercel.app/en/ui-ux](https://evondev-uiux.vercel.app/en/ui-ux)
 
 > **Beta.** Works well for light-theme app UIs: tested on 70 prompts across real projects.
 > Most testing so far used Vietnamese prompts. English prompts follow the same flow but have
