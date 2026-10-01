@@ -229,7 +229,8 @@ Trong mỗi nhóm thì mọi chỗ dùng chung đúng một token, để đườ
 Checkbox, radio chưa chọn cũng dùng `--border-strong`, cùng độ đậm với ô nhập.
 
 Nền tối giữ đúng hai vai đó, cả hai là `rgba` mờ: `--border` 1.23:1 trên card, `--border-strong`
-1.47:1 (đo 01/10/2026). Ô nhập ở nền tối **giữ viền** `--border-strong` (`M32`).
+1.33:1 (đo 01/10/2026; `0.2` ra 1.47:1, dòng bảng thành lưới kẻ ô, đã hạ). Ô nhập ở nền tối
+**giữ viền** `--border-strong` (`M32`).
 
 **Dự án đã có token viền riêng** (dựng mới trong dự án có sẵn, hai chế độ dựng lại): xám
 viền là **dáng, không phải vai màu** (`review.md`), nên xếp token của họ vào hai vai trên

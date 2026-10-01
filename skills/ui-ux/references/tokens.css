@@ -206,9 +206,11 @@
   /* Ở nền tối viền ĐẢO VAI: #0f111a với #05060f chênh nhau quá ít nên viền
      trở thành thứ chính để tách khối; bóng vẫn giữ nhưng chỉ phụ. Xem luật M23.
      Hai vai như bản sáng (M14), đo 01/10/2026 trên card: --border 1.23:1, --border-strong
-     1.47:1 (bản sáng 1.2:1). Ô nhập ở nền tối GIỮ viền --border-strong, không bỏ (M32). */
+     1.33:1 (bản sáng 1.2:1). Ô nhập ở nền tối GIỮ viền --border-strong, không bỏ (M32).
+     01/10/2026 hạ 0.2 → 0.16: ở 0.2 (1.47:1) đường kẻ dòng bảng đậm hơn hẳn bản sáng, bảng thành
+     lưới kẻ ô (ui-ux-dashboard, chủ dự án duyệt); ô nhập, checkbox ở 0.16 vẫn đọc ra. */
   --border: rgba(160, 180, 220, 0.12);
-  --border-strong: rgba(160, 180, 220, 0.2);
+  --border-strong: rgba(160, 180, 220, 0.16);
 
   /* Màu mang nghĩa ở nền tối: chữ SÁNG lên (-400), nền là màu -500 phủ mờ.
      Nền -50 của bản sáng đem sang đây là ra khối trắng giữa màn tối.

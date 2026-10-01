@@ -346,7 +346,7 @@ Lần đo lại 27/09/2026: 29 route, 25 mục đã theo kịp, còn công tắc
   đang chọn là `bg-background` cùng màu nền rê nên rê qua mục nào cũng như vừa chọn (bản sáng); bản tối vá
   `dark:bg-secondary` nhưng `hover:bg-item-hover` vẫn ăn lên mục đang chọn, rê vào mục đang chọn thì nền nhạt đi.
   Theo `layouts/app.md`: đang chọn `bg-secondary font-medium` ở cả hai theme, `hover:` chỉ khi `!isActive`.
-  Kèm theo `index.css` tối: `--primary-hover: #cfd5e0` (skill sửa 01/10/2026).
+  Kèm theo `index.css` tối: `--primary-hover: #cfd5e0`, `--border-strong: rgba(160, 180, 220, 0.16)` (skill sửa 01/10/2026).
 - Bỏ số âm (`N11`, skill xong 27/09/2026): dự án còn ~114 dòng (đo lại 27/09/2026 chiều: còn 108, chưa sửa). Theo `principles.md` `N11` và từng file:
   icon / nút trong ô nhập `inset-y-0 my-auto` + cỡ cố định (khối bọc nút mắt thêm `size-10`); vạch chia menu
   (`action-menu-items`, `account-dropdown`, `select`, `date-picker-panel`, `date-time-picker-panel`,

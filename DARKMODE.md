@@ -420,7 +420,7 @@ Gộp Phần 1 và 2. Mỗi dòng ghi: làm gì, căn cứ, luật bị đụng.
       thẻ theo `media` (tuỳ chọn).
 - [x] → `--surface-overlay`, `--elevation-popover` / `--elevation-modal` (class `shadow-popover` / `shadow-modal`), bảng khung ở đầu `layouts/overlay.md`. Modal, panel giữ `--surface`. **Token tầng nổi thứ ba** (`--surface-overlay` cho popover, menu, modal).
       `tokens.css` hiện chỉ có nền trang và card.
-- [x] → `M14`: giữ hai vai, đo nền tối `--border` 1.23:1, `--border-strong` 1.47:1, không đổi giá trị. **Hai token viền:** viền chia (alpha thấp) và viền điều khiển (≥ 3:1).
+- [x] → `M14`: giữ hai vai, đo nền tối `--border` 1.23:1, `--border-strong` hạ `0.2` → `0.16` (1.33:1) sau lượt rà bảng khách hàng. **Hai token viền:** viền chia (alpha thấp) và viền điều khiển (≥ 3:1).
       `--border-strong` hiện có thể làm vai thứ hai, cần đo lại ở nền tối.
 - [x] → `M32`, `components/input.md` bỏ `dark:border-transparent`. **Ô nhập nền tối:** giữ viền + nền phủ mờ; không bỏ viền.
 - [x] → `M23`, `M15`, `--elevation-*` khối `.dark`. **Bóng nền tối:** vòng 1px + bóng đậm hơn; tắt bóng màu.
