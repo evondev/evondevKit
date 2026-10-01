@@ -160,12 +160,13 @@ Mỗi khối có bốn phần: nhận ra, luật được đè, công thức, b�
 | --- | --- |
 | Card | `shadow-sm` |
 | Card bấm được, khi hover | `shadow-md` |
-| Dropdown, popover | `shadow-lg` |
-| Modal | `shadow-xl` |
+| Dropdown, popover | `shadow-popover` (= `shadow-lg`, `M15`) |
+| Modal, panel trượt, **gồm sidebar trượt ở màn hẹp** | `shadow-modal` (= `shadow-xl`) |
 
 **Bẫy**
 
 - **Card với modal cùng bóng thì modal không còn nổi.** Thang trên tồn tại để lớp cao hơn luôn nổi hơn. Tăng bóng card lên `shadow-lg` là modal phải lên theo, và dropdown cũng vậy.
+- **Bộ token bóng đủ bốn bậc, kể cả khi trang chưa có modal.** Sidebar trượt dưới `lg` là tầng modal, và nó chỉ hiện ở màn hẹp nên hay bị quên. Đã dính 01/10/2026 (dashboard trung tâm ngoại ngữ, đề tự nêu phong cách nổi): dự án định ba token (card, card khi rê, popover), sidebar trượt nằm phẳng trên lớp phủ, không bóng, thấp hơn cả card phía sau. Probe báo "Panel, modal mở ra không nổi hơn trang".
 - **`ring-1 ring-black/5` đi cùng bóng là hợp lệ ở đây.** Nó vạch mép card cho sắc nét trên nền trắng. Đây là chỗ đè `M29`: ở flat thì viền với bóng không đi cùng nhau, ở phong cách nổi thì được.
 - **Ở nền tối, bóng một mình khó thấy.** Dự án nổi mà có dark mode thì ở chế độ tối giữ thang bóng, đậm hơn, thêm viền 1px (`ring-1 ring-white/10`), và bề mặt sáng dần theo tầng (`M21`, `M23`). Ba thứ đi cùng nhau; đừng chỉ tăng bóng lên cho bằng được.
 - `scale-105` khi hover làm chữ bị mờ trong lúc chuyển động. Chỉ tăng bóng, không phóng to.

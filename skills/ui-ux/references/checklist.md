@@ -264,7 +264,7 @@ Nếu có dark mode:
 - [ ] Có dòng `@custom-variant dark` (Tailwind v4) chưa? Thiếu thì bấm Tối trên máy đang sáng, class `dark:` vẫn sáng (`M31`). `color-scheme` đổi theo theme chưa?
 - [ ] Nút đổi theme có đủ Sáng / Tối / Hệ thống, mặc định Hệ thống, không xoay vòng? Tải lại ở chế độ tối có nháy trắng không? Lật theme có chỗ chuyển màu lệch nhịp không (`M31`)?
 - [ ] Ô nhập, select ở nền tối còn viền không (`M32`)? Còn mảng nền `-50`, `-100` sáng nào giữa màn tối không (badge, avatar, banner, chip, ảnh nền trắng)? Grep `bg-[a-z]+-(50|100)\b` không kèm `dark:` (`M32`).
-- [ ] Lớp nổi dùng `bg-surface-overlay` / `bg-surface` + `border border-border` + `shadow-popover` / `shadow-modal`, không `shadow-lg` trần (`M15`)? Toast, hộp thoại của thư viện có còn nền trắng ở chế độ tối không (`M33`)?
+- [ ] Lớp nổi dùng `bg-surface-overlay` / `bg-surface` + `border border-border` + `shadow-popover` / `shadow-modal`, không `shadow-lg` trần (`M15`)? Sidebar trượt ở màn hẹp cũng là panel: có `shadow-modal` chưa? Toast, hộp thoại của thư viện có còn nền trắng ở chế độ tối không (`M33`)?
 - [ ] Chạy probe thêm `--dark`: mục "DARK MODE" phải rỗng.
 
 > **Bốn vòng test gần nhất, ba lỗi giá trị nhất đều đến từ cổng 3**, không phải

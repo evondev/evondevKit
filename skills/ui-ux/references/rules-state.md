@@ -158,6 +158,15 @@ thì nó là thứ duy nhất trong trang trông như ảnh chụp. Luôn có
 `hover:bg-primary-hover` — token đã có sẵn trong `tokens.css`, không phải tự chế
 màu.
 
+**Vế ngược: thứ không bấm được thì không có nền rê.** Nền rê là lời hứa "bấm vào đây";
+dòng chỉ để đọc mà rê vào tô nền thì người dùng bấm thử, không ra gì. Dòng chứa một nút
+(như "Điểm danh") vẫn không phải dòng bấm được: hover nằm ở nút. Hai cách: bỏ hover, hoặc
+cho cả dòng là link tới chi tiết. Ngoại lệ duy nhất: rê vào dòng để hiện nút ẩn
+(`components/list-row.md`), nền rê báo nút đã hiện. Đã dính 01/10/2026 (dashboard trung tâm
+ngoại ngữ): bảy dòng "Lớp hôm nay" `hover:bg-background`, không link, con trỏ thường;
+card bên cạnh thì dòng là link, nên hai danh sách trông giống nhau mà một bên bấm được.
+Probe báo "Nền rê trên khối không bấm được".
+
 **I10. Hover của một dòng là một lớp nền nhẹ, không tô đậm lên, không phóng to.
 Nền hover không bao giờ trùng màu nền trang, cũng không trùng nền của khung ngay phía sau.**
 

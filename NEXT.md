@@ -235,6 +235,16 @@ có wireframe).
 
 **5d. Dựng mới có wireframe, người dùng chọn phong cách shadow (`P7`)**
 
+Rà 01/10/2026 (`lop-hoc`, cổng 3456, chỉ trang tổng quan; Học viên, Lớp học chưa dựng nên link
+sidebar 404). Đạt: card không viền, bóng mềm, không phóng to; token bóng riêng; dropdown tài khoản
+nổi hơn card. Trượt: bộ token chỉ ba bậc (card, card rê, popover), **sidebar trượt dưới `lg` không
+bóng**, thấp hơn cả card phía sau; dòng "Lớp hôm nay" có nền rê mà không bấm được. Đã sửa skill:
+`P7` thang bóng ghi sidebar trượt là tầng modal và đủ bốn bậc dù chưa có modal, `layouts/app.md`
+ghi `shadow-modal` cho sidebar trượt, `I9` thêm vế ngược, `list-row.md`, `checklist.md`; probe đo bóng
+panel / modal mở bằng nút và nền rê trên khối không bấm được. Dự án còn: thêm `--shadow-modal` cho
+sidebar trượt, bỏ hover dòng "Lớp hôm nay", nhãn ô số "Học viên đang học" trơ một chữ (`T10`).
+Chưa soi được ý 1–2 (hỏi lại phong cách, wireframe) vì không có phiên dựng.
+
 Một lượt, không dự án mồi, không đáp án. Test: người dùng tự nêu phong cách thì skill theo luôn
 (`P1`), từ wireframe tới bản dựng, không kéo về flat.
 
@@ -290,35 +300,19 @@ Xong 01/10/2026: bật dark mode (nhánh `dark-mode`, cổng 5173), bảng khác
    `/verify-otp`.
 5. Tick từng mục trong `TESTS.md`.
 
-### [ ] 7. Vòng tiếng Anh (0/2)
+### [-] 7. Vòng tiếng Anh: bỏ
 
-Chỉ hai đề nhắm lỗi hay gặp: bảng (số, ngày, số nhiều, chữ cái avatar) và đề trộn. Đề
-thường đã test tay thấy đúng nên không chạy đủ.
+Bỏ 01/10/2026. Đề thường bằng tiếng Anh đã test tay thấy đúng; còn lại chờ người dùng thật
+báo lỗi rồi sửa, không chạy vòng test riêng.
 
-1. Đề, mỗi đề một phiên (thêm `Read ~/dev/evondevKit/skills/ui-ux/SKILL.md, then` ở đầu):
-   - Dự án trống mới (tạo như bước 2): `Build me a customer table with search, filters, pagination, and multi-select for bulk delete.`
-     So ảnh với bản tiếng Việt đã ✅: bố cục, màu, khoảng thở y hệt, chỉ chữ khác.
-   - **Trộn**, chạy trong `ui-ux-dashboard` (nhãn tiếng Việt): `Add a notification panel that opens from the bell in the header.`
-2. Đề bảng soi bốn thứ: câu trả lời toàn tiếng Anh; nhãn tiếng Anh quen dùng, viết hoa chữ
-   đầu câu; tiền, số, ngày theo kiểu tiếng Anh; không có dấu gạch dài trong câu. Đề trộn:
-   trả lời tiếng Anh nhưng nhãn mới vẫn tiếng Việt, không hỏi.
-3. Tick trong `TESTS.md`, gửi link cho Claude rà.
+### [-] 8. Codex và Antigravity: bỏ
 
-### [ ] 8. Codex và Antigravity
+Bỏ 01/10/2026. Không tự test, người dùng các công cụ đó gặp lỗi thì báo qua issue GitHub rồi
+sửa. Trang landing đã ghi rõ là chưa tự test.
 
-1. Cài skill theo hướng dẫn trên landing page (tab Codex / Antigravity): chép thư mục
-   `skills/ui-ux` vào `.agents/skills/` của dự án, hoặc `~/.codex/skills/` để dùng chung.
-   **Kiểm lại đường dẫn theo tài liệu chính thức** của từng công cụ trước, trang chưa test.
-2. Trong một dự án trống, chạy lại hai đề đã chạy ở Claude: đề bộ nút
-   (`Dựng cho tôi bộ nút: nút chính, nút viền, nút chỉ icon, nút xoá, đủ trạng thái hover, focus, đang tải, bị khoá.`)
-   và đề nha khoa ở bước 2.
-3. Soi: skill có tự bật không; có chạy được `probe.mjs` không (cần Node và Playwright); kết
-   quả có giống bản Claude không.
-4. Ghi kết quả vào `DEVELOP.md` mục "Còn thiếu" và sửa tab cài đặt trên landing page cho đúng.
+### [ ] 9. Skill landing page riêng (làm ngay sau bước 5)
 
-### [ ] 9. Sau cùng: skill landing page riêng
-
-Chỉ làm nếu vẫn muốn, sau khi các bước trên ổn. Làm thành **skill thứ hai** (`evon:landing`),
+Làm ngay khi bước 5 xong. Làm thành **skill thứ hai** (`evon:landing`),
 không gộp vào `ui-ux` vì luật hai bên đá nhau. Cách thêm plugin thứ hai ở cuối `DEVELOP.md`.
 
 **Hướng chốt 01/10/2026:** không cố phủ mọi kiểu SaaS. Nội dung landing page muôn kiểu nhưng

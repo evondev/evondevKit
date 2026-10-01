@@ -30,6 +30,7 @@ Nguồn: dòng nhắc việc của một dự án thật.
 
 **Vì sao ổn**
 
+- Dòng này có nền rê **vì rê vào hiện nút ẩn** bên phải. Dòng chỉ để đọc, không link, không nút ẩn thì không có nền rê (`I9`, vế ngược).
 - Hover là **nền rê `hover:bg-item-hover`** (nền sáng: chìm xuống đúng màu nền trang). Dòng có ô icon hay badge nền `bg-background` thì ô đó đảo sang `group-hover:bg-surface` lúc rê, không thì nó biến mất (`I32`) — được vì dòng này thụt vào, có bo góc. Dòng tràn hết bề ngang khung (bảng) thì dùng `--surface-hover`, xem `I10`, tức dòng tối nhẹ đi chứ không sáng lên, không viền, không nhấc bóng. Cảm giác như con trỏ ấn xuống mặt giấy.
 - **IconButton trong dòng rê `hover:bg-foreground/8`**, không `hover:bg-item-hover` như dòng: rê vào nút thì nền nút trùng nền dòng, nút mất hẳn (đã dính 29/09/2026). `/5` chồng lên nền dòng đang rê cũng gần trùng, nên trong dòng là `/8` (`I10`, `small-controls.md`).
 - Ba tầng ưu tiên rõ rệt trong một dòng: hành động chính luôn hiện bên trái, nội dung ở giữa, hành động phụ ẩn bên phải. Không phải mọi nút đều đòi được nhìn thấy cùng lúc.

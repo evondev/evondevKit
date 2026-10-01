@@ -331,6 +331,9 @@ Quét tối 01/10/2026 (`probe --dark`, 57 route, 375 và 1280px): mọi mục d
 Quét lại 01/10/2026 chiều: 14 route tối và 3 route sáng sạch; màu hổ phách, lớp phủ bản mẫu, sidebar đang chọn đã theo kịp.
 Dark mode của dự án test xong.
 
+- Sidebar trượt dưới `lg` (`src/components/app-sidebar/app-sidebar.tsx`, skill sửa 01/10/2026): panel phẳng không bóng,
+  thêm `shadow-modal` (nền tối giữ `border-r border-border`), như `drawer-panel.tsx` đang có. Probe 375px báo "Panel, modal
+  mở ra không nổi hơn trang".
 - Công tắc ở `/dashboard/settings/notifications` (27/09/2026, probe 375px; đo lại cùng ngày vẫn còn): bảy công
   tắc 44×24 không có vùng bấm nới ra. Skill ghi `relative before:absolute before:-inset-2` trên nút
   `role="switch"`; dự án đang dùng `<input type="checkbox">` `appearance-none` (`src/components/switch/switch.tsx`),
