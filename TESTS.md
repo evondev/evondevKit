@@ -176,7 +176,7 @@ Chốt xong thì ghi ngược vào skill như bậc 1: token vào `tokens.css`, 
       Kiểm thêm: nút đổi theme nằm đâu và nói gì, lựa chọn được nhớ sau khi tải lại, tải trang ở chế độ tối không nháy trắng.
       01/10/2026: icon button trên header mở menu Sáng / Tối / Theo hệ thống có ✓ (`M31`); script đầu `<head>` gắn `.dark`
       trước khi vẽ; chọn Tối trên máy sáng thì cả trang lật kể cả `dark:` và `color-scheme`; tải lại vẫn nhớ; lật tắt transition.
-- [ ] **Khung app + tổng quan** — sidebar, header, card số liệu, biểu đồ (`/dashboard`).
+- ✅ **Khung app + tổng quan** — sidebar, header, card số liệu, biểu đồ (`/dashboard`). 01/10/2026: cột biểu đồ màu nhấn 100% chói nhất màn, thêm `--chart-fill` (70% ở nền tối, chủ dự án chọn).
 - ✅ **Bảng** (01/10/2026: probe tối không mảng sáng, ô nhập còn viền; lỗi skill nút chính rê ra `#ffffff`, đã sửa) — bảng khách hàng: dòng hover, dòng đang chọn, cột ghim, chip lọc, tab trạng thái (`/dashboard/customers`).
 - [ ] **Lớp nổi** — modal, hộp xác nhận xoá, drawer, dropdown, popover lọc, toast, tooltip: lớp nổi phải tách khỏi nền tối bằng viền, không nhờ bóng.
 - [ ] **Form** — ô nhập thường / lỗi / khoá / focus, select, date picker, checkbox, công tắc, alert (`/dashboard/tasks/new`).

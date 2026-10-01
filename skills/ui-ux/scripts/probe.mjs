@@ -2819,6 +2819,9 @@ async function probeWidth(browser, options, width) {
 
   const screenshotPath = join(options.out, `${width}${options.isDark ? "-dark" : ""}.png`);
   await takeFullScreenshot(page, screenshotPath);
+  // Đo dark mode ngay sau khi chụp, lúc trang còn đúng như ảnh: các bước rê, bấm, mở lớp nổi bên dưới
+  // có thể đổi trang (đã dính 01/10/2026: tới lượt đo thì biểu đồ tổng quan còn 2/10 khối màu nhấn).
+  const darkModeProblems = options.isDark ? await page.evaluate(findDarkModeProblems) : [];
 
   const { drawnRings: drawnFocusRings, unmarkedFocusStops } = isMobile ? { drawnRings: [], unmarkedFocusStops: [] } : await findDrawnFocusRings(page);
 
@@ -2835,7 +2838,6 @@ async function probeWidth(browser, options, width) {
   const heavyNavLinks = await page.evaluate(findHeavyNavLinks);
   const brokenImages = await page.evaluate(findBrokenImages);
   const misformattedNumbers = await page.evaluate(findMisformattedNumbers);
-  const darkModeProblems = options.isDark ? await page.evaluate(findDarkModeProblems) : [];
   const overflowingLayers = [...new Set([...hoverStates.overflowingLayers, ...popupLayers.overflowing])];
   // Chạy sau cùng: bấm thử đổi lựa chọn trên trang (ngày, tab), các phép đo khác phải xong trước.
   const pageCheckedHoverChanges = isMobile ? [] : await findCheckedHoverChanges(page);
@@ -2992,6 +2994,8 @@ function findDarkModeProblems() {
     .filter(Boolean)
     .map(toHex);
   const brightColors = new Map();
+  const primaryHex = allowedBrights[0];
+  const solidAccentBars = [];
   let borderlessFieldCount = 0;
   let sunkenHoverCount = 0;
 
@@ -3010,6 +3014,8 @@ function findDarkModeProblems() {
     }
 
     const background = readRgba(style.backgroundColor);
+    // Cột biểu đồ màu nhấn 100%: cao hơn nút (≥ 48px), hẹp như cột. Nút chính cao 40px nên không tính.
+    if (background && background.alpha > 0.95 && toHex(background) === primaryHex && rect.height >= 48 && rect.width <= 64) solidAccentBars.push(element);
     if (background && background.alpha >= 0.5 && readLuminance(background) > 0.6) {
       const hex = toHex(background);
       if (!allowedBrights.includes(hex) && !brightColors.has(hex) && brightColors.size < 5) {
@@ -3025,6 +3031,11 @@ function findDarkModeProblems() {
         findings.push(`ô nhập không viền ở nền tối, chỉ còn nền mờ báo vùng gõ: giữ viền --border-strong (M32): ${describe(element)}`);
       }
     }
+  }
+
+  // Đã dính 01/10/2026, "Việc xong mỗi tuần" ở ui-ux-dashboard: bảy cột trắng đặc là khối chói nhất màn.
+  if (solidAccentBars.length >= 3) {
+    findings.push(`${solidAccentBars.length} cột biểu đồ tô màu nhấn 100% (gần trắng), chói nhất màn tối: dùng --chart-fill, nền tối 70% (M32, components/charts.md): ${describe(solidAccentBars[0])}`);
   }
 
   return [...brightColors.values(), ...findings];

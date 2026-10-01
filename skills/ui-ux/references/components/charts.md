@@ -9,7 +9,7 @@ ra là không quyết định được cái nào quan trọng.
 ## Màu
 
 **Một chuỗi dữ liệu là một màu.** Tám cột của cùng một chỉ số thì cả tám cùng
-`--primary`. Cột cao thấp đã nói lên khác biệt rồi, không cần màu nói lại.
+`--chart-fill` (bản sáng chính là `--primary`, bản tối hạ còn 70%, xem "Nền tối" dưới). Cột cao thấp đã nói lên khác biệt rồi, không cần màu nói lại.
 
 **Hai tới bốn chuỗi thì phân biệt bằng đậm nhạt, không bằng sắc** (dự án chưa có thang màu biểu đồ). Đổi hue là bắt
 người đọc học một bảng chú giải màu mà họ không xin. Một thang cho cả app, biểu
@@ -17,9 +17,9 @@ người đọc học một bảng chú giải màu mà họ không xin. Một t
 
 | Số chuỗi / phần | Bậc |
 | --- | --- |
-| 2 | `bg-primary` · `bg-primary/45` |
-| 3 | `bg-primary` · `bg-primary/45` · `bg-primary/15` |
-| 4 | `bg-primary` · `bg-primary/65` · `bg-primary/35` · `bg-primary/15` |
+| 2 | `bg-chart-fill` · `bg-chart-fill/45` |
+| 3 | `bg-chart-fill` · `bg-chart-fill/45` · `bg-chart-fill/15` |
+| 4 | `bg-chart-fill` · `bg-chart-fill/65` · `bg-chart-fill/35` · `bg-chart-fill/15` |
 
 Không dùng `--muted` làm một bậc: nó gần bằng `primary/60`, hai chuỗi trông như
 một (bản cũ của skill ghi thế, đã sai). Bậc `/15` và `/35` dưới 3:1 trên nền
@@ -55,8 +55,13 @@ emerald là xong. Cột "quá hạn" tô amber thì được (`M7`, `list-row.md
 chọn được cái nào đáng nhìn nhất. Cần nhấn một ô thì nhấn bằng vị trí hoặc bằng
 dòng phụ, không bằng màu.
 
-**Nền tối** (`M32`). Bậc `bg-primary/…` tự đảo theo `--primary` của khối `.dark`, lưới
-`stroke-border` và nhãn `text-muted` cũng vậy: không cần khai gì thêm. Phải khai riêng:
+**Nền tối** (`M32`). **Mảng dữ liệu là `--chart-fill`, không `--primary` trần.** Nền tối màu
+nhấn gần trắng, cột 100% là khối chói nhất màn, nặng hơn cả tên trang (đã dính 01/10/2026,
+"Việc xong mỗi tuần"; chủ dự án chọn 70% sau khi xem 100%, 70%, xám ánh xanh đặt cạnh nhau:
+xám thì nhạt quá, lẫn với cột kỳ đang chạy). Khối `.dark` của `tokens.css` đã hạ token này
+còn 70%, thang `/45`, `/15` nhân theo nên giữ đúng tỉ lệ. Thanh mảnh (thanh tiến độ, `h-2`)
+vẫn `bg-primary`: diện tích nhỏ, không chói. Lưới `stroke-border` và nhãn `text-muted` tự đổi
+theo theme. Phải khai riêng:
 
 - **Thang phân loại** viết bằng class sắc thì thêm bản tối, sáng lên một bậc:
   `blue-500 dark:blue-400` · `sky-400` giữ · `violet-500 dark:violet-400` · `fuchsia-400` giữ ·
@@ -123,7 +128,7 @@ Ví dụ với Recharts / shadcn chart (vì hay gặp nhất, không phải vì 
 | Đường: chỉ chấm và số ở điểm cuối (hoặc điểm đang rê) | `dot={false}`, `activeDot` tắt, tự vẽ chấm + nhãn bằng `<ReferenceDot>` hoặc `label` theo chỉ số điểm đang chọn |
 | Không tooltip nổi cho đường | bỏ `<Tooltip>`, đọc điểm đang rê qua `onMouseMove` để dời chấm và số |
 | Cột bo góc | `radius={[8, 8, 0, 0]}` (cột nhóm hẹp: `[6, 6, 0, 0]`) |
-| Màu từ token, đúng thang đậm nhạt | `fill="var(--primary)"` + `fillOpacity` theo bảng ở mục Màu, không để bảng màu mặc định của thư viện |
+| Màu từ token, đúng thang đậm nhạt | `fill="var(--chart-fill)"` + `fillOpacity` theo bảng ở mục Màu, không để bảng màu mặc định của thư viện |
 | Donut | `<Pie innerRadius="72%" startAngle={90} endAngle={-270} paddingAngle={1} stroke="var(--surface)">`, dữ liệu đã xếp lớn dần |
 | Chưa có số (khác 0) | giá trị `null` + `connectNulls={false}` để đường đứt |
 | Chú giải | bỏ `<Legend>` của thư viện, dựng chú giải bằng HTML theo spec (chấm cùng class cột) |
@@ -161,9 +166,9 @@ luật `S5` trong `../../SKILL.md`.
   <div class="flex h-full flex-1 flex-col justify-end gap-2">
     <p class="text-center text-xs font-medium text-muted">16</p>
     <!-- mx-auto w-full max-w-8: cột tối đa 32px, nằm giữa khe của nó -->
-    <div class="mx-auto w-full max-w-8 rounded-t-md bg-primary" style="height: 80%"></div>
+    <div class="mx-auto w-full max-w-8 rounded-t-md bg-chart-fill" style="height: 80%"></div>
   </div>
-  <!-- các cột khác, cùng bg-primary; kỳ đang chạy (cột cuối) bg-primary/35 -->
+  <!-- các cột khác, cùng bg-chart-fill; kỳ đang chạy (cột cuối) bg-chart-fill/35 -->
 </div>
 
 <div class="mt-3 flex gap-2 border-t border-border pt-3 sm:gap-3">
@@ -176,7 +181,7 @@ Nhãn trục phải dùng **đúng `gap` với cụm cột**, lệch một bậc
 trượt khỏi cột.
 
 - **Cột tối đa 32px** (`max-w-8`), khe còn lại để trống. Để `flex-1` giãn hết thì 8 cột trong card rộng thành 8 khối đen 56px, cả biểu đồ là một mảng đen nặng nhất màn, nặng hơn tên trang và hàng số (đã dính 26/09/2026, thử 32px ngay trên trang thì mảng đen mất, số trên đầu cột vẫn đọc như cũ). Màn hẹp cột tự co theo khe.
-- **Kỳ đang chạy (tuần này, tháng này) là cột nhạt `bg-primary/35`, nhãn trục ghi "Tuần này"**, số trên đầu vẫn ghi. Kỳ chưa hết mà vẽ cùng màu với các kỳ đủ thì cột thấp đọc ra "tuần này tụt", cột cao đọc ra "đã vượt" trong khi tuần còn hai ngày. Hàng số liệu đã so "cùng thời điểm tuần trước", biểu đồ cũng phải nói tuần này chưa xong. Các công cụ phân tích phổ biến đều vẽ kỳ đang chạy khác đi (nhạt hoặc nét đứt).
+- **Kỳ đang chạy (tuần này, tháng này) là cột nhạt `bg-chart-fill/35`, nhãn trục ghi "Tuần này"**, số trên đầu vẫn ghi. Kỳ chưa hết mà vẽ cùng màu với các kỳ đủ thì cột thấp đọc ra "tuần này tụt", cột cao đọc ra "đã vượt" trong khi tuần còn hai ngày. Hàng số liệu đã so "cùng thời điểm tuần trước", biểu đồ cũng phải nói tuần này chưa xong. Các công cụ phân tích phổ biến đều vẽ kỳ đang chạy khác đi (nhạt hoặc nét đứt).
 - **Mới một kỳ thì chưa phải biểu đồ**, như biểu đồ đường: một cột đứng giữa khung trống là một cột đen không so với gì. Thay vùng vẽ bằng khối chữ, giữ chiều cao: số `text-2xl font-semibold tabular-nums` + "Việc xong tuần này. Từ tuần sau sẽ thấy xu hướng" (đã dính 26/09/2026, ca tuần đầu).
 
 **Biểu đồ cột nhóm** (hai, ba kỳ cạnh nhau):

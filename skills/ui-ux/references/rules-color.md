@@ -460,7 +460,7 @@ thì lệch HTML lúc hydrate. Không Next thì script nội tuyến đầu `<he
 | Tooltip | **đảo màu**: `bg-foreground text-background` | nền tối thì tooltip sáng, nổi khỏi mọi tầng |
 | Nền nhạt `-50`, `-100` (badge, banner, chip, ô đáp án) | màu `-500` phủ 10–20%, chữ `-300`/`-400` | nền `-50` sang tối là khối trắng hồng giữa màn đen. Màu mang nghĩa đã có sẵn trong `tokens.css` |
 | Gradient, vệt màu loang trang trí | tắt (`dark:hidden`) hoặc thay bản tối | loang màu sáng trên nền tối là chói |
-| Biểu đồ | bảng màu riêng cho nền tối (`components/charts.md`) | sắc `-500` vẫn đọc được, xám "Khác" `slate-300` thì thành nổi nhất |
+| Biểu đồ | cột, vùng tô dùng `--chart-fill` (màu nhấn 70% ở nền tối); thang phân loại có bản tối (`components/charts.md`) | cột màu nhấn gần trắng 100% là khối chói nhất màn (đã dính 01/10/2026); xám "Khác" `slate-300` thành nổi nhất |
 | Ảnh nền trắng, logo | ảnh cần bản tối thì `<picture><source media="(prefers-color-scheme: dark)">` hoặc hai ảnh theo class; logo chuyển bản sáng | |
 | Avatar, ảnh nhỏ | vòng `ring-1 ring-border` | ảnh tối tan vào nền |
 

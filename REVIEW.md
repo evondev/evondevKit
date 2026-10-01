@@ -88,7 +88,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 
 | # | Trang | Route | Rà ngày |
 | --- | --- | --- | --- |
-| 1 | Khung app + tổng quan | `/dashboard`, `/dashboard/overview/states` | 26/09/2026 (tổng quan, ba lượt) |
+| 1 | Khung app + tổng quan | `/dashboard`, `/dashboard/overview/states` | tối: 01/10/2026 (`/dashboard`, một lượt: cột biểu đồ màu nhấn 100% chói nhất màn, thêm `--chart-fill` 70% ở nền tối, chủ dự án chọn sau khi xem ba bản; probe bắt, và đo dark mode dời lên ngay sau khi chụp); 26/09/2026 (tổng quan, ba lượt) |
 | 2 | Công việc: bảng nhóm, kanban, tạo mới | `/dashboard/tasks`, `/tasks/new`, `/tasks/states` | 26/09/2026 (kanban, ba lượt, đã theo kịp; popover Lọc, ba lượt, đã theo kịp); 27/09/2026 (bảng nhóm, một lượt: khuôn theo bề rộng khung, đã theo kịp; tạo mới, một lượt: nhóm radio, bộ đếm ký tự, đã theo kịp; `/states`, một lượt: khung chờ cột nhảy ngang, đã theo kịp) |
 | 3 | Khách hàng: danh sách, xem nhanh, chi tiết | `/dashboard/customers`, `/customers/quick-view`, `/customers/c-030`, `/customers/khong-co`, `/customers/states` | tối: 01/10/2026 (danh sách, một lượt: `--primary-hover` tối `#ffffff` đổi `#cfd5e0`, probe bắt; sidebar đang chọn chưa theo kịp); 27/09/2026 (danh sách, một lượt: ẩn cột phụ ở khung vừa, số đếm phân trang ở 375px; xem nhanh, một lượt: vùng bấm nút sao chép, hàng có avatar lệch baseline; chi tiết, một lượt: số ô số liệu lệch hàng khi nhãn xuống dòng; `khong-co`, một lượt: gộp về khuôn 404 trong khung; `/states`, một lượt: không lỗi mới; đã theo kịp cả bốn trang) |
 | 4 | Đơn hàng: chi tiết, xem nhanh | `/dashboard/orders/detail`, `/orders/quick-view` | 27/09/2026 (modal chi tiết, một lượt: số tiền ngắt dòng ở 375px; xem nhanh, một lượt: không lỗi skill mới; đã theo kịp cả hai) |
@@ -346,7 +346,10 @@ Lần đo lại 27/09/2026: 29 route, 25 mục đã theo kịp, còn công tắc
   đang chọn là `bg-background` cùng màu nền rê nên rê qua mục nào cũng như vừa chọn (bản sáng); bản tối vá
   `dark:bg-secondary` nhưng `hover:bg-item-hover` vẫn ăn lên mục đang chọn, rê vào mục đang chọn thì nền nhạt đi.
   Theo `layouts/app.md`: đang chọn `bg-secondary font-medium` ở cả hai theme, `hover:` chỉ khi `!isActive`.
-  Kèm theo `index.css` tối: `--primary-hover: #cfd5e0`, `--border-strong: rgba(160, 180, 220, 0.16)` (skill sửa 01/10/2026).
+  Kèm theo `index.css` tối: `--primary-hover: #cfd5e0`, `--border-strong: rgba(160, 180, 220, 0.16)` (skill sửa 01/10/2026; đã theo kịp cùng ngày).
+- Biểu đồ "Việc xong mỗi tuần" ở `/dashboard` (01/10/2026): cột `bg-primary` → `bg-chart-fill`, cột kỳ đang chạy `bg-chart-fill/…`;
+  `index.css` thêm `--chart-fill: var(--primary)` ở `:root`, `color-mix(in srgb, var(--primary) 70%, transparent)` ở `.dark`, map
+  `--color-chart-fill` (`tokens.css`, `components/charts.md`). Thanh tiến độ giữ `bg-primary`.
 - Bỏ số âm (`N11`, skill xong 27/09/2026): dự án còn ~114 dòng (đo lại 27/09/2026 chiều: còn 108, chưa sửa). Theo `principles.md` `N11` và từng file:
   icon / nút trong ô nhập `inset-y-0 my-auto` + cỡ cố định (khối bọc nút mắt thêm `size-10`); vạch chia menu
   (`action-menu-items`, `account-dropdown`, `select`, `date-picker-panel`, `date-time-picker-panel`,

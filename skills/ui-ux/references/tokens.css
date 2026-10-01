@@ -65,6 +65,11 @@
      tối hơn card nên rê vào sẽ chìm xuống gần như không thấy (1.07:1). */
   --item-hover: #f4f4f6;
 
+  /* Mảng dữ liệu của biểu đồ (cột, vùng tô, phần donut). Nền sáng bằng --primary; nền tối hạ
+     còn 70%, xem khối .dark. Thang nhiều chuỗi viết `bg-chart-fill/45`… (components/charts.md).
+     Thanh mảnh (thanh tiến độ) vẫn `bg-primary`. */
+  --chart-fill: var(--primary);
+
   /* Bề mặt của nút phụ, mục sidebar / tab đang chọn. Đậm hơn --item-hover một bậc. */
   --secondary: #e7e8ec;
   --secondary-hover: #dbdce2;
@@ -167,6 +172,11 @@
   /* ============================================ */
 
   --background: #05060f;
+  /* Cột biểu đồ màu nhấn gần trắng 100% là khối chói nhất màn tối, nặng hơn tên trang và hàng
+     số (đã dính 01/10/2026, "Việc xong mỗi tuần" ở ui-ux-dashboard; chủ dự án chọn 70% sau khi
+     xem ba bản đặt cạnh nhau: 100%, 70%, xám ánh xanh). M32. */
+  --chart-fill: color-mix(in srgb, var(--primary) 70%, transparent);
+
   /* Tầng nổi sáng dần: nền trang < card < lớp nổi, mỗi bậc ~1.07–1.09:1 (M21). */
   --surface-overlay: #171a26;
   /* Bóng đậm gấp ~5 bản sáng: bóng 10% trên nền gần đen là không thấy. Thứ thật sự tách lớp
@@ -260,6 +270,7 @@
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
+  --color-chart-fill: var(--chart-fill);
   --color-secondary: var(--secondary);
   --color-secondary-hover: var(--secondary-hover);
   --color-button-hover: var(--button-hover);
