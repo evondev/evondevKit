@@ -96,7 +96,8 @@ Cách xử, theo thứ tự:
 
 Không chỉ tiêu đề: **mô tả hai ba dòng trong cột hẹp** (bước dọc, sidebar, card nhỏ,
 mô tả dưới tiêu đề modal) dính nhiều nhất, vì cột cố định nên dòng nào hụt là hụt ở
-mọi màn. Mọi mô tả được xuống dòng đều `text-pretty`.
+mọi màn. Mọi mô tả được xuống dòng đều `text-pretty`, kể cả tên `line-clamp-2` trong
+danh sách dòng và card (`line-clamp` không tự chia đều dòng). Probe báo "Chữ đơn côi ở dòng cuối".
 
 **`text-balance` chỉ cho chữ đứng một mình trên hàng.** Chữ chung hàng với icon
 hoặc nút ở cuối (câu hỏi accordion có chevron, dòng danh sách có mũi tên, tên có

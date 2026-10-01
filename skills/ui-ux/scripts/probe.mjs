@@ -639,6 +639,40 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     }
   }
 
+  // 6b. Chữ đơn côi ở dòng cuối (`T10`): khối chữ hai, ba dòng mà dòng cuối chỉ còn một chữ ("CRM", "mới").
+  //     Chỉ xét khối chữ lá (không có thẻ con), chưa `text-pretty` / `text-balance`, không bị `line-clamp` cắt.
+  //     Đã dính 01/10/2026: bảng công việc ở 375px, tên việc `line-clamp-2` theo spec danh sách dòng mà spec quên
+  //     `text-pretty`, 6/11 tên trơ một chữ ở dòng hai.
+  const orphanWords = [];
+  for (const block of document.querySelectorAll("p, h1, h2, h3, h4, h5, li, span, a, label, dd, dt, td")) {
+    if (orphanWords.length >= 10 || block.children.length > 0 || !isVisible(block)) continue;
+    const text = block.textContent.replace(/\s+/g, " ").trim();
+    const lastSpace = text.lastIndexOf(" ");
+    if (text.length < 12 || lastSpace < 0) continue;
+    const style = getComputedStyle(block);
+    if (/pretty|balance/.test(`${style.textWrapStyle || ""} ${style.textWrap || ""}`) || style.whiteSpace === "nowrap") continue;
+    if (block.scrollHeight > block.clientHeight + 1 && style.overflow !== "visible") continue;
+    const textNode = block.firstChild;
+    if (!textNode || textNode.nodeType !== Node.TEXT_NODE) continue;
+    const range = document.createRange();
+    range.selectNodeContents(textNode);
+    const lineTops = new Set([...range.getClientRects()].filter((rect) => rect.width > 2).map((rect) => Math.round(rect.top / 4)));
+    if (lineTops.size < 2 || lineTops.size > 3) continue;
+    const rawText = textNode.data;
+    const rawLastSpace = rawText.trimEnd().lastIndexOf(" ");
+    const wordRange = document.createRange();
+    wordRange.setStart(textNode, rawLastSpace + 1);
+    wordRange.setEnd(textNode, rawText.trimEnd().length);
+    const beforeRange = document.createRange();
+    beforeRange.setStart(textNode, Math.max(0, rawLastSpace - 1));
+    beforeRange.setEnd(textNode, rawLastSpace);
+    const wordRect = wordRange.getBoundingClientRect();
+    const beforeRect = beforeRange.getBoundingClientRect();
+    if (wordRect.width && beforeRect.width && wordRect.top >= beforeRect.bottom - 2 && wordRect.width < block.getBoundingClientRect().width * 0.25) {
+      orphanWords.push(`"${text.slice(0, 40)}${text.length > 40 ? "…" : ""}" trơ "${text.slice(lastSpace + 1)}" ở dòng cuối: ${describe(block)}`);
+    }
+  }
+
   // 7. Ô nhập lệch mép với nút rộng hết khung trong cùng form / hộp thoại: màn hẹp nút xếp dọc
   //    rộng hết, còn ô nằm trong cột chữ thụt sau icon (hộp xác nhận có ô gõ lại tên: ô 239px ở
   //    x=96, nút 295px ở x=40, đo 26/09/2026). Nút tự co theo chữ (màn rộng) thì không so.
@@ -1739,6 +1773,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   }
 
   return {
+    orphanWords,
     invisibleFrames,
     mismatchedRadii,
     browserDefaultControls,
@@ -3618,6 +3653,10 @@ function formatReport(results) {
     if (result.orphanPunctuation.length > 0) {
       problems.push(`DẤU CÂU RƠI XUỐNG ĐẦU DÒNG (${result.orphanPunctuation.length} chỗ, dấu phải dính chữ đứng trước):`);
       for (const item of result.orphanPunctuation.slice(0, 5)) problems.push(`  dòng mở đầu "${item.lineStart}": ${item.element}`);
+    }
+    if (result.orphanWords?.length > 0) {
+      problems.push(`CHỮ ĐƠN CÔI Ở DÒNG CUỐI (${result.orphanWords.length} chỗ, thêm text-pretty, tiêu đề ngắn text-balance, T10):`);
+      for (const item of result.orphanWords.slice(0, 5)) problems.push(`  ${item}`);
     }
     if (result.misalignedFields.length > 0) {
       problems.push(`Ô NHẬP LỆCH MÉP VỚI NÚT RỘNG HẾT KHUNG (${result.misalignedFields.length} khung, ô và nút phải cùng mép trái phải):`);
