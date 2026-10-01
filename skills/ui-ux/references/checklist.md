@@ -258,7 +258,7 @@ Kiểm thêm ở 375px:
 Nếu có dark mode:
 
 - [ ] Có chỗ nào dùng màu nhấn làm **đường mảnh** không (viền focus, gạch chân, chỉ báo đang chọn)? (`M22`)
-- [ ] Nền tối: nền trang < card < dropdown / popover có **sáng dần** không? Nền rê và mục đang chọn có **sáng hơn** card (trắng phủ mờ), đang chọn đậm hơn rê một bậc không? Grep `hover:bg-background`, `focus-visible:bg-background`, `data-[highlighted]:bg-background`: phải ra 0, dùng `bg-item-hover` (`M21`, `I10`).
+- [ ] Nền tối: nền trang < card < dropdown / popover có **sáng dần** không? Nền rê và mục đang chọn có **sáng hơn** card (trắng phủ mờ), đang chọn đậm hơn rê một bậc không? Grep `hover:bg-background`, `focus-visible:bg-background`, `data-[highlighted]:bg-background`, và `&& "bg-background` (điều kiện JS: mục đang trỏ, đang chọn): phải ra 0, dùng `bg-item-hover` / `bg-secondary` (`M21`, `I10`). Lớp phủ sau modal là `bg-black/…`, grep `bg-foreground/[2-6]0` trên lớp phủ (`M32`).
 - [ ] Grep `text-white`. Chữ trên nền nhấn phải là `--primary-foreground`.
 - [ ] `.dark` đã khai lại màu nhấn chưa? Chưa là màu nhấn tàng hình.
 - [ ] Có dòng `@custom-variant dark` (Tailwind v4) chưa? Thiếu thì bấm Tối trên máy đang sáng, class `dark:` vẫn sáng (`M31`). `color-scheme` đổi theo theme chưa?

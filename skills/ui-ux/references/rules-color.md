@@ -458,6 +458,8 @@ thì lệch HTML lúc hydrate. Không Next thì script nội tuyến đầu `<he
 | Ô nhập, select, textarea | **giữ viền** `--border-strong`, nền phủ mờ `dark:bg-white/4` | bỏ viền chỉ còn nền mờ là mất ranh giới vùng gõ; mọi bộ lớn đều giữ viền |
 | Nút đảo màu (nền `--foreground`, không phải `--primary`) | về variant `secondary`, hoặc nền trắng mờ + viền | đảo thẳng ra khối trắng chói, nặng hơn cả nút chính. Chỉ màu nhấn được thành khối sáng |
 | Tooltip | **đảo màu**: `bg-foreground text-background` | nền tối thì tooltip sáng, nổi khỏi mọi tầng |
+| Lớp phủ sau modal, panel, sidebar trượt | **`bg-black/…`** ở cả hai theme, không `bg-foreground/…` | `foreground` đảo sang gần trắng, lớp phủ thành màn sương sáng che trang (đã dính 01/10/2026, bản mẫu hộp xác nhận `bg-foreground/40`) |
+| Mục đang trỏ, đang chọn viết bằng điều kiện JS (`isHighlighted && …`, `isActive && …`) | `bg-item-hover` (trỏ), `bg-secondary` (chọn), như class `hover:` | `bg-background` trong điều kiện JS lọt khỏi mọi phép grep `hover:`; ở nền tối thành lỗ khoét trong dropdown (đã dính 01/10/2026, ô chọn, bảng lệnh) |
 | Nền nhạt `-50`, `-100` (badge, banner, chip, ô đáp án) | màu `-500` phủ 10–20%, chữ `-300`/`-400` | nền `-50` sang tối là khối trắng hồng giữa màn đen. Màu mang nghĩa đã có sẵn trong `tokens.css` |
 | Gradient, vệt màu loang trang trí | tắt (`dark:hidden`) hoặc thay bản tối | loang màu sáng trên nền tối là chói |
 | Biểu đồ | cột, vùng tô dùng `--chart-fill` (màu nhấn 70% ở nền tối); thang phân loại có bản tối (`components/charts.md`) | cột màu nhấn gần trắng 100% là khối chói nhất màn (đã dính 01/10/2026); xám "Khác" `slate-300` thành nổi nhất |

@@ -260,12 +260,12 @@ Một lượt, không dự án mồi, không đáp án. Test: người dùng t�
    - Card không viền (được có `ring-1 ring-black/5`), rê chuột thì tăng bóng, không phóng to.
 4. Gửi link cho Claude ở evondevKit rà.
 
-### [ ] 6. Dark mode (3/7)
+### [ ] 6. Dark mode (4/7)
 
 Chạy trên `~/dev/ui-ux-dashboard`. Danh sách mục ở `TESTS.md`, mục "Dark mode".
 
 Luật đã vào skill 01/10/2026 (`DARKMODE.md` Phần 3, `M21`, `M23`, `M31`–`M33`), nên chạy được.
-Xong 01/10/2026: bật dark mode (nhánh `dark-mode`, cổng 5173), bảng khách hàng, khung app + tổng quan. Còn bốn mục ở bước 4.
+Xong 01/10/2026: bật dark mode (nhánh `dark-mode`, cổng 5173), bảng khách hàng, khung app + tổng quan, lớp nổi. Còn ba mục ở bước 4.
 
 1. Tạo nhánh riêng để bản sáng không bị đụng: `git checkout -b dark-mode`.
 2. Phiên Claude Code mới trong `ui-ux-dashboard`, gõ:

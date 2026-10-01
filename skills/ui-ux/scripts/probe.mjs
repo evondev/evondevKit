@@ -2360,8 +2360,9 @@ function findPopupDetails(freezeCss) {
   return { motionless, scrollyLayers };
 }
 
-async function probePopupLayers(page, isMobile) {
+async function probePopupLayers(page, isMobile, isDark = false) {
   const overflowingLayers = new Set();
+  const sunkenSelections = new Set();
   const hollowLayers = new Set();
   const checkedHoverChanges = new Set();
   const heavyLayerLines = new Set();
@@ -2429,6 +2430,8 @@ async function probePopupLayers(page, isMobile) {
     // Ô chọn trong lớp nổi (bộ lọc dạng popover) chỉ hiện lúc mở, nên đo rê vào ô đã chọn ở đây nữa.
     if (!isTap && !isMobile) for (const change of await findCheckedHoverChanges(page)) checkedHoverChanges.add(change);
     if (!isTap) for (const line of await page.evaluate(findHeavyLayerLines)) heavyLayerLines.add(line);
+    // Lớp nổi vừa mở thường tô sẵn mục đầu (đang trỏ): đo mục đó có khoét lỗ ở nền tối không.
+    if (!isTap && isDark) for (const line of await page.evaluate(findSunkenSelections)) sunkenSelections.add(line);
     if (!isTap) {
       const details = await page.evaluate(findPopupDetails, freezeMotionCss);
       for (const layer of details.motionless) motionlessLayers.add(layer);
@@ -2484,6 +2487,7 @@ async function probePopupLayers(page, isMobile) {
     nativeChoices: [...nativeChoices],
     scrollyLayers: [...scrollyLayers],
     lostTriggerIcons: [...lostTriggerIcons],
+    sunkenSelections: [...sunkenSelections],
   };
 }
 
@@ -2821,7 +2825,7 @@ async function probeWidth(browser, options, width) {
   await takeFullScreenshot(page, screenshotPath);
   // Đo dark mode ngay sau khi chụp, lúc trang còn đúng như ảnh: các bước rê, bấm, mở lớp nổi bên dưới
   // có thể đổi trang (đã dính 01/10/2026: tới lượt đo thì biểu đồ tổng quan còn 2/10 khối màu nhấn).
-  const darkModeProblems = options.isDark ? await page.evaluate(findDarkModeProblems) : [];
+  const darkModeProblemSet = new Set(options.isDark ? [...(await page.evaluate(findDarkModeProblems)), ...(await page.evaluate(findSunkenSelections))] : []);
 
   const { drawnRings: drawnFocusRings, unmarkedFocusStops } = isMobile ? { drawnRings: [], unmarkedFocusStops: [] } : await findDrawnFocusRings(page);
 
@@ -2829,10 +2833,14 @@ async function probeWidth(browser, options, width) {
   // tooltip tên tệp tràn màn chỉ lộ khi khối đã mở (27/09/2026).
   const expandedCount = await expandCollapsedBlocks(page);
   const allMeasurements = expandedCount > 0 ? mergeMeasurements(measurements, await page.evaluate(measureInPage, { minTapSize, isMobile })) : measurements;
+  // Khối vừa mở có thể chứa bản mẫu lớp nổi (hộp xác nhận bày tĩnh có lớp phủ): đo dark mode thêm một lần.
+  if (options.isDark && expandedCount > 0) for (const line of [...(await page.evaluate(findDarkModeProblems)), ...(await page.evaluate(findSunkenSelections))]) darkModeProblemSet.add(line);
 
   // Màn chạm không có rê chuột: chỉ đo nền rê ở khổ desktop.
   const hoverStates = isMobile ? { layoutShifts: [], vanishedChildren: [], weakHovers: [], blendedHovers: [], borderHovers: [], overflowingLayers: [] } : await probeHoverStates(page);
-  const popupLayers = await probePopupLayers(page, isMobile);
+  const popupLayers = await probePopupLayers(page, isMobile, options.isDark);
+  for (const line of popupLayers.sunkenSelections) darkModeProblemSet.add(line);
+  const darkModeProblems = [...darkModeProblemSet];
   const heavyDecorativeBorders = options.isDark ? [] : await page.evaluate(findHeavyDecorativeBorders);
   const scrollbarStyles = await page.evaluate(findScrollbarStyles);
   const heavyNavLinks = await page.evaluate(findHeavyNavLinks);
@@ -2933,6 +2941,46 @@ function findHeavyDecorativeBorders() {
   return [...findings.values()];
 }
 
+// Mục đang chọn / đang trỏ tô đúng nền trang (`isHighlighted && "bg-background"`, `aria-current` + `bg-background`)
+// mà khung chứa nó sáng hơn: ở nền tối nền trang tối hơn card và lớp nổi, mục chọn thành lỗ khoét (M21). Class
+// viết trong điều kiện JS nên không grep được `hover:bg-background`; đo màu. Đã dính 01/10/2026, ô chọn và bảng
+// lệnh ở /components. Chỉ gọi ở nền tối: nền sáng thì nền trang tối hơn card là đúng chiều.
+function findSunkenSelections() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1;
+  canvas.height = 1;
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  const readHex = (cssColor) => {
+    context.clearRect(0, 0, 1, 1);
+    context.fillStyle = "rgba(0,0,0,0)";
+    context.fillStyle = cssColor;
+    context.fillRect(0, 0, 1, 1);
+    const [red, green, blue, alpha] = context.getImageData(0, 0, 1, 1).data;
+
+    return alpha < 240 ? null : `#${[red, green, blue].map((channel) => channel.toString(16).padStart(2, "0")).join("")}`;
+  };
+  const pageHex = readHex(getComputedStyle(document.documentElement).getPropertyValue("--background").trim());
+  if (!pageHex) return [];
+  const findings = new Set();
+  const selector = "[role=option], [role=menuitem], [role=menuitemradio], [role=tab], [aria-selected=true], [aria-current]:not([aria-current=false]), [data-highlighted], [data-selected=true]";
+  for (const element of document.querySelectorAll(selector)) {
+    if (findings.size >= 3) break;
+    const rect = element.getBoundingClientRect();
+    if (rect.width < 24 || rect.height < 16 || readHex(getComputedStyle(element).backgroundColor) !== pageHex) continue;
+    let ancestor = element.parentElement;
+    let ancestorHex = null;
+    while (ancestor && !ancestorHex) {
+      ancestorHex = readHex(getComputedStyle(ancestor).backgroundColor);
+      ancestor = ancestor.parentElement;
+    }
+    if (!ancestorHex || ancestorHex === pageHex) continue;
+    const label = (element.textContent || element.getAttribute("aria-label") || "").trim().replace(/\s+/g, " ").slice(0, 30);
+    findings.add(`mục đang chọn / đang trỏ tô nền trang ${pageHex}, tối hơn khung ${ancestorHex}, như lỗ khoét: dùng --item-hover (trỏ, rê) hoặc --secondary (đang chọn) (M21): ${element.getAttribute("role") || element.tagName.toLowerCase()} "${label}"`);
+  }
+
+  return [...findings];
+}
+
 // Chỉ chạy với `--dark` (M21, M31, M32, V4). Bốn kiểu lỗi chỉ người bật tối mới thấy:
 // - trang vẫn sáng: dark mode chỉ có khai báo, hoặc `dark:` chạy theo máy mà token theo class;
 // - mảng nền sáng giữa màn tối: badge, avatar, banner `-50`/`-100`, toast của thư viện chưa đọc token;
@@ -3016,6 +3064,11 @@ function findDarkModeProblems() {
     const background = readRgba(style.backgroundColor);
     // Cột biểu đồ màu nhấn 100%: cao hơn nút (≥ 48px), hẹp như cột. Nút chính cao 40px nên không tính.
     if (background && background.alpha > 0.95 && toHex(background) === primaryHex && rect.height >= 48 && rect.width <= 64) solidAccentBars.push(element);
+    // Lớp phủ sáng mờ phủ vùng lớn: `bg-foreground/40` sau modal, ở nền tối foreground gần trắng nên thành màn
+    // sương sáng (đã dính 01/10/2026, bản mẫu hộp xác nhận ở /components). Lớp phủ phải là `bg-black/…` (M32).
+    if (background && background.alpha >= 0.2 && background.alpha < 0.5 && readLuminance(background) > 0.6 && rect.width >= 300 && rect.height >= 150 && findings.length < 8) {
+      findings.push(`lớp phủ sáng mờ ${toHex(background)} ${Math.round(background.alpha * 100)}% phủ ${Math.round(rect.width)}×${Math.round(rect.height)}px: lớp phủ sau modal, panel phải là bg-black/…, không bg-foreground/… (M32): ${describe(element)}`);
+    }
     if (background && background.alpha >= 0.5 && readLuminance(background) > 0.6) {
       const hex = toHex(background);
       if (!allowedBrights.includes(hex) && !brightColors.has(hex) && brightColors.size < 5) {
@@ -3391,7 +3444,7 @@ function listMustReportItems(results, sweepSteps) {
     for (const item of (result.blendedHovers || []).filter((line) => !line.includes("trùng màu viền"))) addItem(width, `nền rê tan vào nền khác (soi: Gu): ${item}`);
     // Dark mode làm dở là Hỏng (V4): mảng sáng giữa màn tối. Trang không lật thì dark mode chỉ có khai
     // báo, V4 bảo bỏ lượt tối chứ không báo lỗi, nên không vào đây.
-    for (const item of (result.darkModeProblems || []).filter((line) => line.startsWith("mảng nền sáng"))) addItem(width, `dark mode làm dở: ${item.replace(/, \d+×\d+px/, "")}`);
+    for (const item of (result.darkModeProblems || []).filter((line) => /^(mảng nền sáng|lớp phủ sáng mờ)/.test(line))) addItem(width, `dark mode làm dở: ${item.replace(/, \d+×\d+px/, "")}`);
     for (const item of result.untransitionedMotion || []) addItem(width, `scale / translate / rotate không chạy chuyển động: ${item}`);
     for (const item of result.smallTapTargets.filter((target) => target.isBelowFloor)) addItem(width, `chỗ bấm dưới 24px: ${item.element}`);
   }

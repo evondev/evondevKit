@@ -100,7 +100,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 10 | Trợ lý AI | `/dashboard/assistant`, `/assistant/states` | 27/09/2026 (một lượt: không lỗi skill mới, đã theo kịp; sửa báo nhầm dấu câu sau `<code>` của probe) |
 | 11 | Tài liệu (cây thư mục) | `/dashboard/projects/documents`, `/documents/states` | 27/09/2026 (một lượt: vùng bấm "Thử lại", gộp luật chung vào `N9`; sửa báo nhầm focus ô file ẩn; route này là khu tải tệp, cây thư mục nằm ở `/components`: tooltip tên dài tràn màn ở 375px; đã theo kịp) |
 | 12 | Thông báo | `/dashboard/notifications/states` | 27/09/2026 (một lượt: không lỗi hình; "Đánh dấu đã đọc" chưa nối xử lý, là logic dự án, `N10`) |
-| 13 | Thư viện component | `/components` | 26/09/2026 (ô số lượng, ba lượt; tên sửa tại chỗ, hai lượt, đã theo kịp; tiêu đề cột sắp xếp, hai lượt, đã theo kịp) |
+| 13 | Thư viện component | `/components` | tối: 01/10/2026 (lớp nổi, một lượt: `--secondary-hover` tối 0.11 → 0.13; lớp phủ `bg-foreground/40` thành màn sương sáng và mục trỏ `isHighlighted && "bg-background"` khoét lỗ, thêm vào `M32`, probe bắt cả hai, đo cả lúc lớp nổi mở); 26/09/2026 (ô số lượng, ba lượt; tên sửa tại chỗ, hai lượt, đã theo kịp; tiêu đề cột sắp xếp, hai lượt, đã theo kịp) |
 | 14 | Tạo dự án (khu "Cài đặt nâng cao" thu gọn) | `/dashboard/projects/new` | 26/09/2026 (hai lượt, đã theo kịp) |
 | 15 | Form tạo workspace ba bước | `/workspaces/new` | 26/09/2026 (ba lượt, đã theo kịp) |
 | 16 | Cài đặt thông báo (và hàng tab khu cài đặt) | `/dashboard/settings`, `/settings/notifications`, `/settings/notifications/states` | 26/09/2026 (hai lượt, đã theo kịp; 27/09/2026 công tắc chưa nới vùng bấm, dự án chưa theo kịp) |
@@ -350,6 +350,10 @@ Lần đo lại 27/09/2026: 29 route, 25 mục đã theo kịp, còn công tắc
 - Biểu đồ "Việc xong mỗi tuần" ở `/dashboard` (01/10/2026): cột `bg-primary` → `bg-chart-fill`, cột kỳ đang chạy `bg-chart-fill/…`;
   `index.css` thêm `--chart-fill: var(--primary)` ở `:root`, `color-mix(in srgb, var(--primary) 70%, transparent)` ở `.dark`, map
   `--color-chart-fill` (`tokens.css`, `components/charts.md`). Thanh tiến độ giữ `bg-primary`.
+- Lớp nổi ở nền tối (01/10/2026, `/components`): `select-option-row.tsx` và `command-palette-option.tsx` đổi
+  `isHighlighted && "bg-background"` / `isActive && "bg-background"` sang `bg-item-hover`; `confirm-dialog-preview.tsx` và
+  `confirm-dialog.tsx` lớp phủ `bg-foreground/40` sang `bg-black/40` (bỏ luôn vá `dark:backdrop:bg-black/60` nếu muốn một
+  giá trị); `index.css` `.dark` `--secondary-hover: rgb(255 255 255 / 0.13)`.
 - Bỏ số âm (`N11`, skill xong 27/09/2026): dự án còn ~114 dòng (đo lại 27/09/2026 chiều: còn 108, chưa sửa). Theo `principles.md` `N11` và từng file:
   icon / nút trong ô nhập `inset-y-0 my-auto` + cỡ cố định (khối bọc nút mắt thêm `size-10`); vạch chia menu
   (`action-menu-items`, `account-dropdown`, `select`, `date-picker-panel`, `date-time-picker-panel`,

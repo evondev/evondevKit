@@ -192,7 +192,9 @@
      Bản cũ #010207 (chìm dưới cả nền trang, 29/09/2026) gần như không tách khỏi nền: bỏ. */
   --item-hover: rgb(255 255 255 / 0.05);
   --secondary: rgb(255 255 255 / 0.08);
-  --secondary-hover: rgb(255 255 255 / 0.11);
+  /* Rê vào đậm thêm 5%: chênh 12 mức như bản sáng (#e7e8ec → #dbdce2). 0.11 chỉ chênh 7 mức, nút
+     "Xem tất cả", "Huỷ" rê vào gần như không đổi (probe, /components, 01/10/2026). */
+  --secondary-hover: rgb(255 255 255 / 0.13);
 
   --background-hover: #171a26;
   --surface-hover: #141722;  /* sáng hơn --surface một chút, luật I10 */

@@ -85,7 +85,7 @@ vẫn `h-11 md:h-10`, xem `budgets.md`.
 ```
 
 - **`min-w`** cho khối bọc bảng, đủ để mọi cột thở. Không có nó thì bảng vẫn co.
-- **`whitespace-nowrap`** cho ô ngày tháng, số, trạng thái. Chữ dài như tên hay mô tả thì cho xuống dòng bình thường.
+- **`whitespace-nowrap`** cho ô ngày tháng, số, trạng thái, **tên người**. Tên người xuống dòng thì cột co còn một chữ ("Nguyễn / Anh / Tuấn"), cắt đuôi thì mất tên gọi (`layouts/app.md`, bảng nhóm theo trạng thái). Chỉ mô tả, tiêu đề dài mới cho xuống dòng.
 - Lề đặt trên **khối bên trong**, không đặt trên khung cuộn. Xem R6.
 - Cuộn ngang thì **bắt buộc** ghim cột nhận diện (thường là cột đầu) bằng `sticky left-0` kèm nền `--surface`, cột ghim không quá ~40% khung. Cột đầu rộng hơn thế (tên + email) thì đừng cuộn: **dưới `sm`, bảng quản lý thành danh sách dòng** (`layouts/app.md`, mục Bảng dữ liệu). Cuộn mà không ghim thì cuộn một nhịp là mất tên, các ô còn lại không biết của ai (đã dính 25/09/2026).
 

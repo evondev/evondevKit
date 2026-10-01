@@ -226,3 +226,16 @@ một dự án, và chính mẫu `components/accordion.md`).
   `transition-[opacity,scale,translate]`, `transition-[rotate,color]`.
 - Probe báo mục "Scale / translate / rotate không chạy chuyển động" (hạng Hỏng).
 
+
+## W11. `not-sr-only` trả `white-space` về `normal`, nuốt `whitespace-nowrap` cùng thẻ
+
+`not-sr-only` không chỉ gỡ `sr-only`: nó ghi lại `position`, `width`, `height`, `padding`,
+`margin`, `overflow`, `clip-path` **và `white-space: normal`**. Viết
+`sr-only whitespace-nowrap @4xl:not-sr-only` thì từ `@4xl` utility có variant đứng sau trong
+CSS, `normal` thắng, chữ lại xuống dòng. Đặt `nowrap` ở ô cha cũng vô ích: thẻ con đã khai
+`normal` thì không kế thừa nữa (đã dính 01/10/2026: cột người phụ trách co còn 126px, "Nguyễn /
+Anh / Tuấn" ba dòng, dòng bảng cao thấp lởm chởm).
+
+- Ẩn theo chiều ngược lại: `whitespace-nowrap @max-4xl:sr-only` (bề rộng nào không ẩn thì không
+  cần `not-sr-only`). Cùng lý do, padding / margin khai trên thẻ đó cũng bị `not-sr-only` xoá.
+- Probe báo mục "Cột chữ của bảng bị ép xuống dòng".
