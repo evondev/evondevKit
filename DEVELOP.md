@@ -9,32 +9,38 @@ Ghi chú cho người sửa skill. Người dùng skill đọc `README.md`.
 ├── plugin.json           khai báo plugin "evon"
 └── marketplace.json      marketplace "evondevkit", cài được cả local lẫn GitHub
 skills/
-└── ui-ux/                → gọi bằng /evon:ui-ux
-    ├── SKILL.md          bộ định tuyến: 4 câu hỏi vào việc, luật phạm vi, bảng mở doc
-    ├── scripts/
-    │   ├── probe.mjs     mở trang thật ở 6 bề rộng, đo lỗi đo được, chụp ảnh, quét bề rộng
-    │   └── lint-skill.mjs soát câu chữ của skill trước khi commit
+├── ui-ux/                → gọi bằng /evon:ui-ux
+│   ├── SKILL.md          bộ định tuyến: 4 câu hỏi vào việc, luật phạm vi, bảng mở doc
+│   ├── scripts/
+│   │   ├── probe.mjs     mở trang thật ở 6 bề rộng, đo lỗi đo được, chụp ảnh, quét bề rộng
+│   │   └── lint-skill.mjs soát câu chữ của skill trước khi commit
+│   └── references/
+│       ├── principles.md           N — mười hai nguyên tắc đứng sau mọi luật, phép thử cho thứ chưa có mẫu
+│       ├── review.md               V — soi UI đang có, ba chế độ, bảng trước/sau
+│       ├── design-process.md       U — thiết kế từ đầu: brief, việc chính, wireframe, dựng
+│       ├── locked-rules.md         luật chủ dự án đã chốt, lý lẽ đã bị bác
+│       ├── rules-color.md          M — màu, viền, bóng, dark mode, token
+│       ├── rules-type.md           T — chữ, font, xuống dòng, cắt chữ, copy, tiếng Anh
+│       ├── rules-form.md           F — khối, lưới, bo góc, khoảng thở, icon
+│       ├── rules-state.md          I — nút, hover, focus, danh sách, modal
+│       ├── responsive.md           R — màn hẹp, ngưỡng 375px
+│       ├── system.md               D — đề nhiều hơn một màn, dựng design system trước (D9)
+│       ├── refactor.md             L — refactor codebase đã có
+│       ├── tailwind-v4-traps.md    W — bẫy Tailwind v4 khi có CSS cũ
+│       ├── styles.md               P — phong cách: flat, nổi, glass, gradient, tối; tương phản
+│       ├── budgets.md              ngân sách, nhịp, thang cỡ chữ
+│       ├── brand-tokens.md         bảng màu, font, cách đổi thương hiệu
+│       ├── tokens.css              bộ token copy thẳng được
+│       ├── checklist.md            3 cổng kiểm
+│       ├── components/             24 khối code thật
+│       └── layouts/                thư viện bố cục + code mẫu đã duyệt
+└── landing/              → gọi bằng /evon:landing, dùng chung token, component, probe của ui-ux qua ../ui-ux/
+    ├── SKILL.md          lối, ba câu hỏi (câu 3: mục tiêu của trang), bốn bước E1–E4
     └── references/
-        ├── principles.md           N — mười hai nguyên tắc đứng sau mọi luật, phép thử cho thứ chưa có mẫu
-        ├── review.md               V — soi UI đang có, ba chế độ, bảng trước/sau
-        ├── design-process.md       U — thiết kế từ đầu: brief, việc chính, wireframe, dựng
-        ├── locked-rules.md         luật chủ dự án đã chốt, lý lẽ đã bị bác
-        ├── rules-color.md          M — màu, viền, bóng, dark mode, token
-        ├── rules-type.md           T — chữ, font, xuống dòng, cắt chữ, copy, tiếng Anh
-        ├── rules-form.md           F — khối, lưới, bo góc, khoảng thở, icon
-        ├── rules-state.md          I — nút, hover, focus, danh sách, modal
-        ├── responsive.md           R — màn hẹp, ngưỡng 375px
-        ├── system.md               D — đề nhiều hơn một màn, dựng design system trước (D9)
-        ├── refactor.md             L — refactor codebase đã có
-        ├── tailwind-v4-traps.md    W — bẫy Tailwind v4 khi có CSS cũ
-        ├── styles.md               P — phong cách: flat, nổi, glass, gradient, tối; tương phản
-        ├── budgets.md              ngân sách, nhịp, thang cỡ chữ
-        ├── brand-tokens.md         bảng màu, font, cách đổi thương hiệu
-        ├── tokens.css              bộ token copy thẳng được
-        ├── checklist.md            3 cổng kiểm
-        ├── components/             24 khối code thật
-        └── layouts/                thư viện bố cục + code mẫu đã duyệt
-archive/                  nhánh landing đã gỡ khỏi skill, giữ lại để tham khảo
+        ├── goals.md      G — mục tiêu → section nào bật, thứ tự, chữ nút chính, pricing
+        ├── sections.md   K — chín loại section, mỗi loại 1–3 biến thể có code
+        └── page-rules.md H — CTA, khung và nhịp, thang chữ, chữ hero, ảnh sản phẩm, dữ liệu giả
+archive/                  nhánh landing cũ đã gỡ khỏi ui-ux, giữ lại để tham khảo
 ```
 
 Tài liệu làm việc: `TESTS.md` (đề test và kết quả), `REVIEW.md` (quy trình rà trang),

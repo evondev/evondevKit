@@ -332,9 +332,8 @@ của trang.
 3. **Bộ section nền (chín loại):** header, hero, social proof (logo, con số, testimonial),
    tính năng, cách hoạt động, pricing, FAQ, CTA cuối trang, footer. Mỗi loại có 2–3 biến thể,
    không hơn. Bảng so sánh, video demo, integrations, changelog để bản sau.
-4. **Pricing chỉ ba dạng:** một gói; ba gói nổi gói giữa; ba gói có nút chuyển tháng / năm
-   kèm gói Enterprise "liên hệ". Tính tiền theo mức dùng hay bảng so sánh tính năng dài thì
-   về một bảng thường dưới các card, chưa viết luật riêng.
+4. ~~**Pricing chỉ ba dạng**~~ — bỏ sau khi tra (dưới): pricing đi theo mục tiêu, `G4` trong
+   `skills/landing/references/goals.md`.
 5. **Luật chung cho mọi section:**
    - Một CTA chính, lặp lại dọc trang (hero, giữa trang, cuối trang), cùng chữ cùng đích.
    - Một màu nhấn.
@@ -346,7 +345,81 @@ của trang.
    section và kiểu hero) → chọn → dựng. Dùng lại probe để đo 375 tới 1920px.
 7. **Test ba đề trên dự án trống**, mỗi đề một mục tiêu khác nhau (đăng ký dùng thử, đặt lịch
    demo, danh sách chờ). Soi: section bật đúng theo mục tiêu, CTA chính thống nhất, hero có
-   chữ thật, pricing đúng một trong ba dạng. Ghi vào `TESTS.md`.
+   chữ thật, pricing đúng `G4`. Ghi vào `TESTS.md`. Cách chạy ở mục "Test bản đầu" dưới.
+
+**Bản đầu đã viết (01/10/2026):** `skills/landing/` gồm `SKILL.md` (lối, ba câu hỏi, bốn bước
+`E1`–`E4`), `references/goals.md` (`G`), `sections.md` (`K`), `page-rules.md` (`H`). Dùng chung
+token, component, probe, thanh wireframe với `ui-ux` qua `../ui-ux/`. `ui-ux` chuyển đề landing
+sang skill này. Mọi luật gắn ⚑.
+
+**Kết quả tra bước 1 (01/10/2026):** 20 trang đang chạy, 5 mỗi mục tiêu, chụp ở 1440px. Mẫu
+"dùng thử" nghiêng về công cụ cho dev. Bảng đếm số trang có section đó:
+
+| Section | Dùng thử | Mua luôn | Đặt demo | Danh sách chờ |
+| --- | --- | --- | --- | --- |
+| Nhãn nhỏ trên H1 (tin mới, "chưa mở") | 5 | 4 | 3 (thanh trên header) | 5 |
+| Hero chữ canh trái, đa số chia đôi | 4 | 2 (3 canh giữa) | 4 | 5 |
+| Ảnh sản phẩm thật trong màn đầu | 4 | 4 | 4 | 4 |
+| Dải logo ngay dưới hero | 5 | 2 (4 ghi số người dùng ngay hero) | 4 | 0 |
+| Tính năng dạng lưới card | 5 | 2 (mỗi trang một kiểu) | 4 (3 × 2) | 2 |
+| Cách hoạt động, bước đánh số | 1 | 0 | 1 | 3 |
+| Testimonial (tên, chức danh, đa số có ảnh) | 5 | 5 | 5 | 0 |
+| Pricing ngay trên landing | 0 (5 để trang riêng) | 4 | 0 | 0 |
+| FAQ trên landing | 1 | 3 (cạnh pricing) | 0 | 2 |
+| CTA cuối trang (tiêu đề + nút, canh giữa) | 4 | 3 | 5 | 3 |
+
+Lệch so với hướng chốt ở trên:
+
+- **Pricing ba dạng không khớp số đông.** Gói giữa nổi: 1/5 trang giá dùng thử, 0/5 mua luôn,
+  2/5 demo. Trang giá dùng thử là 4 gói (Free, hai gói trả phí, Enterprise "liên hệ") kèm bảng
+  so sánh, 0/5 có nút tháng / năm chung. Mua luôn: 2–4 card, ghi rõ "trả một lần", nút ở hero
+  dẫn xuống pricing chứ không thẳng tới thanh toán, testimonial ngay sau pricing (4/4).
+- **CTA chính lặp giữa trang hiếm** (dùng thử 2/5). Số đông: header + hero + cuối trang. Cùng
+  một đích 5/5, cùng một chữ khoảng 3/5.
+- **Cách hoạt động gần như chỉ ở danh sách chờ** (3/5), các mục tiêu khác 0–1/5.
+- **Danh sách chờ:** chữ trên nút gọi đúng việc ("Join the waitlist", 5/5, không "Get
+  started"), một dòng nhỏ dưới nút (4/5), form một ô email ngay hero (3/5). Không có số liệu
+  hay testimonial thật.
+- **Đặt demo:** header đúng một nút đặc là nút demo (5/5), footer nền tối (5/5), testimonial
+  hai khối mỗi trang.
+- Số đo chung: trang dài 8–12k px (danh sách chờ 2–6k), khoảng giữa các section 100–160px,
+  nội dung rộng 1200–1300px, H1 thường 64px, 0–1 màu nhấn.
+
+**Test bản đầu** (cách chạy như bước 2: dự án trống, đáp án viết trước, phiên Claude Code mới):
+
+1. Mỗi đề một dự án Next trống trong `~/dev/audit-skills/`:
+
+   ```bash
+   cd ~/dev/audit-skills
+   npx create-next-app@latest landing-<ten> --ts --tailwind --app --eslint --use-npm --yes
+   ```
+
+2. Viết đáp án trước ở `~/dev/phase2-dapan/landing/<ten>.md`: mục tiêu, section phải có và phải
+   không có (theo `G1`), chữ nút chính, hero kiểu gì.
+3. Ba đề, **không** nói mục tiêu, để xem câu 3 đoán đúng không:
+
+   ```
+   Đọc ~/dev/evondevKit/skills/landing/SKILL.md rồi dựng landing page cho Lịch Hẹn, app đặt lịch cho tiệm làm tóc và spa nhỏ: khách tự đặt qua link, chủ tiệm xem lịch theo thợ, tự nhắn nhắc khách trước giờ hẹn. Có gói miễn phí cho 1 thợ.
+   ```
+
+   ```
+   Đọc ~/dev/evondevKit/skills/landing/SKILL.md rồi dựng landing page cho Sổ Công, phần mềm chấm công và tính lương cho nhà máy 200–2000 công nhân, bán cho phòng nhân sự. Đội sales tư vấn và báo giá theo từng nhà máy.
+   ```
+
+   ```
+   Đọc ~/dev/evondevKit/skills/landing/SKILL.md rồi dựng landing page cho Ghi Chép, app ghi âm cuộc họp rồi tự tóm tắt bằng tiếng Việt. Chưa ra mắt, đang gom người dùng thử đợt đầu tháng 11.
+   ```
+
+   Đáp án mục tiêu: dùng thử, đặt demo, danh sách chờ.
+4. Soi ở mỗi cổng:
+   - **Cổng 1:** đoán đúng mục tiêu chưa, bảng section đúng cột `G1` chưa, chữ nút chính theo
+     `G2`, dòng 6 của brief có liệt kê thứ giả (logo, số khách, testimonial).
+   - **Cổng 2:** A, B, C khác nhau ở hero và thứ tự section; ảnh hero là màn app dựng thật, không
+     khối xám; đề danh sách chờ có nhóm Trạng thái (Mặc định, Đã gửi, Lỗi).
+   - **Bản dựng:** một nút chính cùng chữ cùng đích ở header, hero, CTA cuối (`H1`); H1 nói việc
+     cụ thể (`H4`); padding các section bằng nhau (`H2`); comment `GIẢ:` trên mọi chỗ giả
+     (`H9`); probe sạch ở 375; tin giao có ba dòng của mục 4 `SKILL.md`.
+5. Ghi kết quả vào đáp án, gửi link localhost cho Claude rà theo `REVIEW.md`.
 
 ---
 
