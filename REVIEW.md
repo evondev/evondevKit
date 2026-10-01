@@ -326,6 +326,8 @@ chấm biểu đồ doanh thu); `-left-[5px]` của cây thư mục là chỗ gi
 Ghi dồn ở đây qua các lượt, để người dùng sửa dự án một lần. Đo lại trên trang thật khi người
 dùng báo đã sửa (bước 7); mục nào đã theo kịp thì xoá khỏi danh sách, ghi vào cột "Rà ngày".
 Lần đo lại 27/09/2026: 29 route, 25 mục đã theo kịp, còn công tắc và bỏ số âm (`N11`).
+Quét tối 01/10/2026 (`probe --dark`, 57 route, 375 và 1280px): mọi mục dark mode các lượt trước đã theo kịp
+(nền rê nút chính, viền đậm, `--chart-fill`, ô chọn, bảng lệnh, khung chờ, rãnh, dải khoảng ngày, `--secondary-hover`); 43 route sạch.
 
 - Công tắc ở `/dashboard/settings/notifications` (27/09/2026, probe 375px; đo lại cùng ngày vẫn còn): bảy công
   tắc 44×24 không có vùng bấm nới ra. Skill ghi `relative before:absolute before:-inset-2` trên nút
@@ -342,22 +344,13 @@ Lần đo lại 27/09/2026: 29 route, 25 mục đã theo kịp, còn công tắc
   (`layouts/app.md`, "Trang chi tiết bản ghi"): ở 1280px một cột. `detail-list.tsx` bỏ prop `isStacked` /
   `isNarrow`, `<dl>` là `@container`, hàng `@sm:grid-cols-[7rem_…] @xl:grid-cols-[10rem_…]`
   (`description-list.md`).
-- Sidebar mục đang chọn (`sidebar-nav-link.tsx`, `sidebar-nav-item-classes.ts`; đo 01/10/2026 ở `/dashboard/customers`):
-  đang chọn là `bg-background` cùng màu nền rê nên rê qua mục nào cũng như vừa chọn (bản sáng); bản tối vá
-  `dark:bg-secondary` nhưng `hover:bg-item-hover` vẫn ăn lên mục đang chọn, rê vào mục đang chọn thì nền nhạt đi.
-  Theo `layouts/app.md`: đang chọn `bg-secondary font-medium` ở cả hai theme, `hover:` chỉ khi `!isActive`.
-  Kèm theo `index.css` tối: `--primary-hover: #cfd5e0`, `--border-strong: rgba(160, 180, 220, 0.16)` (skill sửa 01/10/2026; đã theo kịp cùng ngày).
-- Biểu đồ "Việc xong mỗi tuần" ở `/dashboard` (01/10/2026): cột `bg-primary` → `bg-chart-fill`, cột kỳ đang chạy `bg-chart-fill/…`;
-  `index.css` thêm `--chart-fill: var(--primary)` ở `:root`, `color-mix(in srgb, var(--primary) 70%, transparent)` ở `.dark`, map
-  `--color-chart-fill` (`tokens.css`, `components/charts.md`). Thanh tiến độ giữ `bg-primary`.
-- Lớp nổi ở nền tối (01/10/2026, `/components`): `select-option-row.tsx` và `command-palette-option.tsx` đổi
-  `isHighlighted && "bg-background"` / `isActive && "bg-background"` sang `bg-item-hover`; `confirm-dialog-preview.tsx` và
-  `confirm-dialog.tsx` lớp phủ `bg-foreground/40` sang `bg-black/40` (bỏ luôn vá `dark:backdrop:bg-black/60` nếu muốn một
-  giá trị); `index.css` `.dark` `--secondary-hover: rgb(255 255 255 / 0.13)`.
-- Khung chờ (01/10/2026, `/dashboard/tasks/states` và mọi chỗ có `animate-pulse`): vệt `bg-background` → `bg-foreground/5`.
-- Rãnh và dải (01/10/2026, `/dashboard/revenue`): rãnh thanh tiến độ ("Doanh thu theo kênh", thanh tải tệp, vòng donut tổng 0)
-  `bg-background` → `bg-foreground/5`; `calendar/get-day-cell-classes.ts` dải giữa khoảng `isInRange && "bg-background"` →
-  `bg-item-hover`; bộ chọn giờ: dải chọn và ô đang chọn của cột → `bg-item-hover`.
+- Sidebar mục đang chọn, **bản sáng** (`sidebar-nav-link.tsx`; đo 01/10/2026): đang chọn vẫn `bg-background`, trùng nền
+  rê `hover:bg-item-hover` (bản sáng cùng `#f4f4f6`), rê qua mục nào cũng như vừa chọn. Bản tối đã vá `dark:bg-secondary`.
+  Theo `layouts/app.md`: đang chọn `bg-secondary font-medium` ở cả hai theme, bỏ hai class `dark:`.
+- Màu hổ phách tối (01/10/2026, skill đổi cùng ngày; `quét tối` 57 route báo 13 route): 14 chỗ `dark:text-amber-400` /
+  `dark:text-amber-300` (chữ "Quá hạn", "Khẩn cấp", icon, avatar amber) → `dark:text-orange-400`; `--warning` tối nếu dùng
+  → `#ff8904`. Lý do: `M7`, "Bản tối chọn theo sắc".
+- Bản mẫu hộp xác nhận ở `/components` (`confirm-dialog-preview.tsx`): lớp phủ `bg-foreground/40` → `bg-black/40` (hộp thật đã sửa).
 - Bỏ số âm (`N11`, skill xong 27/09/2026): dự án còn ~114 dòng (đo lại 27/09/2026 chiều: còn 108, chưa sửa). Theo `principles.md` `N11` và từng file:
   icon / nút trong ô nhập `inset-y-0 my-auto` + cỡ cố định (khối bọc nút mắt thêm `size-10`); vạch chia menu
   (`action-menu-items`, `account-dropdown`, `select`, `date-picker-panel`, `date-time-picker-panel`,

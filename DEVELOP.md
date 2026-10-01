@@ -71,7 +71,17 @@ Skill đã có người dùng (01/10/2026): **lần push nào cũng tăng `versi
 2. Trước khi push, tăng `version` một nấc theo bảng, tính cho **cả các commit chưa push**:
    trong đó có một mốc lớn thì tăng minor. Commit tăng version kèm luôn commit cuối, hoặc
    một commit riêng.
-3. Người dùng lấy bản mới bằng `/plugin marketplace update evondevkit`.
+3. Push xong thì gắn tag và tạo GitHub Release, người bấm Watch → Releases sẽ được báo:
+
+   ```bash
+   git tag v0.3.1 && git push origin v0.3.1
+   gh release create v0.3.1 --title "0.3.1" --notes "…"
+   ```
+
+   Ghi chú 2–4 dòng viết cho người dùng: họ thấy gì khác, không chép log commit. Máy chưa có
+   `gh` thì `brew install gh` rồi `gh auth login`, hoặc tạo Release trên web từ tag vừa push.
+4. Người dùng lấy bản mới bằng `/plugin marketplace update evondevkit` (hoặc tự lấy nếu đã bật
+   auto-update), bên Cursor / Codex / OpenCode bằng `npx skills update`.
 
 Thêm plugin thứ hai thì tạo thư mục riêng cho nó, thêm một mục vào `plugins` trong
 `.claude-plugin/marketplace.json`, và đổi `source` của `evon` từ `"./"` sang thư mục của nó.

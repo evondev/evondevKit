@@ -8,7 +8,9 @@ Xem giới thiệu: [evondev-uiux.vercel.app/ui-ux](https://evondev-uiux.vercel.
 > **Bản beta.** Dùng tốt cho giao diện app nền sáng, đề tiếng Việt: đã qua 70 đề test trên dự
 > án thật. Đang test: thêm dark mode cho app đang có.
 > Skill còn được sửa liên tục từ các lượt test, lấy bản mới bằng
-> `/plugin marketplace update evondevkit`.
+> `/plugin marketplace update evondevkit`. Muốn được báo khi có bản mới: trên GitHub bấm
+> **Watch → Custom → Releases**, mỗi bản có vài dòng ghi đổi gì ở
+> [Releases](https://github.com/evondev/evondevKit/releases).
 >
 > Skill không hoàn hảo, nó làm tốt nhất có thể theo bộ luật của nó. Gu mỗi người một khác, dự án
 > nào cũng có cái riêng: dựng xong bạn chỉnh tay hay nhắn AI sửa đều được.
@@ -24,6 +26,9 @@ Xem giới thiệu: [evondev-uiux.vercel.app/ui-ux](https://evondev-uiux.vercel.
 ```
 
 Gọi bằng `/evon:ui-ux`. Lấy bản mới: `/plugin marketplace update evondevkit`.
+
+Bật tự cập nhật cho khỏi gõ lệnh: `/plugin` → Marketplaces → `evondevkit` → Enable
+auto-update. Từ đó mỗi lần mở Claude Code tự lấy bản mới.
 
 ## Dùng
 
