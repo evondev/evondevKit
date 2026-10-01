@@ -255,6 +255,16 @@ dòng đó."* Dừng chờ.
     bấm thì ra bốn link. Bốn trạng thái ít đổi, không đáng chiếm bốn nút trên thanh.
   - **Màu là công tắc** có nhãn "Màu" đứng trước, không phải segmented: chỉ còn hai nấc.
     Nhóm Nhấn, Nav không cần nhãn: chữ trong nút đã tự nói.
+  - **Chữ trên thanh và khung lý do theo tiếng người dùng đang viết (`T27`)**, không theo
+    `T24`: đó là lời skill nói với người dùng, không phải chữ của sản phẩm. Mẫu HTML dưới viết
+    tiếng Việt; đề tiếng Anh thì đổi hết: Phương án → Option, Màu → Color, Nhấn (`aria-label`
+    Chàm, Xanh ngọc, Cam) → Indigo, Teal, Orange, Thanh dưới → Bottom bar, Trạng thái → State
+    (Có dữ liệu, Đang tải, Rỗng, Lỗi → Data, Loading, Empty, Error), Khuyên dùng → Recommended,
+    Ưu, nhược → Pros, cons, Ưu / Nhược / Hợp khi → Pros / Cons / Best when, Gợi ý góp ý →
+    Feedback ideas, tên phương án, câu lý do, câu gợi ý cũng tiếng Anh. Tham số URL (`v`, `mau`,
+    `kho`, `tt`…) giữ nguyên. Chữ **trong** bản thiết kế vẫn theo `T24`: dự án đang có nhãn tiếng
+    Việt thì wireframe tiếng Việt dù đề tiếng Anh. Thanh tiếng Việt trên đề tiếng Anh thì người
+    dùng không đọc được nút nào, mà thanh là chỗ duy nhất để chọn.
 
   Mỗi nút là link giữ nguyên các lựa chọn khác, chỉ đổi đúng tham số của nó. Màn hẹp thì thanh
   cuộn ngang, không xuống dòng. Mở không tham số thì: phương án khuyên dùng, Màu tắt, Desktop, Có

@@ -2914,7 +2914,7 @@ async function probeWidth(browser, options, width) {
   const stateShapes = isMobile ? { shapeMismatches: [], stuckStates: [], hoverLikeSelected: [], groupCount: 0 } : await probeStateShapes(page);
   // Sau cùng thật sự: mỗi lần bấm là một lần tải lại trang.
   const hiddenNativeControls = isMobile ? [] : await page.evaluate(findNativeControls, "hidden");
-  const openerLayers = isMobile ? await probeOpenerLayers(page, options, width) : { problems: [], openedShots: [], nativeControls: [] };
+  const openerLayers = isMobile ? await probeOpenerLayers(page, options, width) : { problems: [], flatLayers: [], openedShots: [], nativeControls: [] };
 
   await context.close();
 
@@ -2928,6 +2928,7 @@ async function probeWidth(browser, options, width) {
     unmarkedFocusStops,
     hollowLayers: popupLayers.hollow,
     openerLayerProblems: openerLayers.problems,
+    flatOpenedLayers: openerLayers.flatLayers,
     openedLayerShots: openerLayers.openedShots,
     layoutShifts: hoverStates.layoutShifts,
     vanishedChildren: hoverStates.vanishedChildren,
@@ -3367,12 +3368,15 @@ function markOpenerButtons({ limit, openerSource, actionSource, openerIconPatter
   return openers;
 }
 
+// Panel nằm sẵn ngoài màn (`-translate-x-full`) hay lớp phủ `opacity-0` chưa tính là đang hiện: bấm ☰ thì
+// sidebar trượt vào là lớp mới (sót 01/10/2026, lop-hoc: probe bấm ☰ mà không thấy panel nào mở).
 function markVisibleLayers() {
   for (const node of document.querySelectorAll("body *")) {
     const style = getComputedStyle(node);
     const isPositioned = style.position === "fixed" || style.position === "absolute";
     const rect = node.getBoundingClientRect();
-    if (isPositioned && rect.width * rect.height > 0 && style.visibility !== "hidden" && style.display !== "none") node.dataset.evonBefore = "1";
+    const isOnScreen = rect.right > 0 && rect.left < window.innerWidth && rect.bottom > 0 && rect.top < window.innerHeight;
+    if (isPositioned && rect.width * rect.height > 0 && isOnScreen && Number(style.opacity) > 0 && style.visibility !== "hidden" && style.display !== "none") node.dataset.evonBefore = "1";
   }
 }
 
@@ -3409,6 +3413,57 @@ function findOpenedLayerProblems(triggerLabel) {
     return !node.dataset.evonBefore && (style.position === "fixed" || style.position === "absolute") && isShown(node);
   });
   const roots = newLayers.filter((node) => !newLayers.some((other) => other !== node && other.contains(node)));
+  const flatLayers = [];
+
+  // Tầm bóng: |y| + blur + spread của lớp xa nhất còn màu. So thang bóng (P7): modal, panel > dropdown > card.
+  function readShadowReach(node) {
+    let reach = 0;
+    for (const layer of getComputedStyle(node).boxShadow.split(/,(?![^(]*\))/)) {
+      if (layer.trim() === "none" || layer.includes("inset")) continue;
+      const color = layer.match(/rgba?\(([^)]+)\)/);
+      const alpha = color ? Number(color[1].split(/[ ,/]+/).filter(Boolean)[3] ?? 1) : 1;
+      if (alpha === 0) continue;
+      const lengths = (layer.replace(/rgba?\([^)]+\)/, "").match(/-?[\d.]+px/g) || []).map((value) => Number.parseFloat(value));
+      reach = Math.max(reach, Math.abs(lengths[1] || 0) + (lengths[2] || 0) + (lengths[3] || 0));
+    }
+
+    return reach;
+  }
+
+  function isOpaque(node) {
+    const color = getComputedStyle(node).backgroundColor.match(/rgba?\(([^)]+)\)/);
+    if (!color) return false;
+    const alpha = Number(color[1].split(/[ ,/]+/).filter(Boolean)[3] ?? 1);
+
+    return alpha >= 0.9;
+  }
+
+  // Bóng lớn nhất của khối nằm trong trang (card), để biết dự án có dùng bóng làm thứ bậc không.
+  let pageReach = 0;
+  for (const node of document.querySelectorAll("body *")) {
+    if (newLayers.some((layer) => layer.contains(node))) continue;
+    const rect = node.getBoundingClientRect();
+    if (rect.width * rect.height < 10000 || !isOpaque(node) || node.closest("[data-evon-before]")) continue;
+    pageReach = Math.max(pageReach, readShadowReach(node));
+  }
+
+  for (const root of roots) {
+    // Panel trượt, modal: khối nền đặc cao từ 60% màn hoặc role dialog. Phủ kín cả màn (sheet toàn màn) thì
+    // không có gì phía sau để tách, bỏ qua. Lớp phủ bán trong suốt không phải khối nền đặc.
+    const panel = [root, ...root.querySelectorAll("*")].find((box) => {
+      const rect = box.getBoundingClientRect();
+      const isTall = rect.height >= viewportHeight * 0.6 || ["dialog", "alertdialog"].includes(box.getAttribute("role")) || box.getAttribute("aria-modal") === "true";
+      const isFullScreen = rect.width >= viewportWidth * 0.98 && rect.height >= viewportHeight * 0.98;
+
+      return isShown(box) && isOpaque(box) && isTall && !isFullScreen;
+    });
+    if (panel) {
+      const panelReach = Math.max(readShadowReach(panel), readShadowReach(root));
+      const name = `${panel.tagName.toLowerCase()}${panel.getAttribute("aria-label") ? ` "${panel.getAttribute("aria-label")}"` : ""}`;
+      if (panelReach === 0) flatLayers.push(`bấm "${triggerLabel}": ${name} không có bóng (panel trượt, modal: shadow-modal, layouts/overlay.md)`);
+      else if (pageReach > 0 && panelReach <= pageReach) flatLayers.push(`bấm "${triggerLabel}": bóng ${name} tầm ${Math.round(panelReach)}px không hơn bóng card ${Math.round(pageReach)}px (thang bóng P7)`);
+    }
+  }
 
   for (const root of roots) {
     const isFixed = getComputedStyle(root).position === "fixed";
@@ -3440,7 +3495,7 @@ function findOpenedLayerProblems(triggerLabel) {
     }
   }
 
-  return { problems, openedCount: roots.length };
+  return { problems, flatLayers, openedCount: roots.length };
 }
 
 async function reloadForProbe(page, options) {
@@ -3463,6 +3518,7 @@ async function probeOpenerLayers(page, options, width) {
   };
   const openerLabels = await page.evaluate(markOpenerButtons, markArgs);
   const problems = [];
+  const flatLayers = [];
   const openedShots = [];
   const nativeControls = new Set();
 
@@ -3481,11 +3537,12 @@ async function probeOpenerLayers(page, options, width) {
     await page.screenshot({ path: shotPath });
     openedShots.push(`"${triggerLabel}": ${shotPath}`);
     problems.push(...opened.problems);
+    flatLayers.push(...opened.flatLayers);
   }
 
   if (openerLabels.length > 0) await reloadForProbe(page, options);
 
-  return { problems, openedShots, nativeControls: [...nativeControls] };
+  return { problems, flatLayers, openedShots, nativeControls: [...nativeControls] };
 }
 
 // Kéo bề rộng từ lớn xuống nhỏ trên cùng một trang, đo nhẹ và chụp ở từng bước. Cửa sổ desktop suốt
@@ -3937,6 +3994,10 @@ function formatReport(results) {
     if (result.openerLayerProblems.length > 0) {
       problems.push(`LỚP NỔI MỞ BẰNG NÚT BỊ VỠ (${result.openerLayerProblems.length} chỗ):`);
       for (const item of result.openerLayerProblems.slice(0, 6)) problems.push(`  ${item}`);
+    }
+    if (result.flatOpenedLayers.length > 0) {
+      problems.push(`PANEL, MODAL MỞ RA KHÔNG NỔI HƠN TRANG (${result.flatOpenedLayers.length} chỗ, Lệch hệ):`);
+      for (const item of result.flatOpenedLayers.slice(0, 6)) problems.push(`  ${item}`);
     }
     if (result.layoutShifts.length > 0) {
       problems.push(`RÊ CHUỘT LÀM NHẢY BỐ CỤC (${result.layoutShifts.length} chỗ, hover thêm hay nở phần tử, khối bên dưới dời theo):`);

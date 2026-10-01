@@ -310,6 +310,7 @@ hơn bắt người ta gõ xong rồi báo sai.
 | Thứ | Theo |
 | --- | --- |
 | Lời phân tích, câu hỏi, câu báo lúc giao (`S15`) | Tiếng người dùng đang viết trong lượt này |
+| Thanh công cụ, khung lý do, câu góp ý của wireframe (`design-process.md`) | Tiếng người dùng đang viết, như dòng trên |
 | Comment trong code | Tiếng của comment sẵn có trong dự án; dự án trống thì theo người dùng |
 | Nhãn, placeholder, thông báo lỗi, dữ liệu mẫu trên UI | `T24` |
 
