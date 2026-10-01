@@ -6,7 +6,7 @@ bảng, form, cài đặt, modal) theo đúng thư viện component và màu c�
 Xem giới thiệu: [evondev-uiux.vercel.app/ui-ux](https://evondev-uiux.vercel.app/ui-ux)
 
 > **Bản beta.** Dùng tốt cho giao diện app nền sáng, đề tiếng Việt: đã qua 70 đề test trên dự
-> án thật. Đang test: thêm dark mode cho app đang có, đề tiếng Anh, Codex và Antigravity.
+> án thật. Đang test: thêm dark mode cho app đang có.
 > Skill còn được sửa liên tục từ các lượt test, lấy bản mới bằng
 > `/plugin marketplace update evondevkit`.
 >
@@ -70,8 +70,25 @@ không qua wireframe.
 
 ## Dùng với Codex, Antigravity
 
-Chép thư mục `skills/ui-ux` vào `.agents/skills/` của dự án. Không có lệnh `/evon:ui-ux`,
-gõ "dùng skill ui-ux" trong đề. Skill mới được test kỹ trên Claude.
+Hai công cụ cùng đọc skill trong `.agents/skills/` của dự án. Chạy ở thư mục gốc dự án:
+
+```bash
+rm -rf /tmp/evondevKit .agents/skills/ui-ux
+git clone --depth 1 https://github.com/evondev/evondevKit.git /tmp/evondevKit
+mkdir -p .agents/skills
+cp -r /tmp/evondevKit/skills/ui-ux .agents/skills/
+```
+
+Muốn dùng chung cho mọi dự án thì chép vào thư mục skill chung thay cho `.agents/skills/`:
+
+| Công cụ | Thư mục chung | Gọi skill |
+| --- | --- | --- |
+| Codex (CLI, IDE) | `~/.agents/skills/` | `$ui-ux Dựng màn danh sách đơn hàng…` |
+| Antigravity IDE | `~/.gemini/config/skills/` | `/ui-ux Dựng màn danh sách đơn hàng…` |
+| Antigravity CLI | `~/.gemini/antigravity-cli/skills/` | `/ui-ux Dựng màn danh sách đơn hàng…` |
+
+Không gọi tên thì công cụ tự bật skill khi đề khớp mô tả. Lấy bản mới: chạy lại bốn lệnh
+trên (lệnh đầu xoá bản cũ). Skill mới được test kỹ trên Claude.
 
 ---
 
