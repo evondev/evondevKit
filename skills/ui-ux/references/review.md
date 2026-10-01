@@ -427,7 +427,7 @@ Cùng tinh thần `M20` (mặc định chỉ light), nhưng dự án đã có s�
   ```
 
   Rồi chụp lại bằng `--dark` và so với ảnh light. Màn không đổi màu thì dark chỉ có
-  khai báo. Probe gắn class `dark` lên `<html>` và giả lập `prefers-color-scheme`;
+  khai báo (probe ghi dòng "trang không tối khi bật --dark"). Probe gắn class `dark` lên `<html>` và giả lập `prefers-color-scheme`;
   dự án bật bằng `data-theme` thì gắn thuộc tính đó rồi tự chụp.
 - **Chưa có (hoặc chỉ khai báo) thì không làm**: không chụp dark, không đề xuất dark,
   không thêm class `dark:` vào code sửa. Ghi tối đa một dòng "dự án chưa bật dark
@@ -438,7 +438,9 @@ Cùng tinh thần `M20` (mặc định chỉ light), nhưng dự án đã có s�
   lượt tối đo ra điều đó. Dòng đếm tách hai phần: "sáng 78 mã, tối 41 mã". Màu dark lấy đúng token dark của dự án (khối `.dark`,
   `[data-theme="dark"]`), không lấy navy của skill (`M23`).
 - **Dark mode làm dở là Hỏng**: có nút bật mà còn mảng nền trắng cứng, chữ đen trên
-  nền tối, viền biến mất, logo tối trên nền tối, bóng không thấy.
+  nền tối, viền biến mất, logo tối trên nền tối, bóng không thấy. Mục "DARK MODE" của probe
+  bắt mảng sáng (Hỏng), ô nhập mất viền, nền rê chìm xuống, thiếu `color-scheme` (`M21`,
+  `M31`, `M32`); ba mục sau xếp Lệch hệ.
 - **Sửa một chế độ thì chụp lại cả hai.** Sửa cho light đẹp mà làm vỡ dark là lỗi hay
   gặp nhất ở dự án có hai chế độ.
 

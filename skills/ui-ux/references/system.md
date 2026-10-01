@@ -179,7 +179,9 @@ bảy dòng chữ trong lượt trả lời, mà thành code thật và một tr
    ước thư mục của dự án. Không dựng hết các mẫu cho "đủ bộ" (`S1`); lúc giao liệt kê
    những mẫu còn sẵn, cần cái nào thì gọi tên.
 5. **Một trang xem design system**: route `/design-system` (dự án có Storybook thì viết
-   story thay cho trang; không có app thì một file HTML). Thứ tự khối:
+   story thay cho trang; không có app thì một file HTML). Dự án có dark mode thì trang có
+   nút đổi theme ở đầu trang (`M31`) để duyệt cả hai bản, và bảng màu ghi mã cả hai theme.
+   Thứ tự khối:
    - **Màu**: ô màu kèm tên token và mã; cặp chữ trên nền chính kèm tỉ lệ tương phản. Cột
      tỉ lệ chỉ ghi số; **chỉ cặp trượt mới có nhãn** ("Dưới 4.5:1", màu cảnh báo), cặp đạt
      để trống. Mười một dòng "Đạt AA" xanh giống nhau là một ý nói mười một lần, mắt phải dò

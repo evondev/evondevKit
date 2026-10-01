@@ -167,8 +167,12 @@ Chọn token theo **nền hover có chạm hai mép khung hay không**:
 
 | Dòng | Hover | Vì sao |
 | --- | --- | --- |
-| **Thụt vào**, có bo góc, cách mép khung một khe: mục menu, link sidebar, dòng danh sách trong widget | `hover:bg-background` | Nền xám nằm gọn trong khung trắng, mắt đọc ra một viên được ấn xuống |
+| **Thụt vào**, có bo góc, cách mép khung một khe: mục menu, link sidebar, dòng danh sách trong widget | `hover:bg-item-hover` | Nền xám nằm gọn trong khung trắng, mắt đọc ra một viên được ấn xuống |
 | **Tràn hết bề ngang**, chạm hai mép khung trắng: dòng bảng, danh sách chia `divide-y` sát mép | `hover:bg-surface-hover` | Tô `--background` thì dòng đó cùng màu với nền trang bên ngoài khung, trông như khung bị khoét thủng một dải (đã dính 21/09/2026, bảng khách hàng) |
+
+`--item-hover` ở nền sáng bằng đúng `--background`, ở nền tối là trắng phủ 5%. Đừng viết
+`hover:bg-background` cho dòng thụt vào: ở nền tối nền trang tối hơn card, rê vào là chìm
+xuống 1.07:1, gần như không thấy (`M21`).
 
 Dòng **đang chọn** (tick checkbox) của bảng dùng **cùng nền mờ với hover**, `--surface-hover`.
 Dấu hiệu của "đã chọn" là **checkbox đã tick**, không phải nền. Rê vào dòng đã chọn thì
@@ -189,7 +193,7 @@ nền đó là rê qua mục nào cũng trông như vừa chọn nó (đã dính
 "cùng nền mờ" ở trên chỉ cho dòng bảng tick checkbox.
 
 - **Danh sách chọn một mục nằm trong card thì dòng thụt vào**, không tràn mép: khung `p-1`,
-  dòng `rounded-xl` (card 16 = 12 + 4, `M19`), rê `hover:bg-background`, đang mở một bậc đậm hơn `bg-secondary` (màu nhấn
+  dòng `rounded-xl` (card 16 = 12 + 4, `M19`), rê `hover:bg-item-hover`, đang mở một bậc đậm hơn `bg-secondary` (màu nhấn
   có sắc thì nền nhạt của màu nhấn, như `bg-primary/8`). Dòng tràn mép phải dùng `surface-hover`
   (`#f8f8fa`), trên card trắng chỉ chênh 7 mức, gần như không thấy, còn đang mở và đang rê thì
   không còn bậc nào để tách (đã dính 28/09/2026).
@@ -250,7 +254,7 @@ Vẫn giữ, vì không phải vòng bao ngoài:
 
 | Phần tử | Lúc focus |
 | --- | --- |
-| Mục trong menu, dropdown, listbox, lệnh trong command palette | **tô nền như hover** (`data-[highlighted]:bg-background`): phím mũi tên dời đúng một chỗ sáng, thiếu nó là menu không đi bằng phím được |
+| Mục trong menu, dropdown, listbox, lệnh trong command palette | **tô nền như hover** (`data-[highlighted]:bg-item-hover`): phím mũi tên dời đúng một chỗ sáng, thiếu nó là menu không đi bằng phím được |
 | Ô nhập, textarea | viền + ring mờ: `focus:border-focus focus:ring-2 focus:ring-focus`, xem dưới bảng |
 | Nút mở select, ô chọn ngày, ô chọn giờ (là `<button>`, không gõ được) | viền `focus-visible:border-focus`; viền + ring mờ chỉ khi đang mở (`aria-expanded:`), không `focus:` |
 | Card chọn (radio dạng card) | chỉ dấu **đang chọn** (viền + ring mờ); Tab tới không thêm gì |
@@ -283,7 +287,7 @@ cùng sáng, người dùng không biết bấm Enter sẽ mở cái nào. Dùng
 dùng **`data-[highlighted]`** thay cho cả `hover:` lẫn `focus:`:
 
 ```tsx
-<DropdownMenuItem className="outline-hidden data-[highlighted]:bg-background">
+<DropdownMenuItem className="outline-hidden data-[highlighted]:bg-item-hover">
 ```
 
 `data-[highlighted]` đi theo cả chuột lẫn phím mũi tên, nên luôn chỉ có một mục
@@ -302,7 +306,7 @@ tiếp cận thì trả vòng lại, **ở đúng một chỗ** (class gốc c�
 - Vòng không chồng lên dấu đang chọn: viền "đang chọn", "đang bật" vẽ bằng `inset-ring-*` hoặc `border`, không `ring-*`, vì `ring-*` chỉ có một lớp bóng và vòng focus sẽ thay mất viền chọn (`W8`).
 
 **I15. Sidebar: mục đang chọn tô nền xám, không tô màu nhấn, không viền.** Mục
-chưa chọn thì không nền. Rê vào `hover:bg-background`; đang chọn **đậm hơn một bậc**
+chưa chọn thì không nền. Rê vào `hover:bg-item-hover`; đang chọn **đậm hơn một bậc**
 `bg-secondary` + `font-medium`. Cây thư mục cùng công thức. Bản trước cho rê và đang chọn
 cùng nền `--background` và cấm `--secondary` vì "đậm quá"; đổi 29/09/2026: mục đang chọn
 không có dấu nào khác ngoài nền nên phải khác nền rê (`I10`), probe xếp Hỏng. Luật "cùng
@@ -548,13 +552,13 @@ khoảng trống là mũi tên. Nền vẫn sáng cả hàng, nên người dùn
 
 ```html
 <!-- Sai: hover ở <li>, vùng bấm chỉ bằng chữ -->
-<li class="flex h-10 items-center rounded-xl px-3 hover:bg-background">
+<li class="flex h-10 items-center rounded-xl px-3 hover:bg-item-hover">
   <a href="/ho-so">Hồ sơ của bạn</a>
 </li>
 
 <!-- Đúng: <li> trơn, mọi thứ dồn vào <a> -->
 <li>
-  <a href="/ho-so" class="flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 hover:bg-background">
+  <a href="/ho-so" class="flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 hover:bg-item-hover">
     <i data-lucide="user" class="size-4 text-muted"></i>
     Hồ sơ của bạn
   </a>
@@ -664,7 +668,7 @@ hai lần `document.activeElement` là `<body>`.
 
 Dòng danh sách, ô danh mục, card bấm được hay có một ô icon (hoặc badge) nền xám nhạt.
 Rê vào mà khối chuyển đúng sang màu đó thì ô icon **biến mất**, chỉ còn icon trơ trọi,
-như vừa bị gỡ khỏi dòng. Mẫu `list-row.md` rê `hover:bg-background`, ô icon trong nhiều
+như vừa bị gỡ khỏi dòng. Mẫu `list-row.md` rê `hover:bg-item-hover`, ô icon trong nhiều
 file cũng `bg-background`: ghép hai cái là dính.
 
 - Khối rê được có ô con nền `bg-background` thì ô con **đảo sang nền card lúc rê**:

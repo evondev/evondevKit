@@ -228,6 +228,9 @@ Trong mỗi nhóm thì mọi chỗ dùng chung đúng một token, để đườ
 
 Checkbox, radio chưa chọn cũng dùng `--border-strong`, cùng độ đậm với ô nhập.
 
+Nền tối giữ đúng hai vai đó, cả hai là `rgba` mờ: `--border` 1.23:1 trên card, `--border-strong`
+1.47:1 (đo 01/10/2026). Ô nhập ở nền tối **giữ viền** `--border-strong` (`M32`).
+
 **Dự án đã có token viền riêng** (dựng mới trong dự án có sẵn, hai chế độ dựng lại): xám
 viền là **dáng, không phải vai màu** (`review.md`), nên xếp token của họ vào hai vai trên
 chứ không giữ cách bản cũ dùng. Bậc nhạt nhất của dự án cho vai trang trí (viền card, khung
@@ -260,6 +263,11 @@ nghi mã màu.
 Modal, command palette, dropdown, popover, toast được đổ bóng vì chúng nằm **trên**
 trang. Mọi thứ nằm **trong** trang thì không.
 
+Bóng lớp nổi đi qua hai token, không viết `shadow-lg`, `shadow-xl` trần: `shadow-popover`
+(dropdown, menu, popover, toast) và `shadow-modal` (modal, panel trượt, command palette).
+Nền sáng chúng bằng đúng `shadow-lg` / `shadow-xl`; nền tối đậm hơn (`M23`). Khung nào
+cũng `border border-border`. Bảng nền của từng khối ở đầu `layouts/overlay.md`.
+
 Định thêm `shadow-*` cho khối nằm trong trang → thử viền trước, xem có đủ tách
 khối không. Gần như luôn là đủ.
 
@@ -284,7 +292,7 @@ lại. Cần đường bao quanh avatar, quanh ô vuông cỡ chuẩn thì dùng
 
 **M18. Phần tử con trong hàng có hover không được trùng token với nền hover của hàng.**
 
-Hàng hover đổi nền (luật `I10`: `--background` hoặc `--surface-hover`). Nếu ô vuông trạng thái, checkbox hay
+Hàng hover đổi nền (luật `I10`: `--item-hover` hoặc `--surface-hover`). Nếu ô vuông trạng thái, checkbox hay
 avatar bên trong cũng dùng đúng token đó làm nền, hoặc chỉ có viền nhạt, thì rê
 chuột vào là chúng **biến mất**.
 
@@ -343,27 +351,40 @@ là ngoại lệ.
 
 **M20. Mặc định chỉ làm light mode.** Dark mode là việc gấp đôi và gấp đôi chỗ
 phải kiểm tương phản. Chỉ làm khi người dùng nói cần, và hỏi một câu lúc giao.
+Làm thì theo đủ `M21`–`M23`, `M31`–`M33`, và khối `.dark` của `tokens.css`.
 
 *Gu flat — phong cách khác đã chọn theo `P1` thì xem `P2` trong `references/styles.md`.*
 
-**M21. Đảo theme thì giữ nguyên QUAN HỆ giữa các bề mặt, không chỉ đảo màu.**
+**M21. Tầng nổi sáng dần ở nền tối; vùng tô là lớp phủ, giữ độ chênh với nền phía sau
+chứ không giữ chiều.**
 
-Thang bề mặt, từ chìm nhất lên nổi nhất:
+Hai loại bề mặt, hai cách đổi theme:
 
-`nút phụ / vùng chìm` → `nền trang` → `card`
+| Loại | Gồm | Nền sáng | Nền tối |
+| --- | --- | --- | --- |
+| **Tầng** | nền trang → card → lớp nổi nhỏ (`--surface-overlay`) | trang xám, card và lớp nổi trắng | **sáng dần**: `#05060f` → `#0f111a` → `#171a26`, mỗi bậc ~1.07–1.09:1 |
+| **Vùng tô** | nút phụ, mục / tab đang chọn (`--secondary`), nền rê (`--item-hover`, `--button-hover`), rãnh, chip | phủ **tối** hơn nền phía sau | phủ **trắng mờ**, **sáng** hơn nền phía sau |
 
-Thứ tự đó phải đúng ở **cả hai theme**. Ở nền sáng nút phụ tối hơn card thì ở nền
-tối nó cũng phải tối hơn card, chứ không sáng lên. Đã có bản dựng đặt nút phụ
-`#1c2030` trên card `#0f111a`: cùng một nút mà light thì chìm, dark thì nổi, đọc
-ra là hai thiết kế khác nhau.
+Vùng tô ở nền sáng tối hơn card, ở nền tối sáng hơn card: đúng ở cả hai. Thứ phải giữ
+là **độ chênh** với nền ngay sau nó, ngang nhau giữa hai theme (đang chọn `--secondary`
+1.22:1 cả hai bản; nền rê 1.10 / 1.12:1). Đây là cách gần như mọi bộ thiết kế lớn làm
+(tra 26/09/2026, 7/7 bộ có số liệu).
 
-*Cách kiểm:* liệt kê ba màu bề mặt của mỗi theme rồi xếp theo độ sáng. Hai danh
-sách phải cùng thứ tự.
+- **Vùng tô nền tối viết bằng trắng phủ mờ** (`white/4`–`white/10`), không bằng xám đặc.
+  Phủ mờ thì đặt trên nền trang, card hay lớp nổi đều đúng; xám đặc chỉ đúng trên một nền.
+  Trong code: lớp phủ `bg-foreground/5` (tự đảo theo theme) hoặc token, không `dark:bg-zinc-800`.
+- **Không dùng `--background` làm nền rê hay nền chọn.** Ở nền tối nó tối hơn card, rê vào
+  là chìm xuống 1.07:1, gần như không thấy. Nền rê mục thụt vào là `--item-hover` (`I10`).
+- **Đang chọn đậm hơn rê đúng một bậc ở cả hai theme** (`I10`, `I15`).
 
-Nền tối thì nền trang và card chỉ chênh 1.07:1, nên nút phụ chìm dưới nền trang gần
-như không tách khỏi nền trang (`tokens.css` đặt `--secondary` gần đen, sửa 29/09/2026).
-Nút secondary, tab boxed đang chọn đặt thẳng trên nền trang tối thì thêm viền
-`--border` (`M23`), không kéo nền sáng lên trên card.
+*Cách kiểm:* liệt kê nền trang, card, lớp nổi của mỗi theme: nền tối phải sáng dần. Rồi đo
+nền rê và nền đang chọn trên card ở cả hai theme: độ chênh hai bản xấp xỉ nhau, đang chọn
+đậm hơn rê.
+
+> Bản cũ của luật này (đến 01/10/2026) bắt nút phụ **chìm hơn card** ở cả hai theme, nên
+> `--secondary` tối từng là `#010207`, dưới cả nền trang: nút và tab đang chọn gần như không
+> tách khỏi nền. Ca gốc của luật cũ (nút phụ `#1c2030` trên card `#0f111a` trông "nổi lên")
+> thật ra là đúng chiều; thứ cần canh là độ chênh, không phải chiều.
 
 **M22. Ở nền tối, màu nhấn chỉ dùng làm nền, không dùng làm đường mảnh.**
 
@@ -372,12 +393,88 @@ nhập lúc focus, gạch chân, hay chỉ báo đang chọn thì thành sợi t
 pixel, gắt và rẻ. Đường mảnh dùng chính màu đó **hạ độ đục xuống khoảng 42%**, vừa đủ 3:1 với nền
 (WCAG 1.4.11). Xuống 35% là còn 2.9:1, trượt.
 
-**M23. Dark mode là navy rất tối, không phải xám trung tính.** Viền dark mode là
-`rgba` mờ, không phải màu đặc. Ở nền tối viền **đảo vai**: nền sáng còn tách được
-bằng chênh lệch nền, nền tối thì `#0f111a` với `#05060f` chênh nhau quá ít nên
-viền trở thành thứ chính để tách khối, và bóng gần như vô dụng.
+**M23. Dark mode mặc định của skill là navy rất tối. Đây là gu, không phải quy ước:
+dự án đã có bảng tối riêng thì theo dự án.**
+
+Phần lớn các bộ thiết kế lớn để nền tối trung tính hoặc gần trung tính; navy là một
+trong nhiều gu. Dự án có xám kẽm, xám trung tính, hay nền tối ám màu thương hiệu thì giữ
+nguyên (`P10`, `V4`). Dự án chưa có thì lấy khối `.dark` của `tokens.css`.
+
+Dù gu nào:
+
+- **Không đen tuyệt đối, không trắng tuyệt đối**, kể cả nền rê của nút chính. Nền gần đen,
+  chữ gần trắng. `--primary-hover` lệch **về phía nền** một bậc ở cả hai theme: nền sáng nhạt
+  đi, nền tối tối đi (`#e9edf5` → `#cfd5e0`), không sáng lên `#ffffff` (đã dính 01/10/2026).
+- **Viền là `rgba` mờ**, không phải màu đặc, không thì thành lưới kẻ ô. Ở nền tối viền
+  **đảo vai**: nền trang và card chênh nhau quá ít (1.07:1) nên viền là thứ chính để tách khối.
+- **Bóng giữ, đậm hơn, đi cặp viền 1px.** Bóng 10% trên nền gần đen gần như không thấy, nên
+  lớp nổi tối có ba thứ cùng lúc: nền sáng hơn một bậc (`M21`), viền `border-border`, bóng
+  đậm (`--elevation-*` khối `.dark`). Không bỏ bóng, không thay bằng vầng sáng.
+- **Không bóng màu ở nền tối** (bóng cam, bóng hổ phách dưới nút): trên nền tối nó thành
+  vầng sáng bẩn. `dark:shadow-none` cho mọi bóng có sắc.
 
 *Gu flat — phong cách khác đã chọn theo `P1` thì xem `P2` trong `references/styles.md`.*
+
+**M31. Nút đổi theme: Sáng / Tối / Hệ thống, mặc định Hệ thống.**
+
+- **Ba lựa chọn thấy hết một lần**, không một nút bấm xoay vòng (người dùng phải bấm thử mới
+  biết lần sau ra gì). Mặc định **Hệ thống** (`prefers-color-scheme`), không mặc định Sáng.
+- **Chỗ đặt:** trong app là **Cài đặt → Giao diện** hoặc mục Giao diện trong **menu tài khoản**;
+  đề bảo đặt trên header thì là **icon button** (`Sun` / `Moon`) mở menu ba mục, mục đang chọn
+  có dấu ✓. Trang công khai, docs: nhóm ba icon (radiogroup) ở footer hoặc nút icon trên header.
+- **Nhớ lựa chọn, không nháy trắng khi tải.** Script đặt class trên `<html>` trước khi vẽ;
+  `<html suppressHydrationWarning>` vì script sửa `<html>` trước React.
+- **Lật theme thì tắt transition một nhịp**, không thì nền trang đổi tức thì còn nút, card
+  chuyển màu 200ms lệch nhịp.
+- **Tầng trình duyệt:** `color-scheme` đi cùng theme (khối `:root` / `.dark` của `tokens.css`
+  đã có), để thanh cuộn gốc, ô chọn ngày, autofill, `<select>` vẽ đúng bản. `theme-color` hai thẻ
+  theo `media` là tuỳ chọn.
+- **`dark:` phải theo class, không theo máy.** Tailwind v4 mặc định `dark:` chạy theo
+  `prefers-color-scheme`; thiếu dòng `@custom-variant dark` trong `tokens.css` thì bấm Tối trên
+  máy đang sáng ra token tối, class `dark:` sáng.
+
+Next.js: `next-themes`.
+
+```tsx
+// app/layout.tsx
+<html lang="vi" suppressHydrationWarning>
+  <body>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      {children}
+    </ThemeProvider>
+  </body>
+</html>
+```
+
+Icon button trên header đọc `resolvedTheme` sau khi mount (trước đó render icon cố định), không
+thì lệch HTML lúc hydrate. Không Next thì script nội tuyến đầu `<head>` đọc `localStorage` +
+`matchMedia("(prefers-color-scheme: dark)")` rồi gắn `.dark`, và nghe đổi của máy khi đang Hệ thống.
+
+**M32. Ở nền tối, vài thứ đổi cách vẽ chứ không chỉ đổi màu.**
+
+| Thứ | Nền tối | Vì sao |
+| --- | --- | --- |
+| Ô nhập, select, textarea | **giữ viền** `--border-strong`, nền phủ mờ `dark:bg-white/4` | bỏ viền chỉ còn nền mờ là mất ranh giới vùng gõ; mọi bộ lớn đều giữ viền |
+| Nút đảo màu (nền `--foreground`, không phải `--primary`) | về variant `secondary`, hoặc nền trắng mờ + viền | đảo thẳng ra khối trắng chói, nặng hơn cả nút chính. Chỉ màu nhấn được thành khối sáng |
+| Tooltip | **đảo màu**: `bg-foreground text-background` | nền tối thì tooltip sáng, nổi khỏi mọi tầng |
+| Nền nhạt `-50`, `-100` (badge, banner, chip, ô đáp án) | màu `-500` phủ 10–20%, chữ `-300`/`-400` | nền `-50` sang tối là khối trắng hồng giữa màn đen. Màu mang nghĩa đã có sẵn trong `tokens.css` |
+| Gradient, vệt màu loang trang trí | tắt (`dark:hidden`) hoặc thay bản tối | loang màu sáng trên nền tối là chói |
+| Biểu đồ | bảng màu riêng cho nền tối (`components/charts.md`) | sắc `-500` vẫn đọc được, xám "Khác" `slate-300` thì thành nổi nhất |
+| Ảnh nền trắng, logo | ảnh cần bản tối thì `<picture><source media="(prefers-color-scheme: dark)">` hoặc hai ảnh theo class; logo chuyển bản sáng | |
+| Avatar, ảnh nhỏ | vòng `ring-1 ring-border` | ảnh tối tan vào nền |
+
+**M33. Vùng khoá theme khai lại token tại chỗ; thư viện bên ngoài đọc token.**
+
+- **Vùng luôn sáng / luôn tối** (trang chia sẻ nền kem, hero luôn tối): class `.force-light` /
+  `.force-dark` trên khung ngoài cùng, `tokens.css` đã cho hai class này đọc lại đúng bộ token,
+  mọi component con đổi theo mà không truyền gì xuống. `@custom-variant dark` của `tokens.css`
+  đã loại vùng `.force-light`, nên `dark:` không rò vào. Cả trang khoá theme thì `next-themes`
+  `forcedTheme`, và ẩn nút đổi theme ở trang đó.
+- **Thư viện bên ngoài đọc token**, không để màu mặc định của nó: toast, hộp thoại, thanh tiến
+  trình chuyển trang, trình soạn thảo, lịch. Đè style bằng `var(--surface-overlay)`,
+  `var(--border)`, `var(--foreground)`, `var(--primary)` là tự lật theo theme. Để màu mặc định
+  của thư viện thì nền tối còn một hộp trắng giữa màn (chỉ người bật tối mới thấy, nên rất lâu
+  mới có người báo).
 
 ---
 

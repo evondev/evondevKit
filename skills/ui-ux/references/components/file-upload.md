@@ -28,7 +28,7 @@ chỉ báo khi cả lượt tải kết thúc (xem mục Toast). Nút theo `butt
 ## Khung kéo thả
 
 ```html
-<label class="flex cursor-pointer flex-col items-center rounded-xl border border-dashed border-border-strong bg-background/60 px-6 py-8 text-center transition-colors hover:bg-background">
+<label class="flex cursor-pointer flex-col items-center rounded-xl border border-dashed border-border-strong bg-background/60 px-6 py-8 text-center transition-colors hover:bg-item-hover">
   <input type="file" multiple class="sr-only" />
   <!-- Máy cảm ứng không kéo thả được: ẩn câu này, còn dòng gợi ý và nút -->
   <p class="text-sm font-medium text-foreground [@media(hover:none)]:hidden">Kéo thả tài liệu vào đây</p>

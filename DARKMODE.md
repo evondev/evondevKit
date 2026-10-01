@@ -6,7 +6,7 @@ chốt thì chuyển vào `references/rules-color.md`, `tokens.css`, rồi gạc
 - **Phần 1 — một dự án thật đã chạy dark mode (26/09/2026): xong.**
 - **Phần 2 — đối chiếu shadcn/ui, Radix, sáu bộ thiết kế lớn và 13 sản phẩm web
   (26/09/2026): xong.** Tra thật từ mã nguồn token, docs, HTML trang thật.
-- **Phần 3 — đề xuất cho skill, gộp từ hai phần trên: chờ chốt.**
+- **Phần 3 — đề xuất cho skill: chủ dự án chốt và đã đưa vào skill 01/10/2026.** Mỗi mục ghi chỗ nằm trong skill.
 
 ---
 
@@ -393,47 +393,47 @@ Skill đã theo đúng công thức này trong `tokens.css`.
 
 Gộp Phần 1 và 2. Mỗi dòng ghi: làm gì, căn cứ, luật bị đụng.
 
-### Ba chỗ skill đang trái số đông — cần chủ dự án chốt
+### Ba chỗ skill đang trái số đông — đã chốt 01/10/2026
 
-- [ ] **`M21` (giữ thứ tự sáng tối của bề mặt).** 7/7 bộ có số liệu cho vùng tô (nút phụ, tab
+- [x] **`M21` (giữ thứ tự sáng tối của bề mặt).** → viết lại `M21`; `--secondary`, `--item-hover`, `--button-hover` tối là trắng phủ mờ; lớp rê `hover:bg-background` đổi thành `hover:bg-item-hover` khắp skill. 7/7 bộ có số liệu cho vùng tô (nút phụ, tab
       đang chọn, ô nhập, hover) **sáng hơn card** ở nền tối, tối hơn ở nền sáng.
       Chính `tokens.css` cũng đã vậy (`--secondary #1c202d` > `--surface #0f111a`,
       sửa 23/09). Đề xuất viết lại: *tầng nổi (card, popover, modal) sáng dần ở
       nền tối; vùng tô là lớp phủ, giữ độ chênh với nền phía sau chứ không giữ
       chiều*. Ca gốc của `M21` (nút phụ `#1c2030` trên card `#0f111a` "nổi lên")
       cần xem lại: có thể lỗi thật là độ chênh quá lớn, không phải chiều.
-- [ ] **`M23` (navy, không xám).** 4/8 bộ trung tính, navy là 1/8. Đề xuất: giữ
+- [x] **`M23` (navy, không xám).** → viết lại `M23`: navy là gu, dự án có bảng tối riêng thì theo dự án; bóng giữ, đậm hơn, đi cặp viền. 4/8 bộ trung tính, navy là 1/8. Đề xuất: giữ
       navy làm gu mặc định của skill nhưng ghi rõ là gu; dự án có xám riêng thì
       theo dự án (`P10` đã nói vậy). Phần "bóng gần như vô dụng" sửa thành: giữ
       bóng, đậm hơn, thêm vòng 1px (mục 6).
-- [ ] **`P10` "hạ độ đậm chữ một bậc".** Không bộ nào làm. Đề xuất bỏ, hoặc hạ thành
+- [x] **`P10` "hạ độ đậm chữ một bậc".** → bỏ, thay bằng thứ bậc chữ theo độ sáng. Không bộ nào làm. Đề xuất bỏ, hoặc hạ thành
       ghi chú "tuỳ font, đo bằng mắt".
 
 ### Thêm mới
 
-- [ ] **Cơ chế bật tắt chuẩn:** Sáng / Tối / Hệ thống, mặc định Hệ thống. Trong
+- [x] → `M31`. **Cơ chế bật tắt chuẩn:** Sáng / Tối / Hệ thống, mặc định Hệ thống. Trong
       app đặt ở Cài đặt → Giao diện hoặc menu tài khoản; trang công khai là nhóm 3
       icon ở footer hoặc header. Không nút xoay vòng. Có dạng tham chiếu cho
       Next.js (next-themes: `attribute="class"`, `defaultTheme="system"`,
       `enableSystem`, `disableTransitionOnChange`, `suppressHydrationWarning`).
-- [ ] **Tầng trình duyệt:** `color-scheme` luôn đi cùng theme; `theme-color` hai
+- [x] → `M31`, `color-scheme` trong `tokens.css`; thêm `@custom-variant dark` theo class. **Tầng trình duyệt:** `color-scheme` luôn đi cùng theme; `theme-color` hai
       thẻ theo `media` (tuỳ chọn).
-- [ ] **Token tầng nổi thứ ba** (`--surface-overlay` cho popover, menu, modal).
+- [x] → `--surface-overlay`, `--elevation-popover` / `--elevation-modal` (class `shadow-popover` / `shadow-modal`), bảng khung ở đầu `layouts/overlay.md`. Modal, panel giữ `--surface`. **Token tầng nổi thứ ba** (`--surface-overlay` cho popover, menu, modal).
       `tokens.css` hiện chỉ có nền trang và card.
-- [ ] **Hai token viền:** viền chia (alpha thấp) và viền điều khiển (≥ 3:1).
+- [x] → `M14`: giữ hai vai, đo nền tối `--border` 1.23:1, `--border-strong` 1.47:1, không đổi giá trị. **Hai token viền:** viền chia (alpha thấp) và viền điều khiển (≥ 3:1).
       `--border-strong` hiện có thể làm vai thứ hai, cần đo lại ở nền tối.
-- [ ] **Ô nhập nền tối:** giữ viền + nền phủ mờ; không bỏ viền.
-- [ ] **Bóng nền tối:** vòng 1px + bóng đậm hơn; tắt bóng màu.
-- [ ] **Nút đảo màu** (nền foreground) không thành khối trắng đặc: nền trắng mờ +
+- [x] → `M32`, `components/input.md` bỏ `dark:border-transparent`. **Ô nhập nền tối:** giữ viền + nền phủ mờ; không bỏ viền.
+- [x] → `M23`, `M15`, `--elevation-*` khối `.dark`. **Bóng nền tối:** vòng 1px + bóng đậm hơn; tắt bóng màu.
+- [x] → `M32`. **Nút đảo màu** (nền foreground) không thành khối trắng đặc: nền trắng mờ +
       viền, hoặc chuyển về variant secondary.
-- [ ] **Vùng tô nền tối là trắng phủ mờ** (`white/4`–`white/10`), không phải xám đặc.
-- [ ] **Gradient, vệt màu trang trí** tắt hoặc thay ở nền tối.
-- [ ] **Chart có bảng màu tối; ảnh cần bản tối thì `<picture>`; avatar có vòng.**
-- [ ] **Tooltip đảo màu.**
-- [ ] **Vùng khoá theme** (`.force-light` / `forcedTheme`) bằng khai lại token, kèm
+- [x] → `M21`. **Vùng tô nền tối là trắng phủ mờ** (`white/4`–`white/10`), không phải xám đặc.
+- [x] → `M32`. **Gradient, vệt màu trang trí** tắt hoặc thay ở nền tối.
+- [x] → `M32`, `components/charts.md` (mục Nền tối), `components/avatar.md` (tông tối). **Chart có bảng màu tối; ảnh cần bản tối thì `<picture>`; avatar có vòng.**
+- [x] → `M32`. **Tooltip đảo màu.**
+- [x] → `M33`, `.force-light` / `.force-dark` trong `tokens.css`. **Vùng khoá theme** (`.force-light` / `forcedTheme`) bằng khai lại token, kèm
       cách chặn `dark:` rò vào.
-- [ ] **Thư viện bên ngoài đọc token** (toast, hộp thoại, thanh tiến trình).
-- [ ] **`probe.mjs` chạy lại các phép đo ở `.dark`**, bắt riêng: nền `-50`/`-100`
+- [x] → `M33`. **Thư viện bên ngoài đọc token** (toast, hộp thoại, thanh tiến trình).
+- [x] → `findDarkModeProblems` (mục "DARK MODE"): mảng sáng (Hỏng), ô nhập không viền, nền rê `bg-background`, thiếu `color-scheme`, trang không lật. Chữ trắng trên màu nhấn: phép đo tương phản chung đã bắt. **`probe.mjs` chạy lại các phép đo ở `.dark`**, bắt riêng: nền `-50`/`-100`
       sáng giữa màn tối, chữ trắng trên màu nhấn đã sáng lên, ô nhập không viền,
       `color-scheme` thiếu.
-- [ ] Trang mẫu `/components` có nút lật theme để review cả hai bản.
+- [x] → `system.md` bước 5 (`/design-system`). Trang mẫu `/components` có nút lật theme để review cả hai bản.

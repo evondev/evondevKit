@@ -24,12 +24,12 @@ interface AvatarTone {
 }
 
 const avatarTones: AvatarTone[] = [
-  { background: "bg-emerald-50", text: "text-emerald-700", ring: "ring-emerald-200" },
-  { background: "bg-sky-50", text: "text-sky-700", ring: "ring-sky-200" },
-  { background: "bg-indigo-50", text: "text-indigo-700", ring: "ring-indigo-200" },
-  { background: "bg-pink-50", text: "text-pink-700", ring: "ring-pink-200" },
-  { background: "bg-amber-50", text: "text-amber-700", ring: "ring-amber-200" },
-  { background: "bg-violet-50", text: "text-violet-700", ring: "ring-violet-200" },
+  { background: "bg-emerald-50 dark:bg-emerald-500/15", text: "text-emerald-700 dark:text-emerald-300", ring: "ring-emerald-200 dark:ring-emerald-500/30" },
+  { background: "bg-sky-50 dark:bg-sky-500/15", text: "text-sky-700 dark:text-sky-300", ring: "ring-sky-200 dark:ring-sky-500/30" },
+  { background: "bg-indigo-50 dark:bg-indigo-500/15", text: "text-indigo-700 dark:text-indigo-300", ring: "ring-indigo-200 dark:ring-indigo-500/30" },
+  { background: "bg-pink-50 dark:bg-pink-500/15", text: "text-pink-700 dark:text-pink-300", ring: "ring-pink-200 dark:ring-pink-500/30" },
+  { background: "bg-amber-50 dark:bg-amber-500/15", text: "text-amber-700 dark:text-amber-300", ring: "ring-amber-200 dark:ring-amber-500/30" },
+  { background: "bg-violet-50 dark:bg-violet-500/15", text: "text-violet-700 dark:text-violet-300", ring: "ring-violet-200 dark:ring-violet-500/30" },
 ];
 
 // Cùng một người thì luôn ra cùng một màu, ở mọi màn, mọi lần tải lại.
@@ -78,6 +78,13 @@ màu nhận diện, không mang nghĩa, nên không vào `tokens.css`: đặt th
 | pink | `#fdf2f8` | `#c6005c` | `#fccee8` | 5.4:1 |
 | amber | `#fffbeb` | `#bb4d00` | `#fee685` | 4.9:1 |
 | violet | `#f5f3ff` | `#7008e7` | `#ddd6ff` | 6.7:1 |
+
+**Nền tối** (`M32`): nền `-50` sang tối là sáu đốm trắng giữa màn đen. Nền là sắc `-500`
+phủ 15%, chữ `-300`, viền sắc `-500` phủ 30%; class `dark:` đã nằm sẵn trong mảng trên.
+Không Tailwind thì chữ: emerald `#5ee9b5`, sky `#74d4ff`, indigo `#a3b3ff`, pink `#fda5d5`,
+amber `#ffd230`, violet `#c4b4ff`; nền và viền là `color-mix(in srgb, <mã -500> 15%, transparent)`
+và `30%` với emerald `#00bc7d`, sky `#00a6f4`, indigo `#615fff`, pink `#f6339a`, amber `#fe9a00`,
+violet `#8e51ff`.
 
 ```ts
 const avatarTones: AvatarTone[] = [

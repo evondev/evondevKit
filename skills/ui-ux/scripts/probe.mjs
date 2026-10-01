@@ -2835,6 +2835,7 @@ async function probeWidth(browser, options, width) {
   const heavyNavLinks = await page.evaluate(findHeavyNavLinks);
   const brokenImages = await page.evaluate(findBrokenImages);
   const misformattedNumbers = await page.evaluate(findMisformattedNumbers);
+  const darkModeProblems = options.isDark ? await page.evaluate(findDarkModeProblems) : [];
   const overflowingLayers = [...new Set([...hoverStates.overflowingLayers, ...popupLayers.overflowing])];
   // Chạy sau cùng: bấm thử đổi lựa chọn trên trang (ngày, tab), các phép đo khác phải xong trước.
   const pageCheckedHoverChanges = isMobile ? [] : await findCheckedHoverChanges(page);
@@ -2875,6 +2876,7 @@ async function probeWidth(browser, options, width) {
     heavyNavLinks,
     brokenImages,
     misformattedNumbers,
+    darkModeProblems,
     stuckStates: stateShapes.stuckStates,
     stateGroupCount: stateShapes.groupCount,
   };
@@ -2927,6 +2929,105 @@ function findHeavyDecorativeBorders() {
   }
 
   return [...findings.values()];
+}
+
+// Chỉ chạy với `--dark` (M21, M31, M32, V4). Bốn kiểu lỗi chỉ người bật tối mới thấy:
+// - trang vẫn sáng: dark mode chỉ có khai báo, hoặc `dark:` chạy theo máy mà token theo class;
+// - mảng nền sáng giữa màn tối: badge, avatar, banner `-50`/`-100`, toast của thư viện chưa đọc token;
+// - ô nhập không viền: `dark:border-transparent`, chỉ còn nền mờ báo vùng gõ;
+// - nền rê `bg-background`: ở nền tối nền trang tối hơn card, rê vào chìm xuống gần như không thấy.
+// Thêm `color-scheme` không phải dark: thanh cuộn gốc, ô ngày, autofill vẫn vẽ bản sáng.
+// Màu nhấn, chữ chính (nút chính, tooltip đảo màu) được phép sáng, không tính.
+function findDarkModeProblems() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1;
+  canvas.height = 1;
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  const readRgba = (cssColor) => {
+    if (!cssColor) return null;
+    context.clearRect(0, 0, 1, 1);
+    context.fillStyle = "rgba(0,0,0,0)";
+    context.fillStyle = cssColor;
+    context.fillRect(0, 0, 1, 1);
+    const [red, green, blue, alpha] = context.getImageData(0, 0, 1, 1).data;
+
+    return { red, green, blue, alpha: alpha / 255 };
+  };
+  const readLuminance = ({ red, green, blue }) => {
+    const toLinear = (channel) => {
+      const value = channel / 255;
+
+      return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+    };
+
+    return 0.2126 * toLinear(red) + 0.7152 * toLinear(green) + 0.0722 * toLinear(blue);
+  };
+  const toHex = ({ red, green, blue }) => `#${[red, green, blue].map((channel) => channel.toString(16).padStart(2, "0")).join("")}`;
+  const describe = (element) => {
+    const classNames = String(element.className?.baseVal ?? element.className ?? "").trim().split(/\s+/).filter(Boolean).slice(0, 4);
+    const text = (element.textContent || "").trim().replace(/\s+/g, " ").slice(0, 30);
+
+    return `${element.tagName.toLowerCase()}${classNames.length > 0 ? `.${classNames.join(".")}` : ""}${text ? ` "${text}"` : ""}`;
+  };
+  const findings = [];
+
+  const pageBackground = [document.body, document.documentElement]
+    .map((element) => readRgba(getComputedStyle(element).backgroundColor))
+    .find((color) => color && color.alpha > 0.5);
+  if (!pageBackground || readLuminance(pageBackground) > 0.4) {
+    return [`trang không tối khi bật --dark (nền ${pageBackground ? toHex(pageBackground) : "trong suốt, tức trắng"}): dark mode chỉ có khai báo, coi như chưa có, bỏ lượt tối (V4). Dự án tự dựng dark mode mà ra dòng này thì token không lật theo class \`dark\` trên <html>`];
+  }
+
+  const colorScheme = getComputedStyle(document.documentElement).colorScheme;
+  if (!/dark/.test(colorScheme)) findings.push(`color-scheme của <html> là "${colorScheme}", không phải dark: thanh cuộn gốc, ô ngày, autofill, <select> vẫn vẽ bản sáng (M31)`);
+
+  const rootStyle = getComputedStyle(document.documentElement);
+  // Nền rê nút chính trắng tuyệt đối: khối chói nhất màn tối (M23, đã dính 01/10/2026, ui-ux-dashboard).
+  const primaryHover = readRgba(rootStyle.getPropertyValue("--primary-hover").trim());
+  if (primaryHover && primaryHover.alpha > 0.5 && readLuminance(primaryHover) > 0.95) {
+    findings.push(`--primary-hover là ${toHex(primaryHover)}, nút chính rê vào thành khối trắng tuyệt đối: lệch về phía nền một bậc, ví dụ #cfd5e0 (M23)`);
+  }
+  const allowedBrights = ["--primary", "--primary-hover", "--foreground"]
+    .map((name) => readRgba(rootStyle.getPropertyValue(name).trim()))
+    .filter(Boolean)
+    .map(toHex);
+  const brightColors = new Map();
+  let borderlessFieldCount = 0;
+  let sunkenHoverCount = 0;
+
+  for (const element of document.querySelectorAll("body *")) {
+    if (element.closest(".force-light, [data-demo-state]")) continue;
+    if (element.matches("img, video, canvas, svg, svg *, picture, iframe")) continue;
+    const rect = element.getBoundingClientRect();
+    if (rect.width < 12 || rect.height < 12) continue;
+    const style = getComputedStyle(element);
+    if (style.visibility === "hidden" || style.display === "none" || Number(style.opacity) === 0) continue;
+
+    const className = String(element.className?.baseVal ?? element.className ?? "");
+    if (sunkenHoverCount < 3 && /(^|\s)(hover|focus-visible|data-\[highlighted\]|data-\[selected=true\]):bg-background(\s|$)/.test(className)) {
+      sunkenHoverCount += 1;
+      findings.push(`nền rê \`bg-background\` chìm xuống, ở nền tối gần như không thấy, dùng \`bg-item-hover\` (M21, I10): ${describe(element)}`);
+    }
+
+    const background = readRgba(style.backgroundColor);
+    if (background && background.alpha >= 0.5 && readLuminance(background) > 0.6) {
+      const hex = toHex(background);
+      if (!allowedBrights.includes(hex) && !brightColors.has(hex) && brightColors.size < 5) {
+        brightColors.set(hex, `mảng nền sáng ${hex} giữa màn tối, ${Math.round(rect.width)}×${Math.round(rect.height)}px (M32): ${describe(element)}`);
+      }
+    }
+
+    if (borderlessFieldCount < 3 && element.matches("input:not([type='checkbox']):not([type='radio']):not([type='hidden']):not([type='range']):not([type='file']):not([type='color']), textarea, select") && rect.width >= 60) {
+      const border = readRgba(style.borderBottomColor);
+      const hasBorder = parseFloat(style.borderBottomWidth) > 0 && border && border.alpha > 0.02;
+      if (!hasBorder && background && background.alpha > 0) {
+        borderlessFieldCount += 1;
+        findings.push(`ô nhập không viền ở nền tối, chỉ còn nền mờ báo vùng gõ: giữ viền --border-strong (M32): ${describe(element)}`);
+      }
+    }
+  }
+
+  return [...brightColors.values(), ...findings];
 }
 
 // Mục điều hướng dọc (sidebar) chữ đậm: mẫu của skill là chữ thường 400 cho mục thường, chỉ mục đang chọn
@@ -3277,6 +3378,9 @@ function listMustReportItems(results, sweepSteps) {
     for (const item of result.weakHovers || []) addItem(width, `nền rê gần như không thấy (soi: Gu): ${item}`);
     // Nút viền rê thành nút đặc cùng màu viền là kiểu hay gặp, không vỡ gì: giữ ở Gu.
     for (const item of (result.blendedHovers || []).filter((line) => !line.includes("trùng màu viền"))) addItem(width, `nền rê tan vào nền khác (soi: Gu): ${item}`);
+    // Dark mode làm dở là Hỏng (V4): mảng sáng giữa màn tối. Trang không lật thì dark mode chỉ có khai
+    // báo, V4 bảo bỏ lượt tối chứ không báo lỗi, nên không vào đây.
+    for (const item of (result.darkModeProblems || []).filter((line) => line.startsWith("mảng nền sáng"))) addItem(width, `dark mode làm dở: ${item.replace(/, \d+×\d+px/, "")}`);
     for (const item of result.untransitionedMotion || []) addItem(width, `scale / translate / rotate không chạy chuyển động: ${item}`);
     for (const item of result.smallTapTargets.filter((target) => target.isBelowFloor)) addItem(width, `chỗ bấm dưới 24px: ${item.element}`);
   }
@@ -3513,6 +3617,10 @@ function formatReport(results) {
     if (result.misformattedNumbers?.length > 0) {
       problems.push(`SỐ VIẾT SAI KIỂU TIẾNG VIỆT (${result.misformattedNumbers.length} chỗ, dấu phẩy thập phân, làm tròn, T28 trong rules-type.md):`);
       for (const item of result.misformattedNumbers) problems.push(`  ${item}`);
+    }
+    if (result.darkModeProblems?.length > 0) {
+      problems.push(`DARK MODE (${result.darkModeProblems.length} chỗ, rules-color.md M21, M31–M33):`);
+      for (const item of result.darkModeProblems) problems.push(`  ${item}`);
     }
     if (result.brokenImages?.length > 0) {
       problems.push(`ẢNH KHÔNG TẢI ĐƯỢC (${result.brokenImages.length} ảnh, thay link khác hoặc khai host trong next.config, SKILL.md S16):`);

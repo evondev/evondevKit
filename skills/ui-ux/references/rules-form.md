@@ -102,14 +102,14 @@ Muốn chữ vẫn thẳng lề với các khối khác mà nền hover vẫn tr
 
 ```html
 <!-- Sai: hover xong chữ dính hai mép -->
-<li class="py-3 hover:bg-background">…</li>
+<li class="py-3 hover:bg-item-hover">…</li>
 
 <!-- Đúng: nền tràn ra ngoài lề, chữ vẫn thẳng hàng. Card không padding ngang, mỗi khối
      tự mang px: tiêu đề px-5, khối danh sách px-2 (= 5 − 3) để chữ dòng px-3 thẳng tiêu đề -->
 <section class="rounded-2xl bg-surface py-5">
   <h2 class="px-5">…</h2>
   <ul class="px-2">
-    <li class="rounded-xl px-3 py-3 hover:bg-background">…</li>
+    <li class="rounded-xl px-3 py-3 hover:bg-item-hover">…</li>
   </ul>
 </section>
 ```

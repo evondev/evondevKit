@@ -90,7 +90,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | --- | --- | --- | --- |
 | 1 | Khung app + tổng quan | `/dashboard`, `/dashboard/overview/states` | 26/09/2026 (tổng quan, ba lượt) |
 | 2 | Công việc: bảng nhóm, kanban, tạo mới | `/dashboard/tasks`, `/tasks/new`, `/tasks/states` | 26/09/2026 (kanban, ba lượt, đã theo kịp; popover Lọc, ba lượt, đã theo kịp); 27/09/2026 (bảng nhóm, một lượt: khuôn theo bề rộng khung, đã theo kịp; tạo mới, một lượt: nhóm radio, bộ đếm ký tự, đã theo kịp; `/states`, một lượt: khung chờ cột nhảy ngang, đã theo kịp) |
-| 3 | Khách hàng: danh sách, xem nhanh, chi tiết | `/dashboard/customers`, `/customers/quick-view`, `/customers/c-030`, `/customers/khong-co`, `/customers/states` | 27/09/2026 (danh sách, một lượt: ẩn cột phụ ở khung vừa, số đếm phân trang ở 375px; xem nhanh, một lượt: vùng bấm nút sao chép, hàng có avatar lệch baseline; chi tiết, một lượt: số ô số liệu lệch hàng khi nhãn xuống dòng; `khong-co`, một lượt: gộp về khuôn 404 trong khung; `/states`, một lượt: không lỗi mới; đã theo kịp cả bốn trang) |
+| 3 | Khách hàng: danh sách, xem nhanh, chi tiết | `/dashboard/customers`, `/customers/quick-view`, `/customers/c-030`, `/customers/khong-co`, `/customers/states` | tối: 01/10/2026 (danh sách, một lượt: `--primary-hover` tối `#ffffff` đổi `#cfd5e0`, probe bắt; sidebar đang chọn chưa theo kịp); 27/09/2026 (danh sách, một lượt: ẩn cột phụ ở khung vừa, số đếm phân trang ở 375px; xem nhanh, một lượt: vùng bấm nút sao chép, hàng có avatar lệch baseline; chi tiết, một lượt: số ô số liệu lệch hàng khi nhãn xuống dòng; `khong-co`, một lượt: gộp về khuôn 404 trong khung; `/states`, một lượt: không lỗi mới; đã theo kịp cả bốn trang) |
 | 4 | Đơn hàng: chi tiết, xem nhanh | `/dashboard/orders/detail`, `/orders/quick-view` | 27/09/2026 (modal chi tiết, một lượt: số tiền ngắt dòng ở 375px; xem nhanh, một lượt: không lỗi skill mới; đã theo kịp cả hai) |
 | 5 | Thành viên và phân quyền | `/dashboard/members` | 25/09/2026 (chín lượt; cả luồng xác thực đã theo kịp) |
 | 6 | Hồ sơ cá nhân | `/dashboard/profile`, `/profile/states` | 27/09/2026 (một lượt: "Gửi lại · Huỷ" của email chờ xác nhận, đã theo kịp) |
@@ -342,6 +342,11 @@ Lần đo lại 27/09/2026: 29 route, 25 mục đã theo kịp, còn công tắc
   (`layouts/app.md`, "Trang chi tiết bản ghi"): ở 1280px một cột. `detail-list.tsx` bỏ prop `isStacked` /
   `isNarrow`, `<dl>` là `@container`, hàng `@sm:grid-cols-[7rem_…] @xl:grid-cols-[10rem_…]`
   (`description-list.md`).
+- Sidebar mục đang chọn (`sidebar-nav-link.tsx`, `sidebar-nav-item-classes.ts`; đo 01/10/2026 ở `/dashboard/customers`):
+  đang chọn là `bg-background` cùng màu nền rê nên rê qua mục nào cũng như vừa chọn (bản sáng); bản tối vá
+  `dark:bg-secondary` nhưng `hover:bg-item-hover` vẫn ăn lên mục đang chọn, rê vào mục đang chọn thì nền nhạt đi.
+  Theo `layouts/app.md`: đang chọn `bg-secondary font-medium` ở cả hai theme, `hover:` chỉ khi `!isActive`.
+  Kèm theo `index.css` tối: `--primary-hover: #cfd5e0` (skill sửa 01/10/2026).
 - Bỏ số âm (`N11`, skill xong 27/09/2026): dự án còn ~114 dòng (đo lại 27/09/2026 chiều: còn 108, chưa sửa). Theo `principles.md` `N11` và từng file:
   icon / nút trong ô nhập `inset-y-0 my-auto` + cỡ cố định (khối bọc nút mắt thêm `size-10`); vạch chia menu
   (`action-menu-items`, `account-dropdown`, `select`, `date-picker-panel`, `date-time-picker-panel`,

@@ -260,9 +260,12 @@ Một lượt, không dự án mồi, không đáp án. Test: người dùng t�
    - Card không viền (được có `ring-1 ring-black/5`), rê chuột thì tăng bóng, không phóng to.
 4. Gửi link cho Claude ở evondevKit rà.
 
-### [ ] 6. Dark mode (0/7)
+### [ ] 6. Dark mode (2/7)
 
 Chạy trên `~/dev/ui-ux-dashboard`. Danh sách mục ở `TESTS.md`, mục "Dark mode".
+
+Luật đã vào skill 01/10/2026 (`DARKMODE.md` Phần 3, `M21`, `M23`, `M31`–`M33`), nên chạy được.
+Xong 01/10/2026: bật dark mode (nhánh `dark-mode`, cổng 5173) và bảng khách hàng. Còn năm mục ở bước 4.
 
 1. Tạo nhánh riêng để bản sáng không bị đụng: `git checkout -b dark-mode`.
 2. Phiên Claude Code mới trong `ui-ux-dashboard`, gõ:
@@ -272,7 +275,10 @@ Chạy trên `~/dev/ui-ux-dashboard`. Danh sách mục ở `TESTS.md`, mục "Da
    ```
 
 3. Soi: nút đổi theme nằm đâu, nói gì; tải lại vẫn nhớ lựa chọn; tải trang ở chế độ tối
-   không nháy trắng.
+   không nháy trắng. Thêm theo luật mới: icon button mở menu ba mục Sáng / Tối / Hệ thống
+   (không xoay vòng); máy đang sáng mà bấm Tối thì cả trang tối, không nửa nọ nửa kia
+   (`@custom-variant dark`); nền rê, mục đang chọn sáng hơn card; dropdown sáng hơn card một
+   bậc, có viền; ô nhập còn viền; không còn mảng `-50` sáng (badge, avatar).
 4. Sáu mục còn lại **không gõ đề mới**. Mỗi mục mở Claude Code ở evondevKit, gõ:
 
    ```
@@ -314,6 +320,39 @@ thường đã test tay thấy đúng nên không chạy đủ.
 
 Chỉ làm nếu vẫn muốn, sau khi các bước trên ổn. Làm thành **skill thứ hai** (`evon:landing`),
 không gộp vào `ui-ux` vì luật hai bên đá nhau. Cách thêm plugin thứ hai ở cuối `DEVELOP.md`.
+
+**Hướng chốt 01/10/2026:** không cố phủ mọi kiểu SaaS. Nội dung landing page muôn kiểu nhưng
+khung gần như giống nhau, nên skill chốt một bộ section cố định và chọn section theo mục tiêu
+của trang.
+
+1. **Tra trước khi viết luật.** Mở 15–20 landing page SaaS đang chạy thật, đủ bốn mục tiêu ở
+   bước 2. Ghi lại: có section nào, theo thứ tự nào, CTA chính lặp mấy lần, pricing dạng gì.
+   Luật lấy theo cách số đông làm, không viết theo trí nhớ.
+2. **Brief hỏi một câu: khách vào trang cần làm gì?** Bốn mục tiêu:
+   - Đăng ký dùng thử: đủ bộ, pricing nếu có gói trả phí.
+   - Mua luôn: pricing lên sớm, thêm FAQ về thanh toán, hoàn tiền.
+   - Đặt lịch demo: nhiều social proof, không pricing hoặc chỉ ghi "liên hệ".
+   - Vào danh sách chờ: hero, tính năng, CTA. Không pricing, không testimonial.
+
+   Mục tiêu quyết định bật section nào và xếp ra sao, giống "việc chính của từng màn" bên `ui-ux`.
+3. **Bộ section nền (chín loại):** header, hero, social proof (logo, con số, testimonial),
+   tính năng, cách hoạt động, pricing, FAQ, CTA cuối trang, footer. Mỗi loại có 2–3 biến thể,
+   không hơn. Bảng so sánh, video demo, integrations, changelog để bản sau.
+4. **Pricing chỉ ba dạng:** một gói; ba gói nổi gói giữa; ba gói có nút chuyển tháng / năm
+   kèm gói Enterprise "liên hệ". Tính tiền theo mức dùng hay bảng so sánh tính năng dài thì
+   về một bảng thường dưới các card, chưa viết luật riêng.
+5. **Luật chung cho mọi section:**
+   - Một CTA chính, lặp lại dọc trang (hero, giữa trang, cuối trang), cùng chữ cùng đích.
+   - Một màu nhấn.
+   - Nhịp đều giữa các section: khoảng cách dọc theo một thang, không mỗi khối một kiểu.
+   - Chữ ở hero là nội dung thật của sản phẩm: nói làm được gì cho ai. Không câu chung
+     chung kiểu "Build faster with AI".
+   - Ảnh hero là ảnh sản phẩm thật hoặc dựng giống thật, không minh hoạ trừu tượng.
+6. **Quy trình như nhánh U của `ui-ux`:** brief → duyệt → 2–3 wireframe (khác nhau ở thứ tự
+   section và kiểu hero) → chọn → dựng. Dùng lại probe để đo 375 tới 1920px.
+7. **Test ba đề trên dự án trống**, mỗi đề một mục tiêu khác nhau (đăng ký dùng thử, đặt lịch
+   demo, danh sách chờ). Soi: section bật đúng theo mục tiêu, CTA chính thống nhất, hero có
+   chữ thật, pricing đúng một trong ba dạng. Ghi vào `TESTS.md`.
 
 ---
 

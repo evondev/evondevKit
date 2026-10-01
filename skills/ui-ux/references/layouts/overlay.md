@@ -3,6 +3,17 @@
 Modal, panel trượt, dropdown, command palette, panel thông báo, toast. Không có wireframe thì dựng đúng khuôn
 dưới đây, báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`.
 
+**Nền, viền, bóng của khung** (`M15`, `M21`, `M23`), một bảng cho mọi khối nổi:
+
+| Khối | Khung |
+| --- | --- |
+| Dropdown, menu, popover, select, toast, command palette | `border border-border bg-surface-overlay shadow-popover` (command palette `shadow-modal`) |
+| Modal, hộp xác nhận, panel trượt | `border border-border bg-surface shadow-modal` |
+
+Nền sáng thì `bg-surface-overlay` bằng card và viền gần như không thấy, nên bản sáng trông
+như cũ. Nền tối thì lớp nổi nhỏ sáng hơn card một bậc, viền 1px tách khung khỏi trang, bóng
+đậm hơn. Modal giữ `bg-surface` vì header dính, card trong thân đều ăn theo nó.
+
 ---
 
 ## Hộp xác nhận
@@ -19,7 +30,7 @@ dưới đây, báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`.
 ```
 
 ```html
-<div role="alertdialog" aria-labelledby="confirm-title" aria-describedby="confirm-desc" class="w-full max-w-md rounded-2xl bg-surface p-6 shadow-xl">
+<div role="alertdialog" aria-labelledby="confirm-title" aria-describedby="confirm-desc" class="w-full max-w-md rounded-2xl border border-border bg-surface p-6 shadow-modal">
   <!-- Lưới hai cột: hàng đầu là icon + tiêu đề (items-center tự đưa tâm icon về tâm dòng tiêu
        đề, không cần nhích bằng margin âm). Thân (câu hậu quả, ô gõ lại tên) dưới sm trải hết bề
        rộng, thẳng mép nút; từ sm nằm ở cột chữ, thẳng mép tiêu đề. -->
@@ -203,12 +214,12 @@ thu rồi mở sidebar, bấm mở lại. Menu phải nằm sát nút cả hai l
 
 ```html
 <!-- Khung chỉ padding dọc, mỗi nhóm mục px-1: vạch giữa hai nhóm tự chạm mép (F25, N11) -->
-<div class="min-w-56 rounded-2xl border border-border bg-surface py-1 shadow-lg">
+<div class="min-w-56 rounded-2xl border border-border bg-surface-overlay py-1 shadow-popover">
   <div class="px-1">
-    <button class="flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm outline-hidden hover:bg-background focus-visible:bg-background">…</button>
+    <button class="flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm outline-hidden hover:bg-item-hover focus-visible:bg-item-hover">…</button>
   </div>
   <!-- Vạch chia cùng token với viền khung, không border-strong: đậm hơn viền là vạch nổi hơn khung.
-       Khung cũng border-border: bóng shadow-lg đã tách khung khỏi trang. Khung và vạch cùng border-strong
+       Khung cũng border-border: bóng shadow-popover đã tách khung khỏi trang. Khung và vạch cùng border-strong
        thì menu kẻ ô như bảng (đã dính 28/09/2026, menu tài khoản) -->
   <hr class="my-1 border-border" />
   <div class="px-1">
@@ -233,7 +244,7 @@ trượt 4.5:1). Lúc chưa rê thì chữ `--foreground`, icon `text-muted` nh�
 | Nền hover của mục | `rounded-xl` 12px | **16 = 12 + 4**, hai góc đồng tâm. Mục cao 40px nên bo 12px (`F1`) |
 
 Dùng shadcn / Radix thì thay cả `hover:` lẫn `focus-visible:` bằng
-`data-[highlighted]:bg-background`, để chuột và phím mũi tên dùng chung **một**
+`data-[highlighted]:bg-item-hover`, để chuột và phím mũi tên dùng chung **một**
 mục sáng (`I13`).
 
 Nền hover **thụt vào** cách mép khung, không tràn sát mép. Cái khe đó cùng với
@@ -257,7 +268,7 @@ góc nền sáng gần chạm góc khung (đã dính 24/09/2026). Xem "Command p
 ### Menu con (dropdown đa cấp)
 
 Mục cha: icon + chữ + `ChevronRight` `size-4 text-muted` ở mép phải. Menu con **cùng
-khung** với menu cha (`rounded-2xl p-1`, viền, `shadow-lg`, mục `h-10 rounded-xl`).
+khung** với menu cha (`rounded-2xl p-1`, viền, `shadow-popover`, mục `h-10 rounded-xl`).
 
 **Màn đủ chỗ cho hai khung cạnh nhau: bay ra cạnh menu cha.**
 
@@ -332,7 +343,7 @@ trách, khoảng ngày, mức ưu tiên…) và nút xác nhận. Khác dropdown
 └──────────────────────────────────┘
 ```
 
-- **Khung** `w-96 max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-surface shadow-lg`, không `p-*`: thân `p-4 flex flex-col gap-4`, footer `border-t border-border px-4 py-3 flex justify-between`. Neo mép phải nút Lọc (dưới `sm` nút đứng riêng hàng, căn trái, thì neo mép trái). Portal ra `body` (`I22`).
+- **Khung** `w-96 max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-surface-overlay shadow-popover`, không `p-*`: thân `p-4 flex flex-col gap-4`, footer `border-t border-border px-4 py-3 flex justify-between`. Neo mép phải nút Lọc (dưới `sm` nút đứng riêng hàng, căn trái, thì neo mép trái). Portal ra `body` (`I22`).
 - **Đổi gì trong khung chỉ sửa bản nháp**; bấm Áp dụng mới lọc danh sách. Esc, bấm ra ngoài là bỏ nháp. Mở lại thì nháp lấy lại bộ lọc đang áp. Đang lọc thì nút ghi "Lọc · 2" (số trường đang bật).
 - **"Xoá lọc" là link chữ, không phải nút `ghost` có padding**: `px-0`, chữ `text-muted`, rê vào `text-foreground` + gạch chân, không nền. Nút `ghost` `px-4` đặt trong footer `px-4` làm chữ "Xoá lọc" thụt vào 16px so với mép trái mọi nhãn phía trên, cả khung có một mép chữ lệch (đã dính 26/09/2026: nhãn ở x=754, chữ "Xoá lọc" ở x=770). Cùng chữ, cùng kiểu với "Xoá" ở hàng nhãn của một trường. Không còn gì để gỡ (nháp rỗng và danh sách không lọc) thì khoá `opacity-50`.
 - **Chip đang chọn trong khung KHÔNG tô `bg-primary`.** Footer đã có nút Áp dụng đặc `primary`; chip chọn cũng đặc đen thì khung nhỏ có ba bốn khối đen ngang nhau, mắt không biết đâu là hành động, và thứ nặng nhất khung là lựa chọn chứ không phải nút (cùng bài học với ô chọn giờ ở `../components/choice-controls.md`). Chip chọn trong khung: `bg-foreground/10 text-foreground inset-ring-1 inset-ring-foreground` (Tailwind v4). **Không `ring-1 ring-inset`**: dự án trả vòng focus lại (`I14`) thì vòng đó dùng chung biến với `ring-*`, Tab tới chip đang chọn là mất viền chọn (`W8`, đã dính 26/09/2026). `inset-ring` là lớp bóng riêng. Tailwind v3 không có `inset-ring`: dùng `shadow-[inset_0_0_0_1px_var(--foreground)]`; chưa chọn giữ `bg-foreground/5 text-foreground/70`, rê vào `bg-foreground/10`. Viền mới là tín hiệu chọn, nền chỉ đậm lên một bậc để chip chọn trông "bật" hơn chip rê. Đã thử và bỏ (26/09/2026): nền trắng + viền đậm (chip chọn nhạt hơn chip chưa chọn, đọc ngược); viền `1.5px` (chọn đủ bốn mức thì hàng chip thành bốn vòng đen dày, nặng ngang nút Áp dụng; đo lại ở 1px vẫn tách rõ chọn với chưa chọn). Hàng chip chính của màn (không có nút xác nhận bên cạnh) vẫn `bg-primary` như `../components/small-controls.md`.
@@ -346,7 +357,7 @@ Mục nào có phím tắt thì hiện ở **mép phải**, `text-xs text-muted`
 ngoặc giữa dòng.
 
 ```html
-<button class="flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm outline-hidden hover:bg-background">
+<button class="flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm outline-hidden hover:bg-item-hover">
   <i data-lucide="user" class="h-4 w-4 shrink-0 text-muted"></i>
   <span class="min-w-0 flex-1 truncate text-left">Hồ sơ của bạn</span>
   <span class="shrink-0 text-xs text-muted">⌘1</span>
@@ -379,14 +390,14 @@ bấm không ăn, mất lòng tin ngay.
 
 ```html
 <!-- Ghim từ trên, không căn giữa dọc -->
-<div role="dialog" aria-label="Tìm trang" class="fixed inset-x-4 top-4 mx-auto w-auto max-w-xl overflow-hidden rounded-2xl bg-surface shadow-xl sm:top-[15vh]">
+<div role="dialog" aria-label="Tìm trang" class="fixed inset-x-4 top-4 mx-auto w-auto max-w-xl overflow-hidden rounded-2xl border border-border bg-surface-overlay shadow-modal sm:top-[15vh]">
   <div class="flex h-14 items-center gap-3 border-b border-border px-5">
     <i data-lucide="search" class="size-4 shrink-0 text-muted"></i>
     <input class="min-w-0 flex-1 bg-transparent text-base outline-hidden placeholder:text-muted md:text-sm" placeholder="Tìm trang" />
   </div>
   <!-- pr-1 + gutter stable: khe phải = 4px + thanh 4px = 8px, bằng khe trái, dù có cuộn hay không -->
   <div role="listbox" class="max-h-[min(22rem,60vh)] overflow-y-auto p-2 pr-1 [scrollbar-gutter:stable] [&::-webkit-scrollbar-track]:mt-2 [&::-webkit-scrollbar-track]:mb-4">
-    <button role="option" class="flex h-10 w-full cursor-pointer items-center gap-3 rounded-lg px-3 text-sm outline-hidden data-[selected=true]:bg-background">
+    <button role="option" class="flex h-10 w-full cursor-pointer items-center gap-3 rounded-lg px-3 text-sm outline-hidden data-[selected=true]:bg-item-hover">
       <i data-lucide="house" class="size-4 shrink-0 text-muted"></i>
       <span class="min-w-0 flex-1 truncate text-left">Tổng quan</span>
     </button>
@@ -429,13 +440,13 @@ Mở tại chỗ từ nút chuông trên header (`I24`), đóng bằng bấm ra 
 └─────────────────────────────────┘
 ```
 
-- **Khung**: popover `w-96 max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-surface shadow-lg`, neo mép phải nút chuông, portal ra `body` (`I22`).
+- **Khung**: popover `w-96 max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-surface-overlay shadow-popover`, neo mép phải nút chuông, portal ra `body` (`I22`).
 - **Mép trên không đứng sát đường kẻ header.** Panel neo theo nút với khoảng cách mặc định thì mép trên thường rơi cách đường kẻ header vài px, đường kẻ chọc vào góc bo của panel như hai thứ suýt khớp (đã dính 24/09/2026: lệch 3px). Chỉnh khoảng cách (`sideOffset`) cho mép trên panel nằm **dưới đường kẻ 8px**. Luật chung cho mọi khối nổi mở từ header.
 - **Header: tiêu đề bên trái, "Đánh dấu đã đọc" bên phải**, nút `ghost h-8`, chỉ chữ (`I1`). Chữ nút thẳng mép phải với chấm chưa đọc bên dưới: header bớt padding phải đúng bằng `px` của nút, không `-mr-3` (`button.md`, `N11`). Mọi panel thông báo thật đều có nút này; thiếu nó thì muốn dọn bốn chấm người dùng phải bấm vào bốn thông báo (đã dính 24/09/2026). Không còn gì chưa đọc thì ẩn nút. Đánh dấu cả danh sách hay chỉ tab đang xem là logic của dự án, handler để rỗng (`I25`). Không thêm icon bánh răng hay nút ⋯ khi chưa được yêu cầu.
 - **Tab `boxed`** như tab trạng thái trên bảng (`components/small-controls.md`): chữ trơn, không số đếm (chấm trên chuông đã báo có chưa đọc).
 - **Chiều cao danh sách = chiều cao của tab Tất cả**, chặn trên `max-h-[min(28rem,calc(100dvh-13rem))]`, cuộn trong khung theo `I18` (đầu dưới rãnh chạm góc bo: `mb-4`). Tab Tất cả chứa mọi thứ nên luôn cao nhất; panel mở ở tab đó, đo chiều cao danh sách một lần rồi đặt làm `min-height` cho các tab còn lại: bấm sang tab rỗng hay tab ít mục thì mép dưới đứng yên (`N1`). Không có thông báo nào thì panel gọn theo câu rỗng (`py-10`). Chiều cao đo ở tab Tất cả là chiều cao **đã hạ cho mục cuối lộ nửa** (`getPeekListHeight`, `I18`): thông báo cao thấp khác nhau nên không chốt được một con số.
   Đã thử hai cách và bỏ (24/09/2026): `min-h-72` thì sang tab rỗng vẫn sụp 448 → 288px; **cao cố định** thì hết sụp, nhưng lúc chưa có thông báo nào panel là một khối trắng 563px với một dòng chữ xám giữa lòng, trông như tải chưa xong.
-- **Mỗi thông báo là một link rộng hết hàng** (`I29`): `flex gap-3 rounded-lg px-3 py-3 hover:bg-background`, khung danh sách `p-2` (`M19`: 16 = 8 + 8). Mục nhiều dòng nên khe 8px như command palette, không 4px như menu. Bấm thì mở đối tượng và đánh dấu đã đọc, handler rỗng.
+- **Mỗi thông báo là một link rộng hết hàng** (`I29`): `flex gap-3 rounded-lg px-3 py-3 hover:bg-item-hover`, khung danh sách `p-2` (`M19`: 16 = 8 + 8). Mục nhiều dòng nên khe 8px như command palette, không 4px như menu. Bấm thì mở đối tượng và đánh dấu đã đọc, handler rỗng.
 - **Dòng tiêu đề**: tên người và tên đối tượng `font-medium`, động từ thường ("**Lan Anh** đã nhắc đến bạn trong **Website bán hàng 2026**"). **Tối đa 2 dòng** (`line-clamp-2` + `title`): tên hợp đồng dài làm tiêu đề ba dòng, cộng hai dòng trích thì một thông báo cao bằng ba cái khác, panel mất tác dụng liếc (đã dính 24/09/2026). Câu trích `text-sm text-muted line-clamp-2`, thời gian `text-xs text-muted`.
 - **Chưa đọc và đã đọc liếc là phân biệt được** (`N2`): chưa đọc thì chấm `size-2 rounded-full bg-foreground` bên phải (**không `bg-primary`**, xem ngay dưới), thẳng tâm dòng đầu; đã đọc thì không chấm **và tiêu đề `text-foreground/70`**. Chỉ có chấm thì trong danh sách lẫn lộn, hai mục trông y hệt nhau trừ một chấm 8px ở tận mép phải, nơi mắt đọc tới cuối cùng (đã dính 24/09/2026, tab Nhắc đến bạn). Không tô nền cho mục chưa đọc: mười mục chưa đọc thành mười dải xám.
 - **Chấm chưa đọc, tên người, tên đối tượng không đổi theo màu thương hiệu.** Dự án brand xanh lá thì chấm vẫn `--foreground` (đen, nền tối thì trắng), tên vẫn `--foreground font-medium`. Màu nhấn để dành cho nút chính của màn (`M3`): mười thông báo chưa đọc là mười chấm xanh rải dọc panel, đúng cái đã bỏ ở badge sidebar (`I15`). Tên tô màu nhấn thì đọc ra là link, trong khi cả hàng mới là chỗ bấm. Chấm cũng không đỏ: đỏ dành cho lỗi (`M30`).
@@ -467,12 +478,12 @@ form; toast bật ra ở đáy đúng lúc vừa bấm nút là che mất nửa 
 ```
 
 ```html
-<div role="status" class="flex w-auto min-w-72 max-w-md items-center gap-3 rounded-2xl border border-border bg-surface py-3 pl-4 pr-3 shadow-lg">
+<div role="status" class="flex w-auto min-w-72 max-w-md items-center gap-3 rounded-2xl border border-border bg-surface-overlay py-3 pl-4 pr-3 shadow-popover">
   <i data-lucide="circle-check" class="size-5 shrink-0 text-emerald-600"></i>
   <p class="min-w-0 flex-1 text-sm">Đã xoá đơn #2041</p>
   <div class="flex shrink-0 items-center gap-1">
     <!-- Hành động: nút thật, không phải chữ đậm trơn -->
-    <button type="button" class="h-8 cursor-pointer rounded-lg px-3 text-sm font-medium hover:bg-background outline-hidden">Hoàn tác</button>
+    <button type="button" class="h-8 cursor-pointer rounded-lg px-3 text-sm font-medium hover:bg-item-hover outline-hidden">Hoàn tác</button>
   </div>
 </div>
 ```

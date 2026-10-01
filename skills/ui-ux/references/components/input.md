@@ -13,7 +13,7 @@ const variantClasses = {
 
 const stateClasses = error
   ? "border-red-500 focus:ring-2 focus:ring-red-500/10"   // lúc thường chỉ viền đỏ, quầng chỉ khi đang gõ
-  : "dark:border-transparent focus:border-focus focus:ring-2 focus:ring-focus";
+  : "focus:border-focus focus:ring-2 focus:ring-focus";
 ```
 
 **Vì sao ổn**
@@ -21,6 +21,7 @@ const stateClasses = error
 - Input luôn `bg-surface`, không bao giờ trong suốt. Ô nhập trong suốt trên nền trang thì người dùng không thấy nó là ô nhập. Đây là luật cứng, kể cả khi thư viện gốc mặc định `bg-transparent`.
 - **Focus = viền `--border-focus` + ring mờ `--ring-focus` dày 2px (`ring-2`)** (`I13`, chủ dự án chốt 21/09/2026). Ring phải mờ tới mức là vầng sáng, không thành vòng viền thứ hai: đừng tăng độ đậm của `--ring-focus`. Ô lỗi cùng công thức, đổi sang đỏ. **Select, combobox dùng y hệt**, kể cả lúc đang mở (`components/choice-controls.md`).
 - **Viền dùng `--border-strong`, không phải `--border`.** Ô nhập cùng nền trắng với card, nên viền là thứ duy nhất báo "đây là chỗ gõ". Viền card và đường chia thì là trang trí, nhạt được; viền ô nhập thì không (`M14`). Viền này chỉ ~1.27:1, chưa đạt WCAG 1.4.11: đánh đổi có chủ ý, xem `P3` trong `styles.md`.
+- **Nền tối giữ viền**, chỉ đổi nền sang trắng phủ mờ `dark:bg-white/4`. Bỏ viền (`dark:border-transparent`) để nền mờ tự báo vùng gõ là mất ranh giới ô; mọi bộ thiết kế lớn đều giữ viền ở nền tối (`M32`, tra 26/09/2026).
 - **Viền ô nhập và viền nút outline phải là CÙNG một class**, `border-border-strong`. Đặt ô nhập cạnh nút mà viền ô mờ hơn là đã lấy nhầm `border-border`. Đã dính 21/09/2026: helper chung cho ô nhập và textarea viết `border-border`, ô trông nhạt hơn hẳn nút đứng bên. Dựng xong thì grep `border-border\b` trong file ô nhập, textarea, select: phải ra 0.
 - Trạng thái lỗi cũng theo đúng công thức đó, chỉ đổi màu: viền đỏ đặc `red-500`, **quầng `red-500/10` chỉ khi ô đang focus**. Quầng cả lúc nghỉ thì mỗi ô lỗi mang ba tín hiệu đỏ (viền, quầng, câu), form có bốn ô lỗi là đỏ loang cả màn (sửa 23/09/2026). **Câu lỗi thì `text-xs red-600`**, cùng cỡ với chữ gợi ý (`layouts/form.md`), không `red-500`: viền chỉ cần 3:1 nhưng chữ nhỏ cần 4.5:1, `red-500` trên nền trắng chỉ 3.8:1. Không Tailwind thì `--error`, `--error-ring`, `--error-text` trong `tokens.css`.
 - Bo `rounded-xl`, cùng bậc với nút, nên input và nút đứng cạnh nhau bằng vai.

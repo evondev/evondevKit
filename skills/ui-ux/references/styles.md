@@ -167,7 +167,7 @@ Mỗi khối có bốn phần: nhận ra, luật được đè, công thức, b�
 
 - **Card với modal cùng bóng thì modal không còn nổi.** Thang trên tồn tại để lớp cao hơn luôn nổi hơn. Tăng bóng card lên `shadow-lg` là modal phải lên theo, và dropdown cũng vậy.
 - **`ring-1 ring-black/5` đi cùng bóng là hợp lệ ở đây.** Nó vạch mép card cho sắc nét trên nền trắng. Đây là chỗ đè `M29`: ở flat thì viền với bóng không đi cùng nhau, ở phong cách nổi thì được.
-- **Ở nền tối, bóng gần như vô hình.** Dự án nổi mà có dark mode thì ở chế độ tối thứ bậc chuyển sang bề mặt sáng dần theo tầng (`M21`), đừng tăng bóng lên cho bằng được.
+- **Ở nền tối, bóng một mình khó thấy.** Dự án nổi mà có dark mode thì ở chế độ tối giữ thang bóng, đậm hơn, thêm viền 1px (`ring-1 ring-white/10`), và bề mặt sáng dần theo tầng (`M21`, `M23`). Ba thứ đi cùng nhau; đừng chỉ tăng bóng lên cho bằng được.
 - `scale-105` khi hover làm chữ bị mờ trong lúc chuyển động. Chỉ tăng bóng, không phóng to.
 
 ### P8. Glass — kính mờ
@@ -229,9 +229,10 @@ ba màu là ba màu nhấn, tức là trượt `M3` và `I3` cùng lúc.
 **Bẫy**
 
 - **Đừng đen tuyệt đối với trắng tuyệt đối.** `#000` với `#fff` chênh nhau quá gắt, chữ bị nhoè sáng khi đọc lâu. Dùng nền gần đen (`zinc-950`) và chữ gần trắng (`zinc-100`).
-- **Hạ độ đậm chữ một bậc.** Chữ sáng trên nền tối trông đậm hơn đúng cỡ đó trên nền sáng. Tiêu đề `700` thì hạ xuống `600`.
-- **Thứ bậc bằng bề mặt sáng dần theo tầng, không bằng bóng.** Nền trang tối nhất, card sáng hơn một bậc, modal sáng hơn nữa (`M21`). Bóng ở nền tối gần như không thấy.
+- **Độ đậm chữ giữ nguyên như bản sáng.** Thứ bậc chữ ở nền tối đi bằng **độ sáng**: chữ chính gần trắng, chữ phụ xám sáng hơn tỉ lệ so với bản sáng (`--muted` tối `#8b93a7`, 6.6:1). Không bộ thiết kế lớn nào hạ độ đậm ở nền tối (tra 26/09/2026); font nào trông dày quá thì đo bằng mắt trên chính font đó, không hạ theo luật.
+- **Thứ bậc bằng bề mặt sáng dần theo tầng, cộng viền và bóng.** Nền trang tối nhất, card sáng hơn một bậc, lớp nổi sáng hơn nữa (`M21`). Bóng vẫn giữ nhưng đậm hơn và đi cặp viền 1px, vì một mình bóng ở nền tối khó thấy (`M23`).
 - Viền `border-white/10` gánh việc tách khối (`M23`), vì các bề mặt tối chênh nhau quá ít.
+- Vùng tô (nút phụ, mục đang chọn, nền rê) là trắng phủ mờ, sáng hơn card (`M21`).
 - Ảnh và avatar cần `ring-1 ring-white/10`. Thiếu nó thì ảnh tối tan vào nền.
 
 ### P11. Neumorphism và 3D — nhận ra, theo, nhưng vá tương phản

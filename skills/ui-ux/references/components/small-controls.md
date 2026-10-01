@@ -41,7 +41,7 @@ chính.
 - **Chip lọc là nút bật/tắt, phải có `aria-pressed={isActive}`.** Trạng thái chọn hiện chỉ bằng màu nền, trình đọc màn hình không thấy màu, nên thiếu `aria-pressed` thì chip nào cũng đọc ra "nút" như nhau. Chip chọn một (kiểu tab) thì dùng `role="radio"` + `aria-checked` trong `role="radiogroup"`, không dùng `aria-pressed`.
 - Chip là `rounded-full`, nút là `rounded-xl` (cao dưới 40px thì `rounded-lg`, `F1`). Khác hình để mắt biết ngay cái nào chọn được nhiều cái nào là hành động.
 - IconButton vuông `size-8`, chữ `text-muted` lúc thường, chỉ đen lên khi hover. Icon phụ không được đen bằng nội dung.
-- **Nền rê của IconButton là lớp phủ `bg-foreground/5`, không `bg-background`.** Nút hay nằm trong dòng rê `hover:bg-background` (`list-row.md`): rê vào nút thì nền nút trùng nền dòng, nút mất hẳn (đã dính 29/09/2026). Lớp phủ lấy màu nền phía sau nên đậm hơn nền quanh nó ở mọi chỗ. **Nằm trong dòng có nền rê thì lên `hover:bg-foreground/8`** (`I10`): `/5` chồng lên nền dòng đang rê gần như trùng.
+- **Nền rê của IconButton là lớp phủ `bg-foreground/5`, không `bg-background`.** Nút hay nằm trong dòng rê `hover:bg-item-hover` (`list-row.md`): rê vào nút thì nền nút trùng nền dòng, nút mất hẳn (đã dính 29/09/2026). Lớp phủ lấy màu nền phía sau nên đậm hơn nền quanh nó ở mọi chỗ. **Nằm trong dòng có nền rê thì lên `hover:bg-foreground/8`** (`I10`): `/5` chồng lên nền dòng đang rê gần như trùng.
 - Trạng thái disabled phải tắt luôn cả hover (`disabled:hover:bg-transparent`). Thiếu dòng đó thì nút chết vẫn sáng lên khi rê vào, người dùng bấm hoài không hiểu sao.
 - `aria-label` và `title` luôn nhận cùng một chuỗi `label`. Nút chỉ có icon thì bắt buộc.
 
@@ -187,7 +187,7 @@ isSelected && "border-transparent bg-secondary text-foreground"
 ```
 
 - **Mọi tab luôn có `border`**, tab chưa chọn là `border-transparent`. Không thì lúc bấm chuyển, tab đang chọn dày thêm 2px và cả hàng xô sang phải.
-- **Tab đang chọn: nền `--secondary`, chữ `--foreground`, viền trong suốt.** Đây là bậc xám duy nhất chìm đủ rõ trên **cả** card trắng lẫn nền trang `#f4f4f6`.
+- **Tab đang chọn: nền `--secondary`, chữ `--foreground`, viền trong suốt.** Đây là bậc xám duy nhất chìm đủ rõ trên **cả** card trắng lẫn nền trang `#f4f4f6`. Nền tối thì `--secondary` là trắng phủ 8%, sáng lên thay vì chìm, cùng độ chênh (`M21`).
 - **Không dùng `bg-surface` (trắng) và cũng không dùng `bg-surface-hover`.** Hai bậc đó chỉ chênh nền trắng 1-3% thì liếc vào không thấy tab nào đang chọn (đã dính 21/09/2026 với `bg-surface`, và 23/09/2026 với `bg-surface-hover` — chủ dự án nhìn bảng khách hàng và nói "tab active khá mờ").
 - **Ô đang chọn phải chênh với nền NẰM DƯỚI nó**, không phải chênh với mấy tab anh em. Cùng một class mà đổi chỗ đặt (card trắng ↔ nền trang xám) là đổi luôn độ rõ, nên chọn bậc xám nào cũng phải thử ở cả hai nền (`N2`).
 - **Không đặt hàng `boxed` vào một khối xám riêng.** Nó nằm thẳng trên nền trang hoặc trên card. Bọc thêm khối xám là thành `segmented` hỏng: rãnh to, đậm, và ô trắng lọt thỏm.
@@ -265,7 +265,7 @@ Hai token bóng khai trong `tokens.css`, có bản nền tối riêng:
 - **Rãnh nhạt, không đậm.** `--background` trên card trắng là vừa đủ thấy rãnh; `--secondary` thì rãnh thành mảng xám nặng, kéo mắt hơn cả nội dung widget.
 - Ô chưa chọn **không có nền hover**, chỉ đổi màu chữ. Nền hover xám trong rãnh xám thì thành ba sắc xám chồng nhau.
 - Bóng ở đây là **ngoại lệ có tên của `M15`**: ô đang chọn là một phím vật lý, bóng nói "đang nhấn nó". Không nhân rộng sang `boxed`, `underline`, `solid`, hay khối khác trong trang.
-- Nền tối: bóng đen gần như vô hình (`M23`), nên ô nổi lên nhờ viền `--border-strong` và vệt sáng `inset` trên mép trên.
+- Nền tối: bóng đen khó thấy (`M23`), nên ô nổi lên nhờ viền `--border-strong` và vệt sáng `inset` trên mép trên.
 - Rãnh đặt trên nền trang xám (không nằm trong card) thì đổi rãnh sang `bg-foreground/5`, để rãnh vẫn chìm hơn nền quanh nó.
 
 ---

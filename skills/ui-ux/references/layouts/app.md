@@ -174,7 +174,7 @@ dòng "1 / 5 bước".
 
 - **Sidebar nền trắng `--surface`, KHÔNG `border-r`** khi vùng nội dung là nền trang xám `--background`: trắng cạnh xám đã là ranh giới, thêm đường kẻ là hai tín hiệu cho một ý (`N3`; bỏ 23/09/2026, chủ dự án). Chỉ kẻ `border-r border-border-strong` khi vùng nội dung cũng trắng. **Đừng để sidebar trong suốt** ăn theo `--background` của trang: sidebar xám trùng nền trang thì cả màn thành một mảng xám, không còn ranh giới nào (đã dính 21/09/2026).
 - **Rộng `w-60` tới `w-64`**, cố định, `shrink-0`.
-- **Rê là `hover:bg-background`, đang chọn đậm hơn một bậc `bg-secondary` + `font-medium`.** Hai nền phải khác nhau: rê ra đúng nền đang chọn thì rê qua mục nào cũng trông như vừa chọn nó, không còn biết mình đang ở trang nào (`I10`; chủ dự án chốt 29/09/2026). "Rê và đã chọn cùng một nền mờ" chỉ còn cho dòng bảng tick checkbox, vì ở đó checkbox đã là dấu chọn. **Không tô màu nhấn**, không viền.
+- **Rê là `hover:bg-item-hover`, đang chọn đậm hơn một bậc `bg-secondary` + `font-medium`.** Hai nền phải khác nhau: rê ra đúng nền đang chọn thì rê qua mục nào cũng trông như vừa chọn nó, không còn biết mình đang ở trang nào (`I10`; chủ dự án chốt 29/09/2026). "Rê và đã chọn cùng một nền mờ" chỉ còn cho dòng bảng tick checkbox, vì ở đó checkbox đã là dấu chọn. **Không tô màu nhấn**, không viền.
 - **Mỗi link cao 40px** (`h-10`, `px-3`), bo `rounded-xl` 12px theo luật bo-theo-chiều-cao `F1`. Link 36px trông chật, nền hover lọt thỏm; 40px thì hàng thoáng và bấm trúng dễ hơn.
 - **Icon và chữ đi cùng nhau.** Lúc thường cả hai `text-foreground/70`: dịu hơn chữ chính nhưng **không mờ tới `--muted`**, xám `--muted` trên nền trắng là đọc không ra tên mục. Hover hay đang chọn thì **cả icon lẫn chữ** lên `text-foreground`. Đặt màu trên phần tử `<a>`, icon dùng `currentColor`, đừng gán màu riêng cho icon, nếu không hover chỉ sáng mỗi chữ.
 - **Nhãn nhóm IN HOA, chữ XÁM**: `text-xs font-medium uppercase tracking-wide text-muted`, hover mới lên `text-foreground`. IN HOA đã đủ tách nhãn khỏi link, nên nhãn phải **nhạt hơn** mục con, không đậm hơn: nhãn đen `--foreground` cộng IN HOA thì nặng nhất cột, lấn cả mục đang chọn (đã dính 21/09/2026). Viết thường thì nhãn nhóm trông y như một mục nav nhạt màu, mắt không tách được đâu là tiêu đề, đâu là link (đã dính 21/09/2026). Chữ trong dữ liệu vẫn viết thường ("Công việc"), IN HOA bằng CSS, để screen reader không đánh vần từng chữ.
@@ -202,7 +202,7 @@ dòng "1 / 5 bước".
   href={item.href}
   className={cn(
     "flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm text-foreground/70 outline-hidden transition-colors",
-    !isActive && "hover:bg-background hover:text-foreground",
+    !isActive && "hover:bg-item-hover hover:text-foreground",
     isActive && "bg-secondary font-medium text-foreground",
   )}
 >
@@ -226,7 +226,7 @@ Nhóm thu gọn được: nút nhãn cùng khuôn mục con, trượt bằng `gr
     aria-expanded={isOpen}
     aria-controls={groupId}
     onClick={() => setIsOpen(!isOpen)}
-    className="flex h-10 w-full cursor-pointer items-center rounded-xl px-3 text-xs font-medium uppercase tracking-wide text-muted outline-hidden transition-colors hover:bg-background hover:text-foreground"
+    className="flex h-10 w-full cursor-pointer items-center rounded-xl px-3 text-xs font-medium uppercase tracking-wide text-muted outline-hidden transition-colors hover:bg-item-hover hover:text-foreground"
   >
     {group.label}
     <ChevronDown
@@ -351,7 +351,7 @@ người dùng yêu cầu.
   aria-label={isCollapsed ? getSidebarLinkLabel(item) : undefined} // "Hộp thư, 20 chưa đọc"
   className={cn(
     "relative flex h-10 w-full items-center gap-2.5 rounded-xl px-3 text-sm whitespace-nowrap text-foreground/70 outline-hidden",
-    !isActive && "hover:bg-background hover:text-foreground",
+    !isActive && "hover:bg-item-hover hover:text-foreground",
     isActive && "bg-secondary font-medium text-foreground",
   )}
 >
@@ -384,7 +384,7 @@ người dùng yêu cầu.
 │ ╰──────────────────────╯ │
 ```
 
-- **Profile là một hàng bấm được, không khung viền**: `h-10 w-full rounded-xl px-1 hover:bg-background`, như `NavUser` của sidebar shadcn. Avatar `size-8` (theo `avatar.md` nhưng **bỏ viền của avatar**), tên `text-sm font-medium truncate`, icon **`ChevronsUpDown`** `size-4 text-muted` ở mép phải. Bản cũ (21/09) bọc khung viền `--border-strong` quanh avatar vốn đã có viền: hai đường viền lồng nhau, avatar dính sát mép khung vì `p-[3px]`, tên bị cắt sớm. Token viền đậm lên thì khung thành cục nặng nhất đáy sidebar (bỏ 23/09/2026, chủ dự án: "footer profile bị xấu").
+- **Profile là một hàng bấm được, không khung viền**: `h-10 w-full rounded-xl px-1 hover:bg-item-hover`, như `NavUser` của sidebar shadcn. Avatar `size-8` (theo `avatar.md` nhưng **bỏ viền của avatar**), tên `text-sm font-medium truncate`, icon **`ChevronsUpDown`** `size-4 text-muted` ở mép phải. Bản cũ (21/09) bọc khung viền `--border-strong` quanh avatar vốn đã có viền: hai đường viền lồng nhau, avatar dính sát mép khung vì `p-[3px]`, tên bị cắt sớm. Token viền đậm lên thì khung thành cục nặng nhất đáy sidebar (bỏ 23/09/2026, chủ dự án: "footer profile bị xấu").
 - **Dấu hiệu bấm được là icon `ChevronsUpDown` + nền khi rê**, không phải khung. Lỗi 21/09/2026 (avatar và tên trôi tự do, không ai biết bấm được) là do **không có icon nào**; có icon mở menu thì hết.
 - **Tâm avatar thẳng tâm icon các link** khi sidebar thu gọn: hàng `px-1` + avatar `size-8` ra tâm 20px, đúng bằng link `px-3` + icon `size-4`.
 - **Cả hàng là một `<button>`**, là trigger của dropdown/popover (`I29`). Đừng làm riêng nút nhỏ ở góc: bấm vào tên mà không có gì xảy ra là người ta tưởng app bị đơ.
@@ -398,7 +398,7 @@ người dùng yêu cầu.
   <DropdownMenuTrigger asChild>
     <Button
       variant="ghost"
-      className="flex h-10 w-full cursor-pointer items-center gap-2.5 overflow-hidden whitespace-nowrap rounded-xl px-1 text-left hover:bg-background"
+      className="flex h-10 w-full cursor-pointer items-center gap-2.5 overflow-hidden whitespace-nowrap rounded-xl px-1 text-left hover:bg-item-hover"
     >
       <Avatar name={user.name} src={user.avatarUrl} className="size-8" />
       <span className="min-w-0 flex-1 truncate text-sm font-medium text-foreground">
@@ -821,7 +821,7 @@ Khi có dòng được chọn, hàng tab + tìm + nút thêm được THAY bằn
 
 - **Tab trạng thái** ở trên bảng theo "Thanh tab" trong `../components/small-controls.md` — mở file đó lấy variant và class, đừng chép lại ở đây. Bảng này thường có thêm hàng chip lọc ngay dưới hàng tab, và khi đó tab dùng `underline`. "Bộ lọc" trong đề không chỉ là hàng tab: các trường khác (công ty, người phụ trách, khoảng ngày) vào nút **Lọc** mở popover, dựng theo "Popover lọc" trong `overlay.md`.
 - **Dưới `sm`, tab trạng thái không vừa một hàng thì thành một nút dropdown**, không cuộn ngang: nút viền `h-10` ghi **nhãn "Trạng thái:" (`text-muted`) rồi trạng thái đang chọn kèm số** ("Trạng thái: Tất cả · 32") và `ChevronDown`; thiếu nhãn thì nút "Tất cả · 32" đứng một mình trông như ô nhập hay nút lạ, không biết đang lọc theo gì (chủ dự án chốt 25/09/2026). Nút mở ra là danh sách đủ các trạng thái, mỗi mục kèm số, mục đang chọn có dấu check (khuôn Select ở `../components/choice-controls.md`, danh sách mở ra theo Dropdown ở `overlay.md`). Đây là bước 3 của `R10`: hàng tab cuộn ngang làm tab cuối nằm **hẳn** ngoài khung ("Ngừng giao dịch 6" bắt đầu ở 370px trong khung 367px), mép mờ không có gì để mờ, người dùng tưởng chỉ có ba trạng thái (đã dính 25/09/2026). Rút chữ ("Đang GD") thì mất nghĩa. Nút **căn trái, rộng theo nội dung** (`w-fit`), đứng riêng một hàng: nó là bộ lọc, đọc từ trái như hàng chip bên dưới và ô tìm bên trên; căn phải thì một nút lẻ trôi giữa khoảng trống, tách khỏi hàng chip nó đi cùng. Không kéo rộng hết hàng: trông như ô nhập. Hàng chip vẫn cuộn ngang, có mép mờ (`R10`; vạch chỉ vị trí chỉ khi người dùng chọn): chip là lọc thêm, thấy một phần là đủ biết còn.
-- **Hover dòng `hover:bg-surface-hover`**, không `hover:bg-background` (`I10`). Dòng chạm hai mép khung trắng mà tô màu nền trang là trông như thủng.
+- **Hover dòng `hover:bg-surface-hover`**, không `hover:bg-item-hover` (`I10`). Dòng chạm hai mép khung trắng mà tô màu nền trang là trông như thủng.
 - **Cột trạng thái là badge màu** theo `M7`, không chấm xám + chữ đen. **Trạng thái mà gần hết các dòng giống nhau thì không làm cột**: dòng thường không có dấu, chỉ dòng ngoại lệ có badge cạnh tên (thành viên "Đang hoạt động" / lời mời "Chờ chấp nhận", xem "Trang thành viên và phân quyền").
 - **Nút gỡ lọc ghi "Xoá lọc", không ghi "Bỏ chọn".** Khi đang chọn dòng, thanh trên cùng đã có "Bỏ chọn" (bỏ tick dòng); cuối hàng chip mà cũng "Bỏ chọn" thì một màn có hai nút cùng chữ khác việc (`N6`, đã dính 23/09/2026). **"Xoá lọc" cuối hàng chip chỉ hiện khi có chip đang chọn** (bấm là gỡ hết: chip, từ khoá, tab về Tất cả). Chỉ có từ khoá thì không hiện: ô tìm đã có nút `X` riêng, khối rỗng đã có "Xoá tìm kiếm"; thêm nút này là **ba nút cùng gỡ một từ khoá** trên một màn, và ở 375px nó chiếm một phần ba hàng chip (đã dính 25/09/2026, sau khi thử cho nó hiện với mọi bộ lọc).
 - **Cột chữ tự co giãn, đừng khoá `max-w` khi bảng còn dư chỗ.** Cột tên và cột công ty để co theo bảng, `truncate` chỉ bật khi thật sự hết chỗ. Khoá cứng thì ra cảnh tên bị cắt "Tôn Nữ Thị Phương Thảo N…" trong khi giữa bảng còn một mảng trắng (đã dính 23/09/2026).
@@ -1017,7 +1017,7 @@ header h-16:  Cài đặt                           <- là <h1>, tên khu
 
 - **Route gốc không bao giờ trống**: `/settings` chuyển thẳng (replace, không thêm lịch sử) tới trang con đầu. Mục "Cài đặt" ở sidebar sáng ở mọi trang con (`aria-current` theo tiền tố route).
 - **Dưới 6 trang: hàng tab `underline` trên cùng vùng nội dung**, rộng bằng cột nội dung (`max-w-2xl`), chữ tab đầu thẳng cột với tiêu đề mục bên dưới. Tab là `<Link>` có `aria-current="page"`, không `role="tablist"`: mỗi tab là một trang, nút Back phải quay về tab trước. Không dùng `solid`: trang cài đặt đầy công tắc bật đã tô `--primary`, thêm viên đen ở đầu trang là hai loại khối đen tranh nhau, và chữ trong viên thụt `px-3` lệch cột với nội dung (thử trên trang 26/09/2026).
-- **Từ 6 trang trở lên: cột nav dọc bên trái** (kiểu B), `w-48 shrink-0`, mục cùng khuôn link sidebar: `h-10 rounded-xl px-3 text-sm text-foreground/70 outline-hidden`, rê `hover:bg-background hover:text-foreground`, đang chọn một bậc đậm hơn `bg-secondary font-medium text-foreground`, có `aria-current="page"`. Cột đặt trong khung trắng `bg-surface rounded-2xl p-2`: đứng thẳng trên nền trang xám thì nền rê `--background` trùng nền trang, rê không thấy gì (`I10`). Dưới `lg` cột đó thành hàng tab `underline` cuộn ngang ở trên (`../responsive.md`).
+- **Từ 6 trang trở lên: cột nav dọc bên trái** (kiểu B), `w-48 shrink-0`, mục cùng khuôn link sidebar: `h-10 rounded-xl px-3 text-sm text-foreground/70 outline-hidden`, rê `hover:bg-item-hover hover:text-foreground`, đang chọn một bậc đậm hơn `bg-secondary font-medium text-foreground`, có `aria-current="page"`. Cột đặt trong khung trắng `bg-surface rounded-2xl p-2`: đứng thẳng trên nền trang xám thì nền rê `--background` trùng nền trang, rê không thấy gì (`I10`). Dưới `lg` cột đó thành hàng tab `underline` cuộn ngang ở trên (`../responsive.md`).
 - **Tên khu ở thanh header là `<h1>`, trang con không có đầu trang riêng.** Tab đang sáng đã nói đang ở trang nào; thêm tiêu đề "Thông báo" + một câu mô tả dưới hàng tab là ghi tên trang hai lần (luật "một trang đúng một `<h1>`" ở "Đầu trang trong vùng nội dung"). Trang trạng thái (`/settings/…/states`) giữ đường dẫn cha như cũ.
 - **Hồ sơ cá nhân là tab đầu của khu**, không phải route riêng ngoài khu. Mục "Hồ sơ" trong menu tài khoản dẫn tới đúng tab đó.
 - **Đường kẻ dưới hàng tab rộng đúng bằng cột nội dung**, không rộng bằng khung cuộn của hàng tab (khung này rộng hơn cột 8px mỗi bên để chữ tab đầu thẳng cột, `small-controls.md`): kẻ ở khung cuộn thì đường kẻ thò ra 8px hai bên so với mép card bên dưới. Vẽ bằng `before:absolute before:inset-x-2 before:bottom-0 before:h-px before:bg-border-strong` trên khối bọc hàng tab (`relative`), số dương, không `-mx` (`N11`). Dùng `before:` chứ không `after:`: `::after` là con cuối nên vẽ đè lên vạch tab đang chọn. Tab theo mẫu `underline` (`box-content h-10 pb-px`, vạch `bottom-0`) thì khối bọc cao 41px, đường kẻ nằm đúng dòng cuối, vạch đè lên. Cột nội dung có `max-w-*` thì cộng thêm 16px cho phần hàng tab lấn ra hai bên (`max-w-2xl` thành `max-w-[43rem]`), các khối khác trong cột `mx-2` (đo 27/09/2026 ở 375 và 768px: vị trí mọi phần tử trùng bản `-mx-2`). Màu `border-border-strong`, cùng màu đường kẻ dưới header `h-16`; đừng tự pha `border-foreground/10` (trên nền trang ra `#e1e1e3`, đậm hơn đường header `#eaeaea` ngay phía trên, đo 26/09/2026). Vạch 2px của tab đang chọn vẫn đè lên đường kẻ này.

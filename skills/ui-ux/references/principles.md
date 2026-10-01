@@ -99,7 +99,7 @@ Ngoại lệ có tên: dòng bảng **đã chọn** và dòng **đang rê chuộ
 hai trạng thái đã tách bằng checkbox đã tick (chủ dự án chốt 23/09/2026, `I10`). Hình
 khác nhau không nhất thiết phải là nền khác nhau. Ngoại lệ này **chỉ cho dòng bảng tick
 checkbox**. Sidebar và cây thư mục không có checkbox nên đang chọn đậm hơn rê một bậc: rê
-`hover:bg-background`, đang chọn `bg-secondary` + `font-medium`, không màu nhấn, không viền
+`hover:bg-item-hover`, đang chọn `bg-secondary` + `font-medium`, không màu nhấn, không viền
 (chủ dự án chốt 29/09/2026).
 
 *Phép thử:* che chữ đi, chỉ nhìn hình. Còn nói được đây là trạng thái nào không?

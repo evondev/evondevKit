@@ -55,6 +55,17 @@ emerald là xong. Cột "quá hạn" tô amber thì được (`M7`, `list-row.md
 chọn được cái nào đáng nhìn nhất. Cần nhấn một ô thì nhấn bằng vị trí hoặc bằng
 dòng phụ, không bằng màu.
 
+**Nền tối** (`M32`). Bậc `bg-primary/…` tự đảo theo `--primary` của khối `.dark`, lưới
+`stroke-border` và nhãn `text-muted` cũng vậy: không cần khai gì thêm. Phải khai riêng:
+
+- **Thang phân loại** viết bằng class sắc thì thêm bản tối, sáng lên một bậc:
+  `blue-500 dark:blue-400` · `sky-400` giữ · `violet-500 dark:violet-400` · `fuchsia-400` giữ ·
+  `teal-500 dark:teal-400` · `indigo-300` giữ. Nhóm "Khác" `slate-300` thành **`dark:slate-600`**:
+  để nguyên thì xám sáng thành mảng nổi nhất biểu đồ tối.
+- **Thư viện vẽ bằng mã màu** (Recharts `fill="#…"`, Chart.js) thì truyền `var(--…)` hoặc đọc
+  token lúc vẽ, không viết hex: hex cứng không lật theo theme. shadcn chart: `ChartConfig` nhận
+  `theme: { light, dark }`, hoặc `--chart-1…5` có bản `.dark`.
+
 ---
 
 ## Bỏ bớt đi
