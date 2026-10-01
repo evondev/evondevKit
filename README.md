@@ -81,7 +81,7 @@ does, no wireframes.
   the prompt.
 - Works without Tailwind or without a `package.json` (plain HTML, WordPress).
 
-## Using with Cursor, OpenCode, Codex, Antigravity
+## Using with Cursor, OpenCode, Codex, Antigravity, omp
 
 Run at the project root (`bunx` works in place of `npx`):
 
@@ -90,7 +90,7 @@ npx skills add evondev/evondevKit
 ```
 
 The command asks which tools to install for, then copies the skill into
-`.agents/skills/ui-ux/`, the folder Cursor, OpenCode, Codex and Antigravity all read. To
+`.agents/skills/ui-ux/`, the folder Cursor, OpenCode, Codex, Antigravity and omp all read. To
 preselect tools, add `-a`, e.g. `-a cursor -a opencode`. To share it across all projects, add
 `-g`.
 
@@ -99,6 +99,7 @@ preselect tools, add `-a`, e.g. `-a cursor -a opencode`. To share it across all 
 | Cursor, Antigravity | `/ui-ux Build an orders list…` |
 | Codex | `$ui-ux Build an orders list…` |
 | OpenCode | `Use the ui-ux skill to build an orders list…` |
+| omp | `/skill:ui-ux Build an orders list…` |
 
 Without the name, the tool turns the skill on when the prompt matches its description.
 Update: `npx skills update`. The skill is tested most on Claude; other tools work but may

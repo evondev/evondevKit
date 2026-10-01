@@ -75,7 +75,7 @@ không qua wireframe.
 - **Phong cách**: mặc định flat. Muốn glassmorphism, gradient, nền tối thì nói trong đề.
 - Không có Tailwind, hay không có `package.json` (HTML thuần, WordPress) vẫn dùng được.
 
-## Dùng với Cursor, OpenCode, Codex, Antigravity
+## Dùng với Cursor, OpenCode, Codex, Antigravity, omp
 
 Chạy ở thư mục gốc dự án (dùng `bunx` thay `npx` cũng được):
 
@@ -84,7 +84,7 @@ npx skills add evondev/evondevKit
 ```
 
 Lệnh hỏi cài cho công cụ nào rồi chép skill vào `.agents/skills/ui-ux/`, thư mục mà Cursor,
-OpenCode, Codex, Antigravity cùng đọc. Muốn chọn sẵn thì thêm `-a`, ví dụ
+OpenCode, Codex, Antigravity, omp cùng đọc. Muốn chọn sẵn thì thêm `-a`, ví dụ
 `-a cursor -a opencode`. Dùng chung cho mọi dự án thì thêm `-g`.
 
 | Công cụ | Gọi skill |
@@ -92,6 +92,7 @@ OpenCode, Codex, Antigravity cùng đọc. Muốn chọn sẵn thì thêm `-a`, 
 | Cursor, Antigravity | `/ui-ux Dựng màn danh sách đơn hàng…` |
 | Codex | `$ui-ux Dựng màn danh sách đơn hàng…` |
 | OpenCode | `Dùng skill ui-ux, dựng màn danh sách đơn hàng…` |
+| omp | `/skill:ui-ux Dựng màn danh sách đơn hàng…` |
 
 Không gọi tên thì công cụ tự bật skill khi đề khớp mô tả. Lấy bản mới: `npx skills update`.
 Skill mới được test kỹ trên Claude, công cụ khác chạy được nhưng có thể lệch vài chỗ.
