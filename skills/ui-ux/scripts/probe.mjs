@@ -1721,6 +1721,31 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   if (wireframeBar && viewportWidth >= 1280 && wireframeBar.scrollWidth > wireframeBar.clientWidth + 1) {
     wireframeChromeProblems.push(`thanh công cụ tràn ${wireframeBar.scrollWidth - wireframeBar.clientWidth}px ở ${viewportWidth}px: rút nhãn (Màn một hai chữ, Phương án chỉ chữ cái)`);
   }
+  // Token focus theo màu nhấn đang áp (design-process.md, U3): đổi --primary trên body mà --border-focus khai
+  // `var(--primary)` ở :root thì đã tính xong ở :root, viền focus giữ màu cũ; --ring-focus viết cứng cũng vậy (đã dính
+  // 01/10/2026, wireframe lớp học: chọn xanh ngọc mà ô tìm focus viền chàm ở mọi nấc). Đo ở khối thiết kế, nền sáng.
+  if (wireframeBar && !document.documentElement.classList.contains("dark")) {
+    const designRoot = document.getElementById("wf-design") || document.body;
+    const sample = document.createElement("span");
+    designRoot.appendChild(sample);
+    const readRgb = (value) => {
+      sample.style.color = "";
+      sample.style.color = value;
+      const color = getComputedStyle(sample).color;
+      // color-mix trả `color(srgb 0.05 0.58 0.53 / 0.1)`, kênh 0–1.
+      const scale = color.startsWith("color(") ? 255 : 1;
+      return (color.replace(/^color\(srgb/, "").match(/[\d.]+/g) || []).slice(0, 3).map((channel) => Math.round(Number(channel) * scale));
+    };
+    const primaryRgb = readRgb("var(--primary)");
+    for (const token of ["--border-focus", "--ring-focus"]) {
+      if (!getComputedStyle(designRoot).getPropertyValue(token).trim()) continue;
+      const tokenRgb = readRgb(`var(${token})`);
+      if (tokenRgb.length === 3 && primaryRgb.length === 3 && tokenRgb.some((channel, index) => Math.abs(channel - primaryRgb[index]) > 6)) {
+        wireframeChromeProblems.push(`token focus không theo màu nhấn: ${token} rgb(${tokenRgb.join(", ")}) trong khi --primary rgb(${primaryRgb.join(", ")}); đổi màu nhấn trên :root và suy lại token (design-process.md)`);
+      }
+    }
+    sample.remove();
+  }
   const breakpointQueries = { sm: "(min-width: 40rem)", md: "(min-width: 48rem)", lg: "(min-width: 64rem)", xl: "(min-width: 80rem)", "2xl": "(min-width: 96rem)" };
   const isRectOverlap = (first, second) => first.left < second.right && first.right > second.left && first.top < second.bottom && first.bottom > second.top;
   for (const block of document.querySelectorAll("[data-wf-block]")) {

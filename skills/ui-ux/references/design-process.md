@@ -112,8 +112,15 @@ dòng đó."* Dừng chờ.
     control, cỡ chữ, cỡ icon), theo thang của dự án hay của skill, không để trình duyệt tự canh.
     Người dùng chọn wireframe là chọn luôn độ thoáng.
   - **Nấc Xám chỉ đổi màu nhấn và màu trạng thái sang xám** (ghi đè `--primary` và các token
-    trạng thái trên `body[data-mau="xam"]`); nền, viền, chữ, bo góc, bóng, font giữ nguyên token.
+    trạng thái trên `:root[data-mau="xam"]`); nền, viền, chữ, bo góc, bóng, font giữ nguyên token.
     Bật Màu lên là thấy đúng bản dựng.
+  - **Đổi màu nhấn trên `:root`, không trên `body`, và kéo theo mọi token suy từ nó.** Biến
+    `--border-focus: var(--primary)` khai ở `:root` được tính xong ngay tại `:root` rồi mới truyền
+    xuống: đổi `--primary` ở `body` thì nút chính đổi màu mà viền focus vẫn màu cũ. Token viết cứng
+    theo màu nhấn (`--ring-focus`, `--primary-hover`, `--primary-light`) cũng phải suy lại ở từng nấc,
+    như `brand-tokens.md` dặn khi đổi `--primary`. Đã dính 01/10/2026 (wireframe lớp học): chọn
+    xanh ngọc, nút xanh ngọc, nhưng ô tìm và select focus vẫn viền và ring màu chàm ở mọi nấc,
+    cả nấc Xám. Probe báo "Token focus không theo màu nhấn".
 - **Nội dung thật**: chữ lấy từ dữ liệu của dự án, cả ca dài nhất và ca trống. Wireframe chữ
   "Lorem" thì không thấy được card quá tải.
 - **Dữ liệu mẫu có đủ mọi trạng thái, nhất là trạng thái suy từ giờ.** Màn có mốc "bây giờ"
@@ -211,7 +218,7 @@ dòng đó."* Dừng chờ.
   **Nhấn: ● ● ●** gồm ba màu gợi ý (chàm `#4f46e5`, xanh ngọc `#0d9488`, cam `#ea580c`), đổi
   `--primary` tại chỗ. Không có nhóm này thì nấc Màu của dự án mới vẫn đen trắng. Màu người dùng
   chọn thành màu nhấn lúc dựng (`brand-tokens.md`); không chọn thì dựng màu đầu, báo một dòng.
-  Đổi màu bằng biến CSS trên `body[data-mau]`, `body[data-nhan]`, không vẽ lại. Probe cả hai
+  Đổi màu bằng biến CSS trên `:root[data-mau]`, `:root[data-nhan]` (không trên `body`, xem trên), không vẽ lại. Probe cả hai
   nấc (tương phản chữ trắng trên nút chính, trên mục đang chọn).
 
 - **Control trong wireframe bấm được và hiện trạng thái như bản thật** ⚑: ô nhập, ô tìm focus
@@ -417,8 +424,19 @@ dòng đó."* Dừng chờ.
     [data-wf-block][data-wf-block-out]::before { top: auto; bottom: 100%; } /* số đè chữ thì lên trên mép khối */
     body[data-frame] .wf-bar, body[data-frame] .wf-reason { display: none; }
     body:not([data-kho="mobile"]) [data-wf-param="nav"] { display: none; }
-    body[data-mau="xam"] { --primary: #2c2c2c; } /* nấc Xám: bỏ màu nhấn, cả màu trạng thái */
-    body:not([data-mau="xam"])[data-nhan="cham"] { --primary: #4f46e5; } /* …ngoc, cam tương tự */
+    /* Màu nhấn đổi trên :root, cùng chỗ khai token: var(--primary) khai ở :root đã tính xong tại :root, đổi ở
+       body thì viền focus, ring, hover vẫn màu cũ (đã dính 01/10/2026). */
+    :root[data-mau="xam"] { --primary: #2c2c2c; } /* nấc Xám: bỏ màu nhấn, cả màu trạng thái */
+    :root:not([data-mau="xam"])[data-nhan="cham"] { --primary: #4f46e5; } /* …ngoc, cam tương tự */
+    /* Token suy từ màu nhấn, tính lại theo nấc (brand-tokens.md). Chỉ ở nấc Xám hoặc khi có nhóm Nhấn: dự án đã có
+       brand thì ở nấc Màu giữ nguyên token của dự án. */
+    :root[data-mau="xam"], :root:has([data-wf-param="nhan"]) {
+      --primary-hover: color-mix(in oklab, var(--primary) 85%, var(--background)); /* lệch về phía nền */
+      --primary-light: color-mix(in srgb, var(--primary) 5%, transparent);
+      --ring-focus: color-mix(in srgb, var(--primary) 10%, transparent);
+      --border-focus: var(--primary);
+      --chart-fill: var(--primary);
+    }
     .wf-drawer { position: fixed; inset: 0 auto 0 0; width: 280px; translate: -100% 0; transition: translate .35s; }
     body[data-menu-open] .wf-drawer { translate: 0 0; }
   </style>
@@ -428,6 +446,7 @@ dòng đó."* Dừng chờ.
     const state = { v: "a", mau: "xam", nhan: "cham", kho: "desktop", nav: "menu", tt: "du-lieu" };
     for (const key of Object.keys(state)) state[key] = params.get(key) || state[key];
     Object.assign(document.body.dataset, state);
+    Object.assign(document.documentElement.dataset, { mau: state.mau, nhan: state.nhan }); // màu nhấn đổi trên :root
     if (params.has("frame")) document.body.dataset.frame = "1";
     for (const set of document.querySelectorAll("[data-wf-param]")) {
       for (const link of set.querySelectorAll("a")) {
