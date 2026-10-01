@@ -1344,7 +1344,14 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     const heights = actions.map((action) => Math.round(action.getBoundingClientRect().height));
     const fontSizes = new Set(actions.map((action) => getComputedStyle(action).fontSize));
     const isFullRadius = (action) => parseFloat(getComputedStyle(action).borderTopLeftRadius) >= action.getBoundingClientRect().height / 2;
-    const shapeCount = new Set(actions.map(isFullRadius)).size;
+    // Nút avatar (vuông, bo tròn hẳn, chỉ ảnh hoặc 1–2 chữ cái) tròn cạnh nút icon bo góc là quy ước chung, không
+    // tính vào phép so hình (báo nhầm 01/10/2026, header khung app: trăng, chuông, avatar "T").
+    const isAvatarAction = (action) => {
+      const actionRect = action.getBoundingClientRect();
+
+      return isFullRadius(action) && Math.abs(actionRect.width - actionRect.height) <= 2 && (Boolean(action.querySelector("img")) || action.textContent.trim().length <= 2);
+    };
+    const shapeCount = new Set(actions.filter((action) => !isAvatarAction(action)).map(isFullRadius)).size;
     const heightSpread = Math.max(...heights) - Math.min(...heights);
     // Khoảng giữa hai nút kề nhau: dưới 6px thì nền rê dính nhau, hàng thành một cục (gap-2, 30/09/2026).
     const sortedActions = [...actions].sort((first, second) => first.getBoundingClientRect().left - second.getBoundingClientRect().left);
@@ -2475,7 +2482,11 @@ async function probePopupLayers(page, isMobile, isDark = false) {
         if (!pick) return null;
         pick.click();
 
-        return { label: `${trigger.tagName.toLowerCase()} "${(trigger.textContent || "").trim().slice(0, 30)}"`, iconCount: trigger.querySelectorAll("svg").length };
+        // Ô trống `—` của bảng có icon `calendar-plus` + "Đặt hạn" chỉ cho lúc trống (`layouts/app.md`, "Ô trống
+        // một kiểu"): có ngày rồi thì hết icon là đúng mẫu (báo nhầm 01/10/2026, cột hạn chót bảng công việc).
+        const isEmptyCellTrigger = (trigger.textContent || "").trim().startsWith("—");
+
+        return { label: `${trigger.tagName.toLowerCase()} "${(trigger.textContent || "").trim().slice(0, 30)}"`, iconCount: isEmptyCellTrigger ? 0 : trigger.querySelectorAll("svg").length };
       }, triggerId);
       if (pickedTrigger) {
         await page.waitForTimeout(250);

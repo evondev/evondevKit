@@ -431,6 +431,8 @@ Dù gu nào:
 - **Chỗ đặt:** trong app là **Cài đặt → Giao diện** hoặc mục Giao diện trong **menu tài khoản**;
   đề bảo đặt trên header thì là **icon button** (`Sun` / `Moon`) mở menu ba mục, mục đang chọn
   có dấu ✓. Trang công khai, docs: nhóm ba icon (radiogroup) ở footer hoặc nút icon trên header.
+- **Màn xác thực, trang lỗi không cần nút đổi theme**: script đầu trang áp lựa chọn đã lưu hoặc theo
+  hệ thống cho mọi route, người dùng đổi trong app.
 - **Nhớ lựa chọn, không nháy trắng khi tải.** Script đặt class trên `<html>` trước khi vẽ;
   `<html suppressHydrationWarning>` vì script sửa `<html>` trước React.
 - **Lật theme thì tắt transition một nhịp**, không thì nền trang đổi tức thì còn nút, card
@@ -535,6 +537,11 @@ Thứ tự thử, dừng ngay khi đủ:
 đi ngược `M14` — viền đậm lên thì cái hộp hiện ra rõ hơn nội dung bên trong nó.
 
 Có từ hai card trở lên trên màn thì quay về `M13` như thường.
+
+**Nền tối giữ y như vậy, không thêm viền dù `M23` nói viền gánh việc tách khối.** Card tối chênh nền
+1.07:1, ngang bản sáng 1.10:1, đủ đọc ra ranh giới. Đã thử trên màn đăng nhập (01/10/2026): viền
+`--border` biến card thành khung, bóng `--elevation-popover` gần như không thấy. `M23` nói về các khối
+nằm cạnh nhau trong trang, không về một card một mình.
 
 ---
 

@@ -181,7 +181,7 @@ Chốt xong thì ghi ngược vào skill như bậc 1: token vào `tokens.css`, 
 - ✅ **Lớp nổi** — modal, hộp xác nhận xoá, drawer, dropdown, popover lọc, toast, tooltip: lớp nổi phải tách khỏi nền tối bằng viền, không nhờ bóng. 01/10/2026 (`/components`): khung đúng `--surface-overlay` + viền + bóng, tooltip đảo màu; sửa skill: nền rê `secondary` tối, lớp phủ `bg-black`, mục trỏ viết bằng điều kiện JS.
 - ✅ **Form** — ô nhập thường / lỗi / khoá / focus, select, date picker, checkbox, công tắc, alert (`/dashboard/tasks/new`). 01/10/2026: đúng cả với màu nhấn xanh (sáng lên `#7ca6ed`, chữ nút đảo tối, viền focus 3.37:1); sửa skill: vệt khung chờ `bg-foreground/5`.
 - ✅ **Badge và biểu đồ** — badge trạng thái, thanh tiến độ, bốn loại biểu đồ: màu mang nghĩa vẫn phân biệt được, nền badge không thành khối sáng. 01/10/2026: badge, avatar, cột nhóm, sparkline, đường đều ổn; sửa skill: rãnh thanh tiến độ và dải khoảng ngày thôi tô `bg-background`. Bậc `/15` mờ ở cả hai bản (1.23 / 1.17:1), đánh đổi đã ghi trong `charts.md`, không đổi.
-- [ ] **Màn xác thực** — đăng nhập, OTP (`/login`, `/verify-otp`): màn không có khung app bọc ngoài, card nằm thẳng trên nền trang tối.
+- ✅ **Màn xác thực** — đăng nhập, OTP (`/login`, `/verify-otp`): màn không có khung app bọc ngoài, card nằm thẳng trên nền trang tối. 01/10/2026: probe sạch, ô nhập và ô OTP có viền; card một mình giữ không viền (`M29`, đã thử viền và bóng).
 
 ## Vòng tiếng Anh
 
