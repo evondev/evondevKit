@@ -242,7 +242,10 @@
   --success-bg: rgb(0 188 125 / 0.15);
   --success: #00d492;                      /* emerald-400, 7.8:1 */
   --warning-bg: rgb(254 154 0 / 0.15);
-  --warning: #ffb900;                      /* amber-400, 8.5:1 */
+  /* orange-400, KHÔNG amber-400: thang amber trôi từ cam sang vàng khi sáng lên (OKLCH: amber-700 49°,
+     amber-400 84°), chữ "Quá hạn" cam ở bản sáng thành vàng ở bản tối (chủ dự án thấy 01/10/2026).
+     orange-400 56°, lệch 7°. 7.9:1 trên card, 6.2:1 trên --warning-bg. M7. */
+  --warning: #ff8904;
   --neutral-bg: rgb(113 113 123 / 0.15);
   --neutral: #9f9fa9;                      /* zinc-400, 6.2:1 */
 }

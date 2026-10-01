@@ -2887,7 +2887,7 @@ async function probeWidth(browser, options, width) {
   await takeFullScreenshot(page, screenshotPath);
   // Đo dark mode ngay sau khi chụp, lúc trang còn đúng như ảnh: các bước rê, bấm, mở lớp nổi bên dưới
   // có thể đổi trang (đã dính 01/10/2026: tới lượt đo thì biểu đồ tổng quan còn 2/10 khối màu nhấn).
-  const darkModeProblemSet = new Set(options.isDark ? [...(await page.evaluate(findDarkModeProblems)), ...(await page.evaluate(findSunkenSelections))] : []);
+  const darkModeProblemSet = new Set(options.isDark ? [...(await page.evaluate(findDarkModeProblems)), ...(await page.evaluate(findSunkenSelections)), ...(await page.evaluate(findHueDrifts))] : []);
 
   const { drawnRings: drawnFocusRings, unmarkedFocusStops } = isMobile ? { drawnRings: [], unmarkedFocusStops: [] } : await findDrawnFocusRings(page);
 
@@ -3059,6 +3059,59 @@ function findSunkenSelections() {
   }
 
   return [...findings];
+}
+
+// Cùng một chữ có màu mà sắc hai theme lệch nhau (M7, "Bản tối chọn theo sắc"): amber-700 cam ở bản sáng, amber-400
+// vàng ở bản tối, đọc ra hai màu (chủ dự án thấy 01/10/2026, bảng công việc). Đang tối thì gỡ `.dark` một nhịp, đọc
+// lại màu chữ rồi gắn lại; chuyển động đã tắt nên màu đổi ngay. So sắc OKLCH, chỉ chữ đủ đậm sắc (chroma > 0.08).
+function findHueDrifts() {
+  const root = document.documentElement;
+  if (!root.classList.contains("dark")) return [];
+  const canvas = document.createElement("canvas");
+  canvas.width = 1;
+  canvas.height = 1;
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  const toOklch = (cssColor) => {
+    context.clearRect(0, 0, 1, 1);
+    context.fillStyle = "rgba(0,0,0,0)";
+    context.fillStyle = cssColor;
+    context.fillRect(0, 0, 1, 1);
+    const [red, green, blue, alpha] = context.getImageData(0, 0, 1, 1).data;
+    if (alpha < 200) return null;
+    const [linearRed, linearGreen, linearBlue] = [red, green, blue].map((channel) => {
+      const value = channel / 255;
+
+      return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+    });
+    const long = Math.cbrt(0.4122214708 * linearRed + 0.5363325363 * linearGreen + 0.0514459929 * linearBlue);
+    const medium = Math.cbrt(0.2119034982 * linearRed + 0.6806995451 * linearGreen + 0.1073969566 * linearBlue);
+    const short = Math.cbrt(0.0883024619 * linearRed + 0.2817188376 * linearGreen + 0.6299787005 * linearBlue);
+    const axisA = 1.9779984951 * long - 2.428592205 * medium + 0.4505937099 * short;
+    const axisB = 0.0259040371 * long + 0.7827717662 * medium - 0.808477439 * short;
+    const hex = `#${[red, green, blue].map((channel) => channel.toString(16).padStart(2, "0")).join("")}`;
+
+    return { chroma: Math.hypot(axisA, axisB), hue: ((Math.atan2(axisB, axisA) * 180) / Math.PI + 360) % 360, hex };
+  };
+  const texts = [...document.querySelectorAll("body *")]
+    .filter((element) => element.children.length === 0 && (element.textContent || "").trim() && element.getBoundingClientRect().width > 0)
+    .slice(0, 600);
+  const darkColors = texts.map((element) => toOklch(getComputedStyle(element).color));
+  root.classList.remove("dark");
+  const lightColors = texts.map((element) => toOklch(getComputedStyle(element).color));
+  root.classList.add("dark");
+  const findings = new Map();
+  texts.forEach((element, index) => {
+    const dark = darkColors[index];
+    const light = lightColors[index];
+    if (!dark || !light || dark.chroma < 0.08 || light.chroma < 0.08) return;
+    const drift = Math.min(Math.abs(dark.hue - light.hue), 360 - Math.abs(dark.hue - light.hue));
+    const key = `${light.hex}→${dark.hex}`;
+    // 20°: sky-700 → sky-300 của avatar lệch 12° ở thang gốc, đo qua hex ra 16°, mắt vẫn đọc là một màu.
+    if (drift <= 20 || findings.has(key) || findings.size >= 4) return;
+    findings.set(key, `chữ màu đổi sắc giữa hai theme: sáng ${light.hex} (${Math.round(light.hue)}°) → tối ${dark.hex} (${Math.round(dark.hue)}°), lệch ${Math.round(drift)}°, đọc ra hai màu; chọn bậc tối theo sắc, ví dụ amber-700 → orange-400 (M7): "${element.textContent.trim().slice(0, 30)}"`);
+  });
+
+  return [...findings.values()];
 }
 
 // Chỉ chạy với `--dark` (M21, M31, M32, V4). Bốn kiểu lỗi chỉ người bật tối mới thấy:

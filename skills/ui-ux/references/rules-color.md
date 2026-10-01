@@ -101,12 +101,20 @@ Bốn tông, không thêm. Trạng thái nào vào tông nào theo **nghĩa**, k
 | Đỏ | `bg-red-50 text-red-700` | `--error-bg` / `--error-strong` | Đã dừng, thất bại, bị từ chối | Ngừng giao dịch, Đã huỷ, Lỗi |
 
 **Dự án có dark mode thì mọi class `-700` của bảng trên đi kèm bản `dark:` `-400`**
-(`text-amber-700 dark:text-amber-400`; không Tailwind thì token, đã lật sẵn). `-700` không tự
+(`text-red-700 dark:text-red-400`; **riêng hổ phách là `text-amber-700 dark:text-orange-400`**, xem
+dưới; không Tailwind thì token, đã lật sẵn). `-700` không tự
 đổi ở nền tối: chữ trạng thái còn 2,9–3,7:1 (`red-700` 2,9, `emerald-700` 3,5, `amber-700`
 3,7). Sót một chỗ là cùng một nghĩa ra hai sắc trên một dòng (đã dính 01/10/2026, bảng công
 việc tối: "Khẩn cấp" `text-amber-700` cam sẫm 3,74:1 cạnh "Quá hạn 3 ngày"
 `dark:text-amber-400` vàng sáng). Gom mỗi tông vào một helper để
 không phải nhớ từng chỗ.
+
+**Bản tối chọn theo sắc, không theo số bậc.** Lên bậc sáng hơn thì phần lớn thang Tailwind giữ sắc
+(đỏ, xanh lá, xanh dương, tím lệch 0–6° OKLCH), riêng **amber trôi sang vàng**: `amber-700` 49°,
+`amber-400` 84°. "Quá hạn" cam ở bản sáng thành vàng ở bản tối, đọc ra hai màu, hai nghĩa (chủ dự án
+thấy 01/10/2026, bảng công việc). Hổ phách tối dùng **`orange-400`** (56°, lệch 7°, 7,9:1 trên card); nền
+badge giữ `amber-500/15` (nền mờ không đọc ra sắc như chữ). Màu khác ngoài bảng này (avatar, chart, nhãn
+tự chọn) cũng vậy: lệch quá ~20° OKLCH với bản sáng thì đổi họ màu gần sắc hơn. Probe `--dark` đo cặp này.
 
 **Mọi badge có thêm `ring-1 ring-inset ring-black/5`** (nền tối `ring-white/10`). Nền badge
 nhạt tới mức chỉ chênh vài phần trăm với nền dưới nó: `zinc-100` (#f4f4f5) đặt lên dòng
