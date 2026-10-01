@@ -87,17 +87,20 @@ Theo `I19`: khung chờ **đúng hình** dòng thật, để lúc dữ liệu v�
 ```html
 <ul aria-busy="true" class="divide-y divide-border">
   <li class="flex items-center gap-3 px-4 py-3">   <!-- cùng padding, cùng divide với dòng thật -->
-    <div class="size-8 shrink-0 animate-pulse rounded-full bg-background motion-reduce:animate-none"></div>
+    <div class="size-8 shrink-0 animate-pulse rounded-full bg-foreground/5 motion-reduce:animate-none"></div>
     <div class="min-w-0 flex-1 space-y-2">
-      <div class="h-3 w-2/5 animate-pulse rounded-full bg-background motion-reduce:animate-none"></div>
-      <div class="h-3 w-1/4 animate-pulse rounded-full bg-background motion-reduce:animate-none"></div>
+      <div class="h-3 w-2/5 animate-pulse rounded-full bg-foreground/5 motion-reduce:animate-none"></div>
+      <div class="h-3 w-1/4 animate-pulse rounded-full bg-foreground/5 motion-reduce:animate-none"></div>
     </div>
-    <div class="h-3 w-16 animate-pulse rounded-full bg-background motion-reduce:animate-none"></div>
+    <div class="h-3 w-16 animate-pulse rounded-full bg-foreground/5 motion-reduce:animate-none"></div>
   </li>
 </ul>
 <span class="sr-only" role="status">Đang tải danh sách khách hàng</span>
 ```
 
+- **Vệt chờ là lớp phủ `bg-foreground/5`, không `bg-background`** (`M21`). Bản sáng hai cách ra cùng một màu
+  (`#f4f4f4` / `#f4f4f6` trên card trắng); bản tối `bg-background` tối hơn card, cả khung chờ thành dãy lỗ đen
+  khoét xuống, còn lớp phủ thì sáng lên mờ như mọi vùng tô khác (đã dính 01/10/2026, `/dashboard/tasks/states`).
 - **Mượn nguyên khuôn dòng thật**: cùng cỡ avatar, cùng padding, cùng đường chia `divide-y`. Dòng thật có đường chia mà khung chờ không có thì lúc dữ liệu về vẫn thấy cả khối đổi hình.
 - **Thanh chữ cao `h-3`, chiều dài lệch nhau** giữa các dòng (`w-2/5`, `w-1/2`, `w-1/3`…). Dài bằng nhau thì trông như sọc kẻ, không giống chữ.
 - Số dòng bằng số dòng mỗi trang, hoặc đủ lấp khung, không bịa 3 dòng cho một khung 10 dòng.

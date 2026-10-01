@@ -89,7 +89,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | # | Trang | Route | Rà ngày |
 | --- | --- | --- | --- |
 | 1 | Khung app + tổng quan | `/dashboard`, `/dashboard/overview/states` | tối: 01/10/2026 (`/dashboard`, một lượt: cột biểu đồ màu nhấn 100% chói nhất màn, thêm `--chart-fill` 70% ở nền tối, chủ dự án chọn sau khi xem ba bản; probe bắt, và đo dark mode dời lên ngay sau khi chụp); 26/09/2026 (tổng quan, ba lượt) |
-| 2 | Công việc: bảng nhóm, kanban, tạo mới | `/dashboard/tasks`, `/tasks/new`, `/tasks/states` | 26/09/2026 (kanban, ba lượt, đã theo kịp; popover Lọc, ba lượt, đã theo kịp); 27/09/2026 (bảng nhóm, một lượt: khuôn theo bề rộng khung, đã theo kịp; tạo mới, một lượt: nhóm radio, bộ đếm ký tự, đã theo kịp; `/states`, một lượt: khung chờ cột nhảy ngang, đã theo kịp) |
+| 2 | Công việc: bảng nhóm, kanban, tạo mới | `/dashboard/tasks`, `/tasks/new`, `/tasks/states` | tối: 01/10/2026 (`/tasks/new`, `/tasks/states`, một lượt: form, focus xanh 60% 3.37:1, lịch đúng; vệt khung chờ `bg-background` khoét lỗ ở nền tối, mẫu `empty-state.md` đổi `bg-foreground/5`, probe bắt); 26/09/2026 (kanban, ba lượt, đã theo kịp; popover Lọc, ba lượt, đã theo kịp); 27/09/2026 (bảng nhóm, một lượt: khuôn theo bề rộng khung, đã theo kịp; tạo mới, một lượt: nhóm radio, bộ đếm ký tự, đã theo kịp; `/states`, một lượt: khung chờ cột nhảy ngang, đã theo kịp) |
 | 3 | Khách hàng: danh sách, xem nhanh, chi tiết | `/dashboard/customers`, `/customers/quick-view`, `/customers/c-030`, `/customers/khong-co`, `/customers/states` | tối: 01/10/2026 (danh sách, một lượt: `--primary-hover` tối `#ffffff` đổi `#cfd5e0`, probe bắt; sidebar đang chọn chưa theo kịp); 27/09/2026 (danh sách, một lượt: ẩn cột phụ ở khung vừa, số đếm phân trang ở 375px; xem nhanh, một lượt: vùng bấm nút sao chép, hàng có avatar lệch baseline; chi tiết, một lượt: số ô số liệu lệch hàng khi nhãn xuống dòng; `khong-co`, một lượt: gộp về khuôn 404 trong khung; `/states`, một lượt: không lỗi mới; đã theo kịp cả bốn trang) |
 | 4 | Đơn hàng: chi tiết, xem nhanh | `/dashboard/orders/detail`, `/orders/quick-view` | 27/09/2026 (modal chi tiết, một lượt: số tiền ngắt dòng ở 375px; xem nhanh, một lượt: không lỗi skill mới; đã theo kịp cả hai) |
 | 5 | Thành viên và phân quyền | `/dashboard/members` | 25/09/2026 (chín lượt; cả luồng xác thực đã theo kịp) |
@@ -354,6 +354,7 @@ Lần đo lại 27/09/2026: 29 route, 25 mục đã theo kịp, còn công tắc
   `isHighlighted && "bg-background"` / `isActive && "bg-background"` sang `bg-item-hover`; `confirm-dialog-preview.tsx` và
   `confirm-dialog.tsx` lớp phủ `bg-foreground/40` sang `bg-black/40` (bỏ luôn vá `dark:backdrop:bg-black/60` nếu muốn một
   giá trị); `index.css` `.dark` `--secondary-hover: rgb(255 255 255 / 0.13)`.
+- Khung chờ (01/10/2026, `/dashboard/tasks/states` và mọi chỗ có `animate-pulse`): vệt `bg-background` → `bg-foreground/5`.
 - Bỏ số âm (`N11`, skill xong 27/09/2026): dự án còn ~114 dòng (đo lại 27/09/2026 chiều: còn 108, chưa sửa). Theo `principles.md` `N11` và từng file:
   icon / nút trong ô nhập `inset-y-0 my-auto` + cỡ cố định (khối bọc nút mắt thêm `size-10`); vạch chia menu
   (`action-menu-items`, `account-dropdown`, `select`, `date-picker-panel`, `date-time-picker-panel`,

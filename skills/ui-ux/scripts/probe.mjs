@@ -2962,7 +2962,8 @@ function findSunkenSelections() {
   const pageHex = readHex(getComputedStyle(document.documentElement).getPropertyValue("--background").trim());
   if (!pageHex) return [];
   const findings = new Set();
-  const selector = "[role=option], [role=menuitem], [role=menuitemradio], [role=tab], [aria-selected=true], [aria-current]:not([aria-current=false]), [data-highlighted], [data-selected=true]";
+  // Thêm vệt khung chờ `animate-pulse`: mẫu cũ tô `bg-background`, ở nền tối thành dãy lỗ đen (01/10/2026).
+  const selector = "[role=option], [role=menuitem], [role=menuitemradio], [role=tab], [aria-selected=true], [aria-current]:not([aria-current=false]), [data-highlighted], [data-selected=true], .animate-pulse";
   for (const element of document.querySelectorAll(selector)) {
     if (findings.size >= 3) break;
     const rect = element.getBoundingClientRect();
@@ -2975,7 +2976,10 @@ function findSunkenSelections() {
     }
     if (!ancestorHex || ancestorHex === pageHex) continue;
     const label = (element.textContent || element.getAttribute("aria-label") || "").trim().replace(/\s+/g, " ").slice(0, 30);
-    findings.add(`mục đang chọn / đang trỏ tô nền trang ${pageHex}, tối hơn khung ${ancestorHex}, như lỗ khoét: dùng --item-hover (trỏ, rê) hoặc --secondary (đang chọn) (M21): ${element.getAttribute("role") || element.tagName.toLowerCase()} "${label}"`);
+    const isSkeleton = element.classList.contains("animate-pulse");
+    findings.add(isSkeleton
+      ? `vệt khung chờ tô nền trang ${pageHex}, tối hơn khung ${ancestorHex}, như lỗ khoét: dùng bg-foreground/5 (M21, components/empty-state.md)`
+      : `mục đang chọn / đang trỏ tô nền trang ${pageHex}, tối hơn khung ${ancestorHex}, như lỗ khoét: dùng --item-hover (trỏ, rê) hoặc --secondary (đang chọn) (M21): ${element.getAttribute("role") || element.tagName.toLowerCase()} "${label}"`);
   }
 
   return [...findings];
