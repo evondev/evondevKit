@@ -110,7 +110,7 @@ Trang dùng nhiều và nhiều tương tác đi trước.
 | 20 | Khoá API | `/dashboard/settings/api-keys`, `/api-keys/states` | 26/09/2026 (hai lượt; lượt hai đã theo kịp); 27/09/2026 (đo lại: card "Quyền" trong hộp tạo khoá, Tab tới card đang chọn không đổi gì, lỗi skill đã sửa, dự án chưa theo kịp) |
 | 21 | Trang lỗi: 404, 403, 500, bảo trì | `/errors/states`, `/403`, `/500`, `/maintenance`, `/khong-co`, `/dashboard/khong-co` | 26/09/2026 (năm lượt; lượt năm đã theo kịp) |
 | 22 | Xoá workspace (vùng nguy hiểm, hộp gõ lại tên) | `/dashboard/settings/workspace`, `/workspace/states` | 26/09/2026 (hai lượt, đã theo kịp) |
-| 23 | Báo cáo doanh thu (khoảng ngày, biểu đồ đường) | `/dashboard/revenue`, `/revenue/states` | 27/09/2026 (ba lượt, đã theo kịp) |
+| 23 | Báo cáo doanh thu (khoảng ngày, biểu đồ đường) | `/dashboard/revenue`, `/revenue/states` | tối: 01/10/2026 (`/dashboard/revenue` + khối Biểu đồ, Badge, Avatar ở `/components`, một lượt: rãnh thanh tiến độ và dải giữa khoảng ngày `bg-background` thành vệt đen / lỗ khoét; `choice-controls.md` năm chỗ sang `bg-item-hover` (gồm mục đang sáng trong select), `charts.md`, `file-upload.md` rãnh sang `bg-foreground/5`; probe nhận rãnh theo hình); 27/09/2026 (ba lượt, đã theo kịp) |
 | 24 | Thanh toán: gói đang dùng, lịch sử hoá đơn | `/dashboard/settings/billing`, `/billing/states` | 27/09/2026 (bốn lượt; lượt ba đã theo kịp, lượt bốn đã theo kịp) |
 
 Route mới xuất hiện trong dự án thì thêm dòng vào bảng (`grep -rhoE "path: ?['\"][^'\"]+" src`).
@@ -355,6 +355,9 @@ Lần đo lại 27/09/2026: 29 route, 25 mục đã theo kịp, còn công tắc
   `confirm-dialog.tsx` lớp phủ `bg-foreground/40` sang `bg-black/40` (bỏ luôn vá `dark:backdrop:bg-black/60` nếu muốn một
   giá trị); `index.css` `.dark` `--secondary-hover: rgb(255 255 255 / 0.13)`.
 - Khung chờ (01/10/2026, `/dashboard/tasks/states` và mọi chỗ có `animate-pulse`): vệt `bg-background` → `bg-foreground/5`.
+- Rãnh và dải (01/10/2026, `/dashboard/revenue`): rãnh thanh tiến độ ("Doanh thu theo kênh", thanh tải tệp, vòng donut tổng 0)
+  `bg-background` → `bg-foreground/5`; `calendar/get-day-cell-classes.ts` dải giữa khoảng `isInRange && "bg-background"` →
+  `bg-item-hover`; bộ chọn giờ: dải chọn và ô đang chọn của cột → `bg-item-hover`.
 - Bỏ số âm (`N11`, skill xong 27/09/2026): dự án còn ~114 dòng (đo lại 27/09/2026 chiều: còn 108, chưa sửa). Theo `principles.md` `N11` và từng file:
   icon / nút trong ô nhập `inset-y-0 my-auto` + cỡ cố định (khối bọc nút mắt thêm `size-10`); vạch chia menu
   (`action-menu-items`, `account-dropdown`, `select`, `date-picker-panel`, `date-time-picker-panel`,

@@ -199,7 +199,7 @@ trượt khỏi cột.
 - **Xếp lớn xuống nhỏ**, bắt đầu từ 12 giờ đi theo chiều kim đồng hồ, phần lớn nhất đậm nhất theo thang ở trên. Giữa các phần một khe trắng mảnh.
 - Bảng chú giải là danh sách chia dòng: chấm · tên (`min-w-0 flex-1 truncate` + `title`) · số (`font-medium tabular-nums`) · phần trăm (`text-muted tabular-nums`, cột rộng cố định). Số và phần trăm không bao giờ bị đẩy xuống dòng.
 - Phần dưới 1% vẫn vẽ một vệt tối thiểu để thấy được. **Phần trăm cùng số chữ số lẻ trong một biểu đồ**: có phần dưới 1% thì cả bảng một chữ số lẻ, không thì số nguyên. Tổng các dòng làm tròn phải ra 100.
-- **Tổng bằng 0**: chỉ còn rãnh `bg-background`, giữa vòng ghi `0`, cột phần trăm để trống (không `0%`, như `0/0`).
+- **Tổng bằng 0**: chỉ còn rãnh `bg-foreground/5`, giữa vòng ghi `0`, cột phần trăm để trống (không `0%`, như `0/0`).
 - Quá bốn phần thì dùng danh sách thanh tiến độ ở dưới, xếp lớn dần.
 
 **Thanh tiến độ trong danh sách:**
@@ -210,7 +210,9 @@ trượt khỏi cột.
     <p class="min-w-0 flex-1 truncate text-sm font-medium text-foreground">Thiết kế giao diện</p>
     <p class="shrink-0 text-sm font-medium text-foreground">92%</p>
   </div>
-  <div class="mt-2 h-2 rounded-full bg-background">
+  <!-- Rãnh là lớp phủ bg-foreground/5, không bg-background: nền tối bg-background tối hơn card, rãnh thành
+       vệt đen nặng (đã dính 01/10/2026, /dashboard/revenue, M21). Bản sáng hai cách cùng một màu. -->
+  <div class="mt-2 h-2 rounded-full bg-foreground/5">
     <div class="h-2 rounded-full bg-primary" style="width: 92%"></div>
   </div>
 </li>

@@ -882,13 +882,24 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     const tops = new Set();
     const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
     for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-      if (!node.textContent.trim()) continue;
+      if (!node.textContent.trim() || isScreenReaderOnly(node.parentElement, element)) continue;
       const range = document.createRange();
       range.selectNodeContents(node);
       for (const rect of range.getClientRects()) if (rect.width > 2 && rect.height > 6) tops.add(Math.round(rect.top / 4));
     }
 
     return tops.size;
+  }
+
+  // Chữ `sr-only` (khung 1px, overflow hidden) không phải một dòng nhìn thấy: tên người cạnh avatar ẩn ở
+  // khung vừa nằm lệch tâm avatar, đếm vào thì ra hai dòng (báo nhầm 01/10/2026, cột Phụ trách ở 768px).
+  function isScreenReaderOnly(node, root) {
+    for (let current = node; current && current !== root.parentElement; current = current.parentElement) {
+      const box = current.getBoundingClientRect();
+      if (box.width <= 1 && box.height <= 1 && getComputedStyle(current).overflow !== "visible") return true;
+    }
+
+    return false;
   }
 
   // 11b. Cột chữ của bảng bị ép xuống dòng trong khi bảng không cuộn: các cột khác `nowrap` giữ chỗ, cột
@@ -1983,11 +1994,16 @@ function readHoverState(probeId) {
     // `bg-muted`). Mục đang chọn thì bỏ qua: rê cùng nền đang chọn là đúng.
     // `dark:hover:bg-` chỉ chạy khi trang đang tối: ô Select của shadcn chỉ khai nền rê cho dark, ở light rê
     // không đổi là đúng mẫu (luật khoá 6, báo nhầm 30/09/2026, lịch khám: mọi Select lên danh sách P).
-    declaresHoverFill: (element.getAttribute("class") || "").split(/\s+/).some((token) => {
+    // `hover:bg-surface` (hay `disabled:hover:bg-surface`) cạnh `bg-surface` là cố ý giữ nền lúc thường, tắt nền
+    // rê kế thừa từ variant (nút lọc dạng dropdown không hover, chủ dự án chốt, `components/choice-controls.md`),
+    // không phải khai nền rê (báo nhầm 01/10/2026,
+    // nút Lọc ở bảng công việc tối).
+    declaresHoverFill: (element.getAttribute("class") || "").split(/\s+/).some((token, index, tokens) => {
       const variants = token.split(":");
       const utility = variants.pop();
+      const isCancellingInheritedHover = tokens.includes(utility);
 
-      return variants.includes("hover") && /^bg-(?!transparent)/.test(utility) && (!variants.includes("dark") || document.documentElement.classList.contains("dark"));
+      return variants.includes("hover") && /^bg-(?!transparent)/.test(utility) && !isCancellingInheritedHover && (!variants.includes("dark") || document.documentElement.classList.contains("dark"));
     }),
     isSelected: element.matches("[aria-current]:not([aria-current='false']), [aria-selected='true'], [aria-pressed='true'], [data-state='active'], [data-state='on'], [data-state='checked']"),
     touchesCardEdge: behind.node !== document.documentElement && (Math.abs(rect.left - cardRect.left) <= 1 || Math.abs(rect.right - cardRect.right) <= 1),
@@ -2963,11 +2979,24 @@ function findSunkenSelections() {
   if (!pageHex) return [];
   const findings = new Set();
   // Thêm vệt khung chờ `animate-pulse`: mẫu cũ tô `bg-background`, ở nền tối thành dãy lỗ đen (01/10/2026).
-  const selector = "[role=option], [role=menuitem], [role=menuitemradio], [role=tab], [aria-selected=true], [aria-current]:not([aria-current=false]), [data-highlighted], [data-selected=true], .animate-pulse";
-  for (const element of document.querySelectorAll(selector)) {
+  const selector = "[role=option], [role=menuitem], [role=menuitemradio], [role=tab], [aria-selected=true], [aria-current]:not([aria-current=false]), [data-highlighted], [data-selected=true], .animate-pulse, [role=progressbar]";
+  // Rãnh không có role (hay gặp: `div.h-2.rounded-full` bọc một thanh tô màu): nhận theo hình. Thấp 2–12px, bo
+  // tròn đầu, rộng ≥ 60px, có con tô màu khác. Đã dính 01/10/2026, "Doanh thu theo kênh" ở /dashboard/revenue.
+  const shapedTracks = [...document.querySelectorAll("div, span")].filter((element) => {
+    const rect = element.getBoundingClientRect();
+    if (rect.height < 2 || rect.height > 12 || rect.width < 60) return false;
+    if (parseFloat(getComputedStyle(element).borderTopLeftRadius) < rect.height / 2 - 0.5) return false;
+    const fill = element.firstElementChild;
+
+    return Boolean(fill) && readHex(getComputedStyle(fill).backgroundColor) !== null && fill.getBoundingClientRect().width < rect.width;
+  });
+  for (const element of shapedTracks) element.dataset.evonTrack = "1";
+  for (const element of document.querySelectorAll(`${selector}, [data-evon-track]`)) {
     if (findings.size >= 3) break;
     const rect = element.getBoundingClientRect();
-    if (rect.width < 24 || rect.height < 16 || readHex(getComputedStyle(element).backgroundColor) !== pageHex) continue;
+    // Rãnh `h-1`, `h-2` và vệt chờ `h-3` thấp hơn mục chọn: hạ ngưỡng cao riêng cho hai loại đó.
+    const minHeight = element.matches(".animate-pulse, [role=progressbar], [data-evon-track]") ? 2 : 16;
+    if (rect.width < 24 || rect.height < minHeight || readHex(getComputedStyle(element).backgroundColor) !== pageHex) continue;
     let ancestor = element.parentElement;
     let ancestorHex = null;
     while (ancestor && !ancestorHex) {
@@ -2977,8 +3006,9 @@ function findSunkenSelections() {
     if (!ancestorHex || ancestorHex === pageHex) continue;
     const label = (element.textContent || element.getAttribute("aria-label") || "").trim().replace(/\s+/g, " ").slice(0, 30);
     const isSkeleton = element.classList.contains("animate-pulse");
-    findings.add(isSkeleton
-      ? `vệt khung chờ tô nền trang ${pageHex}, tối hơn khung ${ancestorHex}, như lỗ khoét: dùng bg-foreground/5 (M21, components/empty-state.md)`
+    const isTrack = element.getAttribute("role") === "progressbar" || element.dataset.evonTrack === "1";
+    findings.add(isSkeleton || isTrack
+      ? `${isTrack ? "rãnh thanh tiến độ" : "vệt khung chờ"} tô nền trang ${pageHex}, tối hơn khung ${ancestorHex}, thành vệt đen: dùng bg-foreground/5 (M21${isTrack ? ", components/charts.md" : ", components/empty-state.md"})`
       : `mục đang chọn / đang trỏ tô nền trang ${pageHex}, tối hơn khung ${ancestorHex}, như lỗ khoét: dùng --item-hover (trỏ, rê) hoặc --secondary (đang chọn) (M21): ${element.getAttribute("role") || element.tagName.toLowerCase()} "${label}"`);
   }
 

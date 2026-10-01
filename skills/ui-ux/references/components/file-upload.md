@@ -64,7 +64,7 @@ chỉ báo khi cả lượt tải kết thúc (xem mục Toast). Nút theo `butt
       </div>
       <!-- Tầng dưới: cao cố định, chứa THANH hoặc MỘT DÒNG CHỮ, không bao giờ cả hai -->
       <div class="mt-1 flex min-h-5 items-center">
-        <div role="progressbar" aria-valuenow="71" aria-valuemin="0" aria-valuemax="100" aria-label="Đang tải bien-ban-hop-khoi-dong….pdf" class="h-1 w-full rounded-full bg-background">
+        <div role="progressbar" aria-valuenow="71" aria-valuemin="0" aria-valuemax="100" aria-label="Đang tải bien-ban-hop-khoi-dong….pdf" class="h-1 w-full rounded-full bg-foreground/5">
           <div class="h-1 rounded-full bg-primary" style="width: 71%"></div>
         </div>
       </div>
@@ -79,7 +79,7 @@ chỉ báo khi cả lượt tải kết thúc (xem mục Toast). Nút theo `butt
 | Trạng thái | Góc phải dòng trên | Tầng dưới | Cột ✕ |
 | --- | --- | --- | --- |
 | Đang chờ | trống | `text-xs text-muted` "Đang chờ · 6,8 MB" | ✕ "Bỏ tệp …" |
-| Đang tải | `71%` `text-muted tabular-nums` | thanh `h-1`, rãnh `bg-background`, thanh `bg-primary` | ✕ "Huỷ tải …" |
+| Đang tải | `71%` `text-muted tabular-nums` | thanh `h-1`, rãnh `bg-foreground/5` (không `bg-background`, `M21`), thanh `bg-primary` | ✕ "Huỷ tải …" |
 | Xong | trống | icon `circle-check` `size-3.5 text-emerald-600` + `text-xs text-muted` "Đã tải xong · 2,4 MB" | trống, giữ `w-8` |
 | Hỏng khi tải | trống | `text-xs text-red-600` "Mất kết nối mạng" · nút chữ **Thử lại** | ✕ "Bỏ tệp …" |
 | Bị từ chối (quá cỡ, sai loại) | trống | `text-xs text-red-600` "Quá 25 MB (tệp nặng 48 MB)" / "Không nhận tệp .zip" | ✕ "Bỏ tệp …" |

@@ -60,8 +60,9 @@
 
   /* Vùng tô (nút phụ, mục đang chọn, nền rê) là LỚP PHỦ trên nền phía sau: nền sáng tối đi,
      nền tối sáng lên. Thứ giữ qua hai theme là độ chênh với nền, không phải chiều (M21). */
-  /* Nền rê của mục thụt vào: mục menu, link sidebar, nút cây thư mục, dòng danh sách trong
-     widget (I10). Nền sáng bằng đúng --background; nền tối là trắng phủ mờ, vì --background
+  /* Vùng tô nhạt nhất. Nền rê của mục thụt vào: mục menu, link sidebar, nút cây thư mục, dòng
+     danh sách trong widget (I10); mục đang sáng trong select / bảng lệnh; dải giữa khoảng ngày, dải
+     chọn giờ (components/choice-controls.md). Nền sáng bằng đúng --background; nền tối là trắng phủ mờ, vì --background
      tối hơn card nên rê vào sẽ chìm xuống gần như không thấy (1.07:1). */
   --item-hover: #f4f4f6;
 

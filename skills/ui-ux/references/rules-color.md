@@ -100,6 +100,14 @@ Bốn tông, không thêm. Trạng thái nào vào tông nào theo **nghĩa**, k
 | Hổ phách | `bg-amber-50 text-amber-700` | `--warning-bg` / `--warning` | Cần chú ý | Quá hạn, Sắp hết hạn, Tạm dừng |
 | Đỏ | `bg-red-50 text-red-700` | `--error-bg` / `--error-strong` | Đã dừng, thất bại, bị từ chối | Ngừng giao dịch, Đã huỷ, Lỗi |
 
+**Dự án có dark mode thì mọi class `-700` của bảng trên đi kèm bản `dark:` `-400`**
+(`text-amber-700 dark:text-amber-400`; không Tailwind thì token, đã lật sẵn). `-700` không tự
+đổi ở nền tối: chữ trạng thái còn 2,9–3,7:1 (`red-700` 2,9, `emerald-700` 3,5, `amber-700`
+3,7). Sót một chỗ là cùng một nghĩa ra hai sắc trên một dòng (đã dính 01/10/2026, bảng công
+việc tối: "Khẩn cấp" `text-amber-700` cam sẫm 3,74:1 cạnh "Quá hạn 3 ngày"
+`dark:text-amber-400` vàng sáng). Gom mỗi tông vào một helper để
+không phải nhớ từng chỗ.
+
 **Mọi badge có thêm `ring-1 ring-inset ring-black/5`** (nền tối `ring-white/10`). Nền badge
 nhạt tới mức chỉ chênh vài phần trăm với nền dưới nó: `zinc-100` (#f4f4f5) đặt lên dòng
 bảng đã chọn hay nền trang (#f4f4f6) là mất hẳn khung, "Tiềm năng" chỉ còn chấm với chữ
@@ -460,6 +468,7 @@ thì lệch HTML lúc hydrate. Không Next thì script nội tuyến đầu `<he
 | Tooltip | **đảo màu**: `bg-foreground text-background` | nền tối thì tooltip sáng, nổi khỏi mọi tầng |
 | Lớp phủ sau modal, panel, sidebar trượt | **`bg-black/…`** ở cả hai theme, không `bg-foreground/…` | `foreground` đảo sang gần trắng, lớp phủ thành màn sương sáng che trang (đã dính 01/10/2026, bản mẫu hộp xác nhận `bg-foreground/40`) |
 | Mục đang trỏ, đang chọn viết bằng điều kiện JS (`isHighlighted && …`, `isActive && …`) | `bg-item-hover` (trỏ), `bg-secondary` (chọn), như class `hover:` | `bg-background` trong điều kiện JS lọt khỏi mọi phép grep `hover:`; ở nền tối thành lỗ khoét trong dropdown (đã dính 01/10/2026, ô chọn, bảng lệnh) |
+| Chữ, icon màu trạng thái không nền (`text-amber-700`, `text-red-700`, `text-emerald-700`) | kèm `dark:text-*-400` cùng sắc (token `--warning`, `--error-strong`, `--success` đã lật sẵn) | `-700` trên nền tối chỉ 2,9–3,7:1, dưới ngưỡng chữ (`M7`) |
 | Nền nhạt `-50`, `-100` (badge, banner, chip, ô đáp án) | màu `-500` phủ 10–20%, chữ `-300`/`-400` | nền `-50` sang tối là khối trắng hồng giữa màn đen. Màu mang nghĩa đã có sẵn trong `tokens.css` |
 | Gradient, vệt màu loang trang trí | tắt (`dark:hidden`) hoặc thay bản tối | loang màu sáng trên nền tối là chói |
 | Biểu đồ | cột, vùng tô dùng `--chart-fill` (màu nhấn 70% ở nền tối); thang phân loại có bản tối (`components/charts.md`) | cột màu nhấn gần trắng 100% là khối chói nhất màn (đã dính 01/10/2026); xám "Khác" `slate-300` thành nổi nhất |
