@@ -3,6 +3,8 @@
 Skill **`ui-ux`** cho Claude Code: dựng và làm đẹp giao diện app (dashboard, danh sách,
 bảng, form, cài đặt, modal) theo đúng thư viện component và màu của dự án bạn.
 
+Xem giới thiệu: [evondev-uiux.vercel.app/ui-ux](https://evondev-uiux.vercel.app/ui-ux)
+
 > **Bản beta.** Dùng tốt cho giao diện app nền sáng, đề tiếng Việt: đã qua 70 đề test trên dự
 > án thật. Đang test: thêm dark mode cho app đang có, đề tiếng Anh, Codex và Antigravity.
 > Skill còn được sửa liên tục từ các lượt test, lấy bản mới bằng
