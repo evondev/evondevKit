@@ -68,27 +68,26 @@ không qua wireframe.
 - **Phong cách**: mặc định flat. Muốn glassmorphism, gradient, nền tối thì nói trong đề.
 - Không có Tailwind, hay không có `package.json` (HTML thuần, WordPress) vẫn dùng được.
 
-## Dùng với Codex, Antigravity
+## Dùng với Cursor, OpenCode, Codex, Antigravity
 
-Hai công cụ cùng đọc skill trong `.agents/skills/` của dự án. Chạy ở thư mục gốc dự án:
+Chạy ở thư mục gốc dự án (dùng `bunx` thay `npx` cũng được):
 
 ```bash
-rm -rf /tmp/evondevKit .agents/skills/ui-ux
-git clone --depth 1 https://github.com/evondev/evondevKit.git /tmp/evondevKit
-mkdir -p .agents/skills
-cp -r /tmp/evondevKit/skills/ui-ux .agents/skills/
+npx skills add evondev/evondevKit
 ```
 
-Muốn dùng chung cho mọi dự án thì chép vào thư mục skill chung thay cho `.agents/skills/`:
+Lệnh hỏi cài cho công cụ nào rồi chép skill vào `.agents/skills/ui-ux/`, thư mục mà Cursor,
+OpenCode, Codex, Antigravity cùng đọc. Muốn chọn sẵn thì thêm `-a`, ví dụ
+`-a cursor -a opencode`. Dùng chung cho mọi dự án thì thêm `-g`.
 
-| Công cụ | Thư mục chung | Gọi skill |
-| --- | --- | --- |
-| Codex (CLI, IDE) | `~/.agents/skills/` | `$ui-ux Dựng màn danh sách đơn hàng…` |
-| Antigravity IDE | `~/.gemini/config/skills/` | `/ui-ux Dựng màn danh sách đơn hàng…` |
-| Antigravity CLI | `~/.gemini/antigravity-cli/skills/` | `/ui-ux Dựng màn danh sách đơn hàng…` |
+| Công cụ | Gọi skill |
+| --- | --- |
+| Cursor, Antigravity | `/ui-ux Dựng màn danh sách đơn hàng…` |
+| Codex | `$ui-ux Dựng màn danh sách đơn hàng…` |
+| OpenCode | `Dùng skill ui-ux, dựng màn danh sách đơn hàng…` |
 
-Không gọi tên thì công cụ tự bật skill khi đề khớp mô tả. Lấy bản mới: chạy lại bốn lệnh
-trên (lệnh đầu xoá bản cũ). Skill mới được test kỹ trên Claude.
+Không gọi tên thì công cụ tự bật skill khi đề khớp mô tả. Lấy bản mới: `npx skills update`.
+Skill mới được test kỹ trên Claude, công cụ khác chạy được nhưng có thể lệch vài chỗ.
 
 ---
 
