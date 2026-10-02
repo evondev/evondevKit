@@ -115,7 +115,7 @@ nút × theo màu của trình duyệt: Chrome tô **xanh dương** theo accent 
 ô đang focus, Safari vẽ vòng tròn xám kiểu khác. Một chấm xanh lạc giữa app đen trắng,
 không theo token nào. Lỗi là **màu và hình** của
 nút trình duyệt, không phải việc có nút: đừng bỏ hẳn nút ×, người gõ
-một câu dài ở 375px không có cách xoá nhanh, chữ trôi khuất bên trái (chủ dự án chốt). Ô tìm của các app lớn đều có nút xoá.
+một câu dài ở 375px không có cách xoá nhanh, chữ trôi khuất bên trái (chủ dự án: "tìm kiếm mà không có clear cũng kì"). Ô tìm của các app lớn đều có nút xoá.
 
 ```tsx
 <div className="relative">

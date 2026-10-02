@@ -203,7 +203,7 @@ dòng đó."* Dừng chờ.
     vẫn đen thì người xem hỏi *"chọn màu mà sao vẫn trắng đen"*. Dự án đã
     có phong cách khác flat (`P4`) thì Màu là phong cách đó.
 
-  ⚠️ **Nấc thứ ba "Có màu" đã bỏ khỏi wireframe (chủ dự án chốt: thêm vào cũng không
+  ⚠️ **Nấc thứ ba "Có màu" đã bỏ khỏi wireframe (chủ dự án: thêm vào cũng không
   khác gì mấy).** Màu brand người dùng cần thấy nằm ở chỗ tương tác (control bấm được, dưới),
   không ở dải màu trang trí. Người dùng tự xin "có màu" trong đề thì theo `P12` ở `styles.md`
   lúc dựng, không vẽ thành nấc.

@@ -72,7 +72,7 @@ Thứ bậc đầy đủ của một trang app: **tên trang > tiêu đề khố
 
 Mở một bài viết, một khoá học, một sản phẩm thì tiêu đề nên **bằng đúng cỡ tiêu
 đề của nó ở danh sách**, không nhảy lên một bậc. Nhảy size gây cảm giác "chữ bự"
-so với nội dung bên dưới.
+so với nội dung bên dưới (chủ dự án chốt).
 
 Cỡ hero chỉ còn cho trang trình diễn thật sự.
 

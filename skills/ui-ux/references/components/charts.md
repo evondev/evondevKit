@@ -57,7 +57,7 @@ dòng phụ, không bằng màu.
 
 **Nền tối** (`M32`). **Mảng dữ liệu là `--chart-fill`, không `--primary` trần.** Nền tối màu
 nhấn gần trắng, cột 100% là khối chói nhất màn, nặng hơn cả tên trang (chủ dự án chọn 70%;
-xám thì nhạt quá, lẫn với cột kỳ đang chạy). Khối `.dark` của `tokens.css` đã hạ token này
+đừng dùng xám ánh xanh: nhạt quá, lẫn với cột kỳ đang chạy). Khối `.dark` của `tokens.css` đã hạ token này
 còn 70%, thang `/45`, `/15` nhân theo nên giữ đúng tỉ lệ. Thanh mảnh (thanh tiến độ, `h-2`)
 vẫn `bg-primary`: diện tích nhỏ, không chói. Lưới `stroke-border` và nhãn `text-muted` tự đổi
 theo theme. Phải khai riêng:

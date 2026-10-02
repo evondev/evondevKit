@@ -50,7 +50,7 @@ Nằm trong card (`card.md`), mỗi hàng một cặp nhãn và giá trị, theo
     chiếm gần nửa, giá trị bị ép xuống 3–4 dòng.
   - **Từ 576px: nhãn `10rem`.**
 
-  Card Liên hệ ở cột phải, `<dl>` 310px, `sm:grid-cols-[7rem_…]` bật vì
+  Ví dụ: card Liên hệ ở cột phải, `<dl>` 310px, `sm:grid-cols-[7rem_…]` bật vì
   màn 1440px: giá trị còn 174px, email vỡ ba dòng ("…thi@" / "quangtrung-" / "logistics.com.vn"), địa chỉ
   bốn dòng, nhãn "Thuốc đang dùng" hai dòng. Xếp chồng cùng khối: email và địa chỉ hai dòng. `probe.mjs` báo
   "nhãn–giá trị hai cột trong khối hẹp". Tailwind v3 cần plugin `@tailwindcss/container-queries`; không có

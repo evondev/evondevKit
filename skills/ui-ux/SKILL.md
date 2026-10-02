@@ -478,6 +478,6 @@ thường đẻ ra triệu chứng khác ở lần dựng sau.
 - Luật nào chưa từng bắt được lỗi thật sau 3 vòng test thì bỏ.
 - **Một luật một chỗ.** Thêm luật vào đúng file của nhóm nó. `SKILL.md` chỉ được trỏ số hiệu.
 - **Thêm luật xong thì rà lại file mẫu trong `layouts/` và `components/`** xem chúng có vi phạm luật vừa thêm không. Code mẫu được chép nguyên, nên một lỗi nằm trong đó sẽ đi khắp nơi. Đã xảy ra thật hai lần.
-- **Skill ghi luật và lý do, không ghi lịch sử.** Không ngày tháng, không tên trang hay dự án test, không "lượt hai", không kể các bản đã thử. Bản sai mà AI dễ tự làm lại thì một câu "Đừng X: hậu quả". Ngày và chỗ dính ghi trong commit message. Chữ "chủ dự án chốt" thì giữ (không kèm ngày), ngày chốt ghi ở `locked-rules.md`.
+- **Skill ghi luật và lý do, không ghi lịch sử.** Không ngày tháng, không tên trang hay dự án test, không "lượt hai", không kể các bản đã thử. Bản sai mà AI dễ tự làm lại thì một câu "Đừng X: hậu quả". Ngày và chỗ dính ghi trong commit message. Quyết định của chủ dự án giữ đúng động từ gốc ("chốt", "bỏ", "chọn"…), không kèm ngày, không tự nâng thành "chốt". Ngày tháng duy nhất được ghi trong skill là cột "Chốt ngày" của `locked-rules.md`.
 - **Đánh số liền mạch trong nhóm.** Đừng đẻ `15b`, `15c`, `17d` chen vào giữa.
 - **Luật chưa qua vòng test nào thì gắn dấu ⚑**, để người dùng biết đang dùng thứ chưa ai thử.

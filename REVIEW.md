@@ -154,10 +154,10 @@ hiện, không phải lượt rà. Skill còn nhiều luật sinh cùng kiểu: 
 của thứ đó (thêm viền, đổi hình, bỏ hover, đổi màu mang nghĩa, số lẻ kiểu `pb-3.5`…). Mỗi luật:
 tra số đông làm thế nào (như "Kiểm chứng quy ước"), rồi thử cách thông thường trên trang dự án
 với đúng ca đã dính (gán `style`, đo như bước 4). Cách thông thường cũng tránh được sự cố thì
-đổi luật theo số đông, giữ lại câu "đã dính" để ghi vì sao; không tránh được thì giữ luật, ghi rõ
+đổi luật theo số đông, giữ một câu lý do hay hậu quả (không ngày, `SKILL.md` mục 4); không tránh được thì giữ luật, ghi rõ
 số đông làm khác và vì sao mình khác. Luật chủ dự án chốt thì hỏi trước khi lật.
 
-Lệnh lọc gợi ý: `grep -rnE "đã dính|chủ dự án chốt|bỏ [0-9]{2}/09" skills/ui-ux/references | wc -l`
+Lệnh lọc gợi ý: `grep -rnE "đã dính|chủ dự án chốt|Đừng " skills/ui-ux/references | wc -l` (dấu "đã dính" phần lớn đã dọn 02/10/2026, ngày và ca dính tra `git log`)
 rồi đọc theo file, mỗi lượt một file.
 
 | File | Số luật đã xét | Đổi | Giữ | Xong |

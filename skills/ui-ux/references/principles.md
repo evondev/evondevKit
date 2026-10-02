@@ -123,8 +123,8 @@ thanh xanh lá đầy + `100%` + "Đã tải xong" (ba tín hiệu một ý: b�
 ở đầu nhóm. Đã dính: "so với 2025" ở cả bốn ô số liệu
 (chính cái đuôi đó làm ô hẹp vỡ dòng; đừng chữa bằng cách xếp một cột thay vì
 bỏ đuôi); khách mới thì "Chưa có kỳ trước" bốn lần; `/2026` ở mọi mốc giờ; cột Trạng
-thái badge xanh "Đang hoạt động" trên 14/18 dòng. **Trạng thái thường không cần dấu, chỉ ngoại lệ mới có** (lời mời "Chờ chấp nhận"). Số
-liệu `text-3xl` to hơn tên khách cũng sai: thứ nặng nhất phải là thứ trả lời "đang xem
+thái badge xanh "Đang hoạt động" trên 14/18 dòng. **Trạng thái thường không cần dấu, chỉ ngoại lệ mới có** (lời mời "Chờ chấp nhận"). Trong
+panel khách hàng, số liệu `text-3xl` to hơn tên khách cũng sai: thứ nặng nhất phải là thứ trả lời "đang xem
 cái gì".
 
 **Thứ vừa bấm để mở cũng là một lần nói.** Đã dính: bấm
@@ -245,8 +245,8 @@ kèm mốc khi trục chỉ ghi vài nhãn cũng là thiếu thứ cần đọc:
 
 **Phải cắt thì cắt phần giống nhau, giữ phần phân biệt.** Cắt ở cuối không phải cách
 duy nhất, và xuống dòng không phải cách thay duy nhất. Email giữ tên miền, cắt phần
-trước `@` (`layouts/overlay.md`, "Cắt email"); tên tệp giữ đuôi `.pdf`. Đã dính:
-sợ cắt mất tên miền nên cho email xuống dòng, mỗi hàng
+trước `@` (`layouts/overlay.md`, "Cắt email"); tên tệp giữ đuôi `.pdf`. Đã dính ở menu
+chuyển tài khoản: sợ cắt mất tên miền nên cho email xuống dòng, mỗi hàng
 thành ba dòng, danh sách con nặng hơn menu cha. Trong menu, hàng chọn, ô hẹp: mỗi
 trường một dòng.
 
