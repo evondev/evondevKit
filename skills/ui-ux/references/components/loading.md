@@ -144,7 +144,7 @@ Toggle, tick việc xong, kéo thẻ sang cột khác, đổi thứ tự, gắn 
 luôn trên màn lúc bấm**, không spinner, không khoá điều khiển trong lúc chờ máy chủ.
 Đây là việc nhỏ, gần như luôn thành công, và người dùng thường bấm liền mấy cái.
 
-- **Lỗi thì trả lại như cũ** (công tắc gạt về, thẻ về cột cũ, đúng vị trí cũ) **kèm toast lỗi** nói cái gì chưa lưu được và có Thử lại: "Chưa chuyển được 'Sửa trang thanh toán' sang Đang làm". Trả lại im lặng thì người dùng tưởng mình bấm trượt.
+- **Lỗi thì trả lại như cũ** (công tắc gạt về, thẻ về cột cũ, đúng vị trí cũ) **kèm toast lỗi** nói cái gì chưa lưu được và có Thử lại: "Chưa chuyển được 'Sửa trang thanh toán' sang Đang làm". Trả lại im lặng thì người dùng tưởng mình bấm trượt. Tên việc dài thì cắt ~30 ký tự + `…` (`../layouts/overlay.md`, Toast), dòng mô tả nói thẻ đang nằm đâu ("Thẻ đã về lại cột Cần làm").
 - Toast lỗi theo `../layouts/overlay.md`: không tự tắt, `role="alert"`.
 - **Không dùng cho việc không đổi lại được hoặc máy chủ phải quyết**: thanh toán, gửi lời mời, xoá vĩnh viễn, tạo bản ghi mà màn kế tiếp cần mã của nó. Mấy việc đó là nút đang xử lý (`button.md`).
 - Gạt thì đổi tại chỗ, có xảy ra hay không là logic (`N10`); skill chỉ dựng đủ hai hình: đã đổi, và đã trả lại + toast.

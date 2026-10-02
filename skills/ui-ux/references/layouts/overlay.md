@@ -490,7 +490,7 @@ form; toast bật ra ở đáy đúng lúc vừa bấm nút là che mất nửa 
 - **Chữ dài quá một dòng thì tách hai tầng**, không để một câu vỡ thành ba dòng: tầng trên `text-sm font-medium` nói chuyện gì xảy ra, tầng dưới `text-sm text-muted` nói vì sao. Cụm nút căn giữa theo chiều dọc của cả khối.
 - **Chữ không lặp lại nút** (`M6`): đã có nút Thử lại thì câu không ghi "rồi thử lại".
 - Viết như câu thường: không viết hoa danh từ giữa câu ("đơn #2041", không "Đơn #2041"), không dấu chấm cuối toast một dòng. Cả bộ một kiểu.
-- Tiêu đề và mô tả toast `text-pretty` (`T10`): màn hẹp toast rộng gần hết màn, câu dài vừa quá một dòng là rớt một chữ ("…xong sẽ báo" / "bạn"). Câu dài thì tách: tiêu đề ngắn nói việc, phần còn lại xuống dòng mô tả.
+- Tiêu đề và mô tả toast `text-pretty` (`T10`): màn hẹp toast rộng gần hết màn, câu dài vừa quá một dòng là rớt một chữ ("…xong sẽ báo" / "bạn"). Câu dài thì tách: tiêu đề ngắn nói việc, phần còn lại xuống dòng mô tả. **Tên do người dùng đặt** (tên việc, tên tệp, tên khách) trong toast cắt bằng số ký tự trong JS, giữ ~30 ký tự + `…` trong cặp ngoặc kép, như từ khoá ở `../components/empty-state.md`: tên việc dài bốn mươi chữ đặt nguyên vào câu là tiêu đề toast vỡ ba dòng.
 - Icon `size-5` màu theo nghĩa (`rules-color.md`): xong `emerald-600`, lỗi `red-600`. Nền toast vẫn `--surface`, không tô nền màu.
 - Toast báo xong việc: **không nút đóng** (vì nó tự tắt). Toast có Hoàn tác cũng không nút đóng.
 - Toast báo hỏng: **có nút Thử lại và nút đóng** (vì nó không tự tắt), `role="alert"` thay cho `role="status"`.
