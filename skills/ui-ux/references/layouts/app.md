@@ -900,7 +900,7 @@ dựng được không:
   thẳng trên nền trang. Nút `h-11 md:h-10`, dưới `sm` rộng hết và xếp dọc (nút đặc trên), từ
   `sm` co theo chữ, đứng ngang, căn giữa, nút đặc trước.
 - **Đứng riêng cũng là khối đó, không card.** Trang `min-h-screen bg-background px-4 pt-24
-  sm:pt-40`, logo (`ProductBrand`) căn giữa ở trên, tiêu đề cách logo `mt-8`; chữ, nút, khoảng
+  sm:pt-40`, logo (`ProductBrand`, `../components/logo.md`) căn giữa ở trên, tiêu đề cách logo `mt-8`; chữ, nút, khoảng
   cách giống hệt bản trong khung. Trang lỗi không phải form: mượn card màn xác thực
   (nút `h-12` rộng hết card) thì trang 404 chỉ có một thanh đen 400px là thứ nặng nhất màn, và đặt
   cạnh bản trong khung thì một loại trang ra hai khuôn khác hẳn nhau (`N5`; chủ dự án thấy "xấu xấu"). Các bộ component trang 404 phổ biến cũng là trang trơn,

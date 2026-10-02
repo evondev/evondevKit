@@ -216,6 +216,12 @@ dòng đó."* Dừng chờ.
   Đổi màu bằng biến CSS trên `:root[data-mau]`, `:root[data-nhan]` (không trên `body`, xem trên), không vẽ lại. Probe cả hai
   nấc (tương phản chữ trắng trên nút chính, trên mục đang chọn).
 
+  **Dự án chưa có logo** thì thêm nhóm **Logo: 1 · 2 · 3** (`?logo=`): ba dấu theo ba hướng của
+  `components/logo.md`, đã kiểm ở 16px, đổi ở mọi chỗ có logo trên trang. Khung lý do có một dòng
+  vì sao cho từng dấu. Không có nhóm này thì đầu sidebar là ô chữ cái, người dùng duyệt xong vẫn
+  chưa thấy sản phẩm mình trông ra sao. Logo người dùng chọn thành logo lúc dựng; không chọn thì
+  dựng hướng khuyên dùng, báo một dòng.
+
 - **Control trong wireframe bấm được và hiện trạng thái như bản thật** ⚑: ô nhập, ô tìm focus
   thì viền và ring màu nhấn (`I13`: `--border-focus`, `--ring-focus`); select, dropdown, nút lọc
   bấm là xổ ra danh sách mục thật theo `layouts/overlay.md` (khung, chuyển động), bấm ngoài hay
@@ -239,7 +245,7 @@ dòng đó."* Dừng chờ.
   56px, nền trắng, viền dưới xám nhạt, chữ 14px, **không dính đỉnh**: thanh dính đè lên sidebar,
   header, panel `sticky top-0` của chính bản thiết kế, người xem thấy sidebar mất logo khi cuộn và
   tưởng bản dựng sẽ vậy. Các nhóm xếp liền từ trái, cách nhau
-  24px, theo thứ tự: Màn (đề nhiều màn) · **Phương án** · **Màu** (công tắc) · Nhấn (dự án chưa có brand) · Khổ · Nav (mobile, ít mục)
+  24px, theo thứ tự: Màn (đề nhiều màn) · **Phương án** · **Màu** (công tắc) · Nhấn (dự án chưa có brand) · Logo (dự án chưa có logo) · Khổ · Nav (mobile, ít mục)
   · **Trạng thái**.
   - **Đề nhiều màn** (lịch và hồ sơ, danh sách và chi tiết) thì một file, nhóm **Màn** đứng đầu
     (`?man=`), nhãn một hai chữ ("Lịch", "Hồ sơ"); mỗi màn có A, B, C riêng. **Ở 1280 thanh phải
@@ -508,7 +514,7 @@ dòng đó."* Dừng chờ.
   </script>
   ```
 
-  Dự án đã có màu brand thì bỏ nhóm Nhấn; app từ 6 mục chính thì bỏ nhóm Nav. Thanh dưới vẽ
+  Dự án đã có màu brand thì bỏ nhóm Nhấn; đã có logo thì bỏ nhóm Logo; app từ 6 mục chính thì bỏ nhóm Nav. Thanh dưới vẽ
   sẵn trong trang, chỉ hiện khi `body[data-kho="mobile"][data-nav="duoi"]` (trong khung là
   `frame=1` kèm `nav=duoi`).
 
@@ -543,7 +549,8 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
   chỉ là giữ màu theo vai, logo, font. Khung trang theo phương án đã chọn. Logic, handler, dữ liệu không đụng;
   thứ cần dữ liệu mới thì để prop và handler rỗng, lúc giao liệt kê.
 - **Sản phẩm mới:** audit câu 2 đã chạy ở `U1`; đi tiếp câu 3 của mục 0 trong `SKILL.md`,
-  rồi dựng theo phương án đã chọn thay cho bố cục mặc định của câu 4.
+  rồi dựng theo phương án đã chọn thay cho bố cục mặc định của câu 4. Chưa có logo thì dựng
+  `ProductBrand` với dấu đã chọn ở nhóm Logo, kèm favicon từ cùng dấu (`components/logo.md`).
 - **Đề nhiều hơn một màn:** chốt hợp đồng nguyên tố `D1` (`system.md`) ở đây, trước khi dựng
   màn đầu tiên. Wireframe đã chọn nói khung, bảng `D1` nói control nào dùng kiểu nào cho cả bộ.
 - Ráp bằng mẫu của skill (`SKILL.md` mục 2). Chạy probe `--sweep --wireframe "<link phương án

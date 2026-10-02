@@ -31,7 +31,7 @@ Khối rộng `max-w-md`. **Không viền** — đây là card đứng một mì
 Không căn giữa chữ trong form, chỉ căn giữa cả khối.
 
 - **Logo sản phẩm luôn có**, đặt trên tiêu đề, dùng đúng dấu hiệu đang nằm ở sidebar
-  (dự án có component logo thì import, chưa có thì ô vuông chữ cái đầu tên sản phẩm).
+  (dự án có component logo thì import, chưa có thì dựng theo `../components/logo.md`).
   Màn xác thực là chỗ duy nhất người dùng chưa vào app; thiếu logo thì trang đọc như
   form quản trị không biết của ai, và người dùng không chắc mình đang đăng nhập đúng
   chỗ. Logo ở đây là cấu trúc, không phải "thêm logo" mà `S3` cấm.

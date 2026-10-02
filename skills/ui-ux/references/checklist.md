@@ -116,6 +116,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Đọc từng câu lỗi: có câu nào **trùng chữ** với placeholder hay nhãn của chính ô đó không? Trùng là bỏ.
 - [ ] Chữ đỏ dưới ô có thật sự là lỗi không, hay là **gợi ý bị tô đỏ**? Gợi ý thì xám và hiện sẵn.
 - [ ] **Màn xác thực: đã báo một dòng** về "quên mật khẩu" / ghi nhớ đăng nhập / mạng xã hội chưa? Dựng theo mặc định thì được, dựng xong im lặng thì không.
+- [ ] **Dự án mới chưa có logo**: đầu sidebar là dấu SVG trong ô màu nhấn, hay vẫn là ô chữ cái? Dấu còn nhận ra ở 16px không, favicon đã thay favicon mặc định của framework chưa? (`components/logo.md`)
 - [ ] Màn đăng nhập, đăng ký có đủ logo sản phẩm, nút Google, placeholder chưa? Đăng ký có đang thừa ô "Nhập lại mật khẩu" không? (`layouts/form.md`)
 - [ ] Luồng quên mật khẩu: bước nhập mã có đang xác nhận email có tài khoản không? Phiên hết hạn có còn để ô mật khẩu và nút Lưu dưới khối lỗi không? (`layouts/form.md`)
 - [ ] Màn OTP: bấm Xác nhận khi chưa đủ sáu số có ra câu lỗi không, hay im lặng?
