@@ -81,7 +81,7 @@ does, no wireframes.
   the prompt.
 - Works without Tailwind or without a `package.json` (plain HTML, WordPress).
 
-## Using with Cursor, OpenCode, Codex, Antigravity, omp
+## Using with Cursor, OpenCode, Codex, Antigravity, ZCode, omp
 
 Run at the project root (`bunx` works in place of `npx`):
 
@@ -90,18 +90,20 @@ npx skills add evondev/evondevKit
 ```
 
 The command asks which tools to install for, then copies the skill into
-`.agents/skills/ui-ux/`, the folder Cursor, OpenCode, Codex, Antigravity and omp all read. To
-preselect tools, add `-a`, e.g. `-a cursor -a opencode`. To share it across all projects, add
-`-g`.
+`.agents/skills/ui-ux/`, the folder Cursor, OpenCode, Codex, Antigravity and omp all read
+(ZCode gets `.zcode/skills/ui-ux/`). To preselect tools, add `-a`, e.g.
+`-a cursor -a zcode`. To share it across all projects, add `-g`.
 
 | Tool | Invoke |
 | --- | --- |
 | Cursor, Antigravity | `/ui-ux Build an orders list…` |
 | Codex | `$ui-ux Build an orders list…` |
+| ZCode | `$ui-ux Build an orders list…` (or pick it from the `/` menu) |
 | OpenCode | `Use the ui-ux skill to build an orders list…` |
 | omp | `/skill:ui-ux Build an orders list…` |
 
 Without the name, the tool turns the skill on when the prompt matches its description.
+ZCode doesn't show the skill yet? Open Settings → Skills and click Refresh.
 Update: `npx skills update`. The skill is tested most on Claude; other tools work but may
 differ in places.
 
