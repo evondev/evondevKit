@@ -16,13 +16,13 @@ cả trang: chữ mảnh hơn, sạch hơn, bớt cái vẻ nặng nề của fo
 **T2. Một họ chữ cho cả app.** Phân vai bằng weight và cỡ, không bằng font thứ
 hai: tiêu đề `600`, body `400`, nhãn phụ `500`. `700` chỉ cho tiêu đề cấp trang và giá
 của trang trình diễn (giới thiệu, bảng giá). Phần lớn hệ thiết kế sản phẩm dùng 600 cho tiêu đề app (có
-hệ dùng 650–700, tra 27/09/2026); skill chọn 600 vì 700 nặng hơn gu mờ của dự án (hạ ngày 23/09/2026).
+hệ dùng 650–700); skill chọn 600 vì 700 nặng hơn gu mờ của dự án.
 
-`tracking-tight` **cho chữ có dấu chỉ từ `text-3xl` trở lên** (nâng từ `2xl` ngày
-22/09/2026: tiêu đề `2xl` "Xác thực email" vẫn đọc ra "thựcemail"). Con số không
+`tracking-tight` **cho chữ có dấu chỉ từ `text-3xl` trở lên** (tiêu đề `2xl`
+khép chữ thì "Xác thực email" đọc ra "thựcemail"). Con số không
 dấu, như số liệu `text-2xl` trong card số liệu, thì khép được. Tiêu đề `lg`/`xl`/`2xl` giữ khoảng chữ mặc định: tiếng Việt dấu chồng hai tầng, khép chữ
 lại ở cỡ này là dấu chạm nhau và khoảng trắng giữa từ hẹp đi, "Công ty" đọc
-thành "Côngty" (đã dính 22/09/2026). Copy không dấu thì ngưỡng khác (`T28`).
+thành "Côngty". Copy không dấu thì ngưỡng khác (`T28`).
 
 Font thứ hai chỉ được dùng cho **tiêu đề của trang trình diễn** (trang giới
 thiệu, bảng giá, trang pháp lý) và phải nói được nó khác font body ở chỗ nào.
@@ -72,8 +72,7 @@ Thứ bậc đầy đủ của một trang app: **tên trang > tiêu đề khố
 
 Mở một bài viết, một khoá học, một sản phẩm thì tiêu đề nên **bằng đúng cỡ tiêu
 đề của nó ở danh sách**, không nhảy lên một bậc. Nhảy size gây cảm giác "chữ bự"
-so với nội dung bên dưới. Chốt 16/09/2026 sau khi hạ tên trang từ
-24px về 20px.
+so với nội dung bên dưới (chủ dự án chốt).
 
 Cỡ hero chỉ còn cho trang trình diễn thật sự.
 
@@ -104,8 +103,7 @@ hoặc nút ở cuối (câu hỏi accordion có chevron, dòng danh sách có m
 badge bên cạnh) thì `text-pretty`, kể cả khi nó là thẻ `h3`. `balance` chia đều mọi
 dòng nên dòng đầu cũng bị cắt ngắn: câu còn chỗ mà đã xuống dòng khi mới được nửa hàng,
 chevron trôi ra xa cả khoảng trống. `pretty` giữ dòng đầu đầy, chỉ chặn chữ đơn côi
-cuối (đã dính 26/09/2026, FAQ trang giá ở 375px: "Chưa biết gì về lập / trình thì bắt
-đầu ở đâu?" chiếm 129px và 162px trong hàng rộng 269px).
+cuối.
 
 Kiểm ở đúng bề rộng thật, nhất là 375px: chữ đơn côi chỉ lộ ở một vài bề rộng.
 
@@ -113,20 +111,19 @@ Kiểm ở đúng bề rộng thật, nhất là 375px: chữ đơn côi chỉ l
 
 **Chặn ở khung ngoài, không chặn ở phần tử con nằm trong một khối tràn bề ngang.**
 Câu trả lời accordion, dòng mô tả trong hàng có nền: `max-w-*` đặt trên chính nó thì
-khối con hụt so với khối bọc, ai tô nền là lòi một mảng trống bên phải (đã dính
-26/09/2026, FAQ trang giá: `<p>` `max-w-[65ch]` hụt 55px). Thu hẹp cả khung cho tới khi
+khối con hụt so với khối bọc, ai tô nền là lòi một mảng trống bên phải
+(`<p>` `max-w-[65ch]` hụt 55px). Thu hẹp cả khung cho tới khi
 dòng dài nhất ≤ 75 ký tự.
 
 **Trần 75 ký tự là cho đoạn văn từ 3 dòng trở lên.** Chữ ngắn đọc một hơi (câu trả lời
 FAQ 1–2 câu, mô tả một dòng) không tính: đừng thu hẹp cả khung vì nó, kẻo tiêu đề cùng
-khung phải xuống dòng khi hàng còn trống (đã dính 26/09/2026, FAQ `max-w-lg`).
+khung phải xuống dòng khi hàng còn trống.
 Card rộng hết khung cũng tính.
 
 **Chữ Việt: `max-w-[55ch]` ≈ 75 ký tự**, ở mọi cỡ chữ. `ch` là bề rộng số "0" (~9,5px ở
 14px), còn ký tự Việt trung bình chỉ ~6,8px, nên `max-w-prose` (65ch) chứa ~90 ký tự và
 `max-w-2xl` ở `text-sm` chứa ~99. Dùng `ch` chứ không dùng `max-w-lg`: nó co giãn theo cỡ
-chữ, và không dính bẫy thang `--container-*` bị ghi đè (`tailwind-v4-traps.md`). Đã dính:
-mô tả việc trong dòng thời gian chạy ~90 ký tự một dòng dù đã `max-w-prose`.
+chữ, và không dính bẫy thang `--container-*` bị ghi đè (`tailwind-v4-traps.md`).
 
 **T12. Chữ dài luôn căn trái.** Không căn giữa mọi thứ.
 
@@ -151,20 +148,18 @@ xuống dòng, đừng cắt — mô tả bị cắt thì mất luôn lý do nó
 **Tên file cắt giữa, giữ đuôi**: "Bao-cao-doanh…thu-quy-3.xlsx", vì đuôi file nói loại
 file. **Phần giữ lại là vài ký tự cuối của tên (khoảng 8) cộng đuôi**, không chỉ mỗi đuôi:
 cắt sát dấu chấm thì `…` dính `.xlsx` thành bốn chấm "doanh-thu….xlsx", đọc như lỗi
-gõ (đã dính 24/09/2026), và mất luôn phần cuối tên, thường là chỗ phân biệt các bản
-("…quy-3", "…ban-cuoi"). Trình quản lý tệp của hệ điều hành cắt kiểu này. Dấu `…` **dính liền** phần giữ lại, không chừa khoảng trắng trước đuôi (đã dính
-23/09/2026: "Báo cáo doan… .xlsx" cạnh "Báo cáo tổng kết năm….pdf", hai kiểu trong
-cùng một cây).
+gõ, và mất luôn phần cuối tên, thường là chỗ phân biệt các bản
+("…quy-3", "…ban-cuoi"). Trình quản lý tệp của hệ điều hành cắt kiểu này. Dấu `…` **dính liền** phần giữ lại, không chừa khoảng trắng trước đuôi
+("Báo cáo doan… .xlsx" cạnh "Báo cáo tổng kết năm….pdf" là hai kiểu trong cùng một cây).
 
 **Dòng ghép nhiều mẩu thì thứ để so sánh đứng trước chữ có thể dài.** "Loại · diện tích"
 mà loại là chữ người đăng tự gõ thì loại dài đẩy diện tích ra sau dấu `…`, mất đúng con số
-người dùng dùng để chọn (đã dính 28/09/2026, card tin đăng: "Duplex gác xép thông tầng full
+người dùng dùng để chọn ("Duplex gác xép thông tầng full
 nội thất… " nuốt mất "210m²"). Đặt mẩu ngắn, cố định lên trước ("210m² · Duplex…"), hoặc tách
 span: mẩu cần giữ `shrink-0`, chỉ mẩu dài `truncate`.
 
-**Chỉ hiện đủ tên khi tên thật sự bị cắt.** So chiều rộng thật rồi mới gắn `title` hay tooltip. **Đo bằng `Range`, không bằng `scrollWidth > clientWidth`**: hai số đó làm tròn về số nguyên, chữ rộng 182,4px trong khung 182px thì cả hai đều ra 182, trình duyệt vẫn cắt "quý" thành "q…" mà phép so báo không cắt (đã dính 25/09/2026, sidebar). Cách đo: `range.selectNodeContents(el)`, so `range.getBoundingClientRect().width > el.getBoundingClientRect().width`;
-gắn sẵn cho mọi hàng thì hàng ngắn cũng bật bong bóng, thành nhiễu (đã dính 23/09/2026:
-cây thư mục hiện tooltip "Khách hàng doanh nghiệp" dù tên còn nguyên). Bong bóng đó
+**Chỉ hiện đủ tên khi tên thật sự bị cắt.** So chiều rộng thật rồi mới gắn `title` hay tooltip. **Đo bằng `Range`, không bằng `scrollWidth > clientWidth`**: hai số đó làm tròn về số nguyên, chữ rộng 182,4px trong khung 182px thì cả hai đều ra 182, trình duyệt vẫn cắt "quý" thành "q…" mà phép so báo không cắt. Cách đo: `range.selectNodeContents(el)`, so `range.getBoundingClientRect().width > el.getBoundingClientRect().width`;
+gắn sẵn cho mọi hàng thì hàng ngắn cũng bật bong bóng, thành nhiễu. Bong bóng đó
 cũng không được che hàng kế bên (`N8`).
 
 **T15. Nhãn nút không được `white-space: nowrap`.**
@@ -186,7 +181,7 @@ dính nhau) + `overflow-wrap: anywhere` (ngắt cả URL và mã dài) + `max-wi
 thiếu nó thì các chữ số rộng khác nhau và cột nhảy lung tung khi dữ liệu đổi.
 Giờ, ngày xếp dọc một mép (cột giờ bên phải dòng thời gian, lịch sử) cũng là cột số.
 **Font phải có `tnum` thì class mới có tác dụng.** Kiểm bằng cách đo "1" và "4": rộng khác
-nhau là font không áp (đã dính: Be Vietnam Pro bản Google Fonts, "1" 4,6px, "4" 8,5px).
+nhau là font không áp (Be Vietnam Pro bản Google Fonts: "1" 4,6px, "4" 8,5px).
 Cột căn phải lệch mép trái vài px thì chấp nhận; bảng tiền, bảng số thì báo người dùng
 một dòng lúc giao, đổi font là việc của họ (`N10`).
 **Số tiền kèm đơn vị là một khối không ngắt**: `whitespace-nowrap` trên cả "128.900.000 đ".
@@ -194,7 +189,7 @@ Hàng nhãn–giá trị hai đầu (`flex justify-between`, như khối Thanh t
 `shrink-0`, nhãn `min-w-0` co lại và xuống dòng; nhãn có phần phụ thì dán `&nbsp;` để ngắt sau
 dấu `·` ("Tạm tính&nbsp;· 1&nbsp;sản&nbsp;phẩm" ra "Tạm tính ·" / "1 sản phẩm"). Đảo lại (nhãn
 `shrink-0`, giá trị `wrap-anywhere`) thì ở 375px chữ "đ" rớt xuống dòng riêng; chỉ thêm
-`nowrap` mà nhãn vẫn không co thì "đ" tràn ra ngoài khung (đã dính 27/09/2026, modal đơn hàng).
+`nowrap` mà nhãn vẫn không co thì "đ" tràn ra ngoài khung.
 
 **T16b. Thời gian tương đối luôn kèm giờ tuyệt đối.** "5 giờ trước", "28 phút trước"
 dễ đọc nhưng không dùng để đối chiếu được. Bọc trong `<time datetime>` và cho `title`
@@ -204,14 +199,14 @@ dòng thời gian đơn hàng, nhật ký thao tác thì hiện thẳng giờ tu
 
 **Trong danh sách, mốc thuộc năm hiện tại thì bỏ năm**: `08:30 · 16/09`, không
 `08:30 · 16/09/2026`. Mười hàng cùng đuôi `/2026` là một ý nhắc mười lần, và cột giờ rộng
-thêm gần một nửa (đã dính 24/09/2026: tab Tin nhắn, Tệp, Hoạt động của panel khách hàng).
+thêm gần một nửa.
 Khác năm thì ghi đủ `16/09/2025`; `title` và `datetime` luôn đủ. Copy tiếng Anh
 thì tháng viết chữ (`T28`). **Bẫy:** `Intl.DateTimeFormat('vi-VN', { day: '2-digit', month: '2-digit' })` bỏ năm thì ra `23-09` gạch ngang, không phải `23/09`; tự ghép ngày và tháng bằng `/`. Bỏ năm với
-mốc trong năm nay là cách của các thành phần hiển thị thời gian phổ biến ("Sat, 31 Dec" nhưng "Wed, 26 Aug 2021", tra 27/09/2026). Một mốc đứng riêng làm trường dữ liệu ("Ngày tạo" trong khối nhãn và giá trị) thì giữ đủ năm.
+mốc trong năm nay là cách của các thành phần hiển thị thời gian phổ biến ("Sat, 31 Dec" nhưng "Wed, 26 Aug 2021"). Một mốc đứng riêng làm trường dữ liệu ("Ngày tạo" trong khối nhãn và giá trị) thì giữ đủ năm.
 
 **Mốc nằm giữa câu văn thì viết như câu nói, không dùng dấu `·`.** `08:30 · 16/09` là kiểu của
 cột và dòng phụ; giữa câu nó đọc thành hai mẩu rời: "Dự kiến mở lại lúc 23:30 · 26/09/2026."
-(đã dính 26/09/2026, trang bảo trì). Viết "lúc 23:30 hôm nay", "lúc 23:30 ngày mai", "lúc 08:00
+Viết "lúc 23:30 hôm nay", "lúc 23:30 ngày mai", "lúc 08:00
 ngày 28/09"; năm chỉ khi khác năm nay. Vẫn bọc `<time datetime>` đủ mốc.
 
 **T17. Mã và định danh dùng `font-mono`.** Mã đơn hàng, mã vận đơn, mã giảm giá, ID,
@@ -226,7 +221,7 @@ kể cả khi nằm giữa một câu mô tả. Nó nói
 
 Luật này nói về **câu văn**. Ô không có giá trị trong bảng hay khối nhãn và giá
 trị thì hiện `—` màu `text-muted`: đó là ký hiệu "trống", không phải dấu câu, và
-dùng một ký hiệu cho mọi ô trống của app (đã dính 22/09/2026: né `T18` nên viết
+dùng một ký hiệu cho mọi ô trống của app (đừng né `T18` bằng cách viết
 "Chưa có", "Chưa gắn nhãn", mỗi ô một câu).
 
 **T19. Không emoji trong tiêu đề, câu chào, hay làm icon.** Icon theo `F15`.
@@ -273,11 +268,11 @@ Có placeholder trong hai ca:
 | **Định dạng** không hiển nhiên: điện thoại, ngày, mã số thuế, biển số | Ví dụ đúng khuôn: `0901 234 567`, `31/12/2026` |
 
 - **Không dùng ví dụ giả cho ô định dạng ai cũng biết** (email, họ tên, mật khẩu): `ten@congty.com` bị đọc nhầm thành chữ đã gõ sẵn, nhất là trên mobile.
-- **Ô có ô không trong cùng form là bình thường.** Luật cũ "cả form phải thống nhất" (22/09/2026) kéo theo câu chép nhãn vào mọi ô, bỏ ngày 23/09/2026.
+- **Ô có ô không trong cùng form là bình thường.** Đừng ép "cả form phải thống nhất": kéo theo câu chép nhãn vào mọi ô.
 - Placeholder **không thay được nhãn**: gõ vào là nó biến mất.
 - **Ngoại lệ: màn đăng nhập, đăng ký đứng một mình** thì có placeholder câu hướng dẫn
   ngắn ("Nhập email"), xem `layouts/form.md`. Cả trang chỉ có vài ô, ô trống trơn trông
-  như chưa dựng xong (đã dính 25/09/2026).
+  như chưa dựng xong.
 
 **T26. Ô mật khẩu KHÔNG dùng dấu chấm tròn làm placeholder.**
 
@@ -369,7 +364,6 @@ dự án.
 Đoạn có thể chạy từ hai dòng trở lên (mô tả dưới tiêu đề modal, thân hộp xác nhận,
 câu mô tả của banner, câu trên trang rỗng có mô tả) dùng `text-sm/6` (14px, dòng 24px).
 Chữ tiếng Việt có dấu chồng hai tầng (`ệ`, `ở`, `ữ`): dòng 20px mặc định của `text-sm`
-làm dấu dòng dưới chạm sát chân chữ dòng trên, đoạn đọc ra đặc (đã dính 25/09/2026, hộp
-thu hồi lời mời). Chữ một dòng trong nút, ô nhập, dòng bảng, mục menu, badge giữ dòng
+làm dấu dòng dưới chạm sát chân chữ dòng trên, đoạn đọc ra đặc. Chữ một dòng trong nút, ô nhập, dòng bảng, mục menu, badge giữ dòng
 mặc định: ở đó chiều cao do control quyết, tăng dòng là nút phình. Khoảng giữa tiêu đề
 và đoạn mô tả ngay dưới là `mt-2` (8px), không `mt-1`.

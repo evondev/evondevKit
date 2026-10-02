@@ -33,7 +33,7 @@ Và luôn giữ: **ngày tháng, nhãn phụ phải nhỏ hơn tiêu đề ít n
 
 **R6. Ngoại lệ của R1 và R2: thứ tự tuyến tính thì không được wrap.** Board trạng thái, các bước quy trình, dòng thời gian, hàng chip lọc, hàng tab đều thuộc loại này. Xếp thành hai hàng thì mắt đọc theo hình chữ Z và mất dòng chảy; bốn chip ở 375px thì ba cái một hàng và một cái rớt xuống đứng lẻ, nhìn như lỗi. Cho cuộn ngang trong khung, mỗi phần tử `shrink-0`, cột kanban `w-[248px] grow max-w-[320px]` (vì sao thì xem `layouts/app.md`).
 
-**Chip đang lọc (bấm để gỡ) không phải thứ tự tuyến tính**, nên không thuộc R6: từ `sm` trở lên cho `flex-wrap`, đặt thành một hàng riêng dưới thanh lọc, "Xoá lọc" nằm cuối và luôn thấy. Dưới `sm` mới cuộn ngang, và "Xoá lọc" đứng **ngoài** khung cuộn (`shrink-0`), không nằm cuối hàng cuộn. Nằm trong khung cuộn thì nhiều chip là "Xoá lọc" khuất theo, đúng nút cần nhất lại không thấy (đã dính 28/09/2026: hàng chip đang lọc cuộn ngang ẩn thanh ở desktop).
+**Chip đang lọc (bấm để gỡ) không phải thứ tự tuyến tính**, nên không thuộc R6: từ `sm` trở lên cho `flex-wrap`, đặt thành một hàng riêng dưới thanh lọc, "Xoá lọc" nằm cuối và luôn thấy. Dưới `sm` mới cuộn ngang, và "Xoá lọc" đứng **ngoài** khung cuộn (`shrink-0`), không nằm cuối hàng cuộn. Nằm trong khung cuộn thì nhiều chip là "Xoá lọc" khuất theo, đúng nút cần nhất lại không thấy.
 
 **Lề của vùng cuộn đặt trên hàng bên trong, không đặt trên khung cuộn.** Padding bên phải của khung `overflow-x-auto` bị nhiều trình duyệt bỏ qua khi cuộn tới cuối, nên phần tử cuối dính sát mép trong khi phần tử đầu vẫn có lề.
 
@@ -49,17 +49,15 @@ Và luôn giữ: **ngày tháng, nhãn phụ phải nhỏ hơn tiêu đề ít n
 ```
 
 Không kéo khung cuộn ra bằng `-mx-3 sm:-mx-5` bù padding của cha (`N11`): đổi padding cha mà
-quên số âm là khung cuộn hụt hoặc lòi. Đo 27/09/2026 board kanban `/dashboard/tasks` 375 và
-1280px, cuộn ở đầu và ở cuối: hai bản trùng từng pixel. Nhiều khối liền nhau không cuộn thì
+quên số âm là khung cuộn hụt hoặc lòi. Nhiều khối liền nhau không cuộn thì
 gom vào một `<div class="px-3 sm:px-5">`. Khối nằm giữa khung trang và khung cuộn mà có `max-w-*` thì
-nới `max-w` thêm đúng phần lấn ra hai bên, không thì các khối anh em hẹp lại (đo 27/09/2026, cột
-`max-w-2xl` ở khu cài đặt: công tắc dịch 16px khi quên nới).
+nới `max-w` thêm đúng phần lấn ra hai bên, không thì các khối anh em hẹp lại.
 
 Cách khác cũng được: chèn phần tử đệm cuối hàng, `<div class="w-3 shrink-0 sm:w-5" aria-hidden="true"></div>`.
 
 ---
 
-**R7. Chữ trong card ở mobile: tiêu đề giữ cỡ, mô tả `text-sm`.** Tiêu đề card `text-base font-semibold` **ở mọi breakpoint** (`D8`), luôn lớn hơn chữ bên trong một bậc (`T8`); dài thì `text-balance`, không hạ cỡ. Mô tả `text-sm` để card không dài lê thê. Bản cũ hạ tiêu đề xuống `text-sm` ở mobile, bằng cỡ mô tả, trái cả `T8` lẫn `D8`.
+**R7. Chữ trong card ở mobile: tiêu đề giữ cỡ, mô tả `text-sm`.** Tiêu đề card `text-base font-semibold` **ở mọi breakpoint** (`D8`), luôn lớn hơn chữ bên trong một bậc (`T8`); dài thì `text-balance`, không hạ cỡ. Mô tả `text-sm` để card không dài lê thê. Đừng hạ tiêu đề xuống `text-sm` ở mobile: bằng cỡ mô tả, trái cả `T8` lẫn `D8`.
 
 **R8. Chữ GÕ ĐƯỢC không bao giờ xuống dưới 16px ở mobile.** `input`, `textarea`,
 `select` — dưới 16px thì iOS **tự phóng to cả trang** khi chạm vào ô, và không
@@ -87,15 +85,14 @@ vẫn `h-11 md:h-10`, xem `budgets.md`.
 - **`min-w`** cho khối bọc bảng, đủ để mọi cột thở. Không có nó thì bảng vẫn co.
 - **`whitespace-nowrap`** cho ô ngày tháng, số, trạng thái, **tên người**. Tên người xuống dòng thì cột co còn một chữ ("Nguyễn / Anh / Tuấn"), cắt đuôi thì mất tên gọi (`layouts/app.md`, bảng nhóm theo trạng thái). Chỉ mô tả, tiêu đề dài mới cho xuống dòng.
 - Lề đặt trên **khối bên trong**, không đặt trên khung cuộn. Xem R6.
-- Cuộn ngang thì **bắt buộc** ghim cột nhận diện (thường là cột đầu) bằng `sticky left-0` kèm nền `--surface`, cột ghim không quá ~40% khung. Cột đầu rộng hơn thế (tên + email) thì đừng cuộn: **dưới `sm`, bảng quản lý thành danh sách dòng** (`layouts/app.md`, mục Bảng dữ liệu). Cuộn mà không ghim thì cuộn một nhịp là mất tên, các ô còn lại không biết của ai (đã dính 25/09/2026).
+- Cuộn ngang thì **bắt buộc** ghim cột nhận diện (thường là cột đầu) bằng `sticky left-0` kèm nền `--surface`, cột ghim không quá ~40% khung. Cột đầu rộng hơn thế (tên + email) thì đừng cuộn: **dưới `sm`, bảng quản lý thành danh sách dòng** (`layouts/app.md`, mục Bảng dữ liệu). Cuộn mà không ghim thì cuộn một nhịp là mất tên, các ô còn lại không biết của ai.
 
 Đây là ngoại lệ hợp lệ của R1, cùng loại với R6: cuộn trong khung chứ không phải cả trang.
 
 **Ở desktop, phải cuộn ngang là dấu hiệu thừa cột, không phải lỗi bề ngang.** Thử theo
 thứ tự: gộp cột (email xuống dưới tên trong cùng một ô), bỏ cột phụ, hoặc đẩy nó sang
 drawer chi tiết. Đếm cột trước khi dựng: bảng trong khung app còn ~970px ở 1280px khi
-sidebar mở, quá 6 cột là bắt đầu chật (đã dính 23/09/2026: bảng khách hàng 7 cột, rộng
-1140px trong khung 970px).
+sidebar mở, quá 6 cột là bắt đầu chật.
 
 **R10. Tab hoặc chip quá nhiều ở màn hẹp thì rút chữ, không rút được thì gom vào dropdown.** Thứ tự nên thử:
 
@@ -105,9 +102,9 @@ sidebar mở, quá 6 cột là bắt đầu chật (đã dính 23/09/2026: bản
 
 Đừng để `flex-wrap`, đó là cách duy nhất sai trong ba cách trên.
 
-**Hàng cuộn ngang thì mép mờ dần ở phía còn mục bị khuất**, cùng cách với vùng nav sidebar (`layouts/app.md`): `mask-image` 32px, mép trái mờ khi đã cuộn khỏi đầu, mép phải mờ khi còn mục phía sau, tính cờ từ `scrollLeft`/`scrollWidth`/`clientWidth`. Thanh cuộn đã ẩn (`scrollbar-clean`) nên mép cắt thẳng qua chữ không báo được gì: ở 375px hàng chip cắt ngang "Bán|", còn tab "Ngừng giao dịch 6" nằm hẳn ngoài khung, trông như chỉ có ba trạng thái (đã dính 25/09/2026, bảng khách hàng). Áp cho hàng tab, hàng chip, và khung bảng cuộn ngang (`R9`).
+**Hàng cuộn ngang thì mép mờ dần ở phía còn mục bị khuất**, cùng cách với vùng nav sidebar (`layouts/app.md`): `mask-image` 32px, mép trái mờ khi đã cuộn khỏi đầu, mép phải mờ khi còn mục phía sau, tính cờ từ `scrollLeft`/`scrollWidth`/`clientWidth`. Thanh cuộn đã ẩn (`scrollbar-clean`) nên mép cắt thẳng qua chữ không báo được gì: ở 375px hàng chip cắt ngang "Bán|", còn tab "Ngừng giao dịch 6" nằm hẳn ngoài khung, trông như chỉ có ba trạng thái. Áp cho hàng tab, hàng chip, và khung bảng cuộn ngang (`R9`).
 
-**Ở máy có chuột, hàng cuộn ngang phải có nút mũi tên ở phía còn mục bị khuất.** Dựng sẵn, không hỏi. Chuột thường chỉ có bánh cuộn dọc; thanh cuộn đã ẩn (`scrollbar-clean`) thì người dùng chuột không có cách nào tới mục phía sau, mép mờ chỉ báo "còn", không cho kéo. Máy có trackpad hay chuột cuộn ngang thì kéo được nên người làm không thấy lỗi (đã dính 28/09/2026: hàng chip đang lọc, máy người làm kéo được, máy khác thì không). Hàng tab, chip, dải card ở desktop đều giống nhau:
+**Ở máy có chuột, hàng cuộn ngang phải có nút mũi tên ở phía còn mục bị khuất.** Dựng sẵn, không hỏi. Chuột thường chỉ có bánh cuộn dọc; thanh cuộn đã ẩn (`scrollbar-clean`) thì người dùng chuột không có cách nào tới mục phía sau, mép mờ chỉ báo "còn", không cho kéo. Máy có trackpad hay chuột cuộn ngang thì kéo được nên người làm không thấy lỗi. Hàng tab, chip, dải card ở desktop đều giống nhau:
 
 ```tsx
 <div className="relative min-w-0">
@@ -135,9 +132,9 @@ ngang chỉ có mép mờ ở trên. Lúc giao màn có hàng tab/chip cuộn ng
 dòng, **nói bằng vấn đề của người dùng cuối, không nhắc tên dự án hay sản phẩm tham khảo nào**:
 _"Trên điện thoại không có thanh cuộn, người dùng không biết hàng [tab lọc] này kéo sang được.
 Mình đang để mép phải mờ dần; có thể đổi sang dropdown, hoặc thêm một thanh cuộn mảnh luôn hiện
-bên dưới hàng."_ Người dùng chọn cách nào mới dựng cách đó (chủ dự án chốt
-25/09/2026: đây là thứ gợi ý cho người dùng, không áp sẵn). Công thức khi dựng (chủ dự án duyệt
-17–18/09/2026 ở một dự án thật): Mép mờ báo "phía này còn", vạch báo "còn bao
+bên dưới hàng."_ Người dùng chọn cách nào mới dựng cách đó (chủ dự án chốt:
+đây là thứ gợi ý cho người dùng, không áp sẵn). Công thức khi dựng (chủ dự án duyệt
+ở một dự án thật): Mép mờ báo "phía này còn", vạch báo "còn bao
 nhiêu và đang ở đâu". Thanh cuộn gốc của iOS/Android là thanh nổi, chỉ hiện **lúc đang
 vuốt**, nên không báo trước được; thanh 4px tự ẩn theo `I18` cũng chỉ hiện khi rê chuột,
 điện thoại không có rê chuột. Tab lấp ló ở mép cũng không chắc có: tab có thể kết thúc
@@ -159,7 +156,7 @@ khít mép khung.
 - **Chỉ hiện khi hàng thật sự tràn** (`scrollWidth > clientWidth + 1`), ở mọi bề rộng, không riêng màn hẹp. `visibleRatio = clientWidth / scrollWidth`, `offsetRatio = scrollLeft / scrollWidth`, đo lúc cuộn (`passive`) và bằng `ResizeObserver` (xoay máy, font tải xong đổi bề rộng). Dùng chung hook với mép mờ.
 - **Nằm NỔI (`absolute top-full mt-1`) dưới hàng, không nằm trong luồng**: vạch chỉ hiện sau khi đo xong lúc tải, nằm trong luồng thì cả trang nhảy xuống một nhịp. Nơi gọi chừa khoảng trống dưới hàng từ 8px trở lên (vạch chiếm 7px).
 - **Hàng tab gạch chân có đường kẻ nền thì vạch chạy ĐÈ lên đường kẻ đó** (`bottom-0 h-0.5`, rãnh chính là đường kẻ nền), không vẽ rãnh riêng bên dưới: hai đường sát nhau đọc như gạch chân bị lệch. Hàng tab gạch chân không có đường kẻ nền thì dùng rãnh riêng như trên.
-- **Màu nhạt, không nhạt hơn nữa**: thanh là gợi ý "kéo được", đậm hơn là kéo mắt khỏi mục đang chọn; nhạt hơn thì ngoài nắng mất hẳn (đã thử `/50`, `/30` rồi chốt khoảng `/20` của màu xám chữ phụ, tương đương `bg-foreground/15` ở đây).
+- **Màu nhạt, không nhạt hơn nữa**: thanh là gợi ý "kéo được", đậm hơn là kéo mắt khỏi mục đang chọn; nhạt hơn thì ngoài nắng mất hẳn (khoảng `/20` của màu xám chữ phụ, tương đương `bg-foreground/15` ở đây).
 - **Mục đang chọn bị khuất thì tự cuộn nó vào giữa hàng** lúc tải và khi đổi mục. Tự tính `scrollLeft` rồi `scroller.scrollTo`, **không `scrollIntoView`**: hàng có thể đang nằm dưới màn lúc tải, `scrollIntoView` kéo cả trang xuống theo. Lần đầu `behavior: "auto"`, các lần sau `"smooth"`.
 - Áp cho hàng chip, hàng tab còn cuộn ngang, dải card/carousel. **Tab trạng thái của bảng ở màn hẹp mà có tab nằm hẳn ngoài khung thì vẫn thành dropdown** (`layouts/app.md`): vạch báo được "còn", không báo được còn trạng thái nào.
 
@@ -167,9 +164,7 @@ khít mép khung.
 dòng (`hidden sm:inline-flex`) và ẩn panel chi tiết (`hidden lg:block`) cùng lúc thì ở 375px bấm
 dòng không ra gì, việc chính của màn không làm được trên điện thoại. Mỗi thứ ẩn đi phải có lối
 khác: bấm dòng mở panel thành trang hay sheet từ dưới, nút chính vào menu ⋯ của dòng, hay nút
-thu còn icon. Đã dính 30/09/2026, wireframe hàng chờ lịch hẹn: nút "Đã đến" ẩn dưới `sm`, panel
-ẩn dưới `lg`, lễ tân cầm điện thoại không tiếp đón được ai, trong khi khung lý do ghi "đọc tốt
-trên điện thoại".
+thu còn icon.
 
 ---
 

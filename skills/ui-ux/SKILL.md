@@ -1,6 +1,6 @@
 ---
 name: ui-ux
-description: Gu UI/UX cho hệ thống app — dashboard, danh sách, bảng, form, cài đặt, modal, trang người dùng cuối lướt để chọn. Mặc định làm như một designer - brief, việc chính của từng màn, 2–3 wireframe có nội dung thật, người dùng chọn rồi mới dựng. Nhánh khác chỉ khi đề nói rõ - soi UI đang có, đề xuất sửa ("xem giúp", "review"), dựng lại giữ brand ("giữ brand", "keep the brand"), dựng lại theo gu skill ("bỏ style cũ"), refactor giữ nguyên hình, dựng luôn không wireframe ("dựng luôn", "just build it"), dựng design system trước ("UI kit", "component library"), sửa một component nhỏ. Mặc định flat, làm được glassmorphism, gradient, nổi, nền tối. Landing page sang skill landing; cửa hàng online, blog chưa được dạy - vẫn làm, báo trước một dòng. Dùng khi dựng, làm lại hay sửa giao diện app, refactor CSS, nhờ xem ảnh hay link app, hoặc khi nhắc "làm UI cho đẹp", "dựng màn", "thiết kế", "làm lại UX", "nhìn rối", "build a page", "design this screen", "redesign", "make it look good", "ecommerce", "ui-ux", "evon".
+description: Gu UI/UX cho app — dashboard, danh sách, bảng, form, cài đặt, modal, trang lướt để chọn. Mặc định như một designer - brief, 2–3 wireframe, người dùng chọn rồi mới dựng. Lối khác khi đề nói rõ - soi UI đang có ("xem giúp", "review"), dựng lại giữ brand ("giữ brand", "keep the brand") hay theo gu skill ("bỏ style cũ"), refactor giữ nguyên hình, dựng luôn ("dựng luôn", "just build it"), design system trước ("UI kit", "component library"), logo đơn giản ("làm logo"), sửa một component. Mặc định flat; làm được glass, gradient, nổi, nền tối. Landing page sang skill landing; cửa hàng online, blog chưa được dạy - vẫn làm, báo trước. Dùng khi dựng, làm lại, sửa giao diện app, xem ảnh hay link app, hoặc nhắc "làm UI cho đẹp", "dựng màn", "thiết kế", "làm lại UX", "nhìn rối", "build a page", "design this screen", "redesign", "make it look good", "ecommerce", "ui-ux", "evon".
 ---
 
 # UI/UX cho hệ thống dashboard
@@ -9,7 +9,8 @@ description: Gu UI/UX cho hệ thống app — dashboard, danh sách, bảng, fo
 > **Mặc định là làm như một designer** (`references/design-process.md`, nhánh `U`): brief,
 > việc chính của từng màn, 2–3 wireframe, người dùng chọn rồi mới dựng. Đề viết tiếng Việt
 > hay tiếng Anh đều vậy. Hai cổng chờ của nhánh đó (duyệt brief, chọn wireframe) là hai chỗ
-> duy nhất được dừng hỏi (lối design system có một cổng riêng, `D9`). Ngoài các cổng đó thì **không hỏi**: chỗ nào đề chưa rõ thì lấy mặc
+> duy nhất được dừng hỏi (lối design system có một cổng riêng, `D9`; lối làm logo có một cổng
+> chọn logo, `components/logo.md`). Ngoài các cổng đó thì **không hỏi**: chỗ nào đề chưa rõ thì lấy mặc
 > định, **báo lúc giao** mình đã chọn gì.
 > Các nhánh khác chỉ khi đề nói rõ (câu 1): **soi UI đang có** (`references/review.md`) thì
 > soi luôn, **sửa thì hỏi**; dựng lại giữ brand; dựng lại theo gu skill; refactor; dựng luôn
@@ -57,14 +58,15 @@ trạng thái một ví dụ tĩnh** cạnh nhau, không dựng bản bấm đư
 Đây là câu **đầu tiên**, trước mọi thứ khác. Các lối khác nhau về rủi ro, về thứ tự
 các bước, và về người phải duyệt.
 
-Đọc đề theo thứ tự bảng, gặp dòng đầu tiên khớp thì dừng. Chủ dự án chốt 29/09/2026: **dòng
-cuối là mặc định**, bảy dòng trên chỉ khi đề nói rõ (tiếng Việt hay tiếng Anh).
+Đọc đề theo thứ tự bảng, gặp dòng đầu tiên khớp thì dừng. Chủ dự án chốt: **dòng
+cuối là mặc định**, tám dòng trên chỉ khi đề nói rõ (tiếng Việt hay tiếng Anh).
 
 | Đề nói | Đi đâu |
 | --- | --- |
 | **Muốn biết UI đang có chỗ nào chưa ổn** ("xem giúp", "review", "chỗ nào chưa ổn", "nhìn rối", "check this UI", "what's wrong with", gửi ảnh hay link app của họ nhờ xem) | Mở `references/review.md`, nhánh `V` **chế độ soi**: lập bảng trước/sau, người dùng chọn dòng rồi mới sửa. **Dừng mục 0 tại đây**, lúc giao theo `V5` chứ không theo `S15` ⚑ |
 | **Làm lại mà giữ brand / giữ giao diện** ("giữ brand", "giữ màu", "giữ giao diện hiện tại", "chỉ làm gọn", "keep the brand", "keep the current look") | `references/review.md`, **chế độ dựng lại giữ brand**: giữ khung trang, thay control gốc bằng component của skill, giữ vai màu. Đề nói bỏ style cũ thì không phải dòng này, xem dòng dựng lại theo gu skill. **Dừng mục 0 tại đây** ⚑ |
 | **Refactor / dọn code mà giữ nguyên hình** ("refactor", "chuyển sang Tailwind", "dọn CSS") | Mở `references/refactor.md`, nhánh `L`. **Dừng mục 0 tại đây** — nhánh đó có bộ mặc định riêng, bắt đầu bằng "đo trước khi kết luận" |
+| **Làm logo** ("làm logo", "dựng logo", "thay logo", "design a logo") | Mở `references/components/logo.md`: audit câu 2, rồi **trang chọn logo** ba hướng đặt trong sidebar, màn đăng nhập, tab trình duyệt. **Một cổng**: người dùng chọn hướng; đề có "luôn" thì dựng thẳng hướng khuyên dùng. **Dừng mục 0 tại đây** ⚑ |
 | **Dựng luôn, không wireframe** ("dựng luôn", "không cần wireframe", "just build it", "skip the wireframe") | Nhánh `U` **không vẽ wireframe**: làm `U1`, `U2`, chọn phương án sẽ khuyên dùng trong đầu, rồi dựng thẳng theo nó (`design-process.md`, đầu file). Không hỏi. Audit câu 2 vẫn chạy, ở `U1`. **Dừng mục 0 tại đây** |
 | **Dựng design system trước** ("design system", "dựng component trước", "UI kit", "chốt token / spacing / typography trước", "build a design system", "component library first") | Mở `references/system.md`, `D9`: token, bảy nguyên tố của `D1` cộng thứ đề nêu tên, một trang xem design system. Không vẽ wireframe. **Một cổng**: duyệt trang đó; màn dựng sau đi lối bình thường. **Dừng mục 0 tại đây**, trừ audit câu 2 ⚑ |
 | **Việc nhỏ hơn một màn**: sửa một component, thêm một dropdown, sửa một lỗi, đổi một màu | Đi tiếp câu 2, dựng theo bố cục mặc định (câu 4), không hỏi |
@@ -240,9 +242,9 @@ Câu 4 chỉ chạy ở lối việc nhỏ hơn một màn (câu 1). Mặc đị
 nơi bố cục mặc định ở đây là **một trong các phương án wireframe**, thường là phương án khuyên
 dùng.
 
-⚠️ **Luật cũ đã bỏ (21/09/2026), đừng hồi sinh:** "đưa 2–3 phương án bố cục bằng lời
+⚠️ **Luật cũ đã bỏ, đừng hồi sinh:** "đưa 2–3 phương án bố cục bằng lời
 rồi DỪNG HẲN chờ chọn". Bỏ vì bắt người dùng chọn trước khi thấy gì, và buộc mỗi file layout
-nuôi nhiều phương án cho mọi loại màn. Nhánh `U` mặc định từ 29/09/2026 (chủ dự án chốt) không
+nuôi nhiều phương án cho mọi loại màn. Nhánh `U` mặc định (chủ dự án chốt) không
 phải luật đó sống lại: người dùng chọn sau khi **đã thấy** wireframe có nội dung thật, đã
 probe, bấm mở được; mỗi file layout vẫn chỉ nuôi một bố cục mặc định.
 
@@ -294,14 +296,14 @@ thẳng một cột giữa màn). Đừng hỏi lại có cần nút Google khô
 **S5. Đề để hở phạm vi thì dựng phạm vi mặc định, không hỏi.**
 
 - **Đề có liệt kê** ("trang đăng nhập gồm ô email, ô mật khẩu, nút…"): phạm vi đã chốt, dựng luôn.
-- **Đề để hở** ("dựng màn hình tổng quan"): lấy **bộ khối mặc định** của loại màn đó trong file layout (màn tổng quan: bảng khối trong `references/layouts/app.md`), dựng **đủ** bộ đó. Đừng để `S1` hoá thành "làm ít nhất có thể" rồi ra một màn mỏng dính 3 khối (đã dính ở vòng test 11).
+- **Đề để hở** ("dựng màn hình tổng quan"): lấy **bộ khối mặc định** của loại màn đó trong file layout (màn tổng quan: bảng khối trong `references/layouts/app.md`), dựng **đủ** bộ đó. Đừng để `S1` hoá thành "làm ít nhất có thể" rồi ra một màn mỏng dính 3 khối.
 - **Lúc giao, câu đầu tiên** liệt kê các khối đã dựng, và khối nào trong bảng đã bỏ ra. Muốn thêm bớt thì người dùng nói.
 
 **S6. Dựng mockup thì điền dữ liệu giả hợp lý, đừng để chỗ trống.** Một trang đầy
 `[cần điền]` không nhìn ra được thiết kế, nó thành cái biểu mẫu. Điền số nghe
 được, rồi **báo một dòng lúc giao**: số liệu trong bản này là giả.
 **Các khối của cùng một bản ghi phải khớp nhau**: tab Hoạt động có một đơn đã huỷ
-thì ô số liệu không ghi 3 đơn, 12,3 tr đ (đã dính 24/09/2026). Số giả lệch nhau giữa hai
+thì ô số liệu không ghi 3 đơn, 12,3 tr đ. Số giả lệch nhau giữa hai
 tab làm người duyệt tưởng giao diện tính sai. Sửa dữ liệu giả cho khớp (lùi ngày tạo, thêm đơn vào lịch sử)
 là việc của bản dựng, tự làm, không hỏi: nó không đụng logic hay dữ liệu thật.
 
@@ -330,7 +332,7 @@ nói rõ dùng thư viện nào thì **theo họ, đừng cãi**.
 **Câu đầu tiên lúc giao** nói thẳng cách hiểu: *"Mình hiểu **bảng** là table dữ
 liệu. Nếu ý bạn là board kanban thì nói, mình đổi."* Hiểu sai thì người dùng thấy
 ngay ở câu đầu, không phải tới lúc test mới lộ. Bài học gốc: "bảng quản lý dự án"
-từng bị hiểu thành kanban mà không ai nói ra, cả vòng test coi như bỏ (vòng 18).
+từng bị hiểu thành kanban mà không ai nói ra, cả vòng test coi như bỏ.
 Lỗi lúc đó là **im lặng chọn nghĩa hiếm**, không phải chuyện không hỏi.
 
 **S11. Code mẫu trong `layouts/` chỉ mở SAU khi đã chốt loại màn hình.** Nó trả
@@ -378,8 +380,7 @@ mockup và wireframe dùng ảnh thật, trang mới trông như sản phẩm đ
 - Lúc giao, dòng "số liệu giả" của `S15` nói luôn: ảnh từ Unsplash và randomuser là ảnh
   mẫu, thay bằng ảnh thật trước khi chạy thật.
 
-Đã dính 29/09/2026: trang phòng trọ dùng tám hình vẽ giường gần giống nhau, chủ dự án thấy
-"nhìn chán" dù bố cục đã đúng.
+Tám hình vẽ gần giống nhau cho tám mục thì trang trông "nhìn chán" dù bố cục đã đúng.
 
 ---
 
@@ -439,10 +440,12 @@ thì một trong hai chỗ là sai.
 | Khung chat với trợ lý AI: tin nhắn hai phía, bước dùng công cụ, gợi ý hỏi tiếp, ô soạn tin | `references/components/chat.md` |
 | Thanh trượt chọn khoảng số, khoảng giá | `references/components/range-slider.md` |
 | Ô nhập nhiều tag (email người nhận, nhãn) | `references/components/tag-input.md` |
-| Danh sách rỗng, đang tải (chữ hoặc khung chờ), lỗi tải | `references/components/empty-state.md` |
+| Danh sách rỗng, lỗi tải | `references/components/empty-state.md` |
+| Đang tải: khung chờ, tải lần hai, đổi ngay trên màn, "Đang lưu… / Đã lưu", việc chạy lâu | `references/components/loading.md` |
 | Thanh thông báo trong trang (thông tin, cần chú ý, lỗi) | `references/components/banner.md` |
 | Chip lọc, chip lọc đang áp dụng (có ×), nút chỉ có icon, thanh tab (4 variant), phân trang | `references/components/small-controls.md` |
 | Avatar, nhóm avatar chồng nhau | `references/components/avatar.md` |
+| Logo sản phẩm (đầu sidebar, màn xác thực, trang lỗi đứng riêng) và favicon, khi dự án chưa có logo | `references/components/logo.md` |
 | Biểu đồ cột, biểu đồ đường, số liệu, thanh tiến độ | `references/components/charts.md` |
 | Khung kéo thả tệp, danh sách tệp đang tải lên | `references/components/file-upload.md` |
 
@@ -478,10 +481,11 @@ Skill này đã có lần **tệ đi vì thêm luật**. Luật viết để ch�
 thường đẻ ra triệu chứng khác ở lần dựng sau.
 
 - Mỗi đợt tối đa **5 luật mới**.
-- Mỗi luật mới phải nói rõ nó **thay thế** hay **mâu thuẫn** với luật nào đang có. Đảo một luật cũ thì để lại một khối ⚠️ ghi rõ "luật cũ đã bỏ, đừng hồi sinh", kèm ngày.
+- Mỗi luật mới phải nói rõ nó **thay thế** hay **mâu thuẫn** với luật nào đang có. Đảo một luật cũ thì để lại một khối ⚠️ ghi rõ "luật cũ đã bỏ, đừng hồi sinh" và vì sao.
 - Luật phải kèm **điều kiện áp dụng**. "Trong app thì X, khi refactor thì Y" chứ không phải "luôn luôn X".
 - Luật nào chưa từng bắt được lỗi thật sau 3 vòng test thì bỏ.
 - **Một luật một chỗ.** Thêm luật vào đúng file của nhóm nó. `SKILL.md` chỉ được trỏ số hiệu.
 - **Thêm luật xong thì rà lại file mẫu trong `layouts/` và `components/`** xem chúng có vi phạm luật vừa thêm không. Code mẫu được chép nguyên, nên một lỗi nằm trong đó sẽ đi khắp nơi. Đã xảy ra thật hai lần.
+- **Skill ghi luật và lý do, không ghi lịch sử.** Không ngày tháng, không tên trang hay dự án test, không "lượt hai", không kể các bản đã thử. Bản sai mà AI dễ tự làm lại thì một câu "Đừng X: hậu quả". Ngày và chỗ dính ghi trong commit message. Quyết định của chủ dự án giữ đúng động từ gốc ("chốt", "bỏ", "chọn"…), không kèm ngày, không tự nâng thành "chốt". Ngày tháng duy nhất được ghi trong skill là cột "Chốt ngày" của `locked-rules.md`.
 - **Đánh số liền mạch trong nhóm.** Đừng đẻ `15b`, `15c`, `17d` chen vào giữa.
 - **Luật chưa qua vòng test nào thì gắn dấu ⚑**, để người dùng biết đang dùng thứ chưa ai thử.

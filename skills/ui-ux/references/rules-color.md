@@ -20,12 +20,12 @@ Luật có dấu ⚑ là chưa qua vòng test nào.
 Đây là luật quan trọng nhất trong nhóm, và là thứ quyết định một màn hình trông
 có chủ ý hay trông như chưa ai quyết định gì.
 
-Bằng chứng thật (một dự án, 11/09/2026): trang challenge tích dần tới **năm màu
+Bằng chứng thật (một dự án): một trang tích dần tới **năm màu
 nền** cho năm loại khối — vàng be cho dặn dò, đỏ hồng cho nội quy, xanh nhạt cho
 quà và nhật ký, tím indigo cho chip quà, cộng xanh/vàng của trạng thái. Khối nào
 cũng đòi được chú ý nên **không khối nào nổi**, và trang đọc ra như "rainbow UI".
 
-Hệ quả ngược cũng đã dính, cùng ngày: gỡ hết màu đi thì thẻ "dặn dò" trắng nằm
+Hệ quả ngược cũng đã dính: gỡ hết màu đi thì thẻ "dặn dò" trắng nằm
 giữa các thẻ task trắng, bị đọc lẫn thành một task. Nên trung tính **không phải
 là không có điểm neo**:
 
@@ -81,9 +81,8 @@ badge "Lưu ý" nữa. Cùng tinh thần với `F6`: phần tử nổi bật ch�
 
 Cột trạng thái trong bảng, góc thẻ kanban, đầu trang chi tiết: **badge pill nền
 nhạt, chấm tròn + chữ cùng tông**. Liếc dọc một cột 20 dòng thì mắt bắt màu nhanh
-hơn bắt chữ; chấm xám + chữ đen thì cả cột trông như nhau (đã dính 21/09/2026,
-bảng khách hàng: "Đang giao dịch" với "Ngừng giao dịch" chỉ khác nhau ở độ mờ
-của một chấm 4px).
+hơn bắt chữ; chấm xám + chữ đen thì cả cột trông như nhau ("Đang giao dịch"
+với "Ngừng giao dịch" chỉ khác nhau ở độ mờ của một chấm 4px).
 
 ```html
 <span class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">
@@ -104,22 +103,20 @@ Bốn tông, không thêm. Trạng thái nào vào tông nào theo **nghĩa**, k
 (`text-red-700 dark:text-red-400`; **riêng hổ phách là `text-amber-700 dark:text-orange-400`**, xem
 dưới; không Tailwind thì token, đã lật sẵn). `-700` không tự
 đổi ở nền tối: chữ trạng thái còn 2,9–3,7:1 (`red-700` 2,9, `emerald-700` 3,5, `amber-700`
-3,7). Sót một chỗ là cùng một nghĩa ra hai sắc trên một dòng (đã dính 01/10/2026, bảng công
-việc tối: "Khẩn cấp" `text-amber-700` cam sẫm 3,74:1 cạnh "Quá hạn 3 ngày"
+3,7). Sót một chỗ là cùng một nghĩa ra hai sắc trên một dòng ("Khẩn cấp" `text-amber-700` cam sẫm 3,74:1 cạnh "Quá hạn 3 ngày"
 `dark:text-amber-400` vàng sáng). Gom mỗi tông vào một helper để
 không phải nhớ từng chỗ.
 
 **Bản tối chọn theo sắc, không theo số bậc.** Lên bậc sáng hơn thì phần lớn thang Tailwind giữ sắc
 (đỏ, xanh lá, xanh dương, tím lệch 0–6° OKLCH), riêng **amber trôi sang vàng**: `amber-700` 49°,
-`amber-400` 84°. "Quá hạn" cam ở bản sáng thành vàng ở bản tối, đọc ra hai màu, hai nghĩa (chủ dự án
-thấy 01/10/2026, bảng công việc). Hổ phách tối dùng **`orange-400`** (56°, lệch 7°, 7,9:1 trên card); nền
+`amber-400` 84°. "Quá hạn" cam ở bản sáng thành vàng ở bản tối, đọc ra hai màu, hai nghĩa. Hổ phách tối dùng **`orange-400`** (56°, lệch 7°, 7,9:1 trên card); nền
 badge giữ `amber-500/15` (nền mờ không đọc ra sắc như chữ). Màu khác ngoài bảng này (avatar, chart, nhãn
 tự chọn) cũng vậy: lệch quá ~20° OKLCH với bản sáng thì đổi họ màu gần sắc hơn. Probe `--dark` đo cặp này.
 
 **Mọi badge có thêm `ring-1 ring-inset ring-black/5`** (nền tối `ring-white/10`). Nền badge
 nhạt tới mức chỉ chênh vài phần trăm với nền dưới nó: `zinc-100` (#f4f4f5) đặt lên dòng
-bảng đã chọn hay nền trang (#f4f4f6) là mất hẳn khung, "Tiềm năng" chỉ còn chấm với chữ
-(đã dính 23/09/2026). Vòng trong 5% giữ khung ở mọi nền mà không nặng thêm.
+bảng đã chọn hay nền trang (#f4f4f6) là mất hẳn khung, "Tiềm năng" chỉ còn chấm với chữ.
+Vòng trong 5% giữ khung ở mọi nền mà không nặng thêm.
 
 **Một luồng có cả bước "đang" lẫn bước "xong" thì xanh dành cho "xong".** Đơn hàng:
 Chờ xử lý → **hổ phách** (người bán phải làm gì đó), Đang giao → **xám** (đang chạy nhưng
@@ -130,7 +127,7 @@ luồng đó không có bước "xong".
 **Luồng có từ hai trạng thái cùng tông thì chấm đổi thành icon, mỗi trạng thái một hình.**
 Bốn tông không đủ cho luồng công việc: theo đoạn trên thì Cần làm và Đang làm cùng xám, và
 bảng nhóm theo trạng thái ra ba nhóm xám một nhóm xanh, liếc không tách được nhóm nào với
-nhóm nào (đã dính 24/09/2026, bảng công việc). Các app quản lý công việc lớn tách bằng **hình**, không thêm màu:
+nhóm nào. Các app quản lý công việc lớn tách bằng **hình**, không thêm màu:
 
 | Trạng thái | Tông | Icon lucide | Vì sao |
 | --- | --- | --- | --- |
@@ -174,7 +171,7 @@ thông tin**. Bốn điều kiện, thiếu một là bỏ:
 
 **M9. Biểu tượng quen thuộc được giữ màu của nó, dù đó không phải trạng thái.**
 
-Chủ dự án duyệt 11/09/2026, sau khi trung tính hoá làm mất nghĩa:
+Chủ dự án duyệt, sau khi trung tính hoá làm mất nghĩa:
 
 - Huy chương top 3 tô đặc vàng / bạc / đồng — màu **trên icon**, không tô thẻ.
 - Thẻ hạng nhất viền vàng, **nền vẫn trắng**. Nền vàng nhạt ra màu be, đọc như thẻ cũ hoặc thẻ đã khoá. Đã thử và đã bỏ.
@@ -188,11 +185,34 @@ nói một câu lý do, rồi ghi ngoại lệ vào đây.
 emoji, chữ đỏ trong markdown — chỉ làm KHUNG bao quanh trung tính, đừng đi sửa
 ruột.
 
+**M34. Thứ người dùng tạo ra thì có màu nhận diện.** Dự án, board, workspace, danh
+mục, cột kanban, kênh: thứ người dùng tự đặt tên, hiện ở nhiều chỗ, và cần nhận ra
+bằng một cái liếc trong danh sách dài. App một màu nhấn nhìn gọn nhưng dễ đơn điệu;
+điểm màu nên nằm ở **dữ liệu**, còn **khung** (nút, sidebar, header, ô nhập) vẫn một
+màu nhấn như `M2`. Khác `M8`: `M8` là nhãn phân loại gắn lên một mục, `M34` là màu
+của chính thực thể. Một card có thể mang cả hai.
+
+- **Khi nào dùng:** app có thực thể như trên, và nó xuất hiện từ hai chỗ trở lên (sidebar, bảng, breadcrumb, ô chọn) hoặc có từ năm cái trở lên. Không có thì thôi, đừng bịa ra thực thể để có chỗ tô. Có thì làm luôn, không hỏi.
+- **Sáu sắc của avatar**, cùng thứ tự (`components/avatar.md`): emerald, sky, indigo, pink, amber, violet. Không thêm sắc, không `red` / `rose` (`M30`).
+- **Màu nằm trên dấu nhỏ**, không trên mảng lớn: chấm tròn `size-2` sắc `-500` (nền tối `-400`) cạnh tên; ô vuông bo góc chữ cái đầu theo khuôn avatar; dải `h-1` ở đỉnh card hay đầu cột; ảnh bìa người dùng tải lên. **Không** tô nền cả card, nền dòng, nền cột, không tô chữ tên.
+- **Màu là dữ liệu, không tính lúc render.** Tạo mới thì có ô chọn sáu màu, mặc định lấy theo `id` như avatar; lưu lại cùng thực thể. Ở sidebar, bảng, breadcrumb, ô chọn đều cùng một màu.
+- **Tên luôn hiện cạnh màu.** Màu giúp liếc, không thay chữ; chấm và ô vuông để `aria-hidden`.
+- **Trạng thái của khung không đổi:** mục sidebar đang chọn vẫn nền `bg-secondary` trung tính (`checklist.md`, mục Sidebar), chấm giữ nguyên màu, không đổi sang màu thực thể.
+- Không tính vào ngân sách một màu nhấn (`budgets.md`). Dự án đã có cách tô riêng cho thực thể thì theo họ.
+
+```
+  DỰ ÁN                         ┌─────────────────────┐
+  ● Website khách A             │▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔│ ← dải h-1 màu dự án
+  ● App nội bộ                  │ Sửa form đăng ký     │
+  ● Marketing Q4                │ [Bug] [Gấp]          │ ← nhãn M8
+                                └─────────────────────┘
+```
+
 **M11. Chữ chỉ ba sắc độ.** Chữ chính, chữ phụ, và màu nằm trên nền nhấn.
 
 Ngoại lệ duy nhất: **mục điều hướng lúc chưa rê/chưa chọn** dùng
 `foreground/70`, để hover có chỗ "sáng lên" mà lúc thường vẫn đọc rõ. Dùng
-`--muted` ở đó thì tên mục mờ quá trên nền trắng (21/09/2026).
+`--muted` ở đó thì tên mục mờ quá trên nền trắng.
 
 ⚠️ Bẫy đã dính ở dự án thật: token tên `--text-muted` bị alias về `--text-normal`,
 tức "chữ phụ" và "chữ chính" cùng một màu đen. Đừng tin tên token — mở giá trị
@@ -211,9 +231,8 @@ Không bao giờ cho nút, card, nền trang, hay chữ (`bg-clip-text text-tran
 ## Viền và bóng
 
 > **⚠️ Đảo luật.** Bản cũ của skill này cấm viền card và bắt tách khối bằng chênh
-> lệch nền. **Luật đó đã bỏ.** Dự án thật sống với luật cấm viền 4 tháng rồi bỏ
-> nó ngày 08/09/2026, và chốt phong cách "đường tóc 1px + bo góc, không bóng"
-> ngày 11/09/2026 sau khi chủ dự án đưa ba ảnh tham chiếu. Đừng hồi sinh luật cũ.
+> lệch nền. **Luật đó đã bỏ.** Chủ dự án chốt phong cách "đường tóc 1px + bo góc,
+> không bóng". Đừng hồi sinh luật cũ.
 
 **M13. Tách khối bằng đường tóc 1px + bo góc, không bằng bóng.**
 
@@ -236,8 +255,8 @@ Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu
 
 | Token | Cho | Vì sao |
 | --- | --- | --- |
-| `--border` | Viền card, khung dropdown, đường chia trong danh sách và menu | **Trang trí**: chỉ vạch ranh giới, nhạt được bao nhiêu thì nhạt |
-| `--border-strong` | **Viền ô nhập**, **viền nút outline**, select, viền card khi hover, **đường kẻ trong khung app** (kẻ dưới đầu sidebar và dưới header; kẻ dọc sidebar **chỉ khi vùng nội dung cũng trắng**, xem `layouts/app.md`) | **Chức năng**: ô nhập và nút outline cùng nền trắng với card, viền là thứ duy nhất báo "đây là chỗ gõ", "đây là chỗ bấm" (`I8`) |
+| `--border` | Viền card, khung dropdown, đường chia trong danh sách và menu, **đường kẻ dưới đầu sidebar và dưới header** (cùng màu vạch trong menu, chủ dự án chốt, `layouts/app.md`) | **Trang trí**: chỉ vạch ranh giới, nhạt được bao nhiêu thì nhạt |
+| `--border-strong` | **Viền ô nhập**, **viền nút outline**, select, viền card khi hover, đường kẻ nằm trên nền trang xám (dưới hàng tab khu cài đặt), kẻ dọc sidebar **chỉ khi vùng nội dung cũng trắng** (`layouts/app.md`) | **Chức năng**: ô nhập và nút outline cùng nền trắng với card, viền là thứ duy nhất báo "đây là chỗ gõ", "đây là chỗ bấm" (`I8`) |
 
 Trong mỗi nhóm thì mọi chỗ dùng chung đúng một token, để đường tóc không chỗ
 đậm chỗ nhạt. Muốn viền card nhạt đi thì hạ `--border`, ô nhập không nhạt theo.
@@ -245,7 +264,7 @@ Trong mỗi nhóm thì mọi chỗ dùng chung đúng một token, để đườ
 Checkbox, radio chưa chọn cũng dùng `--border-strong`, cùng độ đậm với ô nhập.
 
 Nền tối giữ đúng hai vai đó, cả hai là `rgba` mờ: `--border` 1.23:1 trên card, `--border-strong`
-1.33:1 (đo 01/10/2026; `0.2` ra 1.47:1, dòng bảng thành lưới kẻ ô, đã hạ). Ô nhập ở nền tối
+1.33:1 (đừng dùng lại `0.2`: 1.47:1, dòng bảng thành lưới kẻ ô). Ô nhập ở nền tối
 **giữ viền** `--border-strong` (`M32`).
 
 **Dự án đã có token viền riêng** (dựng mới trong dự án có sẵn, hai chế độ dựng lại): xám
@@ -253,20 +272,20 @@ viền là **dáng, không phải vai màu** (`review.md`), nên xếp token c�
 chứ không giữ cách bản cũ dùng. Bậc nhạt nhất của dự án cho vai trang trí (viền card, khung
 dropdown, đường chia). Đường kẻ khung app: **đoạn dưới đầu sidebar và đoạn dưới header
 cùng một token**, vì hai đoạn nối thành một đường (probe: "đường ngăn thẳng hàng mà khác
-màu"). Bậc nào đậm cỡ `#e4e4e7` trở lên (~1.25:1 trên trắng, mức đã chê "đường kẻ sidebar
-đậm" ngày 23/09/2026) thì không dùng cho đường kẻ khung và viền card, chỉ cho ô nhập, nút
-viền. Đã dính 28/09/2026, tim-phong-sua: vạch dưới logo `border-light` `#f1f5f9` nối vào
+màu"). Bậc nào đậm cỡ `#e4e4e7` trở lên (~1.25:1 trên trắng, mức đã bị chê "đường kẻ sidebar
+đậm") thì không dùng cho đường kẻ khung và viền card, chỉ cho ô nhập, nút
+viền. Đã dính: vạch dưới logo `border-light` `#f1f5f9` nối vào
 vạch dưới header `border` `#e2e8f0`, card lọc, card danh sách, card chi tiết cũng
-`#e2e8f0`; chủ dự án thấy "đường ở sidebar ổn, ngoài thì đậm" và tưởng brand bắt vậy.
+`#e2e8f0`: đường ở sidebar ổn, ngoài thì đậm, người xem tưởng brand bắt vậy.
 
-> Ngày 21/09/2026 đã thử làm đậm viền điều khiển cho đạt 3:1 (WCAG 1.4.11): ô nhập,
+> Đã thử làm đậm viền điều khiển cho đạt 3:1 (WCAG 1.4.11): ô nhập,
 > select, nút outline lên `#8a8a91`; checkbox, radio lên `--muted`; track công
-> tắc lên `muted/75`. Chủ dự án xem thật thấy **đậm và xấu**, trả về hết cùng
-> ngày. Đừng đề xuất lại cho dự án thường; chỉ dự án bắt buộc AA (xem `P3`).
+> tắc lên `muted/75`. Chủ dự án xem thật thấy **đậm và xấu**, trả về hết.
+> Đừng đề xuất lại cho dự án thường; chỉ dự án bắt buộc AA (xem `P3`).
 
 ⚠️ **Đừng lấy `--border` cho ô nhập hay nút outline để "cho đồng bộ".** Hạ
 `--border` cho card và dropdown nhẹ đi là ô nhập và nút tan luôn vào nền. Đã xảy
-ra thật (2026-09): `--border` hạ từ `#f3f3f4` xuống `#f7f7f8` cho khung dropdown,
+ra thật: `--border` hạ từ `#f3f3f4` xuống `#f7f7f8` cho khung dropdown,
 nút outline đang dùng chung token nên trông như đã bị khoá.
 
 ⚠️ Thiếu class màu viền thì Tailwind v4 để `border-color: currentColor` — nút chữ
@@ -385,7 +404,7 @@ Hai loại bề mặt, hai cách đổi theme:
 Vùng tô ở nền sáng tối hơn card, ở nền tối sáng hơn card: đúng ở cả hai. Thứ phải giữ
 là **độ chênh** với nền ngay sau nó, ngang nhau giữa hai theme (đang chọn `--secondary`
 1.22:1 cả hai bản; nền rê 1.10 / 1.12:1). Đây là cách gần như mọi bộ thiết kế lớn làm
-(tra 26/09/2026, 7/7 bộ có số liệu).
+(7/7 bộ có số liệu).
 
 - **Vùng tô nền tối viết bằng trắng phủ mờ** (`white/4`–`white/10`), không bằng xám đặc.
   Phủ mờ thì đặt trên nền trang, card hay lớp nổi đều đúng; xám đặc chỉ đúng trên một nền.
@@ -398,10 +417,9 @@ là **độ chênh** với nền ngay sau nó, ngang nhau giữa hai theme (đan
 nền rê và nền đang chọn trên card ở cả hai theme: độ chênh hai bản xấp xỉ nhau, đang chọn
 đậm hơn rê.
 
-> Bản cũ của luật này (đến 01/10/2026) bắt nút phụ **chìm hơn card** ở cả hai theme, nên
-> `--secondary` tối từng là `#010207`, dưới cả nền trang: nút và tab đang chọn gần như không
-> tách khỏi nền. Ca gốc của luật cũ (nút phụ `#1c2030` trên card `#0f111a` trông "nổi lên")
-> thật ra là đúng chiều; thứ cần canh là độ chênh, không phải chiều.
+> Đừng bắt nút phụ **chìm hơn card** ở nền tối: `--secondary` tối `#010207`, dưới cả nền
+> trang, thì nút và tab đang chọn gần như không tách khỏi nền. Nút phụ `#1c2030` trên card
+> `#0f111a` trông "nổi lên" là đúng chiều; thứ cần canh là độ chênh, không phải chiều.
 
 **M22. Ở nền tối, màu nhấn chỉ dùng làm nền, không dùng làm đường mảnh.**
 
@@ -421,7 +439,7 @@ Dù gu nào:
 
 - **Không đen tuyệt đối, không trắng tuyệt đối**, kể cả nền rê của nút chính. Nền gần đen,
   chữ gần trắng. `--primary-hover` lệch **về phía nền** một bậc ở cả hai theme: nền sáng nhạt
-  đi, nền tối tối đi (`#e9edf5` → `#cfd5e0`), không sáng lên `#ffffff` (đã dính 01/10/2026).
+  đi, nền tối tối đi (`#e9edf5` → `#cfd5e0`), không sáng lên `#ffffff`.
 - **Viền là `rgba` mờ**, không phải màu đặc, không thì thành lưới kẻ ô. Ở nền tối viền
   **đảo vai**: nền trang và card chênh nhau quá ít (1.07:1) nên viền là thứ chính để tách khối.
 - **Bóng giữ, đậm hơn, đi cặp viền 1px.** Bóng 10% trên nền gần đen gần như không thấy, nên
@@ -476,12 +494,12 @@ thì lệch HTML lúc hydrate. Không Next thì script nội tuyến đầu `<he
 | Ô nhập, select, textarea | **giữ viền** `--border-strong`, nền phủ mờ `dark:bg-white/4` | bỏ viền chỉ còn nền mờ là mất ranh giới vùng gõ; mọi bộ lớn đều giữ viền |
 | Nút đảo màu (nền `--foreground`, không phải `--primary`) | về variant `secondary`, hoặc nền trắng mờ + viền | đảo thẳng ra khối trắng chói, nặng hơn cả nút chính. Chỉ màu nhấn được thành khối sáng |
 | Tooltip | **đảo màu**: `bg-foreground text-background` | nền tối thì tooltip sáng, nổi khỏi mọi tầng |
-| Lớp phủ sau modal, panel, sidebar trượt | **`bg-black/…`** ở cả hai theme, không `bg-foreground/…` | `foreground` đảo sang gần trắng, lớp phủ thành màn sương sáng che trang (đã dính 01/10/2026, bản mẫu hộp xác nhận `bg-foreground/40`) |
-| Mục đang trỏ, đang chọn viết bằng điều kiện JS (`isHighlighted && …`, `isActive && …`) | `bg-item-hover` (trỏ), `bg-secondary` (chọn), như class `hover:` | `bg-background` trong điều kiện JS lọt khỏi mọi phép grep `hover:`; ở nền tối thành lỗ khoét trong dropdown (đã dính 01/10/2026, ô chọn, bảng lệnh) |
+| Lớp phủ sau modal, panel, sidebar trượt | **`bg-black/…`** ở cả hai theme, không `bg-foreground/…` | `foreground` đảo sang gần trắng, lớp phủ thành màn sương sáng che trang |
+| Mục đang trỏ, đang chọn viết bằng điều kiện JS (`isHighlighted && …`, `isActive && …`) | `bg-item-hover` (trỏ), `bg-secondary` (chọn), như class `hover:` | `bg-background` trong điều kiện JS lọt khỏi mọi phép grep `hover:`; ở nền tối thành lỗ khoét trong dropdown (ô chọn, bảng lệnh) |
 | Chữ, icon màu trạng thái không nền (`text-amber-700`, `text-red-700`, `text-emerald-700`) | kèm `dark:text-*-400` cùng sắc (token `--warning`, `--error-strong`, `--success` đã lật sẵn) | `-700` trên nền tối chỉ 2,9–3,7:1, dưới ngưỡng chữ (`M7`) |
 | Nền nhạt `-50`, `-100` (badge, banner, chip, ô đáp án) | màu `-500` phủ 10–20%, chữ `-300`/`-400` | nền `-50` sang tối là khối trắng hồng giữa màn đen. Màu mang nghĩa đã có sẵn trong `tokens.css` |
 | Gradient, vệt màu loang trang trí | tắt (`dark:hidden`) hoặc thay bản tối | loang màu sáng trên nền tối là chói |
-| Biểu đồ | cột, vùng tô dùng `--chart-fill` (màu nhấn 70% ở nền tối); thang phân loại có bản tối (`components/charts.md`) | cột màu nhấn gần trắng 100% là khối chói nhất màn (đã dính 01/10/2026); xám "Khác" `slate-300` thành nổi nhất |
+| Biểu đồ | cột, vùng tô dùng `--chart-fill` (màu nhấn 70% ở nền tối); thang phân loại có bản tối (`components/charts.md`) | cột màu nhấn gần trắng 100% là khối chói nhất màn; xám "Khác" `slate-300` thành nổi nhất |
 | Ảnh nền trắng, logo | ảnh cần bản tối thì `<picture><source media="(prefers-color-scheme: dark)">` hoặc hai ảnh theo class; logo chuyển bản sáng | |
 | Avatar, ảnh nhỏ | vòng `ring-1 ring-border` | ảnh tối tan vào nền |
 
@@ -547,7 +565,7 @@ Thứ tự thử, dừng ngay khi đủ:
 Có từ hai card trở lên trên màn thì quay về `M13` như thường.
 
 **Nền tối giữ y như vậy, không thêm viền dù `M23` nói viền gánh việc tách khối.** Card tối chênh nền
-1.07:1, ngang bản sáng 1.10:1, đủ đọc ra ranh giới. Đã thử trên màn đăng nhập (01/10/2026): viền
+1.07:1, ngang bản sáng 1.10:1, đủ đọc ra ranh giới. Đã thử trên màn đăng nhập: viền
 `--border` biến card thành khung, bóng `--elevation-popover` gần như không thấy. `M23` nói về các khối
 nằm cạnh nhau trong trang, không về một card một mình.
 

@@ -16,7 +16,7 @@ Ba ca, chọn đúng một:
 | --- | --- |
 | **Người dùng tự nêu phong cách** ("làm trang giá kiểu glassmorphism") | Làm theo phong cách đó, **không hỏi lại** |
 | **Audit thấy dự án có phong cách khác flat** (`P4`) | **Theo phong cách dự án**, dựng luôn, báo một dòng lúc giao (mẫu bên dưới) |
-| **Dự án flat hoặc trống**, người dùng không nêu gì | Flat (`P6`). Không hỏi về phong cách. Có màu (`P12`) chỉ khi người dùng tự xin trong đề; hai chế độ dựng lại: dòng Có màu (`V1d`), không chọn sẵn. Wireframe không còn nấc Có màu (bỏ 30/09/2026) |
+| **Dự án flat hoặc trống**, người dùng không nêu gì | Flat (`P6`). Không hỏi về phong cách. Có màu (`P12`) chỉ khi người dùng tự xin trong đề; hai chế độ dựng lại: dòng Có màu (`V1d`), không chọn sẵn. Wireframe không còn nấc Có màu |
 
 Vì sao theo dự án chứ không theo flat: một màn flat giữa app glass là màn lạc
 loài, người dùng thấy ngay. Nhất quán thắng gu.
@@ -71,13 +71,12 @@ Token mặc định:
 Chữ phụ nằm trên những nền đó (số đếm trong tab đang chọn, chữ trong ô sửa tại chỗ lúc rê)
 thì dùng **`text-foreground/70`**: lớp phủ theo màu chữ nên đậm theo nền, đạt từ 4.82 : 1
 trên mọi nền xám của skill. Đừng nhạt hơn `/70`: `/65` đã trượt trên `--secondary` (4.17).
-Icon phụ `text-muted` thì cứ giữ, icon chỉ cần 3 : 1 (đo 25/09/2026, khi `--muted` đổi
-sang `#707070`).
+Icon phụ `text-muted` thì cứ giữ, icon chỉ cần 3 : 1.
 
 ⚠️ **Viền điều khiển KHÔNG đạt 3 : 1, và đó là đánh đổi có chủ ý.** Đạt thì cần viền
-xám cỡ `#8a8a91`; đã thử ngày 21/09/2026, chủ dự án thấy đậm và xấu, trả về. Mức cũ
+xám cỡ `#8a8a91`; chủ dự án thấy đậm và xấu, bác.
 `#f2f2f2` (1.1:1) thì lại mờ quá, radio chưa chọn gần như vô hình; `#e4e4e7` (1.27:1) thì
-đường kẻ sidebar đậm. Chốt `#eaeaea` (~1.2:1) ngày 23/09/2026. Đừng đổi mà không hỏi. Skill
+đường kẻ sidebar đậm. Chốt `#eaeaea` (~1.2:1). Đừng đổi mà không hỏi. Skill
 bù bằng ba thứ khác để người dùng nhận ra ô nhập: nhãn luôn hiện phía trên
 (`I26`), placeholder, và viền + ring khi focus.
 
@@ -166,7 +165,7 @@ Mỗi khối có bốn phần: nhận ra, luật được đè, công thức, b�
 **Bẫy**
 
 - **Card với modal cùng bóng thì modal không còn nổi.** Thang trên tồn tại để lớp cao hơn luôn nổi hơn. Tăng bóng card lên `shadow-lg` là modal phải lên theo, và dropdown cũng vậy.
-- **Bộ token bóng đủ bốn bậc, kể cả khi trang chưa có modal.** Sidebar trượt dưới `lg` là tầng modal, và nó chỉ hiện ở màn hẹp nên hay bị quên. Đã dính 01/10/2026 (dashboard trung tâm ngoại ngữ, đề tự nêu phong cách nổi): dự án định ba token (card, card khi rê, popover), sidebar trượt nằm phẳng trên lớp phủ, không bóng, thấp hơn cả card phía sau. Probe báo "Panel, modal mở ra không nổi hơn trang".
+- **Bộ token bóng đủ bốn bậc, kể cả khi trang chưa có modal.** Sidebar trượt dưới `lg` là tầng modal, và nó chỉ hiện ở màn hẹp nên hay bị quên. Chỉ định ba token (card, card khi rê, popover) thì sidebar trượt nằm phẳng trên lớp phủ, không bóng, thấp hơn cả card phía sau. Probe báo "Panel, modal mở ra không nổi hơn trang".
 - **`ring-1 ring-black/5` đi cùng bóng là hợp lệ ở đây.** Nó vạch mép card cho sắc nét trên nền trắng. Đây là chỗ đè `M29`: ở flat thì viền với bóng không đi cùng nhau, ở phong cách nổi thì được.
 - **Ở nền tối, bóng một mình khó thấy.** Dự án nổi mà có dark mode thì ở chế độ tối giữ thang bóng, đậm hơn, thêm viền 1px (`ring-1 ring-white/10`), và bề mặt sáng dần theo tầng (`M21`, `M23`). Ba thứ đi cùng nhau; đừng chỉ tăng bóng lên cho bằng được.
 - `scale-105` khi hover làm chữ bị mờ trong lúc chuyển động. Chỉ tăng bóng, không phóng to.
@@ -230,7 +229,7 @@ ba màu là ba màu nhấn, tức là trượt `M3` và `I3` cùng lúc.
 **Bẫy**
 
 - **Đừng đen tuyệt đối với trắng tuyệt đối.** `#000` với `#fff` chênh nhau quá gắt, chữ bị nhoè sáng khi đọc lâu. Dùng nền gần đen (`zinc-950`) và chữ gần trắng (`zinc-100`).
-- **Độ đậm chữ giữ nguyên như bản sáng.** Thứ bậc chữ ở nền tối đi bằng **độ sáng**: chữ chính gần trắng, chữ phụ xám sáng hơn tỉ lệ so với bản sáng (`--muted` tối `#8b93a7`, 6.6:1). Không bộ thiết kế lớn nào hạ độ đậm ở nền tối (tra 26/09/2026); font nào trông dày quá thì đo bằng mắt trên chính font đó, không hạ theo luật.
+- **Độ đậm chữ giữ nguyên như bản sáng.** Thứ bậc chữ ở nền tối đi bằng **độ sáng**: chữ chính gần trắng, chữ phụ xám sáng hơn tỉ lệ so với bản sáng (`--muted` tối `#8b93a7`, 6.6:1). Không bộ thiết kế lớn nào hạ độ đậm ở nền tối; font nào trông dày quá thì đo bằng mắt trên chính font đó, không hạ theo luật.
 - **Thứ bậc bằng bề mặt sáng dần theo tầng, cộng viền và bóng.** Nền trang tối nhất, card sáng hơn một bậc, lớp nổi sáng hơn nữa (`M21`). Bóng vẫn giữ nhưng đậm hơn và đi cặp viền 1px, vì một mình bóng ở nền tối khó thấy (`M23`).
 - Viền `border-white/10` gánh việc tách khối (`M23`), vì các bề mặt tối chênh nhau quá ít.
 - Vùng tô (nút phụ, mục đang chọn, nền rê) là trắng phủ mờ, sáng hơn card (`M21`).
@@ -255,11 +254,10 @@ cách nền của dự án. Đừng tự dựng nút 3D vì thấy dự án có 
 ### P12. Có màu — hai công thức: trang lướt để chọn, và dashboard
 
 Flat thuần đọc ra "buồn màu" ở hai chỗ: trang người dùng cuối lướt để chọn (tìm việc, tìm
-phòng, sản phẩm, khoá học), trang nào cũng như trang quản trị (chủ dự án thấy 29/09/2026, trang
-tìm việc so với trang tìm việc lớn cùng loại); và dashboard dự án mới chưa có brand, màu nhấn
-gần đen nên chọn "Màu" vẫn trắng đen (29/09/2026, wireframe quản lý chi phí khách sạn). Hai chế độ dựng lại đưa nó thành dòng Có màu
+phòng, sản phẩm, khoá học), trang nào cũng như trang quản trị (chủ dự án thấy); và dashboard dự án mới chưa có brand, màu nhấn
+gần đen nên chọn "Màu" vẫn trắng đen. Hai chế độ dựng lại đưa nó thành dòng Có màu
 (`review.md`, `V1d`); người dùng tự xin trong đề thì dựng theo công thức dưới; ngoài hai chỗ đó thì
-theo `P1`. Wireframe từng có nấc Có màu, bỏ 30/09/2026 (`design-process.md`, `U3`).
+theo `P1`. Wireframe không có nấc Có màu (`design-process.md`, `U3`).
 
 - **Nhận ra từ ảnh:** đầu trang là một dải màu đậm (đặc hoặc chuyển màu) ôm header và ô tìm,
   chân trang cùng màu; vài mục trong danh sách có nền nhạt màu nhấn kèm nhãn "Gấp", "Hot";
@@ -287,7 +285,7 @@ theo `P1`. Wireframe từng có nấc Có màu, bỏ 30/09/2026 (`design-process
 | Ô icon đầu dòng theo loại | Bộ phận, nhà cung cấp, loại giao dịch: cùng bộ sắc nhạt, **một loại một sắc cố định** trên mọi màn (Kỹ thuật luôn teal). Không có loại thì không ô |
 | Biểu đồ | Chuỗi chính màu nhấn; nhiều chuỗi thì lấy bộ sắc trên theo cùng thứ tự; kỳ chưa trọn nét đứt hay gạch (`charts.md`) |
 | Trạng thái | Như nấc Màu: `M4` trên thanh tiến độ, số vượt, quá hạn. Sắc phân loại không trùng sắc trạng thái trên cùng một thứ (thanh ngân sách không tô teal vì bộ phận là teal) |
-| Badge trạng thái (người dùng xin "badge có màu") | Đỏ, hổ phách, xanh lá giữ nghĩa `M7`. Các trạng thái xám (đang chạy đúng luồng) mới được lấy sắc phân loại, và **các sắc trong một bảng trạng thái cách nhau từ ~45° trên vòng màu**, không lấy hai sắc kề nhau: `sky`–`blue` (~23°), `blue`–`indigo`, `indigo`–`violet`, `emerald`–`teal`. Không trùng sắc màu nhấn (nút chính teal thì không badge teal). Không đủ sắc cách xa thì trạng thái nhiều dòng nhất (thường là bước bình thường nhất, vd "Đã xác nhận") giữ xám: một danh sách toàn một màu badge là mảng màu, không còn phân biệt. Đã dính 30/09/2026, màn lịch hẹn: "Đã xác nhận" `sky-700` cạnh "Đang khám" `blue-700`, liếc ra một màu xanh |
+| Badge trạng thái (người dùng xin "badge có màu") | Đỏ, hổ phách, xanh lá giữ nghĩa `M7`. Các trạng thái xám (đang chạy đúng luồng) mới được lấy sắc phân loại, và **các sắc trong một bảng trạng thái cách nhau từ ~45° trên vòng màu**, không lấy hai sắc kề nhau: `sky`–`blue` (~23°), `blue`–`indigo`, `indigo`–`violet`, `emerald`–`teal`. Không trùng sắc màu nhấn (nút chính teal thì không badge teal). Không đủ sắc cách xa thì trạng thái nhiều dòng nhất (thường là bước bình thường nhất, vd "Đã xác nhận") giữ xám: một danh sách toàn một màu badge là mảng màu, không còn phân biệt. Sai: "Đã xác nhận" `sky-700` cạnh "Đang khám" `blue-700`, liếc ra một màu xanh |
 
 **Bẫy**
 

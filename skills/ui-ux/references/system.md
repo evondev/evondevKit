@@ -58,13 +58,13 @@ STATUS = {
 
 Màu vẫn theo `M4`: đây là trạng thái thật, nên được dùng màu. Bốn tông và hình
 badge lấy đúng bảng trong `M7`; "Đang làm" xám chứ không hổ phách, vì hổ phách là
-"cần chú ý" và xanh để dành cho "xong" (bản cũ ghi hổ phách, lệch `M7`). Hai trạng
+"cần chú ý" và xanh để dành cho "xong". Hai trạng
 thái cùng tông thì tách bằng icon, bảng icon cũng ở `M7`.
 
 **Trạng thái làm tiêu đề thì cùng một hình ở mọi view.** Hàng nhóm của bảng và đầu
 cột kanban là **icon + tên + số đếm**, không pill; trạng thái làm giá trị một ô thì
 mới là pill. Bảng nhóm dùng pill còn kanban chỉ chữ trơn là cùng một trạng thái hai
-hình (đã dính 24/09/2026).
+hình.
 
 ---
 
@@ -80,7 +80,7 @@ hình (đã dính 24/09/2026).
 - Hộp xác nhận bắt **gõ lại một cụm từ** chỉ dựng khi đề yêu cầu (quyết định sản
   phẩm, không phải mặc định), **trừ việc xoá cả không gian** (workspace, tổ chức): việc đó
   mất dữ liệu của mọi thành viên, nên mặc định bắt gõ lại tên, nút xoá mở khoá khi khớp.
-  Tra 26/09/2026: các sản phẩm lớn đều thêm một bước ngoài hộp hỏi thường cho việc này (gõ
+  Các sản phẩm lớn đều thêm một bước ngoài hộp hỏi thường cho việc này (gõ
   tên là cách hay gặp nhất; có nơi gửi mã qua email hoặc hỏi mật khẩu). Khi có ô gõ đó thì
   không cho bấm ra ngoài để đóng (`I20`). Khuôn hộp và ô ở `layouts/overlay.md`.
 
@@ -163,7 +163,7 @@ bảy dòng chữ trong lượt trả lời, mà thành code thật và một tr
    Với shadcn: **giữ tên token của shadcn, trỏ giá trị về token của skill**, để component shadcn
    thêm sau vẫn đúng màu. Tên trùng mà khác nghĩa thì theo shadcn: `--muted` của shadcn là
    *nền*, nên chữ phụ của skill (`text-muted`) viết thành `text-muted-foreground` trong cả dự
-   án. Bản 4b ngày 30/09/2026 tự làm đúng như vậy; ghi ra để lần sau không phải đoán.
+   án.
 2. **Brief một khối, không dừng**: sản phẩm, người dùng, màu nhấn, font, phong cách (`P1`),
    chỉ sáng hay có tối (`M20`), ngôn ngữ của copy (`T24`). Đề không nói thì lấy mặc định
    của `brand-tokens.md` (gần đen, Inter, flat, chỉ sáng) và ghi vào brief. Dự án chưa có
@@ -185,8 +185,7 @@ bảy dòng chữ trong lượt trả lời, mà thành code thật và một tr
    - **Màu**: ô màu kèm tên token và mã; cặp chữ trên nền chính kèm tỉ lệ tương phản. Cột
      tỉ lệ chỉ ghi số; **chỉ cặp trượt mới có nhãn** ("Dưới 4.5:1", màu cảnh báo), cặp đạt
      để trống. Mười một dòng "Đạt AA" xanh giống nhau là một ý nói mười một lần, mắt phải dò
-     hết cột mới biết có cặp nào trượt không (đã dính 30/09/2026, trang design system phòng
-     khám).
+     hết cột mới biết có cặp nào trượt không.
    - **Chữ**: từng bậc của thang cỡ chữ, viết bằng câu thật theo ngôn ngữ của dự án (tiếng
      Việt thì có đủ dấu, `T5`), ghi cỡ và độ đậm.
    - **Khoảng cách, bo góc, viền, bóng**: các bậc đang dùng, hai vai viền đặt cạnh nhau,
@@ -198,16 +197,13 @@ bảy dòng chữ trong lượt trả lời, mà thành code thật và một tr
      khối**: chữ nhỏ `text-xs text-muted` ngay trên ví dụ. Không đặt nhãn vào chỗ câu gợi ý
      hay câu lỗi dưới ô nhập: "Đang gõ" nằm dưới ô trông y như câu gợi ý thật của ô đó. Ô
      nhập bày cạnh nhau thì cách nhau như trong form thật (`gap-y-5` trở lên), không `gap-y-2`:
-     câu gợi ý của ô trên chỉ cách nhãn ô dưới 10px, đọc ra là nhãn của ô dưới (đã dính
-     30/09/2026, khối Ô nhập: nút có nhãn trạng thái ở trên, ô nhập thì nhãn nằm dưới ô,
-     hàng cách nhau 10px).
+     câu gợi ý của ô trên chỉ cách nhãn ô dưới 10px, đọc ra là nhãn của ô dưới.
 
    **Ví dụ ép trạng thái** (nút tô sẵn nền rê, ô vẽ sẵn viền focus, select và modal mở sẵn trong
    khung tĩnh, nút nhãn dài trong khung hẹp) bọc trong `<div inert data-demo-state="hover">` (giá
    trị là tên trạng thái). `inert`: Tab không dừng ở ô giả focus, rê vào không đổi gì. Probe bỏ
    qua các khối này ở phép đo rê, lớp nổi, viền trang trí, nút xuống dòng; không bọc thì mỗi
-   ví dụ thành một mục Hỏng giả (đã dính 30/09/2026: bản shadcn 14 trên 15 mục Hỏng là ví dụ
-   mẫu, bản không shadcn có viền focus mẫu và nút nhãn dài). Ví dụ "Thường" thì **không** bọc,
+   ví dụ thành một mục Hỏng giả. Ví dụ "Thường" thì **không** bọc,
    đó là component thật để probe đo.
 
    Trang là công cụ để duyệt: flat như gu skill, không hero, không lời quảng cáo.

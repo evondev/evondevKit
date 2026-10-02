@@ -1,6 +1,6 @@
 # Thiết kế từ đầu như một designer — luật U
 
-**Nhánh mặc định** (chủ dự án chốt 29/09/2026): mọi đề dựng hay làm lại một màn trở lên đều
+**Nhánh mặc định** (chủ dự án chốt): mọi đề dựng hay làm lại một màn trở lên đều
 vào đây, tiếng Việt hay tiếng Anh, sản phẩm mới hay màn đã có. Chỉ không vào khi đề nói rõ lối
 khác (bảng câu 1 của `SKILL.md`): soi, giữ brand, dựng lại theo gu skill, refactor, dựng
 luôn, hoặc việc nhỏ hơn một màn.
@@ -8,13 +8,13 @@ luôn, hoặc việc nhỏ hơn một màn.
 Khác nhánh `V` (`review.md`): `V` giữ khung trang, sửa lỗi và làm gọn. Kết quả là bản hi-fi
 sạch hơn của **đúng wireframe cũ**. Nhánh `U` bắt đầu từ câu *"người dùng đến màn này để
 làm gì"*, nên được đổi cả khung: cái gì đứng đầu, lọc nằm đâu, card nói gì, có chế độ xem
-nào. Đã dính 28/09/2026: bản dựng lại theo `V` sạch hết lỗi đo được, người xem vẫn nói
+nào. Bản dựng lại theo `V` sạch hết lỗi đo được mà người xem vẫn nói
 "nhìn không khác gì bản cũ, vẫn cần người làm UX".
 
 Hai cổng chờ của nhánh này là hai chỗ duy nhất skill dừng hỏi. Đề ghi sẵn đủ cho cổng nào
 (brief đã rõ, "chọn A luôn") thì qua cổng đó không dừng.
 
-**"Dựng luôn" thì không vẽ wireframe** (vẽ wireframe tốn nhiều token, chủ dự án chốt 29/09/2026).
+**"Dựng luôn" thì không vẽ wireframe** (vẽ wireframe tốn nhiều token, chủ dự án chốt).
 Đề có "dựng luôn", "just build it", hoặc người dùng trả lời `dựng luôn` ở cổng 1: vẫn làm `U1`,
 `U2` và chọn phương án `U3` sẽ khuyên dùng, **trong đầu, không gửi, không dừng**, rồi dựng thẳng
 theo phương án đó (`U4`), màu theo nấc sẽ khuyên. Lúc giao ghi một dòng: *"Bố cục: [phương án]
@@ -79,18 +79,18 @@ dòng đó."* Dừng chờ.
   sa vào màu; màu nhấn chỉ bật bằng nút Màu trên thanh công cụ (dưới). Xám chỉ là tắt màu nhấn,
   còn lại vẫn là token và component thật (dòng "Wireframe dựng bằng chính token…" dưới).
 - **Icon lucide thật ở đúng chỗ các app đều đặt**, không vẽ ô vuông giữ chỗ (ô vuông cạnh mục
-  sidebar đọc ra checkbox, đã dính 29/09/2026). Nạp `lucide` từ `cdn.jsdelivr.net`, gọi
+  sidebar đọc ra checkbox). Nạp `lucide` từ `cdn.jsdelivr.net`, gọi
   `lucide.createIcons()`. **Mỗi lần ghi lại `innerHTML` là phải vẽ lại icon**: `createIcons()`
   chỉ thay các `<i data-lucide>` có lúc gọi, thẻ mới ghi sau đó nằm trống. Gắn một lần ở đầu
   script `new MutationObserver(() => { if (document.querySelector("i[data-lucide]")) lucide.createIcons(); }).observe(document.body, { childList: true, subtree: true })`
   thay vì gọi tay sau từng lần render. **Phải có điều kiện `i[data-lucide]`**: svg vẽ xong vẫn mang
-  `data-lucide`, gọi thẳng `createIcons()` trong observer thì nó thay svg mãi, trang treo. Đã dính
-  30/09/2026: chọn xong một mục thì ô select và ô ngày mất icon (svg thành `<i data-lucide>` trống),
+  `data-lucide`, gọi thẳng `createIcons()` trong observer thì nó thay svg mãi, trang treo. Không gắn
+  observer thì chọn xong một mục là ô select và ô ngày mất icon (svg thành `<i data-lucide>` trống),
   phải mở lại mới thấy. Ba chỗ: **mỗi mục sidebar**; **ô icon 32px nền nhạt ở góc mỗi card số
   liệu**; **ô icon hay avatar đầu dòng** khi dòng thuộc một loại (bộ phận, nhà cung cấp, loại
   giao dịch). Tiêu đề khối, dòng meta thì không icon (`V1c`). Nấc Xám thì icon xám; ba icon
   giống hệt nhau cho ba mục là thà bỏ (`F17`). Dashboard không icon trông "chán", người xem
-  nói ngay (29/09/2026). **Xám vẫn có mức nhấn**: nút chính tô xám đậm chữ
+  nói ngay. **Xám vẫn có mức nhấn**: nút chính tô xám đậm chữ
   trắng, nút phụ viền. Hai nút cùng một kiểu trong wireframe là chưa quyết thứ bậc, lúc dựng
   thật sẽ lại thành hai nút tranh nhau (`V1b`).
 - **Wireframe dựng bằng chính token, font, component mà bản dựng sẽ dùng** ⚑, vì `U4` chép
@@ -118,7 +118,7 @@ dòng đó."* Dừng chờ.
     `--border-focus: var(--primary)` khai ở `:root` được tính xong ngay tại `:root` rồi mới truyền
     xuống: đổi `--primary` ở `body` thì nút chính đổi màu mà viền focus vẫn màu cũ. Token viết cứng
     theo màu nhấn (`--ring-focus`, `--primary-hover`, `--primary-light`) cũng phải suy lại ở từng nấc,
-    như `brand-tokens.md` dặn khi đổi `--primary`. Đã dính 01/10/2026 (wireframe lớp học): chọn
+    như `brand-tokens.md` dặn khi đổi `--primary`. Không suy lại thì chọn
     xanh ngọc, nút xanh ngọc, nhưng ô tìm và select focus vẫn viền và ring màu chàm ở mọi nấc,
     cả nấc Xám. Probe báo "Token focus không theo màu nhấn".
 - **Nội dung thật**: chữ lấy từ dữ liệu của dự án, cả ca dài nhất và ca trống. Wireframe chữ
@@ -128,13 +128,12 @@ dòng đó."* Dừng chờ.
   mốc mà chưa xong**: khách trễ giờ hẹn chưa đến, việc quá hạn, đơn giao chậm. Nó không nằm
   trong danh sách trạng thái lưu trong dữ liệu (chỉ có "Đã xác nhận"), mà tính từ giờ, nên
   hay bị quên. Đặt giờ "bây giờ" của wireframe sao cho có ít nhất một mục như vậy, vẽ nó thành
-  trạng thái riêng (`M4`: hổ phách hay đỏ ở nấc Màu), và ghi vào `U2` là thứ phải nổi. Đã dính
-  30/09/2026, lịch hẹn nha khoa: 10:40, mọi lịch trước đó đều đã đến, đang khám hoặc không
-  đến, không có ai "trễ": việc chính của lễ tân lúc đó (gọi người trễ) không có trên wireframe.
+  trạng thái riêng (`M4`: hổ phách hay đỏ ở nấc Màu), và ghi vào `U2` là thứ phải nổi. Ví dụ lịch
+  hẹn lúc 10:40 mà mọi lịch trước đó đều đã đến, đang khám hoặc không đến, không có ai "trễ": việc
+  chính của lễ tân lúc đó (gọi người trễ) không có trên wireframe.
 - **Đúng hình dạng dữ liệu**: mỗi mục có mấy ảnh, trường nào hay trống, danh sách dài bao
   nhiêu. Dữ liệu chỉ có một ảnh mỗi tin mà wireframe vẽ lưới ba ảnh là hứa thứ dữ liệu
-  không có: người dùng chọn vì lưới ảnh, bản dựng ra một ảnh to quá khổ (đã dính
-  28/09/2026). Muốn phương án cần thêm dữ liệu thì vẽ đúng cái đang có và ghi *"đẹp hơn khi
+  không có: người dùng chọn vì lưới ảnh, bản dựng ra một ảnh to quá khổ. Muốn phương án cần thêm dữ liệu thì vẽ đúng cái đang có và ghi *"đẹp hơn khi
   có X"* ở dòng đánh đổi.
 - Mỗi phương án ghi **ba dòng**: việc chính giờ thấy ở đâu, đổi gì so với bản cũ, đánh đổi.
   Ba dòng đó cũng là nội dung khung lý do trên trang wireframe (dưới), hai chỗ cùng một chữ.
@@ -153,25 +152,22 @@ dòng đó."* Dừng chờ.
   trạng thái) có chữ ngay góc trên trái: số đè thành "ThBa". Sau mỗi lần vẽ, `placeBlockNumbers()`
   (mẫu dưới) đo chữ và icon dưới số, đè thì gắn `data-wf-block-out` để số lên ngay trên mép khối.
   **`data-wf-block` đặt trên khối bọc không cuộn**: khối `overflow-x-auto` (hàng chip) cắt mất số
-  nằm ngoài mép, bọc thêm một `div` rồi đánh số lên đó. Đã dính 30/09/2026, lịch hẹn nha khoa:
-  số 3 đè "Thứ Ba", số 4 đè icon "Đang khám", số hàng chip bị khung cuộn nuốt mất.
+  nằm ngoài mép, bọc thêm một `div` rồi đánh số lên đó.
 - **Khối nào skill đã có mẫu thì wireframe vẽ đúng hình mẫu đó**, vì `U4` dựng đúng wireframe:
   vẽ sai là bản dựng chép sai theo. Trước khi vẽ, liệt kê các khối của phương án rồi mở mẫu
   tương ứng ở bảng mục 2 của `SKILL.md` (`components/`, `layouts/`): nút, ô nhập, select, ô
   chọn ngày, checkbox, công tắc, tab, chip, phân trang, badge, avatar, dòng danh sách, card, card
   số liệu, biểu đồ, khối rỗng, đường dẫn, header, sidebar, bảng. Chép **hình và class**: cỡ, số phần tử,
   cách xếp, chữ nằm đâu, chuỗi class của mẫu; không cần chép code React. Control là thẻ thật (`<input>`, `<button>`,
-  `<select>` nếu mẫu dùng), không `div` giả. Khối chưa có mẫu mới tự vẽ. Đã dính 29/09/2026, hai
-  ví dụ trong một lượt: phân trang vẽ hai nút chữ "Trước / Sau" rộng khác nhau thay cho
+  `<select>` nếu mẫu dùng), không `div` giả. Khối chưa có mẫu mới tự vẽ. Hai
+  lỗi hay gặp: phân trang vẽ hai nút chữ "Trước / Sau" rộng khác nhau thay cho
   `‹ 1 2 3 … ›`; ô tìm là `div` nên placeholder dài rớt xuống dòng hai.
   **App đang có mà dùng control gốc của trình duyệt thì wireframe không chép theo**, kể cả khi
   app đã tô viền, bo góc: `<select>`, ô ngày / giờ bấm vào vẫn bung menu và lịch của hệ điều hành;
   checkbox, radio, thanh trượt, ô chọn tệp gốc lạc dáng giữa app. Vẽ theo mẫu tương ứng của skill
   (`components/choice-controls.md`, `range-slider.md`, `file-upload.md`), tô bằng token của app. Chỉ giữ control gốc khi nó chỉ hiện trên mobile (luật `<select>` gốc cho màn
   cảm ứng ở đó); ô nằm trong dialog dùng cho cả hai khổ thì dựng. Khối trong lớp nổi (dialog,
-  sheet, popover) cũng đối chiếu mẫu, mở ra rồi xem, không chỉ phần trang đang hiện. Đã dính
-  30/09/2026, wireframe làm lại trang nhập – xuất của app kho nền tối: dialog "Tạo phiếu" giữ
-  hai select gốc và ô ngày gốc của app cũ.
+  sheet, popover) cũng đối chiếu mẫu, mở ra rồi xem, không chỉ phần trang đang hiện.
 - **Tự đối chiếu trước khi probe**: mỗi khối có mẫu, so wireframe với mẫu một dòng ("phân trang:
   khớp", "ô tìm: `<input>`, placeholder vừa"). Probe bắt được một phần (placeholder dài hơn ô,
   khối trông như ô nhập mà chữ xuống dòng, phân trang chỉ có nút chữ, hàng control lệch), phần
@@ -188,9 +184,8 @@ dòng đó."* Dừng chờ.
   trong dialog đang đóng), "khung wireframe làm hỏng
   bản thiết kế" (số đè chữ, `sticky` mất, thanh tràn). Rồi chạy luật Cấu trúc (`V1b` trong `review.md`) bằng
   mắt. Người dùng không tự thấy "card chữ quá trời" hay "vạch bị cắt" trên wireframe xám, họ
-  chọn theo bố cục rồi vấp lỗi ở bản dựng (đã dính 28/09/2026: wireframe C năm dòng mỗi mục,
-  vạch trái bị bo cắt, đang chọn và rê cùng một xám; probe đo ra cả hai lỗi đầu trên chính
-  file wireframe). Ghi một dòng khi gửi: *"Probe wireframe: A sạch, B sạch, C sạch"*.
+  chọn theo bố cục rồi vấp lỗi ở bản dựng (năm dòng mỗi mục, vạch trái bị bo cắt, đang chọn và rê
+  cùng một xám; probe đo ra cả hai lỗi đầu trên chính file wireframe). Ghi một dòng khi gửi: *"Probe wireframe: A sạch, B sạch, C sạch"*.
 - **Hai biến thể nội dung, D và E, trên phương án khuyên dùng.** Cùng bố cục, chỉ khác nội
   dung, để người dùng thấy cạnh nhau cái họ không tự nghĩ ra:
   - **D, gọn chữ:** mỗi mục chỉ giữ thứ dùng để chọn ở cột "so sánh bằng gì" của `U2`, tối
@@ -205,10 +200,10 @@ dòng đó."* Dừng chờ.
   - **Bật, Màu:** như bản dựng sẽ ra theo mặc định (`P6`): màu nhấn ở nút chính, mục đang chọn, link,
     biểu đồ; **và màu trạng thái của `M4` trên mọi dữ liệu có trạng thái**: vượt ngân sách,
     quá hạn đỏ hay hổ phách, đã xong xanh, thanh tiến độ tô theo ngưỡng. Nấc Màu mà thanh 103%
-    vẫn đen thì người xem hỏi *"chọn màu mà sao vẫn trắng đen"* (đã dính 29/09/2026). Dự án đã
+    vẫn đen thì người xem hỏi *"chọn màu mà sao vẫn trắng đen"*. Dự án đã
     có phong cách khác flat (`P4`) thì Màu là phong cách đó.
 
-  ⚠️ **Nấc thứ ba "Có màu" đã bỏ khỏi wireframe (30/09/2026, chủ dự án: thêm vào cũng không
+  ⚠️ **Nấc thứ ba "Có màu" đã bỏ khỏi wireframe (chủ dự án: thêm vào cũng không
   khác gì mấy).** Màu brand người dùng cần thấy nằm ở chỗ tương tác (control bấm được, dưới),
   không ở dải màu trang trí. Người dùng tự xin "có màu" trong đề thì theo `P12` ở `styles.md`
   lúc dựng, không vẽ thành nấc.
@@ -221,12 +216,18 @@ dòng đó."* Dừng chờ.
   Đổi màu bằng biến CSS trên `:root[data-mau]`, `:root[data-nhan]` (không trên `body`, xem trên), không vẽ lại. Probe cả hai
   nấc (tương phản chữ trắng trên nút chính, trên mục đang chọn).
 
+  **Dự án chưa có logo** thì thêm nhóm **Logo: 1 · 2 · 3** (`?logo=`): ba dấu theo ba hướng của
+  `components/logo.md`, đã kiểm ở 16px, đổi ở mọi chỗ có logo trên trang. Khung lý do có một dòng
+  vì sao cho từng dấu. Không có nhóm này thì đầu sidebar là ô chữ cái, người dùng duyệt xong vẫn
+  chưa thấy sản phẩm mình trông ra sao. Logo người dùng chọn thành logo lúc dựng; không chọn thì
+  dựng hướng khuyên dùng, báo một dòng.
+
 - **Control trong wireframe bấm được và hiện trạng thái như bản thật** ⚑: ô nhập, ô tìm focus
   thì viền và ring màu nhấn (`I13`: `--border-focus`, `--ring-focus`); select, dropdown, nút lọc
   bấm là xổ ra danh sách mục thật theo `layouts/overlay.md` (khung, chuyển động), bấm ngoài hay
   Esc thì đóng. Mục đang chọn có badge thì badge đảo màu như bản dựng (`layouts/app.md`,
-  Sidebar). Bật Màu lên là người dùng thấy màu brand đúng ở chỗ họ sẽ bấm (chủ dự án chốt
-  30/09/2026: "cho user thấy còn hay hơn" nấc Có màu).
+  Sidebar). Bật Màu lên là người dùng thấy màu brand đúng ở chỗ họ sẽ bấm (chủ dự án chốt:
+  "cho user thấy còn hay hơn" nấc Có màu).
 
 - **Nút Khổ: Desktop · Mobile.** Mobile hiện chính trang đó trong một khung 375 × 812 giữa màn
   (iframe cùng link, thêm `frame=1` để trong khung không có thanh công cụ), nên media query chạy
@@ -244,16 +245,16 @@ dòng đó."* Dừng chờ.
   56px, nền trắng, viền dưới xám nhạt, chữ 14px, **không dính đỉnh**: thanh dính đè lên sidebar,
   header, panel `sticky top-0` của chính bản thiết kế, người xem thấy sidebar mất logo khi cuộn và
   tưởng bản dựng sẽ vậy. Các nhóm xếp liền từ trái, cách nhau
-  24px, theo thứ tự: Màn (đề nhiều màn) · **Phương án** · **Màu** (công tắc) · Nhấn (dự án chưa có brand) · Khổ · Nav (mobile, ít mục)
+  24px, theo thứ tự: Màn (đề nhiều màn) · **Phương án** · **Màu** (công tắc) · Nhấn (dự án chưa có brand) · Logo (dự án chưa có logo) · Khổ · Nav (mobile, ít mục)
   · **Trạng thái**.
   - **Đề nhiều màn** (lịch và hồ sơ, danh sách và chi tiết) thì một file, nhóm **Màn** đứng đầu
     (`?man=`), nhãn một hai chữ ("Lịch", "Hồ sơ"); mỗi màn có A, B, C riêng. **Ở 1280 thanh phải
-    vừa một dòng không cuộn** (probe đo): đã dính 30/09/2026, nhãn "Lịch trong ngày", "Hồ sơ bệnh
-    nhân" cộng nấc Màu cũ đẩy thanh tràn 60px, "Trạng thái" bị cắt mất.
+    vừa một dòng không cuộn** (probe đo): nhãn dài như "Lịch trong ngày", "Hồ sơ bệnh
+    nhân" đẩy thanh tràn, "Trạng thái" bị cắt mất.
   - **Mỗi nhóm là một segmented control**: rãnh xám nhạt bo 10px, nút trong rãnh không nền, nút
     đang bật (`aria-current="page"`) nền trắng, bóng mảnh, chữ đậm đen; nút khác chữ xám. Không
     dải tối, không nút chữ trắng rời rạc: dải tối nặng hơn chính bản thiết kế, kéo mắt khỏi thứ
-    cần xem, và mười mấy nút cùng hình đọc không ra nhóm nào (đã dính 29/09/2026).
+    cần xem, và mười mấy nút cùng hình đọc không ra nhóm nào.
   - **Phương án chỉ ghi chữ cái** `A B C D E`, có nhãn "Phương án" xám đứng trước; tên đầy đủ ở
     `title` và ở đầu khung lý do. Phương án khuyên dùng có chấm nhỏ màu nhấn cạnh chữ cái. Tên
     dài trên thanh ("A · Báo cáo một trang (khuyên dùng)") đẩy cả thanh phải cuộn ngang ở 1280.
@@ -275,8 +276,7 @@ dòng đó."* Dừng chờ.
 
   Mỗi nút là link giữ nguyên các lựa chọn khác, chỉ đổi đúng tham số của nó. Màn hẹp thì thanh
   cuộn ngang, không xuống dòng. Mở không tham số thì: phương án khuyên dùng, Màu tắt, Desktop, Có
-  dữ liệu. Đã dính 29/09/2026: có lượt wireframe có thanh, có lượt không, người dùng phải tự
-  gõ `?v=`.
+  dữ liệu. Thiếu thanh thì người dùng phải tự gõ `?v=`.
 
 - **Khung lý do ngay dưới thanh**, không modal (modal che mất bản thiết kế đúng lúc cần nhìn),
   nền xám rất nhạt. **Dòng đóng**: tên phương án đậm đen, nhãn "Khuyên dùng" (chỉ phương án khuyên
@@ -295,9 +295,8 @@ dòng đó."* Dừng chờ.
     khoảng cách giữa các khối"*; *"Font khác hợp sản phẩm hơn"*; *"Bỏ khối 3"*. Không gợi ý
     thứ trang đã có (đã nhiều màu thì không "thêm màu").
 
-  Đã dính 30/09/2026, lịch hẹn nha khoa: khung lý do cũ viết mọi thứ thành chữ 13px xám `#737373`
-  liền một khối (Ưu, Nhược, Hợp khi nối đuôi, nút Chép chen giữa câu, một câu gợi ý gãy làm hai
-  dòng), chủ dự án: "màu chìm, cấu trúc loạn xạ".
+  Đừng viết mọi thứ thành chữ 13px xám `#737373` liền một khối (Ưu, Nhược, Hợp khi nối đuôi, nút
+  Chép chen giữa câu, một câu gợi ý gãy làm hai dòng): người xem thấy "màu chìm, cấu trúc loạn xạ".
 
   ```html
   <nav class="wf-bar" aria-label="Wireframe">
@@ -391,7 +390,7 @@ dòng đó."* Dừng chờ.
     .wf-reason summary:hover .wf-reason-toggle { background: #f0f0f0; }
     .wf-reason-toggle svg { width: 16px; height: 16px; transition: rotate .15s; }
     .wf-reason[open] .wf-reason-toggle svg { rotate: 180deg; }
-    /* minmax(0, 1fr) và min(240px, 100%): thiếu thì ở 375 lưới cột tính theo max-width, tràn ngang (đã dính 30/09/2026). */
+    /* minmax(0, 1fr) và min(240px, 100%): thiếu thì ở 375 lưới cột tính theo max-width, tràn ngang. */
     .wf-reason-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; padding: 4px 16px 16px; }
     .wf-reason-cols { display: grid; max-width: 1120px; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 16px 32px; }
     .wf-reason h3 { display: flex; align-items: center; gap: 6px; margin: 0 0 4px; color: #171717; font-size: 12px; font-weight: 600; }
@@ -417,7 +416,7 @@ dòng đó."* Dừng chờ.
       .wf-reason-tips h3 { flex-basis: 100%; }
     }
     /* Trong layer: rule ngoài layer thắng mọi utility Tailwind, `sticky` của sidebar thành `relative`, sidebar
-       trôi khi cuộn (đã dính 30/09/2026). Không Tailwind thì class `sticky` của dự án vẫn thắng rule trong layer. */
+       trôi khi cuộn. Không Tailwind thì class `sticky` của dự án vẫn thắng rule trong layer. */
     @layer base { [data-wf-block] { position: relative; } }
     [data-wf-block]::before { content: attr(data-wf-block); position: absolute; top: 4px; left: 4px; z-index: 5;
       display: grid; place-items: center; width: 18px; height: 18px; border-radius: 9px; background: #1f1f1f; color: #fff; font-size: 11px; }
@@ -425,7 +424,7 @@ dòng đó."* Dừng chờ.
     body[data-frame] .wf-bar, body[data-frame] .wf-reason { display: none; }
     body:not([data-kho="mobile"]) [data-wf-param="nav"] { display: none; }
     /* Màu nhấn đổi trên :root, cùng chỗ khai token: var(--primary) khai ở :root đã tính xong tại :root, đổi ở
-       body thì viền focus, ring, hover vẫn màu cũ (đã dính 01/10/2026). */
+       body thì viền focus, ring, hover vẫn màu cũ. */
     :root[data-mau="xam"] { --primary: #2c2c2c; } /* nấc Xám: bỏ màu nhấn, cả màu trạng thái */
     :root:not([data-mau="xam"])[data-nhan="cham"] { --primary: #4f46e5; } /* …ngoc, cam tương tự */
     /* Token suy từ màu nhấn, tính lại theo nấc (brand-tokens.md). Chỉ ở nấc Xám hoặc khi có nhóm Nhấn: dự án đã có
@@ -515,7 +514,7 @@ dòng đó."* Dừng chờ.
   </script>
   ```
 
-  Dự án đã có màu brand thì bỏ nhóm Nhấn; app từ 6 mục chính thì bỏ nhóm Nav. Thanh dưới vẽ
+  Dự án đã có màu brand thì bỏ nhóm Nhấn; đã có logo thì bỏ nhóm Logo; app từ 6 mục chính thì bỏ nhóm Nav. Thanh dưới vẽ
   sẵn trong trang, chỉ hiện khi `body[data-kho="mobile"][data-nav="duoi"]` (trong khung là
   `frame=1` kèm `nav=duoi`).
 
@@ -550,23 +549,21 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
   chỉ là giữ màu theo vai, logo, font. Khung trang theo phương án đã chọn. Logic, handler, dữ liệu không đụng;
   thứ cần dữ liệu mới thì để prop và handler rỗng, lúc giao liệt kê.
 - **Sản phẩm mới:** audit câu 2 đã chạy ở `U1`; đi tiếp câu 3 của mục 0 trong `SKILL.md`,
-  rồi dựng theo phương án đã chọn thay cho bố cục mặc định của câu 4.
+  rồi dựng theo phương án đã chọn thay cho bố cục mặc định của câu 4. Chưa có logo thì dựng
+  `ProductBrand` với dấu đã chọn ở nhóm Logo, kèm favicon từ cùng dấu (`components/logo.md`).
 - **Đề nhiều hơn một màn:** chốt hợp đồng nguyên tố `D1` (`system.md`) ở đây, trước khi dựng
   màn đầu tiên. Wireframe đã chọn nói khung, bảng `D1` nói control nào dùng kiểu nào cho cả bộ.
 - Ráp bằng mẫu của skill (`SKILL.md` mục 2). Chạy probe `--sweep --wireframe "<link phương án
   đã chọn>&mau=mau"` tới khi danh sách `P` trống, tối đa ba vòng. **Mục probe về dáng cũng sửa**, dù không nằm trong `P`: hàng nút
   header không đồng cỡ, vòng focus, control gốc, lớp nổi không chuyển động, viền trang trí
-  đậm, thanh cuộn. Ở `U4` dáng là của skill, nên đó không phải "Lệch hệ để tuỳ" như lúc soi
-  (đã dính 29/09/2026: probe báo nút header 30–34px lệch nhau, bản dựng bỏ qua vì không
-  phải `P`). **Danh sách `P` tính cả khung app trên route đó** (header, sidebar,
+  đậm, thanh cuộn. Ở `U4` dáng là của skill, nên đó không phải "Lệch hệ để tuỳ" như lúc soi.
+  **Danh sách `P` tính cả khung app trên route đó** (header, sidebar,
   thanh dưới, menu thông báo): người dùng nhìn cả màn, không chỉ phần mới dựng. Khung app lỗi
-  thì sửa luôn, sửa ở component dùng chung và nói nó đổi cả các màn khác. Đã dính 28/09/2026:
-  trang dựng lại đúng bố cục mà header vẫn bị bóp, người xem vẫn chấm "xấu".
+  thì sửa luôn, sửa ở component dùng chung và nói nó đổi cả các màn khác. Trang
+  dựng lại đúng bố cục mà header vẫn bị bóp thì người xem vẫn chấm "xấu".
 - **Wireframe vẽ khung app (header, sidebar) thì khung app cũng là phương án**: dựng lại
   component dùng chung theo wireframe (số mục, mục nào nút đặc, mục nào chỉ icon), dáng theo
-  gu, màu theo vai màu. Không để nguyên header cũ rồi chỉ vá cho khỏi rớt dòng. Đã dính
-  28/09/2026: wireframe header năm mục một nút đặc, bản dựng giữ sáu mục cũ lệch cỡ; chủ dự
-  án hỏi "wireframe vẽ chuẩn rồi mà sao không ai sửa".
+  gu, màu theo vai màu. Không để nguyên header cũ rồi chỉ vá cho khỏi rớt dòng.
 - **Dựng đúng wireframe đã chọn, không bịa.** Wireframe ở nấc Màu là bản đặc tả, đã dùng token
   và component của bản dựng (`U3`): bản dựng là nó viết lại bằng code dự án. **Không thêm** mục, dòng chữ, badge, nút, khối mà wireframe không có;
   **không bỏ** thứ wireframe có; không đổi thứ tự. Thấy wireframe thiếu gì thì hỏi hoặc ghi
@@ -592,17 +589,14 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
     `P`, sửa tới khi trống như mọi mục `P`. Chỉ được lệch khi người dùng dặn hoặc dữ liệu thật khác
     wireframe (chữ dài hơn nên thêm dòng); lúc giao ghi từng chỗ.
 
-  Đã dính 30/09/2026, tìm phòng: bản dựng giữ padding khung trang của dự án, ô tìm thấp hơn
-  wireframe 17px, hàng chip 20px, lưới card 21px; chữ đếm "8 phòng trọ ở Hà Nội" thành "8 kết
-  quả", placeholder đổi, mất dòng "Đã hiện hết 8 phòng" và nút tim trên header. Chủ dự án kéo
-  thanh so sánh wireframe với bản dựng qua lại thì mọi khối nhảy.
+  Lệch vài px mỗi khối, đổi chữ đếm, đổi placeholder, mất dòng cuối danh sách thì kéo thanh so
+  sánh wireframe với bản dựng qua lại là mọi khối nhảy.
 - **Mục điều hướng trỏ tới màn ngoài đề** (sidebar có "Bệnh nhân" mà đề chỉ xin hồ sơ một người):
   màn đó chưa qua `U2`, chưa có wireframe, nên không tự nghĩ bố cục. Dựng tối giản theo khuôn mặc
   định của skill cho loại màn đó (danh sách thì "Danh sách có bộ lọc" trong `layouts/app.md`: ô tìm,
   dòng theo `components/list-row.md` có giá trị so sánh bên phải), rồi ghi một dòng lúc giao:
-  *"Màn [X] ngoài đề, dựng tạm để menu không dẫn vào trang trống; muốn làm thật thì nhắn."* Đã dính
-  30/09/2026, lịch hẹn nha khoa: `/benh-nhan` tự dựng thành cột tên + mã rộng 1500px, nửa phải
-  trống, không ô tìm, không lần khám gần nhất hay lịch hẹn tới.
+  *"Màn [X] ngoài đề, dựng tạm để menu không dẫn vào trang trống; muốn làm thật thì nhắn."* Đừng tự
+  nghĩ bố cục: ra cột tên + mã rộng 1500px, nửa phải trống, không ô tìm, không giá trị so sánh.
 - **Đối chiếu wireframe từng khối trước khi giao.** Mở ảnh wireframe đã chọn cạnh ảnh 1440
   của bản dựng, đi từng khối (header, sidebar, hàng lọc, danh sách, panel): số mục, thứ tự,
   mục nào nút đặc, mục nào chỉ icon, thứ gì wireframe đã bỏ. Khoảng cách và chữ thì đã có
@@ -625,11 +619,9 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
   Kết bằng *"Muốn sửa dòng nào thì trả lời số, ví dụ `sửa 1, 3`."* Không thấy gì thì ghi
   "Còn thấy: không". Đây không phải cổng: bản dựng đã giao xong, người dùng trả lời hay không
   tuỳ họ. **Lỗi dáng mà skill đã có luật thì sửa trước khi giao, không đẩy vào "Còn thấy"**:
-  mục chỉ dành cho thứ bản dựng không được tự quyết. Đã dính 30/09/2026, nha khoa dựng luôn: "hàng đếm
-  375px cắt mục cuối không mép mờ" (`R10`) và "email xuống dòng ở gạch nối tên miền" (`description-list.md`)
-  nằm trong "Còn thấy" thay vì được sửa. Đã dính 29/09/2026, tim-phong-sua: năm badge năm màu (Mới, Hot, Giảm giá, VIP,
-  Xác thực) giữ nguyên theo vai màu mà không nói gì, chủ dự án tự thấy "badge chưa đẹp" rồi
-  hỏi sao không ai đề xuất.
+  mục chỉ dành cho thứ bản dựng không được tự quyết (ví dụ hàng đếm 375px cắt mục cuối không mép
+  mờ theo `R10`, email xuống dòng ở gạch nối tên miền theo `description-list.md`: sửa, không đưa
+  vào "Còn thấy").
 - **Tự soi bằng mắt trước khi giao, ghi ra.** Mở ảnh 375, 1440 và 1920 của probe, trả lời
   từng câu thành một dòng trong tin giao (câu nào có lỗi thì sửa trước, rồi mới ghi "không"):
   1. Card, dòng cùng loại có cao thấp khác nhau vì có dòng thiếu một mẩu không?
@@ -639,9 +631,7 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
   5. Thứ nặng nhất màn (đậm nhất, màu nhất) có đúng là việc chính ở `U2` không?
 
   Không ghi mấy dòng này thì coi như chưa soi. Người dùng tự phát hiện ra lỗi nằm trong năm
-  câu này là skill chưa làm xong việc (28/09/2026: thanh cuộn thường trực, chữ cắt nuốt diện
-  tích, nội dung trôi giữa màn rộng, đường kẻ header lệch, đều do chủ dự án tự thấy; bốn
-  thứ đó nay probe đo).
+  câu này là skill chưa làm xong việc.
 - **Lúc giao** nói bằng ngôn ngữ trải nghiệm, không bằng class: việc chính giờ làm trong mấy
   bước, thấy ngay ở khổ nào; ảnh trước và sau ở 1280 và 375, là link bấm được và một trang
   `so-sanh.html` như `V5` trong `review.md` (cả ảnh của mục "Còn thấy"); danh sách thứ cần bạn nối logic

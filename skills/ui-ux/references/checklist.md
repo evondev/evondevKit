@@ -44,7 +44,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 
 ### Màu
 
-- [ ] Đếm màu nhấn trên màn hình. Nhiều hơn một thì cắt (tag phân loại không tính, `M8`).
+- [ ] Đếm màu nhấn trên màn hình. Nhiều hơn một thì cắt (tag phân loại `M8` và màu nhận diện thực thể `M34` không tính). App có dự án, board, danh mục người dùng tạo mà tên vẫn xám trơn thì thêm chấm màu theo `M34`.
 - [ ] **Cả màn có chỗ nào dùng màu nhấn không?** Không có là chưa quyết định, không phải tối giản (`D5`).
 - [ ] Có khối nào được tô nền màu chỉ để phân loại không? Phân loại bằng icon + chữ (`M5`).
 - [ ] Grep mã hex. Chỉ được có trong khối đổi thương hiệu ở đầu file.
@@ -96,7 +96,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] **Trang thành viên**: ô vai trò đổi được có `ChevronDown` luôn hiện, dòng khoá (chủ sở hữu, chính mình) là chữ trơn không mũi tên, hay phải rê chuột mới biết đổi được? Có cột Trạng thái lặp "Đang hoạt động" trên gần hết các dòng không (chỉ lời mời mới có badge "Chờ chấp nhận" cạnh email)? Lọc vai trò là một dropdown cạnh ô tìm, hay thêm một hàng chip dưới hàng tab? Email của lời mời bị cắt mất tên miền không? Modal mời nhận nhiều email (tag input), email trùng phân biệt "Đã là thành viên" với "Đã mời …, chưa chấp nhận"? Thanh hàng loạt có "Đổi vai trò" (`layouts/app.md`, "Trang thành viên và phân quyền")?
 - [ ] **Modal xem bản ghi có nút trước / sau** (chi tiết đơn): modal neo đỉnh hay căn giữa dọc? Bấm Đơn sau sang đơn cao thấp khác thì nút ‹ › có đứng yên dưới con trỏ không? Tới đầu, cuối thì nút mờ nhưng vẫn giữ chỗ, tiêu điểm chuyển sang nút còn lại chưa? Chỉ phần mã `font-mono`? Tiền bám một mép phải, tạm tính đếm theo số lượng, các số cộng trừ có khớp không (`layouts/overlay.md`)?
 - [ ] **Vùng cuộn trong lớp nổi** (select, dropdown dài, command palette): chưa rê chuột, mép dưới có cắt ngang một mục (lộ khoảng nửa) không? Cắt sát ranh giới hai mục là trông như đã hết. Rê chuột vào (không cuộn) thì thanh cuộn có hiện không? Chỉ hiện khi cuộn là đang dùng CSS thanh cuộn cũ (`I18`).
-- [ ] **Sidebar**: nền trắng chứ không trùng nền trang; vùng nội dung nền xám thì **không `border-r`** giữa sidebar và nội dung; rê `hover:bg-item-hover`, mục đang chọn đậm hơn một bậc `bg-secondary` + `font-medium`, không màu nhấn, không viền (chủ dự án đổi 29/09/2026; "rê và đã chọn cùng một nền" chỉ còn cho dòng bảng tick checkbox); hover vào thì icon và chữ cùng đậm lên; số đếm là số trơn `text-muted`, không pill, không badge màu brand (`I15`); nhãn nhóm IN HOA, giữa các nhóm không kẻ đường chia (chỉ khoảng trắng + nhãn), profile là hàng không viền có icon `ChevronsUpDown`, nhiều nhóm thì thu gọn được; thanh cuộn tự ẩn (`I18`); tên dài bị cắt thì rê vào có tooltip đủ tên, cả lúc sidebar mở; dưới `lg` sidebar là panel trượt trái, lớp phủ `bg-black/15`, 500/350ms đường cong sheet.
+- [ ] **Sidebar**: nền trắng chứ không trùng nền trang; vùng nội dung nền xám thì **không `border-r`** giữa sidebar và nội dung; rê `hover:bg-item-hover`, mục đang chọn đậm hơn một bậc `bg-secondary` + `font-medium`, không màu nhấn, không viền (chủ dự án chốt; "rê và đã chọn cùng một nền" chỉ còn cho dòng bảng tick checkbox); hover vào thì icon và chữ cùng đậm lên; số đếm là số trơn `text-muted`, không pill, không badge màu brand (`I15`); nhãn nhóm IN HOA, giữa các nhóm không kẻ đường chia (chỉ khoảng trắng + nhãn), profile là hàng không viền có icon `ChevronsUpDown`, nhiều nhóm thì thu gọn được; thanh cuộn tự ẩn (`I18`); tên dài bị cắt thì rê vào có tooltip đủ tên, cả lúc sidebar mở; dưới `lg` sidebar là panel trượt trái, lớp phủ `bg-black/15`, 500/350ms đường cong sheet.
 - [ ] **Thu gọn sidebar**: thu về dải icon `w-16`; **mục nào đang hiện lúc mở thì lúc thu vẫn hiện**, nhóm đang đóng vẫn đóng; nhãn nhóm chỉ `opacity-0` + `inert`, giữ chiều cao hàng, **thay bằng gạch ngắn `w-4` thẳng tâm icon**; màn thấp thì mép vùng nav mờ dần ở phía còn mục bị khuất; chấm góc icon chỉ cho số cần xử lý, cùng độ đậm với số lúc mở; mục đang chọn vẫn sáng và được cuộn vào tầm nhìn; lúc thu ẩn thanh cuộn (vẫn cuộn được); bấm mở/thu thì icon, logo, avatar ĐỨNG YÊN (không `justify-center`, không đổi padding), chữ không gỡ khỏi DOM mà bị cắt dần và mờ đi; mỗi icon có tooltip kèm số đếm; focus theo `I13` (`layouts/app.md`).
 - [ ] **Chân sidebar**: profile là một hàng `h-10` **không viền**, avatar không viền, icon `ChevronsUpDown` ở mép phải, cả hàng là nút mở menu; lúc thu rê vào thì vòng quanh avatar, không tô ô vuông; email ở đầu menu một dòng, chỉ cắt phần trước `@`, tên miền còn nguyên; menu rộng bằng hàng; Đăng xuất cuối menu, đỏ khi rê (`layouts/app.md`). **Tải lại trang rồi bấm mở ngay lần đầu**, và thu/mở sidebar rồi bấm lại: menu có nằm sát nút không, hay trôi lên đầu sidebar? Menu tự dựng đo chiều cao trước khi có bề rộng là dính lỗi này (`layouts/overlay.md`).
 - [ ] **Menu con / menu tài khoản** (`layouts/overlay.md`): bay ra thì hàng đầu thẳng mục cha, mục cha giữ nền sáng, đi chéo chuột sang không tắt? Ở 375px menu con **thay chỗ** menu cha có nút `‹` lùi, hay đang xổ ra bên dưới mục cha? Hàng tài khoản có hàng nào quá hai dòng không (email phải một dòng, cắt phần trước `@`)? Đầu menu mở từ avatar có lặp lại avatar không? Header có avatar mà chân sidebar vẫn còn hàng profile là hai lối vào một menu.
@@ -116,6 +116,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Đọc từng câu lỗi: có câu nào **trùng chữ** với placeholder hay nhãn của chính ô đó không? Trùng là bỏ.
 - [ ] Chữ đỏ dưới ô có thật sự là lỗi không, hay là **gợi ý bị tô đỏ**? Gợi ý thì xám và hiện sẵn.
 - [ ] **Màn xác thực: đã báo một dòng** về "quên mật khẩu" / ghi nhớ đăng nhập / mạng xã hội chưa? Dựng theo mặc định thì được, dựng xong im lặng thì không.
+- [ ] **Dự án mới chưa có logo**: đầu sidebar là dấu SVG trong ô màu nhấn, hay vẫn là ô chữ cái? Dấu còn nhận ra ở 16px không, favicon đã thay favicon mặc định của framework chưa? (`components/logo.md`)
 - [ ] Màn đăng nhập, đăng ký có đủ logo sản phẩm, nút Google, placeholder chưa? Đăng ký có đang thừa ô "Nhập lại mật khẩu" không? (`layouts/form.md`)
 - [ ] Luồng quên mật khẩu: bước nhập mã có đang xác nhận email có tài khoản không? Phiên hết hạn có còn để ô mật khẩu và nút Lưu dưới khối lỗi không? (`layouts/form.md`)
 - [ ] Màn OTP: bấm Xác nhận khi chưa đủ sáu số có ra câu lỗi không, hay im lặng?
@@ -141,7 +142,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Ô có giới hạn tối đa ("Tối đa 120 ký tự"): gõ tới ~80% có bộ đếm cùng dòng gợi ý, căn phải không? Gõ quá có đỏ lên không, hay im lặng? Có `maxlength` cắt mất đuôi câu dán vào không (`layouts/form.md`, "Ô có giới hạn ký tự")?
 - [ ] Modal có ô nhập mà bấm ra ngoài vẫn đóng không? (`I20`)
 - [ ] Modal đã gỡ dismiss thì **còn đường đóng khác** chưa?
-- [ ] Có đủ ba trạng thái chưa: đang tải, rỗng, lỗi? Khung chờ có **đúng hình** nội dung không?
+- [ ] Có đủ ba trạng thái chưa: đang tải, rỗng, lỗi? Khung chờ có **đúng hình** nội dung không? Đổi lọc, đổi trang: dữ liệu cũ còn đó với thanh mảnh trên đầu, hay cả bảng thành khung chờ lần nữa? Dữ liệu về nhanh có làm khung chớp không (chờ 300ms, giữ 500ms)? Toggle, kéo thẻ có spinner không (phải đổi ngay)? Lúc chờ có chớp câu rỗng "Chưa có…" không? Tải lần hai hỏng: tab, chip có trả về khớp dữ liệu đang hiện không, hay tab mới sáng trên bảng cũ? Việc chạy nền: còn spinner trong nút song song toast tiến độ không (`components/loading.md`)?
 - [ ] Danh sách quá 25 dòng đã có phân trang chưa, và có hiện tổng số không? Ở 375px số đếm có rớt chữ xuống dòng hai cạnh nav không (dưới `sm` chỉ còn tổng, `components/small-controls.md`)?
 - [ ] Phân trang: nav có nằm phải cùng hàng ở mọi số trang không? Trang đang chọn có trông như ô input không? Một trang thì đã ẩn nav, 0 dòng thì đã ẩn footer chưa?
 - [ ] **Tải tệp lên** (`components/file-upload.md`): chỉ tệp đang tải có thanh (`h-1`), tệp xong và tệp hỏng không còn thanh, không còn số %? Tệp hỏng có cả Thử lại lẫn ✕? Đang kéo tệp vào thì viền đậm lên vừa phải, không nét đứt đen? Dòng đổi trạng thái thì các dòng dưới có nhảy không? Tên dài cắt giữa còn đuôi `.pdf` không? Tên cắt giữa có giữ vài ký tự cuối, không thành bốn chấm "….docx"? Icon tệp cùng dáng tờ giấy, viền không bị hình tròn cắt góc? Không có quyền thì ẩn cả khu tải, không dựng khung khoá? Khung bị khoá: tiêu đề là lý do, nền khác lúc kéo vào, có nút lối ra thay cho nút mờ chưa?
@@ -180,17 +181,14 @@ grep -nE "(margin[a-z-]*|inset[a-z-]*|top|left|right|bottom|translate|transform)
 ```
 
 Phải sạch, trừ ngoại lệ đã ghi trong luật. `<details>` / `<summary>` không có ngoại lệ: mở/đóng tức thì, không animate được (`I30`).
-Dòng grep thứ hai và thứ ba (số âm, `N11`): mỗi kết quả phải có comment lý do ngay trên, không có thì làm lại bằng padding, `gap`, căn hàng. Chỉ grep file mình vừa viết hay sửa; số âm có sẵn của dự án không phải việc của lượt dựng. Đã dính 30/09/2026 (`kho-hang`, CSS Modules): bản dựng thêm `margin: -4px -8px 0 0` cho nút đóng dialog, `margin: 0 -20px` cho danh sách, `translate: -50% 0` cho chấm hôm nay, không comment, vì grep chỉ bắt class Tailwind.
+Dòng grep thứ hai và thứ ba (số âm, `N11`): mỗi kết quả phải có comment lý do ngay trên, không có thì làm lại bằng padding, `gap`, căn hàng. Chỉ grep file mình vừa viết hay sửa; số âm có sẵn của dự án không phải việc của lượt dựng.
 
 ---
 
 ## Cổng 3 — vòng tra tấn, BẮT BUỘC sau mỗi lần dựng
 
 **Mở trang thật, không trả lời cổng này bằng cách đọc lại code.** Đọc code thì chỉ thấy
-thứ mình định viết, không thấy thứ trình duyệt vẽ ra. Đã dính 26/09/2026 ở trang lịch: bản
-dựng qua cổng 3 bằng đọc code, lượt rà mở trang thật tìm ra năm lỗi, ba lỗi trong đó
-(chữ cắt còn một chữ ở 1024px, hàng cao thấp 2px, số ngày lệch mép tên thứ) script dưới
-đây đo ra ngay.
+thứ mình định viết, không thấy thứ trình duyệt vẽ ra.
 
 0. [ ] **Chạy `scripts/probe.mjs`** (nằm cạnh `SKILL.md`) trên đúng route vừa dựng:
    `node <thư mục skill>/scripts/probe.mjs http://localhost:<cổng>/<route> --sweep`.

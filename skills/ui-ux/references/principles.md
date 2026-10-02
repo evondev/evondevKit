@@ -14,8 +14,8 @@ dựng. Trả lời "không" là đang vi phạm, dù chưa có luật cụ th�
 mà hầu hết app đều làm và người dùng đã quen (dấu `*` đỏ cho trường bắt buộc, logo
 góc trái về trang chủ, ✕ góc phải để đóng, Huỷ bên trái nút chính), thì làm đúng
 như thế, **kể cả khi một cách khác trông gọn hơn**. Người dùng không nên phải dừng lại
-tự hỏi. Gu của skill (nhạt, ít tín hiệu) chỉ quyết những chỗ chưa có quy ước. Chốt
-25/09/2026, khi `form.md` còn ghi dấu `*` xám, lệch quy ước.
+tự hỏi. Gu của skill (nhạt, ít tín hiệu) chỉ quyết những chỗ chưa có quy ước. Chủ
+dự án chốt.
 
 *Phép thử:* người dùng lần đầu mở màn này có chỗ nào phải hỏi "cái này nghĩa là
 gì" hay "bấm đâu để…" không? Có thì đang phá cách ở đó.
@@ -26,7 +26,7 @@ màu của skill (xám + một màu nhấn, `M4`, `M5`, biểu đồ đậm nh�
 bằng màu nhấn nhạt, khối bước nền xanh nhạt, nhãn nhỏ đầu mục dạng pill tím, nút chính
 có quầng sáng, biểu đồ mỗi loại một màu, thì màn mới dựng **cùng cách đó** (`N5`), và
 refactor **không trung tính hoá** màu của họ. Vào dự án nhiều màu mà rút về xám là làm
-hỏng nhận diện của họ, không phải làm đẹp (chốt 25/09/2026). Cách nhận ra: đếm như phong
+hỏng nhận diện của họ, không phải làm đẹp (chủ dự án chốt). Cách nhận ra: đếm như phong
 cách, `P4` trong `styles.md` (dòng "màu" ở tầng 3, `SKILL.md` câu 2).
 
 Theo dự án là theo **cách dùng màu**, còn **luật về nghĩa và về đọc được** thì giữ ở
@@ -96,11 +96,11 @@ làm nên "đang ở bước cuối" giống "đã xong hết", sửa thành đ�
 lại đọc như thanh thiếu (đang làm là tầng thứ ba, nửa đậm).
 
 Ngoại lệ có tên: dòng bảng **đã chọn** và dòng **đang rê chuột** cùng một nền mờ, vì
-hai trạng thái đã tách bằng checkbox đã tick (chủ dự án chốt 23/09/2026, `I10`). Hình
+hai trạng thái đã tách bằng checkbox đã tick (chủ dự án chốt, `I10`). Hình
 khác nhau không nhất thiết phải là nền khác nhau. Ngoại lệ này **chỉ cho dòng bảng tick
 checkbox**. Sidebar và cây thư mục không có checkbox nên đang chọn đậm hơn rê một bậc: rê
 `hover:bg-item-hover`, đang chọn `bg-secondary` + `font-medium`, không màu nhấn, không viền
-(chủ dự án chốt 29/09/2026).
+(chủ dự án chốt).
 
 *Phép thử:* che chữ đi, chỉ nhìn hình. Còn nói được đây là trạng thái nào không?
 
@@ -120,21 +120,20 @@ mới" trong câu lỗi lẫn "Gửi lại mã" bên dưới (hai nút một vi�
 thanh xanh lá đầy + `100%` + "Đã tải xong" (ba tín hiệu một ý: bỏ thanh và số, giữ chữ).
 
 **Cùng một câu ở mọi ô, mọi hàng cũng là một ý nói nhiều lần**: kéo ra ghi một lần
-ở đầu nhóm. Đã dính 24/09/2026, panel khách hàng: "so với 2025" ở cả bốn ô số liệu
-(chính cái đuôi đó làm ô hẹp vỡ dòng, và bản dựng chữa bằng cách xếp một cột thay vì
-bỏ đuôi); khách mới thì "Chưa có kỳ trước" bốn lần; `/2026` ở mọi mốc giờ. Đã dính
-25/09/2026, trang thành viên: cột Trạng thái badge xanh "Đang hoạt động" trên 14/18
-dòng. **Trạng thái thường không cần dấu, chỉ ngoại lệ mới có** (lời mời "Chờ chấp nhận"). Cùng panel
-đó, số liệu `text-3xl` to hơn tên khách: thứ nặng nhất phải là thứ trả lời "đang xem
+ở đầu nhóm. Đã dính: "so với 2025" ở cả bốn ô số liệu
+(chính cái đuôi đó làm ô hẹp vỡ dòng; đừng chữa bằng cách xếp một cột thay vì
+bỏ đuôi); khách mới thì "Chưa có kỳ trước" bốn lần; `/2026` ở mọi mốc giờ; cột Trạng
+thái badge xanh "Đang hoạt động" trên 14/18 dòng. **Trạng thái thường không cần dấu, chỉ ngoại lệ mới có** (lời mời "Chờ chấp nhận"). Trong
+panel khách hàng, số liệu `text-3xl` to hơn tên khách cũng sai: thứ nặng nhất phải là thứ trả lời "đang xem
 cái gì".
 
-**Thứ vừa bấm để mở cũng là một lần nói.** Đã dính 24/09/2026, menu tài khoản: bấm
+**Thứ vừa bấm để mở cũng là một lần nói.** Đã dính: bấm
 avatar ra menu, đầu menu lại một avatar 40px to hơn chính nút vừa bấm; header có avatar
 mà chân sidebar vẫn còn hàng profile mở cùng menu đó (hai lối vào một chỗ); màn hẹp xổ
 danh sách tài khoản ngay dưới đầu menu, tài khoản đang dùng hiện hai lần liền nhau.
 
 **Đã nói bằng vị trí thì không nói thêm bằng hình. Một việc đang chạy, một spinner.**
-Đã dính 24/09/2026, khung chat: bong bóng căn phải đã nói "ai đang nói" mà mỗi câu trả
+Đã dính ở khung chat: bong bóng căn phải đã nói "ai đang nói" mà mỗi câu trả
 lời vẫn có một vòng robot; mở danh sách công cụ ra thấy spinner ở cả hàng đầu lẫn hàng
 bước; một công cụ lỗi mà câu trả lời đã giải thích vẫn có "1 lỗi" đỏ, icon đỏ, dòng mô
 tả, bốn lần một ý (`components/chat.md`). Cùng màn đó, tên bước công cụ nặng ngang câu
@@ -199,15 +198,15 @@ hạn" làm câu lỗi (đọc như hướng dẫn); "ví dụ 31/12/2026" cho �
 đã chọn xong. Màn OTP không có "Đổi email": gõ nhầm email là kẹt, không có
 đường lùi. **Mỗi bước phải có lối ra khi người dùng đi nhầm.** Tự tay dừng cũng là
 đi nhầm được: câu trả lời bị dừng mà không có Tạo lại thì phải gõ lại cả câu hỏi
-(đã dính 24/09/2026, `components/chat.md`).
+(`components/chat.md`).
 
 **Câu lỗi không được bịa ra một luật mà hệ thống không hề kiểm.** Nó dạy sai người
-dùng, và mâu thuẫn ngay với dữ liệu đang hiện trên màn (đã dính 23/09/2026: ô nhập
+dùng, và mâu thuẫn ngay với dữ liệu đang hiện trên màn (ô nhập
 nhiều tag ghi "cần có dấu @ và đuôi .com" trong khi các email hợp lệ ngay trên đó là
 `@saoviet.vn`). Viết đúng cái đang kiểm: "cần có dấu @ và tên miền".
 
 **Rỗng mà người dùng là người phải mở đầu thì trạng thái rỗng là việc bấm được ngay**,
-không phải câu báo "chưa có". Đã dính 24/09/2026: khung chat mới chỉ có "Chưa có tin
+không phải câu báo "chưa có". Đã dính: khung chat mới chỉ có "Chưa có tin
 nhắn nào" giữa màn (thay bằng 2–3 gợi ý mở đầu, `components/chat.md`). Danh sách do hệ
 thống đổ về (đơn hàng, thông báo) thì vẫn một dòng chữ mờ (`components/empty-state.md`).
 
@@ -241,13 +240,13 @@ nửa trên popover trống trơn vì chèn đệm. Mô tả bước ở thanh c
 trong câu không bị bẻ giữa chừng**: `whitespace-nowrap` để nó xuống dòng nguyên
 cụm. Nhãn nút thì ngược lại, được xuống dòng (`T15`). **Chữ ghi đè lên hình (số trên
 biểu đồ) đặt về phía trống**, không đặt cố định một phía: số "44,4 tr đ" đặt trên chấm
-nằm đúng trên đoạn nối đi lên, nền sau chữ cắt đôi đường (27/09/2026). Một con số không
+nằm đúng trên đoạn nối đi lên, nền sau chữ cắt đôi đường. Một con số không
 kèm mốc khi trục chỉ ghi vài nhãn cũng là thiếu thứ cần đọc: không biết số của ngày nào.
 
 **Phải cắt thì cắt phần giống nhau, giữ phần phân biệt.** Cắt ở cuối không phải cách
 duy nhất, và xuống dòng không phải cách thay duy nhất. Email giữ tên miền, cắt phần
-trước `@` (`layouts/overlay.md`, "Cắt email"); tên tệp giữ đuôi `.pdf`. Đã dính
-24/09/2026, chuyển tài khoản: sợ cắt mất tên miền nên cho email xuống dòng, mỗi hàng
+trước `@` (`layouts/overlay.md`, "Cắt email"); tên tệp giữ đuôi `.pdf`. Đã dính ở menu
+chuyển tài khoản: sợ cắt mất tên miền nên cho email xuống dòng, mỗi hàng
 thành ba dòng, danh sách con nặng hơn menu cha. Trong menu, hàng chọn, ô hẹp: mỗi
 trường một dòng.
 
@@ -267,8 +266,8 @@ bằng hình (`aria-pressed`, `aria-current`, `role="progressbar"`).
 **Thứ bấm được mà hình nhỏ hơn 32px** (nút chữ giữa câu "Thử lại", "Gửi lại", nút icon `size-7`
 cạnh một giá trị) **giữ hình, nới vùng bấm bằng `relative before:absolute before:-inset-*`** cho
 tới ~32–40px, không phóng to hình: to hình thì đẩy lệch hàng và nặng hơn việc của nó. Số âm ở đây
-buộc phải giữ (`N11`). Nếu hai vùng nới chạm nhau thì tách thứ đó ra hàng riêng trước. Đã dính ba
-chỗ trong một ngày (27/09/2026): nút sao chép 28px, "Gửi lại · Huỷ" 18px, "Thử lại" 16px; công thức
+buộc phải giữ (`N11`). Nếu hai vùng nới chạm nhau thì tách thứ đó ra hàng riêng trước. Đã dính:
+nút sao chép 28px, "Gửi lại · Huỷ" 18px, "Thử lại" 16px; công thức
 từng chỗ ở `components/description-list.md`, `layouts/app.md` (Hồ sơ), `components/file-upload.md`.
 
 Đã dính: bánh xe giờ chỉ cuộn mới chọn được, và cuộn khựng giữa chừng; chỉ có
@@ -302,11 +301,11 @@ giờ mà đề không yêu cầu không?
 
 Margin âm (`-mt-*`, `-mx-*`), `-space-*`, `-translate-*`, `-inset-*`, `top-[-…]`: số âm
 kéo phần tử ra khỏi chỗ của nó, nên khung bao không còn nói thật kích thước bên trong.
-Sửa padding một chỗ là chỗ khác lệch theo, và hay lộ lỗi ở trạng thái khác (đã dính
-26/09/2026: margin âm trong accordion làm câu đang đóng lòi dòng đầu câu trả lời; nút ⋯
+Sửa padding một chỗ là chỗ khác lệch theo, và hay lộ lỗi ở trạng thái khác (margin
+âm trong accordion làm câu đang đóng lòi dòng đầu câu trả lời; nút ⋯
 `size-8` trên thẻ kanban kéo `-mr-2` thì khối bọc co còn 24px, `max-w-full` của Button bóp
 nút theo thành 24×32). Chủ
-dự án chốt 26/09/2026: ưu tiên mọi giá là không dùng.
+dự án chốt: ưu tiên mọi giá là không dùng.
 
 Làm theo thứ tự:
 
@@ -314,13 +313,12 @@ Làm theo thứ tự:
    padding ngang, từng hàng tự có `px`: vạch tự chạm mép, không phải kéo ra.
 2. **Chấp nhận khoảng cách mà padding cố định cho ra**, thay vì kéo cho sát hơn. Đừng
    đổi padding của một khối theo trạng thái để bù cho khối bên cạnh: tô nền khối đó là
-   chữ lệch về một mép (đã dính 26/09/2026, accordion bớt `pb` của nút khi mở, `I30`).
+   chữ lệch về một mép (accordion bớt `pb` của nút khi mở, `I30`).
 3. **`gap`, căn `items-*`, đổi `leading`** để thẳng hàng, thay vì nhích bằng `translate`.
    **Căn giữa quanh một điểm** (chấm trên biểu đồ, nhãn trên tay cầm): đặt khối `absolute
-   w-0 flex justify-center` đúng tại điểm, phần tử nằm trong nó, không `-translate-x-1/2`. Đo
-   27/09/2026 chấm cuối đường doanh thu ở 375 và 1280px: trùng (chênh 0,02px do làm tròn).
+   w-0 flex justify-center` đúng tại điểm, phần tử nằm trong nó, không `-translate-x-1/2`.
 4. Không cách nào ở trên làm được: dùng số âm, và **ghi comment lý do ngay trên dòng đó**, như
-   `eslint-disable`. Các chỗ đã thử và giữ (27/09/2026): avatar xếp chồng (`avatar.md`); vùng
+   `eslint-disable`. Các chỗ đã thử và giữ: avatar xếp chồng (`avatar.md`); vùng
    bấm nở ra ngoài một phần tử nhỏ (`before:-inset-*`, `N9`); khung tên sửa tại chỗ tràn ra
    ngoài chữ để chữ thẳng cột (`inline-edit.md`); hàng icon có nền rê nằm giữa một cột chữ
    (`button.md`, mục `ghost`); đoạn đậm của đường dọc cây thư mục (`tree.md`).
@@ -347,16 +345,14 @@ lưới, kể cả kiểu chưa có mẫu. Không cần mẫu riêng cho từng 
 2. **Nhịp theo nhóm: trong nhóm gần, giữa nhóm xa.** Gom chữ thành nhóm theo nghĩa (giá +
    tên; diện tích · khu vực · mốc gần; thời gian đăng). Dòng trong một nhóm cách **4px
    (`gap-1`)**, không `gap-0.5`: 2px thì hai dòng dính nhau, nhất là dòng có dấu tiếng Việt
-   (chủ dự án chốt 30/09/2026). Giữa các nhóm 8–12px, khoảng từ chữ tới mép khối không nhỏ
+   (chủ dự án chốt). Giữa các nhóm 8–12px, khoảng từ chữ tới mép khối không nhỏ
    hơn khoảng giữa nhóm. Mọi dòng cách đều nhau là không có nhóm, mắt đọc thành một cục chữ.
 3. **Tên để nhận ra mục không cắt cụt.** Khối lặp mà mỗi mục là một khối riêng (card trong
    lưới) thì tên `line-clamp-2`; `truncate` một dòng chỉ cho danh sách dày (dòng bảng,
    sidebar, `T14`). Tên cắt sau hai mươi mấy ký tự ("Cho thuê phòng trọ khép kín …") là
    mất đúng thứ người dùng đọc để chọn (`N8`).
 
-Đã dính 29/09/2026, tim-phong-sua: card phòng giá 18px trên tên 14px, ba nhóm chữ cách đều
-4–5px, tên cắt một dòng. Không lượt nào nêu, vì skill chỉ có mẫu cho khối đã biết; chủ dự án
-chốt: đừng viết thêm mẫu cho từng kiểu, viết phép thử chung.
+Chủ dự án chốt: đừng viết thêm mẫu cho từng kiểu, viết phép thử chung.
 
 *Phép thử:* probe mục "KHỐI LẶP" (card có ảnh: chữ to nhất so với tên, khoảng giữa các dòng,
 tên cắt một dòng). Khối không ảnh thì tự soi ba câu trên bằng ảnh chụp.
@@ -373,13 +369,12 @@ trong `components/` thì:
    lồng nhau mượn dòng danh sách (`components/list-row.md`); cây thư mục mượn link
    sidebar có menu con (`layouts/app.md`); khung chat mượn cây thư mục, nút viền và
    "Lỗi tải" (`components/chat.md`).
-   **Chỉ mượn từ file trong skill**, không mượn từ bản dựng chưa duyệt trong dự án
-   (đã dính: dòng thời gian ghi mượn "thanh các bước dọc", thứ cũng đang là đề
-   bậc 1b). Khuôn lấy từ file thì dự án sau vẫn có, và lỗi không nhân đôi.
+   **Chỉ mượn từ file trong skill**, không mượn từ bản dựng chưa duyệt trong dự án.
+   Khuôn lấy từ file thì dự án sau vẫn có, và lỗi không nhân đôi.
    **Mượn khuôn, không mượn nội dung.** Khung mới làm việc khác thì chọn lại nội dung
    theo việc của nó: trang chi tiết mượn hàng tên, ô số của panel xem nhanh, nhưng bộ
-   tab phải có bản ghi con chính (đã dính 25/09/2026: trang khách chép nguyên tab
-   Tin nhắn / Tệp / Hoạt động của panel, 24 đơn không có chỗ xem, `layouts/app.md`).
+   tab phải có bản ghi con chính (trang khách chép nguyên tab
+   Tin nhắn / Tệp / Hoạt động của panel thì 24 đơn không có chỗ xem, `layouts/app.md`).
 2. **Dựng luôn các ca biên vào trang**, không chỉ ca đẹp (`N2`, `S8`). Khối lặp (card,
    dòng, ô) thì mỗi bản sao một ca: tên một dòng và tên rất dài, số `0` và số rất lớn,
    thiếu ảnh, thiếu mô tả, một mục và nhiều mục. Không lặp được (một form, một panel)

@@ -1,7 +1,6 @@
 # Bảng giá
 
-> ⚑ Rút ra từ một lượt dựng thật (trang giá khoá học 3 gói), rà bằng link bảy lượt
-> ngày 25 và 26/09/2026.
+> ⚑ Rút ra từ một lượt dựng thật (trang giá khoá học 3 gói).
 
 **Một bố cục mặc định, dựng luôn.** Người dùng muốn kiểu khác (gộp một khối,
 nút lên trên, bảng so sánh, gói nổi bật chỉ viền thay vì đảo màu…) thì họ nói, mình sửa theo. Đừng bày
@@ -28,7 +27,7 @@ tối đa hai dòng).
 
 - **Tên trang `sm:text-3xl`, không phải `2xl`.** Giá là `3xl`; tên trang `2xl`
   (24px) nằm trên ba con số 30px thì trang không có đầu, mắt nhảy thẳng vào giá
-  mà không biết đang xem gì (đã dính 25/09/2026). Tên trang bằng cỡ giá là đủ: nó
+  mà không biết đang xem gì. Tên trang bằng cỡ giá là đủ: nó
   đứng một mình, căn giữa, font tiêu đề, không cần to hơn nữa.
 - Trang bảng giá **nằm trong khung app** (Cài đặt → Gói cước) thì không theo mục
   này: tên trang `xl` căn trái như mọi trang app (`budgets.md`).
@@ -69,17 +68,15 @@ Gói nào cũng đủ 7 hàng. Thiếu dòng phụ thì để phần tử rỗng
 **Vạch giữa phần giá và phần tính năng kẻ bằng `--border-strong`**, tràn mép card
 (`F25`): `border-t border-border-strong` trên hàng tiêu đề danh sách. Card chỉ có
 padding dọc (`py-7`), padding ngang nằm ở từng hàng (`*:px-7`), nên vạch tự chạm hai
-mép card; không `-mx-7` (`N11`). Đã đo 26/09/2026: vị trí chữ, nút, chiều cao card y hệt
-bản cũ dùng margin âm.
+mép card; không `-mx-7` (`N11`).
 Cùng lý do với đường chia "hoặc" ở `form.md`: `--border` (`#f7f7f8`) đứng một mình
-trên card trắng chỉ 1.06 : 1, vạch biến mất, card đọc thành một khối chữ liền (đã
-dính 25/09/2026). Viền ngoài card vẫn `--border`: card trắng trên nền trang xám đã
+trên card trắng chỉ 1.06 : 1, vạch biến mất, card đọc thành một khối chữ liền. Viền ngoài card vẫn `--border`: card trắng trên nền trang xám đã
 tự tách.
 
 Màn hẹp: một cột dưới `lg`, giữ thứ tự rẻ đến đắt, và **chặn bề rộng khi xếp
 chồng**: `mx-auto max-w-lg lg:max-w-none`. Không chặn thì ở 768px mỗi card rộng
 650px: danh sách tính năng chiếm một phần ba bên trái, còn lại trống, nút dài
-615px trông như thanh ngang (đã dính 25/09/2026). Card gói là thứ đọc dọc, rộng
+615px trông như thanh ngang. Card gói là thứ đọc dọc, rộng
 ~500px là vừa, như khi đứng cạnh nhau ở màn rộng.
 
 ```html
@@ -102,7 +99,7 @@ chồng**: `mx-auto max-w-lg lg:max-w-none`. Không chặn thì ở 768px mỗi 
 
 **Nút `h-12`, không `h-10`.** Đây là hành động chính của cả trang, nằm đáy một card
 cao ~520px dưới con số 30px: nút 40px trông mỏng, như nút phụ trong toolbar (chủ dự
-án thấy "hơi thấp" 26/09/2026). Cùng ngoại lệ với form đăng nhập đứng riêng
+án thấy "hơi thấp"). Cùng ngoại lệ với form đăng nhập đứng riêng
 (`form.md`): màn chỉ có một việc thì nút của việc đó to hơn một bậc.
 
 ---
@@ -133,9 +130,8 @@ cao ~520px dưới con số 30px: nút 40px trông mỏng, như nút phụ trong
 </article>
 ```
 
-**Vì sao đảo màu.** Bản trước chỉ có badge + nút primary: ba card trắng giống hệt,
-mắt không có chỗ dừng, chủ dự án thấy "chưa wow" (26/09/2026). Đã so trên trang
-thật ba cách: chỉ badge + nút (phẳng, không gói nào nổi), viền 1px `--primary` quanh
+**Vì sao đảo màu.** Chỉ có badge + nút primary thì ba card trắng giống hệt,
+mắt không có chỗ dừng (chủ dự án thấy "chưa wow"). So ba cách: chỉ badge + nút (phẳng, không gói nào nổi), viền 1px `--primary` quanh
 card (có nổi nhưng phải nhìn kỹ mới thấy), card đảo màu (thấy ngay từ xa, vẫn phẳng:
 không bóng, không phóng to). Card đảo màu là cách phổ biến nhất ở các trang giá dùng
 màu trung tính. Chữ phụ `/70` trên `#181818` đo ~8:1; `--primary` có sắc thì đo lại,
@@ -175,7 +171,7 @@ Màu nhấn chỉ nằm ở **card của gói nổi bật**. Còn lại trung t�
 **Accordion trong MỘT khung trắng, đóng hết lúc vào trang**, một cột giữa trang.
 Người ta đến trang giá để chọn gói; FAQ là chỗ tra khi còn vướng, nên chỉ cần thấy
 danh sách câu hỏi, bấm câu nào mở câu đó. Bung hết thì FAQ dài gần bằng dãy gói
-(chủ dự án thấy "bung ra hết" 26/09/2026). Hầu hết trang giá đều dùng accordion ở
+(chủ dự án thấy "bung ra hết"). Hầu hết trang giá đều dùng accordion ở
 đây. Đây là ngoại lệ của `I17`: FAQ ở trang giá luôn accordion, dù dưới 6 câu.
 
 Mỗi câu là một mục accordion, dựng đúng theo `../components/accordion.md` (padding,
@@ -194,15 +190,15 @@ chuyển động, hover, khung, cách kiểm đều nằm ở đó). Phần riê
 </section>
 ```
 
-- **Khung `max-w-3xl` giữa trang**, đủ để câu hỏi dài nhất vừa một dòng ở desktop. Bản
-  `max-w-lg` (512px, chọn để câu trả lời ≤ 75 ký tự) làm câu hỏi "Đang học gói Tự học,
+- **Khung `max-w-3xl` giữa trang**, đủ để câu hỏi dài nhất vừa một dòng ở desktop. Đừng
+  `max-w-lg` (512px, chọn để câu trả lời ≤ 75 ký tự): câu hỏi "Đang học gói Tự học,
   muốn lên gói Pro thì phần đã học có mất không?" xuống dòng khi hàng còn trống, và khung
-  chỉ rộng nửa dãy card (chủ dự án hỏi "sao không làm full chữ dài ra", 26/09/2026). Đo:
+  chỉ rộng nửa dãy card. Đo:
   `max-w-2xl` câu hỏi một dòng, câu trả lời 2 dòng ~89 ký tự; `max-w-3xl` cả hai một dòng.
   Câu trả lời FAQ là 1–2 câu, đọc một hơi, không phải đoạn văn nên không tính trần `T11`.
 - **Tiêu đề `font-heading font-bold`, căn giữa, cùng họ chữ với tên trang.** Trang trình
   diễn có font tiêu đề thì mọi tiêu đề cấp trang (`h1`, `h2` của từng phần) dùng chung nó;
-  để `h2` font body thì trang có hai tiêu đề lớn hai kiểu chữ (đã dính 26/09/2026). Tên
+  để `h2` font body thì trang có hai tiêu đề lớn hai kiểu chữ. Tên
   gói, câu hỏi vẫn font body (`T2`).
 - **Cách dãy gói `mt-16 sm:mt-20`**: phần khác của trang, không phải card thứ tư.
 - **Đóng hết lúc vào trang.**

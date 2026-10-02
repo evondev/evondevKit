@@ -8,15 +8,14 @@ Nguồn duy nhất cho nút, hover, focus, danh sách, modal. Con số ở `budg
 
 > **⚠️ Đảo luật.** Bản cũ của skill này viết "ba variant `primary` / `ghost` /
 > `danger`, không outline" và "nút mặc định không icon". **Cả hai đã bỏ.** Chủ dự
-> án chốt ngược lại ngày 13/09/2026. Đừng hồi sinh luật cũ.
+> án chốt ngược lại. Đừng hồi sinh luật cũ.
 
 **I1. Nút mặc định là nút viền, không phải nền màu nhấn. Icon trái chỉ khi nó nói đúng hành động.**
 
 Dựng nút mới → nút viền. Gắn icon lucide **bên trái** chữ khi có một glyph gọi đúng tên
 hành động: thêm (`plus`), lọc, tải xuống, xuất, sao chép, chia sẻ. Nút form và nút
 trong modal (Lưu, Huỷ, Gửi, Tạo công việc) **chỉ có chữ**: tiêu đề đã nói việc gì, icon
-chỉ lặp lại. Bản 13/09/2026 bắt mọi nút có icon, nới
-lại ngày 23/09/2026.
+chỉ lặp lại.
 
 *Vì sao:* nguyên lời chủ dự án — *"không nên để brand bị nhiều màu quá trong dự
 án"*. Nút nền nhấn rải khắp nơi thì màu thương hiệu loang ra, tới lúc có một nút
@@ -26,7 +25,7 @@ lại ngày 23/09/2026.
 | --- | --- |
 | Mặc định | viền + chữ; thêm icon trái khi glyph gọi đúng tên hành động (thêm, lọc, tải xuống, xuất) |
 | Nút gửi form, nút ở footer modal và panel | chỉ chữ: động từ + đối tượng ("Tạo công việc", "Xác nhận đơn", "In hoá đơn"). Cả footer một kiểu: một nút có icon một nút không là lệch |
-| Nút đổi trạng thái trên dòng hay ô (tiếp đón, duyệt, giao) | động từ nói việc sẽ làm ("Tiếp đón", "Bắt đầu khám", "Hoàn tất"), **không** dùng tên trạng thái đích ("Đã đến", "Xong"): đứng cạnh badge "Đã xác nhận", nút "Đã đến" đọc thành badge thứ hai, người xem không biết khách đã đến hay chưa (đã dính 30/09/2026, hàng chờ lịch hẹn) |
+| Nút đổi trạng thái trên dòng hay ô (tiếp đón, duyệt, giao) | động từ nói việc sẽ làm ("Tiếp đón", "Bắt đầu khám", "Hoàn tất"), **không** dùng tên trạng thái đích ("Đã đến", "Xong"): đứng cạnh badge "Đã xác nhận", nút "Đã đến" đọc thành badge thứ hai, người xem không biết khách đã đến hay chưa |
 | Hành động chính **duy nhất** của một khu, thật cần nổi | nền màu nhấn |
 | Nút phụ cần rõ hơn ghost: nút rộng hết card, nút cạnh `primary` | nền `--secondary`, không viền |
 | Chỉ icon | nút cỡ icon, có `aria-label`, cao bằng nút chữ cạnh nó |
@@ -52,10 +51,9 @@ rời nhóm rồi xin mời lại được, cả ba vẫn đỏ.
 
 **Lý lẽ đã bị bác, đừng dùng lại** (danh sách đủ ở `locked-rules.md`):
 - "Không mất dữ liệu nên để trung tính": chủ dự án đã thử bản đăng xuất trung tính
-  (23/09/2026, "đăng xuất mất danger"), chốt lại một lần nữa cho đăng xuất hàng loạt ở
-  trang bảo mật (26/09/2026).
-- "Vẫn dùng được tới hết kỳ nên không đỏ": đã dính 27/09/2026. Mục trang thanh toán ghi
-  "Huỷ gói không đỏ", bản dựng làm theo: nút viền xám, hộp xác nhận icon xám, nút đen.
+  ("đăng xuất mất danger"), chốt lại cả cho đăng xuất hàng loạt.
+- "Vẫn dùng được tới hết kỳ nên không đỏ": đã dính, huỷ gói ra nút viền xám, hộp xác
+  nhận icon xám, nút đen.
 - "Nhiều app để nó trung tính": quy ước số đông không lật luật chủ dự án đã chốt.
 
 | Việc | Nguy hiểm? | Câu nào "có" |
@@ -80,13 +78,13 @@ nên đỏ sẵn. Có ba dạng tuỳ chỗ đứng:
 | **Mục trong menu** — dropdown, sidebar | trung tính như mục khác | chữ + icon đỏ, nền `rose-500/10` |
 | **Nút lặp lại trên từng dòng** — "Đăng xuất" mỗi thiết bị, "Gỡ" mỗi thành viên hiện thẳng | nút viền trung tính như nút dòng khác | viền trong suốt, nền `rose-500/10`, chữ `rose-700` |
 
-Nút thì nền mờ đỏ luôn hiện (chủ dự án chốt 21/09/2026), code ở
+Nút thì nền mờ đỏ luôn hiện (chủ dự án chốt), code ở
 `components/button.md`. Không bao giờ `bg-rose-500 text-white`, không viền đỏ.
 
 Nút lặp trên từng dòng thì đỏ lúc rê như mục menu, không đỏ sẵn: bốn dòng bốn nút nền
 đỏ là cả khung đỏ, và nút hàng loạt ở chân khung ("Đăng xuất 4 thiết bị khác", nút đứng
 riêng, đỏ sẵn) không còn nổi lên được. Class: `hover:border-transparent hover:bg-rose-500/10
-hover:text-rose-700`, kèm cùng bộ đó cho `focus-visible:`. Thử trên trang bảo mật 26/09/2026.
+hover:text-rose-700`, kèm cùng bộ đó cho `focus-visible:`.
 
 Phần dưới là cho **mục trong menu**. Khi rê vào thì đổi **cả hai**: chữ (kèm icon) sang đỏ, nền sang đỏ rất mờ.
 
@@ -125,9 +123,9 @@ Nó dẫn sang màn khác và là hành động phụ của khối: phải trôn
 nó là link chữ.
 
 - **Dẫn sang màn khác thì là link, nhìn cũng là link**: `<Link>` `inline-flex h-8 items-center text-sm font-medium text-foreground/70`, **không padding ngang, không nền**; rê vào thì `text-foreground underline underline-offset-4`. Không vòng focus (`I13`). `h-8` là vùng bấm dọc. Không icon mũi tên, không tô màu nhấn.
-- **Vì sao không còn là nút `ghost`** (đổi 26/09/2026, chủ dự án hỏi): (1) rê vào mà hiện nền xám bo góc là ngôn ngữ của nút làm một việc tại chỗ, trong khi cùng card các tên việc, tên dự án là link rê vào gạch chân: hai kiểu cho cùng một việc "sang trang khác" (`N5`); (2) `px-3` của nút đẩy chữ lệch vào trong 12px so với mép phải nội dung (số % của hàng bên dưới); bỏ padding thì chữ thẳng mép, đo trên `/dashboard`: 1235 = 1235.
+- **Vì sao không phải nút `ghost`**: (1) rê vào mà hiện nền xám bo góc là ngôn ngữ của nút làm một việc tại chỗ, trong khi cùng card các tên việc, tên dự án là link rê vào gạch chân: hai kiểu cho cùng một việc "sang trang khác" (`N5`); (2) `px-3` của nút đẩy chữ lệch vào trong 12px so với mép phải nội dung (số % của hàng bên dưới); bỏ padding thì chữ thẳng mép.
 - **Nạp thêm tại chỗ thì vẫn là nút `ghost`**: "Xem hoạt động cũ hơn" nối thêm hàng ngay bên dưới, không đổi trang (`components/timeline.md`). Phân theo việc nó làm, không theo chữ trên nó.
-- Bản cũ hơn nữa dùng `secondary` nền xám cao 40px ở đầu mọi card, card nào cũng có một khối xám kéo mắt (bỏ 23/09/2026).
+- Đừng dùng `secondary` nền xám cao 40px: card nào cũng có một khối xám kéo mắt.
 - **Căn phải.** Khối có header thì đặt ở header bên phải, cùng hàng với tiêu đề. Danh sách phải đọc hết mới bấm thì đặt cuối khối, vẫn căn phải, vẫn **trong khung** (xem `F3`).
 
 ```tsx
@@ -162,9 +160,8 @@ màu.
 dòng chỉ để đọc mà rê vào tô nền thì người dùng bấm thử, không ra gì. Dòng chứa một nút
 (như "Điểm danh") vẫn không phải dòng bấm được: hover nằm ở nút. Hai cách: bỏ hover, hoặc
 cho cả dòng là link tới chi tiết. Ngoại lệ duy nhất: rê vào dòng để hiện nút ẩn
-(`components/list-row.md`), nền rê báo nút đã hiện. Đã dính 01/10/2026 (dashboard trung tâm
-ngoại ngữ): bảy dòng "Lớp hôm nay" `hover:bg-background`, không link, con trỏ thường;
-card bên cạnh thì dòng là link, nên hai danh sách trông giống nhau mà một bên bấm được.
+(`components/list-row.md`), nền rê báo nút đã hiện. Dòng không link mà vẫn rê ra nền, đặt
+cạnh card có dòng là link, thì hai danh sách trông giống nhau mà một bên bấm được.
 Probe báo "Nền rê trên khối không bấm được".
 
 **I10. Hover của một dòng là một lớp nền nhẹ, không tô đậm lên, không phóng to.
@@ -177,7 +174,7 @@ Chọn token theo **nền hover có chạm hai mép khung hay không**:
 | Dòng | Hover | Vì sao |
 | --- | --- | --- |
 | **Thụt vào**, có bo góc, cách mép khung một khe: mục menu, link sidebar, dòng danh sách trong widget | `hover:bg-item-hover` | Nền xám nằm gọn trong khung trắng, mắt đọc ra một viên được ấn xuống |
-| **Tràn hết bề ngang**, chạm hai mép khung trắng: dòng bảng, danh sách chia `divide-y` sát mép | `hover:bg-surface-hover` | Tô `--background` thì dòng đó cùng màu với nền trang bên ngoài khung, trông như khung bị khoét thủng một dải (đã dính 21/09/2026, bảng khách hàng) |
+| **Tràn hết bề ngang**, chạm hai mép khung trắng: dòng bảng, danh sách chia `divide-y` sát mép | `hover:bg-surface-hover` | Tô `--background` thì dòng đó cùng màu với nền trang bên ngoài khung, trông như khung bị khoét thủng một dải |
 
 `--item-hover` ở nền sáng bằng đúng `--background`, ở nền tối là trắng phủ 5%. Đừng viết
 `hover:bg-background` cho dòng thụt vào: ở nền tối nền trang tối hơn card, rê vào là chìm
@@ -187,10 +184,10 @@ Dòng **đang chọn** (tick checkbox) của bảng dùng **cùng nền mờ v�
 Dấu hiệu của "đã chọn" là **checkbox đã tick**, không phải nền. Rê vào dòng đã chọn thì
 giữ nguyên. Nút ⋯ trong dòng rê vào có nền trùng tông hover cũng được, không cần tách.
 
-Chủ dự án chốt 23/09/2026 sau khi thử hết các cách tách nền, và cả ba đều bỏ:
+Chủ dự án chốt sau khi thử hết các cách tách nền, và cả ba đều bỏ:
 - **`--secondary`**: rõ, nhưng tick cả trang thành mười dải xám đậm, trái gu mờ.
 - **`--background`**: đúng bằng màu nền trang bên ngoài khung, dòng đã chọn trông như
-  khung bị khoét một dải — y hệt lỗi hover 21/09/2026, chỉ là đổi sang dòng đã chọn.
+  khung bị khoét một dải — y hệt lỗi hover tràn mép ở trên, chỉ là đổi sang dòng đã chọn.
 - **Vạch dọc đậm ở mép trái**: chọn tất cả thì mười vạch nối thành một cột đen (`N3`).
 
 Muốn hai trạng thái tách nhau thì tách bằng checkbox, không bằng thêm một bậc xám. Vạch
@@ -198,14 +195,14 @@ trái để dành cho **một** mục đang mở trong cột điều hướng (s
 
 **Mục đang mở không có checkbox thì nền của nó khác nền rê.** Danh sách bên trái của bố cục
 danh sách + chi tiết, hộp thư, cây thư mục: không có dấu nào khác ngoài nền, nên rê ra đúng
-nền đó là rê qua mục nào cũng trông như vừa chọn nó (đã dính 28/09/2026, hai lần). Luật
+nền đó là rê qua mục nào cũng trông như vừa chọn nó. Luật
 "cùng nền mờ" ở trên chỉ cho dòng bảng tick checkbox.
 
 - **Danh sách chọn một mục nằm trong card thì dòng thụt vào**, không tràn mép: khung `p-1`,
   dòng `rounded-xl` (card 16 = 12 + 4, `M19`), rê `hover:bg-item-hover`, đang mở một bậc đậm hơn `bg-secondary` (màu nhấn
   có sắc thì nền nhạt của màu nhấn, như `bg-primary/8`). Dòng tràn mép phải dùng `surface-hover`
   (`#f8f8fa`), trên card trắng chỉ chênh 7 mức, gần như không thấy, còn đang mở và đang rê thì
-  không còn bậc nào để tách (đã dính 28/09/2026).
+  không còn bậc nào để tách.
 - **Không vạch trái ở dòng nằm trong khung bo góc `overflow-hidden`**: dòng đầu và dòng cuối,
   bo góc khung cắt vạch thành một mảnh cong. Vạch trái chỉ cho cột điều hướng không bo góc
   (sidebar, cây thư mục).
@@ -213,8 +210,7 @@ nền đó là rê qua mục nào cũng trông như vừa chọn nó (đã dính
 **Nút và ô bấm được nằm trong dòng có nền rê thì nền rê của nó là `bg-foreground/8`**,
 không `/5` như nút đứng ngoài (`components/button.md`). Chuột đang ở trên nút thì cũng
 đang ở trên dòng, nên nút luôn chồng lên nền dòng `#f8f8fa`: `/5` ra `#ededef`, chỉ hơn nền
-dòng 11 mức, mắt đọc thành cùng một mảng xám (đã dính 25/09/2026, ô vai trò và nút ⋯ ở
-trang thành viên, chủ dự án: "hover vào trong table màu cũng khá như nhau"). `/8` ra
+dòng 11 mức, mắt đọc thành cùng một mảng xám. `/8` ra
 `#e6e6e8`, tách rõ mà vẫn nhạt. Áp cho ô sửa tại chỗ, nút ⋯, icon button trong dòng, cả
 lúc mở (`aria-expanded:bg-foreground/8`). Chữ phụ trong ô đó (`—` của ô trống, ngày
 nhạt) rê vào thì lên `hover:text-foreground`, như nút ghost: `--muted` trên nền `/8` chỉ
@@ -239,7 +235,7 @@ Thiết bị không có chuột thì không có hover: nút ẩn-hiện-khi-rê 
 `transition-all`. Khối nổi **mở và đóng** (modal, dropdown, panel, toast) thì có chuyển
 động vào ra riêng, số ở mục "Chuyển động" cuối `layouts/overlay.md`.
 
-**I13. Không vẽ vòng focus.** Chủ dự án chốt 28/09/2026.
+**I13. Không vẽ vòng focus.** Chủ dự án chốt.
 
 Nút (mọi dạng), link, link sidebar, tab, chip, checkbox, radio, công tắc, card chọn, dòng
 danh sách, tay cầm thanh trượt: chỉ `outline-hidden`, **không** `focus-visible:ring-*`,
@@ -248,16 +244,16 @@ ngoài. Đánh đổi đã biết: người dùng bàn phím không thấy mình
 thêm lại khi thấy Tab tới không có dấu gì**, và đừng báo nó là lỗi lúc soi (`V1`). Dự án
 cần đạt chuẩn tiếp cận thì xem `I14`.
 
-**Ngoại lệ lúc soi** (chủ dự án chốt 30/09/2026): dự án **tự vẽ** vòng focus ở các control
+**Ngoại lệ lúc soi** (chủ dự án chốt): dự án **tự vẽ** vòng focus ở các control
 khác mà một chỗ Tab tới không thấy gì, thì đó là chỗ bị đè mất trong hệ của họ, không phải
 gu. Báo Lệch hệ, sửa bằng đúng vòng của họ (token `--focus-ring`, class focus của component
-dùng chung). Dự án không vẽ vòng ở đâu cả thì vẫn theo luật trên: không báo. Đã sót
-30/09/2026 ở dự án mồi: tab đang chọn đặt `box-shadow` viền trong, đè mất vòng focus của
-`Button`, trong khi mọi nút khác có vòng.
+dùng chung). Dự án không vẽ vòng ở đâu cả thì vẫn theo luật trên: không báo. Ca hay sót:
+tab đang chọn đặt `box-shadow` viền trong, đè mất vòng focus của `Button`, trong khi mọi
+nút khác có vòng.
 
 Lý do chốt: vòng xám 2px vẽ chồng lên dấu đang chọn, vạch trái, gạch chân thành ba bốn dấu
 trên một dòng; bấm phím (Shift, phím tắt) trong lúc đang đứng trên phần tử cũng làm nó hiện,
-nên người dùng chuột vẫn gặp (đã dính 28/09/2026, danh sách việc làm và nút tài khoản).
+nên người dùng chuột vẫn gặp.
 
 Vẫn giữ, vì không phải vòng bao ngoài:
 
@@ -274,12 +270,12 @@ hay bàn phím.
 **Nút mở select trông như ô nhập nhưng không phải ô nhập**: chọn xong một mục, focus
 trả về nút (đúng, cho bàn phím), và nếu nút dùng `focus:` thì nó giữ viền đậm + ring y
 như đang mở, dù danh sách đã đóng. Trên Safari bấm nút khác không lấy focus, nên viền đó
-bám mãi tới khi bấm ra chỗ trống. Đã dính 26/09/2026 ở popover Lọc: ô "Người phụ trách"
-viền đen đậm cạnh ô "Hạn chót" viền nhạt, hai ô cùng loại mà trông như một ô đang mở.
+bám mãi tới khi bấm ra chỗ trống: hai ô cùng loại đứng cạnh nhau mà một ô viền đen đậm,
+trông như đang mở.
 Dùng `focus-visible:` (bàn phím mới sáng; trình duyệt tự biết lần focus trả về sau cú bấm
 chuột không phải bàn phím) và `aria-expanded:` (đang mở).
 
-**Vì sao ô điền được ring mà nút thì không.** Chủ dự án chốt 21/09/2026, đảo bản
+**Vì sao ô điền được ring mà nút thì không.** Chủ dự án chốt, đảo bản
 "ô chỉ đổi viền": viền đổi màu một mình thì trong form nhiều ô khó thấy ô nào
 đang gõ, nhất là select đang mở. Ring ở đây là `--ring-focus` (màu nhấn 10%) dày
 2px (`ring-2`, không `ring-4`: `F20`), **mờ tới mức đọc ra là vầng sáng quanh ô**, không phải vòng viền thứ hai. Ô lỗi lúc thường chỉ viền đỏ `border-red-500` + câu lỗi, **không quầng**; quầng đỏ
@@ -316,9 +312,9 @@ tiếp cận thì trả vòng lại, **ở đúng một chỗ** (class gốc c�
 
 **I15. Sidebar: mục đang chọn tô nền xám, không tô màu nhấn, không viền.** Mục
 chưa chọn thì không nền. Rê vào `hover:bg-item-hover`; đang chọn **đậm hơn một bậc**
-`bg-secondary` + `font-medium`. Cây thư mục cùng công thức. Bản trước cho rê và đang chọn
-cùng nền `--background` và cấm `--secondary` vì "đậm quá"; đổi 29/09/2026: mục đang chọn
-không có dấu nào khác ngoài nền nên phải khác nền rê (`I10`), probe xếp Hỏng. Luật "cùng
+`bg-secondary` + `font-medium`. Cây thư mục cùng công thức. Đừng cho rê và đang chọn
+cùng nền `--background`: mục đang chọn không có dấu nào khác ngoài nền nên phải khác nền
+rê (`I10`), probe xếp Hỏng. Luật "cùng
 nền mờ" chỉ còn cho dòng bảng tick checkbox. Hover hay đang chọn thì **icon và chữ cùng
 lên `--foreground`**; lúc thường cả hai `foreground/70`, không mờ tới `--muted`.
 Xem `layouts/app.md`.
@@ -347,13 +343,13 @@ người đụng tới để đường chính ngắn (`components/accordion.md`,
 
 **I18. Thanh cuộn tự ẩn: đứng yên thì không thấy, rê vào hoặc đang cuộn thì hiện.**
 
-Công thức đã chạy ở dự án thật (chốt 08/09/2026, sửa lỗi Chrome 18/09/2026), CSS
+Công thức đã chạy ở dự án thật, CSS
 nằm sẵn trong `tokens.css`, áp cho cả app:
 
 - Thanh **4px**, rãnh trong suốt, thumb bo tròn hẳn.
 - **Đứng yên: thumb trong suốt.** Rê chuột vào vùng cuộn: hiện mờ (16%). Đang cuộn: đậm hơn (28%). Rê thẳng vào thumb: 40%.
 - **Ẩn bằng màu trong suốt, không bằng `scrollbar-width: none`.** Bề rộng vẫn giữ chỗ, lúc thanh hiện ra nội dung không bị đẩy ngang 4px. Dùng `none` là mỗi lần cuộn cả khối giật một cái.
-- **Màu thumb đi qua biến `--scrollbar-thumb` đặt trên khung cuộn**, không viết `*:hover::-webkit-scrollbar-thumb`. Chrome không vẽ lại thumb theo selector đó: rê vào không hiện gì, phải cuộn mới hiện, nên thanh "tự ẩn" thành "ẩn tới lúc đã cuộn" (đã dính 24/09/2026 ở command palette, đo lại bằng Chrome thật). `*:hover { --scrollbar-thumb: … }` thì Chrome vẽ lại ngay. Dự án đang dùng bản cũ thì thay cả khối bằng khối trong `tokens.css`.
+- **Màu thumb đi qua biến `--scrollbar-thumb` đặt trên khung cuộn**, không viết `*:hover::-webkit-scrollbar-thumb`. Chrome không vẽ lại thumb theo selector đó: rê vào không hiện gì, phải cuộn mới hiện, nên thanh "tự ẩn" thành "ẩn tới lúc đã cuộn". `*:hover { --scrollbar-thumb: … }` thì Chrome vẽ lại ngay. Dự án đang dùng bản cũ thì thay cả khối bằng khối trong `tokens.css`.
 - **Khối Firefox phải bọc `@supports not selector(::-webkit-scrollbar)`.** Từ Chrome 121, có `scrollbar-width` là Chrome bỏ hết `::-webkit-scrollbar` và vẽ thanh gốc to, chiếm chỗ.
 - Trạng thái "đang cuộn" cần một component nhỏ gắn `.is-scrolling` vào **đúng phần tử đang cuộn**, gỡ ra sau 700ms. Nghe `scroll` ở pha **capture** để bắt được cả vùng cuộn lồng nhau (sidebar, danh sách trong modal). Mount một lần ở gốc app:
 
@@ -398,10 +394,10 @@ nằm trong vùng cuộn; người vừa mở command palette bằng ⌘K, tay c
 phím, không thấy gì cả. Tín hiệu lúc đứng yên là **mục cuối bị mép dưới cắt
 ngang, lộ khoảng một nửa**. macOS, iOS, Android mặc định ẩn thanh cuộn lúc đứng
 yên, và người dùng hay bỏ sót cả thanh cuộn đang hiện; nội dung bị cắt ngang thì mắt
-muốn cuộn tiếp để xem nốt (kiểm chứng 26/09/2026):
+muốn cuộn tiếp để xem nốt:
 
-- **Chọn `max-h` sao cho mép dưới cắt giữa một mục, không cắt sát ranh giới hai mục.** Cắt còn thiếu vài px thì trông như danh sách hết ở đó (đã dính 24/09/2026: palette cắt mục "Hợp đồng" lộ gần trọn, không ai biết còn mục bên dưới). Công thức cho khung `p-1`, mục `h-10`: `max-h` = 40 × số mục trọn + 4 + 20 → **`max-h-76`** (304px, lộ 7 mục rưỡi) cho select, dropdown dài. Danh sách có nhãn nhóm thì đo ở trạng thái mặc định rồi xê `max-h` từng bậc 4px tới khi mục cuối lộ giữa 1/3 và 2/3.
-- **Mục cao thấp khác nhau** (thông báo, bình luận, kết quả tìm có mô tả) thì không chốt được một con số `max-h`. Tính bằng JS lúc mở: trong giới hạn cao tối đa, tìm mục thấp nhất mà **điểm giữa** của nó còn lọt, rồi hạ chiều cao danh sách xuống đúng điểm giữa đó. Dữ liệu dài ngắn hay màn cao thấp thế nào cũng cắt giữa một mục (dự án test làm trước skill, 24/09/2026):
+- **Chọn `max-h` sao cho mép dưới cắt giữa một mục, không cắt sát ranh giới hai mục.** Cắt còn thiếu vài px thì trông như danh sách hết ở đó (mục cuối lộ gần trọn thì không ai biết còn mục bên dưới). Công thức cho khung `p-1`, mục `h-10`: `max-h` = 40 × số mục trọn + 4 + 20 → **`max-h-76`** (304px, lộ 7 mục rưỡi) cho select, dropdown dài. Danh sách có nhãn nhóm thì đo ở trạng thái mặc định rồi xê `max-h` từng bậc 4px tới khi mục cuối lộ giữa 1/3 và 2/3.
+- **Mục cao thấp khác nhau** (thông báo, bình luận, kết quả tìm có mô tả) thì không chốt được một con số `max-h`. Tính bằng JS lúc mở: trong giới hạn cao tối đa, tìm mục thấp nhất mà **điểm giữa** của nó còn lọt, rồi hạ chiều cao danh sách xuống đúng điểm giữa đó. Dữ liệu dài ngắn hay màn cao thấp thế nào cũng cắt giữa một mục:
 
 ```ts
 // Chiều cao để mục cuối lộ đúng một nửa (luật I18). Mỗi mục gắn data-peek-item.
@@ -422,7 +418,7 @@ export function getPeekListHeight(listElement: HTMLElement, maxHeight: number): 
 }
 ```
 - **Lớp nổi có danh sách cuộn (command palette, select, dropdown dài) chớp thanh cuộn một lần lúc mở**, như macOS: nếu `scrollHeight > clientHeight` thì gắn `.is-scrolling` vào vùng danh sách, gỡ ra sau ~1 giây. Chỉ lớp nổi; sidebar và trang thì không chớp.
-- **Vùng cuộn nằm trong khung bo góc (lớp nổi, card) thì rãnh lùi theo đầu nó chạm**: đầu nào chạm góc bo thì lùi **bằng bán kính góc bo** (khung `rounded-2xl` → `mb-4`, cả hai đầu chạm thì `my-4`), vì đầu tròn của thanh 4px sát mép chỉ nằm trọn trong góc khi cách mép từ R − 2px; đầu nào nằm dưới đường kẻ thẳng thì `mt-2`. Viết bằng `[&::-webkit-scrollbar-track]:mb-4`. Khe phải trừ đi 4px của thanh (`pr-1` thay cho `p-2`, kèm `[scrollbar-gutter:stable]`). Lùi thiếu thì cuộn tới cuối, đuôi thanh bị góc bo cắt vát (`my-2` vẫn thiếu 2px ở khung bo 16px, đã dính 24/09/2026); không trừ khe thì khe phải rộng hơn khe trái 4px (đo bằng Chrome 24/09/2026). Xem mẫu ở mục Command palette trong `layouts/overlay.md`.
+- **Vùng cuộn nằm trong khung bo góc (lớp nổi, card) thì rãnh lùi theo đầu nó chạm**: đầu nào chạm góc bo thì lùi **bằng bán kính góc bo** (khung `rounded-2xl` → `mb-4`, cả hai đầu chạm thì `my-4`), vì đầu tròn của thanh 4px sát mép chỉ nằm trọn trong góc khi cách mép từ R − 2px; đầu nào nằm dưới đường kẻ thẳng thì `mt-2`. Viết bằng `[&::-webkit-scrollbar-track]:mb-4`. Khe phải trừ đi 4px của thanh (`pr-1` thay cho `p-2`, kèm `[scrollbar-gutter:stable]`). Lùi thiếu thì cuộn tới cuối, đuôi thanh bị góc bo cắt vát (`my-2` vẫn thiếu 2px ở khung bo 16px); không trừ khe thì khe phải rộng hơn khe trái 4px. Xem mẫu ở mục Command palette trong `layouts/overlay.md`.
 - **Không phủ dải mờ ở đáy** để báo còn nữa: thêm một lớp gradient là thêm tín hiệu cho việc mục bị cắt nửa đã nói (`N3`), và dải mờ đè lên chữ của mục cuối.
 
 ```ts
@@ -439,9 +435,10 @@ export function flashScrollbar(scrollElement: HTMLElement | null) {
 
 Khung chờ phải **đúng hình** của nội dung sẽ hiện ra, không phải một vòng xoay
 giữa màn. Khung chờ sai hình thì trang nhảy một cái lúc dữ liệu về, và đó là thứ
-người dùng cảm nhận được dù không gọi tên được.
+người dùng cảm nhận được dù không gọi tên được. Đã có dữ liệu trên màn (đổi lọc, đổi
+trang, đổi tab) thì giữ dữ liệu cũ, không vẽ lại khung chờ.
 
-Xem `components/empty-state.md`.
+Đang tải: `components/loading.md`. Rỗng, lỗi: `components/empty-state.md`.
 
 ---
 
@@ -477,7 +474,7 @@ nút đã mở, khoá cuộn nền, và aria đúng chuẩn — tự dựng thì
 **I24. Panel thông báo mở tại chỗ, không điều hướng sang trang khác.** Điều hướng
 đi mất luôn ngữ cảnh chỉ để liếc một cái thông báo.
 
-**I25. Đã bỏ (22/09/2026).** Luật cũ nói "đánh dấu đã đọc" chỉ áp cho phạm vi
+**I25. Đã bỏ.** Luật cũ nói "đánh dấu đã đọc" chỉ áp cho phạm vi
 đang lọc. Đó là logic dữ liệu, không phải giao diện, người dùng tự quyết (xem
 phạm vi ở `../SKILL.md`). Giữ số để các chỗ dẫn `I26` trở đi không lệch.
 
@@ -502,7 +499,7 @@ Ba thứ đi liền nhau, thiếu một cái là lỗi:
 là phải xoá hết gõ lại, và đó là lý do rời form phổ biến nhất ở màn đăng nhập.
 
 - Nút **chỉ có icon**, `absolute` trong ô, căn phải. Icon `Eye` / `EyeOff` theo `F15`.
-- **Nút `size-10`, `right-1` căn giữa dọc** (`inset-y-0 my-auto`, không `-translate-y-1/2`: `N11`), icon `size-4` giữa nút. Icon đứng đúng chỗ cũ, chỉ vùng bấm to ra; vừa khít `pr-11` (4 + 40 = 44px). Nút ôm sát icon (`p-1`, 24px) thì trên điện thoại bấm trượt vào ô, bàn phím bật lên thay vì hiện mật khẩu (đã dính 25/09/2026). Không vòng focus (`I13`).
+- **Nút `size-10`, `right-1` căn giữa dọc** (`inset-y-0 my-auto`, không `-translate-y-1/2`: `N11`), icon `size-4` giữa nút. Icon đứng đúng chỗ cũ, chỉ vùng bấm to ra; vừa khít `pr-11` (4 + 40 = 44px). Nút ôm sát icon (`p-1`, 24px) thì trên điện thoại bấm trượt vào ô, bàn phím bật lên thay vì hiện mật khẩu. Không vòng focus (`I13`).
 - **`type="button"`.** Quên thì nó mặc định là `submit` — bấm xem mật khẩu hoá ra gửi form.
 - `aria-label` đổi theo trạng thái: "Hiện mật khẩu" / "Ẩn mật khẩu". Không phải một nhãn cố định.
 - Chừa chỗ cho nút bằng padding phải trên chính ô (`pr-11`), đừng để chữ gõ dài chui xuống dưới icon.
@@ -538,7 +535,7 @@ qua link) thì thêm một ô ẩn mang tên tài khoản, ngay đầu form:
 
 Không có ô này thì trình quản lý mật khẩu lưu mật khẩu mới mà không biết của tài khoản
 nào, hoặc lưu thành một mục mới bên cạnh mục cũ. Lần đăng nhập sau nó vẫn gợi ý mật khẩu
-cũ, người dùng tưởng đổi chưa được (đã dính 25/09/2026, `/forgot-password/new-password`).
+cũ, người dùng tưởng đổi chưa được.
 
 Khung gợi ý **che mất ô ngay dưới** — đó là hành vi bình thường của trình duyệt,
 nó tự đóng khi gõ hoặc khi rời ô. Đừng đẩy khoảng cách các trường ra xa để
@@ -607,8 +604,7 @@ vì padding cũng là vùng bấm.
 `<details>` mở và đóng tức thì, không trình duyệt nào animate sẵn: bấm là nội dung
 giật ra, bấm lần nữa là biến mất, cả trang bên dưới nhảy theo (`N1`). Cách vá bằng
 `::details-content` + `interpolate-size` chỉ chạy trên Chrome; Safari và Firefox vẫn
-giật. Đã dính 26/09/2026: FAQ trang giá dựng bằng `<details>` theo đúng spec cũ của
-skill, chủ dự án bấm thử thấy "giật ra chứ không có animation như accordion".
+giật.
 
 Áp cho mọi thứ mở/đóng: accordion, FAQ, nhóm sidebar thu gọn, mục cây, "xem chi
 tiết" trong dòng, khối bước công cụ trong chat. Cùng lý do, **không render có điều
@@ -645,7 +641,7 @@ Công thức lõi, giống nhóm sidebar (`layouts/app.md`):
 - **Nút và nội dung giữ padding cố định, không đổi theo trạng thái.** Nút `py-*` như nhau
   lúc mở và đóng; nội dung cùng `px` với nút, chỉ `pb`, nối tiếp padding dưới của nút.
   Không bớt `pb` của nút khi mở, không margin âm (`N11`): tô nền nút là chữ lệch hẳn về
-  một mép (đã dính 26/09/2026, FAQ trang giá).
+  một mép.
 - Đổi lại mất Ctrl+F tự mở khối chứa chữ (chỉ `<details>` có). Chấp nhận, như
   accordion của mọi thư viện component.
 
@@ -670,9 +666,6 @@ dùng bàn phím mất chỗ.
 - Đổi focus sau khi React đã gỡ dòng: `flushSync` rồi `focus()`, hoặc giữ id đích trong
   ref và focus trong `useEffect` khi danh sách đổi.
 
-Đã dính 26/09/2026 ở trang bảo mật: đăng xuất một thiết bị và đăng xuất hàng loạt, cả
-hai lần `document.activeElement` là `<body>`.
-
 **I32. Nền rê của một khối không được trùng nền của khối con bên trong nó.** ⚑
 
 Dòng danh sách, ô danh mục, card bấm được hay có một ô icon (hoặc badge) nền xám nhạt.
@@ -685,6 +678,3 @@ file cũng `bg-background`: ghép hai cái là dính.
   vẫn đọc ra là một ô.
 - Hoặc cho ô con một viền `border-border` để nó không dựa vào nền.
 - Kiểm khi rê: ô con có còn nhìn ra là một ô không. Probe báo "Khối con biến mất lúc rê".
-
-Đã dính 27/09/2026 ở bản dựng lại của dự án mồi phase 2: hàng "Mời bạn bè" và ô danh mục
-đang rê mất hẳn ô icon.
