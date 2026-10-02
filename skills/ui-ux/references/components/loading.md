@@ -145,7 +145,7 @@ luôn trên màn lúc bấm**, không spinner, không khoá điều khiển tron
 Đây là việc nhỏ, gần như luôn thành công, và người dùng thường bấm liền mấy cái.
 
 - **Lỗi thì trả lại như cũ** (công tắc gạt về, thẻ về cột cũ, đúng vị trí cũ) **kèm toast lỗi** nói cái gì chưa lưu được và có Thử lại: "Chưa chuyển được 'Sửa trang thanh toán' sang Đang làm". Trả lại im lặng thì người dùng tưởng mình bấm trượt. Tên việc dài thì cắt ~30 ký tự + `…` (`../layouts/overlay.md`, Toast), dòng mô tả nói thẻ đang nằm đâu ("Thẻ đã về lại cột Cần làm").
-- Toast lỗi theo `../layouts/overlay.md`: không tự tắt, `role="alert"`.
+- Toast lỗi theo `../layouts/overlay.md`: không tự tắt, `role="alert"`. Chỗ đã có dấu tự lưu (hàng cài đặt) thì câu lỗi nằm ở dấu đó, không thêm toast (mục dưới).
 - **Không dùng cho việc không đổi lại được hoặc máy chủ phải quyết**: thanh toán, gửi lời mời, xoá vĩnh viễn, tạo bản ghi mà màn kế tiếp cần mã của nó. Mấy việc đó là nút đang xử lý (`button.md`).
 - Gạt thì đổi tại chỗ, có xảy ra hay không là logic (`N10`); skill chỉ dựng đủ hai hình: đã đổi, và đã trả lại + toast.
 
@@ -169,8 +169,9 @@ cạnh tiêu đề tài liệu ở header trình soạn thảo.
 | --- | --- |
 | Đang lưu | "Đang lưu…" `text-xs text-muted`, không spinner. Hiện theo luật 300ms |
 | Đã lưu | icon `check` `size-3.5` + "Đã lưu", cùng màu `text-muted`, không xanh lá. Cài đặt: tắt sau ~2 giây. Trình soạn thảo: ở lại, thành "Đã lưu lúc 14:32" |
-| Không lưu được | "Chưa lưu được" `text-red-600` + link chữ "Thử lại". Ở lại tới khi lưu được |
+| Không lưu được | **Điều khiển trả về giá trị đã lưu** (công tắc gạt về, select về lựa chọn cũ), cạnh nhãn "Chưa lưu được" `text-red-600` + link chữ "Thử lại" (áp lại đúng thay đổi vừa hỏng). Ở lại tới khi lưu được. Không thêm toast: lỗi đã nói tại chỗ (`N3`) |
 
+- **Hỏng mà công tắc vẫn nằm ở vị trí mới thì màn đang nói sai**: công tắc tắt cạnh "Chưa lưu được", người đọc không biết máy chủ đang bật hay tắt. Trả về giá trị đã lưu, như ca đổi ngay trên màn. **Riêng ô chữ giữ nguyên chữ đã gõ**, không xoá thứ người dùng gõ.
 - **Không xanh lá cho "Đã lưu"**: lưu là việc thường xuyên, như dấu `Check` xám của bước công cụ trong `chat.md`. Xanh lá để dành cho trạng thái "đang ổn" (`rules-color.md`).
 - Dấu nằm trong cùng dòng với nhãn, `flex-wrap`, đổi chữ thì chỉ nó dài ra, không đẩy điều khiển (`N1`).
 - Công tắc mở luồng (quét mã, nhập mật khẩu) thì không có dấu này, xem `choice-controls.md`.
