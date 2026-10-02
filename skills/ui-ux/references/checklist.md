@@ -44,7 +44,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 
 ### Màu
 
-- [ ] Đếm màu nhấn trên màn hình. Nhiều hơn một thì cắt (tag phân loại không tính, `M8`).
+- [ ] Đếm màu nhấn trên màn hình. Nhiều hơn một thì cắt (tag phân loại `M8` và màu nhận diện thực thể `M34` không tính). App có dự án, board, danh mục người dùng tạo mà tên vẫn xám trơn thì thêm chấm màu theo `M34`.
 - [ ] **Cả màn có chỗ nào dùng màu nhấn không?** Không có là chưa quyết định, không phải tối giản (`D5`).
 - [ ] Có khối nào được tô nền màu chỉ để phân loại không? Phân loại bằng icon + chữ (`M5`).
 - [ ] Grep mã hex. Chỉ được có trong khối đổi thương hiệu ở đầu file.

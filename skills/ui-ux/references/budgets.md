@@ -11,7 +11,7 @@ Skill này chỉ lo **màn hình trong app** — dashboard, danh sách, bảng, 
 
 | Hạng mục | Trần | Ghi chú |
 | --- | --- | --- |
-| Màu nhấn | 1 | Màu thứ hai phải xin phép. Tag phân loại không tính, xem `M8` |
+| Màu nhấn | 1 | Màu thứ hai phải xin phép. Tag phân loại (`M8`) và màu nhận diện của thực thể người dùng tạo (`M34`) không tính |
 | Họ chữ | 1 | Phân vai bằng weight, không bằng font thứ hai |
 | Sắc độ chữ | 3 | chính, phụ, và màu trên nền nhấn |
 | Bậc bo góc | 4 | full, lớn, giữa, nhỏ |

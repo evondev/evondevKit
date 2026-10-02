@@ -185,6 +185,29 @@ nói một câu lý do, rồi ghi ngoại lệ vào đây.
 emoji, chữ đỏ trong markdown — chỉ làm KHUNG bao quanh trung tính, đừng đi sửa
 ruột.
 
+**M34. Thứ người dùng tạo ra thì có màu nhận diện.** Dự án, board, workspace, danh
+mục, cột kanban, kênh: thứ người dùng tự đặt tên, hiện ở nhiều chỗ, và cần nhận ra
+bằng một cái liếc trong danh sách dài. App một màu nhấn nhìn gọn nhưng dễ đơn điệu;
+điểm màu nên nằm ở **dữ liệu**, còn **khung** (nút, sidebar, header, ô nhập) vẫn một
+màu nhấn như `M2`. Khác `M8`: `M8` là nhãn phân loại gắn lên một mục, `M34` là màu
+của chính thực thể. Một card có thể mang cả hai.
+
+- **Khi nào dùng:** app có thực thể như trên, và nó xuất hiện từ hai chỗ trở lên (sidebar, bảng, breadcrumb, ô chọn) hoặc có từ năm cái trở lên. Không có thì thôi, đừng bịa ra thực thể để có chỗ tô. Có thì làm luôn, không hỏi.
+- **Sáu sắc của avatar**, cùng thứ tự (`components/avatar.md`): emerald, sky, indigo, pink, amber, violet. Không thêm sắc, không `red` / `rose` (`M30`).
+- **Màu nằm trên dấu nhỏ**, không trên mảng lớn: chấm tròn `size-2` sắc `-500` (nền tối `-400`) cạnh tên; ô vuông bo góc chữ cái đầu theo khuôn avatar; dải `h-1` ở đỉnh card hay đầu cột; ảnh bìa người dùng tải lên. **Không** tô nền cả card, nền dòng, nền cột, không tô chữ tên.
+- **Màu là dữ liệu, không tính lúc render.** Tạo mới thì có ô chọn sáu màu, mặc định lấy theo `id` như avatar; lưu lại cùng thực thể. Ở sidebar, bảng, breadcrumb, ô chọn đều cùng một màu.
+- **Tên luôn hiện cạnh màu.** Màu giúp liếc, không thay chữ; chấm và ô vuông để `aria-hidden`.
+- **Trạng thái của khung không đổi:** mục sidebar đang chọn vẫn nền `bg-secondary` trung tính (`checklist.md`, mục Sidebar), chấm giữ nguyên màu, không đổi sang màu thực thể.
+- Không tính vào ngân sách một màu nhấn (`budgets.md`). Dự án đã có cách tô riêng cho thực thể thì theo họ.
+
+```
+  DỰ ÁN                         ┌─────────────────────┐
+  ● Website khách A             │▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔│ ← dải h-1 màu dự án
+  ● App nội bộ                  │ Sửa form đăng ký     │
+  ● Marketing Q4                │ [Bug] [Gấp]          │ ← nhãn M8
+                                └─────────────────────┘
+```
+
 **M11. Chữ chỉ ba sắc độ.** Chữ chính, chữ phụ, và màu nằm trên nền nhấn.
 
 Ngoại lệ duy nhất: **mục điều hướng lúc chưa rê/chưa chọn** dùng
