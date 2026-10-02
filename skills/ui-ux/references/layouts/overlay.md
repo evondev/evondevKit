@@ -121,7 +121,7 @@ panel trượt hoặc trang riêng.
 - **Mô tả dưới tiêu đề chạy tới sát cột nút ✕**: chỉ header chừa `pr-10` cho nút đóng, đừng đặt `max-w` hẹp cho câu mô tả. Thêm `text-pretty` để không rớt một chữ xuống dòng cuối ("…để tham gia / nhóm.").
 - Có ô nhập nên **bấm ra ngoài không đóng** (`I20`); đóng bằng ✕, Huỷ, Esc. Mở ra thì tiêu điểm vào ô đầu tiên.
 - Nút chính ở footer là `primary` (một hành động duy nhất của modal, `I2`), **chỉ có chữ** theo `I1`: "Gửi lời mời", không icon. Nút Huỷ `secondary`. Cả hai `h-11 md:h-10`, cao bằng ô nhập.
-- **Trạng thái đang gửi**: nút chỉ chữ thì **spinner đè lên giữa nút, chữ `invisible`** (vẫn chiếm chỗ), nút `disabled` + `aria-busy`. Chèn spinner cạnh chữ là nút rộng ra, đẩy Huỷ sang trái. Xem `../components/button.md`.
+- **Trạng thái đang gửi**: nút chỉ chữ thì **spinner đè lên giữa nút, chữ `invisible`** (vẫn chiếm chỗ), nút `aria-disabled` + `aria-busy`, không `disabled`. Chèn spinner cạnh chữ là nút rộng ra, đẩy Huỷ sang trái. Xem `../components/button.md`.
 - Câu lỗi dưới ô nói **cách sửa**, theo bảng "Ô trống thì viết gì" trong `form.md` (một nguồn): "Email phải có dấu @".
 - **Modal mời thành viên: ô email là tag input** (`../components/tag-input.md`), mời nhiều người một lần, nút ghi số ("Gửi 3 lời mời"); email trùng phân biệt "Đã là thành viên" với "Đã mời …, chưa chấp nhận". Chi tiết ở "Trang thành viên và phân quyền" trong `app.md`.
 
@@ -490,6 +490,7 @@ form; toast bật ra ở đáy đúng lúc vừa bấm nút là che mất nửa 
 - **Chữ dài quá một dòng thì tách hai tầng**, không để một câu vỡ thành ba dòng: tầng trên `text-sm font-medium` nói chuyện gì xảy ra, tầng dưới `text-sm text-muted` nói vì sao. Cụm nút căn giữa theo chiều dọc của cả khối.
 - **Chữ không lặp lại nút** (`M6`): đã có nút Thử lại thì câu không ghi "rồi thử lại".
 - Viết như câu thường: không viết hoa danh từ giữa câu ("đơn #2041", không "Đơn #2041"), không dấu chấm cuối toast một dòng. Cả bộ một kiểu.
+- Tiêu đề và mô tả toast `text-pretty` (`T10`): màn hẹp toast rộng gần hết màn, câu dài vừa quá một dòng là rớt một chữ ("…xong sẽ báo" / "bạn"). Câu dài thì tách: tiêu đề ngắn nói việc, phần còn lại xuống dòng mô tả.
 - Icon `size-5` màu theo nghĩa (`rules-color.md`): xong `emerald-600`, lỗi `red-600`. Nền toast vẫn `--surface`, không tô nền màu.
 - Toast báo xong việc: **không nút đóng** (vì nó tự tắt). Toast có Hoàn tác cũng không nút đóng.
 - Toast báo hỏng: **có nút Thử lại và nút đóng** (vì nó không tự tắt), `role="alert"` thay cho `role="status"`.

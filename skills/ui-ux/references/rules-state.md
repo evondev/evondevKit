@@ -435,9 +435,10 @@ export function flashScrollbar(scrollElement: HTMLElement | null) {
 
 Khung chờ phải **đúng hình** của nội dung sẽ hiện ra, không phải một vòng xoay
 giữa màn. Khung chờ sai hình thì trang nhảy một cái lúc dữ liệu về, và đó là thứ
-người dùng cảm nhận được dù không gọi tên được.
+người dùng cảm nhận được dù không gọi tên được. Đã có dữ liệu trên màn (đổi lọc, đổi
+trang, đổi tab) thì giữ dữ liệu cũ, không vẽ lại khung chờ.
 
-Xem `components/empty-state.md`.
+Đang tải: `components/loading.md`. Rỗng, lỗi: `components/empty-state.md`.
 
 ---
 

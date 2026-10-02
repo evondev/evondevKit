@@ -436,7 +436,8 @@ thì một trong hai chỗ là sai.
 | Khung chat với trợ lý AI: tin nhắn hai phía, bước dùng công cụ, gợi ý hỏi tiếp, ô soạn tin | `references/components/chat.md` |
 | Thanh trượt chọn khoảng số, khoảng giá | `references/components/range-slider.md` |
 | Ô nhập nhiều tag (email người nhận, nhãn) | `references/components/tag-input.md` |
-| Danh sách rỗng, đang tải (chữ hoặc khung chờ), lỗi tải | `references/components/empty-state.md` |
+| Danh sách rỗng, lỗi tải | `references/components/empty-state.md` |
+| Đang tải: khung chờ, tải lần hai, đổi ngay trên màn, "Đang lưu… / Đã lưu", việc chạy lâu | `references/components/loading.md` |
 | Thanh thông báo trong trang (thông tin, cần chú ý, lỗi) | `references/components/banner.md` |
 | Chip lọc, chip lọc đang áp dụng (có ×), nút chỉ có icon, thanh tab (4 variant), phân trang | `references/components/small-controls.md` |
 | Avatar, nhóm avatar chồng nhau | `references/components/avatar.md` |
