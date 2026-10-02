@@ -38,7 +38,7 @@ Nhận chế độ từ đề, không hỏi, rồi nói một dòng ở phần m
 | Sửa xong | chụp lại, chạy lại probe route đó | chạy lại probe **tới khi danh sách `P` trống**, tối đa ba vòng, như cổng 3 (`checklist.md`) | như cột giữa |
 
 Chế độ dựng lại chỉ vào khi đề nói giữ brand hay giữ giao diện; đề chỉ nói "dựng lại theo
-skill" thì đi nhánh `U` (chủ dự án chốt 29/09/2026), và nhánh đó vẫn giữ brand theo bảng vai
+skill" thì đi nhánh `U` (chủ dự án chốt), và nhánh đó vẫn giữ brand theo bảng vai
 màu dưới đây (`U4`). Chế độ theo gu skill thì đổi nhận diện, phải là người dùng tự nói ra.
 
 **Bảng vai màu, ghi trước khi dựng lại** ⚑. Brand không chỉ là màu nút chính mà là
@@ -55,7 +55,7 @@ màu dưới đây (`U4`). Chế độ theo gu skill thì đổi nhận diện, 
 
 Chế độ giữ brand được đổi **bố cục, nhịp, cấu trúc component, cỡ chữ, bóng, viền, cách đè
 lên ảnh**: nói gọn là số 2 = gu của số 3 trừ màu. Giữ màu mà giữ luôn mọi cái rườm của
-bản cũ thì bản dựng lại vẫn xấu y như cũ (đã dính 28/09/2026: card dựng lại đúng màu nhưng
+bản cũ thì bản dựng lại vẫn xấu y như cũ (card dựng lại đúng màu nhưng
 còn nhãn tiền tố, chân card hai tầng, bốn lớp phủ trên ảnh).
 Không được đổi **vai màu**: mục đang chọn đỏ đặc thì bản mới vẫn đỏ đặc, dù gu skill là nền
 xám nhạt. Dựng xong, đặt ảnh trước và sau cạnh nhau, đi lại từng dòng của bảng. Dòng nào
@@ -66,11 +66,11 @@ xám nhạt. Dựng xong, đặt ảnh trước và sau cạnh nhau, đi lại t
 màu (đỏ khác sắc, xanh khác sắc) là cùng vai viết lệch: gom về đúng token đó. Xám (chữ phụ,
 viền, nền) về token xám của dự án, một họ xám, viền xếp theo `M14` trong `rules-color.md`.
 Mã không khớp vai nào (tím, cam trang trí) thì theo dòng "Màu trang trí tranh với màu vai"
-ở `V1b`. Đã dính 28/09/2026, tim-phong-sua: ba sắc đỏ (`#e61e25` token, `#ef4444`,
+ở `V1b`. Đã dính: ba sắc đỏ (`#e61e25` token, `#ef4444`,
 `#dc2626`), bốn sắc xanh (`#0068ff` token, `#2563eb`, `#3b82f6`, `#4f46e5`), viền card đậm
 hơn đường kẻ sidebar; từng khối đúng brand mà ghép lại không ăn nhập.
 
-Đã dính 28/09/2026 ở lần dựng lại đầu tiên của dự án mồi: mục đang chọn ở sidebar từ đỏ
+Đã dính: mục đang chọn ở sidebar từ đỏ
 đặc thành viền xám, badge "Mới" từ nền đỏ thành chữ xám, link đăng nhập xanh thành nút
 viền. Bản mới gọn hơn, nhưng mất nhận diện.
 
@@ -101,10 +101,10 @@ dựng bản thứ hai (`S9`); chưa có thì dựng mới theo mẫu, không t�
 Lúc giao có một dòng **"Dáng:"** đi qua đủ các dòng trên mà trang có, mỗi dòng ghi đã thay
 theo file nào (*"Dáng: dropdown theo overlay.md, checkbox theo choice-controls.md, viền
 card `--color-border-light`, scrollbar theo tokens.css"*). Như dòng `Audit:`, dòng này làm
-cho việc bỏ qua **nhìn thấy được**. Đã dính 29/09/2026, tim-phong-sua qua nhánh `U`: đúng bố
-cục wireframe C, đúng màu đỏ, nhưng dropdown tự chế bật tắt không chuyển động, checkbox gốc
+cho việc bỏ qua **nhìn thấy được**. Đã dính ở nhánh `U`: đúng bố
+cục wireframe, đúng màu đỏ, nhưng dropdown tự chế bật tắt không chuyển động, checkbox gốc
 `accent-color`, viền card và khung menu `#e2e8f0`, scrollbar 6px xám đặc của CSS cũ, nút
-header cao 30–34px lệch nhau. Chủ dự án tưởng do "giữ brand" nên hỏi *"không giống skill
+header cao 30–34px lệch nhau. Người xem tưởng do "giữ brand" nên thấy *"không giống skill
 một chút nào"*.
 
 ---
@@ -181,22 +181,22 @@ một chút nào"*.
   Kết quả trùng giá trị token (viết cứng `#2563eb` khi đã có token đó), hay lệch token
   một chút cho cùng vai (`#3b82f6` cạnh token xanh `#2563eb`), là Lệch hệ. Ghi vai và
   `file:line`, cùng gốc thì gộp. Giá trị lạ mà dùng đều cho một vai thì không (mục
-  trên). Đã sót 30/09/2026 ở dự án mồi CSS Modules: nút chính một trang đè `#a3e635` thay
-  token `#c6f432`, một card đè `border-radius: 8px` giữa các card 20px. Lượt tự mở trang chỉ
-  chạy lệnh Tailwind nên không ra; lượt chỉ đưa ảnh lại bắt được cả hai bằng mắt.
+  trên). Đã sót ở dự án CSS Modules: nút chính một trang đè `#a3e635` thay
+  token `#c6f432`, một card đè `border-radius: 8px` giữa các card 20px. Chỉ
+  chạy lệnh Tailwind thì không ra; nhìn ảnh lại bắt được cả hai bằng mắt.
 - **Thứ bậc nút là Gu ở chế độ soi, không phải Lệch hệ.** Hai nút chính cạnh nhau trên một
   header, dù trang khác để một nút phụ: mỗi nút đúng token, đúng component, chọn nút nào là
   chính là quyết định sản phẩm. Ghi một dòng Gu (*"hai nút cùng nổi, không biết đâu là việc
   chính"*). Lệch hệ là **cùng vai mà khác giá trị** (màu, bo góc, cỡ, kiểu badge), không phải
   khác lựa chọn biến thể. Hai chế độ dựng lại thì vào dòng Cấu trúc "Tín hiệu tranh nhau"
-  (`V1b`). Đã xếp nhầm Lệch hệ ở cả hai lượt, 30/09/2026.
+  (`V1b`).
 - **Không bao giờ là lỗi**, trừ khi phạm luật đọc được ở hạng Hỏng: màu nhấn và màu
   brand, bo góc lớn hay nhỏ, font, bóng / gradient / glass dùng đều khắp dự án, mật
   độ dày hay thoáng, dự án nhiều màu hơn gu skill (đầu `principles.md`), khối màu đậm
   hay gradient của brand (thẻ ví, banner), icon và badge mỗi loại một màu. "Không phải lỗi"
   nghĩa là **không xếp Hỏng hay Lệch hệ, không tự sửa, không chọn sẵn**. Không có nghĩa là
   im lặng: trông xấu thì vẫn đề xuất, theo mục dưới.
-- **Chỗ nào trông xấu thì đề xuất, dù là dáng hay nhận diện** ⚑ (chủ dự án chốt 29/09/2026).
+- **Chỗ nào trông xấu thì đề xuất, dù là dáng hay nhận diện** ⚑ (chủ dự án chốt).
   Soi từng khối bằng mắt, đặt cạnh mẫu gần nhất của skill: badge, font, nút, card, icon, ảnh,
   khoảng thở, bóng, gradient, màu trang trí, sidebar, header… Khối nào trông xấu thì có một
   dòng, chia theo loại:
@@ -218,10 +218,10 @@ một chút nào"*.
   hay "trông cũ" chưa phải lý do. Chấm dự án mồi: dòng đề xuất có lý do, không chọn sẵn,
   **không tính là báo nhầm**; xếp brand vào Hỏng / Lệch hệ hay tự sửa brand thì vẫn là báo nhầm.
 
-  ⚠️ **Đảo luật 29/09/2026, đừng hồi sinh bản cũ:** bản 27/09 ghi mấy thứ trên "cũng không
-  đưa vào hạng Gu", để chặn các dòng đòi đổi nhận diện ở dự án mồi. Nó chặn luôn thứ đáng nói:
-  ở tim-phong-sua, 8/8 thẻ có badge, năm màu đè lên ảnh; badge, font, sidebar chữ đậm đều xấu
-  mà không lượt soi hay dựng lại nào nêu, chủ dự án tự thấy rồi hỏi sao skill không đề xuất.
+  ⚠️ **Đảo luật, đừng hồi sinh bản cũ:** bản cũ ghi mấy thứ trên "cũng không
+  đưa vào hạng Gu", để chặn các dòng đòi đổi nhận diện. Nó chặn luôn thứ đáng nói:
+  8/8 thẻ có badge, năm màu đè lên ảnh; badge, font, sidebar chữ đậm đều xấu
+  mà không được nêu.
 - **Gu tối đa năm dòng** ở chế độ soi, xếp cuối bảng. Hai chế độ dựng lại không giới hạn,
   nhưng Gu của một khối chính thì gom vào dòng Gọn của khối đó (`V1c`).
 
@@ -240,11 +240,11 @@ sang hạng theo bảng này. Những mục xếp Hỏng thì probe đã tự go
 | Select gốc đã tô trên desktop, ô ngày / giờ gốc đã tô, kể cả trong lớp nổi | Chế độ soi: không vào bảng. Hai chế độ dựng lại: Lệch hệ, thay bằng Select dựng (từ 8 mục có ô tìm) và ô chọn ngày có popover lịch |
 | Lỗi console | Không vào bảng. Ghi một dòng dưới bảng |
 
-Nền rê yếu là Gu ở chế độ soi (chủ dự án chốt 30/09/2026): rê nhạt không làm hỏng việc gì, người
+Nền rê yếu là Gu ở chế độ soi (chủ dự án chốt): rê nhạt không làm hỏng việc gì, người
 dùng vẫn bấm được, và đó là mặc định của shadcn. Chỉ rê làm **sai trạng thái** mới là Hỏng: rê ra
 đúng màu mục đang chọn, rê vào ô đã chọn làm mất màu nhấn, rê làm nhảy bố cục. Probe vẫn đưa nền rê
 yếu vào danh sách `P` (nhãn có "soi: Gu") vì lúc dựng, cổng 3 phải sửa hết. Ở bảng soi, mã đó lên
-dòng Gu. ⚠️ Bản 28/09 xếp Hỏng; vòng 1 lịch khám ra ba dòng Hỏng chỉ vì nút ghost và dòng bảng
+dòng Gu. ⚠️ Đừng xếp Hỏng: bảng ra ba dòng Hỏng chỉ vì nút ghost và dòng bảng
 shadcn rê nhạt.
 
 ---
@@ -320,8 +320,8 @@ Hay gặp:
 
 ## V1d. Dòng Có màu, chỉ ở hai chế độ dựng lại ⚑
 
-Dựng lại cho gọn xong mà trang vẫn "buồn màu" là chuyện hay gặp ở trang người dùng cuối
-(chủ dự án thấy 29/09/2026). Nên hai chế độ dựng lại đưa thêm **một dòng Có màu** cho cả
+Dựng lại cho gọn xong mà trang vẫn "buồn màu" là chuyện hay gặp ở trang người dùng cuối.
+Nên hai chế độ dựng lại đưa thêm **một dòng Có màu** cho cả
 route, theo `P12` trong `styles.md`.
 
 - **Chỉ khi cả ba đúng**: trang người dùng cuối lướt để chọn (tìm việc, tìm phòng, sản phẩm,
@@ -352,13 +352,13 @@ route, theo `P12` trong `styles.md`.
 - **Ảnh cũng đo được vùng bấm.** Ảnh rộng đúng bằng khổ màn (ảnh 1280px của khổ 1280) là tỉ
   lệ 1x; ảnh gấp đôi thì chia 2. Đo từng control nhỏ bằng pixel: công tắc, checkbox, radio,
   nút chỉ icon, nút trong hàng bảng, nút đóng. Chiều nào dưới 24px là Hỏng, nguồn
-  *đo trên ảnh 1x*. Đã sót 30/09/2026: lượt chỉ đưa ảnh có nhìn công tắc 32×18 (còn chê rãnh
+  *đo trên ảnh 1x*. Đã sót: nhìn công tắc 32×18 (còn chê rãnh
   chìm vào nền) mà không đo cỡ.
   **Trừ checkbox và radio vẽ 16–20px**: đó là cỡ vẽ quen dùng, vùng bấm thật thường nới ra
   bằng padding, giả phần tử hay nhãn bấm được, ảnh không cho thấy. Không lên bảng, không
   hạng nào; chỉ vào bảng khi ô vẽ dưới 16px. Công tắc, nút chỉ icon, nút đóng thì phần vẽ
-  thường chính là vùng bấm, nên vẫn đo như trên. Đã báo nhầm 30/09/2026, lịch khám: checkbox
-  shadcn ô vẽ 18px, vùng bấm 24px, lượt ảnh xếp Hỏng.
+  thường chính là vùng bấm, nên vẫn đo như trên. Đã báo nhầm: checkbox
+  shadcn ô vẽ 18px, vùng bấm 24px, bị xếp Hỏng.
 - **Video**: model không xem video được. Tách khung ra rồi chọn các khung quanh lúc
   chuyển động: `ffmpeg -i quay.mp4 -vf fps=4 "$TMPDIR/evon-review/khung/%03d.png"`.
 - **Mỗi dòng ghi nguồn**: *đo*, *thấy trong ảnh*, *đọc code*, hay *đoán*. Ảnh tĩnh
@@ -457,8 +457,7 @@ Cùng tinh thần `M20` (mặc định chỉ light), nhưng dự án đã có s�
 - Dòng Gu không cần ảnh "sau", trừ dòng có phương án để chọn (kiểu A / B / C): chụp đủ.
 
 **Ảnh là link bấm được, không phải đường dẫn tệp** ⚑. `$TMPDIR/evon-review/…/hien-tai.png`
-trong chat thì người dùng không mở được, gợi ý hay mấy cũng như không (đã dính 29/09/2026,
-tim-phong-sua: bốn kiểu badge A / B / C chỉ ghi tên tệp).
+trong chat thì người dùng không mở được, gợi ý hay mấy cũng như không.
 
 - Chạy server tĩnh nền trên thư mục ảnh: `python3 -m http.server <cổng> -d "$TMPDIR/evon-review"`.
   Mọi ô Ảnh là link đầy đủ `http://localhost:<cổng>/<route>/fix/1-truoc.png`.
@@ -512,8 +511,7 @@ figure img{display:block;height:320px;width:auto;border-radius:8px}figcaption{pa
    mà sửa phải đổi token dùng khắp app thì vẫn lên bảng, ghi rõ "đổi token, ảnh hưởng
    toàn app": chọn hay không là việc của người dùng, không phải lý do để loại.
 
-   Hai vòng đầu của dự án mồi, nhiều lỗi probe đã đo ra mà bảng giao không có. Máy đo ra
-   mà bảng không có thì người dùng không có cách nào biết đã bị bỏ.
+   Máy đo ra mà bảng không có thì người dùng không có cách nào biết đã bị bỏ.
 4. **Rà hạng Gu và Cấu trúc lần cuối**: dòng đề xuất đổi màu brand, font, logo là dòng
    **nhận diện** (`V1`): phải có lý do người dùng cuối thấy, ảnh trước / sau, không chọn
    sẵn; thiếu lý do thì xoá. Dòng Gọn cũng rà: đổi màu trong bảng vai màu là sai chế độ 2.

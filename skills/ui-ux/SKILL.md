@@ -53,7 +53,7 @@ trạng thái một ví dụ tĩnh** cạnh nhau, không dựng bản bấm đư
 Đây là câu **đầu tiên**, trước mọi thứ khác. Các lối khác nhau về rủi ro, về thứ tự
 các bước, và về người phải duyệt.
 
-Đọc đề theo thứ tự bảng, gặp dòng đầu tiên khớp thì dừng. Chủ dự án chốt 29/09/2026: **dòng
+Đọc đề theo thứ tự bảng, gặp dòng đầu tiên khớp thì dừng. Chủ dự án chốt: **dòng
 cuối là mặc định**, bảy dòng trên chỉ khi đề nói rõ (tiếng Việt hay tiếng Anh).
 
 | Đề nói | Đi đâu |
@@ -236,9 +236,9 @@ Câu 4 chỉ chạy ở lối việc nhỏ hơn một màn (câu 1). Mặc đị
 nơi bố cục mặc định ở đây là **một trong các phương án wireframe**, thường là phương án khuyên
 dùng.
 
-⚠️ **Luật cũ đã bỏ (21/09/2026), đừng hồi sinh:** "đưa 2–3 phương án bố cục bằng lời
+⚠️ **Luật cũ đã bỏ, đừng hồi sinh:** "đưa 2–3 phương án bố cục bằng lời
 rồi DỪNG HẲN chờ chọn". Bỏ vì bắt người dùng chọn trước khi thấy gì, và buộc mỗi file layout
-nuôi nhiều phương án cho mọi loại màn. Nhánh `U` mặc định từ 29/09/2026 (chủ dự án chốt) không
+nuôi nhiều phương án cho mọi loại màn. Nhánh `U` mặc định (chủ dự án chốt) không
 phải luật đó sống lại: người dùng chọn sau khi **đã thấy** wireframe có nội dung thật, đã
 probe, bấm mở được; mỗi file layout vẫn chỉ nuôi một bố cục mặc định.
 
@@ -290,14 +290,14 @@ thẳng một cột giữa màn). Đừng hỏi lại có cần nút Google khô
 **S5. Đề để hở phạm vi thì dựng phạm vi mặc định, không hỏi.**
 
 - **Đề có liệt kê** ("trang đăng nhập gồm ô email, ô mật khẩu, nút…"): phạm vi đã chốt, dựng luôn.
-- **Đề để hở** ("dựng màn hình tổng quan"): lấy **bộ khối mặc định** của loại màn đó trong file layout (màn tổng quan: bảng khối trong `references/layouts/app.md`), dựng **đủ** bộ đó. Đừng để `S1` hoá thành "làm ít nhất có thể" rồi ra một màn mỏng dính 3 khối (đã dính ở vòng test 11).
+- **Đề để hở** ("dựng màn hình tổng quan"): lấy **bộ khối mặc định** của loại màn đó trong file layout (màn tổng quan: bảng khối trong `references/layouts/app.md`), dựng **đủ** bộ đó. Đừng để `S1` hoá thành "làm ít nhất có thể" rồi ra một màn mỏng dính 3 khối.
 - **Lúc giao, câu đầu tiên** liệt kê các khối đã dựng, và khối nào trong bảng đã bỏ ra. Muốn thêm bớt thì người dùng nói.
 
 **S6. Dựng mockup thì điền dữ liệu giả hợp lý, đừng để chỗ trống.** Một trang đầy
 `[cần điền]` không nhìn ra được thiết kế, nó thành cái biểu mẫu. Điền số nghe
 được, rồi **báo một dòng lúc giao**: số liệu trong bản này là giả.
 **Các khối của cùng một bản ghi phải khớp nhau**: tab Hoạt động có một đơn đã huỷ
-thì ô số liệu không ghi 3 đơn, 12,3 tr đ (đã dính 24/09/2026). Số giả lệch nhau giữa hai
+thì ô số liệu không ghi 3 đơn, 12,3 tr đ. Số giả lệch nhau giữa hai
 tab làm người duyệt tưởng giao diện tính sai. Sửa dữ liệu giả cho khớp (lùi ngày tạo, thêm đơn vào lịch sử)
 là việc của bản dựng, tự làm, không hỏi: nó không đụng logic hay dữ liệu thật.
 
@@ -326,7 +326,7 @@ nói rõ dùng thư viện nào thì **theo họ, đừng cãi**.
 **Câu đầu tiên lúc giao** nói thẳng cách hiểu: *"Mình hiểu **bảng** là table dữ
 liệu. Nếu ý bạn là board kanban thì nói, mình đổi."* Hiểu sai thì người dùng thấy
 ngay ở câu đầu, không phải tới lúc test mới lộ. Bài học gốc: "bảng quản lý dự án"
-từng bị hiểu thành kanban mà không ai nói ra, cả vòng test coi như bỏ (vòng 18).
+từng bị hiểu thành kanban mà không ai nói ra, cả vòng test coi như bỏ.
 Lỗi lúc đó là **im lặng chọn nghĩa hiếm**, không phải chuyện không hỏi.
 
 **S11. Code mẫu trong `layouts/` chỉ mở SAU khi đã chốt loại màn hình.** Nó trả
@@ -374,8 +374,7 @@ mockup và wireframe dùng ảnh thật, trang mới trông như sản phẩm đ
 - Lúc giao, dòng "số liệu giả" của `S15` nói luôn: ảnh từ Unsplash và randomuser là ảnh
   mẫu, thay bằng ảnh thật trước khi chạy thật.
 
-Đã dính 29/09/2026: trang phòng trọ dùng tám hình vẽ giường gần giống nhau, chủ dự án thấy
-"nhìn chán" dù bố cục đã đúng.
+Tám hình vẽ gần giống nhau cho tám mục thì trang trông "nhìn chán" dù bố cục đã đúng.
 
 ---
 
@@ -474,10 +473,11 @@ Skill này đã có lần **tệ đi vì thêm luật**. Luật viết để ch�
 thường đẻ ra triệu chứng khác ở lần dựng sau.
 
 - Mỗi đợt tối đa **5 luật mới**.
-- Mỗi luật mới phải nói rõ nó **thay thế** hay **mâu thuẫn** với luật nào đang có. Đảo một luật cũ thì để lại một khối ⚠️ ghi rõ "luật cũ đã bỏ, đừng hồi sinh", kèm ngày.
+- Mỗi luật mới phải nói rõ nó **thay thế** hay **mâu thuẫn** với luật nào đang có. Đảo một luật cũ thì để lại một khối ⚠️ ghi rõ "luật cũ đã bỏ, đừng hồi sinh" và vì sao.
 - Luật phải kèm **điều kiện áp dụng**. "Trong app thì X, khi refactor thì Y" chứ không phải "luôn luôn X".
 - Luật nào chưa từng bắt được lỗi thật sau 3 vòng test thì bỏ.
 - **Một luật một chỗ.** Thêm luật vào đúng file của nhóm nó. `SKILL.md` chỉ được trỏ số hiệu.
 - **Thêm luật xong thì rà lại file mẫu trong `layouts/` và `components/`** xem chúng có vi phạm luật vừa thêm không. Code mẫu được chép nguyên, nên một lỗi nằm trong đó sẽ đi khắp nơi. Đã xảy ra thật hai lần.
+- **Skill ghi luật và lý do, không ghi lịch sử.** Không ngày tháng, không tên trang hay dự án test, không "lượt hai", không kể các bản đã thử. Bản sai mà AI dễ tự làm lại thì một câu "Đừng X: hậu quả". Ngày và chỗ dính ghi trong commit message. Chữ "chủ dự án chốt" thì giữ (không kèm ngày), ngày chốt ghi ở `locked-rules.md`.
 - **Đánh số liền mạch trong nhóm.** Đừng đẻ `15b`, `15c`, `17d` chen vào giữa.
 - **Luật chưa qua vòng test nào thì gắn dấu ⚑**, để người dùng biết đang dùng thứ chưa ai thử.

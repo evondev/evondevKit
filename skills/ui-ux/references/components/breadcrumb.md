@@ -57,7 +57,7 @@ Tài liệu  ›  …  ›  Hợp đồng 2026  ›  Quý 3                <- 5 
 - **Nút "…" trông như một mục chữ, không phải icon button.** Hộp ôm sát icon (`h-5 w-4 p-0`,
   icon `MoreHorizontal size-4`), không nền, `text-muted` rê vào `text-foreground`, đang mở giữ
   `text-foreground`. Vùng bấm nới bằng `before:` (`before:absolute before:-inset-x-1.5
-  before:-inset-y-1.5`, 28×32px, cùng cách tay cầm ở `range-slider.md`). Đã dính 26/09/2026: nút `ghost size-8` có padding 8px mỗi bên, nét "…"
+  before:-inset-y-1.5`, 28×32px, cùng cách tay cầm ở `range-slider.md`). Đừng dùng nút `ghost size-8`: padding 8px mỗi bên, nét "…"
   cách dấu › 22px trong khi chữ cách dấu 12px, và rê vào hiện một ô nền xám giữa hàng chữ
   chỉ đổi màu.
 

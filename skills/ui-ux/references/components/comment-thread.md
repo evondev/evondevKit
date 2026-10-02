@@ -5,7 +5,7 @@ Bình luận dưới một bản ghi: task, tài liệu, đơn hàng. Chữ mư�
 
 - **Mỗi bình luận**: avatar `size-8` (`avatar.md`), tên `text-sm font-medium`, thời gian `text-xs text-muted` kèm giờ tuyệt đối ở `title` (`T16b`), nội dung `text-sm` cho xuống dòng, dưới cùng là nút `ghost` có icon `Reply` ghi "Trả lời". Hai cỡ chữ, không hơn.
 - **Thụt lề mỗi tầng ~29px** (`ml-4` + viền + `pl-3`), đường dọc `border-l border-border-strong` (như cây thư mục, `tree.md`) rơi đúng tâm avatar của bình luận cha.
-- **Màn hẹp chỉ thụt tối đa 2 tầng.** Sâu hơn thì hàng con **không thụt nữa**, thay bằng dòng `text-xs text-muted` "Trả lời **<tên>**" ở đầu bình luận. Thụt tiếp là cột chữ còn ~140px, ô trả lời vỡ hai dòng placeholder, và nội dung xuống dòng từng hai ba chữ (`R5`, đã dính 23/09/2026).
+- **Màn hẹp chỉ thụt tối đa 2 tầng.** Sâu hơn thì hàng con **không thụt nữa**, thay bằng dòng `text-xs text-muted` "Trả lời **<tên>**" ở đầu bình luận. Thụt tiếp là cột chữ còn ~140px, ô trả lời vỡ hai dòng placeholder, và nội dung xuống dòng từng hai ba chữ (`R5`).
 - **Ô trả lời ở màn hẹp bỏ avatar bên trái** (lấy lại 44px), ô viết chiếm hết bề ngang. Ô gốc ở cuối khu thì vẫn có avatar.
 - **Nút trong ô viết**: gửi là `primary` (`I3`: một nút chính trong cụm) và **khoá khi ô trống** (`opacity-50`), huỷ là `secondary`. Một nút thì **không kéo rộng hết hàng ở màn hẹp** — `R3` chỉ áp khi cụm nút không vừa.
 - **Bốn trạng thái của một bình luận** (`N2`), mỗi cái một hình riêng:

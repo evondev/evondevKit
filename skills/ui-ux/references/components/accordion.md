@@ -10,8 +10,6 @@ Khi nào dùng: danh sách dài hơn 6 mục, hoặc mỗi nội dung dài quá 
 đó thì hiện hết (`I17`). Ngoại lệ: FAQ trang giá luôn accordion (`../layouts/pricing.md`).
 Mọi thứ mở/đóng dựng theo đúng công thức ở đây, không dùng `<details>` (`I30`).
 
-Mẫu đã chạy thật ở FAQ trang giá, rà bằng link bảy lượt ngày 26/09/2026.
-
 ---
 
 ## Mẫu
@@ -88,31 +86,30 @@ dòng tràn hết bề ngang, `rounded-none`, và **tắt nền hover của vari
 **Chuyển động**
 - **Trượt bằng `grid-rows` 0fr ↔ 1fr, `duration-200 ease-out`**, chevron xoay cùng nhịp.
   Không `<details>`, không render có điều kiện, không `hidden`: đều mở đóng tức thì, bấm là
-  giật (`I30`, đã dính 26/09/2026). Không đo chiều cao bằng JS.
+  giật (`I30`). Không đo chiều cao bằng JS.
 - **Mục đóng gắn `inert`**: Tab không lọt vào nội dung đã ẩn, trình đọc màn hình không đọc.
 - **`motion-reduce:transition-none`** trên cả khối trượt và chevron.
 
 **Padding: mỗi khối tự đứng được**
 - **Nút tiêu đề `px-5 py-4`, cố định ở cả lúc mở và đóng.** Đừng bớt `pb` khi mở để kéo
-  nội dung lại gần: tô nền nút thì chữ cách mép trên 17px, mép dưới 7px (đã dính
-  26/09/2026).
-- **Nội dung `px-5 pb-4`, không `pt`**: nối tiếp padding dưới của nút. Đo 26/09/2026:
-  mép trên → tiêu đề 17px, tiêu đề → nội dung 20px, nội dung → mép dưới 20px. Đã so với
+  nội dung lại gần: tô nền nút thì chữ cách mép trên 17px, mép dưới 7px.
+- **Nội dung `px-5 pb-4`, không `pt`**: nối tiếp padding dưới của nút. Đo:
+  mép trên → tiêu đề 17px, tiêu đề → nội dung 20px, nội dung → mép dưới 20px. Đừng để
   nội dung `py-3` (tô màu khối nào cũng đều, nhưng nội dung cách tiêu đề 32px mà cách vạch
   dưới 16px, trông thuộc về vạch dưới); chủ dự án chọn nối tiếp.
 - **Nội dung cùng `px` với nút, không `pr` riêng, không `max-w`.** `pr-12` (để chữ không
   chạy dưới chevron) làm lề phải 48px mà lề trái 20px; `max-w-[65ch]` làm khối nội dung
-  hụt 55px so với khối bọc (đã dính 26/09/2026). Bề rộng đặt ở **khung ngoài**.
+  hụt 55px so với khối bọc. Bề rộng đặt ở **khung ngoài**.
 - **Khung đủ rộng để tiêu đề dài nhất vừa một dòng ở desktop.** Đừng thu khung cho nội dung
   ≤ 75 ký tự: nội dung 1–2 câu đọc một hơi, không tính `T11`; khung hẹp làm tiêu đề xuống
-  dòng khi hàng còn trống (đã dính 26/09/2026, FAQ `max-w-lg`). Nội dung dài từ 3 dòng trở
+  dòng khi hàng còn trống. Nội dung dài từ 3 dòng trở
   lên mới xét `T11`, và khi đó thường là nên rút nội dung.
 - **Không số âm** để kéo nội dung lên (`N11`): margin âm trên khối con `overflow-hidden`
-  làm mục đang đóng lòi dòng đầu nội dung ra (đã thử 26/09/2026).
+  làm mục đang đóng lòi dòng đầu nội dung ra.
 
 **Hover và focus**
 - **Không nền hover. Rê vào thì chevron đậm lên** (`group-hover:text-foreground`) cộng
-  con trỏ bàn tay. Ngoại lệ của `I10`. Đã thử và bỏ (26/09/2026):
+  con trỏ bàn tay. Ngoại lệ của `I10`. Đừng dùng:
   - nền `--surface-hover` (`#f8f8fa`) trên nút: gần màu nền trang `#f4f4f6` ngay ngoài mép
     khung, hàng như bị khoét; mục đang mở thì nửa trên xám nửa dưới trắng;
   - nền phủ cả mục (`has-[]`): vẫn là mảng gần màu nền trang chạm mép khung;
@@ -120,7 +117,7 @@ dòng tràn hết bề ngang, `rounded-none`, và **tắt nền hover của vari
 
 **Khung và chữ**
 - **Một khung trắng, `divide-y divide-border`** (`M13`). Không để vạch kẻ thẳng trên nền
-  trang xám: không khung thì vạch đọc ra như đường ngăn trang lơ lửng (đã dính 26/09/2026).
+  trang xám: không khung thì vạch đọc ra như đường ngăn trang lơ lửng.
 - **Tiêu đề mục `text-sm font-medium`, `text-pretty`**, không `text-balance` dù là `h3`: nó
   chung hàng với chevron, `balance` làm câu xuống dòng khi mới được nửa hàng (`T10`).
 - **Nội dung `text-sm/6 text-muted`.**
@@ -210,22 +207,22 @@ window.setTimeout(() => focusFieldById(fieldId), accordionDurationMs);
 ```
 
 **Luật**
-- **Không khung, không vạch kẻ trên dưới khu.** Đã dính 26/09/2026 ở form tạo dự án: dựng
+- **Không khung, không vạch kẻ trên dưới khu.** Dựng
   bằng khung accordion (viền `--border`, `rounded-xl`) lồng trong card form trắng thì
   - lúc đóng, hàng có viền bo góc, rộng bằng ô nhập, chevron ở mép phải: nhìn y một ô
     select tên "Cài đặt nâng cao";
-  - ô bên trong thụt 21px, hẹp hơn ô "Tên dự án" 42px (580 so với 622px ở 1280px): form
+  - ô bên trong thụt 21px, hẹp hơn ô phía trên 42px: form
     có hai mép trái;
   - mở ra thì đáy khung và vạch trên hàng nút là hai đường kẻ cách nhau 24px;
 - **Chevron liền sau chữ (`gap-1.5`)**, không đẩy ra mép phải. Chevron ở mép phải của một
   hàng rộng bằng ô nhập là dấu hiệu của select.
 - **Các ô bên trong như mọi ô khác của form**: cùng mép trái, cùng bề rộng, cùng `gap-5`.
   Đo lại bằng `getBoundingClientRect`: nhãn ô đầu trong khu và nhãn ô phía trên cùng `left`.
-- **`overflow-y-clip` trên khối cắt.** Đo 26/09/2026 ở 375 và 1280px: quầng focus đủ bốn
+- **`overflow-y-clip` trên khối cắt.** Ở 375 và 1280px: quầng focus đủ bốn
   phía, giữa lúc trượt không lòi chữ, không cuộn ngang. Ô cuối khu là ô nhập không có
   dòng gợi ý thì thêm `pb-1` vào khối nội dung cho quầng dưới.
 - **Khoảng cách tự ra từ `h-10` của nút**: gợi ý của ô trên → tiêu đề 32px, tiêu đề → nhãn
-  ô đầu 22px (đo 26/09/2026). Tiêu đề gần nhóm của nó hơn, không cần kẻ thêm.
+  ô đầu 22px. Tiêu đề gần nhóm của nó hơn, không cần kẻ thêm.
 - **Chỉ giấu thứ có mặc định dùng được.** Lựa chọn quyết định ai thấy dữ liệu (riêng tư /
   công khai) thì đưa ra ngoài khu: hầu hết app để nó ngay trên form tạo, người tạo phải thấy
   nó trước khi bấm. Khu này không tính theo ngưỡng `I17`: nó giấu để đường chính ngắn, không

@@ -66,7 +66,8 @@ chưa tick đầu tiên. Nhiều trang cùng lúc thì lỗi bị lướt và c�
    - **Lỗi của skill** (skill thiếu, sai, hoặc mơ hồ nên bản dựng làm sai): sửa skill
      ngay trong lượt. Sửa spec của component/layout, xem bài học có chung cho nhiều chỗ
      không thì thêm vào `principles.md` hoặc `rules-*.md`, thêm câu hỏi vào
-     `checklist.md`. Ghi "đã dính <ngày>" kèm ví dụ thật như các mục khác.
+     `checklist.md`. Ghi hậu quả thật nhìn thấy được, không ngày, không tên trang test
+     (`SKILL.md` mục 4); ngày và chỗ dính ghi trong commit message.
      **Sửa skill xong chạy `node skills/ui-ux/scripts/lint-skill.mjs`** (soát các dòng vừa
      sửa): câu nói màu nút phải ghi mã luật gốc (`I4`, `I2`), và lý lẽ đã bị bác
      (`references/locked-rules.md`) không được quay lại. Viết **mục mới** cho một trang cũng

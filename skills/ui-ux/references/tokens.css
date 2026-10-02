@@ -44,7 +44,7 @@
      khung app và viền card khi hover. Đây là token viền thứ hai và cũng là token
      cuối, xem luật M14, M16. ~1.2:1 với nền trắng: đánh đổi thẩm mỹ có chủ ý,
      xem P3 trong styles.md. */
-  --border-strong: #eaeaea;   /* 23/09/2026: #f2f2f2 (1.1:1) mờ quá, radio gần như vô hình;
+  --border-strong: #eaeaea;   /* #f2f2f2 (1.1:1) mờ quá, radio gần như vô hình;
                                  #e4e4e7 (1.27:1) thì đường kẻ sidebar đậm. Chốt ở giữa. */
 
   /* Lớp nổi nhỏ: dropdown, popover, menu, select, toast, command palette. Nền sáng bằng card;
@@ -83,16 +83,15 @@
 
   /* Hover và dòng đang chọn của BẢNG / danh sách tràn hết bề ngang khung trắng.
      Không dùng --background ở đây: dòng chạm hai mép khung mà tô đúng màu nền
-     trang thì trông như khung bị khoét một lỗ (đã dính 21/09/2026). Chỉ nhỉnh
+     trang thì trông như khung bị khoét một lỗ. Chỉ nhỉnh
      hơn --surface một chút. Xem luật I10. */
   --surface-hover: #f8f8fa;
 
-  /* Hover của nút viền (outline): CHỈ đổi nền, viền giữ nguyên (chủ dự án chốt 26/09/2026).
+  /* Hover của nút viền (outline): CHỈ đổi nền, viền giữ nguyên (chủ dự án chốt).
      Màu ĐẶC, và **theo nền ngay sau nút**, không một màu cho mọi chỗ:
      - trên card trắng (--button-hover-surface #f1f1f3): thấy rõ, viền vẫn còn;
      - thẳng trên nền trang, hoặc trong dòng đang rê (dòng chìm về #f4f4f6)
-       (--button-hover-page #e4e4e7): #f1f1f3 ở đây chỉ lệch nền 3 mức, nút như tan vào trang
-       (đã dính 30/09/2026, nút ‹ Hôm nay › trên hàng công cụ màn lịch hẹn, chủ dự án chỉ ra).
+       (--button-hover-page #e4e4e7): #f1f1f3 ở đây chỉ lệch nền 3 mức, nút như tan vào trang.
      Biến đổi tự động bằng khối "NỀN RÊ CỦA NÚT VIỀN" bên dưới, class vẫn là
      `hover:bg-button-hover`. Không dùng --surface-hover (#f8f8fa: trên card gần như không đổi),
      không dùng lớp phủ foreground/5 (trong suốt, trên nền trang ra #e9e9eb trùng viền). */
@@ -165,8 +164,7 @@
      khoảng hai bậc của chính nó. */
   --primary: #e9edf5;
   /* Lệch về phía NỀN một bậc như bản sáng, tức TỐI đi (1.26:1 với --primary). Không sáng lên
-     #ffffff: trắng tuyệt đối là khối chói nhất màn tối, trái M23 (đã dính 01/10/2026, nút
-     "Thêm khách hàng" ở ui-ux-dashboard rê vào thành khối trắng đặc). Chữ trên nó 13.7:1. */
+     #ffffff: trắng tuyệt đối là khối chói nhất màn tối, trái M23. Chữ trên nó 13.7:1. */
   --primary-hover: #cfd5e0;
   --primary-foreground: #05060f;  /* nền nhấn giờ gần trắng, chữ phải đảo lại */
   --primary-light: rgba(233, 237, 245, 0.1);
@@ -174,8 +172,7 @@
 
   --background: #05060f;
   /* Cột biểu đồ màu nhấn gần trắng 100% là khối chói nhất màn tối, nặng hơn tên trang và hàng
-     số (đã dính 01/10/2026, "Việc xong mỗi tuần" ở ui-ux-dashboard; chủ dự án chọn 70% sau khi
-     xem ba bản đặt cạnh nhau: 100%, 70%, xám ánh xanh). M32. */
+     số (chủ dự án chọn 70%). M32. */
   --chart-fill: color-mix(in srgb, var(--primary) 70%, transparent);
 
   /* Tầng nổi sáng dần: nền trang < card < lớp nổi, mỗi bậc ~1.07–1.09:1 (M21). */
@@ -187,14 +184,14 @@
 
   /* Vùng tô là trắng phủ mờ, SÁNG hơn card (M21). Phủ mờ nên đặt trên nền trang, card hay
      lớp nổi đều giữ được độ chênh, không phải khai một màu cho từng nền. Độ chênh ngang bản
-     sáng (đo 01/10/2026 trên card #0f111a):
+     sáng (đo trên card #0f111a):
      - --item-hover 5%   → 1.12:1 (bản sáng #f4f4f6 trên trắng 1.10:1);
      - --secondary  8%   → 1.22:1 (bản sáng #e7e8ec trên trắng 1.22:1), đậm hơn rê một bậc.
-     Bản cũ #010207 (chìm dưới cả nền trang, 29/09/2026) gần như không tách khỏi nền: bỏ. */
+     Đừng dùng màu đặc tối hơn nền trang (#010207): gần như không tách khỏi nền. */
   --item-hover: rgb(255 255 255 / 0.05);
   --secondary: rgb(255 255 255 / 0.08);
   /* Rê vào đậm thêm 5%: chênh 12 mức như bản sáng (#e7e8ec → #dbdce2). 0.11 chỉ chênh 7 mức, nút
-     "Xem tất cả", "Huỷ" rê vào gần như không đổi (probe, /components, 01/10/2026). */
+     "Xem tất cả", "Huỷ" rê vào gần như không đổi. */
   --secondary-hover: rgb(255 255 255 / 0.13);
 
   --background-hover: #171a26;
@@ -218,10 +215,10 @@
   --muted: #8b93a7;
   /* Ở nền tối viền ĐẢO VAI: #0f111a với #05060f chênh nhau quá ít nên viền
      trở thành thứ chính để tách khối; bóng vẫn giữ nhưng chỉ phụ. Xem luật M23.
-     Hai vai như bản sáng (M14), đo 01/10/2026 trên card: --border 1.23:1, --border-strong
+     Hai vai như bản sáng (M14), đo trên card: --border 1.23:1, --border-strong
      1.33:1 (bản sáng 1.2:1). Ô nhập ở nền tối GIỮ viền --border-strong, không bỏ (M32).
-     01/10/2026 hạ 0.2 → 0.16: ở 0.2 (1.47:1) đường kẻ dòng bảng đậm hơn hẳn bản sáng, bảng thành
-     lưới kẻ ô (ui-ux-dashboard, chủ dự án duyệt); ô nhập, checkbox ở 0.16 vẫn đọc ra. */
+     Đừng lên 0.2 (1.47:1): đường kẻ dòng bảng đậm hơn hẳn bản sáng, bảng thành
+     lưới kẻ ô (chủ dự án duyệt 0.16); ô nhập, checkbox ở 0.16 vẫn đọc ra. */
   --border: rgba(160, 180, 220, 0.12);
   --border-strong: rgba(160, 180, 220, 0.16);
 
@@ -243,7 +240,7 @@
   --success: #00d492;                      /* emerald-400, 7.8:1 */
   --warning-bg: rgb(254 154 0 / 0.15);
   /* orange-400, KHÔNG amber-400: thang amber trôi từ cam sang vàng khi sáng lên (OKLCH: amber-700 49°,
-     amber-400 84°), chữ "Quá hạn" cam ở bản sáng thành vàng ở bản tối (chủ dự án thấy 01/10/2026).
+     amber-400 84°), chữ "Quá hạn" cam ở bản sáng thành vàng ở bản tối.
      orange-400 56°, lệch 7°. 7.9:1 trên card, 6.2:1 trên --warning-bg. M7. */
   --warning: #ff8904;
   --neutral-bg: rgb(113 113 123 / 0.15);
@@ -298,7 +295,7 @@
 @custom-variant dark (&:where(.dark, .dark *, .force-dark, .force-dark *):not(:where(.force-light, .force-light *)));
 /* ================================================= */
 
-/* ===== NỀN RÊ CỦA NÚT VIỀN THEO NỀN PHÍA SAU (30/09/2026) =====
+/* ===== NỀN RÊ CỦA NÚT VIỀN THEO NỀN PHÍA SAU =====
    Mặc định (nền trang) là --button-hover-page. Mọi thứ nằm trong khối trắng lấy
    --button-hover-surface; khối nền trang lồng trong card, và dòng đang rê chìm về nền
    trang, lấy lại --button-hover-page. Chỉ đặt biến, không đặt màu, nên không đè utility.
@@ -318,13 +315,12 @@
    tử đang cuộn). Ẩn bằng MÀU TRONG SUỐT chứ không bằng `scrollbar-width: none`:
    bề rộng 4px vẫn giữ chỗ, nên lúc thanh hiện ra nội dung không bị đẩy ngang.
    Màu lấy từ --foreground nên nền tối tự đảo, không cần khai lại.
-   Nguồn: dự án thật, chủ dự án chốt 08/09/2026.
+   Nguồn: dự án thật, chủ dự án chốt.
 
    ⚠️ Màu thumb đi qua BIẾN --scrollbar-thumb đặt trên chính khung cuộn, không
    viết `*:hover::-webkit-scrollbar-thumb`. Chrome không vẽ lại thumb khi selector
-   :hover nằm trước pseudo thanh cuộn: rê vào không hiện, phải cuộn mới hiện (đã
-   dính 24/09/2026, đo lại bằng Chrome thật). Đổi biến trên phần tử thì Chrome vẽ
-   lại ngay. `* { --scrollbar-thumb: transparent }` đặt lại trên TỪNG phần tử, để
+   :hover nằm trước pseudo thanh cuộn: rê vào không hiện, phải cuộn mới hiện. Đổi
+   biến trên phần tử thì Chrome vẽ lại ngay. `* { --scrollbar-thumb: transparent }` đặt lại trên TỪNG phần tử, để
    khung cha đang được rê không truyền biến xuống khung cuộn con bên cạnh.
    KHÔNG thêm `transition` vào rule `*` này: CSS nằm ngoài @layer thắng mọi
    utility của Tailwind v4, một dòng `* { transition }` là xoá hết `transition-*`
@@ -340,7 +336,7 @@
 /* Firefox. ⚠️ PHẢI nằm trong @supports: từ Chrome 121, phần tử có
    scrollbar-width/scrollbar-color là Chrome BỎ QUA toàn bộ ::-webkit-scrollbar
    và vẽ thanh "thin" gốc ~8-11px chiếm chỗ. Để trần thì bản 4px ở trên chỉ còn
-   chạy trên Safari (dính ở dự án thật 18/09/2026). */
+   chạy trên Safari. */
 @supports not selector(::-webkit-scrollbar) {
   * { scrollbar-width: thin; scrollbar-color: transparent transparent; }
   *:hover { scrollbar-color: color-mix(in srgb, var(--foreground) 18%, transparent) transparent; }

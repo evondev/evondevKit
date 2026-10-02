@@ -3,7 +3,7 @@
 Mở file này khi việc là **sửa giao diện một dự án đang chạy**, không phải dựng
 màn mới. Hai việc khác hẳn nhau về rủi ro và về thứ tự các bước.
 
-Đúc rút từ một đợt refactor dự án thật (09/2026): Next 16 + React 19, 237k dòng
+Đúc rút từ một đợt refactor dự án thật: Next 16 + React 19, 237k dòng
 TS/TSX, 14.218 dòng CSS, 4,5 tháng tuổi, có tiền thật chạy qua.
 
 ---
@@ -181,8 +181,8 @@ grep -hoE '^\s*\.[a-z][a-z0-9-]*' $(find . -name '*.css') | tr -d ' .' \
 
 ## L9. CSS cũ trong `@layer base` thua utility — đừng vá bằng `!important`
 
-Dính thật 14/09/2026: viết rule CSS theo class cha để điều khiển một component
-đã sang utility. CSS cũ nằm trong `@layer base` nên **thua** utility, phải rải
+Đừng viết rule CSS theo class cha để điều khiển một component
+đã sang utility: CSS cũ nằm trong `@layer base` nên **thua** utility, phải rải
 `!important` khắp nơi để thắng lại.
 
 Cách đúng: khai một **variant** trong hệ utility (ví dụ một variant
@@ -226,7 +226,7 @@ trông ổn cho tới lúc gặp khách thật.
 Test đang xanh mà đột nhiên đỏ sau khi đụng vào môi trường → **nghi môi trường
 trước khi nghi code**. Kiểm bằng cách chạy đúng file test đó riêng.
 
-Ba ca đã dính trong một tuần ở dự án đó, không cái nào là lỗi code: package
+Ba ca đã dính, không cái nào là lỗi code: package
 manager sai phiên bản; shell nạp nvm sai đường; và thiếu partial index vì
 `db push` bỏ qua **im lặng** những thứ không diễn đạt nổi trong schema (partial
 index `WHERE`, trigger, generated column) — dựng lại DB local xong phải grep
@@ -237,8 +237,8 @@ phần thiếu.
 
 ## L13. Đo tác động thật, không chỉ đo số dòng
 
-Chỗ này dự án đó **chưa làm được**, ghi ra để không quên: chưa có số Lighthouse
-trước/sau, nên chưa chứng minh được refactor cải thiện gì ngoài số dòng CSS.
+Không có số Lighthouse trước/sau thì không chứng minh được refactor cải thiện gì ngoài số
+dòng CSS.
 
 Số dòng CSS giảm là một chỉ số **dễ đo**, không phải chỉ số **quan trọng**. Nếu
 chốt được một chỉ số thật ngay từ đầu (thời gian tải, CLS, số lần phải prompt

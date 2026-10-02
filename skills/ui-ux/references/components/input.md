@@ -19,14 +19,14 @@ const stateClasses = error
 **Vì sao ổn**
 
 - Input luôn `bg-surface`, không bao giờ trong suốt. Ô nhập trong suốt trên nền trang thì người dùng không thấy nó là ô nhập. Đây là luật cứng, kể cả khi thư viện gốc mặc định `bg-transparent`.
-- **Focus = viền `--border-focus` + ring mờ `--ring-focus` dày 2px (`ring-2`)** (`I13`, chủ dự án chốt 21/09/2026). Ring phải mờ tới mức là vầng sáng, không thành vòng viền thứ hai: đừng tăng độ đậm của `--ring-focus`. Ô lỗi cùng công thức, đổi sang đỏ. **Select, combobox dùng y hệt**, kể cả lúc đang mở (`components/choice-controls.md`).
+- **Focus = viền `--border-focus` + ring mờ `--ring-focus` dày 2px (`ring-2`)** (`I13`, chủ dự án chốt). Ring phải mờ tới mức là vầng sáng, không thành vòng viền thứ hai: đừng tăng độ đậm của `--ring-focus`. Ô lỗi cùng công thức, đổi sang đỏ. **Select, combobox dùng y hệt**, kể cả lúc đang mở (`components/choice-controls.md`).
 - **Viền dùng `--border-strong`, không phải `--border`.** Ô nhập cùng nền trắng với card, nên viền là thứ duy nhất báo "đây là chỗ gõ". Viền card và đường chia thì là trang trí, nhạt được; viền ô nhập thì không (`M14`). Viền này chỉ ~1.27:1, chưa đạt WCAG 1.4.11: đánh đổi có chủ ý, xem `P3` trong `styles.md`.
-- **Nền tối giữ viền**, chỉ đổi nền sang trắng phủ mờ `dark:bg-white/4`. Bỏ viền (`dark:border-transparent`) để nền mờ tự báo vùng gõ là mất ranh giới ô; mọi bộ thiết kế lớn đều giữ viền ở nền tối (`M32`, tra 26/09/2026).
-- **Viền ô nhập và viền nút outline phải là CÙNG một class**, `border-border-strong`. Đặt ô nhập cạnh nút mà viền ô mờ hơn là đã lấy nhầm `border-border`. Đã dính 21/09/2026: helper chung cho ô nhập và textarea viết `border-border`, ô trông nhạt hơn hẳn nút đứng bên. Dựng xong thì grep `border-border\b` trong file ô nhập, textarea, select: phải ra 0.
-- Trạng thái lỗi cũng theo đúng công thức đó, chỉ đổi màu: viền đỏ đặc `red-500`, **quầng `red-500/10` chỉ khi ô đang focus**. Quầng cả lúc nghỉ thì mỗi ô lỗi mang ba tín hiệu đỏ (viền, quầng, câu), form có bốn ô lỗi là đỏ loang cả màn (sửa 23/09/2026). **Câu lỗi thì `text-xs red-600`**, cùng cỡ với chữ gợi ý (`layouts/form.md`), không `red-500`: viền chỉ cần 3:1 nhưng chữ nhỏ cần 4.5:1, `red-500` trên nền trắng chỉ 3.8:1. Không Tailwind thì `--error`, `--error-ring`, `--error-text` trong `tokens.css`.
+- **Nền tối giữ viền**, chỉ đổi nền sang trắng phủ mờ `dark:bg-white/4`. Bỏ viền (`dark:border-transparent`) để nền mờ tự báo vùng gõ là mất ranh giới ô; mọi bộ thiết kế lớn đều giữ viền ở nền tối (`M32`).
+- **Viền ô nhập và viền nút outline phải là CÙNG một class**, `border-border-strong`. Đặt ô nhập cạnh nút mà viền ô mờ hơn là đã lấy nhầm `border-border`. Dựng xong thì grep `border-border\b` trong file ô nhập, textarea, select: phải ra 0.
+- Trạng thái lỗi cũng theo đúng công thức đó, chỉ đổi màu: viền đỏ đặc `red-500`, **quầng `red-500/10` chỉ khi ô đang focus**. Quầng cả lúc nghỉ thì mỗi ô lỗi mang ba tín hiệu đỏ (viền, quầng, câu), form có bốn ô lỗi là đỏ loang cả màn. **Câu lỗi thì `text-xs red-600`**, cùng cỡ với chữ gợi ý (`layouts/form.md`), không `red-500`: viền chỉ cần 3:1 nhưng chữ nhỏ cần 4.5:1, `red-500` trên nền trắng chỉ 3.8:1. Không Tailwind thì `--error`, `--error-ring`, `--error-text` trong `tokens.css`.
 - Bo `rounded-xl`, cùng bậc với nút, nên input và nút đứng cạnh nhau bằng vai.
 - **`text-base` trên mobile rồi thu về `md:text-sm`** — luật `R8`, áp cho cả `textarea` và `select`.
-- **`h-11 md:h-10`**: 40px trên desktop, bằng link sidebar và mục menu; 44px ở màn hẹp cho vừa ngón tay. Nút trong cùng form đổi theo y hệt (`budgets.md`). Form đăng nhập/đăng ký đứng riêng được lên `h-12`. Không dùng `h-12` làm mặc định trong app: thô, và lệch bậc với mọi thứ khác (đảo 22/09/2026).
+- **`h-11 md:h-10`**: 40px trên desktop, bằng link sidebar và mục menu; 44px ở màn hẹp cho vừa ngón tay. Nút trong cùng form đổi theo y hệt (`budgets.md`). Form đăng nhập/đăng ký đứng riêng được lên `h-12`. Không dùng `h-12` làm mặc định trong app: thô, và lệch bậc với mọi thứ khác.
 
 ---
 
@@ -80,7 +80,7 @@ const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
 - `type="button"`, không phải mặc định `submit`.
 - Nút `size-10` sát phải `right-1`, vừa khít `pr-11` của ô (`I27`).
-- **Căn giữa dọc bằng `inset-y-0 my-auto` cộng cỡ cố định** (`size-*`), không `top-1/2 -translate-y-1/2` (`N11`). Áp cho mọi icon, nút nằm trong ô dưới đây. Đo 27/09/2026 ở `/login`, `/register`, đặt mật khẩu mới, ô tìm khách hàng, 375 và 1280px: trùng từng pixel. Quên cỡ thì khối `inset-y-0` giãn cao bằng cả ô (nút mắt 40px thành 48px).
+- **Căn giữa dọc bằng `inset-y-0 my-auto` cộng cỡ cố định** (`size-*`), không `top-1/2 -translate-y-1/2` (`N11`). Áp cho mọi icon, nút nằm trong ô dưới đây. Hai cách trùng từng pixel. Quên cỡ thì khối `inset-y-0` giãn cao bằng cả ô (nút mắt 40px thành 48px).
 - Nút nằm **trong** ô, không phải chữ "Hiện" nằm ngoài bên cạnh — chữ ngoài làm hàng bị lệch so với các field khác.
 - Nút không có nền, không viền. Nó là hành động phụ trong ô, hiện lên bằng màu chữ khi rê vào.
 
@@ -113,10 +113,9 @@ const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 **Tắt nút × có sẵn của trình duyệt, dựng nút xoá riêng.** `type="search"` tự vẽ một
 nút × theo màu của trình duyệt: Chrome tô **xanh dương** theo accent hệ điều hành khi
 ô đang focus, Safari vẽ vòng tròn xám kiểu khác. Một chấm xanh lạc giữa app đen trắng,
-không theo token nào (đã dính 25/09/2026, bảng khách hàng). Lỗi là **màu và hình** của
-nút trình duyệt, không phải việc có nút: bản bỏ hẳn nút × (25/09/2026) làm người gõ
-một câu dài ở 375px không có cách xoá nhanh, chữ trôi khuất bên trái (chủ dự án:
-"tìm kiếm mà không có clear cũng kì"). Ô tìm của các app lớn đều có nút xoá.
+không theo token nào. Lỗi là **màu và hình** của
+nút trình duyệt, không phải việc có nút: đừng bỏ hẳn nút ×, người gõ
+một câu dài ở 375px không có cách xoá nhanh, chữ trôi khuất bên trái (chủ dự án chốt). Ô tìm của các app lớn đều có nút xoá.
 
 ```tsx
 <div className="relative">

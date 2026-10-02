@@ -1,9 +1,9 @@
 # Button
 
 > ⚠️ Bản trước của file này dạy ba variant `primary` / `ghost` / `danger` và
-> "nút mặc định không icon". **Cả hai đã đảo** — xem luật `I1`. Chủ dự án chốt
-> 13/09/2026: nút mặc định là **nút viền**. Icon lucide bên trái chữ chỉ khi glyph gọi đúng
-> hành động; nút form và nút trong modal chỉ có chữ (nới ngày 23/09/2026, xem `I1`).
+> "nút mặc định không icon". **Cả hai đã đảo** — xem luật `I1`. Chủ dự án chốt:
+> nút mặc định là **nút viền**. Icon lucide bên trái chữ chỉ khi glyph gọi đúng
+> hành động; nút form và nút trong modal chỉ có chữ (xem `I1`).
 
 ---
 
@@ -63,26 +63,26 @@ function getVariantClasses(variant: ButtonVariant): string {
 
 - Spinner **thế chỗ icon**, cùng `size-4`, chữ giữ nguyên. Nút không đổi bề rộng, hàng nút không xô. **Nút chỉ chữ** (không icon để thế chỗ): nút `relative`, chữ thêm `invisible` để vẫn giữ bề rộng, spinner `absolute inset-0 m-auto` nằm giữa.
 - Không đổi chữ sang "Đang gửi…": chữ dài ngắn khác nhau là nút co giãn. Đổi thì phải giữ `min-w` bằng bản cũ.
-- **Đang xử lý thì chặn bấm bằng `aria-disabled` + `preventDefault` trong `onClick`, KHÔNG đặt `disabled`.** Nút `disabled` bị trình duyệt tước tiêu điểm: người dùng bàn phím bấm Enter xong rơi về `<body>`, lúc xong việc phải Tab lại từ đầu trang (đã dính 24/09/2026 ở nút "Xem hoạt động cũ hơn", và 25/09/2026 ở trang đăng ký khi skill còn ghi `disabled`). Chặn ở `onClick` là chặn luôn Enter trong ô nhập, vì submit ngầm của form cũng đi qua cú click của nút submit. Nên cài một lần trong component `Button` (prop `isLoading`), đừng viết lại ở từng trang.
+- **Đang xử lý thì chặn bấm bằng `aria-disabled` + `preventDefault` trong `onClick`, KHÔNG đặt `disabled`.** Nút `disabled` bị trình duyệt tước tiêu điểm: người dùng bàn phím bấm Enter xong rơi về `<body>`, lúc xong việc phải Tab lại từ đầu trang. Chặn ở `onClick` là chặn luôn Enter trong ô nhập, vì submit ngầm của form cũng đi qua cú click của nút submit. Nên cài một lần trong component `Button` (prop `isLoading`), đừng viết lại ở từng trang.
 - Nút đang xử lý **không mờ** như nút khoá thường, chỉ spinner nói đang chạy, con trỏ `cursor-progress`. Mờ đi thì đọc ra là "bấm không được vì sai gì đó". Class gốc vẫn giữ `disabled:not-aria-busy:opacity-50` cho dự án nào lỡ đặt `disabled` lúc đang xử lý.
 
 **Vì sao ổn**
 
 - **`outline` là mặc định**, không phải `primary`. Nút nền nhấn rải khắp nơi thì màu thương hiệu loang ra, tới lúc có một nút thật sự cần nổi thì nó không nổi được nữa (`I1`, `M2`).
-- **Nút viền rê vào thì chỉ đổi nền, viền giữ nguyên** (`hover:bg-button-hover`, `#f1f1f3`), như phần lớn các bộ component. Nền hover phải là **màu đặc**, tách được cả khỏi nền ngay sau nút lẫn khỏi màu viền. Ba cách đã hỏng: `hover:bg-item-hover` ra đúng `#f4f4f6` của nền trang, nút tan vào trang; lớp phủ `foreground/5` trong suốt nên lấy màu nền phía sau, trên nền trang ra `#e9e9eb` **trùng màu viền** `#eaeaea`, nút thành mảng xám không viền (hai lần 25/09/2026, nút lọc "Vai trò"); `--surface-hover` `#f8f8fa` thì trên card gần như không đổi. Cách chữa tạm "viền đậm lên `foreground/20`" thấy được ở đâu cũng được nhưng nặng, trông như nút đang bấm giữ hoặc đang chọn (bỏ 26/09/2026, chủ dự án chốt chỉ đổi nền). **Màu rê theo nền ngay sau nút**, tự đổi qua biến (`tokens.css`, khối "NỀN RÊ CỦA NÚT VIỀN"): trên card trắng `#f1f1f3`, thẳng trên nền trang hoặc trong dòng đang rê `#e4e4e7`. Một màu `#f1f1f3` cho mọi chỗ thì trên nền trang `#f4f4f6` chỉ lệch 3 mức, nút như tan vào trang (đã dính 30/09/2026, nút ‹ Hôm nay › trên hàng công cụ màn lịch hẹn; chủ dự án chỉ ra, bản 26/09 ghi "chìm nhẹ mà viền vẫn còn" là chấp nhận sai). Màu nền trang phải đậm hơn viền `#eaeaea` ít nhất 5 mức: `#e7e7ea` chỉ lệch 3, viền tan, nút thành mảng xám (ca 25/09); `#e4e4e7` lệch 6. Màu đó trên card trắng thì quá nặng, nên card giữ `#f1f1f3`. Class vẫn là `hover:bg-button-hover`, không viết màu theo chỗ đặt. Nút có mũi tên mở danh sách lựa chọn thì không theo mục này mà theo ô Select (xem dưới).
+- **Nút viền rê vào thì chỉ đổi nền, viền giữ nguyên** (`hover:bg-button-hover`, `#f1f1f3`), như phần lớn các bộ component. Nền hover phải là **màu đặc**, tách được cả khỏi nền ngay sau nút lẫn khỏi màu viền. Ba cách đã hỏng: `hover:bg-item-hover` ra đúng `#f4f4f6` của nền trang, nút tan vào trang; lớp phủ `foreground/5` trong suốt nên lấy màu nền phía sau, trên nền trang ra `#e9e9eb` **trùng màu viền** `#eaeaea`, nút thành mảng xám không viền; `--surface-hover` `#f8f8fa` thì trên card gần như không đổi. Cách chữa tạm "viền đậm lên `foreground/20`" thấy được ở đâu cũng được nhưng nặng, trông như nút đang bấm giữ hoặc đang chọn (chủ dự án chốt chỉ đổi nền). **Màu rê theo nền ngay sau nút**, tự đổi qua biến (`tokens.css`, khối "NỀN RÊ CỦA NÚT VIỀN"): trên card trắng `#f1f1f3`, thẳng trên nền trang hoặc trong dòng đang rê `#e4e4e7`. Một màu `#f1f1f3` cho mọi chỗ thì trên nền trang `#f4f4f6` chỉ lệch 3 mức, nút như tan vào trang (bác lý lẽ "chìm nhẹ mà viền vẫn còn"). Màu nền trang phải đậm hơn viền `#eaeaea` ít nhất 5 mức: `#e7e7ea` chỉ lệch 3, viền tan, nút thành mảng xám; `#e4e4e7` lệch 6. Màu đó trên card trắng thì quá nặng, nên card giữ `#f1f1f3`. Class vẫn là `hover:bg-button-hover`, không viết màu theo chỗ đặt. Nút có mũi tên mở danh sách lựa chọn thì không theo mục này mà theo ô Select (xem dưới).
 - **`ghost` rê vào `hover:bg-foreground/5`**, không `bg-background` (ghost trong suốt, không có viền để đậm lên, nên phải là lớp phủ). Nút ghost nằm **trong dòng bảng / danh sách có nền rê** (⋯, icon button, ô sửa tại chỗ) thì `/8`, vì nó chồng lên nền dòng đang rê (`I10`).
-- **Nút mở danh sách lựa chọn** (nút lọc "Vai trò ▾", "Trạng thái: Tất cả ▾", "Mỗi trang 10 ▾") **là ô Select, không phải nút viền**: dùng đúng class của ô Select (`choice-controls.md`), tức **không có hover**, chỉ `cursor-pointer`; lúc mở `aria-expanded:border-focus aria-expanded:ring-2 aria-expanded:ring-focus`, nền giữ `bg-surface`, mũi tên xoay. Mũi tên + con trỏ đã nói "bấm được", như ô Select trong form và ô nhập vốn không có hover; thêm hover nữa là tín hiệu thứ hai cho một ý (`N3`), và lệch khuôn với ô Select ngay trong modal (`N5`). Chủ dự án chốt 25/09/2026, sau hai lần hover làm nút tan vào nền trang. Nút mở **menu thao tác** (⋯, "Xuất ▾") thì không phải ô chọn: lúc mở giữ nền rê `aria-expanded:bg-foreground/5`.
-- **`secondary` (nền xám, không viền)** dùng khi nút phụ cần có mặt rõ hơn `ghost` nhưng viền mảnh trông rỗng: nút rộng hết card (các gói thường trong bảng giá, `layouts/pricing.md`), hoặc nút phụ đứng cạnh nút `primary` trong footer. Không thay `outline` làm mặc định (chủ dự án chốt 21/09/2026).
+- **Nút mở danh sách lựa chọn** (nút lọc "Vai trò ▾", "Trạng thái: Tất cả ▾", "Mỗi trang 10 ▾") **là ô Select, không phải nút viền**: dùng đúng class của ô Select (`choice-controls.md`), tức **không có hover**, chỉ `cursor-pointer`; lúc mở `aria-expanded:border-focus aria-expanded:ring-2 aria-expanded:ring-focus`, nền giữ `bg-surface`, mũi tên xoay. Mũi tên + con trỏ đã nói "bấm được", như ô Select trong form và ô nhập vốn không có hover; thêm hover nữa là tín hiệu thứ hai cho một ý (`N3`), và lệch khuôn với ô Select ngay trong modal (`N5`). Chủ dự án chốt. Nút mở **menu thao tác** (⋯, "Xuất ▾") thì không phải ô chọn: lúc mở giữ nền rê `aria-expanded:bg-foreground/5`.
+- **`secondary` (nền xám, không viền)** dùng khi nút phụ cần có mặt rõ hơn `ghost` nhưng viền mảnh trông rỗng: nút rộng hết card (các gói thường trong bảng giá, `layouts/pricing.md`), hoặc nút phụ đứng cạnh nút `primary` trong footer. Không thay `outline` làm mặc định (chủ dự án chốt).
 - **`ghost` đứng đầu hàng, thẳng cột với chữ phía trên.** Nền trong suốt nên mắt thấy mép của chữ chứ không thấy mép nút, để nguyên thì cả hàng trông lệch vào 16px so với tiêu đề và nhãn bên dưới. Nút có nền hoặc viền thì không bù. Bù theo thứ tự, không kéo nút ra bằng `-ml-*` / `-mr-*` (`N11`):
-  1. **Nút nằm ở đầu hay cuối một hàng riêng** (header, dòng danh sách): **hàng bớt padding phía đó** đúng bằng `px` của nút, ví dụ header `pl-4 pr-3` khi nút cuối `h-8 px-3` trong hàng `px-6`. Chữ "Đánh dấu đã đọc" ở header panel thông báo thẳng cột với chấm chưa đọc bên dưới; lúc rê vào nền xám sát mép panel hơn tiêu đề bên trái là đúng ý. Đo 27/09/2026 header trang tổng quan (nút menu đầu hàng, avatar cuối hàng), dòng khách hàng và thành viên ở 375px: trùng từng pixel với bản số âm.
+  1. **Nút nằm ở đầu hay cuối một hàng riêng** (header, dòng danh sách): **hàng bớt padding phía đó** đúng bằng `px` của nút, ví dụ header `pl-4 pr-3` khi nút cuối `h-8 px-3` trong hàng `px-6`. Chữ "Đánh dấu đã đọc" ở header panel thông báo thẳng cột với chấm chưa đọc bên dưới; lúc rê vào nền xám sát mép panel hơn tiêu đề bên trái là đúng ý. Trùng từng pixel với bản số âm.
   2. **Nút chỉ đổi màu chữ khi rê, không nền** (nút mở danh sách bước công cụ trong chat): bỏ `px`, chữ tự thẳng mép.
-  3. **Nút có nền rê nằm giữa một cột chữ** (hàng Sao chép / Tạo lại dưới câu trả lời): không có hàng riêng để bớt padding; chia padding từng khối thì mọi khối con phải tự nhớ `px-2` và `max-w` phải cộng bù (thử 27/09/2026 ở trợ lý AI: bong bóng `max-w-[80%]` và cột `55ch` lệch theo). Giữ `-ml-2` kèm comment lý do (`N11` bước 4).
+  3. **Nút có nền rê nằm giữa một cột chữ** (hàng Sao chép / Tạo lại dưới câu trả lời): không có hàng riêng để bớt padding; chia padding từng khối thì mọi khối con phải tự nhớ `px-2` và `max-w` phải cộng bù (bong bóng `max-w-[80%]` và cột `55ch` lệch theo). Giữ `-ml-2` kèm comment lý do (`N11` bước 4).
 - Icon lucide **bên trái chữ**, `size-4`, `shrink-0` để nó không bị bóp khi nhãn dài. `aria-hidden` vì chữ đã nói rồi.
 - **Không `white-space: nowrap`.** Đo thật ở một dự án: hộp 140px, nút nowrap rộng 192px, tràn 60px ra ngoài. `leading-tight` để hai dòng không dính nhau. Luật `T15`.
 - **Không `shadow`.** Nút nằm trong trang (`M15`).
 - Chỉ `transition-colors`. Nút không phóng to, không nhấc lên, không đổ bóng thêm khi hover (`F22`).
 - **Không vòng focus** (`I13`), kể cả khi Tab tới.
-- **Chiều cao đặt bằng `min-h-10`, không để `py` tự lo.** `py-2.5` + `leading-tight` thì nút đặc cao 38px, nút viền cao 40px vì cộng 2px viền: hai nút cạnh nhau lệch đáy (đã dính 29/09/2026). `min-h-10` gồm cả viền, nên nút nào cũng 40px; nhãn dài xuống dòng thì nút cao thêm, không tràn (`T15`). Nút chỉ icon `size-10`, cao bằng.
+- **Chiều cao đặt bằng `min-h-10`, không để `py` tự lo.** `py-2.5` + `leading-tight` thì nút đặc cao 38px, nút viền cao 40px vì cộng 2px viền: hai nút cạnh nhau lệch đáy. `min-h-10` gồm cả viền, nên nút nào cũng 40px; nhãn dài xuống dòng thì nút cao thêm, không tràn (`T15`). Nút chỉ icon `size-10`, cao bằng.
 - **Nút trong form hoặc footer modal** thêm `min-h-11 md:min-h-10` để cao đúng bằng ô nhập (`budgets.md`).
 - Không có prop `size`. Cần nút khác cỡ thì truyền `className` — đỡ đẻ ra ma trận variant nhân size (`I6`). **Nút thấp hơn 40px thì truyền cả `min-h-*`** (`size-8 min-h-8`, link chữ `h-auto min-h-0`): `h-8` hay `size-8` không đè được `min-h-10` của class gốc, nút vẫn cao 40px.
 - Logic class nằm trong `getVariantClasses()` ngoài JSX, không nhét ternary vào giữa markup.
@@ -112,7 +112,7 @@ tới thì nền đậm lên một bậc:
 - Bị khoá thì vẫn `opacity-50` như mọi nút.
 - Chỉ áp cho **nút đứng riêng**: hàng nút, hộp xác nhận, khu nguy hiểm trong cài đặt. **Mục trong menu** (dropdown, sidebar) vẫn trung tính lúc thường, rê vào mới đỏ — xem `I4`.
 
-> Chủ dự án chốt 21/09/2026: nút xoá là nền danger 10% + chữ danger. Bản trước
+> Chủ dự án chốt: nút xoá là nền danger 10% + chữ danger. Bản trước
 > (xám lúc thường, rê vào mới đỏ) đã bỏ cho nút; vẫn giữ cho mục menu.
 
 ---
@@ -130,8 +130,7 @@ Vuông, cao **bằng đúng** nút chữ đứng cạnh nó, và luôn có `aria
 </button>
 ```
 
-Chênh chiều cao với ô nhập hay nút chữ bên cạnh dù chỉ một bậc là nhìn ra ngay —
-đây là lỗi đã dính ở vòng test kanban.
+Chênh chiều cao với ô nhập hay nút chữ bên cạnh dù chỉ một bậc là nhìn ra ngay.
 
 ---
 

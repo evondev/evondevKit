@@ -47,19 +47,19 @@ Nằm trong card (`card.md`), mỗi hàng một cặp nhãn và giá trị, theo
     cặp nhỏ hơn khe giữa các cặp thì mắt mới gom đúng nhãn với giá trị của nó. Cột phải trang chi tiết,
     màn điện thoại rơi vào đây.
   - **384–575px: nhãn `7rem`** (panel trượt, card nửa khung). Panel 448px trừ lề còn ~400px: nhãn `10rem`
-    chiếm gần nửa, giá trị bị ép xuống 3–4 dòng (đã dính 23/09/2026, địa chỉ giao trong panel xem nhanh đơn hàng).
+    chiếm gần nửa, giá trị bị ép xuống 3–4 dòng.
   - **Từ 576px: nhãn `10rem`.**
 
-  Đã dính 30/09/2026, hồ sơ bệnh nhân: card Liên hệ ở cột phải, `<dl>` 310px, `sm:grid-cols-[7rem_…]` bật vì
-  màn 1440px; giá trị còn 174px, email vỡ ba dòng ("…thi@" / "quangtrung-" / "logistics.com.vn"), địa chỉ
+  Card Liên hệ ở cột phải, `<dl>` 310px, `sm:grid-cols-[7rem_…]` bật vì
+  màn 1440px: giá trị còn 174px, email vỡ ba dòng ("…thi@" / "quangtrung-" / "logistics.com.vn"), địa chỉ
   bốn dòng, nhãn "Thuốc đang dùng" hai dòng. Xếp chồng cùng khối: email và địa chỉ hai dòng. `probe.mjs` báo
   "nhãn–giá trị hai cột trong khối hẹp". Tailwind v3 cần plugin `@tailwindcss/container-queries`; không có
   thì truyền prop bố cục từ chỗ đặt card (cột phải thì xếp chồng), đừng quay về `sm:`.
 - **Giá trị `font-medium text-foreground`, nhãn `text-muted`** (`T23`). Giá trị dài xuống dòng, bám mép trên cùng nhãn (`items-start`), không `truncate`: đây là chỗ để đọc đủ.
-- **Giá trị có avatar (người phụ trách) là `flex h-5 items-center gap-2`, không `inline-flex`.** `inline-flex` nằm trong dòng chữ nên cả cụm bị đẩy theo baseline: hàng cao 24px thay vì 20px, chữ tên thấp hơn chữ nhãn 1,5px, nhìn rõ nhãn "Phụ trách" nổi lên cao hơn tên (đã dính 27/09/2026, panel xem nhanh khách hàng; đổi avatar xuống `size-5` vẫn lệch). `h-5` giữ hàng đúng một dòng chữ, avatar `size-6` tràn 2px trên dưới vào khoảng cách giữa hai hàng.
+- **Giá trị có avatar (người phụ trách) là `flex h-5 items-center gap-2`, không `inline-flex`.** `inline-flex` nằm trong dòng chữ nên cả cụm bị đẩy theo baseline: hàng cao 24px thay vì 20px, chữ tên thấp hơn chữ nhãn 1,5px, nhìn rõ nhãn "Phụ trách" nổi lên cao hơn tên (đổi avatar xuống `size-5` vẫn lệch). `h-5` giữ hàng đúng một dòng chữ, avatar `size-6` tràn 2px trên dưới vào khoảng cách giữa hai hàng.
 - **`[overflow-wrap:anywhere]` cho giá trị**: email, URL, mã dài không có dấu cách nên không tự xuống dòng, sẽ đẩy tràn card ở màn hẹp.
-- **Email chèn `<wbr>` ngay sau `@`**, để email dài xuống dòng ở ranh giới tên / tên miền. `overflow-wrap:anywhere` chỉ là lưới đỡ: một mình nó thì bẻ ở bất kỳ ký tự nào vừa hết chỗ. Đã dính 25/09/2026: thêm nút sao chép cạnh email, cột giá trị hẹp đi 28px, "…@hoanggiap" / "hat-import-export.com.vn" vỡ giữa chữ.
-  - **Email nằm giữa câu chữ** (hộp xác nhận, toast, dòng "Đang chờ xác nhận…") thì `<wbr>` chưa đủ: tên miền có gạch nối thì trình duyệt còn bẻ ở gạch nối, ra "…khang@evondev-" / "studio.com" (đã dính 25/09/2026, hộp xoá tài khoản; ở 375px còn vỡ "…@evo" / "ndev-studio.com"). Tách email làm hai khúc `inline-block max-w-full`, mỗi khúc chỉ bẻ bên trong khi tự nó dài hơn cả dòng:
+- **Email chèn `<wbr>` ngay sau `@`**, để email dài xuống dòng ở ranh giới tên / tên miền. `overflow-wrap:anywhere` chỉ là lưới đỡ: một mình nó thì bẻ ở bất kỳ ký tự nào vừa hết chỗ. Ví dụ: thêm nút sao chép cạnh email, cột giá trị hẹp đi 28px, "…@hoanggiap" / "hat-import-export.com.vn" vỡ giữa chữ.
+  - **Email nằm giữa câu chữ** (hộp xác nhận, toast, dòng "Đang chờ xác nhận…") thì `<wbr>` chưa đủ: tên miền có gạch nối thì trình duyệt còn bẻ ở gạch nối, ra "…khang@evondev-" / "studio.com" (ở 375px còn vỡ "…@evo" / "ndev-studio.com"). Tách email làm hai khúc `inline-block max-w-full`, mỗi khúc chỉ bẻ bên trong khi tự nó dài hơn cả dòng:
 
     ```tsx
     interface EmailTextProps {
@@ -99,18 +99,18 @@ Nằm trong card (`card.md`), mỗi hàng một cặp nhãn và giá trị, theo
     Dùng chung một component này cho mọi chỗ in email, kể cả hàng giá trị ở trên.
   - **Dấu câu ngay sau email đi vào `suffix`, không viết sau thẻ.** Sau một khối `inline-block`
     trình duyệt được phép xuống dòng, nên `<EmailText />.` ở câu dài ra dòng mở đầu bằng dấu
-    chấm: "…evondev.com.vn" / ". Đổi tài khoản" (đã dính 26/09/2026, trang 403 ở 375 và 768px).
+    chấm: "…evondev.com.vn" / ". Đổi tài khoản".
     Viết `<EmailText email={email} suffix="." />`. Bọc cả email và dấu bằng `whitespace-nowrap`
     thì không được: mất luôn chỗ xuống dòng sau `@`. Probe báo lỗi này ở mục "Dấu câu rơi xuống
     đầu dòng".
   - **Khối bọc ngoài cũng `inline-block max-w-full`.** Để khối ngoài là inline thường thì trình
     duyệt chọn ngắt ngay sau `@` dù cả email vừa một dòng: "Bạn đang đăng nhập bằng
     tran.nguyen.anh.tuan.khang@" / "evondev-studio.com. Đổi tài khoản", đọc như hai mẩu, câu căn
-    giữa thì hai dòng lệch hẳn nhau (đã dính 26/09/2026, trang 403). Khối ngoài `inline-block` thì
+    giữa thì hai dòng lệch hẳn nhau. Khối ngoài `inline-block` thì
     email vừa dòng sẽ xuống nguyên cụm; chỉ khi dài hơn cả dòng mới ngắt sau `@` như trên (thử ở
     320, 375, 1280px).
-  - **Phần trước `@` dài hơn cả dòng thì xuống dòng trước dấu chấm** (`<wbr>` trước mỗi `.`, như trên). Không có nó thì `wrap-anywhere` bẻ ở ký tự vừa hết chỗ, và hay rơi đúng trước `@`: một dòng chỉ có mỗi "@" (đã dính 25/09/2026, màn OTP ở 1280px, "…toan.tong.hop" / "@" / "congty-…"). Có `<wbr>` thì ra "…toan.tong" / ".hop@" / "congty-…". Không dính `@` vào ký tự cuối bằng `nowrap`: ra "…tong.ho" / "p@", vẫn vỡ giữa chữ.
+  - **Phần trước `@` dài hơn cả dòng thì xuống dòng trước dấu chấm** (`<wbr>` trước mỗi `.`, như trên). Không có nó thì `wrap-anywhere` bẻ ở ký tự vừa hết chỗ, và hay rơi đúng trước `@`: một dòng chỉ có mỗi "@" ("…toan.tong.hop" / "@" / "congty-…"). Có `<wbr>` thì ra "…toan.tong" / ".hop@" / "congty-…". Không dính `@` vào ký tự cuối bằng `nowrap`: ra "…tong.ho" / "p@", vẫn vỡ giữa chữ.
 - **Giá trị trống là `—` `text-muted`**, một ký hiệu cho mọi ô trống, giống ô trống trong bảng (`layouts/app.md`, `T18`). Không viết "Chưa có", "Chưa gắn nhãn", mỗi dòng một câu.
 - **Giá trị có khuôn riêng thì dùng đúng component của nó**, không viết chữ trơn: trạng thái là badge màu (`M7`), nhãn phân loại là pill (`M8`, `list-row.md`), tiền dùng `đ` không `₫` (`charts.md`), số `tabular-nums`, mã và ID `font-mono` (`T17`).
-- **Email là link `mailto:`, số điện thoại là link `tel:`**, chữ vẫn `text-foreground`, rê vào gạch chân. Kèm icon button `copy` `size-7` hiện khi rê vào hàng, luôn hiện trên màn chạm (`I11`); bấm thì icon đổi `check` 1,5 giây, không toast. **Vùng bấm nới ra 40px mà hình giữ 28px**: `relative before:absolute before:-inset-1.5` (số âm buộc phải giữ theo `N11`, cùng cách tay cầm ở `range-slider.md`: nút to lên `size-10` thì cột giá trị hẹp thêm 12px và mỗi hàng trên điện thoại cao thêm 12px). Nút 28px trơn trên màn chạm là dưới mức 32px (đã dính 27/09/2026, `/dashboard/customers/quick-view` ở 375px, năm nút). Hai hàng có nút sao chép cách nhau 56px nên vùng 40px không chồng nhau. Mặc định ở trang chi tiết và panel xem bản ghi; ở form xác nhận, màn chỉ đọc lại thông tin vừa nhập thì để chữ trơn. **Không lặp các việc này vào menu ⋯** ("Gọi điện", "Sao chép email"): việc gắn với một giá trị thì nằm cạnh giá trị đó (`layouts/app.md`, "Trang chi tiết bản ghi").
+- **Email là link `mailto:`, số điện thoại là link `tel:`**, chữ vẫn `text-foreground`, rê vào gạch chân. Kèm icon button `copy` `size-7` hiện khi rê vào hàng, luôn hiện trên màn chạm (`I11`); bấm thì icon đổi `check` 1,5 giây, không toast. **Vùng bấm nới ra 40px mà hình giữ 28px**: `relative before:absolute before:-inset-1.5` (số âm buộc phải giữ theo `N11`, cùng cách tay cầm ở `range-slider.md`: nút to lên `size-10` thì cột giá trị hẹp thêm 12px và mỗi hàng trên điện thoại cao thêm 12px). Nút 28px trơn trên màn chạm là dưới mức 32px. Hai hàng có nút sao chép cách nhau 56px nên vùng 40px không chồng nhau. Mặc định ở trang chi tiết và panel xem bản ghi; ở form xác nhận, màn chỉ đọc lại thông tin vừa nhập thì để chữ trơn. **Không lặp các việc này vào menu ⋯** ("Gọi điện", "Sao chép email"): việc gắn với một giá trị thì nằm cạnh giá trị đó (`layouts/app.md`, "Trang chi tiết bản ghi").
 - Không kẻ đường chia giữa các hàng khi dưới 8 hàng: khoảng trắng đủ tách. Nhiều hơn thì chia nhóm có tiêu đề nhỏ, không kẻ từng hàng.

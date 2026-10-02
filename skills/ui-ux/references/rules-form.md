@@ -21,7 +21,7 @@ Bốn bậc, hết:
 **Luật chiều cao: từ 40px trở lên thì tối thiểu 12px.** Nhìn chiều cao phần tử
 trước rồi mới chọn bậc, đừng chọn theo tên loại ("mục menu thì 8px"). Mục menu
 cao 40px mà bo 8px thì góc trông cứng, lạc tông với nút và ô nhập 12px đứng gần
-(chủ dự án chốt 21/09/2026). Dưới 40px thì 12px bắt đầu tròn quá so với chiều
+(chủ dự án chốt). Dưới 40px thì 12px bắt đầu tròn quá so với chiều
 cao, nên hạ về 8px.
 
 Dùng `rounded-md`, `rounded` hay số tuỳ chế là đẻ bậc thứ năm. *Ngoại lệ có tên:
@@ -114,9 +114,8 @@ Muốn chữ vẫn thẳng lề với các khối khác mà nền hover vẫn tr
 </section>
 ```
 
-Không kéo danh sách ra bằng `-mx-3` (`N11`). Đo 27/09/2026 card "Việc hôm nay" ở `/dashboard`,
-375 và 1280px: bản padding từng khối và bản `-mx-*` trùng từng pixel (chữ tiêu đề, ô tick, nền
-dòng). Ô trong bảng cùng cách: ô chứa nút bớt padding đúng bằng `px` của nút (`td` `px-2` khi
+Không kéo danh sách ra bằng `-mx-3` (`N11`). Bản padding từng khối và bản `-mx-*` trùng từng
+pixel (chữ tiêu đề, ô tick, nền dòng). Ô trong bảng cùng cách: ô chứa nút bớt padding đúng bằng `px` của nút (`td` `px-2` khi
 nút `px-2`, các ô khác `px-4`), không kéo nút ra.
 
 **F14. Không spacing tuỳ hứng, không bo góc tuỳ hứng.** Lấy từ `budgets.md`.
@@ -222,12 +221,11 @@ Chọn cách theo **nền hover của mục có thụt vào so với mép khung 
 mép, mất khe hở, và bo góc của mục với bo góc của khung không còn đồng tâm
 (`M19`).
 
-**Cách 1 không kéo vạch ra bằng `-mx-*`** (`N11`). Bản cũ để khung `p-2` rồi cho vạch
-`-mx-2`: hai con số phải khớp nhau, đổi padding khung mà quên đổi âm lề là vạch lại hụt
+**Cách 1 không kéo vạch ra bằng `-mx-*`** (`N11`). Để khung `p-2` rồi cho vạch
+`-mx-2` thì hai con số phải khớp nhau, đổi padding khung mà quên đổi âm lề là vạch lại hụt
 hoặc tràn khỏi khung. Gom mục thành nhóm `px-*` thì không còn số nào phải khớp. Nhóm
 chỉ là `<div>` trơn, không `role`: trình đọc màn hình vẫn thấy các `menuitem` là con của
-`menu`. Đo 27/09/2026 trên 12 menu (tài khoản, ⋯ của thành viên, ⋯ của khoá API; 375 và
-1280px): vị trí từng mục, từng vạch và chiều cao menu trùng từng pixel với bản `-mx-1`.
+`menu`. Vị trí từng mục, từng vạch và chiều cao menu trùng từng pixel với bản `-mx-1`.
 
 Cùng lý do, `divide-y` trên danh sách trong card cũng tràn hết bề ngang — xem
 `references/components/card.md`.

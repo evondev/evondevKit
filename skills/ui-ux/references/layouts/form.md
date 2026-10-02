@@ -59,9 +59,9 @@ một dòng** cho họ biết mình đã chọn gì.
 | --- | --- | --- |
 | **"Quên mật khẩu?"** | **Có** | Thiếu nó thì người quên mật khẩu không còn đường nào vào. Đây là phần tử duy nhất mà thiếu là hỏng chức năng, không phải hỏng thẩm mỹ |
 | **Ghi nhớ đăng nhập** | **Không** | Nó đổi thời hạn phiên ở **backend**, không phải chỉ là cái checkbox. Vẽ ra mà backend không làm gì là lừa người dùng — sai nhiều hơn là thiếu |
-| **Đăng nhập mạng xã hội** | **Có, một nút Google** ("Đăng nhập bằng Google" / "Đăng ký bằng Google") | Gần như mọi app có màn đăng nhập đều có nút này, người dùng tìm nó trước cả ô email. Thiếu là trang trông như bản dựng dở (đã dính 25/09/2026). Handler để rỗng, báo lúc giao là cần nối nhà cung cấp. Sản phẩm cho lập trình viên thì thêm GitHub. Cả đăng nhập lẫn đăng ký đều có, và cùng bộ nhà cung cấp |
-| **Placeholder** | **Có**, ngoại lệ của `T25` | Màn đứng một mình, cả trang chỉ có vài ô: ô trống trơn trông như chưa dựng xong (đã dính 25/09/2026). Chữ ở mục dưới |
-| **Con trỏ lúc mở màn** | **Nằm sẵn ở ô đầu** (`autoFocus`) | Cả màn chỉ có một việc là gõ. Áp cho **mọi** màn trong luồng: đăng nhập, đăng ký, từng bước quên mật khẩu, OTP. Bước này có bước kia không thì sang bước mới người dùng phải chạm lại vào ô (đã dính 25/09/2026: nhập email và OTP có, đăng nhập, đăng ký, đặt mật khẩu mới không) |
+| **Đăng nhập mạng xã hội** | **Có, một nút Google** ("Đăng nhập bằng Google" / "Đăng ký bằng Google") | Gần như mọi app có màn đăng nhập đều có nút này, người dùng tìm nó trước cả ô email. Thiếu là trang trông như bản dựng dở. Handler để rỗng, báo lúc giao là cần nối nhà cung cấp. Sản phẩm cho lập trình viên thì thêm GitHub. Cả đăng nhập lẫn đăng ký đều có, và cùng bộ nhà cung cấp |
+| **Placeholder** | **Có**, ngoại lệ của `T25` | Màn đứng một mình, cả trang chỉ có vài ô: ô trống trơn trông như chưa dựng xong. Chữ ở mục dưới |
+| **Con trỏ lúc mở màn** | **Nằm sẵn ở ô đầu** (`autoFocus`) | Cả màn chỉ có một việc là gõ. Áp cho **mọi** màn trong luồng: đăng nhập, đăng ký, từng bước quên mật khẩu, OTP. Bước này có bước kia không thì sang bước mới người dùng phải chạm lại vào ô |
 | **"Nhập lại mật khẩu"** | **Không** | Ô mật khẩu đã có nút mắt để xem lại. Hầu hết app đã bỏ ô gõ lại; thêm nó là thêm một ô cho mỗi người đăng ký để phòng lỗi mà nút mắt đã phòng rồi |
 | **Chiều cao ô và nút** | **`h-12`** | Ngoại lệ duy nhất của `h-11 md:h-10` (`budgets.md`): form đứng một mình giữa trang, cả màn chỉ có nó, ô to hơn một bậc là hợp. Form trong app, modal, cài đặt thì không |
 
@@ -91,14 +91,13 @@ Một dòng, không phải một bảng câu hỏi. Người dùng **không nh�
 đồng ý, dựng theo mặc định, đi tiếp.
 
 **Chưa nối backend thì gửi hợp lệ vẫn phải đi tiếp.** Bấm "Đăng ký" với form đúng mà
-không có gì xảy ra thì người duyệt tưởng nút hỏng (đã dính 25/09/2026). Giả lập: nút
+không có gì xảy ra thì người duyệt tưởng nút hỏng. Giả lập: nút
 quay spinner ~1 giây, rồi sang bước kế tiếp nếu đã dựng (đăng nhập → trang đầu của app, đăng ký → nhập OTP → trang đầu của app, quên mật
 khẩu → nhập mã, mật khẩu mới → màn xong). Hàm gọi API vẫn để trống, có comment chỗ nối.
 
 **Bước sau hiện đúng thứ người dùng vừa gõ.** Gõ `an@congty.vn` ở trang đăng ký thì trang
-OTP ghi "Mã … vừa được gửi tới an@congty.vn", không phải email mẫu của trang OTP (đã dính
-25/09/2026: sang OTP hiện "nguyen.hoang.bao…@congty-…", người duyệt tưởng mã gửi nhầm địa
-chỉ). Chuyền qua state của router; email mẫu chỉ dùng khi mở thẳng trang OTP bằng link, và
+OTP ghi "Mã … vừa được gửi tới an@congty.vn", không phải email mẫu của trang OTP (người duyệt
+tưởng mã gửi nhầm địa chỉ). Chuyền qua state của router; email mẫu chỉ dùng khi mở thẳng trang OTP bằng link, và
 ở trang `/states`. Cùng luật `S6`: dữ liệu giả của một luồng phải khớp nhau giữa các bước.
 
 **Họ nói muốn thêm thì thêm ngay, đừng hỏi lại.** "Thêm remember me" là đủ rõ —
@@ -131,8 +130,7 @@ nằm dưới nút submit.
 
 **Thứ tự Tab: email → mật khẩu → nút mắt → "Quên mật khẩu?" → Đăng nhập.** Link đặt
 trong hàng nhãn bằng `flex justify-between` thì nó đứng trước ô mật khẩu trong DOM: gõ
-email xong bấm Tab là rơi vào link, bấm Enter theo thói quen là rời trang đăng nhập (đã
-dính 25/09/2026). Nên link nằm sau ô trong DOM, `absolute top-0 right-0` để vẫn hiện ở
+email xong bấm Tab là rơi vào link, bấm Enter theo thói quen là rời trang đăng nhập. Nên link nằm sau ô trong DOM, `absolute top-0 right-0` để vẫn hiện ở
 hàng nhãn; vị trí trên màn không đổi một pixel. Đừng chữa bằng `tabindex="-1"`: người
 dùng bàn phím mất luôn lối vào link.
 
@@ -181,7 +179,7 @@ vì cả luồng nằm trong một tab, báo một dòng lúc giao.
      "Gửi mã mới" (`I3`: lối ra duy nhất) (gửi lại tới email cũ, sang bước 2). Câu báo nói luôn điều người
      dùng lo: "Mật khẩu cũ chưa bị đổi". Đừng để ô mật khẩu và nút "Lưu mật khẩu" nằm
      dưới khối lỗi: bấm Lưu lần nữa vẫn hỏng, và khối lỗi có nút riêng thì màn có hai
-     nút tranh nhau làm việc chính (đã dính 25/09/2026, `N5`).
+     nút tranh nhau làm việc chính (`N5`).
 4. **Xong.** "Đã đổi mật khẩu", nút "Đăng nhập" về trang đăng nhập với email điền sẵn.
    Backend cho đăng nhập luôn sau khi đổi thì bỏ màn này, vào thẳng app; báo lúc giao.
 
@@ -208,8 +206,7 @@ Số lượng quyết định bố cục:
 
 Kẻ bằng **`--border-strong`**, không `--border`. `--border` (`#f7f7f8`) là đường tóc giữa các
 hàng danh sách, nơi có chữ hai bên đỡ mắt; đứng một mình trên card trắng thì nó chỉ
-1.06 : 1, hai vạch biến mất, còn trơ chữ "hoặc" lơ lửng giữa hai nút (đã dính 25/09/2026,
-trang đăng ký ở 375px).
+1.06 : 1, hai vạch biến mất, còn trơ chữ "hoặc" lơ lửng giữa hai nút.
 
 Xếp dọc 3–4 nút full width thì phần mạng xã hội **dài hơn cả form thật**, và
 người dùng phải cuộn qua một dãy nút giống hệt nhau mới thấy ô email. Thứ chính
@@ -253,9 +250,9 @@ khi bị báo lỗi. Chọn một trong hai cách theo tỉ lệ, đừng dùng 
 Dấu `*` **tô đỏ**, cùng sắc với câu lỗi (`text-red-600 dark:text-red-400`), ngoại lệ có tên ở `M9`,
 `aria-hidden="true"`; ô vẫn mang `required` để trình đọc màn hình đọc "bắt buộc".
 Đây là quy ước số đông: người dùng đã quen "* đỏ = phải điền", để xám thì họ phải
-dừng lại tự hỏi dấu đó nghĩa là gì (đổi 25/09/2026: bản cũ ở đây ghi `text-muted`, cãi nhau với `M9`).
+dừng lại tự hỏi dấu đó nghĩa là gì.
 
-Dấu `*` trong dòng chú thích ("Mục có dấu * là bắt buộc") cũng đỏ y như ở nhãn: chú thích giải nghĩa một ký hiệu thì phải in đúng ký hiệu đó, xám ở đây đỏ ở kia là hai dấu khác nhau (đã dính 25/09/2026).
+Dấu `*` trong dòng chú thích ("Mục có dấu * là bắt buộc") cũng đỏ y như ở nhãn: chú thích giải nghĩa một ký hiệu thì phải in đúng ký hiệu đó, xám ở đây đỏ ở kia là hai dấu khác nhau.
 
 ```html
 <label for="full-name" class="text-sm font-medium">
@@ -312,12 +309,12 @@ Thông tin công ty   **Người liên hệ**   Xác nhận
 | Chưa tới | nền `bg-secondary`, số `text-muted` | `text-muted` | `h-0.5 bg-secondary` |
 | Có lỗi | nền `bg-red-600`, chữ `!` `text-sm font-bold text-white` (ký tự, không icon) | `text-red-700`, câu lỗi `text-sm text-red-600` dưới nhãn | như trạng thái của nó |
 
-- **Phần "chưa tới" dùng `--secondary`, không `--background`, không `--border`.** Thanh các bước thường đứng trên nền trang, ngoài card. Vòng `bg-background` trùng đúng màu nền trang nên tan mất, chỉ còn con số "3" lơ lửng cuối đường nối; `--border` (#f7f7f8) còn **sáng hơn** nền trang (#f4f4f6), đường nối và đoạn thanh mảnh chưa tới gần như vô hình (đã dính 26/09/2026, `/workspaces/new`; dự án tự đổi đường nối sang `bg-secondary` vì thấy mờ). `--secondary` (#e7e8ec) đọc được cả trên nền trang lẫn trên card trắng.
-- **Vòng lỗi là vòng đặc đỏ với dấu `!`, không phải vòng viền đỏ bọc icon `circle-alert`.** Icon đó tự có một vòng tròn, đặt vào vòng viền thành hai vòng lồng nhau, nhìn rối và nhỏ xíu (đã dính 22/09/2026). Vòng đặc cùng khuôn với bước đã xong (đặc + ký hiệu), chỉ đổi màu và ký hiệu.
-- Dựng bằng `<ol>`, bước đang làm có `aria-current="step"`. Các bước `flex-1`, **riêng bước cuối `flex-none`** (không đường nối, không `pr`): hàng trải đúng từ mép trái tới mép phải của card bên dưới. Để bước cuối `flex-1` thì cột cuối chỉ có vòng và một chữ ngắn, hở một mảng bên phải, cả thanh lệch trái so với card (đã dính 26/09/2026: "Xác nhận" dừng ở 860px, card tới 952px; bỏ mô tả thì hở tới 150px).
-- **Thanh ngang chỉ có nhãn, không mô tả dưới nhãn**, khi mỗi bước đã có tiêu đề và câu dẫn trong card (mặc định, xem "Khung một bước" dưới). Mô tả ở thanh cộng câu dẫn trong card là hai câu cho một ý, cách nhau 100px (`N3`). Đã dính 26/09/2026: thanh ghi "Có thể để trống, mời sau", câu dẫn ghi "Chưa cần thì để trống, mời sau ở trang Thành viên", nhãn ô ghi "Không bắt buộc": ba lần "không bắt buộc" trên một màn. Mô tả dưới nhãn chỉ dùng khi bên cạnh không có tiêu đề bước riêng (thường là thanh dọc bên trái form dài); khi đó `text-sm text-muted text-pretty`, cho xuống dòng, không `truncate`. Thiếu `text-pretty` là trơ một chữ ở dòng cuối (đã dính 22/09/2026 ở bản dọc).
+- **Phần "chưa tới" dùng `--secondary`, không `--background`, không `--border`.** Thanh các bước thường đứng trên nền trang, ngoài card. Vòng `bg-background` trùng đúng màu nền trang nên tan mất, chỉ còn con số "3" lơ lửng cuối đường nối; `--border` (#f7f7f8) còn **sáng hơn** nền trang (#f4f4f6), đường nối và đoạn thanh mảnh chưa tới gần như vô hình. `--secondary` (#e7e8ec) đọc được cả trên nền trang lẫn trên card trắng.
+- **Vòng lỗi là vòng đặc đỏ với dấu `!`, không phải vòng viền đỏ bọc icon `circle-alert`.** Icon đó tự có một vòng tròn, đặt vào vòng viền thành hai vòng lồng nhau, nhìn rối và nhỏ xíu. Vòng đặc cùng khuôn với bước đã xong (đặc + ký hiệu), chỉ đổi màu và ký hiệu.
+- Dựng bằng `<ol>`, bước đang làm có `aria-current="step"`. Các bước `flex-1`, **riêng bước cuối `flex-none`** (không đường nối, không `pr`): hàng trải đúng từ mép trái tới mép phải của card bên dưới. Để bước cuối `flex-1` thì cột cuối chỉ có vòng và một chữ ngắn, hở một mảng bên phải, cả thanh lệch trái so với card.
+- **Thanh ngang chỉ có nhãn, không mô tả dưới nhãn**, khi mỗi bước đã có tiêu đề và câu dẫn trong card (mặc định, xem "Khung một bước" dưới). Mô tả ở thanh cộng câu dẫn trong card là hai câu cho một ý, cách nhau 100px (`N3`). Thanh ghi "Có thể để trống, mời sau", câu dẫn ghi "Chưa cần thì để trống, mời sau ở trang Thành viên", nhãn ô ghi "Không bắt buộc": ba lần "không bắt buộc" trên một màn. Mô tả dưới nhãn chỉ dùng khi bên cạnh không có tiêu đề bước riêng (thường là thanh dọc bên trái form dài); khi đó `text-sm text-muted text-pretty`, cho xuống dòng, không `truncate`. Thiếu `text-pretty` là trơ một chữ ở dòng cuối.
 - **Bước đã xong bấm được để quay lại** (vòng + nhãn là một nút, `cursor-pointer`, hover nhãn gạch chân). Bước chưa tới không bấm được. Có cho nhảy cóc tới bước chưa tới hay không là logic, người dùng quyết. **Đang gửi ở bước cuối thì các bước đã xong `disabled`** như nút "Quay lại": trông bấm được (rê vào gạch chân) mà bấm không đi đâu là nói sai.
-- **Màn hẹp dưới `sm` thu gọn**, không cố nhét ba cột: một dòng "Bước 2 / 3" `text-sm font-medium tabular-nums` + một thanh mảnh `h-1` chia đoạn theo số bước. **Tên bước không ghi ở dòng này khi card ngay dưới đã có tiêu đề bước**: "Bước 1 / 3 · Thông tin workspace" rồi tiêu đề card "Thông tin workspace" cách 50px là lặp, cùng lý do đường dẫn không ghi trang đang đứng (`layouts/app.md`, đã dính 26/09/2026). Đoạn bước đã xong `bg-primary`, **đoạn bước đang làm `bg-primary/30`** (nửa đậm), chưa tới `bg-secondary`. Ba tầng như ba kiểu vòng ở màn rộng. Không tô đậm đủ đoạn đang làm: đứng ở bước cuối sẽ trông y như đã xong hết. Cũng không để đoạn đang làm xám như chưa tới: chữ ghi "Bước 2 / 3" mà thanh chỉ sáng một đoạn, đọc như thanh bị thiếu (đã dính cả hai chiều 22/09/2026). **Ca có ghi tên bước** ("Bước 2 / 3 · Người liên hệ", khi bên dưới không có tiêu đề bước riêng): **tên được xuống dòng**, `text-pretty`, không `truncate`: tên bước là thứ người dùng cần đọc (`N8`), và đổi bước là đổi cả màn nên dòng chữ cao thêm một dòng không tính là nhảy (`N1`). Cụm "Bước 2 / 3 ·" `whitespace-nowrap` để không bị bẻ đôi. Mô tả ẩn. Không để các cột bước wrap thành hai hàng (`R6`). Có bước lỗi thì đoạn của bước đó đỏ, và **thêm một dòng `text-xs text-red-600` dưới thanh nói bước nào sai** ("Bước 1 còn thiếu mã số thuế"), bấm được để quay lại. Chỉ có đoạn đỏ mà không có chữ thì màn hẹp không biết sai ở đâu.
+- **Màn hẹp dưới `sm` thu gọn**, không cố nhét ba cột: một dòng "Bước 2 / 3" `text-sm font-medium tabular-nums` + một thanh mảnh `h-1` chia đoạn theo số bước. **Tên bước không ghi ở dòng này khi card ngay dưới đã có tiêu đề bước**: "Bước 1 / 3 · Thông tin workspace" rồi tiêu đề card "Thông tin workspace" cách 50px là lặp, cùng lý do đường dẫn không ghi trang đang đứng (`layouts/app.md`). Đoạn bước đã xong `bg-primary`, **đoạn bước đang làm `bg-primary/30`** (nửa đậm), chưa tới `bg-secondary`. Ba tầng như ba kiểu vòng ở màn rộng. Không tô đậm đủ đoạn đang làm: đứng ở bước cuối sẽ trông y như đã xong hết. Cũng không để đoạn đang làm xám như chưa tới: chữ ghi "Bước 2 / 3" mà thanh chỉ sáng một đoạn, đọc như thanh bị thiếu. **Ca có ghi tên bước** ("Bước 2 / 3 · Người liên hệ", khi bên dưới không có tiêu đề bước riêng): **tên được xuống dòng**, `text-pretty`, không `truncate`: tên bước là thứ người dùng cần đọc (`N8`), và đổi bước là đổi cả màn nên dòng chữ cao thêm một dòng không tính là nhảy (`N1`). Cụm "Bước 2 / 3 ·" `whitespace-nowrap` để không bị bẻ đôi. Mô tả ẩn. Không để các cột bước wrap thành hai hàng (`R6`). Có bước lỗi thì đoạn của bước đó đỏ, và **thêm một dòng `text-xs text-red-600` dưới thanh nói bước nào sai** ("Bước 1 còn thiếu mã số thuế"), bấm được để quay lại. Chỉ có đoạn đỏ mà không có chữ thì màn hẹp không biết sai ở đâu.
 - Không quá 5 bước. Hơn nữa là form đang cần gộp bước lại.
 
 **Khung một bước:**
@@ -338,7 +335,7 @@ Tạo workspace mới                      <- tên trang, một lần
 - **Tiêu điểm**: mở trang thì con trỏ nằm sẵn ở ô đầu của bước 1 (`autoFocus`, cùng lý do màn đăng nhập ở trên). Sang bước khác thì đưa tiêu điểm lên `h2` (`tabIndex={-1}`, `outline-hidden`): trình đọc màn hình đọc tên bước mới, và ở màn hẹp trang về đầu bước thay vì đứng ở hàng nút dưới đáy.
 - **Hàng nút đáy**: lối lùi bên trái, nút chính bên phải, `border-t border-border pt-5 mt-8`, cao bằng ô (`h-11 md:h-10`). Bước 1 lối lùi là "Huỷ" (rời luồng), các bước sau "Quay lại". Nút chính "Tiếp", bước cuối là động từ của cả luồng ("Tạo workspace", không "Hoàn tất"). Bấm "Tiếp" chỉ kiểm bước đang đứng; sai thì đứng lại, focus ô sai đầu tiên. Lùi về không mất gì đã điền.
 - **Chặn bấm đúp ở nút chính**: nút cuối hiện đúng chỗ nút "Tiếp", bấm đúp "Tiếp" ở bước áp chót thì cú thứ hai gửi luôn khi người dùng chưa kịp đọc bước xác nhận. `onClick` bỏ qua `event.detail > 1` (Enter có `detail = 0`, không bị chặn).
-- **Bước xác nhận chia nhóm theo bước, mỗi nhóm một link "Sửa"** ở mép phải tiêu đề nhóm, bấm về đúng bước đó. Đây là cách trang thanh toán nào cũng làm. Ở màn hẹp thanh các bước chỉ là dòng chữ và thanh mảnh, không bấm được, nên thiếu "Sửa" thì muốn sửa tên từ bước 3 phải bấm "Quay lại" hai lần qua bước 2 (đã dính 26/09/2026, `/workspaces/new`: bước xác nhận là một danh sách nhãn–giá trị liền, không có lối sửa). Nhóm là khối nhãn–giá trị (`../components/description-list.md`), tiêu đề nhóm **`text-sm font-semibold`**, link "Sửa" là link chữ `text-sm text-foreground/70` như `I7`, rê vào `text-foreground` + gạch chân, không nút viền. **Tiêu đề nhóm phải khác kiểu chữ giá trị**: giá trị trong khối nhãn–giá trị đã là `text-sm font-medium text-foreground`, tiêu đề nhóm cũng `font-medium` thì trùng hệt, ở màn hẹp (nhãn trên, giá trị dưới) "Thông tin workspace" đọc như một giá trị nữa (đã dính 26/09/2026, lượt hai `/workspaces/new`, do chính bản trước của dòng này ghi `font-medium`). Không đổi sang chữ nhỏ xám: tiêu đề nhóm nhạt hơn nhãn con bên dưới là ngược thứ bậc. Không thêm đường kẻ giữa nhóm, khoảng trắng `gap-6` đủ tách. Sửa xong bấm "Tiếp" đi lại tuần tự như thường, không nhảy thẳng về bước xác nhận (nhảy thẳng là logic, người dùng quyết).
+- **Bước xác nhận chia nhóm theo bước, mỗi nhóm một link "Sửa"** ở mép phải tiêu đề nhóm, bấm về đúng bước đó. Đây là cách trang thanh toán nào cũng làm. Ở màn hẹp thanh các bước chỉ là dòng chữ và thanh mảnh, không bấm được, nên thiếu "Sửa" thì muốn sửa tên từ bước 3 phải bấm "Quay lại" hai lần qua bước 2. Nhóm là khối nhãn–giá trị (`../components/description-list.md`), tiêu đề nhóm **`text-sm font-semibold`**, link "Sửa" là link chữ `text-sm text-foreground/70` như `I7`, rê vào `text-foreground` + gạch chân, không nút viền. **Tiêu đề nhóm phải khác kiểu chữ giá trị**: giá trị trong khối nhãn–giá trị đã là `text-sm font-medium text-foreground`, tiêu đề nhóm cũng `font-medium` thì trùng hệt, ở màn hẹp (nhãn trên, giá trị dưới) "Thông tin workspace" đọc như một giá trị nữa. Không đổi sang chữ nhỏ xám: tiêu đề nhóm nhạt hơn nhãn con bên dưới là ngược thứ bậc. Không thêm đường kẻ giữa nhóm, khoảng trắng `gap-6` đủ tách. Sửa xong bấm "Tiếp" đi lại tuần tự như thường, không nhảy thẳng về bước xác nhận (nhảy thẳng là logic, người dùng quyết).
 
 ---
 
@@ -355,10 +352,10 @@ Email này đã có người dùng     <- chữ đỏ, text-xs, ngay dưới ô
 - Viền `red-500` đặc, ring `red-500/10` rất mờ. Không tô nền đỏ cả ô.
 - Câu lỗi nói **cách sửa**, không nói "không hợp lệ". "Email này đã có người dùng" chứ không phải "Email không hợp lệ".
 - **Câu lỗi không được trùng chữ với placeholder hay nhãn.** Trùng là dấu hiệu nó không mang thêm thông tin nào — xem mục dưới.
-- **Ô tự điền theo ô khác** (đường dẫn theo tên, mã theo tên sản phẩm): ô nguồn trống thì **chỉ ô nguồn báo lỗi**, ô phụ thuộc để yên, vì gõ ô nguồn là ô kia tự có. Ô phụ thuộc chỉ báo lỗi khi người dùng đã tự sửa nó, hoặc khi ô nguồn có chữ mà giá trị sinh ra vẫn sai (quá ngắn, trùng). Đã dính 26/09/2026, `/workspaces/new`: bấm Tiếp khi trống ra hai dòng đỏ "Chưa nhập tên workspace" và "Chưa nhập đường dẫn", mà chỉ cần gõ tên là hết cả hai (`N3`).
+- **Ô tự điền theo ô khác** (đường dẫn theo tên, mã theo tên sản phẩm): ô nguồn trống thì **chỉ ô nguồn báo lỗi**, ô phụ thuộc để yên, vì gõ ô nguồn là ô kia tự có. Ô phụ thuộc chỉ báo lỗi khi người dùng đã tự sửa nó, hoặc khi ô nguồn có chữ mà giá trị sinh ra vẫn sai (quá ngắn, trùng). Báo cả hai thì bấm Tiếp khi trống ra hai dòng đỏ "Chưa nhập tên workspace" và "Chưa nhập đường dẫn", mà chỉ cần gõ tên là hết cả hai (`N3`).
 - Gợi ý thời điểm (người dùng quyết): hiện lỗi sau khi rời ô hoặc bấm gửi, đừng hiện ngay ký tự đầu tiên. Skill chỉ lo lỗi **trông ra sao**, dựng nó như một trạng thái tĩnh của ô.
-- **Sửa xong một ô thì câu lỗi mất, nhưng chỗ của nó ở lại** tới lần bấm gửi sau (`min-h-4` trên dòng dưới ô, bằng một dòng `text-xs`). Rút câu lỗi đi ngay thì mọi ô bên dưới nhảy lên 16px đúng lúc người dùng đang đưa chuột xuống ô kế tiếp (`N1`, đã dính 23/09/2026 ở form tạo công việc). Ô nào có sẵn dòng gợi ý thì không cần: gợi ý quay về đúng chỗ câu lỗi vừa rời.
-- **Mặc định: chỉ lỗi tại chỗ, không banner tóm tắt.** Bấm gửi mà có lỗi thì cuộn tới và **focus ô lỗi đầu tiên**; mỗi ô sai viền đỏ + một câu dưới ô. Form trong sản phẩm (SaaS, công cụ làm việc) hầu hết làm vậy; hệ thiết kế cho dịch vụ công thì thêm hộp tóm tắt lỗi đầu trang có link tới từng ô, vì form của họ dài và người điền lần đầu, skill chỉ giữ ca đó cho form rất dài (ca 2 bên dưới; tra 27/09/2026). Banner liệt kê lỗi trên một form thường chỉ đọc lại đúng mấy câu đã nằm dưới từng ô: hai tín hiệu cho một ý (`N3`), và cả màn đỏ rực (đã dính 23/09/2026: form tạo công việc 6 trường, banner 4 dòng lặp y 4 câu lỗi; chủ dự án: "thực tế có ai làm mục đỏ ở trên đâu"). Luật cũ "form dài hơn một màn thì có banner" sai, vì ở 375px form nào cũng dài hơn một màn.
+- **Sửa xong một ô thì câu lỗi mất, nhưng chỗ của nó ở lại** tới lần bấm gửi sau (`min-h-4` trên dòng dưới ô, bằng một dòng `text-xs`). Rút câu lỗi đi ngay thì mọi ô bên dưới nhảy lên 16px đúng lúc người dùng đang đưa chuột xuống ô kế tiếp (`N1`). Ô nào có sẵn dòng gợi ý thì không cần: gợi ý quay về đúng chỗ câu lỗi vừa rời.
+- **Mặc định: chỉ lỗi tại chỗ, không banner tóm tắt.** Bấm gửi mà có lỗi thì cuộn tới và **focus ô lỗi đầu tiên**; mỗi ô sai viền đỏ + một câu dưới ô. Form trong sản phẩm (SaaS, công cụ làm việc) hầu hết làm vậy; hệ thiết kế cho dịch vụ công thì thêm hộp tóm tắt lỗi đầu trang có link tới từng ô, vì form của họ dài và người điền lần đầu, skill chỉ giữ ca đó cho form rất dài (ca 2 bên dưới). Banner liệt kê lỗi trên một form thường chỉ đọc lại đúng mấy câu đã nằm dưới từng ô: hai tín hiệu cho một ý (`N3`), và cả màn đỏ rực (chủ dự án: "thực tế có ai làm mục đỏ ở trên đâu"). Luật cũ "form dài hơn một màn thì có banner" sai, vì ở 375px form nào cũng dài hơn một màn.
 - **Banner chỉ dùng cho hai ca:**
   1. **Lỗi không gắn với ô nào**: mất mạng, hết phiên, không có quyền, trùng dữ liệu phía máy chủ. Banner một dòng nói chuyện gì và làm gì tiếp, không liệt kê.
   2. **Form rất dài, chia nhiều mục có tiêu đề** (từ khoảng 12 trường, hoặc phải cuộn qua nhiều mục): lỗi ở mục cuối không thể thấy khi đang đứng ở đầu. Lúc đó banner liệt kê từng lỗi kèm link nhảy tới đúng ô, và **vẫn giữ** lỗi tại chỗ.
@@ -394,7 +391,7 @@ nhất ở form, và nhìn ảnh chụp rất khó nhận ra vì "trông vẫn �
 
 Gợi ý đã ghi "Tối đa 120 ký tự" thì ô phải cho thấy mình đang ở đâu so với mức đó.
 Chỉ ghi mà không đếm thì người gõ câu 132 ký tự không biết mình vượt, tới lúc gửi mới
-bị chặn (đã dính 27/09/2026, `/dashboard/tasks/new`: gõ 132 ký tự, dưới ô không đổi gì).
+bị chặn.
 Cách của các hệ thiết kế lớn:
 
 - **Bộ đếm cùng dòng với gợi ý, căn phải**: `flex justify-between gap-3`, gợi ý trái, bộ

@@ -179,8 +179,7 @@ thuộc.
 không vẽ vòng focus (`I13`) nên thường không đụng nhau. Dự án trả vòng focus lại (`I14`) thì
 viền trạng thái (đang chọn, đang bật) vẽ bằng `inset-ring-*` (lớp bóng riêng của v4) hoặc
 `border`, không `ring-*`; `ring-*` để dành cho vòng focus của `I14`. Viền chọn bằng `ring-*` thì
-Tab tới là vòng focus **thay** viền chọn, không cộng vào (đã dính 26/09/2026: chip mức ưu tiên
-`ring-1 ring-inset`, Tab tới chip đang chọn là mất viền chọn).
+Tab tới là vòng focus **thay** viền chọn, không cộng vào.
 
 ## W9. Dự án không nạp preflight thì control nào cũng giữ kiểu của trình duyệt ⚑
 
@@ -208,10 +207,8 @@ grep -rn '@import "tailwindcss' --include='*.css' . 2>/dev/null | grep -v node_m
 - Probe báo "Control còn kiểu mặc định của trình duyệt" (viền inset / outset, viền xám
   `#767676`, select `appearance: auto`).
 
-Đã dính 27/09/2026 ở bản dựng lại của dự án mồi phase 2: bản dựng tự thêm reset cho nút
-và danh sách, quên ô nhập của khung chat, ô đó mang nguyên viền đen của trình duyệt. Ô
-nằm dưới mép khung cuộn nên ảnh chụp cũng không thấy (probe giờ kéo cửa sổ cao bằng khung
-cuộn trước khi chụp).
+Đừng chỉ reset nút và danh sách: ô nhập bị quên (như ô của khung chat) mang nguyên viền đen
+của trình duyệt.
 
 ## W10. `scale-*`, `translate-*`, `rotate-*` không chạy theo `transition-[transform]` ⚑
 
@@ -219,8 +216,7 @@ Tailwind v4 ghi `scale-95`, `-translate-y-1`, `rotate-180` vào thuộc tính CS
 `scale`, `translate`, `rotate`, không vào `transform`. Viết `transition-[opacity,transform]`
 hay `transition-[transform,color]` thì ba thuộc tính đó **nhảy thẳng**, chỉ `opacity` và màu
 chạy: menu co lại 95% và nhích lên 4px ngay khung đầu rồi mới mờ, nhìn như giật; mũi tên
-accordion lật ngược tức thì (đã dính 28/09/2026, menu tài khoản, select, drawer, hộp thoại của
-một dự án, và chính mẫu `components/accordion.md`).
+accordion lật ngược tức thì.
 
 - Dùng `transition-transform` (v4 gồm `transform, translate, scale, rotate`), hoặc ghi đúng tên:
   `transition-[opacity,scale,translate]`, `transition-[rotate,color]`.
@@ -233,7 +229,7 @@ một dự án, và chính mẫu `components/accordion.md`).
 `margin`, `overflow`, `clip-path` **và `white-space: normal`**. Viết
 `sr-only whitespace-nowrap @4xl:not-sr-only` thì từ `@4xl` utility có variant đứng sau trong
 CSS, `normal` thắng, chữ lại xuống dòng. Đặt `nowrap` ở ô cha cũng vô ích: thẻ con đã khai
-`normal` thì không kế thừa nữa (đã dính 01/10/2026: cột người phụ trách co còn 126px, "Nguyễn /
+`normal` thì không kế thừa nữa (cột người phụ trách co còn 126px, "Nguyễn /
 Anh / Tuấn" ba dòng, dòng bảng cao thấp lởm chởm).
 
 - Ẩn theo chiều ngược lại: `whitespace-nowrap @max-4xl:sr-only` (bề rộng nào không ẩn thì không

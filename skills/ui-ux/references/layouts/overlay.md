@@ -57,11 +57,11 @@ như cũ. Nền tối thì lớp nổi nhỏ sáng hơn card một bậc, viền
 
 - Rộng `max-w-md`, căn giữa màn, nền phủ đen mờ phía sau.
 - Tiêu đề là **câu hỏi**, thân là hậu quả cụ thể có tên đối tượng.
-- **Tên đối tượng `font-medium text-foreground`**, phần còn lại của câu `text-muted`. Đó là thứ người dùng cần liếc thấy để biết đang xoá đúng cái. Để cả câu cùng màu xám thì tên chìm vào câu (đã dính 22/09/2026). Tên dài thì cho xuống dòng, **không `truncate`**: xác nhận mà không đọc được hết tên thì không xác nhận được gì. Tên đối tượng là email (xoá tài khoản, gỡ thành viên) thì xuống dòng ở sau `@`, không vỡ giữa tên miền (`EmailText` ở `../components/description-list.md`).
+- **Tên đối tượng `font-medium text-foreground`**, phần còn lại của câu `text-muted`. Đó là thứ người dùng cần liếc thấy để biết đang xoá đúng cái. Để cả câu cùng màu xám thì tên chìm vào câu. Tên dài thì cho xuống dòng, **không `truncate`**: xác nhận mà không đọc được hết tên thì không xác nhận được gì. Tên đối tượng là email (xoá tài khoản, gỡ thành viên) thì xuống dòng ở sau `@`, không vỡ giữa tên miền (`EmailText` ở `../components/description-list.md`).
 - **Icon tròn `size-10` nằm cùng hàng với tiêu đề**, bên trái; lưới `items-center` đưa tâm icon về tâm dòng tiêu đề. Đặt icon thành một hàng riêng phía trên thì hộp cao thêm ~60px mà không thêm thông tin.
-- **Dưới `sm`, chỉ tiêu đề đứng cạnh icon; thân hộp trải hết bề rộng**, thẳng mép trái với hai nút xếp dọc. Để cả thân trong cột chữ thụt 56px sau icon thì ô gõ lại tên hẹp hơn nút, lệch mép nút 56px, còn câu hậu quả bị ép thêm một dòng. Đã dính 26/09/2026, hộp xoá workspace ở 375px: ô 239px ở x=96, nút 295px ở x=40, câu năm dòng; đổi sang lưới thì ô, câu, nút cùng mép x=40, câu bốn dòng, hộp thấp đi 12px. Từ `sm` nút co theo chữ và nằm bên phải, thân về cột chữ như cũ. Probe báo lỗi này ở mục "Ô nhập lệch mép với nút rộng hết khung".
-- **Tiêu đề cách thân `mt-2`, thân `text-sm/6`** (dòng cao 24px), không `mt-1` + dòng 20px mặc định. Thân hộp xác nhận thường chạy hai ba dòng có tên đối tượng đậm xen chữ xám; dòng 20px thì dấu chồng hai tầng (`ệ`, `ở`, `ữ`) chạm sát dòng trên, còn 4px dưới tiêu đề làm tiêu đề dính vào thân (đã dính 25/09/2026, hộp thu hồi lời mời, chủ dự án: "heading sát nội dung quá"). Bộ component phổ biến cho React cách 8px, Material cách 16px (tra 27/09/2026); skill giữ 8px vì thân hộp xác nhận ngắn, 16px thì tiêu đề tách khỏi câu nó mở đầu. Xem `T30`.
-- **Tiêu đề `text-lg font-semibold`, luôn đậm hơn tên đối tượng** (`font-medium`). Tiêu đề thiếu `font-semibold` thì tên dài hai dòng lấn át câu hỏi, mắt đọc tên trước (đã dính 22/09/2026).
+- **Dưới `sm`, chỉ tiêu đề đứng cạnh icon; thân hộp trải hết bề rộng**, thẳng mép trái với hai nút xếp dọc. Để cả thân trong cột chữ thụt 56px sau icon thì ô gõ lại tên hẹp hơn nút, lệch mép nút 56px, còn câu hậu quả bị ép thêm một dòng (ở 375px: ô 239px ở x=96, nút 295px ở x=40, câu năm dòng; đổi sang lưới thì ô, câu, nút cùng mép x=40, câu bốn dòng, hộp thấp đi 12px). Từ `sm` nút co theo chữ và nằm bên phải, thân về cột chữ như cũ. Probe báo lỗi này ở mục "Ô nhập lệch mép với nút rộng hết khung".
+- **Tiêu đề cách thân `mt-2`, thân `text-sm/6`** (dòng cao 24px), không `mt-1` + dòng 20px mặc định. Thân hộp xác nhận thường chạy hai ba dòng có tên đối tượng đậm xen chữ xám; dòng 20px thì dấu chồng hai tầng (`ệ`, `ở`, `ữ`) chạm sát dòng trên, còn 4px dưới tiêu đề làm tiêu đề dính vào thân. Bộ component phổ biến cho React cách 8px, Material cách 16px; skill giữ 8px vì thân hộp xác nhận ngắn, 16px thì tiêu đề tách khỏi câu nó mở đầu. Xem `T30`.
+- **Tiêu đề `text-lg font-semibold`, luôn đậm hơn tên đối tượng** (`font-medium`). Tiêu đề thiếu `font-semibold` thì tên dài hai dòng lấn át câu hỏi, mắt đọc tên trước.
 - **Nút trong hộp xác nhận chỉ có chữ, không icon.** Đây là ngoại lệ có tên của `I1`: icon thùng rác đã đứng ở đầu hộp, gắn thêm vào nút là hai tín hiệu cho một ý (`M6`). Chữ trên nút lặp lại động từ và đối tượng: "Xoá dự án", không chỉ "Xoá" hay "Đồng ý".
 - Nút phá huỷ nằm bên phải cùng và là nút duy nhất mang màu cảnh báo. Huỷ là nút phụ nền `--secondary`, và là nơi tiêu điểm rơi vào khi mở, để Enter không xoá nhầm.
 - Màn hẹp dưới `sm`: hai nút xếp dọc, rộng hết, nút xoá ở trên (`flex-col-reverse`).
@@ -79,10 +79,10 @@ không mất dữ liệu mà vẫn đỏ (`I4`). Cùng khuôn trên, chỉ đổ
 - Huỷ vẫn là nút `--secondary` và nhận tiêu điểm khi mở.
 
 **Đăng xuất không thuộc nhóm này**: đăng xuất ở skill này là việc nguy hiểm (`I4`), hộp
-"Đăng xuất các thiết bị khác?" đỏ như hộp xoá. Đã dính 26/09/2026: skill từng lấy chính
-hộp đó làm ví dụ cho hộp trung tính, chủ dự án chốt lại là đỏ.
+"Đăng xuất các thiết bị khác?" đỏ như hộp xoá, chủ dự án chốt; đừng dùng lại nó làm ví dụ
+cho hộp trung tính.
 **Huỷ gói trả phí cũng không thuộc nhóm này** (`I4`), hộp "Huỷ gói Pro?" đỏ như hộp xoá dù vẫn
-dùng được tới hết kỳ (đã dính 27/09/2026, trang thanh toán: icon xám, nút xác nhận đen).
+dùng được tới hết kỳ; đừng để icon xám, nút xác nhận đen.
 
 **Hộp xác nhận có ô gõ lại tên** (xoá workspace, tổ chức; khi nào dựng xem `D3` ở
 `../system.md`). Cùng khuôn trên, thêm ô dưới câu hậu quả, trong khối thân (`mt-4`):
@@ -97,9 +97,6 @@ dùng được tới hết kỳ (đã dính 27/09/2026, trang thanh toán: icon 
 - Xoá lỗi: khung lỗi dưới ô nói dữ liệu còn hay mất ("…workspace và dữ liệu vẫn còn
   nguyên."), chữ đã gõ giữ lại, nút xoá mở lại để thử lần nữa.
 - Bấm ra ngoài không đóng (`I20`), Esc và Huỷ vẫn đóng.
-
-Dựng lần đầu 26/09/2026 ở `/dashboard/settings/workspace`, qua hai lượt rà: lượt một chỉ
-lỗi thân hộp lệch mép ở màn hẹp (gạch đầu dòng "Dưới `sm`…" ở trên).
 
 ## Modal có nội dung
 
@@ -121,10 +118,10 @@ panel trượt hoặc trang riêng.
 
 - **Đường chia header/footer chỉ có khi thân thật sự cuộn.** Form hai ba ô không cuộn thì bỏ cả hai đường, dùng khoảng trắng (`gap-6`). Ba khối chia kẻ cho một form ngắn là nặng hơn nội dung.
 - **Mô tả dưới tiêu đề `mt-2 text-sm/6 text-muted`** như hộp xác nhận (`T30`).
-- **Mô tả dưới tiêu đề chạy tới sát cột nút ✕**: chỉ header chừa `pr-10` cho nút đóng, đừng đặt `max-w` hẹp cho câu mô tả. Thêm `text-pretty` để không rớt một chữ xuống dòng cuối (đã dính 22/09/2026: "…để tham gia / nhóm.").
+- **Mô tả dưới tiêu đề chạy tới sát cột nút ✕**: chỉ header chừa `pr-10` cho nút đóng, đừng đặt `max-w` hẹp cho câu mô tả. Thêm `text-pretty` để không rớt một chữ xuống dòng cuối ("…để tham gia / nhóm.").
 - Có ô nhập nên **bấm ra ngoài không đóng** (`I20`); đóng bằng ✕, Huỷ, Esc. Mở ra thì tiêu điểm vào ô đầu tiên.
 - Nút chính ở footer là `primary` (một hành động duy nhất của modal, `I2`), **chỉ có chữ** theo `I1`: "Gửi lời mời", không icon. Nút Huỷ `secondary`. Cả hai `h-11 md:h-10`, cao bằng ô nhập.
-- **Trạng thái đang gửi**: nút chỉ chữ thì **spinner đè lên giữa nút, chữ `invisible`** (vẫn chiếm chỗ), nút `disabled` + `aria-busy`. Chèn spinner cạnh chữ là nút rộng ra, đẩy Huỷ sang trái (đã dính 22/09/2026). Xem `../components/button.md`.
+- **Trạng thái đang gửi**: nút chỉ chữ thì **spinner đè lên giữa nút, chữ `invisible`** (vẫn chiếm chỗ), nút `disabled` + `aria-busy`. Chèn spinner cạnh chữ là nút rộng ra, đẩy Huỷ sang trái. Xem `../components/button.md`.
 - Câu lỗi dưới ô nói **cách sửa**, theo bảng "Ô trống thì viết gì" trong `form.md` (một nguồn): "Email phải có dấu @".
 - **Modal mời thành viên: ô email là tag input** (`../components/tag-input.md`), mời nhiều người một lần, nút ghi số ("Gửi 3 lời mời"); email trùng phân biệt "Đã là thành viên" với "Đã mời …, chưa chấp nhận". Chi tiết ở "Trang thành viên và phân quyền" trong `app.md`.
 
@@ -146,7 +143,7 @@ panel trượt hoặc trang riêng.
 └──────────────────────────────────────────┘
 ```
 
-- **Neo đỉnh, không căn giữa dọc**: khung ngoài `items-start`, modal cách đỉnh một khoảng cố định (`mt-16 sm:mt-[8vh]`). Mỗi bản ghi cao một khác (một sản phẩm, hay bốn sản phẩm tên dài ba dòng); căn giữa thì mỗi lần bấm Đơn sau cả header trượt lên xuống, nút ‹ › chạy khỏi con trỏ, bấm liền hai lần là trúng nền (`N1`). Bản dựng 24/09/2026 neo đỉnh, đổi đơn thì header đứng yên dù modal cao 600px hay 820px.
+- **Neo đỉnh, không căn giữa dọc**: khung ngoài `items-start`, modal cách đỉnh một khoảng cố định (`mt-16 sm:mt-[8vh]`). Mỗi bản ghi cao một khác (một sản phẩm, hay bốn sản phẩm tên dài ba dòng); căn giữa thì mỗi lần bấm Đơn sau cả header trượt lên xuống, nút ‹ › chạy khỏi con trỏ, bấm liền hai lần là trúng nền (`N1`). Neo đỉnh thì đổi đơn header đứng yên dù modal cao 600px hay 820px.
 - **Chiều cao theo dữ liệu nên luôn có trần**: `max-h-[calc(100dvh-8vh-1rem)]`, header đứng yên, chỉ thân cuộn. Câu "cao quá 80% màn thì đổi sang panel" ở trên là lúc chọn khuôn; một đơn có 20 sản phẩm thì thân cuộn, không đổi khuôn giữa chừng.
 - **Header hai dòng**: dòng một là tiêu đề `text-lg font-semibold` "Đơn #10248", **chỉ phần mã `font-mono`** (`T17`), chữ "Đơn" giữ font thường; nút `copy` là icon button ngay sau mã. Cụm phải `‹ › │ ✕`: ‹ › là icon button ghost có tooltip "Đơn trước", "Đơn sau"; vạch đứng `h-5 w-px bg-border` tách ✕ ra vì đóng khác loại với đi tiếp. Dòng hai là badge trạng thái đơn và mốc đặt đủ năm (mốc đứng riêng, `T16b`).
 - **Tới đầu hoặc cuối danh sách thì nút đó `disabled`**, mờ nhưng vẫn chiếm chỗ, không ẩn (`N1`: ẩn thì › trượt sang chỗ của ‹). Tiêu điểm đang nằm trên nút vừa thành `disabled` thì **chuyển sang nút còn lại**, không để rơi về `body`; người dùng bàn phím vẫn đứng trong cụm điều hướng.
@@ -162,7 +159,7 @@ panel trượt hoặc trang riêng.
 Trượt từ phải, `w-full sm:w-[28rem]` (dưới `sm` phủ hết bề ngang, 448px rộng hơn điện thoại 375px), dùng khi nội dung dài hoặc người dùng
 cần nhìn thấy danh sách phía sau. Không dùng panel cho một câu xác nhận.
 
-- **Lớp phủ sau panel mờ: `bg-black/15`.** Panel tồn tại để người dùng **vẫn thấy danh sách phía sau**; lớp phủ đặc che kín danh sách là mất đúng lý do dùng panel (đã dính 23/09/2026: lớp phủ xám đục, nền trang biến thành một mảng xám chết). Modal thì `bg-black/30`, vì modal cần tách hẳn người dùng khỏi trang.
+- **Lớp phủ sau panel mờ: `bg-black/15`.** Panel tồn tại để người dùng **vẫn thấy danh sách phía sau**; lớp phủ đặc che kín danh sách là mất đúng lý do dùng panel (lớp phủ xám đục thì nền trang biến thành một mảng xám chết). Modal thì `bg-black/30`, vì modal cần tách hẳn người dùng khỏi trang.
 - **Ba tầng: header, thân cuộn, footer.** Header `px-6 pt-5 pb-4 border-b border-border` gồm tiêu đề, dòng trạng thái + thời gian, nút ⋯ và ✕ cùng hàng tiêu đề. Thân `flex-1 overflow-y-auto px-6 py-6`: **luôn có `pt` riêng**, không để tiêu đề mục đầu dính sát đường kẻ header. Footer `border-t border-border px-6 py-4`, nút căn phải, luôn đứng đáy dù thân ngắn.
 - Nhãn và giá trị trong panel theo `components/description-list.md`, cột nhãn `7rem`.
 - **Nút ở footer giữ kiểu theo vai, không theo số lượng.** Đơn đã huỷ mất nút chính, footer chỉ còn "In hoá đơn": nó **vẫn `secondary`** như lúc đứng cạnh nút chính. Không đẩy lên `primary` (đơn đã huỷ không còn hành động chính, tô đen là giả làm việc quan trọng) và không đổi sang `outline` (cùng một nút mà mỗi đơn một kiểu, `N5`). Nút footer chỉ có chữ (`I1`).
@@ -170,9 +167,9 @@ cần nhìn thấy danh sách phía sau. Không dùng panel cho một câu xác 
 
 **Panel xem bản ghi có tab** (khách hàng, dự án, ticket: tên, trạng thái, nút thao tác nhanh, hàng tab):
 
-- **Phần cố định chỉ là hàng tên**: avatar, tên, nút ⋯ và ✕. Trạng thái, dòng phụ (công ty), hàng nút thao tác nhanh nằm đầu thân cuộn và **cuộn đi**; hàng tab `sticky top-0 z-10 bg-surface` trong thân cuộn, đường kẻ dưới tab tràn hai mép panel: thân cuộn không padding ngang, mỗi khối trong thân tự `px-6`, hàng tab `px-6` bên trong, không kéo ra bằng `-mx-6` (`N11`; đo 27/09/2026 ở `/dashboard/customers/quick-view` 375 và 1280px, đầu thân và cuộn 400px: trùng từng pixel). Giữ cố định cả khối thì với tên hai dòng và tên công ty dài, phần đứng yên cao ~240px: laptop 800px mất gần một phần ba, điện thoại mất gần nửa, vùng đọc tab Tin nhắn còn một mẩu (đã dính 24/09/2026). Cuộn xuống thì còn lại tên + ✕ + tab, đủ biết đang xem ai và đang ở tab nào.
-- **Tên là chữ nặng nhất panel** (`text-lg font-semibold`). Số liệu, tiêu đề mục, không thứ gì trong thân to hơn tên. Ô số liệu trong panel theo mục "Trong panel trượt hay cột hẹp" ở `../components/charts.md`: một khung 2×2, số `text-lg`, không phải bốn card rời số `text-3xl` (đã dính 24/09/2026: bốn card số to nhất panel, tên khách đứng hàng hai).
-- **Đổi tab thì hàng tab đứng yên dưới con trỏ** (`N1`): đang dính đỉnh thì cuộn về ngay dưới hàng tab, không về 0; chưa dính thì giữ nguyên chỗ cuộn. Về 0 lúc đang dính là hàng tab tụt xuống dưới khối trạng thái, trượt khỏi chỗ vừa bấm. Muốn vậy thì nội dung tab `min-h` bằng vùng cuộn trừ hàng tab, để tab ngắn (tin nhắn trống) không kéo hàng tab xuống. Trang phía sau đứng yên. Mũi tên trái/phải chuyển tab (`../components/small-controls.md`). (Sửa 24/09/2026: bản trước ghi "cuộn về đầu", bản dựng làm khác và đúng hơn.)
+- **Phần cố định chỉ là hàng tên**: avatar, tên, nút ⋯ và ✕. Trạng thái, dòng phụ (công ty), hàng nút thao tác nhanh nằm đầu thân cuộn và **cuộn đi**; hàng tab `sticky top-0 z-10 bg-surface` trong thân cuộn, đường kẻ dưới tab tràn hai mép panel: thân cuộn không padding ngang, mỗi khối trong thân tự `px-6`, hàng tab `px-6` bên trong, không kéo ra bằng `-mx-6` (`N11`). Giữ cố định cả khối thì với tên hai dòng và tên công ty dài, phần đứng yên cao ~240px: laptop 800px mất gần một phần ba, điện thoại mất gần nửa, vùng đọc tab Tin nhắn còn một mẩu. Cuộn xuống thì còn lại tên + ✕ + tab, đủ biết đang xem ai và đang ở tab nào.
+- **Tên là chữ nặng nhất panel** (`text-lg font-semibold`). Số liệu, tiêu đề mục, không thứ gì trong thân to hơn tên. Ô số liệu trong panel theo mục "Trong panel trượt hay cột hẹp" ở `../components/charts.md`: một khung 2×2, số `text-lg`, không phải bốn card rời số `text-3xl` (bốn card thì số to nhất panel, tên khách đứng hàng hai).
+- **Đổi tab thì hàng tab đứng yên dưới con trỏ** (`N1`): đang dính đỉnh thì cuộn về ngay dưới hàng tab, không về 0; chưa dính thì giữ nguyên chỗ cuộn. Về 0 lúc đang dính là hàng tab tụt xuống dưới khối trạng thái, trượt khỏi chỗ vừa bấm. Muốn vậy thì nội dung tab `min-h` bằng vùng cuộn trừ hàng tab, để tab ngắn (tin nhắn trống) không kéo hàng tab xuống. Trang phía sau đứng yên. Mũi tên trái/phải chuyển tab (`../components/small-controls.md`).
 - Danh sách trong tab (tin nhắn, tệp, hoạt động) ghi giờ theo `T16b`: năm hiện tại thì bỏ năm.
 
 ## Dropdown
@@ -186,7 +183,7 @@ chính `<button>` hay `<a>`, không đặt trên phần tử bọc ngoài. Dùng
 mục có link phải là `<DropdownMenuItem asChild>`.
 
 **Gần mép thì lật, không tràn ra ngoài.** Menu mở từ dòng cuối bảng mà vẫn đổ xuống thì
-nó trùm qua hàng phân trang và lòi khỏi card (đã dính 23/09/2026). Không đủ chỗ bên dưới
+nó trùm qua hàng phân trang và lòi khỏi card. Không đủ chỗ bên dưới
 thì lật lên trên nút, sát mép phải thì canh phải. Dùng thư viện popover có sẵn của dự án
 thì bật `collisionPadding`, tự dựng thì đo `getBoundingClientRect` trước khi mở.
 
@@ -195,15 +192,15 @@ thì bật `collisionPadding`, tự dựng thì đo `getBoundingClientRect` trư
 máy bật "luôn hiện thanh cuộn" thì thành hai vệt xám to đè lên nội dung. Thẻ `[popover]` gốc
 trình duyệt đặt sẵn `overflow: auto`, nên khung cố định nào hụt cũng ra cuộn. Chỉ listbox, menu
 dài quá `max-h` mới cuộn dọc, và không lớp nổi nào cuộn ngang. Cần giữ khung cố định (lịch đổi
-tầng, `choice-controls.md`) thì lấy cỡ từ nội dung to nhất, không đoán số. Đã dính 30/09/2026,
-wireframe làm lại trang nhập – xuất: lịch khung cao 272px mà lưới ngày cần 288px, rộng hụt 2px.
+tầng, `choice-controls.md`) thì lấy cỡ từ nội dung to nhất, không đoán số (lịch khung cao
+272px mà lưới ngày cần 288px, rộng hụt 2px, là ra cuộn cả hai chiều).
 
 **Tự dựng: có đủ bề rộng rồi mới đo chiều cao, và menu đổi cỡ thì đo lại.** Menu
 mở lên (`top = đỉnh nút − chiều cao menu`) mà rộng theo nút đọc từ state thì lần mở
 đầu state còn `width: 0`. Menu rộng 0 nên chữ xuống dòng từng từ, cao hàng trăm px,
 `top` âm bị kẹp về mép trên màn. Render lại thì bề rộng đúng nhưng `top` không tính lại:
-menu tài khoản chân sidebar trôi lên tận đầu sidebar, đè lên nav, cách nút mở cả màn
-(đã dính 24/09/2026). Chỉ bị **lần mở đầu sau khi tải trang, hoặc sau khi thu/mở
+menu tài khoản chân sidebar trôi lên tận đầu sidebar, đè lên nav, cách nút mở cả màn.
+Chỉ bị **lần mở đầu sau khi tải trang, hoặc sau khi thu/mở
 sidebar** (bề rộng cũ còn trong state), nên trông như lỗi "lúc có lúc không". Cách làm:
 gán bề rộng thẳng vào DOM từ `triggerRect.width` **trước khi** đọc `offsetHeight`, hoặc
 đo lại bằng `ResizeObserver` trên menu. Kiểm tra: tải lại trang, bấm mở ngay lần đầu;
@@ -220,7 +217,7 @@ thu rồi mở sidebar, bấm mở lại. Menu phải nằm sát nút cả hai l
   </div>
   <!-- Vạch chia cùng token với viền khung, không border-strong: đậm hơn viền là vạch nổi hơn khung.
        Khung cũng border-border: bóng shadow-popover đã tách khung khỏi trang. Khung và vạch cùng border-strong
-       thì menu kẻ ô như bảng (đã dính 28/09/2026, menu tài khoản) -->
+       thì menu kẻ ô như bảng -->
   <hr class="my-1 border-border" />
   <div class="px-1">
     <!-- Mục nguy hiểm: lúc thường y như mục khác, rê vào mới đỏ (I4) -->
@@ -260,7 +257,7 @@ danh sách rộng 224–320px: khe `p-1` là chuẩn chung của các thư việ
 menu macOS 5px). Nâng lên `p-2` thì mỗi bên mất thêm 4px bề ngang cho chữ, và nền
 sáng trông như lơ lửng giữa khung. **Khối rộng từ ~480px (command palette) thì
 khe `p-2`**: ở bề ngang đó khe 4px làm nền sáng thành một thanh chạy gần hết khung,
-góc nền sáng gần chạm góc khung (đã dính 24/09/2026). Xem "Command palette" bên dưới.
+góc nền sáng gần chạm góc khung. Xem "Command palette" bên dưới.
 
 **Dropdown dài phải cuộn** thì `max-h-76` và chớp thanh cuộn lúc mở, như select
 (`I18`): mục cuối bị cắt ngang là tín hiệu duy nhất lúc đứng yên.
@@ -285,14 +282,14 @@ Bấm mục cha thì **cả nội dung menu thay bằng menu con**, hàng đầu
 `←` / `Esc` lùi về menu cha và sáng lại mục cha. YouTube, Facebook làm menu tài khoản
 đúng kiểu này.
 
-Đừng xổ danh sách ngay dưới mục cha (chevron xoay xuống như nhóm sidebar). Đã dính
-24/09/2026, menu tài khoản ở 375px: menu cao gần 600px, bốn tài khoản xổ ra thẳng
+Đừng xổ danh sách ngay dưới mục cha (chevron xoay xuống như nhóm sidebar): ở 375px menu
+tài khoản cao gần 600px, bốn tài khoản xổ ra thẳng
 mép với các mục thường nên không đọc ra là con của mục nào, và tài khoản đang dùng
 hiện **hai lần liền nhau** (đầu menu, rồi hàng đầu danh sách).
 
 **Hàng trong menu con không cao hơn mục thường quá một bậc.** Mục một dòng `h-10`;
 hàng hai dòng (tên + dòng phụ) `h-12`, avatar `size-8`. Mỗi trường **một dòng**,
-không trường nào xuống dòng. Đã dính 24/09/2026: email xuống dòng trước `@` làm mỗi
+không trường nào xuống dòng: email xuống dòng trước `@` làm mỗi
 hàng tài khoản ba dòng, cao ~68px, menu con nặng hơn hẳn menu cha. Chữ dài thì cắt
 theo "Cắt email" bên dưới, không bẻ dòng.
 
@@ -301,7 +298,7 @@ theo "Cắt email" bên dưới, không bẻ dòng.
 Mở từ avatar trên header, hoặc từ hàng profile chân sidebar (`app.md`).
 
 - **Tài khoản chỉ có một lối vào.** Đề bảo đặt avatar trên header mà chân sidebar đã có hàng profile thì chuyển hẳn lên header, bỏ hàng profile, báo một dòng lúc giao. Hai chỗ mở cùng một menu là một ý nói hai lần (`N3`); các app lớn đều chỉ có một.
-- **Đầu menu mở từ avatar: tên + email, không avatar.** Avatar vừa bấm nằm ngay bên trên; lặp lại một avatar 40px ở đầu menu thì nó thành thứ nặng nhất menu (đã dính 24/09/2026). Tên `text-sm font-medium truncate`, email `text-xs text-muted` một dòng, khối `px-3 py-2`. Mở từ chân sidebar thì chỉ email, vì tên đã ở hàng profile.
+- **Đầu menu mở từ avatar: tên + email, không avatar.** Avatar vừa bấm nằm ngay bên trên; lặp lại một avatar 40px ở đầu menu thì nó thành thứ nặng nhất menu. Tên `text-sm font-medium truncate`, email `text-xs text-muted` một dòng, khối `px-3 py-2`. Mở từ chân sidebar thì chỉ email, vì tên đã ở hàng profile.
 - Thứ tự: đầu menu, đường chia, Hồ sơ / Trợ giúp…, **Chuyển tài khoản** (chỉ khi có từ 2 tài khoản), đường chia, Đăng xuất (`I4`).
 - **Hàng tài khoản trong menu con**: avatar `size-8` (màu theo `avatar.md`), tên `text-sm font-medium truncate`, email một dòng, và ô `size-4` luôn giữ chỗ ở mép phải cho dấu `Check` của tài khoản đang dùng. Chỉ dấu tick, không tô nền, không chữ đậm thêm. Hàng `role="menuitemradio"`. Bấm tài khoản đang dùng thì chỉ đóng menu.
 - Menu con rộng `w-72`. Menu cha từ avatar header cũng `w-72` cho hai khung cân nhau.
@@ -345,11 +342,11 @@ trách, khoảng ngày, mức ưu tiên…) và nút xác nhận. Khác dropdown
 
 - **Khung** `w-96 max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-surface-overlay shadow-popover`, không `p-*`: thân `p-4 flex flex-col gap-4`, footer `border-t border-border px-4 py-3 flex justify-between`. Neo mép phải nút Lọc (dưới `sm` nút đứng riêng hàng, căn trái, thì neo mép trái). Portal ra `body` (`I22`).
 - **Đổi gì trong khung chỉ sửa bản nháp**; bấm Áp dụng mới lọc danh sách. Esc, bấm ra ngoài là bỏ nháp. Mở lại thì nháp lấy lại bộ lọc đang áp. Đang lọc thì nút ghi "Lọc · 2" (số trường đang bật).
-- **"Xoá lọc" là link chữ, không phải nút `ghost` có padding**: `px-0`, chữ `text-muted`, rê vào `text-foreground` + gạch chân, không nền. Nút `ghost` `px-4` đặt trong footer `px-4` làm chữ "Xoá lọc" thụt vào 16px so với mép trái mọi nhãn phía trên, cả khung có một mép chữ lệch (đã dính 26/09/2026: nhãn ở x=754, chữ "Xoá lọc" ở x=770). Cùng chữ, cùng kiểu với "Xoá" ở hàng nhãn của một trường. Không còn gì để gỡ (nháp rỗng và danh sách không lọc) thì khoá `opacity-50`.
-- **Chip đang chọn trong khung KHÔNG tô `bg-primary`.** Footer đã có nút Áp dụng đặc `primary`; chip chọn cũng đặc đen thì khung nhỏ có ba bốn khối đen ngang nhau, mắt không biết đâu là hành động, và thứ nặng nhất khung là lựa chọn chứ không phải nút (cùng bài học với ô chọn giờ ở `../components/choice-controls.md`). Chip chọn trong khung: `bg-foreground/10 text-foreground inset-ring-1 inset-ring-foreground` (Tailwind v4). **Không `ring-1 ring-inset`**: dự án trả vòng focus lại (`I14`) thì vòng đó dùng chung biến với `ring-*`, Tab tới chip đang chọn là mất viền chọn (`W8`, đã dính 26/09/2026). `inset-ring` là lớp bóng riêng. Tailwind v3 không có `inset-ring`: dùng `shadow-[inset_0_0_0_1px_var(--foreground)]`; chưa chọn giữ `bg-foreground/5 text-foreground/70`, rê vào `bg-foreground/10`. Viền mới là tín hiệu chọn, nền chỉ đậm lên một bậc để chip chọn trông "bật" hơn chip rê. Đã thử và bỏ (26/09/2026): nền trắng + viền đậm (chip chọn nhạt hơn chip chưa chọn, đọc ngược); viền `1.5px` (chọn đủ bốn mức thì hàng chip thành bốn vòng đen dày, nặng ngang nút Áp dụng; đo lại ở 1px vẫn tách rõ chọn với chưa chọn). Hàng chip chính của màn (không có nút xác nhận bên cạnh) vẫn `bg-primary` như `../components/small-controls.md`.
+- **"Xoá lọc" là link chữ, không phải nút `ghost` có padding**: `px-0`, chữ `text-muted`, rê vào `text-foreground` + gạch chân, không nền. Nút `ghost` `px-4` đặt trong footer `px-4` làm chữ "Xoá lọc" thụt vào 16px so với mép trái mọi nhãn phía trên, cả khung có một mép chữ lệch. Cùng chữ, cùng kiểu với "Xoá" ở hàng nhãn của một trường. Không còn gì để gỡ (nháp rỗng và danh sách không lọc) thì khoá `opacity-50`.
+- **Chip đang chọn trong khung KHÔNG tô `bg-primary`.** Footer đã có nút Áp dụng đặc `primary`; chip chọn cũng đặc đen thì khung nhỏ có ba bốn khối đen ngang nhau, mắt không biết đâu là hành động, và thứ nặng nhất khung là lựa chọn chứ không phải nút (cùng bài học với ô chọn giờ ở `../components/choice-controls.md`). Chip chọn trong khung: `bg-foreground/10 text-foreground inset-ring-1 inset-ring-foreground` (Tailwind v4). **Không `ring-1 ring-inset`**: dự án trả vòng focus lại (`I14`) thì vòng đó dùng chung biến với `ring-*`, Tab tới chip đang chọn là mất viền chọn (`W8`). `inset-ring` là lớp bóng riêng. Tailwind v3 không có `inset-ring`: dùng `shadow-[inset_0_0_0_1px_var(--foreground)]`; chưa chọn giữ `bg-foreground/5 text-foreground/70`, rê vào `bg-foreground/10`. Viền mới là tín hiệu chọn, nền chỉ đậm lên một bậc để chip chọn trông "bật" hơn chip rê. Đừng dùng nền trắng + viền đậm (chip chọn nhạt hơn chip chưa chọn, đọc ngược), cũng đừng dùng viền `1.5px` (chọn đủ bốn mức thì hàng chip thành bốn vòng đen dày, nặng ngang nút Áp dụng; 1px vẫn tách rõ chọn với chưa chọn). Hàng chip chính của màn (không có nút xác nhận bên cạnh) vẫn `bg-primary` như `../components/small-controls.md`.
 - **Chip trong khung được xuống dòng** (`flex-wrap`): bốn mức cố định trong một ô của form, cuộn ngang trong một khung nổi là giấu mức cuối. Luật "không bao giờ wrap" của hàng chip chỉ áp cho hàng lọc của cả màn.
-- **Ô chọn trong khung theo luật focus của nút mở** (`focus-visible:`, không `focus:`): chọn người bằng chuột xong mà ô giữ viền đen + ring thì khung có một ô trông như đang mở (đã dính 26/09/2026).
-- **Lịch lồng trong khung dùng khuôn gọn ở mọi bề rộng**: một tháng, mốc nhanh thành hàng chip trên lưới (xuống dòng, không cuộn ngang, xem Ô chọn khoảng ngày), rộng bằng ô bấm mở. Không bung lịch hai tháng + cột mốc nhanh: ở 1280px lịch rộng ~590px mọc ra từ khung 384px, lấn sang bảng hai phía, mép phải còn cách màn 8px, thành ba lớp nổi chồng nhau (đã dính 26/09/2026). Lịch hai tháng dành cho ô khoảng ngày nằm trên trang hoặc trong form rộng.
+- **Ô chọn trong khung theo luật focus của nút mở** (`focus-visible:`, không `focus:`): chọn người bằng chuột xong mà ô giữ viền đen + ring thì khung có một ô trông như đang mở.
+- **Lịch lồng trong khung dùng khuôn gọn ở mọi bề rộng**: một tháng, mốc nhanh thành hàng chip trên lưới (xuống dòng, không cuộn ngang, xem Ô chọn khoảng ngày), rộng bằng ô bấm mở. Không bung lịch hai tháng + cột mốc nhanh: ở 1280px lịch rộng ~590px mọc ra từ khung 384px, lấn sang bảng hai phía, mép phải còn cách màn 8px, thành ba lớp nổi chồng nhau. Lịch hai tháng dành cho ô khoảng ngày nằm trên trang hoặc trong form rộng.
 
 ## Phím tắt trong menu
 
@@ -411,14 +408,14 @@ bấm không ăn, mất lòng tin ngay.
 - **Ghim từ trên (`sm:top-[15vh]`), không căn giữa dọc.** Gõ để lọc thì danh sách co lại; khung căn giữa thì ô tìm nhảy lên xuống theo từng phím gõ, ngay dưới con trỏ (`N1`). Ghim từ trên thì ô tìm đứng yên, chỉ đáy khung co. Các bảng lệnh phổ biến đều ghim.
 - **Khe `p-2`, mục `rounded-lg`**: khung 16 = 8 + 8 (`M19`). Palette rộng 576px, khe `p-1` của dropdown ở bề ngang này thì nền sáng thành một thanh gần hết khung (lý do ở "Dropdown" bên trên). Mục `h-10`, icon `size-4 text-muted`, chữ `text-sm`.
 - **Icon ô tìm thẳng cột icon mục**: ô tìm `px-5` = khe `p-2` + mục `px-3`. Đổi một bên thì đổi cả hai.
-- **Nhãn nhóm gần nhóm của nó**: `pt-5 pb-1`. **Đo từ chữ tới chữ, không từ mép hàng**: mục `h-10` đã có sẵn 10px khoảng thở trên và dưới chữ, nên `pt-4 pb-1.5` nhìn bằng mắt chỉ còn 26px trên, 16px dưới, nhãn vẫn lơ lửng giữa hai nhóm (đã dính 2 lần 24/09/2026). `pt-5 pb-1` ra 30px trên, 14px dưới, khoảng gấp đôi, mắt gắn nhãn với nhóm bên dưới. Kiểu chữ như nhãn nhóm sidebar (`app.md`): IN HOA bằng CSS, xám. Không kẻ đường giữa các nhóm.
+- **Nhãn nhóm gần nhóm của nó**: `pt-5 pb-1`. **Đo từ chữ tới chữ, không từ mép hàng**: mục `h-10` đã có sẵn 10px khoảng thở trên và dưới chữ, nên `pt-4 pb-1.5` nhìn bằng mắt chỉ còn 26px trên, 16px dưới, nhãn vẫn lơ lửng giữa hai nhóm. `pt-5 pb-1` ra 30px trên, 14px dưới, khoảng gấp đôi, mắt gắn nhãn với nhóm bên dưới. Kiểu chữ như nhãn nhóm sidebar (`app.md`): IN HOA bằng CSS, xám. Không kẻ đường giữa các nhóm.
 - **Chiều cao theo `I18`**: đo ở trạng thái chưa gõ, xê `max-h` từng bậc 4px tới khi mục cuối lộ khoảng một nửa. Mở palette thì chớp thanh cuộn một lần (`flashScrollbar`).
-- **Khe hai bên bằng nhau dù có cuộn hay không**: thanh cuộn 4px chiếm chỗ bên phải, nên khung danh sách `p-2` thì khe phải thành 12px, khe trái 8px, lệch 4px mỗi khi danh sách dài (đã dính 24/09/2026, đo lại bằng Chrome). Sửa bằng `pr-1` + `[scrollbar-gutter:stable]`: luôn giữ chỗ 4px cho thanh, nên lọc còn một kết quả thì khe vẫn y như lúc cuộn.
-- **Rãnh thanh cuộn lùi `mt-2 mb-4`** (`[&::-webkit-scrollbar-track]:mt-2 [&::-webkit-scrollbar-track]:mb-4`). Đầu trên nằm dưới đường kẻ thẳng của ô tìm, lùi 8px để thanh không dính đường kẻ. Đầu dưới chạm góc bo 16px, **lùi bằng bán kính góc bo**: đầu tròn của thanh 4px sát mép chỉ nằm trọn trong góc bo khi cách đáy từ 14px (16 − 2). `my-2` cũ để đuôi bị vát mép phải khoảng 2px, thấy rõ khi phóng to 4 lần (đã dính 24/09/2026, dự án test đo ra và sửa trước skill).
+- **Khe hai bên bằng nhau dù có cuộn hay không**: thanh cuộn 4px chiếm chỗ bên phải, nên khung danh sách `p-2` thì khe phải thành 12px, khe trái 8px, lệch 4px mỗi khi danh sách dài. Sửa bằng `pr-1` + `[scrollbar-gutter:stable]`: luôn giữ chỗ 4px cho thanh, nên lọc còn một kết quả thì khe vẫn y như lúc cuộn.
+- **Rãnh thanh cuộn lùi `mt-2 mb-4`** (`[&::-webkit-scrollbar-track]:mt-2 [&::-webkit-scrollbar-track]:mb-4`). Đầu trên nằm dưới đường kẻ thẳng của ô tìm, lùi 8px để thanh không dính đường kẻ. Đầu dưới chạm góc bo 16px, **lùi bằng bán kính góc bo**: đầu tròn của thanh 4px sát mép chỉ nằm trọn trong góc bo khi cách đáy từ 14px (16 − 2). `my-2` cũ để đuôi bị vát mép phải khoảng 2px, thấy rõ khi phóng to 4 lần.
 - **Mục sáng là một**: mở ra thì mục đầu sáng sẵn, Enter chạy nó; chuột và phím mũi tên dời cùng một chỗ sáng (`I13`). cmdk dùng `data-[selected=true]:`, Radix dùng `data-[highlighted]:`. Phím mũi tên đi tới mục khuất thì cuộn nó vào tầm nhìn (`block: "nearest"`).
-- **Lọc không phân biệt dấu** ("tai" ra "Tài liệu"). **Chỉ khớp theo tên mục và từ khoá riêng của mục** (từ đồng nghĩa, tên tiếng Anh), không khớp theo tên nhóm: gõ "tai" mà cả nhóm TÀI KHOẢN hiện ra thì "Cài đặt", "Hồ sơ của bạn" nằm trong kết quả không rõ vì sao (đã dính 24/09/2026). Khớp đầu từ xếp trước. Nhóm không còn mục nào thì ẩn luôn nhãn.
+- **Lọc không phân biệt dấu** ("tai" ra "Tài liệu"). **Chỉ khớp theo tên mục và từ khoá riêng của mục** (từ đồng nghĩa, tên tiếng Anh), không khớp theo tên nhóm: gõ "tai" mà cả nhóm TÀI KHOẢN hiện ra thì "Cài đặt", "Hồ sơ của bạn" nằm trong kết quả không rõ vì sao. Khớp đầu từ xếp trước. Nhóm không còn mục nào thì ẩn luôn nhãn.
 - **Tên dài `truncate` kèm `title`** (`T14`).
-- **Không có kết quả**: một dòng `py-10 text-center text-sm text-muted`, "Không có trang nào khớp. Thử gõ ngắn hơn." **Không nhắc lại từ khoá**: nó nằm ngay ô tìm phía trên (`N3`), và từ khoá dài bị cắt giữa chữ thành "của phò…" (đã dính 24/09/2026).
+- **Không có kết quả**: một dòng `py-10 text-center text-sm text-muted`, "Không có trang nào khớp. Thử gõ ngắn hơn." **Không nhắc lại từ khoá**: nó nằm ngay ô tìm phía trên (`N3`), và từ khoá dài bị cắt giữa chữ thành "của phò…".
 - **Esc đóng, bấm ra ngoài cũng đóng.** Ngoại lệ có tên của `I20`: ô duy nhất là ô tìm, đóng lỡ tay không mất gì.
 - Chuyển động như modal (bảng "Chuyển động"). Không dựng hàng gợi ý phím (↑↓ ↵ Esc) ở đáy khi chưa được yêu cầu.
 
@@ -441,18 +438,18 @@ Mở tại chỗ từ nút chuông trên header (`I24`), đóng bằng bấm ra 
 ```
 
 - **Khung**: popover `w-96 max-w-[calc(100vw-2rem)] rounded-2xl border border-border bg-surface-overlay shadow-popover`, neo mép phải nút chuông, portal ra `body` (`I22`).
-- **Mép trên không đứng sát đường kẻ header.** Panel neo theo nút với khoảng cách mặc định thì mép trên thường rơi cách đường kẻ header vài px, đường kẻ chọc vào góc bo của panel như hai thứ suýt khớp (đã dính 24/09/2026: lệch 3px). Chỉnh khoảng cách (`sideOffset`) cho mép trên panel nằm **dưới đường kẻ 8px**. Luật chung cho mọi khối nổi mở từ header.
-- **Header: tiêu đề bên trái, "Đánh dấu đã đọc" bên phải**, nút `ghost h-8`, chỉ chữ (`I1`). Chữ nút thẳng mép phải với chấm chưa đọc bên dưới: header bớt padding phải đúng bằng `px` của nút, không `-mr-3` (`button.md`, `N11`). Mọi panel thông báo thật đều có nút này; thiếu nó thì muốn dọn bốn chấm người dùng phải bấm vào bốn thông báo (đã dính 24/09/2026). Không còn gì chưa đọc thì ẩn nút. Đánh dấu cả danh sách hay chỉ tab đang xem là logic của dự án, handler để rỗng (`I25`). Không thêm icon bánh răng hay nút ⋯ khi chưa được yêu cầu.
+- **Mép trên không đứng sát đường kẻ header.** Panel neo theo nút với khoảng cách mặc định thì mép trên thường rơi cách đường kẻ header vài px, đường kẻ chọc vào góc bo của panel như hai thứ suýt khớp. Chỉnh khoảng cách (`sideOffset`) cho mép trên panel nằm **dưới đường kẻ 8px**. Luật chung cho mọi khối nổi mở từ header.
+- **Header: tiêu đề bên trái, "Đánh dấu đã đọc" bên phải**, nút `ghost h-8`, chỉ chữ (`I1`). Chữ nút thẳng mép phải với chấm chưa đọc bên dưới: header bớt padding phải đúng bằng `px` của nút, không `-mr-3` (`button.md`, `N11`). Mọi panel thông báo thật đều có nút này; thiếu nó thì muốn dọn bốn chấm người dùng phải bấm vào bốn thông báo. Không còn gì chưa đọc thì ẩn nút. Đánh dấu cả danh sách hay chỉ tab đang xem là logic của dự án, handler để rỗng (`I25`). Không thêm icon bánh răng hay nút ⋯ khi chưa được yêu cầu.
 - **Tab `boxed`** như tab trạng thái trên bảng (`components/small-controls.md`): chữ trơn, không số đếm (chấm trên chuông đã báo có chưa đọc).
 - **Chiều cao danh sách = chiều cao của tab Tất cả**, chặn trên `max-h-[min(28rem,calc(100dvh-13rem))]`, cuộn trong khung theo `I18` (đầu dưới rãnh chạm góc bo: `mb-4`). Tab Tất cả chứa mọi thứ nên luôn cao nhất; panel mở ở tab đó, đo chiều cao danh sách một lần rồi đặt làm `min-height` cho các tab còn lại: bấm sang tab rỗng hay tab ít mục thì mép dưới đứng yên (`N1`). Không có thông báo nào thì panel gọn theo câu rỗng (`py-10`). Chiều cao đo ở tab Tất cả là chiều cao **đã hạ cho mục cuối lộ nửa** (`getPeekListHeight`, `I18`): thông báo cao thấp khác nhau nên không chốt được một con số.
-  Đã thử hai cách và bỏ (24/09/2026): `min-h-72` thì sang tab rỗng vẫn sụp 448 → 288px; **cao cố định** thì hết sụp, nhưng lúc chưa có thông báo nào panel là một khối trắng 563px với một dòng chữ xám giữa lòng, trông như tải chưa xong.
+  Đã thử hai cách và bỏ: `min-h-72` thì sang tab rỗng vẫn sụp 448 → 288px; **cao cố định** thì hết sụp, nhưng lúc chưa có thông báo nào panel là một khối trắng 563px với một dòng chữ xám giữa lòng, trông như tải chưa xong.
 - **Mỗi thông báo là một link rộng hết hàng** (`I29`): `flex gap-3 rounded-lg px-3 py-3 hover:bg-item-hover`, khung danh sách `p-2` (`M19`: 16 = 8 + 8). Mục nhiều dòng nên khe 8px như command palette, không 4px như menu. Bấm thì mở đối tượng và đánh dấu đã đọc, handler rỗng.
-- **Dòng tiêu đề**: tên người và tên đối tượng `font-medium`, động từ thường ("**Lan Anh** đã nhắc đến bạn trong **Website bán hàng 2026**"). **Tối đa 2 dòng** (`line-clamp-2` + `title`): tên hợp đồng dài làm tiêu đề ba dòng, cộng hai dòng trích thì một thông báo cao bằng ba cái khác, panel mất tác dụng liếc (đã dính 24/09/2026). Câu trích `text-sm text-muted line-clamp-2`, thời gian `text-xs text-muted`.
-- **Chưa đọc và đã đọc liếc là phân biệt được** (`N2`): chưa đọc thì chấm `size-2 rounded-full bg-foreground` bên phải (**không `bg-primary`**, xem ngay dưới), thẳng tâm dòng đầu; đã đọc thì không chấm **và tiêu đề `text-foreground/70`**. Chỉ có chấm thì trong danh sách lẫn lộn, hai mục trông y hệt nhau trừ một chấm 8px ở tận mép phải, nơi mắt đọc tới cuối cùng (đã dính 24/09/2026, tab Nhắc đến bạn). Không tô nền cho mục chưa đọc: mười mục chưa đọc thành mười dải xám.
+- **Dòng tiêu đề**: tên người và tên đối tượng `font-medium`, động từ thường ("**Lan Anh** đã nhắc đến bạn trong **Website bán hàng 2026**"). **Tối đa 2 dòng** (`line-clamp-2` + `title`): tên hợp đồng dài làm tiêu đề ba dòng, cộng hai dòng trích thì một thông báo cao bằng ba cái khác, panel mất tác dụng liếc. Câu trích `text-sm text-muted line-clamp-2`, thời gian `text-xs text-muted`.
+- **Chưa đọc và đã đọc liếc là phân biệt được** (`N2`): chưa đọc thì chấm `size-2 rounded-full bg-foreground` bên phải (**không `bg-primary`**, xem ngay dưới), thẳng tâm dòng đầu; đã đọc thì không chấm **và tiêu đề `text-foreground/70`**. Chỉ có chấm thì trong danh sách lẫn lộn, hai mục trông y hệt nhau trừ một chấm 8px ở tận mép phải, nơi mắt đọc tới cuối cùng. Không tô nền cho mục chưa đọc: mười mục chưa đọc thành mười dải xám.
 - **Chấm chưa đọc, tên người, tên đối tượng không đổi theo màu thương hiệu.** Dự án brand xanh lá thì chấm vẫn `--foreground` (đen, nền tối thì trắng), tên vẫn `--foreground font-medium`. Màu nhấn để dành cho nút chính của màn (`M3`): mười thông báo chưa đọc là mười chấm xanh rải dọc panel, đúng cái đã bỏ ở badge sidebar (`I15`). Tên tô màu nhấn thì đọc ra là link, trong khi cả hàng mới là chỗ bấm. Chấm cũng không đỏ: đỏ dành cho lỗi (`M30`).
 - **Avatar `size-8`** theo `components/avatar.md`, thẳng dòng đầu tiêu đề, không căn giữa cả mục.
 - **Rỗng**: một dòng `text-sm text-muted` theo `components/empty-state.md`. Tab Chưa đọc rỗng: "Bạn đã đọc hết thông báo". Chưa có gì: "Chưa có thông báo nào".
-- **Nút chuông**: icon `BellDot` của lucide khi có chưa đọc, **tô đặc chấm bằng `[&_circle]:fill-current`**, `Bell` khi không. `BellDot` gốc vẽ chấm bằng nét viền, không tô: ở `size-5` nó chỉ là một vòng tròn rỗng 6px, trông như chữ o lạc vào icon (đã dính 24/09/2026). Chuông đã khoét sẵn khe quanh chấm, đừng tự đè thêm chấm `absolute`. `aria-label` kèm số: "Thông báo, 4 chưa đọc". **Lúc panel mở, nút có nền như hover** (`aria-expanded:bg-foreground/5`), để biết panel mọc ra từ đâu.
+- **Nút chuông**: icon `BellDot` của lucide khi có chưa đọc, **tô đặc chấm bằng `[&_circle]:fill-current`**, `Bell` khi không. `BellDot` gốc vẽ chấm bằng nét viền, không tô: ở `size-5` nó chỉ là một vòng tròn rỗng 6px, trông như chữ o lạc vào icon. Chuông đã khoét sẵn khe quanh chấm, đừng tự đè thêm chấm `absolute`. `aria-label` kèm số: "Thông báo, 4 chưa đọc". **Lúc panel mở, nút có nền như hover** (`aria-expanded:bg-foreground/5`), để biết panel mọc ra từ đâu.
 - Chuyển động như dropdown (bảng "Chuyển động").
 
 ## Toast
@@ -465,8 +462,7 @@ lên chính toast vừa chèn vào thì nhiều trình đọc màn hình không 
 hay toast của shadcn thì dùng nó, nó lo sẵn.
 
 **Màn hẹp dưới `sm` thì toast lên đỉnh màn, giữa.** Đáy màn là chỗ của nút chính của
-form; toast bật ra ở đáy đúng lúc vừa bấm nút là che mất nửa nút đó trong 4 giây (đã dính
-23/09/2026, form tạo công việc ở 375px).
+form; toast bật ra ở đáy đúng lúc vừa bấm nút là che mất nửa nút đó trong 4 giây.
 
 ```
 [✓] Đã sao chép liên kết                                  <- xong việc: một dòng, co theo chữ
@@ -499,11 +495,11 @@ form; toast bật ra ở đáy đúng lúc vừa bấm nút là che mất nửa 
 - Toast báo hỏng: **có nút Thử lại và nút đóng** (vì nó không tự tắt), `role="alert"` thay cho `role="status"`.
 - Nhiều toast cùng lúc thì xếp chồng cột, `gap-2`, cái mới nhất gần mép màn nhất. Tối đa 3 cái.
 - Gợi ý thời gian (người dùng quyết): tự tắt sau khoảng 4 giây, có Hoàn tác thì lâu hơn và dừng đếm khi rê chuột vào. Hoàn tác, Thử lại gọi gì là handler rỗng (`onUndo`, `onRetry`).
-- **Toast có chuyển động vào và ra** theo bảng "Chuyển động" bên dưới: trượt lên từ đáy (màn hẹp: trượt xuống từ đỉnh), hết giờ thì trượt về. Quãng trượt là cả chiều cao toast, không phải 8px: 8px trong 200ms mắt gần như không bắt được, toast trông như bật "phựt" ra (chủ dự án 25/09/2026: "không có animation hiển thị ra như trượt từ dưới lên").
-  - **Bẫy: `{toast && <Toast />}` thì không có chuyển động ra.** Hết giờ là phần tử bị gỡ khỏi DOM ngay, không còn gì để trượt (đã dính 25/09/2026, bản dựng không có cả chuyển động vào). Giữ toast trong DOM qua một pha "đang đóng": đổi cờ → chạy chuyển động ra → `onTransitionEnd`/`onAnimationEnd` mới gỡ. Dự án có Sonner thì nó lo sẵn, dùng nó.
+- **Toast có chuyển động vào và ra** theo bảng "Chuyển động" bên dưới: trượt lên từ đáy (màn hẹp: trượt xuống từ đỉnh), hết giờ thì trượt về. Quãng trượt là cả chiều cao toast, không phải 8px: 8px trong 200ms mắt gần như không bắt được, toast trông như bật "phựt" ra.
+  - **Bẫy: `{toast && <Toast />}` thì không có chuyển động ra.** Hết giờ là phần tử bị gỡ khỏi DOM ngay, không còn gì để trượt. Giữ toast trong DOM qua một pha "đang đóng": đổi cờ → chạy chuyển động ra → `onTransitionEnd`/`onAnimationEnd` mới gỡ. Dự án có Sonner thì nó lo sẵn, dùng nó.
   - **Toast mới thay toast cũ** thì đổi `key` để toast mới chạy lại chuyển động vào, không đổi chữ tại chỗ trong cùng một khung.
   - `motion-reduce`: chỉ `opacity`, không trượt.
-- **Toast có email thì email xuống tầng dưới**, tầng trên là việc vừa xong ("Đã gửi lại lời mời"), tầng dưới là email bọc `EmailText` (`../components/description-list.md`) để xuống dòng sau `@`. **Không đặt `wrap-anywhere` cho cả khối chữ của toast**: nó bẻ bất kỳ chỗ nào, ra "…@congtymi" / "nhphat.com.vn" (đã dính 25/09/2026). Câu một dòng thì không cần bẻ; tầng nào có chuỗi dài không dấu cách (email, link) thì bọc riêng chuỗi đó.
+- **Toast có email thì email xuống tầng dưới**, tầng trên là việc vừa xong ("Đã gửi lại lời mời"), tầng dưới là email bọc `EmailText` (`../components/description-list.md`) để xuống dòng sau `@`. **Không đặt `wrap-anywhere` cho cả khối chữ của toast**: nó bẻ bất kỳ chỗ nào, ra "…@congtymi" / "nhphat.com.vn". Câu một dòng thì không cần bẻ; tầng nào có chuỗi dài không dấu cách (email, link) thì bọc riêng chuỗi đó.
 - Duyệt toast thì bày **từng loại một bản tĩnh** cạnh nhau, không dựng nút bấm giả lỗi (phạm vi ở `../../SKILL.md`).
 
 ---
@@ -533,11 +529,10 @@ lấy số ở bảng này.
   cả hai cùng ghi `transition-property`, class sau đè class trước, còn lại một thứ chạy.
 - **Khung hộp thoại không nằm trong lớp nền mờ đang chuyển `opacity`.** Lớp nền (`bg-black/30`) và
   khung là hai anh em trong một khối `fixed` đứng yên, mỗi cái tự mờ, cùng thời lượng. Khung là
-  con của lớp nền thì độ mờ nhân nhau: lúc đóng khung tan nhanh hơn nền, nhìn giật (đã dính
-  28/09/2026). **Mở khoá cuộn trang sau khi chạy xong**, không ngay lúc bấm đóng: thanh cuộn hiện
+  con của lớp nền thì độ mờ nhân nhau: lúc đóng khung tan nhanh hơn nền, nhìn giật. **Mở khoá cuộn trang sau khi chạy xong**, không ngay lúc bấm đóng: thanh cuộn hiện
   lại giữa chừng làm cả trang dưới lớp nền xô ngang.
 - **Ra nhanh hơn vào.** Vào `ease-out` (nhanh đầu, chậm cuối, như đồ vật đặt xuống), ra `ease-in` và ngắn hơn: người đã bấm đóng thì không muốn chờ.
-- **Bẫy đã dính khi dựng panel (23/09/2026)** — panel "chạy từ trong ra, cách lề một khoảng rồi giật mạnh vào lề", tooltip nhấp nháy, cả chuyển động giật cục:
+- **Bẫy khi dựng panel** — panel "chạy từ trong ra, cách lề một khoảng rồi giật mạnh vào lề", tooltip nhấp nháy, cả chuyển động giật cục:
   - **Panel dính `zoom-in-95` chép từ modal.** Phóng 95% quanh tâm thì mép phải panel bắt đầu cách lề màn ~11px, chạy xong mới nhảy vào lề. Panel chỉ `translate`, **không bao giờ `scale`**: nó đến từ mép, không mọc từ tâm.
   - **Radix (Dialog, Sheet) chỉ chờ `@keyframes`, không chờ `transition`.** Presence của Radix đọc `animation-name` để biết khi nào gỡ phần tử; viết bằng `transition` thì lúc mở phần tử gắn vào đã ở vị trí cuối (không chạy), lúc đóng bị gỡ ngay (giật mất). Với Radix dùng `data-[state=open]:animate-in data-[state=open]:slide-in-from-right data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right` (`tw-animate-css`, mặc định dịch 100%). Không Radix thì dùng `transition-transform` nhưng giữ phần tử trong DOM suốt lúc đóng.
   - **Hai cơ chế chạy cùng lúc**: `transition-all` trên panel cộng thêm keyframe của `animate-in` là hai chuyển động giành nhau, ra cảnh giật. Chọn một.
@@ -551,8 +546,6 @@ lấy số ở bảng này.
 - **`motion-reduce:`** tắt `scale` và `translate`, chỉ giữ `opacity` (hoặc tắt hẳn): người bật giảm chuyển động bị chóng mặt vì chuyển động chứ không vì mờ dần.
 - Không chuyển động khi **tải trang**: không cho cả trang hay từng card mờ dần vào.
 
-- **Panel 500/350ms là số chủ dự án chốt** (23/09/2026) sau khi xem video ba bản: 300/200ms thì vụt qua như giật, `linear` 500ms thì cứng và chậm. Đường cong này chạy nhanh ở đầu rồi đậu êm, nên 500ms không thấy chậm. Đừng rút ngắn cho "nhanh hơn".
+- **Panel 500/350ms là số chủ dự án chốt**: 300/200ms thì vụt qua như giật, `linear` 500ms thì cứng và chậm. Đường cong này chạy nhanh ở đầu rồi đậu êm, nên 500ms không thấy chậm. Đừng rút ngắn cho "nhanh hơn".
 - **Sửa chuyển động thì duyệt bằng video, không bằng số đo**: quay tốc độ thật và bản chậm 4 lần (DevTools, Animations, 25%). Giật, lố, nhảy lề chỉ lộ ra trong bản chậm.
-
-Đã thêm 23/09/2026 theo yêu cầu chủ dự án: trước đó các khối nổi bật ra không chuyển động.
 
