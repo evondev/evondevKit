@@ -1208,8 +1208,15 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     }
   }
 
+  // Nhãn của ô đang khoá mờ theo ô là cố ý (choice-controls.md, bảng Khoá) và WCAG miễn chữ của control khoá.
+  function isLabelOfDisabledControl(element) {
+    const labelControl = element.closest("label")?.control;
+
+    return Boolean(labelControl?.matches(":disabled, [aria-disabled='true']"));
+  }
+
   for (const element of allElements) {
-    if (element.closest(":disabled, [aria-disabled='true']") || !isVisible(element)) continue;
+    if (element.closest(":disabled, [aria-disabled='true']") || isLabelOfDisabledControl(element) || !isVisible(element)) continue;
     const ownText = [...element.childNodes].filter((node) => node.nodeType === Node.TEXT_NODE).map((node) => node.textContent.trim()).join(" ").trim();
     if (ownText) checkContrast(element, getComputedStyle(element).color, ownText.slice(0, 24));
 
