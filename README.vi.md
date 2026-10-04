@@ -1,11 +1,51 @@
-# evondevKit
+# <img src="images/logo-mark.png" alt="" width="32" height="32" align="top"> evondevKit
 
 [English](README.md) | **Tiếng Việt**
+
+![evondevKit / ui-ux: UI dashboard không còn mùi AI](images/evondevkit-ui-ux.png)
 
 Skill **`ui-ux`** cho Claude Code: dựng và làm đẹp giao diện app (dashboard, danh sách,
 bảng, form, cài đặt, modal) theo đúng thư viện component và màu của dự án bạn.
 
 Xem giới thiệu: [evondev-uiux.vercel.app/ui-ux](https://evondev-uiux.vercel.app/ui-ux)
+
+## Cài
+
+### Claude Code
+
+```bash
+/plugin marketplace add evondev/evondevKit
+/plugin install evon@evondevkit
+```
+
+Gọi bằng `/evon:ui-ux`. Lấy bản mới: `/plugin marketplace update evondevkit`.
+
+Bật tự cập nhật cho khỏi gõ lệnh: `/plugin` → Marketplaces → `evondevkit` → Enable
+auto-update. Từ đó mỗi lần mở Claude Code tự lấy bản mới.
+
+### Cursor, OpenCode, Codex, Antigravity, ZCode, omp
+
+Chạy ở thư mục gốc dự án (dùng `bunx` thay `npx` cũng được):
+
+```bash
+npx skills add evondev/evondevKit
+```
+
+Lệnh hỏi cài cho công cụ nào rồi chép skill vào `.agents/skills/ui-ux/`, thư mục mà Cursor,
+OpenCode, Codex, Antigravity, omp cùng đọc (ZCode thì vào `.zcode/skills/ui-ux/`). Muốn chọn sẵn
+thì thêm `-a`, ví dụ `-a cursor -a zcode`. Dùng chung cho mọi dự án thì thêm `-g`.
+
+| Công cụ | Gọi skill |
+| --- | --- |
+| Cursor, Antigravity | `/ui-ux Dựng màn danh sách đơn hàng…` |
+| Codex | `$ui-ux Dựng màn danh sách đơn hàng…` |
+| ZCode | `$ui-ux Dựng màn danh sách đơn hàng…` (hoặc chọn trong menu `/`) |
+| OpenCode | `Dùng skill ui-ux, dựng màn danh sách đơn hàng…` |
+| omp | `/skill:ui-ux Dựng màn danh sách đơn hàng…` |
+
+Không gọi tên thì công cụ tự bật skill khi đề khớp mô tả. ZCode chưa thấy skill thì vào
+Settings → Skills bấm Refresh. Lấy bản mới: `npx skills update`.
+Skill mới được test kỹ trên Claude, công cụ khác chạy được nhưng có thể lệch vài chỗ.
 
 > **Bản beta.** Dùng tốt cho giao diện app nền sáng, đề tiếng Việt: đã qua 70 đề test trên dự
 > án thật. Đang test: thêm dark mode cho app đang có.
@@ -19,18 +59,6 @@ Xem giới thiệu: [evondev-uiux.vercel.app/ui-ux](https://evondev-uiux.vercel.
 >
 > Gặp chỗ chưa ổn thì [mở issue](https://github.com/evondev/evondevKit/issues), kèm link
 > hoặc ảnh màn đó và câu đề bạn đã gõ.
-
-## Cài
-
-```bash
-/plugin marketplace add evondev/evondevKit
-/plugin install evon@evondevkit
-```
-
-Gọi bằng `/evon:ui-ux`. Lấy bản mới: `/plugin marketplace update evondevkit`.
-
-Bật tự cập nhật cho khỏi gõ lệnh: `/plugin` → Marketplaces → `evondevkit` → Enable
-auto-update. Từ đó mỗi lần mở Claude Code tự lấy bản mới.
 
 ## Dùng
 
@@ -74,30 +102,6 @@ không qua wireframe.
 - **Màu brand**: giữ, trừ khi bạn nói "bỏ style cũ".
 - **Phong cách**: mặc định flat. Muốn glassmorphism, gradient, nền tối thì nói trong đề.
 - Không có Tailwind, hay không có `package.json` (HTML thuần, WordPress) vẫn dùng được.
-
-## Dùng với Cursor, OpenCode, Codex, Antigravity, ZCode, omp
-
-Chạy ở thư mục gốc dự án (dùng `bunx` thay `npx` cũng được):
-
-```bash
-npx skills add evondev/evondevKit
-```
-
-Lệnh hỏi cài cho công cụ nào rồi chép skill vào `.agents/skills/ui-ux/`, thư mục mà Cursor,
-OpenCode, Codex, Antigravity, omp cùng đọc (ZCode thì vào `.zcode/skills/ui-ux/`). Muốn chọn sẵn
-thì thêm `-a`, ví dụ `-a cursor -a zcode`. Dùng chung cho mọi dự án thì thêm `-g`.
-
-| Công cụ | Gọi skill |
-| --- | --- |
-| Cursor, Antigravity | `/ui-ux Dựng màn danh sách đơn hàng…` |
-| Codex | `$ui-ux Dựng màn danh sách đơn hàng…` |
-| ZCode | `$ui-ux Dựng màn danh sách đơn hàng…` (hoặc chọn trong menu `/`) |
-| OpenCode | `Dùng skill ui-ux, dựng màn danh sách đơn hàng…` |
-| omp | `/skill:ui-ux Dựng màn danh sách đơn hàng…` |
-
-Không gọi tên thì công cụ tự bật skill khi đề khớp mô tả. ZCode chưa thấy skill thì vào
-Settings → Skills bấm Refresh. Lấy bản mới: `npx skills update`.
-Skill mới được test kỹ trên Claude, công cụ khác chạy được nhưng có thể lệch vài chỗ.
 
 ---
 

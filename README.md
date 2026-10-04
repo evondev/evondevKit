@@ -1,11 +1,53 @@
-# evondevKit
+# <img src="images/logo-mark.png" alt="" width="32" height="32" align="top"> evondevKit
 
 **English** | [Tiếng Việt](README.vi.md)
+
+![evondevKit / ui-ux: UI dashboard without the AI hassle](images/evondevkit-ui-ux-en-v2.png)
 
 A **`ui-ux`** skill for Claude Code: builds and polishes app UIs (dashboards, lists, tables,
 forms, settings, modals) using your project's own component library and colors.
 
 Overview: [evondev-uiux.vercel.app/en/ui-ux](https://evondev-uiux.vercel.app/en/ui-ux)
+
+## Install
+
+### Claude Code
+
+```bash
+/plugin marketplace add evondev/evondevKit
+/plugin install evon@evondevkit
+```
+
+Invoke with `/evon:ui-ux`. Update: `/plugin marketplace update evondevkit`.
+
+To skip the update command: `/plugin` → Marketplaces → `evondevkit` → Enable auto-update.
+Claude Code then pulls the latest version every time it starts.
+
+### Cursor, OpenCode, Codex, Antigravity, ZCode, omp
+
+Run at the project root (`bunx` works in place of `npx`):
+
+```bash
+npx skills add evondev/evondevKit
+```
+
+The command asks which tools to install for, then copies the skill into
+`.agents/skills/ui-ux/`, the folder Cursor, OpenCode, Codex, Antigravity and omp all read
+(ZCode gets `.zcode/skills/ui-ux/`). To preselect tools, add `-a`, e.g.
+`-a cursor -a zcode`. To share it across all projects, add `-g`.
+
+| Tool | Invoke |
+| --- | --- |
+| Cursor, Antigravity | `/ui-ux Build an orders list…` |
+| Codex | `$ui-ux Build an orders list…` |
+| ZCode | `$ui-ux Build an orders list…` (or pick it from the `/` menu) |
+| OpenCode | `Use the ui-ux skill to build an orders list…` |
+| omp | `/skill:ui-ux Build an orders list…` |
+
+Without the name, the tool turns the skill on when the prompt matches its description.
+ZCode doesn't show the skill yet? Open Settings → Skills and click Refresh.
+Update: `npx skills update`. The skill is tested most on Claude; other tools work but may
+differ in places.
 
 > **Beta.** Works well for light-theme app UIs: tested on 70 prompts across real projects.
 > Most testing so far used Vietnamese prompts. English prompts follow the same flow but have
@@ -20,18 +62,6 @@ Overview: [evondev-uiux.vercel.app/en/ui-ux](https://evondev-uiux.vercel.app/en/
 >
 > If something looks off, [open an issue](https://github.com/evondev/evondevKit/issues) with a
 > link or screenshot of the screen and the prompt you used.
-
-## Install
-
-```bash
-/plugin marketplace add evondev/evondevKit
-/plugin install evon@evondevkit
-```
-
-Invoke with `/evon:ui-ux`. Update: `/plugin marketplace update evondevkit`.
-
-To skip the update command: `/plugin` → Marketplaces → `evondevkit` → Enable auto-update.
-Claude Code then pulls the latest version every time it starts.
 
 ## Usage
 
@@ -80,32 +110,6 @@ does, no wireframes.
 - **Style**: flat by default. Want glassmorphism, gradients or a dark background? Say so in
   the prompt.
 - Works without Tailwind or without a `package.json` (plain HTML, WordPress).
-
-## Using with Cursor, OpenCode, Codex, Antigravity, ZCode, omp
-
-Run at the project root (`bunx` works in place of `npx`):
-
-```bash
-npx skills add evondev/evondevKit
-```
-
-The command asks which tools to install for, then copies the skill into
-`.agents/skills/ui-ux/`, the folder Cursor, OpenCode, Codex, Antigravity and omp all read
-(ZCode gets `.zcode/skills/ui-ux/`). To preselect tools, add `-a`, e.g.
-`-a cursor -a zcode`. To share it across all projects, add `-g`.
-
-| Tool | Invoke |
-| --- | --- |
-| Cursor, Antigravity | `/ui-ux Build an orders list…` |
-| Codex | `$ui-ux Build an orders list…` |
-| ZCode | `$ui-ux Build an orders list…` (or pick it from the `/` menu) |
-| OpenCode | `Use the ui-ux skill to build an orders list…` |
-| omp | `/skill:ui-ux Build an orders list…` |
-
-Without the name, the tool turns the skill on when the prompt matches its description.
-ZCode doesn't show the skill yet? Open Settings → Skills and click Refresh.
-Update: `npx skills update`. The skill is tested most on Claude; other tools work but may
-differ in places.
 
 ---
 
