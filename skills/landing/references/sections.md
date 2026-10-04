@@ -66,7 +66,8 @@ bỏ, đừng bịa "✨ Powered by AI".
 ```
 
 ```html
-<section class="pt-12 pb-14 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24">
+<section class="relative isolate overflow-hidden pt-12 pb-14 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24">
+  …lớp nền H11 (a, b), con đầu…
   <div class="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16 lg:px-8">
     <div class="max-w-xl">
       …nhãn nhỏ…
@@ -81,6 +82,7 @@ bỏ, đừng bịa "✨ Powered by AI".
 ```
 
 - Cột chữ 5 phần, cột ảnh 7 phần: ảnh là thứ chứng minh, chữ chỉ cần đủ chỗ cho H1 ba dòng.
+- Mọi biến thể hero có lớp nền `H11`. Kiểu c (ảnh) chỉ đặt sau cột ảnh, không sau cột chữ.
 - Danh sách chờ: hàng nút thay bằng **form email** (dưới), câu nhỏ đứng ngay dưới form.
 
 **B. Chữ trái, ảnh rộng bên dưới** (hợp khi màn app rộng: bảng, lịch tuần, kanban)
@@ -94,7 +96,8 @@ câu dẫn                               [ NÚT ] [ nút viền ]
 └──────────────────────────────────────────────────────────┘
 ```
 
-Khối chữ `max-w-3xl` canh trái; ảnh `mt-12 sm:mt-16`, rộng hết khung `max-w-7xl`.
+Khối chữ `max-w-3xl` canh trái; ảnh `mt-12 sm:mt-16`, rộng hết khung `max-w-7xl`. Màn app chìm
+dưới đáy hero (`pb-0`, `H6`) khi hero là panel.
 
 **C. Canh giữa, ảnh bên dưới** (mặc định: mua luôn)
 
@@ -188,7 +191,46 @@ Không carousel (`H10`). Không tường 15 bài đăng mạng xã hội trừ k
 
 `id="features"`. Đầu section: H2 nói lợi ích chung, câu dẫn một câu.
 
-**A. Lưới icon** (mặc định; đặt demo 3 × 2, danh sách chờ 3 × 1)
+**A. Bento: card có mảnh giao diện** (mặc định cho 3–4 tính năng chính; 8/8 trang trọn đã tra
+làm vậy)
+
+```
+┌───────────────────────────────┬───────────────┐
+│ ┌─────────────────┐           │ ┌───────────┐ │   mỗi card: mảnh UI trên, chữ dưới
+│ │ mảnh UI rộng    │           │ │ mảnh UI   │ │   4 card: card 1 và 4 rộng gấp đôi
+│ └─────────────────┘           │ └───────────┘ │
+│ Tên tính năng                 │ Tên           │
+│ một đến hai dòng mô tả        │ mô tả         │
+├───────────────┬───────────────┴───────────────┤
+│ …             │ …                             │
+└───────────────┴───────────────────────────────┘
+```
+
+```html
+<ul class="grid gap-4 lg:grid-cols-3">
+  <li class="flex flex-col overflow-hidden rounded-2xl bg-background lg:col-span-2"> <!-- card 1 và 4 khi có 4 card -->
+    <div class="relative h-56 overflow-hidden px-6 pt-6 [mask-image:linear-gradient(to_bottom,black_75%,transparent)]" aria-hidden="true" inert>
+      <div class="w-[360px] rounded-xl border border-border bg-surface p-4 shadow-[var(--elevation-popover)]">…mảnh UI…</div>
+    </div>
+    <div class="p-6 pt-4">
+      <h3 class="text-base font-semibold text-foreground">…</h3>
+      <p class="mt-2 text-base/7 text-muted">…tối đa hai dòng…</p>
+    </div>
+  </li>
+</ul>
+```
+
+- **Mảnh UI là một góc của màn app trong hero**, cùng dữ liệu, đúng tính năng của card: tính
+  năng "tự nhắc khách" thì mảnh là tin nhắn nhắc đã gửi; "xem lịch theo thợ" thì ba dòng lịch có
+  avatar thợ. Dựng bằng component của `ui-ux`. Không icon to thay mảnh, không ảnh minh hoạ.
+- Mảnh có **bề rộng cố định**, tràn thì cắt, đáy tan dần (`mask-image`) để card nào cũng cao
+  bằng nhau mà không bóp mảnh.
+- Card nền `bg-background` trên trang trắng, không viền. Card không bấm được, không hover.
+- 3 card: một hàng bằng nhau (bỏ `lg:col-span-2`). 4 card: card 1 và 4 rộng gấp đôi, thành
+  hai hàng so le. 5 trở lên thì 3–4 cái chính vào A, phần còn lại vào B ngay dưới.
+- Dưới `lg`: một cột (dưới `sm`) rồi hai cột, bỏ `col-span`.
+
+**B. Lưới icon** (6 tính năng ngắn; đặt demo 3 × 2; hay theo sau A cho phần còn lại)
 
 ```html
 <dl class="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
@@ -202,18 +244,18 @@ Không carousel (`H10`). Không tường 15 bài đăng mạng xã hội trừ k
 </dl>
 ```
 
-- **Không bọc từng ô vào card**: nền trang đã trắng, sáu card viền là sáu hộp chen nhau. Khối
-  tách bằng khoảng trống `gap-y-10`.
+- **Không bọc từng ô vào card**: sáu card viền là sáu hộp chen nhau. Khối tách bằng khoảng
+  trống `gap-y-10`. Icon theo `H8`.
 - Đúng 3 hoặc 6 mục (hay 4 ở lưới 2 cột). 5 mục là lưới hụt một ô.
 
-**B. Một ảnh lớn kèm ba điểm** (dùng thử 3/5): H2 và câu dẫn, rồi màn app giả lớn (`H6`) rộng
-hết khung, dưới ảnh ba điểm kiểu A một hàng `lg:grid-cols-3`. Hợp khi sản phẩm có một màn
+**C. Một ảnh lớn kèm ba điểm** (dùng thử 3/5): H2 và câu dẫn, rồi màn app giả lớn (`H6`) rộng
+hết khung, dưới ảnh ba điểm kiểu B một hàng `lg:grid-cols-3`. Hợp khi sản phẩm có một màn
 chính nói được hết.
 
-**C. Hàng xen kẽ** (3–4 tính năng cần giải thích kỹ): mỗi tính năng một hàng hai cột, chữ (H3,
-đoạn ngắn, 2–3 gạch đầu dòng ✓) và màn app giả của đúng tính năng đó; hàng chẵn đổi bên
-(`lg:[&>*:first-child]:order-last`). Các hàng cách nhau `gap-y-16 lg:gap-y-24`. Không hợp với 6
-tính năng ngắn.
+**D. Hàng xen kẽ** (3–4 tính năng cần giải thích kỹ): mỗi tính năng một hàng hai cột, chữ (H3,
+đoạn ngắn, 2–3 gạch đầu dòng ✓) và màn app giả của đúng tính năng đó trong khối
+`rounded-2xl bg-background p-6`; hàng chẵn đổi bên (`lg:[&>*:first-child]:order-last`). Các
+hàng cách nhau `gap-y-16 lg:gap-y-24`. Không hợp với 6 tính năng ngắn.
 
 ## K5. Cách hoạt động ⚑
 
@@ -270,24 +312,30 @@ FAQ làm vậy).
 
 ## K8. CTA cuối trang ⚑
 
-**A. Dải canh giữa** (mặc định)
+**A. Panel canh giữa** (mặc định)
 
 ```html
-<section class="bg-background py-14 sm:py-20 lg:py-24">
-  <div class="mx-auto max-w-2xl px-4 text-center sm:px-6">
-    <h2 class="…H2 của H3…">…</h2>
-    <p class="mt-4 …câu dẫn section…">…</p>
-    <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">…nút chính, nút viền nếu có G5…</div>
+<section class="py-14 sm:py-20 lg:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="relative isolate overflow-hidden rounded-3xl bg-background px-6 py-14 text-center sm:px-12 sm:py-20">
+      …lớp nền H11, cùng kiểu với hero…
+      <div class="mx-auto max-w-2xl">
+        <h2 class="…H2 của H3…">…</h2>
+        <p class="mt-4 …câu dẫn section…">…</p>
+        <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">…nút chính, nút viền nếu có G5…</div>
+      </div>
+    </div>
   </div>
 </section>
 ```
 
 - H2 **không chép H1** và không chỉ ghi lại chữ nút ("Đặt lịch demo ngay"). Nói điều khách được
   khi bấm: *"Thử với lịch thật của bạn trong 5 phút"*.
-- Dùng thử: hai nút, nút chính + nút viền "Liên hệ tư vấn" (3/4 trang có CTA cuối làm vậy).
-- Dải nền `bg-background`, là một trong hai dải nền của `H2`.
+- Dùng thử: hai nút, nút chính + nút viền "Liên hệ tư vấn" (3/4 trang có CTA cuối làm vậy). Nút
+  viền trên panel `bg-background` dùng nền `bg-surface` để không chìm.
+- Panel nằm trong khung `max-w-7xl`, không tràn mép màn (`H11`).
 
-**B. Dải có form email** (đặt demo, danh sách chờ): như A, hàng nút thay bằng form email của
+**B. Panel có form email** (đặt demo, danh sách chờ): như A, hàng nút thay bằng form email của
 `K2`, canh giữa (`mx-auto`).
 
 ## K9. Footer ⚑

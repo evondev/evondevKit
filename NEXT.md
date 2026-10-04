@@ -385,6 +385,35 @@ Lệch so với hướng chốt ở trên:
 - Số đo chung: trang dài 8–12k px (danh sách chờ 2–6k), khoảng giữa các section 100–160px,
   nội dung rộng 1200–1300px, H1 thường 64px, 0–1 màu nhấn.
 
+**Tra lớp nhìn (02/10/2026):** chủ dự án chấm landing theo các mẫu thiết kế được khen, không theo
+trang đang chạy. Tra 21 mẫu (13 màn đầu, 8 trang trọn), giữ bố cục và section theo 20 trang đang
+chạy, chỉ đổi lớp nhìn. Đếm được:
+
+| Thấy gì | Số mẫu | Đã ghi vào |
+| --- | --- | --- |
+| Card tính năng có mảnh giao diện (bento) | 8/8 trang trọn | `K4` A, lưới icon xuống B |
+| H1, H2 đậm thường hoặc vừa, không đậm | ~16/21 | `H3` |
+| Hero có lớp nền: vầng màu, lưới mờ, ảnh | 13/21 | `H11` (đè `M12` chỉ ở hero, CTA cuối) |
+| CTA cuối là panel bo góc trong khung | 6/8 | `H11`, `K8` |
+| Mảnh UI nổi chồng lên màn app | 7/21 | `H6` |
+| Hero nằm trong panel bo góc cách mép màn | 6/21 | `H11`, phương án được |
+| Tiêu đề hai tông (vế sau màu nhạt) hay có từ nhấn | ~9/21 | `H3`, được dùng, không mặc định |
+
+Để đợt sau (đã đủ 5 luật đợt này): nút bo tròn hẳn (5/8), câu FAQ mỗi câu một card (5/7), hero
+canh giữa nhiều hơn chia đôi (14/21, ngược với trang đang chạy), nền trang trắng ngà hay tối thay
+trắng (5/8), nhãn nhỏ trên mỗi H2 (4/7, `H3` đang cấm). Chờ test xem bản dựng còn thiếu gì rồi mới
+chọn.
+
+**Đợt luật sau test (chủ dự án chốt 02/10/2026):**
+
+- Brief thêm dòng 7 **cảm giác của trang** (gọn chuyên nghiệp, ấm thân thiện, kỹ thuật nền tối…):
+  quyết kiểu nền `H11`, sáng hay tối, mức chuyển động.
+- **`H12` chuyển động, ba mức, mặc định Nhẹ.** Tĩnh; **Nhẹ**: section hiện dần khi cuộn tới (một
+  lần), hover nút và card, bằng Motion (`motion`) hoặc CSS; **Nổi bật** chỉ khi người dùng xin:
+  nền động, cuộn ghim cảnh GSAP ScrollTrigger, 3D three.js. Mức nào cũng: `prefers-reduced-motion`,
+  chữ hero không ẩn chờ animation, không chiếm cuộn, 3D tải sau và tắt trên điện thoại. Đè `F22`
+  của `ui-ux` chỉ trong landing.
+
 **Test bản đầu** (cách chạy như bước 2: dự án trống, đáp án viết trước, phiên Claude Code mới):
 
 1. Mỗi đề một dự án Next trống trong `~/dev/audit-skills/`:

@@ -17,12 +17,12 @@ số trang trên 5 có làm vậy. Mẫu "dùng thử" nghiêng về công cụ 
 | 1 | Header | ✓ | ✓ | ✓ | ✓ gọn: logo, 0–3 link, nút (4/5) |
 | 2 | Hero | ✓ chia đôi | ✓ canh giữa (3/5) | ✓ chia đôi (4/5) | ✓ chia đôi, form email (3/5) |
 | 3a | Dải logo ngay dưới hero | ✓ (5/5) | – thay bằng dòng số người dùng ngay hero (4/5) | ✓ kèm số khách (4/5) | – (0/5) |
-| 4 | Tính năng | ✓ lưới card (5/5) | ✓ | ✓ lưới 3 × 2 (4/5) | ✓ một hàng 3 card |
+| 4 | Tính năng | ✓ bento `K4` A (5/5 có lưới) | ✓ | ✓ lưới 3 × 2 (4/5), `K4` B, có thể sau A | ✓ một hàng 3 card bento |
 | 5 | Cách hoạt động | – (1/5) | – (0/5) | – (1/5) | ✓ 3 bước (3/5) |
 | 6 | Pricing | – trang riêng (5/5), link "Bảng giá" trên header | ✓ ngay trên trang (4/5) | – (5/5) | – (5/5) |
 | 3b | Testimonial | ✓ (5/5) | ✓ ngay sau pricing (4/4) | ✓ (5/5) | – (0/5) |
 | 7 | FAQ | – (1/5) | ✓ cạnh pricing (3/5) | – (0/5) | – (2/5) |
-| 8 | CTA cuối trang | ✓ hai nút (4/5) | ✓ (3/5) | ✓ dải nền, có ô email (5/5) | ✓ form email lần hai (3/5) |
+| 8 | CTA cuối trang | ✓ hai nút (4/5) | ✓ (3/5) | ✓ panel, có ô email (5/5) | ✓ form email lần hai (3/5) |
 | 9 | Footer | ✓ cột link | ✓ cột link | ✓ cột link, nền tối (5/5) | ✓ một hàng gọn (2/5) |
 
 **Thứ tự mặc định** (số là cột `#`):

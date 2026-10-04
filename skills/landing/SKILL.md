@@ -22,8 +22,9 @@ Không gồm: cửa hàng nhiều sản phẩm, blog, portfolio, trang sự ki�
 Skill lo **giao diện**. Gửi form đi đâu, nối mailing list nào, mở checkout nào là logic của
 người dùng: để handler rỗng (`onSubmit`) và `href` giữ chỗ, báo lúc giao (`N10` của `ui-ux`).
 
-⚑ **Mọi luật trong skill này chưa qua vòng test nào.** Rút từ 20 landing page đang chạy (5 mỗi
-mục tiêu), tra ngày 01/10/2026.
+⚑ **Mọi luật trong skill này chưa qua vòng test nào.** Bố cục và section rút từ 20 landing page
+đang chạy (5 mỗi mục tiêu), tra 01/10/2026. Lớp nhìn (nền hero, ảnh sản phẩm, card tính năng, độ
+đậm tiêu đề) rút từ 21 mẫu thiết kế landing được đánh giá cao, tra 02/10/2026.
 
 ---
 
@@ -109,7 +110,8 @@ Làm đúng như `U3` của `../ui-ux/references/design-process.md`: một file 
 component thật, thanh công cụ (Phương án, Màu, Nhấn, Khổ), khung lý do, số khối
 `data-wf-block`, link bấm được qua server tĩnh, probe từng phương án trước khi gửi. Khác ở:
 
-- **Phương án khác nhau ở kiểu hero và thứ tự section**, không ở màu hay bo góc. Ví dụ: A hero
+- **Phương án khác nhau ở kiểu hero, kiểu nền hero (`H11`: hào quang, lưới mờ, ảnh) và thứ tự
+  section**, không ở màu hay bo góc. Ví dụ: A hero
   chia đôi, tính năng lưới card; B hero chữ trái ảnh rộng bên dưới, tính năng một ảnh lớn kèm
   ba điểm; C hero canh giữa, testimonial lên ngay sau hero. Phương án khuyên dùng theo cột
   mặc định của `goals.md`.
@@ -169,6 +171,8 @@ Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn. Góp ý theo số kh�
 - **`S1`, `S5` (không tự thêm section)** → bộ section lấy theo mục tiêu (`G1`), người dùng
   duyệt ở cổng 1.
 - **Nút cao 40px (`button.md`)** → nút ở hero và CTA cuối trang cao 44px (`H1`).
+- **`M12` không gradient** → được ở nền hero và panel CTA cuối (`H11`), chỗ khác vẫn không.
+- **Bóng chỉ cho lớp nổi (`M15`)** → màn app và mảnh nổi trên nền hero có bóng (`H6`).
 
 ---
 
@@ -179,8 +183,8 @@ Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn. Góp ý theo số kh�
 - [ ] **Một CTA chính**: cùng chữ, cùng đích ở header, hero, CTA cuối trang (`H1`). Header chỉ
   một nút đặc.
 - [ ] **H1 nói làm được gì cho ai**, không câu chung chung (`H4`).
-- [ ] **Ảnh sản phẩm là màn app dựng giống thật**, không minh hoạ trừu tượng, không khối xám
-  (`H6`).
+- [ ] **Ảnh sản phẩm là màn app dựng giống thật** đặt trên nền hero, không minh hoạ trừu
+  tượng, không khối xám (`H6`, `H11`). Card tính năng có mảnh giao diện, không chỉ icon (`K4`).
 - [ ] **Nhịp đều**: mọi section cùng một padding dọc, cùng một khung bề rộng (`H2`).
 - [ ] **Số, logo, testimonial, giá giả đã đánh dấu** trong code và nói lúc giao (`H9`).
 - [ ] Đã probe 375 tới 1920 và xem ảnh. Trang cuộn ngang ở 375 là hỏng (`H10`).
