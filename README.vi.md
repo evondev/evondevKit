@@ -33,6 +33,21 @@ Gọi bằng `/evon:ui-ux`.
 `/reload-plugins` chỉ nạp lại bản đã tải về, không tự kéo bản mới. Muốn khỏi cập nhật tay:
 Marketplaces → `evondevkit` → **Enable auto-update**, từ đó mỗi lần mở Claude Code tự lấy bản mới.
 
+**Gỡ**
+
+```bash
+/plugin uninstall evon@evondevkit
+/plugin marketplace remove evondevkit
+```
+
+Dòng đầu gỡ skill, dòng hai bỏ luôn nguồn cài (không định cài lại thì chạy). Gỡ xong mở
+phiên mới để chắc phiên không còn nạp skill.
+
+- VS Code, app desktop: `/` → **Manage plugins** → tab Plugins → `evon` → Uninstall; muốn bỏ
+  nguồn cài thì sang Marketplaces → `evondevkit` → xoá.
+- Từ shell bất kỳ: `claude plugin uninstall evon@evondevkit`, rồi
+  `claude plugin marketplace remove evondevkit`.
+
 ### Cursor, OpenCode, Codex, Antigravity, ZCode, omp
 
 Chạy ở thư mục gốc dự án (dùng `bunx` thay `npx` cũng được):
@@ -54,7 +69,8 @@ thì thêm `-a`, ví dụ `-a cursor -a zcode`. Dùng chung cho mọi dự án t
 | omp | `/skill:ui-ux Dựng màn danh sách đơn hàng…` |
 
 Không gọi tên thì công cụ tự bật skill khi đề khớp mô tả. ZCode chưa thấy skill thì vào
-Settings → Skills bấm Refresh. Lấy bản mới: `npx skills update`.
+Settings → Skills bấm Refresh. Lấy bản mới: `npx skills update`. Gỡ: `npx skills remove ui-ux`
+ở thư mục gốc dự án, cài bằng `-g` thì gỡ bằng `npx skills remove -g ui-ux`.
 Skill mới được test kỹ trên Claude, công cụ khác chạy được nhưng có thể lệch vài chỗ.
 
 > **Bản beta.** Dùng tốt cho giao diện app nền sáng, đề tiếng Việt: đã qua 70 đề test trên dự

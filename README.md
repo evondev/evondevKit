@@ -34,6 +34,21 @@ Invoke with `/evon:ui-ux`.
 To skip updating by hand: Marketplaces → `evondevkit` → **Enable auto-update**. Claude Code
 then pulls the latest version every time it starts.
 
+**Uninstall**
+
+```bash
+/plugin uninstall evon@evondevkit
+/plugin marketplace remove evondevkit
+```
+
+The first line removes the skill, the second removes the source too (run it if you won't
+reinstall). Afterwards, start a new session so the skill is no longer loaded.
+
+- VS Code, desktop app: `/` → **Manage plugins** → Plugins tab → `evon` → Uninstall; to
+  remove the source, go to Marketplaces → `evondevkit` → remove.
+- From any shell: `claude plugin uninstall evon@evondevkit`, then
+  `claude plugin marketplace remove evondevkit`.
+
 ### Cursor, OpenCode, Codex, Antigravity, ZCode, omp
 
 Run at the project root (`bunx` works in place of `npx`):
@@ -57,7 +72,8 @@ The command asks which tools to install for, then copies the skill into
 
 Without the name, the tool turns the skill on when the prompt matches its description.
 ZCode doesn't show the skill yet? Open Settings → Skills and click Refresh.
-Update: `npx skills update`. The skill is tested most on Claude; other tools work but may
+Update: `npx skills update`. Uninstall: `npx skills remove ui-ux` at the project root; if you
+installed with `-g`, use `npx skills remove -g ui-ux`. The skill is tested most on Claude; other tools work but may
 differ in places.
 
 > **Beta.** Works well for light-theme app UIs: tested on 70 prompts across real projects.
