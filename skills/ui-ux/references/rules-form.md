@@ -233,3 +233,31 @@ Cùng lý do, `divide-y` trên danh sách trong card cũng tràn hết bề ngan
 Ngoại lệ duy nhất: đường chia **giữa các dòng của một danh sách** mà muốn bắt đầu
 thẳng hàng với chữ (bỏ qua avatar bên trái). Cái đó là thụt có chủ ý, và phải
 thụt đúng bằng chiều rộng avatar cộng gap, không phải bằng padding.
+
+**F26. Hai khối có viền đứng sát nhau thì chỉ một bên vẽ đường giáp ranh.**
+
+Mỗi mục tự có `border` đủ bốn phía rồi xếp liền nhau (không `gap`) thì chỗ giáp
+nhau là **hai đường 1px chồng lên thành 2px**: đậm gấp đôi mọi viền khác, nhìn như
+kẻ bút dày, liếc là thấy lỗi. Áp cho mọi hướng, trên dưới lẫn trái phải, và mọi loại
+khối: dòng danh sách, ô lưới, nút trong nhóm nút, card xếp chồng, header với thanh
+công cụ ngay dưới nó.
+
+Đường giáp ranh **thuộc về đúng một chủ**:
+
+- **Danh sách, hàng, cột liền nhau**: viền khung ở **cha**, vạch giữa bằng `divide-y`
+  / `divide-x` trên cha. Mục con không có `border` nào. Không tự viết `border-b` cho
+  mục rồi quên `last:border-b-0`, vì dòng cuối sẽ chồng lên viền đáy khung.
+- **Lưới ô liền nhau hai chiều** (bảng số liệu dạng ô, lịch tháng, bảng so sánh): cha
+  `grid gap-px bg-border` + viền ngoài, ô `bg-surface`. Khe 1px lộ nền cha thành vạch,
+  không ô nào tự vẽ viền nên không chỗ nào dày.
+- **Nhóm nút dính nhau** (segmented, nhóm nút viền): nút đầu đủ viền, các nút sau
+  `border-l-0` (dọc thì `border-t-0`). Không kéo đè bằng `-ml-px` (`N11`).
+- **Khối có viền nằm trong khung có viền và chạm mép** (bảng chạm mép card, ô trong
+  panel): mép trùng thì bỏ viền khối trong, khung ngoài giữ. Hai vạch ngang từ hai khối
+  liền nhau (`border-b` của header + `border-t` của thanh công cụ) thì xoá một cái.
+- Muốn mỗi mục giữ viền riêng (card trong lưới) thì phải có **khe** (`gap-2` trở lên):
+  có khe thì là hai khối tách rời, không còn chồng.
+
+Rà trước khi giao: mỗi phần tử có `border` mà anh em kề nó cũng có `border` và giữa
+hai đứa không có `gap` là chỗ nghi. Phóng 200% chỗ giáp ranh: vạch nào dày hơn viền
+khung là dính.

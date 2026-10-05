@@ -56,6 +56,9 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 
 - [ ] Có `shadow-*` nào trên khối **nằm trong trang** không? Bóng chỉ cho modal/dropdown (`M15`), ngoại lệ trong trang chỉ có ô chọn của tab `segmented` và núm công tắc (`shadow-sm`).
 - [ ] Có token viền nào tự đẻ ra ngoài `--border`, `--border-strong`, `--border-focus` không?
+- [ ] **Thanh cuộn**: grep `::-webkit-scrollbar` trong CSS gốc ra khối của `tokens.css` chưa, `ScrollbarAutohide` đã mount ở gốc app chưa? Mở một vùng cuộn (trang, sidebar, dropdown dài, bảng cuộn ngang): thấy thanh xám mặc định to là thiếu khối (`I18`). Dự án có token sẵn vẫn phải chép.
+- [ ] Có chỗ nào hai khối có viền đứng sát nhau, không khe, thành vạch 2px không (dòng `border-b` dòng cuối chồng viền khung, ô lưới, nhóm nút, header + thanh công cụ)? Chỉ một bên giữ đường giáp ranh: `divide-*` trên cha, lưới `gap-px bg-border`, nút sau `border-l-0` (`F26`).
+- [ ] Có đường kẻ `--border` nào nằm thẳng trên nền trang xám (footer, dải tiêu đề, `<hr>`) không? `--border` nhạt hơn nền xám, ra vệt mờ căm: bỏ đường, tách bằng khoảng trắng, hoặc đổi `border-border-strong` (`M14`).
 - [ ] Có chỗ nào mỗi mục một card không? Gom thành một khung chia đường kẻ (`F3`).
 - [ ] Card chỉ có tiêu đề, không nút ở header: còn `min-h-10` không? Còn thì tiêu đề cách mép trên xa hơn nội dung cách mép dưới, card hẫng đầu (`components/card.md`).
 - [ ] Dòng tiêu đề và nút "Xem tất cả" có nằm **trong** khung không?

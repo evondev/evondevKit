@@ -256,10 +256,24 @@ Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu
 | Token | Cho | Vì sao |
 | --- | --- | --- |
 | `--border` | Viền card, khung dropdown, đường chia trong danh sách và menu, **đường kẻ dưới đầu sidebar và dưới header** (cùng màu vạch trong menu, chủ dự án chốt, `layouts/app.md`) | **Trang trí**: chỉ vạch ranh giới, nhạt được bao nhiêu thì nhạt |
-| `--border-strong` | **Viền ô nhập**, **viền nút outline**, select, viền card khi hover, đường kẻ nằm trên nền trang xám (dưới hàng tab khu cài đặt), kẻ dọc sidebar **chỉ khi vùng nội dung cũng trắng** (`layouts/app.md`) | **Chức năng**: ô nhập và nút outline cùng nền trắng với card, viền là thứ duy nhất báo "đây là chỗ gõ", "đây là chỗ bấm" (`I8`) |
+| `--border-strong` | **Viền ô nhập**, **viền nút outline**, select, viền card khi hover, **mọi đường kẻ nằm thẳng trên nền trang xám** (footer trang, dưới hàng tab khu cài đặt; xem dưới bảng), kẻ dọc sidebar **chỉ khi vùng nội dung cũng trắng** (`layouts/app.md`) | **Chức năng**: ô nhập và nút outline cùng nền trắng với card, viền là thứ duy nhất báo "đây là chỗ gõ", "đây là chỗ bấm" (`I8`) |
 
 Trong mỗi nhóm thì mọi chỗ dùng chung đúng một token, để đường tóc không chỗ
 đậm chỗ nhạt. Muốn viền card nhạt đi thì hạ `--border`, ô nhập không nhạt theo.
+
+**`--border` chỉ đúng trên nền trắng.** Nó là `#f7f7f8`, **nhạt hơn** nền trang `--background`
+`#f4f4f6`: kẻ thẳng lên nền xám thì ra một vệt sáng mờ căm, liếc không thấy, nhìn kỹ lại
+tưởng lỗi. Mọi đường kẻ nằm **trực tiếp trên `--background`**, không có card trắng nào lót
+dưới (`border-t` của footer trang, `border-b` dưới dải tiêu đề xám, `divide-y` giữa các khối
+đặt thẳng trên nền trang, `<hr>` giữa hai vùng), làm một trong hai:
+
+1. **Bỏ đường kẻ**, tách bằng khoảng trắng (`mt-12`, `pt-8`) hoặc chênh nền. Đây là mặc định:
+   footer đứng cuối trang, nội dung trên nó đã dừng, khoảng trắng đủ báo "hết phần chính".
+2. Buộc phải có đường (footer dài nhiều cột nối liền nội dung, dải tiêu đề xám cần mép) thì
+   **`border-border-strong`**, không bao giờ `border-border`.
+
+Trước khi giao, rà mọi `border-*`/`divide-*` dùng `--border`: phần tử đó hoặc cha gần nhất
+có nền trắng (`bg-surface`, `bg-surface-overlay`) không? Không có thì đổi theo hai cách trên.
 
 Checkbox, radio chưa chọn cũng dùng `--border-strong`, cùng độ đậm với ô nhập.
 

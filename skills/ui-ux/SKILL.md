@@ -166,6 +166,13 @@ bộ nhãn chứ không phải một dòng. Copy không phải tiếng Việt th
 màu nhấn và font chỉ nằm ở một chỗ, lúc giao chỉ ra chỗ đó (`S15`) là họ tự thay.
 **Không bao giờ hỏi số lượng font.**
 
+**Thanh cuộn thì luôn chép, kể cả dự án có token sẵn.** "Dùng token của họ" chỉ áp
+cho màu và font. Khối thanh cuộn trong `tokens.css` (từ `* { --scrollbar-thumb` tới hết
+`.scrollbar-clean`) và component `ScrollbarAutohide` (`I18`) là dáng, không phải brand:
+grep `::-webkit-scrollbar` trong CSS gốc, chưa có hay đang là bản khác thì chép vào.
+Thiếu khối này là trình duyệt vẽ thanh mặc định, to và thô, ở mọi vùng cuộn: trang,
+sidebar, bảng cuộn ngang, dropdown. Trang HTML thuần, wireframe cũng chép.
+
 Dùng thư viện của họ thì cách áp skill là **chỉnh token cho khớp**, cộng vài mặc
 định trái luật. Với shadcn thường là ba chỗ:
 
