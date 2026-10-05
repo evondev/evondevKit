@@ -3,7 +3,17 @@
 // Dùng ở cổng 3 của checklist (references/checklist.md). Chỉ đọc trang, không sửa gì.
 //
 //   node probe.mjs <url> [--widths 375,768,1024,1280,1440,1920] [--out <thư mục>] [--dark] [--wait 800] [--dpr 1]
-//                        [--sweep [1440,375,20]] [--wireframe <link phương án đã chọn>]
+//                        [--sweep [1440,375,20]] [--wireframe <link phương án đã chọn>] [--quick]
+//                        [--dynamic-widths 1280,375|none]
+//
+// Phép đo động (Tab, rê chuột, bấm, mở lớp nổi) chiếm phần lớn thời gian mà ít đổi theo bề rộng, nên mặc định
+// chỉ chạy ở các khổ mobile, khổ gần 768 và gần 1280 nhất; khổ khác đo trang đứng yên.
+// --dynamic-widths: chọn khổ chạy phép đo động, "none" là không khổ nào. Vòng sửa thứ hai trở đi truyền đúng các
+// khổ vòng trước còn lỗi động (cuối báo cáo in sẵn lệnh).
+//
+// --quick: chỉ đo trang đứng yên (bố cục, chữ, tràn, tương phản, control gốc kể cả trong lớp đang ẩn), bỏ Tab,
+// rê chuột, bấm, mở lớp nổi. Dùng cho wireframe trước khi gửi (design-process.md, U3): ~4 lần nhanh hơn,
+// phần động để U4 đo đủ.
 //
 // --wireframe: so bản dựng với wireframe đã chọn (design-process.md, U4) ở 1440 và 375: khoảng nào cao thấp khác,
 // chữ nào đổi hay thiếu, cỡ chữ, độ đậm nào khác; link có mau=mau thì so cả màu chữ, màu icon, nền. Ghi vào danh sách P.
@@ -34,7 +44,7 @@ const maxTabStops = 160;
 const maxFocusChecksPerKind = 2;
 
 function parseArgs(argv) {
-  const options = { url: "", widths: defaultWidths, out: "", isDark: false, waitMs: 800, dpr: 1, playwrightDir: "", sweep: null, wireframeUrl: "" };
+  const options = { url: "", widths: defaultWidths, out: "", isDark: false, waitMs: 800, dpr: 1, playwrightDir: "", sweep: null, wireframeUrl: "", isQuick: false, dynamicWidths: null };
   const rest = [...argv];
 
   while (rest.length > 0) {
@@ -51,12 +61,30 @@ function parseArgs(argv) {
     else if (arg === "--dpr") options.dpr = Number(rest.shift());
     else if (arg === "--pw") options.playwrightDir = rest.shift();
     else if (arg === "--wireframe") options.wireframeUrl = rest.shift();
+    else if (arg === "--quick") options.isQuick = true;
+    else if (arg === "--dynamic-widths") {
+      const value = rest.shift() ?? "";
+      options.dynamicWidths = new Set(value === "none" ? [] : value.split(",").map(Number));
+    }
     else if (!arg.startsWith("--")) options.url = arg;
   }
 
   if (!options.out) options.out = join(tmpdir(), `evon-probe-${Date.now()}`);
+  if (options.isQuick) options.dynamicWidths = new Set();
+  if (!options.dynamicWidths) options.dynamicWidths = pickDefaultDynamicWidths(options.widths);
 
   return options;
+}
+
+// Khổ mobile nào cũng đo động (menu, sheet chỉ mở ở màn hẹp). Trên đó hai khổ: gần 1280, và gần 768 vì bố cục
+// tablet có control riêng (đo 05/10/2026: nút "Mục lục" chỉ hiện ở 768, Tab tới không thấy gì; lớp nổi lòi khỏi
+// màn hẹp mà 1280 không lòi). 1024, 1440, 1920 đo động không ra thêm lỗi nào đáng kể.
+function pickDefaultDynamicWidths(widths) {
+  const mobileWidths = widths.filter((width) => width < mobileWidthLimit);
+  const desktopWidths = widths.filter((width) => width >= mobileWidthLimit);
+  const closestTo = (target) => desktopWidths.reduce((best, width) => (best === null || Math.abs(width - target) < Math.abs(best - target) ? width : best), null);
+
+  return new Set([...mobileWidths, closestTo(768), closestTo(1280)].filter((width) => width !== null));
 }
 
 function loadPlaywright(playwrightDir) {
@@ -2921,18 +2949,23 @@ async function probeWidth(browser, options, width) {
   // có thể đổi trang (đã dính 01/10/2026: tới lượt đo thì biểu đồ tổng quan còn 2/10 khối màu nhấn).
   const darkModeProblemSet = new Set(options.isDark ? [...(await page.evaluate(findDarkModeProblems)), ...(await page.evaluate(findSunkenSelections)), ...(await page.evaluate(findHueDrifts))] : []);
 
-  const { drawnRings: drawnFocusRings, unmarkedFocusStops } = isMobile ? { drawnRings: [], unmarkedFocusStops: [] } : await findDrawnFocusRings(page);
+  // Khổ không nằm trong --dynamic-widths (hay --quick) bỏ mọi bước Tab, rê, bấm, mở lớp nổi bên dưới.
+  const isDynamic = options.dynamicWidths.has(width);
+  const isStaticOnly = isMobile || !isDynamic;
+  const { drawnRings: drawnFocusRings, unmarkedFocusStops } = isStaticOnly ? { drawnRings: [], unmarkedFocusStops: [] } : await findDrawnFocusRings(page);
 
   // Mở khối đang đóng trước khi rê và chạm: cây thư mục nằm trong accordion đóng ở /components thì
   // tooltip tên tệp tràn màn chỉ lộ khi khối đã mở (27/09/2026).
-  const expandedCount = await expandCollapsedBlocks(page);
+  const expandedCount = isDynamic ? await expandCollapsedBlocks(page) : 0;
   const allMeasurements = expandedCount > 0 ? mergeMeasurements(measurements, await page.evaluate(measureInPage, { minTapSize, isMobile })) : measurements;
   // Khối vừa mở có thể chứa bản mẫu lớp nổi (hộp xác nhận bày tĩnh có lớp phủ): đo dark mode thêm một lần.
   if (options.isDark && expandedCount > 0) for (const line of [...(await page.evaluate(findDarkModeProblems)), ...(await page.evaluate(findSunkenSelections))]) darkModeProblemSet.add(line);
 
   // Màn chạm không có rê chuột: chỉ đo nền rê ở khổ desktop.
-  const hoverStates = isMobile ? { layoutShifts: [], vanishedChildren: [], weakHovers: [], blendedHovers: [], borderHovers: [], overflowingLayers: [] } : await probeHoverStates(page);
-  const popupLayers = await probePopupLayers(page, isMobile, options.isDark);
+  const hoverStates = isStaticOnly ? { layoutShifts: [], vanishedChildren: [], weakHovers: [], blendedHovers: [], borderHovers: [], overflowingLayers: [] } : await probeHoverStates(page);
+  const popupLayers = !isDynamic
+    ? { overflowing: [], hollow: [], checkedHoverChanges: [], heavyLayerLines: [], motionless: [], nativeChoices: [], scrollyLayers: [], lostTriggerIcons: [], sunkenSelections: [] }
+    : await probePopupLayers(page, isMobile, options.isDark);
   for (const line of popupLayers.sunkenSelections) darkModeProblemSet.add(line);
   const darkModeProblems = [...darkModeProblemSet];
   const heavyDecorativeBorders = options.isDark ? [] : await page.evaluate(findHeavyDecorativeBorders);
@@ -2943,16 +2976,17 @@ async function probeWidth(browser, options, width) {
   const misformattedNumbers = await page.evaluate(findMisformattedNumbers);
   const overflowingLayers = [...new Set([...hoverStates.overflowingLayers, ...popupLayers.overflowing])];
   // Chạy sau cùng: bấm thử đổi lựa chọn trên trang (ngày, tab), các phép đo khác phải xong trước.
-  const pageCheckedHoverChanges = isMobile ? [] : await findCheckedHoverChanges(page);
-  const stateShapes = isMobile ? { shapeMismatches: [], stuckStates: [], hoverLikeSelected: [], groupCount: 0 } : await probeStateShapes(page);
+  const pageCheckedHoverChanges = isStaticOnly ? [] : await findCheckedHoverChanges(page);
+  const stateShapes = isStaticOnly ? { shapeMismatches: [], stuckStates: [], hoverLikeSelected: [], groupCount: 0 } : await probeStateShapes(page);
   // Sau cùng thật sự: mỗi lần bấm là một lần tải lại trang.
   const hiddenNativeControls = isMobile ? [] : await page.evaluate(findNativeControls, "hidden");
-  const openerLayers = isMobile ? await probeOpenerLayers(page, options, width) : { problems: [], flatLayers: [], openedShots: [], nativeControls: [] };
+  const openerLayers = isMobile && isDynamic ? await probeOpenerLayers(page, options, width) : { problems: [], flatLayers: [], openedShots: [], nativeControls: [] };
 
   await context.close();
 
   return {
     width,
+    isDynamic,
     screenshotPath,
     consoleErrors: [...new Set(consoleErrors)],
     ...allMeasurements,
@@ -4397,6 +4431,27 @@ function listWireframeMustReportItems(comparisons) {
   return items;
 }
 
+// Mục chỉ phép đo động (Tab, rê, bấm, lớp nổi) mới ra.
+const dynamicProblemKeys = ["unmarkedFocusStops", "drawnFocusRings", "hollowLayers", "openerLayerProblems", "flatOpenedLayers", "layoutShifts", "vanishedChildren", "weakHovers", "blendedHovers", "borderHovers", "overflowingLayers", "shapeMismatches", "hoverLikeSelected", "checkedHoverChanges", "heavyLayerLines", "motionlessLayers", "scrollyLayers", "lostTriggerIcons", "stuckStates"];
+
+function formatDynamicCoverage(results, options) {
+  if (options.isQuick) return "Đo nhanh (--quick): chưa đo Tab, rê chuột, bấm, lớp nổi.\n";
+  const dynamicWidths = results.filter((result) => result.isDynamic).map((result) => `${result.width}px`);
+  if (dynamicWidths.length === results.length) return "";
+
+  return `Tab, rê chuột, bấm, lớp nổi: chỉ đo ở ${dynamicWidths.join(", ") || "không khổ nào"}; khổ khác đo trang đứng yên.\n`;
+}
+
+// Vòng sửa sau chỉ cần đo động lại ở khổ còn lỗi động; phần đứng yên và --sweep vẫn đo đủ.
+function formatNextRoundHint(results, options) {
+  if (options.isQuick) return "";
+  const widthsWithDynamicProblems = results
+    .filter((result) => result.isDynamic && dynamicProblemKeys.some((key) => result[key]?.length > 0))
+    .map((result) => result.width);
+
+  return `\nVòng sửa sau: thêm --dynamic-widths ${widthsWithDynamicProblems.join(",") || "none"} (khổ còn lỗi Tab, rê, bấm, lớp nổi).`;
+}
+
 async function main() {
   const options = parseArgs(process.argv.slice(2));
 
@@ -4436,11 +4491,13 @@ async function main() {
   }
 
   writeFileSync(join(options.out, "report.json"), JSON.stringify({ widths: results, sweep: sweepSteps, wireframe: wireframeComparisons }, null, 2));
+  console.log(formatDynamicCoverage(results, options));
   console.log(formatReport(results));
   if (sweepSteps.length > 0) console.log(formatSweepReport(sweepSteps, options.sweep.step));
   if (wireframeComparisons.length > 0) console.log(formatWireframeReport(wireframeComparisons));
   const mustReportItems = [...listMustReportItems(results, sweepSteps), ...listWireframeMustReportItems(wireframeComparisons)];
   console.log(formatMustReportList(mustReportItems, options.sweep?.step ?? 20));
+  console.log(formatNextRoundHint(results, options));
   console.log(`\nChi tiết: ${join(options.out, "report.json")}`);
 }
 
