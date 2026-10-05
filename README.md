@@ -18,10 +18,21 @@ Overview: [evondev-uiux.vercel.app/en/ui-ux](https://evondev-uiux.vercel.app/en/
 /plugin install evon@evondevkit
 ```
 
-Invoke with `/evon:ui-ux`. Update: `/plugin marketplace update evondevkit`.
+In the VS Code extension or the desktop app, `/plugin` isn't available: type `/` → **Manage
+plugins** → Marketplaces, add `evondev/evondevKit`, then install `evon` from the Plugins tab.
 
-To skip the update command: `/plugin` → Marketplaces → `evondevkit` → Enable auto-update.
-Claude Code then pulls the latest version every time it starts.
+Invoke with `/evon:ui-ux`.
+
+**Update**
+
+- Terminal: `/plugin marketplace update evondevkit`, then `/reload-plugins` to apply it in the
+  open session.
+- VS Code, desktop app: `/` → **Manage plugins** → Marketplaces → `evondevkit` → refresh icon.
+- From any shell: `claude plugin marketplace update evondevkit`.
+
+`/reload-plugins` only reloads what's already downloaded; it doesn't fetch a new version.
+To skip updating by hand: Marketplaces → `evondevkit` → **Enable auto-update**. Claude Code
+then pulls the latest version every time it starts.
 
 ### Cursor, OpenCode, Codex, Antigravity, ZCode, omp
 
@@ -52,8 +63,7 @@ differ in places.
 > **Beta.** Works well for light-theme app UIs: tested on 70 prompts across real projects.
 > Most testing so far used Vietnamese prompts. English prompts follow the same flow but have
 > had less testing. Currently testing: adding dark mode to existing apps.
-> The skill keeps changing as tests come in; get the latest with
-> `/plugin marketplace update evondevkit`. To hear about new versions, click
+> The skill keeps changing as tests come in; get the latest as in **Update** above. To hear about new versions, click
 > **Watch → Custom → Releases** on GitHub. Each release has a few lines on what changed in
 > [Releases](https://github.com/evondev/evondevKit/releases).
 >

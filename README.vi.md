@@ -18,10 +18,20 @@ Xem giới thiệu: [evondev-uiux.vercel.app/ui-ux](https://evondev-uiux.vercel.
 /plugin install evon@evondevkit
 ```
 
-Gọi bằng `/evon:ui-ux`. Lấy bản mới: `/plugin marketplace update evondevkit`.
+Trong extension VS Code hay app desktop không có `/plugin`: gõ `/` → **Manage plugins** →
+Marketplaces, thêm `evondev/evondevKit`, rồi sang tab Plugins cài `evon`.
 
-Bật tự cập nhật cho khỏi gõ lệnh: `/plugin` → Marketplaces → `evondevkit` → Enable
-auto-update. Từ đó mỗi lần mở Claude Code tự lấy bản mới.
+Gọi bằng `/evon:ui-ux`.
+
+**Lấy bản mới**
+
+- Terminal: `/plugin marketplace update evondevkit`, rồi `/reload-plugins` để phiên đang mở
+  nhận bản mới.
+- VS Code, app desktop: `/` → **Manage plugins** → Marketplaces → `evondevkit` → bấm icon refresh.
+- Từ shell bất kỳ: `claude plugin marketplace update evondevkit`.
+
+`/reload-plugins` chỉ nạp lại bản đã tải về, không tự kéo bản mới. Muốn khỏi cập nhật tay:
+Marketplaces → `evondevkit` → **Enable auto-update**, từ đó mỗi lần mở Claude Code tự lấy bản mới.
 
 ### Cursor, OpenCode, Codex, Antigravity, ZCode, omp
 
@@ -49,8 +59,7 @@ Skill mới được test kỹ trên Claude, công cụ khác chạy được nh
 
 > **Bản beta.** Dùng tốt cho giao diện app nền sáng, đề tiếng Việt: đã qua 70 đề test trên dự
 > án thật. Đang test: thêm dark mode cho app đang có.
-> Skill còn được sửa liên tục từ các lượt test, lấy bản mới bằng
-> `/plugin marketplace update evondevkit`. Muốn được báo khi có bản mới: trên GitHub bấm
+> Skill còn được sửa liên tục từ các lượt test, lấy bản mới như mục **Lấy bản mới** ở trên. Muốn được báo khi có bản mới: trên GitHub bấm
 > **Watch → Custom → Releases**, mỗi bản có vài dòng ghi đổi gì ở
 > [Releases](https://github.com/evondev/evondevKit/releases).
 >
