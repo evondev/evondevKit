@@ -1273,6 +1273,77 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     }
   }
 
+  // 16c. Đường kẻ ngang chìm vào nền: `border-b`/`border-t` một phía, hoặc bóng inset 1px ở đáy (đường kẻ hàng tab
+  //      `underline`), chỉ đậm hơn nền ngay sau nó dưới 8 mức. Trên card trắng `--border` #f7f7f8 chênh đúng 8;
+  //      trên nền trang xám thì phải `--border-strong` (`M14`). Đã dính 05/10/2026, hàng tab trang quản trị:
+  //      đường kẻ #efefef trên nền trang #f3f4f6 chênh 7, người dùng nói "không thấy luôn".
+  const faintLines = [];
+  for (const element of allElements) {
+    if (faintLines.length >= 6) break;
+    const style = getComputedStyle(element);
+    if (!isVisible(element)) continue;
+    const rect = element.getBoundingClientRect();
+    if (rect.width < 160) continue;
+    let lineColor = null;
+    const hasBottomOnly = parseFloat(style.borderBottomWidth) > 0 && style.borderBottomStyle !== "none" && !(parseFloat(style.borderTopWidth) > 0);
+    const hasTopOnly = parseFloat(style.borderTopWidth) > 0 && style.borderTopStyle !== "none" && !(parseFloat(style.borderBottomWidth) > 0);
+    if ((hasBottomOnly || hasTopOnly) && !(parseFloat(style.borderLeftWidth) > 0)) lineColor = hasBottomOnly ? style.borderBottomColor : style.borderTopColor;
+    const insetLine = style.boxShadow.match(/(rgba?\([^)]*\)|#[0-9a-f]{3,8})\s+0px\s+-?1px\s+0px(\s+0px)?\s+inset|inset\s+0px\s+-?1px\s+0px(\s+0px)?\s+(rgba?\([^)]*\)|#[0-9a-f]{3,8})/i);
+    if (!lineColor && insetLine) lineColor = insetLine[1] || insetLine[4];
+    if (!lineColor) continue;
+    const behind = readAncestorBackdrop(element);
+    if (!behind) continue;
+    const line = blendColors(readColor(lineColor), behind);
+    const gap = channelDistance(line, behind);
+    // Đường kẻ hàng tab cần rõ hơn đường tóc trang trí: mẫu `--tab-rail` chênh ~22, chủ dự án duyệt 21.
+    const isTabRail = Boolean(element.querySelector("[role='tab'], [aria-current='page']"));
+    const minGap = isTabRail ? 16 : 8;
+    if (gap > 0 && gap < minGap) faintLines.push(`đường kẻ ${toHex(line)} trên nền ${toHex(behind)} chỉ chênh ${gap} mức (cần từ ${minGap}${isTabRail ? ", hàng tab: `--tab-rail`" : ""}): ${describe(element)}`);
+  }
+
+  // 16d. Tab đang chọn tô nền mà chỉ chênh nền phía sau dưới 16 mức: liếc không ra tab nào đang chọn. Đã
+  //      dính 05/10/2026: tab "Chờ duyệt" #e9eaee trên nền trang #f3f4f6 (chênh 10) bị chê "trùng màu nền",
+  //      bản sửa chênh 16 được duyệt. `bg-secondary` thẳng trên nền trang chỉ chênh 13 (`bg-tab-selected`).
+  const faintSelectedTabs = [];
+  for (const tab of document.querySelectorAll("[role='tab'][aria-selected='true'], [aria-current='page']")) {
+    if (faintSelectedTabs.length >= 4 || !isVisible(tab)) continue;
+    // Link `aria-current` chỉ tính khi nằm trong hàng ngang (tab là link): mục sidebar xếp dọc theo luật riêng.
+    const parentStyle = tab.parentElement ? getComputedStyle(tab.parentElement) : null;
+    if (tab.getAttribute("role") !== "tab" && !(parentStyle?.display.includes("flex") && parentStyle.flexDirection.startsWith("row"))) continue;
+    const ownColor = readColor(getComputedStyle(tab).backgroundColor);
+    if (ownColor.alpha < 0.02) continue;
+    const behind = tab.parentElement ? readAncestorBackdrop(tab.parentElement) : null;
+    if (!behind) continue;
+    const shown = blendColors(ownColor, behind);
+    const gap = channelDistance(shown, behind);
+    if (gap < 16) faintSelectedTabs.push(`nền ${toHex(shown)} trên ${toHex(behind)} chỉ chênh ${gap} mức (cần từ 16): ${describe(tab)}`);
+  }
+
+  // 16e. Dòng bo góc đang chọn đứng cách dòng kề dưới 4px: rê dòng kề là hai nền liền thành một khối cao gấp
+  //      đôi (luật khoá 19). Đã dính 05/10/2026, mục lục bài học: "Bài 20" đang học, "Bài 21" đang rê, dính sát.
+  //      Dòng bảng không bo góc thì bỏ qua.
+  const stuckRows = [];
+  for (const row of document.querySelectorAll("[aria-current]:not([aria-current='false']), [aria-selected='true'], [data-state='active'], [data-active='true']")) {
+    if (stuckRows.length >= 4 || !isVisible(row)) continue;
+    const rowStyle = getComputedStyle(row);
+    if (!(parseFloat(rowStyle.borderTopLeftRadius) > 0) || readColor(rowStyle.backgroundColor).alpha < 0.02) continue;
+    const rowRect = row.getBoundingClientRect();
+    if (rowRect.width < 120) continue;
+    // Leo lên tới khối là con trực tiếp của danh sách (link nằm trong `<li>`), tối đa ba tầng.
+    let item = row;
+    for (let depth = 0; depth < 3 && item.parentElement && item.parentElement.children.length < 2; depth++) item = item.parentElement;
+    const neighbours = [item.previousElementSibling, item.nextElementSibling].filter((sibling) => sibling && isVisible(sibling));
+    for (const sibling of neighbours) {
+      const siblingRect = sibling.getBoundingClientRect();
+      if (Math.abs(siblingRect.left - item.getBoundingClientRect().left) > 2 || siblingRect.height === 0) continue;
+      const gap = siblingRect.top >= rowRect.bottom - 1 ? siblingRect.top - rowRect.bottom : rowRect.top - siblingRect.bottom;
+      if (gap >= -1 && gap < 3.5) {
+        stuckRows.push(`cách dòng kề ${Math.max(0, Math.round(gap * 10) / 10)}px, cần từ 4px (\`gap-1\`): ${describe(row)}`);
+        break;
+      }
+    }
+  }
+
   // 16b. Khối cùng component mà bo góc khác nhau (Lệch hệ, `V1` "cùng vai"): gom khối có nền / viền / bóng theo
   //      component, nhận ra bằng `data-slot` (shadcn) hoặc class CSS Module có hash (`_card_x1y2z`,
   //      `glass-card-module__card__AbC12`). Một khối bo khác số đông của chính component đó là bị đè riêng.
@@ -1835,6 +1906,9 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   return {
     orphanWords,
     invisibleFrames,
+    faintLines,
+    faintSelectedTabs,
+    stuckRows,
     mismatchedRadii,
     browserDefaultControls,
     brokenRules,
@@ -2478,10 +2552,56 @@ function findPopupDetails(freezeCss) {
   return { motionless, scrollyLayers };
 }
 
+// Mục trong lớp nổi (option, menuitem) khai chiều cao cố định mà chữ dài xuống dòng, tràn khỏi mục và đè lên
+// mục dưới. Đã dính 05/10/2026, lọc "Khoá học ▾" ở trang duyệt bình luận: mục `h-10`, tên khoá học ba dòng
+// chồng lên nhau. Đo bằng `Range` trên chữ, không bằng scrollHeight (mục `overflow-visible` vẫn báo đủ).
+function findCrampedOptions() {
+  const crampedOptions = [];
+
+  for (const option of document.querySelectorAll("[role='option'], [role='menuitem'], [role='menuitemradio'], [role='menuitemcheckbox']")) {
+    const style = getComputedStyle(option);
+    if (style.display === "none" || style.visibility === "hidden") continue;
+    const rect = option.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) continue;
+    const range = document.createRange();
+    range.selectNodeContents(option);
+    const textRects = [...range.getClientRects()].filter((textRect) => textRect.width > 0 && textRect.height > 0);
+    if (textRects.length === 0) continue;
+    const textTop = Math.min(...textRects.map((textRect) => textRect.top));
+    const textBottom = Math.max(...textRects.map((textRect) => textRect.bottom));
+    const spill = Math.max(rect.top - textTop, textBottom - rect.bottom);
+    if (spill > 2) {
+      const text = option.textContent.trim().replace(/\s+/g, " ").slice(0, 40);
+      crampedOptions.push(`"${text}": mục cao ${Math.round(rect.height)}px mà chữ cao ${Math.round(textBottom - textTop)}px, lòi ${Math.round(spill)}px đè lên mục kề`);
+    }
+  }
+
+  // Mục kề nhau cách dưới 4px (`gap-0.5`, dính sát): tên dài hai dòng của hai mục liền thành một khối.
+  // Mục `gap-1` là mẫu (`layouts/overlay.md`). Chỉ so hai mục cùng cha, đứng thẳng hàng dọc.
+  const seenParents = new Set();
+  for (const option of document.querySelectorAll("[role='option'], [role='menuitem'], [role='menuitemradio'], [role='menuitemcheckbox']")) {
+    const parent = option.parentElement;
+    if (!parent || seenParents.has(parent)) continue;
+    seenParents.add(parent);
+    const siblings = [...parent.children].filter((child) => child.matches("[role^='option'], [role^='menuitem']") && child.getBoundingClientRect().height > 0);
+    for (let i = 1; i < siblings.length; i++) {
+      const gap = siblings[i].getBoundingClientRect().top - siblings[i - 1].getBoundingClientRect().bottom;
+      if (gap >= 0 && gap < 3.5) {
+        const text = siblings[i].textContent.trim().replace(/\s+/g, " ").slice(0, 40);
+        crampedOptions.push(`"${text}": cách mục trên ${Math.round(gap * 10) / 10}px, dưới 4px (\`gap-1\`)`);
+        break;
+      }
+    }
+  }
+
+  return crampedOptions.slice(0, 8);
+}
+
 async function probePopupLayers(page, isMobile, isDark = false) {
   const overflowingLayers = new Set();
   const sunkenSelections = new Set();
   const hollowLayers = new Set();
+  const crampedOptions = new Set();
   const checkedHoverChanges = new Set();
   const heavyLayerLines = new Set();
   const motionlessLayers = new Set();
@@ -2545,6 +2665,7 @@ async function probePopupLayers(page, isMobile, isDark = false) {
     await page.waitForTimeout(250);
     for (const layer of await page.evaluate(findOverflowingLayers)) overflowingLayers.add(`${isTap ? "chạm chữ bị cắt" : "mở"}: ${layer}`);
     for (const layer of await page.evaluate(findHollowLayers)) if (!hollowBefore.has(layer)) hollowLayers.add(layer);
+    for (const option of await page.evaluate(findCrampedOptions)) crampedOptions.add(option);
     // Ô chọn trong lớp nổi (bộ lọc dạng popover) chỉ hiện lúc mở, nên đo rê vào ô đã chọn ở đây nữa.
     if (!isTap && !isMobile) for (const change of await findCheckedHoverChanges(page)) checkedHoverChanges.add(change);
     if (!isTap) for (const line of await page.evaluate(findHeavyLayerLines)) heavyLayerLines.add(line);
@@ -2603,6 +2724,7 @@ async function probePopupLayers(page, isMobile, isDark = false) {
   return {
     overflowing: [...overflowingLayers],
     hollow: [...hollowLayers],
+    cramped: [...crampedOptions],
     checkedHoverChanges: [...checkedHoverChanges],
     heavyLayerLines: [...heavyLayerLines],
     motionless: [...motionlessLayers],
@@ -2994,6 +3116,7 @@ async function probeWidth(browser, options, width) {
     drawnFocusRings,
     unmarkedFocusStops,
     hollowLayers: popupLayers.hollow,
+    crampedOptions: popupLayers.cramped || [],
     openerLayerProblems: openerLayers.problems,
     flatOpenedLayers: openerLayers.flatLayers,
     openedLayerShots: openerLayers.openedShots,
@@ -4075,9 +4198,25 @@ function formatReport(results) {
       problems.push(`KHỐI CÙNG COMPONENT BO GÓC KHÁC NHAU (${result.mismatchedRadii.length} khối, Lệch hệ: bị đè bo góc riêng):`);
       for (const item of result.mismatchedRadii) problems.push(`  ${item}`);
     }
+    if (result.stuckRows?.length > 0) {
+      problems.push(`DÒNG BO GÓC CÓ NỀN DÍNH NHAU (${result.stuckRows.length} chỗ, dòng đang chọn cách dòng kề dưới 4px: rê dòng kề là hai nền liền một khối; \`components/list-row.md\`, luật khoá 19):`);
+      for (const item of result.stuckRows) problems.push(`  ${item}`);
+    }
+    if (result.faintSelectedTabs?.length > 0) {
+      problems.push(`TAB ĐANG CHỌN GẦN TRÙNG NỀN (${result.faintSelectedTabs.length} chỗ; dùng \`bg-tab-selected\`, \`components/small-controls.md\`):`);
+      for (const item of result.faintSelectedTabs) problems.push(`  ${item}`);
+    }
+    if (result.faintLines?.length > 0) {
+      problems.push(`ĐƯỜNG KẺ CHÌM VÀO NỀN (${result.faintLines.length} chỗ; đường tóc cần từ 8 mức, trên nền trang xám dùng \`--border-strong\` (\`M14\`); đường kẻ hàng tab cần từ 16, dùng \`--tab-rail\`):`);
+      for (const item of result.faintLines) problems.push(`  ${item}`);
+    }
     if (result.invisibleFrames.length > 0) {
       problems.push(`KHUNG KHAI VIỀN MÀ VIỀN KHÔNG THẤY (${result.invisibleFrames.length} khung, nền trong, viền, nền ngoài gần như một màu):`);
       for (const item of result.invisibleFrames) problems.push(`  ${item}`);
+    }
+    if (result.crampedOptions?.length > 0) {
+      problems.push(`MỤC TRONG LỚP NỔI CHẬT (${result.crampedOptions.length} chỗ: chữ tràn khỏi mục cao cố định, hoặc mục kề nhau cách dưới 4px; mục \`min-h-10\` cách nhau \`gap-1\`, \`layouts/overlay.md\`):`);
+      for (const item of result.crampedOptions) problems.push(`  ${item}`);
     }
     if (result.hollowLayers.length > 0) {
       problems.push(`LỚP NỔI CÓ DẢI TRỐNG (${result.hollowLayers.length} chỗ, khung rộng hơn nội dung bên trong, thường do \`max-w\` chặn nội dung):`);
@@ -4432,7 +4571,7 @@ function listWireframeMustReportItems(comparisons) {
 }
 
 // Mục chỉ phép đo động (Tab, rê, bấm, lớp nổi) mới ra.
-const dynamicProblemKeys = ["unmarkedFocusStops", "drawnFocusRings", "hollowLayers", "openerLayerProblems", "flatOpenedLayers", "layoutShifts", "vanishedChildren", "weakHovers", "blendedHovers", "borderHovers", "overflowingLayers", "shapeMismatches", "hoverLikeSelected", "checkedHoverChanges", "heavyLayerLines", "motionlessLayers", "scrollyLayers", "lostTriggerIcons", "stuckStates"];
+const dynamicProblemKeys = ["unmarkedFocusStops", "drawnFocusRings", "hollowLayers", "crampedOptions", "openerLayerProblems", "flatOpenedLayers", "layoutShifts", "vanishedChildren", "weakHovers", "blendedHovers", "borderHovers", "overflowingLayers", "shapeMismatches", "hoverLikeSelected", "checkedHoverChanges", "heavyLayerLines", "motionlessLayers", "scrollyLayers", "lostTriggerIcons", "stuckStates"];
 
 function formatDynamicCoverage(results, options) {
   if (options.isQuick) return "Đo nhanh (--quick): chưa đo Tab, rê chuột, bấm, lớp nổi.\n";

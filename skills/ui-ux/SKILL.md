@@ -255,7 +255,7 @@ probe, bấm mở được; mỗi file layout vẫn chỉ nuôi một bố cục
 | --- | --- |
 | Dashboard, các bước bắt đầu (onboarding checklist), danh sách, bảng, danh sách rỗng, cài đặt, hồ sơ cá nhân, bảo mật (xác thực hai lớp, phiên đăng nhập), khoá API, thành viên và phân quyền, trang lịch (lịch tháng), trang lỗi (404, 403, 500, bảo trì), trang báo cáo (doanh thu, phân tích theo khoảng ngày), đầu trang (đường dẫn + tên + nút), trang chi tiết bản ghi | `references/layouts/app.md` |
 | Đăng nhập, đăng ký, quên mật khẩu, form nhiều trường, form nhiều bước (thanh các bước), trạng thái lỗi | `references/layouts/form.md` |
-| Modal, panel trượt, dropdown, command palette, panel thông báo, toast, **chuyển động mở đóng của mọi khối nổi** (cả select, date picker) | `references/layouts/overlay.md` |
+| Modal, panel trượt, dropdown, command palette, panel thông báo, toast, **chuyển động mở đóng của mọi khối nổi** (cả select, date picker), **đề yêu cầu animation mà không nói thư viện** (mục "Đề yêu cầu animation mà không nói thư viện") | `references/layouts/overlay.md` |
 | Bảng giá, trang chọn gói | `references/layouts/pricing.md` |
 | **Nhiều hơn một màn trong cùng một đề** | Vào nhánh `U` như mọi đề dựng; `references/system.md` — hợp đồng nguyên tố chốt ở `U4`, trước màn đầu tiên. Bố cục mặc định chỉ dùng thẳng ở lối dựng luôn hoặc việc nhỏ |
 

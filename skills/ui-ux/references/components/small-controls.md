@@ -178,12 +178,12 @@ Icon trước chữ **không bắt buộc**, xem mặc định ở trên. Có th
 ```ts
 // Khung cuộn py-0.5, khối bọc lề ít hơn 4px (R6, không -mx-1): nền hover tab đầu/cuối không bị cắt. Hàng: gap-1 px-1.
 "h-9 rounded-lg border px-3"
-isSelected && "border-transparent bg-secondary text-foreground"
+isSelected && "border-transparent bg-tab-selected text-foreground"
 !isSelected && "border-transparent text-foreground/70 hover:bg-foreground/5 hover:text-foreground"
 ```
 
 - **Mọi tab luôn có `border`**, tab chưa chọn là `border-transparent`. Không thì lúc bấm chuyển, tab đang chọn dày thêm 2px và cả hàng xô sang phải.
-- **Tab đang chọn: nền `--secondary`, chữ `--foreground`, viền trong suốt.** Đây là bậc xám duy nhất chìm đủ rõ trên **cả** card trắng lẫn nền trang `#f4f4f6`. Nền tối thì `--secondary` là trắng phủ 8%, sáng lên thay vì chìm, cùng độ chênh (`M21`).
+- **Tab đang chọn: nền `bg-tab-selected`, chữ `--foreground`, viền trong suốt.** Token là chữ phủ 8% (`tokens.css`), nên tự đúng trên nền của dự án: nền trang xám chênh 18 mức, card trắng chênh 19, dark mode tự đảo. Đừng dùng `bg-secondary` đặc: thẳng trên nền trang nó chỉ chênh 13, tab đang chọn "trùng màu nền" (dính 05/10/2026, trang duyệt bình luận: bản chênh 10 bị chê, bản chênh 16 được duyệt). Dự án có token riêng thì giữ đúng ý: ô đang chọn đậm hơn **nền ngay sau nó** từ 16 mức, đo pixel cả trên card lẫn nền trang (probe báo "Tab đang chọn gần trùng nền").
 - **Không dùng `bg-surface` (trắng) và cũng không dùng `bg-surface-hover`.** Hai bậc đó chỉ chênh nền trắng 1-3% thì liếc vào không thấy tab nào đang chọn.
 - **Ô đang chọn phải chênh với nền NẰM DƯỚI nó**, không phải chênh với mấy tab anh em. Cùng một class mà đổi chỗ đặt (card trắng ↔ nền trang xám) là đổi luôn độ rõ, nên chọn bậc xám nào cũng phải thử ở cả hai nền (`N2`).
 - **Không đặt hàng `boxed` vào một khối xám riêng.** Nó nằm thẳng trên nền trang hoặc trên card. Bọc thêm khối xám là thành `segmented` hỏng: rãnh to, đậm, và ô trắng lọt thỏm.
@@ -194,7 +194,7 @@ isSelected && "border-transparent bg-secondary text-foreground"
 
 ```ts
 // Hàng: đường kẻ chạy hết bề ngang, vẽ bên trong hàng (bóng inset 1px ở đáy), vạch của tab đang chọn đè lên nó.
-"flex min-w-full gap-2 px-2 shadow-[inset_0_-1px_0_var(--border-strong)]"
+"flex min-w-full gap-2 px-2 shadow-[inset_0_-1px_0_var(--tab-rail)]"
 // Tab: vạch là ::after nên không đẩy chiều cao. box-content h-10 pb-px: tab cao 41px phủ cả dòng kẻ, vạch bottom-0 đè đúng lên nó.
 "relative box-content h-10 rounded-xl px-2 pb-px after:absolute after:inset-x-2 after:bottom-0 after:h-0.5 after:rounded-full"
 isSelected && "text-foreground after:bg-foreground"
@@ -207,7 +207,7 @@ isSelected && "text-foreground after:bg-foreground"
 - Khối bọc hàng tab lùi lề ít hơn 8px (`R6`), khung cuộn không `-mx-2` (`N11`): chữ tab đầu thẳng cột với nội dung bên dưới.
 - Tab đang chọn không tô nền, không đổi nền lúc hover. Vạch là tín hiệu duy nhất.
 - **Không tab nào có nền, kể cả lúc focus.** Tab bàn phím tới thì không đổi gì (`I13`). Tab là `Button variant="ghost"` mà `Button` dự án còn kiểu cũ "focus trông như hover" (nền xám) thì hàng tab dính theo: tab đang focus có nền xám, tab đang rê chuột đậm chữ, **hai tab cùng sáng** và không đọc ra tab nào đang chọn. Sửa ở `Button` dùng chung, không vá riêng từng tab.
-- Hàng tab nằm được cả trên card trắng lẫn trên dải header xám: đường kẻ `--border-strong` đủ nhìn ở cả hai.
+- **Đường kẻ hết hàng là `--tab-rail`** (chữ phủ 10%), không `--border-strong`: hàng tab hay đứng thẳng trên nền trang xám, ở đó `--border-strong` chỉ đậm hơn nền 10 mức, liếc không thấy (dính 05/10/2026, hàng tab trang quản trị: `#efefef` trên `#f3f4f6`). Phủ mờ nên trên card trắng hay nền xám đều chênh ~22 mức. Đo pixel đường kẻ so với nền ngay sau nó: dưới 16 mức là chìm (probe báo "Đường kẻ chìm vào nền").
 
 ### `solid`: pill tô đặc (chỉ khi người dùng chọn)
 

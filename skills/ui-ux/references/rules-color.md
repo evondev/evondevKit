@@ -248,7 +248,7 @@ Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu
 | Danh sách nhiều mục | MỘT khung, các dòng chia bằng `divide-y`. Dòng tiêu đề và dòng hành động cuối nằm TRONG khung |
 | Khối tóm tắt phụ | nền xám nhạt + viền, bo như thẻ |
 | Mục sidebar, cây thư mục đang chọn | nền `--secondary` + `font-medium`, **không viền**, không màu nhấn; rê vào `--background`, mục chưa chọn không nền. Đang chọn đậm hơn nền rê một bậc (`I10`, `I15`) |
-| Tab ngang trên bảng / danh sách | tab đang chọn **nền `--secondary`, viền trong suốt** (không nền trắng, không `--surface-hover`: trên card trắng liếc không thấy), mọi tab có `border`, mục chưa chọn `border-transparent`. Xem "Thanh tab" trong `components/small-controls.md` |
+| Tab ngang trên bảng / danh sách | tab đang chọn **nền `bg-tab-selected` (chữ phủ 8%, đúng trên cả card lẫn nền trang), viền trong suốt** (không nền trắng, không `--surface-hover`: trên card trắng liếc không thấy), mọi tab có `border`, mục chưa chọn `border-transparent`. Xem "Thanh tab" trong `components/small-controls.md` |
 | Ô nhập | viền — đây là chỗ viền đúng vai nhất, người ta phải nhìn ra ranh giới vùng gõ được |
 
 **M14. Hai token viền, chia theo vai trò. Không có cái thứ ba.**
@@ -256,7 +256,7 @@ Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu
 | Token | Cho | Vì sao |
 | --- | --- | --- |
 | `--border` | Viền card, khung dropdown, đường chia trong danh sách và menu, **đường kẻ dưới đầu sidebar và dưới header** (cùng màu vạch trong menu, chủ dự án chốt, `layouts/app.md`) | **Trang trí**: chỉ vạch ranh giới, nhạt được bao nhiêu thì nhạt |
-| `--border-strong` | **Viền ô nhập**, **viền nút outline**, select, viền card khi hover, **mọi đường kẻ nằm thẳng trên nền trang xám** (footer trang, dưới hàng tab khu cài đặt; xem dưới bảng), kẻ dọc sidebar **chỉ khi vùng nội dung cũng trắng** (`layouts/app.md`) | **Chức năng**: ô nhập và nút outline cùng nền trắng với card, viền là thứ duy nhất báo "đây là chỗ gõ", "đây là chỗ bấm" (`I8`) |
+| `--border-strong` | **Viền ô nhập**, **viền nút outline**, select, viền card khi hover, **mọi đường kẻ nằm thẳng trên nền trang xám** (footer trang; xem dưới bảng; riêng đường kẻ hàng tab `underline` là `--tab-rail`, `components/small-controls.md`), kẻ dọc sidebar **chỉ khi vùng nội dung cũng trắng** (`layouts/app.md`) | **Chức năng**: ô nhập và nút outline cùng nền trắng với card, viền là thứ duy nhất báo "đây là chỗ gõ", "đây là chỗ bấm" (`I8`) |
 
 Trong mỗi nhóm thì mọi chỗ dùng chung đúng một token, để đường tóc không chỗ
 đậm chỗ nhạt. Muốn viền card nhạt đi thì hạ `--border`, ô nhập không nhạt theo.
