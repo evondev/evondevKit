@@ -23,14 +23,14 @@ và **ràng buộc bằng con số** để phần còn lại tự sạch.
 Phạm vi: **màn hình trong app**. Dashboard, danh sách, bảng, form, cài đặt,
 modal. Không lo trang bán hàng, trừ bảng giá (`references/layouts/pricing.md`).
 
-**Landing page, trang giới thiệu sản phẩm, trang danh sách chờ thì mở skill `landing`**
-(`../landing/SKILL.md`, gọi bằng `/evon:landing`) và đi theo nó từ mục 0 của nó, không theo
-file này. Không thấy thư mục đó thì xếp vào nhóm chưa được dạy dưới đây. ⚑
+**Landing page, trang giới thiệu doanh nghiệp hay cửa hàng (spa, quán, showroom, công ty sản
+xuất) thì mở skill `landing`** (`../landing/SKILL.md`, gọi bằng `/evon:landing`) và đi theo nó
+từ mục 0 của nó, không theo file này. Landing cho phần mềm cũng sang đó (nó tự báo chưa dạy).
+Không thấy thư mục đó thì xếp vào nhóm chưa được dạy dưới đây. ⚑
 
-**Đề là loại UI skill chưa được dạy thì báo trước một dòng, rồi vẫn làm.** Gồm: trang chủ
-website không phải của một sản phẩm phần mềm; cửa hàng online phía người mua (trang chủ shop,
-trang sản phẩm, giỏ hàng, thanh toán); blog (trang chủ blog, trang đọc bài); và loại tương
-tự (portfolio, trang sự kiện). Phía quản trị của chúng (quản lý đơn, sản phẩm, bài viết) là
+**Đề là loại UI skill chưa được dạy thì báo trước một dòng, rồi vẫn làm.** Gồm: cửa hàng
+online phía người mua (trang chủ shop, trang sản phẩm, giỏ hàng, thanh toán); blog (trang chủ
+blog, trang đọc bài); và loại tương tự (portfolio, trang sự kiện). Phía quản trị của chúng (quản lý đơn, sản phẩm, bài viết) là
 màn trong app, không thuộc nhóm này. Câu báo nằm **đầu câu trả lời đầu tiên**, trước dòng
 audit, theo ngôn ngữ của đề:
 

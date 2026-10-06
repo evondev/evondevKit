@@ -315,7 +315,91 @@ sửa. Trang landing đã ghi rõ là chưa tự test.
 Làm ngay khi bước 5 xong. Làm thành **skill thứ hai** (`evon:landing`),
 không gộp vào `ui-ux` vì luật hai bên đá nhau. Cách thêm plugin thứ hai ở cuối `DEVELOP.md`.
 
-**Hướng chốt 01/10/2026:** không cố phủ mọi kiểu SaaS. Nội dung landing page muôn kiểu nhưng
+**Đổi hướng 06/10/2026 (chủ dự án chốt sau khi hỏi user):** user cần landing **thu lead giới
+thiệu doanh nghiệp, cửa hàng**: spa, store, doanh nghiệp bao bì… Làm một hướng này trước, không
+gộp SaaS hay trang quảng cáo chung.
+
+- **Một mục tiêu: khách để lại liên hệ.** Chỉ khác kiểu liên hệ: đặt lịch (spa), ghé tiệm hay
+  nhắn (store), nhận báo giá (B2B). Câu đầu của brief thành "khách để lại gì".
+- **Hai nhánh con:** tiệm cho khách lẻ (spa, store) và doanh nghiệp B2B (bao bì, sản xuất).
+  Section từng nhánh chốt theo kết quả tra, không đoán.
+- **Giữ:** luật chung `H` (`page-rules.md`), quy trình brief → wireframe → dựng, probe.
+  **Viết lại:** `goals.md` (`G`) và `sections.md` (`K`), vốn đếm từ 20 trang SaaS.
+- Phần SaaS dưới đây (tra 20 trang, 21 mẫu, ba đề test) gác lại, giữ để tham khảo. Lớp nhìn
+  (`H11`, `H12`, `K4`) xem lại sau khi tra.
+
+**Việc tiếp:**
+
+1. [x] Tra 15–20 landing thu lead **nước ngoài** (trang VN cùng loại nhìn xấu, chủ dự án bỏ
+   06/10/2026; lấy từ các gallery landing tuyển chọn, ưu tiên site doanh nghiệp thật), chia đều spa, store, B2B. Đếm như lần trước:
+   section, thứ tự, form (mấy ô, ở đâu), nút gọi / Zalo nổi, ảnh thật, bản đồ, chữ nút chính.
+   **Kết quả (06/10/2026):** 21 trang, 7 mỗi nhánh (spa 6 thật + 1 template, store 5 + 2,
+   B2B 5 + 2), chụp 1440 và 390. Gallery tuyển chọn gần như không có B2B, phần lớn tìm qua search.
+
+   | Thấy gì | Spa | Store | B2B |
+   | --- | --- | --- | --- |
+   | Ảnh thật ở hero (không minh hoạ, không 3D) | 7 | 6 | 7 (video nền 4) |
+   | H1 nói việc cụ thể (+ nơi) | 4 | 0 (tên / câu cảm xúc, câu "làm gì ở đâu" ngay dưới 7/7) | 4 |
+   | Nút ở hero | 5 | 2 (chỉ template) | 6 (hai nút đặc + viền) |
+   | Chữ nút chính | "Book…" 7/7 | đặt bàn / hẹn ghé showroom | "…Quote" 4, "Contact" 3 |
+   | CTA lặp | ~4 lần | ≥3 lần chỉ 3/7 | 3–4 lần |
+   | Form ngay trên trang | 0 (dẫn sang trang đặt lịch) | 2 (4–7 ô) | 1 + 1 modal (form ở trang riêng, 5–8 ô) |
+   | SĐT trên header | 2 | 0 | 1 |
+   | Nút gọi / Zalo nổi, thanh dính đáy mobile | 0 | 0 | 0 (chat nổi 2) |
+   | Bản đồ nhúng | 0 | 1 | 0 |
+   | Địa chỉ trên trang (đa số ở footer) | 5 | 6 | 4 |
+   | Giới thiệu / câu chuyện | 7 | 7 | 7 |
+   | Dịch vụ / sản phẩm | 6 (không bảng giá) | 7 | 6 |
+   | Đánh giá khách | 4 | 3 | 6 |
+   | Dải logo khách / đối tác | 2 | 1 | 5 |
+   | Quy trình | 1 | 3 | 5 |
+   | Con số | 2 | 1 | 4 |
+   | FAQ | 1 | 0 | 2 |
+   | CTA cuối trước footer | 3 | 3 | 5 |
+   | Ảnh không gian / đội ngũ / xưởng thật | 4–4 | 6 | 3 |
+   | Nền | kem ấm 6 | ngà / tint 5, trắng tinh 0 | sáng 4, tối 3 |
+   | Tiêu đề | serif mảnh 6 | serif mảnh–vừa 5 | sans 600–700, 5 |
+   | Một màu nhấn | 6 | 6 | 7 |
+   | Góc | chia đôi: bo 10px / vuông | vuông ≤4px 5 | nút 0–6px 5 |
+   | Footer tối | 5 | – | 5 |
+
+   Trang dài ~7–10k px ở 1440. Lệch lớn với trang VN: trang nước ngoài không đẩy liên hệ (không
+   Zalo nổi, không form ở hero, ít SĐT trên header), liên hệ là nút dẫn sang trang đặt lịch /
+   báo giá.
+
+2. [x] Viết lại skill theo kết quả tra (06/10/2026): `G` ba loại trang (dịch vụ đặt lịch, cửa
+   hàng và quán, B2B) × kiểu liên hệ, `K` mười ba section (thêm Liên hệ có form, nút Zalo / gọi
+   nổi), `H` sửa nền ngà, tiêu đề serif, ảnh thật, chữ trên ảnh ở hero; thêm `H12` chuyển động
+   (chốt 02/10 nhưng chưa ghi vào skill) và `H13` liên hệ kiểu VN. Bản SaaS cất ở
+   `archive/landing-saas/`.
+3. [ ] Test ba đề trên dự án trống. Cách chạy như "Test bản đầu" dưới: mỗi đề một dự án Next
+   trống trong `~/dev/audit-skills/`, đáp án viết trước ở `~/dev/phase2-dapan/landing/<ten>.md`
+   (loại trang, section phải có / không có theo `G2`, chữ nút chính, ô form, hero kiểu gì), phiên
+   Claude Code mới. Đề **không** nói loại trang hay chữ nút, để xem câu 3 đoán đúng không:
+
+   ```
+   Đọc ~/dev/evondevKit/skills/landing/SKILL.md rồi dựng landing page cho Mộc Spa, spa chăm sóc da nhỏ ở Quận 3, TP.HCM: năm phòng riêng, chuyên da mụn, da nhạy cảm và massage mặt. Khách đa số là dân văn phòng quanh đó.
+   ```
+
+   ```
+   Đọc ~/dev/evondevKit/skills/landing/SKILL.md rồi dựng landing page cho Gỗ Tâm An, showroom bàn ghế gỗ tự nhiên ở Thủ Đức, nhận đóng theo kích thước. Khách thường ghé xem tận nơi rồi mới đặt.
+   ```
+
+   ```
+   Đọc ~/dev/evondevKit/skills/landing/SKILL.md rồi dựng landing page cho Bao Bì Phú Thành, xưởng in thùng carton và hộp giấy ở Long An, nhận đơn từ 500 cái cho shop online và nhà máy thực phẩm.
+   ```
+
+   Đáp án loại trang: dịch vụ đặt lịch, cửa hàng, B2B. Soi:
+   - **Cổng 1:** đoán đúng loại, bảng section đúng cột `G2`, nút "Đặt lịch" / "Đặt lịch tư vấn" /
+     "Nhận báo giá" (`G3`), dòng 6 liệt kê thứ giả (địa chỉ, số, ảnh, đánh giá), dòng 7 cảm giác.
+   - **Cổng 2:** A, B, C khác nhau ở kiểu hero (`K2`) và thứ tự; ảnh thật, không khối xám; có nhóm
+     Trạng thái của form; khung 375 đứng đầu.
+   - **Bản dựng:** một nút chính cùng chữ cùng đích ở header, hero, Liên hệ (`H1`); H1 nói làm gì
+     ở đâu (`H4`); spa và showroom tiêu đề serif có dấu đúng (`H3`); form đúng ô `G3`; nút Zalo /
+     gọi nổi gọn, không nhấp nháy (`H13`); `GIẢ:` trên mọi chỗ giả, số `0900 000 000` (`H9`); probe
+     sạch ở 375; tin giao có ba dòng của mục 4 `SKILL.md`.
+
+**Hướng SaaS (gác 06/10/2026)** — hướng chốt 01/10/2026: không cố phủ mọi kiểu SaaS. Nội dung landing page muôn kiểu nhưng
 khung gần như giống nhau, nên skill chốt một bộ section cố định và chọn section theo mục tiêu
 của trang.
 

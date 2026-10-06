@@ -1,221 +1,217 @@
 # Luật chung toàn trang — luật H
 
-Áp cho mọi section. Luật của từng section nằm ở `sections.md`, mục tiêu ở `goals.md`.
+Áp cho mọi section. Luật của từng section nằm ở `sections.md`, loại trang ở `goals.md`.
 
-⚑ Chưa qua vòng test nào. Số đo rút từ 20 trang đang chạy (01/10/2026): trang dài 8–12k px
-(danh sách chờ 2–6k), khoảng trống giữa hai section 100–160px, nội dung rộng 1200–1300px, H1
-thường 60–64px, 0–1 màu nhấn.
-
-Bố cục, section, CTA theo trang đang chạy (số đông). **Lớp nhìn** (`H3` độ đậm, `H6`, `H11`)
-theo 21 mẫu thiết kế landing được đánh giá cao, tra 02/10/2026 (13 màn đầu, 8 trang trọn): trang
-đang chạy phần lớn trơn, mẫu được khen thì có nền ở hero, ảnh sản phẩm đặt trên nền đó, tính năng
-là card có mảnh giao diện.
+⚑ Chưa qua vòng test nào. Rút từ 21 trang thu lead nước ngoài (7 dịch vụ đặt lịch, 7 cửa hàng
+và quán, 7 B2B), tra 06/10/2026, chụp 1440 và 390. Số đo chung: trang dài 7–10k px ở 1440, ảnh
+thật ở hero 20/21, một màu nhấn 19/21, không trang nào có nút gọi nổi hay thanh dính đáy.
+`H13` theo thói quen khách VN, không đếm từ trang nào.
 
 ---
 
 **H1. Một CTA chính, cùng chữ, cùng đích ở mọi chỗ nó xuất hiện.** ⚑
 
-- Chỗ xuất hiện mặc định: **header, hero, CTA cuối trang** (số đông). Không lặp thêm giữa trang
-  trừ khi trang dài hơn 10 màn; lặp giữa trang chỉ 2/5 trang dùng thử làm.
-- Cùng một đích ở mọi chỗ (20/20 trang). Cùng một chữ (khoảng 3/5): skill chọn cùng chữ, vì hai
-  chữ cho một đích làm khách tưởng hai việc khác nhau.
-- **Header có đúng một nút đặc**, là nút chính (5/5 trang demo). Đăng nhập là link chữ.
-- Mục tiêu thứ hai (`G5`) là nút viền, không bao giờ là nút đặc thứ hai.
+- Chỗ xuất hiện mặc định: **header, hero, khối Liên hệ** (nút gửi form cùng chữ). Dịch vụ đặt
+  lịch và B2B thêm một chỗ giữa trang, cuối khối dịch vụ / năng lực (cả hai loại lặp 3–4 lần).
+- Chữ theo `G3`, đích là `#lien-he` hay trang đặt lịch của người dùng (`G3`).
+- **Header có đúng một nút đặc**, là nút chính. Nút phụ của hero là nút viền, không lên header.
 - Nút chính dùng biến thể `primary` của `../ui-ux/references/components/button.md`. Ở hero và
-  CTA cuối trang thì to hơn một nấc: `min-h-11 px-5 text-base` (đè `min-h-10 px-4 text-sm` của
-  mẫu); ở header giữ mẫu.
-- Link `href` giữ chỗ (`/signup`, `#pricing`, `/demo`) khai **một lần** thành hằng số và dùng
-  lại, để người dùng đổi một chỗ là đủ.
+  khối Liên hệ thì to hơn: `min-h-12 px-6 text-base` (nút ở các trang đã tra cao 48–58px); ở
+  header giữ mẫu.
+- Link `href` giữ chỗ (`#lien-he`, link đặt lịch, `tel:`, `https://zalo.me/…`) khai **một lần**
+  thành hằng số và dùng lại.
 
 **H2. Khung và nhịp: một bề rộng, một padding dọc cho mọi section.** ⚑
 
 ```html
-<section class="py-14 sm:py-20 lg:py-24">           <!-- mọi section, trừ hero (H11) -->
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"> <!-- khung chung, nội dung 1216px ở ≥1280 -->
-    <header class="max-w-2xl">…H2, câu dẫn…</header>
-    <div class="mt-10 sm:mt-14">…nội dung…</div>
-  </div>
-</section>
-```
-
-- **Nền trang là `bg-surface` (trắng)**, không phải `bg-background` xám của app: landing là
-  một mặt giấy, khối tách bằng khoảng trống chứ không bằng card trên nền xám.
-- **Dải nền** `bg-background` (xám nhạt) phủ hết bề ngang, tối đa **một** dải mỗi trang, cho
-  testimonial. CTA cuối trang không còn là dải mà là panel bo góc (`H11`). Dải nền dùng cùng
-  padding dọc.
-- **Đầu section canh trái** mặc định, trừ: hero biến thể C, testimonial một câu lớn, CTA cuối
-  trang. Đầu canh trái mà lưới bên dưới canh giữa thì trang lệch một bên.
-- Khoảng giữa hai section là **hai lần padding**, không thêm `mt-*` lên section: thêm một chỗ
-  là nhịp lệch cả trang.
-- Không đổi padding theo section "cho thoáng hơn". Muốn thoáng thì đổi cả thang ở đây.
-
-**H3. Thang chữ landing.** ⚑ Đè thang của `../ui-ux/references/budgets.md` (trần `3xl`) chỉ
-trong landing.
-
-| Vai | Class |
-| --- | --- |
-| H1 hero | `text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight text-balance` |
-| Câu dẫn hero | `text-lg sm:text-xl text-muted text-pretty` |
-| H2 đầu section | `text-3xl sm:text-4xl font-medium tracking-tight text-balance` |
-| Câu dẫn section | `text-base sm:text-lg text-muted text-pretty` |
-| Tên card, tên bước | `text-base font-semibold` |
-| Chữ trong card | `text-base/7 text-muted` |
-| Câu nhỏ dưới nút, chú thích | `text-sm text-muted` |
-
-- **H1, H2 đậm vừa (`font-medium`), không `font-semibold`**: chữ to mà đậm nhìn nặng như
-  banner (16/21 mẫu dùng đậm thường hoặc vừa). Tên card, tên bước vẫn `font-semibold` vì chữ nhỏ.
-- **Tiêu đề hai tông** được dùng: vế sau của câu màu `text-muted`
-  (`Lịch tự nhắc khách. <span class="text-muted">Bạn khỏi gọi từng người.</span>`). Dùng thì
-  áp cho H1 và mọi H2, không chỗ có chỗ không. Không đổi vế sau sang màu nhấn hay gradient.
-- Một font, theo token (`--app-font`). Không thêm font serif cho tiêu đề trừ khi người dùng
-  xin (2/20 trang làm).
-- **Mỗi section đúng một H2.** Không nhãn nhỏ ("TÍNH NĂNG", "FEATURES") trên mọi H2: nhãn nhỏ chỉ
-  có ở hero (`K2`). Một chữ in hoa nhỏ trên mỗi section là dấu hiệu trang AI.
-- H1 tối đa ba dòng ở 1280, H2 tối đa hai dòng. Dài hơn thì cắt chữ, không hạ cỡ.
-
-**H4. H1 nói sản phẩm làm được gì cho ai, bằng chữ của chính sản phẩm.** ⚑
-
-- Lấy từ dòng 3 của brief (`E1`). Thử: che logo đi, đọc H1, có đoán được sản phẩm làm gì không.
-  Không đoán được là H1 chung chung.
-- **Cấm** các câu đặt được lên bất kỳ sản phẩm nào: "Build faster with AI", "Nâng tầm doanh
-  nghiệp", "Giải pháp toàn diện", "Unlock your potential", "The future of X", "Supercharge",
-  "Seamless", "All-in-one platform" (đứng một mình).
-- Câu dẫn nói **cách** (một câu, tối đa hai dòng): làm gì, bằng gì. Không nhắc lại H1.
-- H2 của từng section cũng nói lợi ích cụ thể ("Lịch hẹn tự nhắc khách trước 2 giờ"), không
-  nói tên section ("Tính năng", "Vì sao chọn chúng tôi").
-
-**H5. Một màu nhấn, không trang trí bằng màu.** ⚑
-
-- Màu nhấn theo token `--primary` (`../ui-ux/references/brand-tokens.md`). Dự án chưa có brand
-  thì gần đen như mặc định của `ui-ux` (3/5 trang dùng thử đen trắng), wireframe có nhóm Nhấn để
-  chọn.
-- Màu nhấn chỉ ở: nút chính, link, icon tính năng, số bước, dấu ✓ trong card giá.
-- **Trang trí nền chỉ ở hero và panel CTA cuối** (`H11`). Các section giữa nền trơn. Không chữ
-  gradient ở H1, không đốm màu rải khắp trang. Người dùng xin phong cách gradient hay glass cho
-  cả trang thì theo `../ui-ux/references/styles.md`.
-- **Dải nền tối** chỉ cho footer của mục tiêu đặt demo (5/5) và CTA cuối trang khi người dùng
-  muốn. Nền tối dùng token chế độ tối của `tokens.css` qua class `.force-dark` (`M33`), không tự
-  đặt mã màu.
-- Không làm dark mode cho cả trang trừ khi đề xin (`M20`).
-
-**H6. Ảnh sản phẩm là màn app dựng giống thật, đặt trên nền của hero.** ⚑
-
-16/20 trang có màn app thật trong màn đầu. Dự án chưa có ảnh chụp thì **dựng màn app giả bằng
-HTML** từ component của `ui-ux` (sidebar, bảng, card số liệu, lịch… theo
-`../ui-ux/references/layouts/app.md`), với dữ liệu nói đúng sản phẩm. Không khối xám, không
-minh hoạ trừu tượng, không ảnh 3D, không icon to thay ảnh.
-
-```html
-<!-- Đặt thẳng trên lớp nền của hero (H11), không thêm khay xám bọc ngoài. -->
-<div class="relative" aria-hidden="true" inert>
-  <div class="overflow-hidden rounded-2xl border border-border-strong bg-surface shadow-[var(--elevation-modal)]">
-    <div class="w-[1040px] origin-top-left">…màn app giả, chữ theo T24…</div>
-  </div>
-  <!-- 0–2 mảnh nổi, từ sm trở lên -->
-  <div class="absolute -bottom-6 -left-6 hidden w-64 rounded-xl border border-border bg-surface p-4 shadow-[var(--elevation-popover)] sm:block">…</div>
+<div class="landing bg-background text-foreground">      <!-- bọc cả trang, đặt token trang (H5) -->
+  <section class="py-16 sm:py-24 lg:py-28">              <!-- mọi section, trừ hero (K2) -->
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"> <!-- khung chung -->
+      <header class="max-w-2xl">…nhãn nhỏ (H3), H2, câu dẫn…</header>
+      <div class="mt-10 sm:mt-14">…nội dung…</div>
+    </div>
+  </section>
 </div>
 ```
 
-- **Bóng có lý do ở đây**: màn app và mảnh nổi là lớp đứng trên nền trang trí (`M15` của `ui-ux`
-  cho bóng ở lớp nổi). Không có nền `H11` phía sau thì bỏ bóng, quay về viền.
-- **Mảnh nổi** (7/21 mẫu): 1–2 card nhỏ trích **đúng dữ liệu của màn app** (thông báo "Đã nhắc
-  chị Lan lịch 15:00", một con số, một avatar đang làm gì), chồng lên mép màn app.
-  `-bottom-6 -left-6` là số âm có lý do (chồng lên mép là chính hình dạng của khối, `N11`). Ẩn
-  dưới `sm`: màn hẹp không còn chỗ chồng. Không rải 6 icon app bay quanh H1.
-- **Bề rộng cố định bên trong, khung cắt ở màn hẹp**: màn app không co theo khung (co lại là
-  bảng vỡ, chữ xuống dòng). Ở 375 khung chỉ cho thấy góc trái trên, như ảnh chụp bị cắt.
-- Hero canh giữa (`K2` B, C): màn app có thể **chìm dưới mép panel** (panel cắt đáy màn app,
-  `pb-0`), mắt đọc là còn nữa ở dưới.
-- `aria-hidden` và `inert`: màn giả không bấm được, trình đọc màn hình bỏ qua. Có ảnh chụp thật
-  thì thay bằng `<img>` (hay `next/image`) có `alt` nói ảnh đó cho thấy gì.
-- **Một màn, đúng việc chính** của sản phẩm (app đặt lịch thì là lịch, công cụ email thì là hộp
-  thư). Không ghép năm màn chồng nhau.
-- Dữ liệu trong màn giả theo `S6`, `S8`, `S16` của `ui-ux`: số nghe được, tên thật, avatar ảnh thật.
+- **Nền trang là `bg-background` của trang**, không phải xám của app: `H5` đặt lại token này
+  thành trắng ngà ấm hay trắng theo loại trang. Card, form đứng trên nền đó là `bg-surface`.
+- **Dải nền**: tối đa **hai** dải phủ hết bề ngang mỗi trang, màu `bg-primary-light` (tint nhạt
+  của màu nhấn) hay tối (`.force-dark`). Dải dùng cùng padding dọc. Dịch vụ đặt lịch hay đặt dải
+  tint cho đánh giá; B2B đặt dải tối cho quy trình hay con số.
+- **Thoáng hơn trang app**: padding dọc lớn hơn thang của `ui-ux` (các trang đã tra đều nhiều
+  khoảng trắng). Khoảng giữa hai section là hai lần padding, không thêm `mt-*` lên section.
+- Đầu section canh trái mặc định, trừ: hero canh giữa, câu đánh giá lớn, đầu khối Liên hệ khi
+  form canh giữa.
+
+**H3. Thang chữ và font tiêu đề.** ⚑ Đè thang của `../ui-ux/references/budgets.md` (trần `3xl`)
+chỉ trong landing.
+
+| Vai | Dịch vụ đặt lịch, cửa hàng (serif) | B2B (sans) |
+| --- | --- | --- |
+| H1 hero | `font-heading text-4xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-balance` | `text-4xl sm:text-5xl font-semibold tracking-tight text-balance` |
+| H2 đầu section | `font-heading text-3xl sm:text-4xl font-normal tracking-tight text-balance` | `text-3xl sm:text-4xl font-semibold tracking-tight text-balance` |
+| Nhãn nhỏ trên H2 | `text-xs font-medium uppercase tracking-[0.18em] text-muted` | như bên trái, hay bỏ |
+| Câu dẫn | `text-base sm:text-lg text-muted text-pretty` | như bên trái |
+| Tên card | `text-lg font-medium` (serif được) | `text-base font-semibold` |
+| Chữ trong card | `text-base/7 text-muted` | như bên trái |
+| Chú thích, câu nhỏ dưới nút | `text-sm text-muted` | như bên trái |
+
+- **Dịch vụ đặt lịch, cửa hàng: tiêu đề serif nét thường** (6/7 và 5/7), thân chữ sans theo token
+  (`--app-font`). B2B: một font sans, tiêu đề đậm 600 (5/7).
+- Font serif khai thành `--font-heading` trong `@theme` (Tailwind v4) để có class `font-heading`;
+  Next.js thì nạp qua `next/font/google` với `subsets: ["vietnamese"]`. Font **phải có subset
+  tiếng Việt** (`T5` của `ui-ux`): Lora, Playfair Display, Cormorant Garamond, Noto Serif đều có;
+  kiểm dấu "Ưu đãi tháng mười" trước khi chốt.
+- **Nhãn nhỏ trên H2** được dùng (dịch vụ đặt lịch 5/7). Dùng thì mọi H2 đều có, không chỗ có
+  chỗ không. Nhãn nói nơi chốn hay nhóm ("Spa da · Quận 3", "Dịch vụ"), không trang trí ("✦").
+- Mỗi section đúng một H2. H1 tối đa ba dòng ở 1280, H2 tối đa hai dòng. Dài hơn thì cắt chữ.
+
+**H4. H1 nói làm gì, ở đâu.** ⚑
+
+- Dịch vụ đặt lịch và B2B: H1 nói **dịch vụ hay sản phẩm cụ thể** (4/7 mỗi loại), có nơi chốn
+  thì càng tốt ("Chăm sóc da chuyên sâu ở Quận 3", "In hộp carton theo đơn từ 500 chiếc").
+- Cửa hàng, quán: H1 được là **tên tiệm hay một câu ngắn có cảm xúc** (7/7 làm vậy), nhưng câu
+  dẫn **ngay dưới** phải nói làm gì, ở đâu (7/7): *"Tiệm hoa nhỏ ở Đà Lạt, cắm hoa theo mùa và
+  giao trong ngày."*
+- Thử: che logo đi, đọc H1 và câu dẫn, có biết nơi này bán gì, ở đâu không.
+- **Cấm** câu đặt được lên bất kỳ doanh nghiệp nào: "Nâng tầm vẻ đẹp Việt", "Giải pháp toàn
+  diện", "Uy tín – Chất lượng – Giá tốt", "Đối tác tin cậy hàng đầu", "Đẳng cấp khác biệt".
+- H2 của từng section cũng nói điều cụ thể ("Ba phòng trị liệu riêng, mỗi phòng một khách"),
+  không gọi tên section ("Về chúng tôi", "Dịch vụ của chúng tôi").
+
+**H5. Nền, màu nhấn, cảm giác của trang.** ⚑
+
+Dòng 7 của brief (cảm giác) quyết ba thứ: nền trang, màu nhấn, font tiêu đề.
+
+| Cảm giác | Nền trang `--background` | Màu nhấn `--primary` gợi ý | Hợp với |
+| --- | --- | --- | --- |
+| Ấm, thanh lịch (mặc định dịch vụ đặt lịch, cửa hàng) | trắng ngà `#fbf8f3` | nâu `#6b4e3d`, xanh rừng `#2f4a3c` | spa, tiệm hoa, tiệm bánh, nội thất |
+| Sạch, tin cậy | trắng `#ffffff`, dải `#f5f7f7` | xanh navy `#1f3a5f`, xanh lá đậm `#24614a` | nha khoa, phòng khám, B2B |
+| Mạnh, kỹ thuật | trắng, hero và dải tối | một màu sáng trên tối (cam, xanh chanh) | cơ khí, gia công, thiết bị |
+| Tối, sang | tối cả trang (`.force-dark`) | vàng đồng `#b08d57` | nhà hàng, bar |
+
+- Đặt token trên `.landing` (bọc trang, `H2`), không sửa `:root` của app nếu dự án còn có app:
+
+  ```css
+  .landing { --background: #fbf8f3; --primary: #2f4a3c; --primary-hover: #263d31; --primary-light: #e9efe9; }
+  ```
+
+  Dự án đã có brand thì dùng brand (`../ui-ux/references/brand-tokens.md`), chỉ đổi nền.
+- **Một màu nhấn** (19/21). Màu nhấn ở: nút chính, link, số bước, icon. Không chữ gradient, không
+  đốm màu trang trí, không nền gradient (`M12` của `ui-ux` giữ nguyên).
+- **Không trắng tinh cho cửa hàng, dịch vụ đặt lịch** (0/7 cửa hàng dùng trắng tinh).
+- **Footer tối** cho dịch vụ đặt lịch và B2B (5/7 mỗi loại): `.force-dark` (`M33`), không tự đặt
+  mã màu.
+- Chữ `text-muted` đo tương phản trên nền ngà và dải tint, không chỉ trên trắng (`P3`).
+
+**H6. Ảnh thật làm phần bán hàng.** ⚑
+
+20/21 trang mở bằng ảnh thật lớn: không gian, sản phẩm, người làm việc, xưởng. Không minh hoạ
+(chỉ 1/21), không 3D, không icon to thay ảnh, không ảnh chụp màn hình app.
+
+- **Đúng loại ảnh theo loại trang:** dịch vụ đặt lịch: phòng trị liệu, cận cảnh làn da, người
+  thật đang làm; cửa hàng: sản phẩm, mặt tiền, không gian bên trong; B2B: máy móc đang chạy,
+  người đứng máy, thành phẩm xếp kho. Ảnh xưởng B2B hay tối và ngả xám; ảnh spa sáng, ấm.
+- Dự án chưa có ảnh thì lấy ảnh mẫu Unsplash theo `S16` của `ui-ux` (tìm thật, `curl -sI` từng
+  link), mỗi chỗ một ảnh khác nhau, **comment `GIẢ:` trên từng ảnh** (`H9`): ảnh mẫu không phải
+  nơi của khách.
+- `next/image` (hay `<img>` có `width`, `height`) với `alt` nói ảnh cho thấy gì ("Phòng trị liệu
+  có giường đôi và cửa sổ ra vườn"). Ảnh hero `priority`, còn lại lazy.
+- **Bo góc ảnh nhỏ** (`rounded-lg` trở xuống) mặc định: cửa hàng và B2B góc gần vuông (5/7 mỗi
+  loại). Dịch vụ đặt lịch được **cắt hình vòm** (`rounded-t-full`, 3/7) cho một hai ảnh dọc, không
+  cho mọi ảnh.
+- Tỉ lệ ảnh thống nhất trong một lưới (`aspect-4/5` cho ảnh dọc, `aspect-3/2` cho ảnh ngang),
+  `object-cover`.
 
 **H7. Header.** ⚑
 
-- Trái: logo (chữ tên sản phẩm `text-base font-semibold`, có icon logo thì kèm). Giữa hoặc ngay
-  sau logo: 3–5 link neo tới section (`#features`, `#pricing`, `#faq`) hoặc trang khác ("Bảng
-  giá", "Tài liệu"). Phải: link "Đăng nhập" (chỉ khi sản phẩm có tài khoản), rồi nút chính.
-- Danh sách chờ: 0–3 link, không đăng nhập (4/5).
-- `sticky top-0 z-40`, nền `bg-surface/90 backdrop-blur`, viền dưới `border-b border-border`.
-  Cao 64px (`h-16`).
-- Dưới `md`: link vào panel trượt mở bằng ☰ (`../ui-ux/references/layouts/overlay.md`, Panel
-  trượt). **Nút chính vẫn hiện trên thanh** cạnh ☰, không giấu vào panel.
-- Link neo cuộn có `scroll-mt-20` trên section đích, không thì header dính che mất H2.
+- Trái: logo (chữ tên `text-lg` theo font tiêu đề, có logo hình thì kèm). Giữa hay phải: 3–5 link
+  neo (`#dich-vu`, `#gioi-thieu`, `#danh-gia`, `#lien-he`). Phải cùng: nút chính.
+- **Không số điện thoại trên header** mặc định (2/7, 0/7, 1/7): số nằm ở khối Liên hệ, footer và
+  nút gọi nổi (`H13`). B2B được thêm **thanh mảnh trên header** (3/7) cho hotline, email hay một
+  tin thật, `h-9 text-sm`, nền tối hay `bg-primary-light`.
+- `sticky top-0 z-40`, nền `bg-background/90 backdrop-blur`, viền dưới `border-b border-border`
+  khi đã cuộn (hay luôn có). Cao 64–72px.
+- Hero ảnh tràn (`K2` A): header trong suốt chữ trắng nằm đè lên ảnh khi ở đỉnh trang, cuộn qua
+  hero thì về nền đặc. Không làm được trơn tru thì header nền đặc ngay từ đầu.
+- Dưới `md`: link vào panel trượt mở bằng ☰ (7/7, `../ui-ux/references/layouts/overlay.md`).
+  Nút chính vẫn hiện trên thanh cạnh ☰.
+- Section đích của link neo có `scroll-mt-20`.
 
-**H8. Icon tính năng.** ⚑
-
-- Icon `lucide`, 20px, trong ô 40px bo `rounded-lg`, nền `bg-primary-light` hoặc `bg-background`,
-  icon màu nhấn hoặc `text-foreground`. Mỗi tính năng một icon khác nhau, đúng nghĩa (`F17` của
-  `ui-ux`).
-- Không emoji làm icon. Không icon lấp lánh (`Sparkles`) cho mọi thứ dính tới AI.
+**H8. Icon.** ⚑ Icon `lucide`, 20px, ít thôi: trang loại này nói bằng ảnh. Icon chỉ ở dòng thông
+tin liên hệ (`MapPin`, `Clock`, `Phone`, `Mail`), bước quy trình B2B, điểm "vì sao chọn". Không
+emoji, không icon trong mọi card dịch vụ khi card đã có ảnh.
 
 **H9. Dữ liệu giả có hậu quả thì đánh dấu, không im lặng.** ⚑
 
-Logo khách hàng, số khách ("8.500+ đội"), testimonial, điểm đánh giá, giá, "không cần thẻ",
-"hoàn tiền" là **lời khẳng định với khách thật**. Trang lên mạng mà còn số giả là nói dối khách.
+Mọi thứ trong `G5` là lời khẳng định với khách thật. Trang lên mạng mà còn địa chỉ giả, số điện
+thoại giả, đánh giá giả là nói dối khách, và khách gọi nhầm số.
 
-- Người dùng đã đưa thì dùng đúng. Chưa đưa thì **dùng số và tên giả nghe được để thấy bố cục**,
-  nhưng:
-  - mỗi chỗ có comment `GIẢ:` ngay trên (`{/* GIẢ: thay bằng logo khách thật hoặc xoá dải này */}`);
-  - lúc giao liệt kê từng chỗ (`SKILL.md` mục 4);
-  - giá, cam kết hoàn tiền, cam kết bảo mật thì để `[cần điền]` khi trang đi thẳng ra khách
-    thật (`S7` của `ui-ux`).
-- **Logo giả là chữ, không hình:** tên công ty giả viết bằng chữ xám đậm `text-lg font-semibold
-  text-muted`, mỗi tên một kiểu chữ hoa thường khác nhau. Không lấy logo thương hiệu thật gắn cho
-  công ty giả, không vẽ hình logo bịa.
-- **Testimonial giả** dùng tên người Việt (hay tên theo ngôn ngữ copy), chức danh và công ty
-  nghe được, avatar ảnh thật theo `S16`. Câu nói nói **kết quả cụ thể** ("giảm một nửa số khách
-  quên lịch"), không khen chung chung ("Sản phẩm tuyệt vời!").
-- Không bịa huy hiệu giải thưởng, chứng nhận (SOC 2, ISO), điểm G2 / Capterra: những thứ đó
-  hoặc có thật hoặc không có.
+- Người dùng đã đưa thì dùng đúng. Chưa đưa thì dùng **dữ liệu giả nghe được** để thấy bố cục:
+  - mỗi chỗ có comment `GIẢ:` ngay trên (`{/* GIẢ: thay bằng ảnh phòng trị liệu thật */}`);
+  - số điện thoại giả là `0900 000 000`, Zalo giả trỏ `https://zalo.me/0900000000`: nhìn là biết
+    giả, lỡ quên thay cũng không ai gọi trúng người lạ;
+  - lúc giao liệt kê từng chỗ (`SKILL.md` mục 4).
+- **Đánh giá giả** dùng tên người Việt, avatar ảnh thật theo `S16`, câu nói một trải nghiệm cụ thể
+  ("Làm xong da đỡ khô hẳn, chị kỹ thuật viên dặn kỹ cách dưỡng ở nhà"), không khen chung chung.
+- **Logo khách giả** (B2B) là chữ tên công ty `text-lg font-semibold text-muted`, không lấy logo
+  thương hiệu thật, không vẽ logo bịa.
+- **Không bịa** chứng nhận, giấy phép, giải thưởng, điểm Google, mã số thuế: chưa có thì bỏ khối
+  đó, không dựng giả.
 
-**H10. Màn hẹp.** ⚑ Áp thêm `../ui-ux/references/responsive.md`.
+**H10. Màn hẹp.** ⚑ Áp thêm `../ui-ux/references/responsive.md`. Khách của loại trang này phần
+lớn vào từ điện thoại (link quảng cáo, Zalo, Facebook): soi 375 trước 1440.
 
-- Hero chia đôi xếp chồng dưới `lg`: chữ trên, ảnh dưới. Không giấu ảnh ở mobile.
-- Hàng nút hero dưới `sm`: xếp dọc, mỗi nút `w-full`. Từ `sm`: một hàng, nút rộng theo chữ.
-- Lưới card: một cột dưới `sm`, hai cột `sm`, ba cột `lg`. Ba card ở hai cột thì card cuối lẻ
-  một mình: được, nhưng không kéo nó rộng gấp đôi.
-- Dải logo: lưới 2 cột (hay 3) dưới `sm`, không cuộn ngang, không chạy vòng.
-- Form email một hàng (ô + nút) từ `sm`; dưới `sm` xếp dọc, nút `w-full`.
-- Không chạy chữ, không carousel tự trượt ở mọi khổ: testimonial và logo xếp lưới.
+- Hero ảnh tràn: ở 375 ảnh vẫn tràn, chữ đặt ở nửa dưới ảnh, lớp phủ tối đủ cho chữ trắng (`K2`).
+  Hero chia đôi xếp chồng: chữ trên, ảnh dưới. Không giấu ảnh ở mobile.
+- Hàng nút hero dưới `sm`: xếp dọc, mỗi nút `w-full`.
+- Lưới card dịch vụ: một cột dưới `sm`, hai cột `sm`, ba cột `lg`.
+- Form: một cột ở mọi khổ dưới `md`; ô `h-12`, chữ `text-base` (dưới 16px thì iOS phóng to trang
+  khi chạm ô).
+- **Không thanh nút dính đáy màn hình** (0/21): nút nổi `H13` đã làm việc đó.
+- Không carousel tự trượt, không chạy chữ. Nhiều ảnh thì lưới, hay cuộn ngang bằng tay có
+  `snap-x` và mép ảnh kế lộ ra.
 
-**H11. Hero và CTA cuối có nền; CTA cuối là panel bo góc.** ⚑ Đè `M12` (không gradient) của
-`ui-ux`, chỉ ở hai chỗ này.
+**H11. Hero là ảnh thật; khối Liên hệ là chỗ chốt.** ⚑
 
-13/21 mẫu có lớp nền ở hero; CTA cuối là panel bo góc nằm trong khung ở 6/8 trang trọn. Nền trơn
-trắng từ header tới footer là thứ làm landing trông như tài liệu.
+- Hero có **một ảnh thật lớn** (hay video ngắn, `H12`) theo một trong ba kiểu của `K2`: ảnh tràn
+  có lớp phủ (cửa hàng 6/7, dịch vụ 3/7, B2B video 4/7), chia đôi (dịch vụ 2/7, B2B 3/7), panel bo
+  góc cách mép màn (dịch vụ 2/7).
+- **Chữ trên ảnh** được, chỉ ở hero, với lớp phủ tối đo được: chữ trắng, lớp phủ
+  `bg-linear-to-t from-black/70 via-black/30 to-transparent` từ phía chữ, đo tương phản ở chỗ
+  ảnh sáng nhất sau chữ (`P3`). Không đặt chữ giữa vùng ảnh nhiều chi tiết.
+- Không nền trang trí (vầng màu, lưới mờ) như landing phần mềm: ảnh đã là lớp nền.
+- Trang **không có dải CTA cuối riêng**: khối Liên hệ (`K11`) đứng cuối, trước footer, làm việc
+  đó (dải CTA cuối chỉ 3/7, 3/7, 5/7; form và địa chỉ là thứ khách cần ở cuối trang).
 
-**Ba kiểu nền**, mỗi trang một kiểu, hero và CTA cuối dùng cùng kiểu. Mỗi phương án wireframe
-một kiểu (`E3`):
+**H12. Chuyển động: ba mức, mặc định Nhẹ.** ⚑ Đè `F22` của `ui-ux` chỉ trong landing.
 
-```html
-<!-- Lớp nền: con đầu của hero (hay panel CTA), section có `relative isolate overflow-hidden` -->
+| Mức | Gồm | Khi nào |
+| --- | --- | --- |
+| Tĩnh | hover nút, link | người dùng xin, hay cảm giác "sạch, tin cậy" cho phòng khám |
+| **Nhẹ** (mặc định) | section hiện dần khi cuộn tới (mờ → rõ, dịch 16px, 400–600ms, một lần); hover card ảnh phóng nhẹ `scale-[1.03]` trong khung `overflow-hidden` | mọi trang |
+| Nổi bật | video nền hero (B2B 4/7), ảnh trôi chậm khi cuộn, cuộn ghim cảnh (GSAP ScrollTrigger) | chỉ khi người dùng xin, hay có video thật |
 
-<!-- a. Hào quang: vầng màu nhấn mờ từ đỉnh. Màu nhấn gần đen thì vầng thành xám khói, vẫn được. -->
-<div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[560px] bg-[radial-gradient(55%_60%_at_50%_0%,color-mix(in_srgb,var(--primary)_16%,transparent),transparent)]"></div>
+- CSS trước; cần điều khiển theo cuộn thì gói `motion` hay GSAP, gọn nhẹ.
+- Mức nào cũng: tôn trọng `prefers-reduced-motion` (tắt hết, hiện ngay); **chữ hero không ẩn chờ
+  animation** (hero hiện ngay, chỉ section bên dưới mới hiện dần); không chiếm cuộn; video nền tắt
+  tiếng, `playsinline`, có ảnh `poster`, không tải trên kết nối tiết kiệm dữ liệu.
+- Không nút nhấp nháy, không rung, không vòng sóng quanh nút gọi (`H13`).
 
-<!-- b. Lưới mờ: kẻ ô màu viền, tan dần ra ngoài. -->
-<div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border-strong)_1px,transparent_1px),linear-gradient(to_bottom,var(--border-strong)_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,black,transparent)]"></div>
+**H13. Liên hệ theo thói quen khách VN: nút nổi và form trên trang.** ⚑ Không đếm từ trang nào:
+21/21 trang nước ngoài không có nút gọi / chat nổi kiểu này và 19/21 không đặt form trên trang.
+Chủ dự án chốt giữ vì khách VN quen nhắn Zalo, gọi điện, và landing một trang không có trang liên
+hệ riêng để dẫn sang.
 
-<!-- c. Ảnh: ảnh thật (S16 của ui-ux: phong cảnh, chất liệu, không người cầm điện thoại) CHỈ sau
-     màn app, không sau chữ. Khối chữ đứng trên nền trơn phía trên ảnh. -->
-<div class="relative isolate overflow-hidden rounded-3xl px-4 pt-10 sm:px-10 sm:pt-16">
-  <img src="…" alt="" class="absolute inset-0 -z-10 size-full object-cover" />
-  …màn app H6…
-</div>
-```
-
-- **Panel bo góc cho hero** (6/21, phương án được): hero nằm trong
-  `mx-2 sm:mx-3 rounded-3xl bg-background` cách header `mt-2`, lớp nền đặt trong panel. Không
-  panel thì lớp nền trải hết bề ngang và tan vào nền trắng của trang.
-- **Panel CTA cuối** thay dải nền của `H2`: trong khung `max-w-7xl`, `rounded-3xl
-  bg-background px-6 py-14 sm:px-12 sm:py-20`, chữ canh giữa, cùng kiểu nền với hero. Section
-  bọc ngoài vẫn padding dọc chung của `H2`.
-- **Chữ đo ở chỗ nền đậm nhất** (`P3` của `ui-ux`): vầng sáng và ảnh làm `text-muted` trượt
-  trước tiên. Ảnh không bao giờ nằm sau chữ; muốn chữ trên ảnh thì đó là phong cách người dùng
-  xin, theo `styles.md`.
-- Không thêm lớp nền thứ hai (vầng + lưới + ảnh cùng lúc), không động (`F22` của `ui-ux`), không
-  đốm màu thứ hai khác sắc màu nhấn.
-
+- **Nút nổi** góc phải dưới (`fixed bottom-4 right-4 z-30`, `sm:bottom-6 sm:right-6`), xếp dọc
+  `gap-3`, tối đa hai nút: **Zalo** (`https://zalo.me/<số>`) và **Gọi** (`tel:`, chỉ dưới `md`:
+  trên máy tính bấm gọi không ra gì). Người dùng không có Zalo thì chỉ nút Gọi.
+- Hình: tròn 48px (`size-12 rounded-full`), nền `bg-surface`, viền `border-border-strong`, bóng
+  `shadow-popover`; Gọi dùng icon `Phone` màu nhấn; Zalo là chữ "Zalo"
+  `text-xs font-semibold` màu nhấn (không chép logo thương hiệu vào code). `aria-label` đủ câu
+  ("Nhắn Zalo cho Tên tiệm", "Gọi 0900 000 000").
+- **Cùng tông với trang**, không màu xanh Zalo, đỏ, không nhấp nháy, không vòng sóng, không bong
+  bóng chữ bật ra tự động. Footer có `pb-24` dưới `md` để nút nổi không che dòng cuối.
+- **Form ở khối Liên hệ** (`K11`), ô theo `G3`. Không popup form khi vào trang hay khi định thoát
+  (0/21 popup đặt lịch; 1/7 popup giảm giá lấy email).

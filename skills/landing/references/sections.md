@@ -1,9 +1,9 @@
-# Chín loại section — luật K
+# Mười ba loại section — luật K
 
-Mỗi loại 1–3 biến thể. Biến thể đầu là mặc định; mục tiêu nào lấy biến thể nào ghi ở `goals.md`.
-Code viết bằng HTML + class Tailwind theo token của `ui-ux`; dự án React thì đổi `class` thành
-`className`, mỗi section một component. Khung `<section>` và khung bề rộng theo `H2`, thang chữ
-theo `H3`, không nhắc lại ở từng mục.
+Số `K` khớp cột `#` của bảng `G2`. Mỗi loại 1–3 biến thể, biến thể đầu là mặc định; loại trang
+nào lấy biến thể nào ghi ngay trong mục. Code viết bằng HTML + class Tailwind theo token của
+`ui-ux`; dự án React thì đổi `class` thành `className`, `<img>` thành `next/image`, mỗi section
+một component. Khung `<section>` theo `H2`, thang chữ và font theo `H3`, không nhắc lại ở từng mục.
 
 ⚑ Chưa qua vòng test nào.
 
@@ -13,142 +13,100 @@ theo `H3`, không nhắc lại ở từng mục.
 
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
-│ ◆ Tên    Tính năng  Bảng giá  FAQ               Đăng nhập  [ NÚT ]  │  h-16, dính đỉnh
+│ Tên tiệm        Dịch vụ  Giới thiệu  Đánh giá  Liên hệ    [ NÚT ]   │  sticky, h-16/h-18
 └──────────────────────────────────────────────────────────────────────┘
-mobile:  ◆ Tên                                       [ NÚT ]  ☰
+mobile:  Tên tiệm                                    [ NÚT ]  ☰
 ```
 
 ```html
-<header class="sticky top-0 z-40 border-b border-border bg-surface/90 backdrop-blur">
-  <div class="mx-auto flex h-16 max-w-7xl items-center gap-8 px-4 sm:px-6 lg:px-8">
-    <a href="/" class="flex items-center gap-2 text-base font-semibold text-foreground">…logo + tên</a>
-    <nav class="hidden items-center gap-6 text-sm text-muted md:flex">
-      <a href="#features" class="hover:text-foreground">…</a>
+<header class="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
+  <div class="mx-auto flex h-16 max-w-7xl items-center gap-8 px-4 sm:px-6 lg:h-18 lg:px-8">
+    <a href="#" class="font-heading text-lg text-foreground">…logo + tên</a>
+    <nav class="ml-auto hidden items-center gap-7 text-sm text-muted md:flex">
+      <a href="#dich-vu" class="hover:text-foreground">Dịch vụ</a>
     </nav>
-    <div class="ml-auto flex items-center gap-3">
-      <a href="/login" class="hidden text-sm font-medium text-muted hover:text-foreground sm:inline">Đăng nhập</a>
-      <a href="…CTA" class="…nút primary của button.md…">…chữ nút chính…</a>
-      <button type="button" class="…nút chỉ icon của button.md… md:hidden" aria-label="Mở menu">☰</button>
+    <div class="ml-auto flex items-center gap-3 md:ml-0">
+      <a href="…CTA" class="…nút primary của button.md…">…chữ nút chính G3…</a>
+      <button type="button" class="…nút chỉ icon của button.md… md:hidden" aria-label="Mở menu">…Menu 20px…</button>
     </div>
   </div>
 </header>
 ```
 
-- Luật đầy đủ ở `H7`. Nút ☰ mở panel trượt từ phải theo `layouts/overlay.md` của `ui-ux`,
-  trong panel: các link neo, rồi "Đăng nhập". Nút chính không vào panel.
-- Danh sách chờ: không `nav`, không "Đăng nhập", chỉ logo và nút.
+- Luật đầy đủ ở `H7`. Link neo bên phải, sát nút (trang loại này ít link, gom một cụm).
+- B2B có thanh mảnh phía trên (`H7`): `h-9`, `text-sm`, trái một tin thật hay câu ngắn, phải
+  hotline và email có icon 16px.
 
 ## K2. Hero ⚑
 
-Thứ tự trong khối chữ, biến thể nào cũng vậy: **nhãn nhỏ → H1 → câu dẫn → hàng nút → câu nhỏ
-dưới nút** (`G3`).
+Thứ tự khối chữ: **nhãn nơi chốn → H1 → câu dẫn → (dòng ưu đãi) → hàng nút**. Nhãn nơi chốn
+`text-xs uppercase tracking-[0.18em]` nói loại và nơi ("Spa da · Quận 3, TP.HCM", "Xưởng in bao
+bì · KCN Tân Tạo"); dịch vụ đặt lịch 4/7 có. Dòng ưu đãi chỉ khi người dùng đưa (`G4`).
 
-**Nhãn nhỏ trên H1** (17/20 trang có): một pill, nói tin mới ("Mới: đồng bộ Google Calendar →")
-hay trạng thái ("Mở đợt đầu tháng 11/2026" cho danh sách chờ). Không có tin gì thật để nói thì
-bỏ, đừng bịa "✨ Powered by AI".
-
-```html
-<a href="…" class="inline-flex h-7 items-center gap-1.5 rounded-full border border-border-strong bg-surface px-3 text-sm text-muted hover:text-foreground">
-  <span class="font-medium text-foreground">Mới</span> Đồng bộ Google Calendar <!-- icon ChevronRight 14px -->
-</a>
-```
-
-**A. Chia đôi, chữ trái, ảnh phải** (mặc định: dùng thử, đặt demo, danh sách chờ)
+**A. Ảnh tràn, chữ trên ảnh** (mặc định cửa hàng; B2B khi có video hay ảnh xưởng đẹp)
 
 ```
-┌───────────────────────────┬────────────────────────────────┐
-│ (nhãn nhỏ)                │ ┌────────────────────────────┐ │
-│ H1 hai đến ba dòng        │ │  màn app giả (H6),         │ │
-│ câu dẫn hai dòng          │ │  tràn ra mép phải khung    │ │
-│ [ NÚT ]  [ nút viền ]     │ │                            │ │
-│ câu nhỏ dưới nút          │ └────────────────────────────┘ │
-└───────────────────────────┴────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│                                                              │  ảnh thật phủ hết,
+│                    ẢNH / VIDEO                               │  min-h-[88svh] desktop,
+│ (nhãn nơi chốn)                                              │  min-h-[80svh] mobile
+│ H1 hai dòng, chữ trắng                                       │
+│ câu dẫn                                                      │
+│ [ NÚT ]  [ nút viền trắng ]                                  │
+└──────────────────────────────────────────────────────────────┘
 ```
 
 ```html
-<section class="relative isolate overflow-hidden pt-12 pb-14 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24">
-  …lớp nền H11 (a, b), con đầu…
-  <div class="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16 lg:px-8">
-    <div class="max-w-xl">
-      …nhãn nhỏ…
-      <h1 class="mt-5 …H3…">…</h1>
-      <p class="mt-5 …câu dẫn H3…">…</p>
-      <div class="mt-8 flex flex-col gap-3 sm:flex-row">…nút chính `w-full sm:w-auto`, nút viền…</div>
-      <p class="mt-4 text-sm text-muted">…câu nhỏ dưới nút…</p>
+<section class="relative isolate flex min-h-[80svh] items-end overflow-hidden lg:min-h-[88svh]">
+  <!-- GIẢ: ảnh mẫu, thay bằng ảnh không gian thật của tiệm -->
+  <img src="…" alt="…" class="absolute inset-0 -z-20 size-full object-cover" fetchpriority="high" />
+  <div aria-hidden="true" class="absolute inset-0 -z-10 bg-linear-to-t from-black/75 via-black/35 to-black/10"></div>
+  <div class="mx-auto w-full max-w-7xl px-4 pt-32 pb-14 text-white sm:px-6 sm:pb-20 lg:px-8 lg:pb-24">
+    <div class="max-w-2xl">
+      <p class="text-xs font-medium uppercase tracking-[0.18em] text-white/80">…</p>
+      <h1 class="mt-4 …H1 của H3…">…</h1>
+      <p class="mt-5 text-lg text-white/85 text-pretty">…</p>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">…nút chính `w-full sm:w-auto`, nút viền trắng…</div>
     </div>
-    <div class="min-w-0">…khung ảnh sản phẩm H6…</div>
   </div>
 </section>
 ```
 
-- Cột chữ 5 phần, cột ảnh 7 phần: ảnh là thứ chứng minh, chữ chỉ cần đủ chỗ cho H1 ba dòng.
-- Mọi biến thể hero có lớp nền `H11`. Kiểu c (ảnh) chỉ đặt sau cột ảnh, không sau cột chữ.
-- Danh sách chờ: hàng nút thay bằng **form email** (dưới), câu nhỏ đứng ngay dưới form.
+- Lớp phủ đậm phía chữ (dưới), nhạt phía trên để ảnh còn thấy. Chữ đo trên chỗ ảnh sáng nhất
+  (`H11`). Nút viền trên ảnh: `border-white/60 text-white hover:bg-white/10`.
+- Header đè lên ảnh khi ở đỉnh (`H7`): `pt-32` chừa chỗ.
+- Video (`H12` mức Nổi bật): `<video autoplay muted loop playsinline poster="…">` thay `<img>`.
 
-**B. Chữ trái, ảnh rộng bên dưới** (hợp khi màn app rộng: bảng, lịch tuần, kanban)
-
-```
-(nhãn nhỏ)
-H1 hai dòng, rộng tối đa max-w-3xl
-câu dẫn                               [ NÚT ] [ nút viền ]
-┌──────────────────────────────────────────────────────────┐
-│                 màn app giả rộng hết khung               │
-└──────────────────────────────────────────────────────────┘
-```
-
-Khối chữ `max-w-3xl` canh trái; ảnh `mt-12 sm:mt-16`, rộng hết khung `max-w-7xl`. Màn app chìm
-dưới đáy hero (`pb-0`, `H6`) khi hero là panel.
-
-**C. Canh giữa, ảnh bên dưới** (mặc định: mua luôn)
-
-Như B nhưng khối chữ `mx-auto max-w-3xl text-center`, hàng nút `justify-center`. Mua luôn thì
-câu nhỏ dưới nút là hàng **avatar chồng + 5 sao + số người mua**:
+**B. Chia đôi, chữ trái, ảnh phải** (dịch vụ đặt lịch, B2B có ảnh sản phẩm)
 
 ```html
-<div class="mt-6 flex items-center justify-center gap-3">
-  <div class="flex -space-x-2">…4 avatar 32px theo components/avatar.md, ring-2 ring-surface…</div>
-  <div class="text-left text-sm">
-    <div class="text-amber-500" aria-label="5 trên 5 sao">★★★★★</div>
-    <p class="text-muted"><span class="font-medium text-foreground">2.400+</span> người đã mua</p> <!-- GIẢ: H9 -->
+<section class="pt-10 pb-16 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
+  <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
+    <div class="max-w-xl">…khối chữ, chữ màu thường…</div>
+    <!-- GIẢ: ảnh mẫu -->
+    <img src="…" alt="…" class="aspect-4/5 w-full rounded-lg object-cover lg:aspect-auto lg:h-[640px]" />
   </div>
-</div>
+</section>
 ```
 
-`-space-x-2` là số âm có lý do (avatar chồng nhau là chính hình dạng của khối, `N11` của `ui-ux`).
+- Dịch vụ đặt lịch được cắt ảnh hình vòm `rounded-t-full` thay `rounded-lg` (`H6`).
+- B2B: dưới hàng nút một hàng 3 con số nhỏ (năm, khách, công suất) chỉ khi có thật (`H9`).
 
-**Form email** (danh sách chờ ở hero, đặt demo và danh sách chờ ở CTA cuối)
+**C. Panel ảnh cách mép màn** (dịch vụ đặt lịch, cảm giác thanh lịch)
+
+Như A nhưng ảnh nằm trong panel `mx-2 mt-2 rounded-2xl overflow-hidden sm:mx-3` (2/7), chữ trắng
+trên ảnh hay khối chữ đặt trong ô `bg-background` ở góc trái dưới của panel
+(`max-w-lg rounded-xl p-6 sm:p-8`), chữ màu thường. Hero không có header đè (header nằm trên
+panel).
+
+## K3. Dải logo khách ⚑
+
+Chỉ B2B (5/7), ngay dưới hero.
 
 ```html
-<form class="mt-8 flex max-w-md flex-col gap-3 sm:flex-row" novalidate>
-  <label for="waitlist-email" class="sr-only">Email</label>
-  <input id="waitlist-email" type="email" autocomplete="email" placeholder="ban@congty.vn"
-         class="…input default của input.md… h-11 md:h-11 sm:flex-1" />
-  <button type="submit" class="…nút primary, min-h-11 px-5…">Đăng ký chờ</button>
-</form>
-```
-
-- Ô và nút cùng `h-11` ở mọi khổ (đè `md:h-10` của `input.md`): đứng cạnh nhau phải bằng vai.
-- Placeholder là ví dụ email, vì nhãn đã ẩn (`T25`). Câu lỗi `text-xs text-red-600` ngay dưới
-  hàng, dòng luôn có mặt `min-h-4` để form không nhảy.
-- **Đã gửi**: thay cả form bằng một dòng icon `CircleCheck` xanh + "Đã thêm bạn vào danh sách.
-  Kiểm tra email để xác nhận." Không toast, không modal. Ba trạng thái (mặc định, lỗi, đã gửi)
-  đều vẽ ở wireframe (`E3`). Gửi đi đâu là logic người dùng (`N10`).
-- Một ô email là đủ (3/5). Cần thêm tên công ty, quy mô (đặt demo) thì đó là trang đặt lịch
-  riêng, nút dẫn sang đó.
-
-## K3. Social proof ⚑
-
-### K3a. Dải logo ngay dưới hero
-
-```
-              Hơn 8.500 đội đang dùng [Tên]          ← GIẢ nếu người dùng chưa đưa
-   Acme Co    nova    BLUEPEAK    Lumen.    orbit    Harbor
-```
-
-```html
-<section class="pb-14 sm:pb-20 lg:pb-24"> <!-- nối liền hero: không py, chỉ pb -->
+<section class="py-10 sm:py-12 border-b border-border">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <p class="text-center text-sm text-muted">…</p>
+    <p class="text-center text-sm text-muted">Đang sản xuất bao bì cho hơn 300 doanh nghiệp</p> <!-- GIẢ: H9 -->
     <ul class="mt-6 grid grid-cols-2 items-center gap-x-8 gap-y-6 sm:grid-cols-3 lg:grid-cols-6">
       <li class="text-center text-lg font-semibold text-muted">…</li>
     </ul>
@@ -156,213 +114,258 @@ câu nhỏ dưới nút là hàng **avatar chồng + 5 sao + số người mua**
 </section>
 ```
 
-- 6 logo (hay 5, 4 khi ít). Logo giả là chữ (`H9`). Logo thật thì SVG xám một màu, cao 24–32px.
-- Dải này **liền với hero**: không padding trên, không dải nền riêng.
+- 6 logo (5, 4 khi ít). Logo giả là chữ (`H9`); logo thật SVG xám một màu, cao 24–32px.
+- Dải liền hero: padding nhỏ hơn section thường. Không chạy vòng, dưới `sm` lưới 2 cột.
 
-### K3b. Testimonial
+## K4. Giới thiệu ⚑
 
-**A. Lưới ba câu** (mặc định)
+`id="gioi-thieu"`. Có ở 21/21 trang.
+
+**A. Ảnh và câu chuyện** (dịch vụ đặt lịch, cửa hàng)
+
+```
+┌──────────────────────┬──────────────────────────────────┐
+│                      │ (nhãn nhỏ)                       │
+│   ảnh dọc 4/5        │ H2 nói một điều cụ thể           │
+│   (người, không gian)│ hai đoạn ngắn: ai mở, từ năm nào,│
+│                      │ làm khác chỗ khác ở đâu          │
+│                      │ — Tên, chủ tiệm                  │
+└──────────────────────┴──────────────────────────────────┘
+```
+
+- Lưới `lg:grid-cols-2 gap-10 lg:gap-16 items-center`. Ảnh trái, chữ phải; dưới `lg` ảnh trên.
+- Đoạn văn tối đa ~90 chữ mỗi đoạn, `text-base/7 text-muted`, `max-w-prose`.
+- Ký tên chủ tiệm hay năm thành lập ở cuối (cửa hàng hay làm vậy): `text-sm text-foreground`.
+  Chưa có thì đánh dấu `GIẢ:`.
+
+**B. Vì sao chọn, kèm con số** (B2B)
+
+H2 và câu dẫn bên trái (`lg:col-span-5`); bên phải (`lg:col-span-7`) 3–4 điểm dạng lưới 2 cột:
+icon 20px (`H8`), tên điểm `font-semibold`, hai dòng mô tả. Dưới cả khối, một hàng 3–4 con số
+cách bằng đường kẻ:
 
 ```html
-<ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-  <li>
-    <figure class="flex h-full flex-col rounded-2xl border border-border-strong p-6">
-      <blockquote class="text-base/7 text-foreground">“…kết quả cụ thể…”</blockquote>
-      <figcaption class="mt-auto flex items-center gap-3 pt-6">
-        …avatar 40px…
-        <div class="text-sm"><p class="font-medium text-foreground">Tên</p><p class="text-muted">Chức danh, Công ty</p></div>
-      </figcaption>
-    </figure>
-  </li>
-</ul>
-```
-
-- Card viền `border-border-strong` vì nền trang trắng: `border-border` gần như không thấy trên
-  trắng (`pricing.md` đã dính). Tên người đáy card bằng `mt-auto`, ba card cùng cao.
-- Ba câu dài ngắn khác nhau (`S8`): một câu một dòng, một câu bốn dòng.
-
-**B. Một câu lớn** (đặt demo, hay xen giữa trang dài): canh giữa, `max-w-3xl`, câu nói
-`text-2xl sm:text-3xl font-medium text-balance`, dưới là avatar 48px, tên, chức danh, logo
-công ty. Đặt demo dùng cả B (sau tính năng đầu) lẫn A (trước CTA cuối): 5/5 trang có hai khối.
-
-Không carousel (`H10`). Không tường 15 bài đăng mạng xã hội trừ khi người dùng có thật.
-
-## K4. Tính năng ⚑
-
-`id="features"`. Đầu section: H2 nói lợi ích chung, câu dẫn một câu.
-
-**A. Bento: card có mảnh giao diện** (mặc định cho 3–4 tính năng chính; 8/8 trang trọn đã tra
-làm vậy)
-
-```
-┌───────────────────────────────┬───────────────┐
-│ ┌─────────────────┐           │ ┌───────────┐ │   mỗi card: mảnh UI trên, chữ dưới
-│ │ mảnh UI rộng    │           │ │ mảnh UI   │ │   4 card: card 1 và 4 rộng gấp đôi
-│ └─────────────────┘           │ └───────────┘ │
-│ Tên tính năng                 │ Tên           │
-│ một đến hai dòng mô tả        │ mô tả         │
-├───────────────┬───────────────┴───────────────┤
-│ …             │ …                             │
-└───────────────┴───────────────────────────────┘
-```
-
-```html
-<ul class="grid gap-4 lg:grid-cols-3">
-  <li class="flex flex-col overflow-hidden rounded-2xl bg-background lg:col-span-2"> <!-- card 1 và 4 khi có 4 card -->
-    <div class="relative h-56 overflow-hidden px-6 pt-6 [mask-image:linear-gradient(to_bottom,black_75%,transparent)]" aria-hidden="true" inert>
-      <div class="w-[360px] rounded-xl border border-border bg-surface p-4 shadow-[var(--elevation-popover)]">…mảnh UI…</div>
-    </div>
-    <div class="p-6 pt-4">
-      <h3 class="text-base font-semibold text-foreground">…</h3>
-      <p class="mt-2 text-base/7 text-muted">…tối đa hai dòng…</p>
-    </div>
-  </li>
-</ul>
-```
-
-- **Mảnh UI là một góc của màn app trong hero**, cùng dữ liệu, đúng tính năng của card: tính
-  năng "tự nhắc khách" thì mảnh là tin nhắn nhắc đã gửi; "xem lịch theo thợ" thì ba dòng lịch có
-  avatar thợ. Dựng bằng component của `ui-ux`. Không icon to thay mảnh, không ảnh minh hoạ.
-- Mảnh có **bề rộng cố định**, tràn thì cắt, đáy tan dần (`mask-image`) để card nào cũng cao
-  bằng nhau mà không bóp mảnh.
-- Card nền `bg-background` trên trang trắng, không viền. Card không bấm được, không hover.
-- 3 card: một hàng bằng nhau (bỏ `lg:col-span-2`). 4 card: card 1 và 4 rộng gấp đôi, thành
-  hai hàng so le. 5 trở lên thì 3–4 cái chính vào A, phần còn lại vào B ngay dưới.
-- Dưới `lg`: một cột (dưới `sm`) rồi hai cột, bỏ `col-span`.
-
-**B. Lưới icon** (6 tính năng ngắn; đặt demo 3 × 2; hay theo sau A cho phần còn lại)
-
-```html
-<dl class="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-  <div>
-    <dt>
-      <span class="grid size-10 place-items-center rounded-lg bg-background text-foreground">…icon 20px…</span>
-      <span class="mt-4 block text-base font-semibold text-foreground">…</span>
-    </dt>
-    <dd class="mt-2 text-base/7 text-muted">…tối đa ba dòng…</dd>
-  </div>
+<dl class="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-lg bg-border lg:grid-cols-4">
+  <div class="bg-background p-6"><dt class="text-sm text-muted">Năm sản xuất</dt><dd class="mt-2 text-3xl font-semibold">18</dd></div>
 </dl>
 ```
 
-- **Không bọc từng ô vào card**: sáu card viền là sáu hộp chen nhau. Khối tách bằng khoảng
-  trống `gap-y-10`. Icon theo `H8`.
-- Đúng 3 hoặc 6 mục (hay 4 ở lưới 2 cột). 5 mục là lưới hụt một ô.
+Con số chỉ khi có thật hay đánh dấu `GIẢ:` (`H9`). Không số tròn kiểu "1000+ khách hài lòng".
 
-**C. Một ảnh lớn kèm ba điểm** (dùng thử 3/5): H2 và câu dẫn, rồi màn app giả lớn (`H6`) rộng
-hết khung, dưới ảnh ba điểm kiểu B một hàng `lg:grid-cols-3`. Hợp khi sản phẩm có một màn
-chính nói được hết.
+## K5. Dịch vụ / sản phẩm ⚑
 
-**D. Hàng xen kẽ** (3–4 tính năng cần giải thích kỹ): mỗi tính năng một hàng hai cột, chữ (H3,
-đoạn ngắn, 2–3 gạch đầu dòng ✓) và màn app giả của đúng tính năng đó trong khối
-`rounded-2xl bg-background p-6`; hàng chẵn đổi bên (`lg:[&>*:first-child]:order-last`). Các
-hàng cách nhau `gap-y-16 lg:gap-y-24`. Không hợp với 6 tính năng ngắn.
+`id="dich-vu"` (hay `id="san-pham"`). Đầu section: nhãn nhỏ, H2, câu dẫn.
 
-## K5. Cách hoạt động ⚑
-
-Mặc định chỉ danh sách chờ (`G1`). Đúng 3 bước (hay 4), một hàng từ `lg`.
+**A. Card ảnh** (mặc định mọi loại; 3–6 mục)
 
 ```html
-<ol class="grid gap-10 lg:grid-cols-3">
-  <li>
-    <span class="grid size-8 place-items-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">1</span>
-    <h3 class="mt-4 text-base font-semibold text-foreground">…động từ đầu câu: "Để lại email"</h3>
+<ul class="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+  <li class="group">
+    <div class="overflow-hidden rounded-lg">
+      <!-- GIẢ: ảnh mẫu -->
+      <img src="…" alt="…" class="aspect-4/5 w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+    </div>
+    <h3 class="mt-5 …tên card H3…">…</h3>
+    <p class="mt-2 text-base/7 text-muted">…tối đa hai dòng…</p>
+    <p class="mt-3 text-sm text-foreground">Từ 450.000đ · 60 phút</p> <!-- chỉ khi người dùng đưa giá, G4 -->
+  </li>
+</ul>
+```
+
+- Card không viền, không nền: ảnh và chữ đứng thẳng trên nền trang. Cả card không bấm được; muốn
+  đặt dịch vụ thì một link chữ "Đặt lịch dịch vụ này →" dẫn `#lien-he` và chọn sẵn dịch vụ trong
+  form.
+- 4 hay 5 mục: lưới `lg:grid-cols-4` hay 3 + 2 lệch; không kéo card lẻ rộng gấp đôi.
+- Cuối khối (dịch vụ đặt lịch, B2B): nút chính lặp lần giữa trang (`H1`), canh trái.
+
+**B. Danh sách thực đơn** (quán; spa có bảng dịch vụ dài)
+
+```html
+<div class="grid gap-x-16 gap-y-10 lg:grid-cols-2">
+  <div>
+    <h3 class="…tên nhóm…">Chăm sóc da</h3>
+    <ul class="mt-4 divide-y divide-border">
+      <li class="flex items-baseline gap-4 py-4">
+        <div class="min-w-0"><p class="text-base text-foreground">…tên món</p><p class="text-sm text-muted">…mô tả một dòng</p></div>
+        <p class="ml-auto shrink-0 text-base tabular-nums">…giá</p>
+      </li>
+    </ul>
+  </div>
+</div>
+```
+
+Có thể đặt một ảnh dọc cạnh danh sách. Giá theo `G4`.
+
+**C. Lưới năng lực** (B2B): như A nhưng ảnh `aspect-3/2`, tên là loại sản phẩm hay năng lực ("Hộp
+carton 3–5 lớp", "In offset 4 màu"), dưới mô tả một dòng thông số nhỏ `text-sm text-muted`
+("Đơn tối thiểu 500 chiếc · Giao 7–10 ngày") khi người dùng đưa.
+
+## K6. Không gian, đội ngũ ⚑
+
+**A. Lưới ảnh không gian** (mọi loại; B2B là xưởng, máy móc)
+
+```html
+<div class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:grid-rows-2">
+  <img class="col-span-2 row-span-2 aspect-square size-full rounded-lg object-cover" …/>  <!-- ảnh lớn -->
+  <img class="aspect-square size-full rounded-lg object-cover" …/>                         <!-- 4 ảnh nhỏ -->
+</div>
+```
+
+- 5 ảnh: một lớn, bốn nhỏ. Đầu section H2 nói điều cụ thể ("Năm phòng riêng, không ai đi ngang
+  lúc bạn nằm"). Mỗi ảnh `GIẢ:` nếu là ảnh mẫu.
+- Không lightbox, không carousel tự trượt (`H10`).
+
+**B. Đội ngũ** (dịch vụ đặt lịch 4/7): 3–4 người, ảnh chân dung `aspect-4/5 rounded-lg`, tên
+`text-lg`, vai trò và một dòng kinh nghiệm `text-sm text-muted`. Ảnh người từ randomuser theo `S16`
+chỉ khi tạm, tên giả theo giới. Đặt sau A hay thay A.
+
+## K7. Quy trình ⚑
+
+B2B (5/7): cách đặt hàng, 4 bước (hay 3). Dải tối được (`H2`).
+
+```html
+<ol class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+  <li class="border-t border-border-strong pt-6">
+    <p class="text-sm font-semibold text-primary tabular-nums">01</p>
+    <h3 class="mt-3 text-base font-semibold">Gửi yêu cầu</h3>
     <p class="mt-2 text-base/7 text-muted">…</p>
   </li>
 </ol>
 ```
 
-- Bước là **việc khách làm** theo thứ tự thời gian ("Để lại email → Nhận lời mời → Kết nối
-  lịch"), không phải ba tính năng đổi tên.
-- Không vẽ mũi tên hay đường nối giữa các bước: thứ tự đã nằm ở số.
+- Bước là **việc khách và xưởng làm theo thứ tự** ("Gửi yêu cầu → Nhận báo giá và mẫu → Duyệt
+  mẫu → Sản xuất và giao"), có thời gian nếu người dùng đưa.
+- Không mũi tên nối giữa các bước: thứ tự đã nằm ở số.
 
-## K6. Pricing ⚑
+## K8. Đánh giá ⚑
 
-Chỉ mục tiêu mua luôn (`G4`). `id="pricing"`.
+`id="danh-gia"`. 2–3 câu (dịch vụ đặt lịch 4/7 làm 2–3 câu).
 
-- Card theo `../ui-ux/references/layouts/pricing.md` (subgrid, bảy hàng, nút đáy card), **với
-  ba chỗ khác trong landing**: đầu section canh trái theo `H2` thay vì đầu trang canh giữa của
-  `pricing.md`; viền card `border-border-strong` vì nền trắng; không gói nào nổi trừ khi người
-  dùng nói (`G4`).
-- Câu dẫn nói cách trả tiền: *"Trả một lần, dùng mãi. Cập nhật miễn phí 12 tháng."* (chữ của
-  người dùng, không có thì `[cần điền]`).
-- Nút trên card là nút thanh toán của gói đó. Card chính (gói người dùng muốn bán) nút `primary`,
-  card khác nút viền: một nút đặc mỗi khu (`I1` của `ui-ux`).
-- Dưới dãy card một dòng `text-sm text-muted` canh giữa về hoàn tiền hoặc thanh toán, chỉ khi
-  người dùng đã nói.
-
-## K7. FAQ ⚑
-
-`id="faq"`. Hai cột từ `lg`: đầu section bên trái, danh sách bên phải (2/3 trang mua luôn có
-FAQ làm vậy).
+**A. Hai ba câu** (mặc định)
 
 ```html
-<div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-16">
-  <header>…H2 "Câu hỏi thường gặp", câu dẫn có link liên hệ…</header>
-  <div class="divide-y divide-border-strong border-y border-border-strong">
-    …mỗi câu một AccordionItem của components/accordion.md, đè px-5 thành px-0…
-  </div>
-</div>
+<ul class="grid gap-6 lg:grid-cols-3">
+  <li>
+    <figure class="flex h-full flex-col rounded-lg bg-surface p-8">
+      <blockquote class="font-heading text-xl/8 text-foreground">“…một trải nghiệm cụ thể…”</blockquote>
+      <figcaption class="mt-auto flex items-center gap-3 pt-8">…avatar 40px… <span class="text-sm"><span class="font-medium">Tên</span><span class="text-muted"> · khách từ 2023</span></span></figcaption>
+    </figure>
+  </li>
+</ul>
 ```
 
-- Accordion của `ui-ux`, **bỏ khung**: không `rounded-2xl border bg-surface`, chỉ đường kẻ
-  `border-border-strong` trên dưới và giữa các câu, nút và câu trả lời `px-0` để chữ thẳng mép
-  với H2 bên trái. Chữ câu hỏi `text-base font-medium`, câu trả lời `text-base/7`.
-- 5–8 câu. Mua luôn: license dùng cho mấy dự án, hoàn tiền, cách thanh toán, hoá đơn, cập nhật.
-  Câu trả lời có chính sách thật thì `[cần điền]` tới khi người dùng đưa (`H9`).
+- Card `bg-surface` trên nền ngà hay dải tint, không viền. Câu nói theo font tiêu đề (dịch vụ,
+  cửa hàng); B2B dùng sans, kèm chức danh và công ty.
+- Điểm Google (2/7): một dòng trên lưới "4,9 ★ trên Google · 320 đánh giá" **chỉ khi có thật**,
+  không dựng giả (`H9`).
 
-## K8. CTA cuối trang ⚑
+**B. Một câu lớn** (khi chỉ có một đánh giá tốt): canh giữa `max-w-3xl`, `font-heading text-2xl
+sm:text-3xl`, dưới là avatar 48px và tên.
 
-**A. Panel canh giữa** (mặc định)
+## K9. Chứng nhận ⚑
+
+B2B, chỉ khi người dùng đưa chứng nhận thật (4/7). Một hàng gọn, không section to:
 
 ```html
-<section class="py-14 sm:py-20 lg:py-24">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="relative isolate overflow-hidden rounded-3xl bg-background px-6 py-14 text-center sm:px-12 sm:py-20">
-      …lớp nền H11, cùng kiểu với hero…
-      <div class="mx-auto max-w-2xl">
-        <h2 class="…H2 của H3…">…</h2>
-        <p class="mt-4 …câu dẫn section…">…</p>
-        <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">…nút chính, nút viền nếu có G5…</div>
-      </div>
+<ul class="flex flex-wrap items-center gap-x-10 gap-y-4">
+  <li class="flex items-center gap-3 text-sm"><span class="…ảnh dấu chứng nhận 40px…"></span><span><span class="font-medium">ISO 9001:2015</span><br class="hidden sm:block"><span class="text-muted">Quản lý chất lượng</span></span></li>
+</ul>
+```
+
+Đặt cuối khối Giới thiệu (`K4` B) hay đầu khối Liên hệ. Không có thì bỏ, không dựng giả.
+
+## K10. FAQ ⚑
+
+Tắt mặc định (0–2/7). Người dùng xin thì theo accordion của `../ui-ux/references/components/accordion.md`,
+bỏ khung, chỉ đường kẻ `border-border-strong`, hai cột từ `lg` (đầu section trái, câu hỏi phải),
+5–7 câu. Câu có chính sách (hoàn tiền, bảo hành) để `[cần điền]` tới khi người dùng đưa.
+
+## K11. Liên hệ ⚑
+
+`id="lien-he"`. Khối cuối trước footer (`H11`): thông tin bên trái, form bên phải.
+
+```
+┌──────────────────────────────┬────────────────────────────────┐
+│ (nhãn nhỏ)                   │ ┌────────────────────────────┐ │
+│ H2: Đặt lịch, chúng tôi gọi  │ │ Họ tên                     │ │
+│     lại trong 15 phút        │ │ Số điện thoại              │ │
+│ câu dẫn                      │ │ Dịch vụ quan tâm      ▾    │ │
+│ ⌖ 12 Nguyễn Văn A, Q.3  Chỉ đường │ │ Ngày muốn đến         │ │
+│ ◷ 9:00–20:00, cả tuần        │ │ [        Đặt lịch        ] │ │
+│ ✆ 0900 000 000   Zalo        │ └────────────────────────────┘ │
+└──────────────────────────────┴────────────────────────────────┘
+```
+
+```html
+<section id="lien-he" class="scroll-mt-20 py-16 sm:py-24 lg:py-28">
+  <div class="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
+    <div>
+      …nhãn nhỏ, H2, câu dẫn…
+      <dl class="mt-10 space-y-5 text-base">
+        <div class="flex gap-3"><dt class="sr-only">Địa chỉ</dt><!-- MapPin 20px text-muted -->
+          <dd>12 Nguyễn Văn A, Quận 3, TP.HCM · <a href="https://maps.google.com/?q=…" class="underline underline-offset-4">Chỉ đường</a></dd></div> <!-- GIẢ: H9 -->
+        …Giờ mở cửa (Clock), Điện thoại (Phone, tel:), Zalo, Email…
+      </dl>
     </div>
+    <form class="rounded-xl bg-surface p-6 sm:p-8" novalidate>
+      …ô theo G3, mỗi ô theo components/input.md: nhãn trên ô, h-12, text-base…
+      <button type="submit" class="…nút primary, min-h-12 w-full…">Đặt lịch</button>
+      <p class="mt-3 text-sm text-muted">Chúng tôi chỉ dùng số điện thoại để xác nhận lịch.</p>
+    </form>
   </div>
 </section>
 ```
 
-- H2 **không chép H1** và không chỉ ghi lại chữ nút ("Đặt lịch demo ngay"). Nói điều khách được
-  khi bấm: *"Thử với lịch thật của bạn trong 5 phút"*.
-- Dùng thử: hai nút, nút chính + nút viền "Liên hệ tư vấn" (3/4 trang có CTA cuối làm vậy). Nút
-  viền trên panel `bg-background` dùng nền `bg-surface` để không chìm.
-- Panel nằm trong khung `max-w-7xl`, không tràn mép màn (`H11`).
+- **Nhãn hiện trên ô** (`components/input.md`), không chỉ placeholder. Ô bắt buộc không gắn `*`
+  khi mọi ô đều bắt buộc; có ô không bắt buộc thì ghi "(không bắt buộc)" sau nhãn của ô đó.
+- Số điện thoại: `type="tel" inputmode="tel" autocomplete="tel"`; họ tên `autocomplete="name"`.
+- Select dịch vụ lấy đúng tên các card ở `K5`. Bấm "Đặt lịch dịch vụ này" ở card thì select chọn
+  sẵn mục đó.
+- **Ba trạng thái**, đều vẽ ở wireframe (`E3`): mặc định; lỗi (câu lỗi `text-sm` ngay dưới ô sai,
+  dòng lỗi luôn giữ chỗ để form không nhảy); **đã gửi**: thay cả form bằng khối icon `CircleCheck`
+  + "Đã nhận lịch của bạn. Chúng tôi sẽ gọi lại trong giờ làm việc." + nút viền "Nhắn Zalo" nếu có.
+  Không toast, không modal.
+- Bản đồ nhúng tắt mặc định (1/21): link "Chỉ đường" mở Google Maps là đủ. Nhiều chi nhánh thì
+  thay danh sách bên trái bằng mỗi chi nhánh một card nhỏ (ảnh mặt tiền, địa chỉ, giờ, "Chỉ đường").
+- Dưới `lg`: thông tin trên, form dưới. Form `p-5` ở 375.
 
-**B. Panel có form email** (đặt demo, danh sách chờ): như A, hàng nút thay bằng form email của
-`K2`, canh giữa (`mx-auto`).
-
-## K9. Footer ⚑
-
-**A. Cột link** (mặc định)
+## K12. Footer ⚑
 
 ```
-◆ Tên                 Sản phẩm      Công ty       Pháp lý
-câu mô tả một dòng    Tính năng     Giới thiệu    Điều khoản
-                      Bảng giá      Liên hệ       Bảo mật
-───────────────────────────────────────────────────────────
-© 2026 Tên công ty                              (icon mạng xã hội)
+Tên tiệm                     Liên hệ                Theo dõi
+câu mô tả một dòng           12 Nguyễn Văn A, Q.3    Facebook
+                             0900 000 000            Instagram
+                             9:00–20:00              Zalo
+──────────────────────────────────────────────────────────────
+© 2026 Tên công ty · MST 0123456789 (B2B, khi có)
 ```
 
 ```html
-<footer class="border-t border-border">
-  <div class="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,2fr)_repeat(3,minmax(0,1fr))] lg:px-8">
-    …logo + câu mô tả…  …3 cột: tiêu đề text-sm font-semibold, link text-sm text-muted, gap-3…
-  </div>
-  <div class="mx-auto flex max-w-7xl flex-col gap-4 border-t border-border px-4 py-6 text-sm text-muted sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">…</div>
+<footer class="force-dark bg-background text-foreground pb-24 md:pb-0"> <!-- dịch vụ đặt lịch, B2B: nền tối H5 -->
+  <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[minmax(0,2fr)_repeat(2,minmax(0,1fr))] lg:px-8">…</div>
+  <div class="mx-auto max-w-7xl border-t border-border px-4 py-6 text-sm text-muted sm:px-6 lg:px-8">…</div>
 </footer>
 ```
 
-- 3–4 cột link, chỉ link có thật hoặc chắc sẽ có (Điều khoản, Bảo mật). Không newsletter (đa số
-  không có), trừ khi người dùng xin.
-- Đặt demo: footer **nền tối** (`.force-dark` + `bg-background` của token tối, `H5`).
-- Dưới `lg`: logo một hàng riêng, ba cột link thành lưới `grid-cols-2 sm:grid-cols-3`.
+- Lặp lại địa chỉ, điện thoại, giờ (khách cuộn xuống đáy tìm, 5/7 dịch vụ đặt lịch để ở footer).
+- Link mạng xã hội chỉ khi người dùng đưa. B2B: tên công ty đầy đủ, mã số thuế khi người dùng đưa
+  (không bịa, `H9`).
+- `pb-24` dưới `md` chừa chỗ cho nút nổi (`H13`). Cửa hàng được footer sáng cùng nền trang, viền
+  trên `border-t border-border`.
 
-**B. Một hàng gọn** (danh sách chờ): `© 2026 Tên` bên trái, 2–3 link (Điều khoản, Bảo mật, Liên
-hệ) bên phải, `py-8`, viền trên.
+## K13. Nút liên hệ nổi ⚑
+
+Luật ở `H13`. Mọi loại trang.
+
+```html
+<!-- GIẢ: H9, số Zalo và số gọi -->
+<div class="fixed right-4 bottom-4 z-30 flex flex-col gap-3 sm:right-6 sm:bottom-6">
+  <a href="https://zalo.me/0900000000" target="_blank" rel="noopener" aria-label="Nhắn Zalo cho Tên tiệm"
+     class="grid size-12 place-items-center rounded-full border border-border-strong bg-surface text-xs font-semibold text-primary shadow-popover hover:bg-surface-hover">Zalo</a>
+  <a href="tel:0900000000" aria-label="Gọi 0900 000 000"
+     class="grid size-12 place-items-center rounded-full border border-border-strong bg-surface text-primary shadow-popover hover:bg-surface-hover md:hidden"><!-- Phone 20px --></a>
+</div>
+```
+
+- Ẩn khi khối Liên hệ đang trong màn hình được (đã có cả form lẫn số ở đó), không bắt buộc.
+- Không tooltip bật tự động, không chấm đỏ thông báo, không vòng sóng (`H12`).

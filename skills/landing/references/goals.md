@@ -1,92 +1,119 @@
-# Mục tiêu của trang — luật G
+# Loại trang và cách khách liên hệ — luật G
 
-Mục tiêu quyết định section nào bật, xếp ra sao, nút chính ghi gì. Giống "việc chính của từng
-màn" bên `ui-ux`, nhưng landing chỉ có một việc: dẫn khách tới **một** hành động.
+Landing của skill này chỉ có **một mục tiêu: khách để lại liên hệ**. Cái khác nhau giữa các trang
+là **loại doanh nghiệp** (quyết section nào bật, xếp ra sao) và **kiểu liên hệ** (quyết chữ nút
+chính, form có những ô nào).
 
-⚑ Bảng dưới đếm từ 20 trang đang chạy, 5 trang mỗi mục tiêu, tra 01/10/2026. Số trong ngoặc là
-số trang trên 5 có làm vậy. Mẫu "dùng thử" nghiêng về công cụ cho dev.
+⚑ Bảng dưới đếm từ 21 trang thu lead nước ngoài được đánh giá cao, 7 trang mỗi loại, tra
+06/10/2026. Số trong ngoặc là số trang trên 7 có làm vậy. Trang VN cùng loại không dùng làm mẫu
+vì lớp nhìn kém. Hai thứ **không đếm từ trang nào** mà theo thói quen khách VN: nút Zalo / gọi nổi
+và form liên hệ ngay trên trang (`G3`, `H13`).
 
 ---
 
-## G1. Bảng bật section theo mục tiêu ⚑
+## G1. Ba loại trang ⚑
+
+| Loại | Gồm | Nhận ra khi đề nói |
+| --- | --- | --- |
+| **Dịch vụ đặt lịch** | spa, thẩm mỹ, da liễu, salon tóc, nail, nha khoa, vật lý trị liệu, phòng khám nhỏ | đặt lịch, liệu trình, khách tới làm dịch vụ |
+| **Cửa hàng, quán** | showroom nội thất, bếp, xe; tiệm hoa, tiệm bánh; quán cà phê, nhà hàng | cửa hàng, showroom, quán, ghé, đặt bàn, xem hàng tận nơi |
+| **Doanh nghiệp B2B** | sản xuất, bao bì, in ấn, đồng phục, cơ khí, nhựa, thiết bị, gia công | công ty, nhà máy, xưởng, báo giá, đơn hàng số lượng, khách doanh nghiệp |
+
+Đề không nói rõ thì **đoán theo bảng**, ghi vào brief kèm chữ *đoán*. Loại không nằm trong ba nhóm
+(công ty luật, trung tâm tiếng Anh, khách sạn…) thì lấy loại gần nhất theo cách khách liên hệ:
+hẹn một buổi là dịch vụ đặt lịch, ghé xem là cửa hàng, xin báo giá là B2B. Báo một dòng *"X chưa
+có mẫu riêng, mình theo khung Y"*.
+
+## G2. Bảng bật section theo loại ⚑
 
 `✓` bật mặc định. `–` tắt. Tắt không có nghĩa là cấm: người dùng nêu trong đề thì bật (`E2`).
 
-| # | Section (`sections.md`) | Dùng thử | Mua luôn | Đặt demo | Danh sách chờ |
-| --- | --- | --- | --- | --- | --- |
-| 1 | Header | ✓ | ✓ | ✓ | ✓ gọn: logo, 0–3 link, nút (4/5) |
-| 2 | Hero | ✓ chia đôi | ✓ canh giữa (3/5) | ✓ chia đôi (4/5) | ✓ chia đôi, form email (3/5) |
-| 3a | Dải logo ngay dưới hero | ✓ (5/5) | – thay bằng dòng số người dùng ngay hero (4/5) | ✓ kèm số khách (4/5) | – (0/5) |
-| 4 | Tính năng | ✓ bento `K4` A (5/5 có lưới) | ✓ | ✓ lưới 3 × 2 (4/5), `K4` B, có thể sau A | ✓ một hàng 3 card bento |
-| 5 | Cách hoạt động | – (1/5) | – (0/5) | – (1/5) | ✓ 3 bước (3/5) |
-| 6 | Pricing | – trang riêng (5/5), link "Bảng giá" trên header | ✓ ngay trên trang (4/5) | – (5/5) | – (5/5) |
-| 3b | Testimonial | ✓ (5/5) | ✓ ngay sau pricing (4/4) | ✓ (5/5) | – (0/5) |
-| 7 | FAQ | – (1/5) | ✓ cạnh pricing (3/5) | – (0/5) | – (2/5) |
-| 8 | CTA cuối trang | ✓ hai nút (4/5) | ✓ (3/5) | ✓ panel, có ô email (5/5) | ✓ form email lần hai (3/5) |
-| 9 | Footer | ✓ cột link | ✓ cột link | ✓ cột link, nền tối (5/5) | ✓ một hàng gọn (2/5) |
+| # | Section (`sections.md`) | Dịch vụ đặt lịch | Cửa hàng, quán | B2B |
+| --- | --- | --- | --- | --- |
+| 1 | Header | ✓ (7/7 dính đỉnh) | ✓ | ✓ |
+| 2 | Hero | ✓ ảnh tràn hay panel | ✓ ảnh tràn (6/7 ảnh lớn) | ✓ ảnh/video tràn hay chia đôi |
+| 3 | Dải logo khách | – (2/7) | – (1/7) | ✓ ngay dưới hero (5/7) |
+| 4 | Giới thiệu | ✓ (7/7) | ✓ (7/7) | ✓ "vì sao chọn" kèm con số (7/7, số 4/7) |
+| 5 | Dịch vụ / sản phẩm | ✓ (6/7) | ✓ (7/7) | ✓ năng lực, sản phẩm (6/7) |
+| 6 | Không gian, đội ngũ | ✓ (không gian 4/7, đội ngũ 4/7) | ✓ (6/7) | ✓ xưởng, máy móc (3/7, +1 nói bằng chữ) |
+| 7 | Quy trình | – (1/7) | – | ✓ cách đặt hàng (5/7) |
+| 8 | Đánh giá | ✓ 2–3 câu (4/7) | – (3/7) | ✓ (6/7) |
+| 9 | Chứng nhận | – | – | ✓ chỉ khi có thật (4/7) |
+| 10 | FAQ | – (1/7) | – (0/7) | – (2/7) |
+| 11 | Liên hệ (form + địa chỉ) | ✓ | ✓ | ✓ |
+| 12 | Footer | ✓ nền tối (5/7) | ✓ | ✓ nền tối (5/7) |
+| – | Nút Zalo / gọi nổi | ✓ | ✓ | ✓ |
 
 **Thứ tự mặc định** (số là cột `#`):
 
-| Mục tiêu | Thứ tự |
+| Loại | Thứ tự |
 | --- | --- |
-| Dùng thử | 1 · 2 · 3a · 4 · 3b · 8 · 9 |
-| Mua luôn | 1 · 2 · 4 · 6 · 3b · 7 · 8 · 9 |
-| Đặt demo | 1 · 2 · 3a · 4 · 3b · 8 · 9 |
-| Danh sách chờ | 1 · 2 · 4 · 5 · 8 · 9 |
+| Dịch vụ đặt lịch | 1 · 2 · 4 · 5 · 6 · 8 · 11 · 12 |
+| Cửa hàng, quán | 1 · 2 · 4 · 5 · 6 · 11 · 12 |
+| B2B | 1 · 2 · 3 · 5 · 4 · 6 · 7 · 8 · 9 · 11 · 12 |
 
-Không có trong bộ nền (để bản sau): bảng so sánh với đối thủ, video demo riêng, integrations,
-khối code mẫu, changelog, khối số liệu lớn (0–2/5 ở mọi mục tiêu). Người dùng xin thì mượn
-khuôn gần nhất trong `sections.md`, báo một dòng *"X chưa có mẫu, mình mượn khuôn của Y"*.
+- Cửa hàng có đánh giá thật (điểm Google, câu khách viết) thì bật 8 sau 6.
+- B2B: năng lực đứng trước giới thiệu (khách B2B tới để xem làm được gì), giới thiệu kèm con số
+  đứng sau làm bằng chứng.
+- Ưu đãi, gói thành viên (dịch vụ đặt lịch 4/7): không thành section riêng. Có ưu đãi thật thì
+  thành một dòng ở hero (`K2`) hay một card trong khối dịch vụ.
+- Không có trong bộ nền: bảng giá đầy đủ, đếm ngược khuyến mãi, tin tức, Instagram, bản đồ nhúng
+  (0–1/7 mọi loại). Người dùng xin thì mượn khuôn gần nhất trong `sections.md`, báo một dòng.
 
-## G2. Chữ nút chính theo mục tiêu ⚑
+## G3. Kiểu liên hệ, chữ nút chính, form ⚑
 
-Nút gọi **đúng việc khách sắp làm**. Chữ chung chung ("Bắt đầu", "Get started", "Tìm hiểu
-thêm") chỉ dùng khi đề yêu cầu.
+Nút chính gọi **đúng việc khách sắp làm**. Không "Liên hệ ngay", "Tìm hiểu thêm", "Xem thêm"
+làm nút chính.
 
-| Mục tiêu | Tiếng Việt | Tiếng Anh | Nút phụ ở hero |
+| Loại | Kiểu liên hệ | Nút chính | Nút phụ ở hero |
 | --- | --- | --- | --- |
-| Dùng thử | Dùng thử miễn phí | Start for free | Viền "Liên hệ tư vấn" (3/5 có), hoặc không |
-| Mua luôn | Mua [Tên sản phẩm] | Get [Product] | Viền "Xem cách hoạt động", cuộn xuống tính năng (3/5) |
-| Đặt demo | Đặt lịch demo | Book a demo | Không (3/5 không có) |
-| Danh sách chờ | Đăng ký chờ | Join the waitlist | Không. Chữ nút gọi đúng tên danh sách chờ (5/5) |
+| Dịch vụ đặt lịch | đặt một buổi | **Đặt lịch** (7/7 bắt đầu bằng "Book") | không |
+| Quán | đặt bàn | **Đặt bàn** | viền "Xem thực đơn", cuộn tới khối 5 |
+| Showroom, cửa hàng | hẹn ghé, nhờ tư vấn | **Đặt lịch tư vấn** (showroom), **Nhắn tư vấn** (tiệm nhỏ) | viền "Xem sản phẩm" |
+| B2B | xin báo giá | **Nhận báo giá** (4/7 có chữ "quote") | viền "Xem năng lực sản xuất" (6/7 có hai nút) |
 
-- **Mua luôn: nút ở header và hero cuộn xuống `#pricing`**, không mở thẳng thanh toán (4/4
-  trang có nút ở hero). Nút thanh toán chỉ nằm trên card giá.
-- **Danh sách chờ: không dùng "Đăng ký", "Bắt đầu"**: khách tưởng vào dùng được ngay.
+- B2B gia công theo bản vẽ, cơ khí: "Liên hệ tư vấn" được (3/7 dùng "Contact"), vì khách chưa
+  biết cần báo giá món gì.
+- **Đích của nút chính là form ở khối Liên hệ** (`#lien-he`), cùng một đích ở mọi chỗ. Người
+  dùng đã có trang đặt lịch hay hệ thống đặt bàn riêng thì nút dẫn thẳng sang đó (4/7 trang dịch
+  vụ làm vậy), form vẫn giữ cho ai muốn được gọi lại.
 
-## G3. Câu nhỏ dưới nút chính ⚑
+**Form liên hệ** (theo thói quen VN: trang nước ngoài gần như không đặt form ngay trên trang, 0–2/7,
+mà dẫn sang trang riêng; landing một trang của khách VN thì form phải nằm trên trang):
 
-Một dòng `text-sm text-muted` ngay dưới hàng nút ở hero, nói điều làm khách bớt ngại bấm.
-
-| Mục tiêu | Mặc định | Ghi chú |
+| Loại | Ô (theo thứ tự) | Nút gửi |
 | --- | --- | --- |
-| Danh sách chờ | ✓ (4/5): khi nào mở, sẽ nhận gì ("Mở đợt đầu tháng 11. Chỉ gửi email khi tới lượt bạn.") | Không hứa thứ đề không nói |
-| Mua luôn | ✓ (3/5): hàng avatar chồng nhau + 5 sao + số người mua, cạnh nút | Số giả thì đánh dấu (`H9`) |
-| Dùng thử | – (1/5) | "Không cần thẻ" chỉ khi người dùng xác nhận đúng |
-| Đặt demo | – (1/5) | |
+| Dịch vụ đặt lịch | Họ tên · Số điện thoại · Dịch vụ quan tâm (select) · Ngày muốn đến (không bắt buộc) | Đặt lịch |
+| Quán | Họ tên · Số điện thoại · Ngày · Giờ · Số người · Ghi chú (không bắt buộc) | Đặt bàn |
+| Cửa hàng, showroom | Họ tên · Số điện thoại · Cần tư vấn gì (không bắt buộc) | Gửi yêu cầu |
+| B2B | Họ tên · Công ty · Số điện thoại · Email · Sản phẩm cần · Số lượng dự kiến (không bắt buộc) · Ghi chú (không bắt buộc) | Gửi yêu cầu báo giá |
 
-Câu hứa về tiền và cam kết ("Không cần thẻ", "Hoàn tiền 30 ngày", "Huỷ lúc nào cũng được")
-là thứ có hậu quả: chỉ ghi khi người dùng đã nói, không thì để `[cần điền]` (`S7` của
-`ui-ux`).
+- **Số điện thoại bắt buộc ở mọi loại**: khách VN được gọi lại hoặc nhắn Zalo, không qua email.
+  Email chỉ bắt buộc ở B2B (form B2B nước ngoài 7/7 có email).
+- Ô tối đa như bảng (form B2B nước ngoài 5–8 ô, chỉ 1/7 có ô số lượng, 1/7 có tải file). Không
+  thêm ô "Bạn biết chúng tôi qua đâu", không thêm captcha nhìn thấy.
+- Chữ nút gửi theo việc, không "Gửi", không "Submit" (6/7 trang nước ngoài ghi "Submit", nhưng
+  chữ chung chung làm khách không chắc vừa đăng ký cái gì).
+- Gửi đi đâu (Google Sheet, email, CRM) là logic người dùng: handler để trống, báo lúc giao
+  (`N10` của `ui-ux`).
 
-## G4. Pricing theo mục tiêu ⚑
+## G4. Giá và ưu đãi ⚑
 
-Bản đầu chốt ba dạng "một gói / ba gói nổi gói giữa / tháng năm kèm Enterprise". Tra thật
-01/10/2026 thì không khớp số đông, nên bỏ. Pricing đi theo mục tiêu:
+- **Không bảng giá đầy đủ trên trang** (dịch vụ đặt lịch 0/7, B2B 0/7: giá nằm ở trang dịch vụ
+  hay báo giá riêng).
+- Dịch vụ đặt lịch, quán: card dịch vụ / món **được ghi giá "từ …"** khi người dùng đưa giá
+  (quán 3/7 có giá). Không đưa thì card không có dòng giá, không để `[cần điền]` ở từng card.
+- B2B: không giá. Dòng nhỏ dưới nút "Báo giá trong 24 giờ làm việc" chỉ khi người dùng hứa vậy.
+- Ưu đãi (giảm giá lần đầu, quà) chỉ khi người dùng đưa: một dòng dưới H1 hay trên nút hero,
+  không đếm ngược, không popup.
 
-- **Dùng thử:** không có section pricing trên landing (5/5). Header có link "Bảng giá" sang
-  trang riêng; trang đó dựng theo `../ui-ux/references/layouts/pricing.md`. Trang giá thật
-  của loại này thường 4 gói (Free, hai gói trả phí, Enterprise "liên hệ") kèm bảng so sánh.
-- **Mua luôn:** section pricing ngay trên trang, `id="pricing"`. 2–4 card theo khuôn card của
-  `layouts/pricing.md`, **không gói nào nổi** trừ khi người dùng nói gói nào nên mua (0/5 nổi
-  gói giữa). Dòng đầu section **nói rõ "trả một lần"** nếu đúng vậy (5/5). FAQ đứng ngay sau
-  testimonial, nói về license, hoàn tiền, thanh toán, cập nhật.
-- **Đặt demo, danh sách chờ:** không pricing (5/5 cả hai). Đặt demo có thể có link "Bảng giá"
-  trên header sang trang báo giá (4/5), chỉ khi người dùng có trang đó.
+## G5. Thứ người dùng phải đưa thật ⚑
 
-## G5. Mục tiêu thứ hai ⚑
+Landing doanh nghiệp là **lời khẳng định với khách thật về một nơi có thật**. Những thứ sau, người
+dùng chưa đưa thì dựng bằng dữ liệu giả để thấy bố cục, đánh dấu `GIẢ:` (`H9`), liệt kê lúc giao:
 
-Nhiều trang có hai lối (dùng thử và đặt demo). Vẫn **một** nút chính: lối kia thành nút viền
-ở hero và nút thứ hai ở CTA cuối trang, không bao giờ là nút đặc thứ hai trên header. Người
-dùng không nói lối nào chính thì lấy lối rẻ hơn với khách (dùng thử thắng demo, danh sách
-chờ thắng mua trước).
+- Địa chỉ, số điện thoại, số Zalo, giờ mở cửa, email.
+- Ảnh tiệm, xưởng, đội ngũ, sản phẩm (ảnh mẫu Unsplash không phải nơi của họ).
+- Đánh giá khách, điểm Google, logo khách hàng, con số (năm kinh nghiệm, số khách, công suất).
+- Chứng nhận (ISO, FSC…), giấy phép, mã số thuế: **không bịa**, chưa có thì bỏ khối.
+- Giá, ưu đãi.

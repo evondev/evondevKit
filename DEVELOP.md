@@ -35,12 +35,12 @@ skills/
 │       ├── components/             24 khối code thật
 │       └── layouts/                thư viện bố cục + code mẫu đã duyệt
 └── landing/              → gọi bằng /evon:landing, dùng chung token, component, probe của ui-ux qua ../ui-ux/
-    ├── SKILL.md          lối, ba câu hỏi (câu 3: mục tiêu của trang), bốn bước E1–E4
+    ├── SKILL.md          lối, ba câu hỏi (câu 3: loại trang, khách để lại gì), bốn bước E1–E4
     └── references/
-        ├── goals.md      G — mục tiêu → section nào bật, thứ tự, chữ nút chính, pricing
-        ├── sections.md   K — chín loại section, mỗi loại 1–3 biến thể có code
-        └── page-rules.md H — CTA, khung và nhịp, thang chữ, chữ hero, ảnh sản phẩm, dữ liệu giả
-archive/                  nhánh landing cũ đã gỡ khỏi ui-ux, giữ lại để tham khảo
+        ├── goals.md      G — loại trang (dịch vụ đặt lịch, cửa hàng, B2B) → section, nút chính, form
+        ├── sections.md   K — mười ba loại section, mỗi loại 1–3 biến thể có code
+        └── page-rules.md H — CTA, nhịp, chữ và font, nền, ảnh thật, dữ liệu giả, chuyển động, nút Zalo nổi
+archive/                  nhánh landing cũ đã gỡ khỏi ui-ux; landing-saas/ bản landing SaaS gác 06/10/2026
 ```
 
 Tài liệu làm việc: `TESTS.md` (đề test và kết quả), `REVIEW.md` (quy trình rà trang),
