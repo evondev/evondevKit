@@ -397,6 +397,11 @@ gộp SaaS hay trang quảng cáo chung.
    Đọc ~/dev/evondevKit/skills/landing/SKILL.md rồi dựng landing page cho Lá Thông, tiệm massage và xông thảo dược ở Đà Lạt, mở trong một căn nhà gỗ cũ, khách phần lớn là khách du lịch ở vài ngày.
    ```
 
+   **Mộc Spa: qua (06/10/2026)**, ba lượt rà (wireframe, bản dựng, bản sửa). Đoán đúng loại trang,
+   section đúng `G2`; lỗi skill đã sửa: footer tối lạnh, ảnh kho tĩnh vật và người mẫu phương Tây,
+   card dịch vụ, form (nhãn 8px, câu lỗi một dòng, select không bắt buộc), avatar một màu. Probe
+   thêm `--landing`. Gỗ Tâm An, Bao Bì Phú Thành: phiên khác đang rà wireframe.
+
    Đáp án loại trang: dịch vụ đặt lịch, cửa hàng, B2B. Soi:
    - **Cổng 1:** đoán đúng loại, bảng section đúng cột `G2`, nút "Đặt lịch" / "Hẹn ghé showroom" /
      "Nhận báo giá" (`G3`), dòng 6 liệt kê thứ giả (địa chỉ, số, ảnh, đánh giá), dòng 7 cảm giác.
