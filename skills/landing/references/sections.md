@@ -408,10 +408,10 @@ câu mô tả một dòng           12 Nguyễn Văn A, Q.3    Facebook
 ```
 
 ```html
-<footer class="bg-primary pb-24 text-primary-foreground md:pb-0"> <!-- dịch vụ đặt lịch, B2B: nền tối lấy sắc màu nhấn, H5 -->
+<footer class="bg-[color-mix(in_oklab,var(--primary)_55%,black)] pb-24 text-white md:pb-0"> <!-- dịch vụ đặt lịch, B2B: màu nhấn pha tối, H5 -->
   <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[minmax(0,2fr)_repeat(2,minmax(0,1fr))] lg:px-8">…</div>
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="border-t border-primary-foreground/15 py-6 text-sm text-primary-foreground/70">…</div>
+    <div class="border-t border-white/15 py-6 text-sm text-white/70">…</div>
   </div>
 </footer>
 ```

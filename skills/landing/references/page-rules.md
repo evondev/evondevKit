@@ -101,11 +101,12 @@ Dòng 7 của brief (cảm giác) quyết ba thứ: nền trang, màu nhấn, fo
 - **Một màu nhấn** (19/21). Màu nhấn ở: nút chính, link, số bước, icon. Không chữ gradient, không
   đốm màu trang trí, không nền gradient (`M12` của `ui-ux` giữ nguyên).
 - **Không trắng tinh cho cửa hàng, dịch vụ đặt lịch** (0/7 cửa hàng dùng trắng tinh).
-- **Footer tối** cho dịch vụ đặt lịch và B2B (5/7 mỗi loại) **lấy sắc màu nhấn**: `bg-primary
-  text-primary-foreground`, chữ phụ `text-primary-foreground/70`, đường kẻ
-  `border-primary-foreground/15`. Không `.force-dark`: token tối của `ui-ux` ngả xanh lạnh
-  (`#05060f`), đứng dưới trang ngà ấm thành một khối đen lạnh tách khỏi trang. Màu nhấn gần đen
-  (B2B mạnh, wireframe chưa bật Màu) thì nền đó cũng chính là footer tối.
+- **Footer tối** cho dịch vụ đặt lịch và B2B (5/7 mỗi loại) **lấy sắc màu nhấn pha tối**:
+  `bg-[color-mix(in_oklab,var(--primary)_55%,black)] text-white`, chữ phụ `text-white/70`, đường kẻ
+  `border-white/15`. Không `.force-dark`: token tối của `ui-ux` ngả xanh lạnh (`#05060f`), đứng
+  dưới trang ngà ấm thành một khối đen lạnh tách khỏi trang. Không `bg-primary` thẳng: màu nhấn
+  vừa (hồng đất, cam đất) thành cả một khối đỏ gạch to nhất trang, nặng hơn mọi nút; pha 55% với
+  đen thì màu nào cũng thành nâu rượu, xanh rêu sẫm, vẫn cùng sắc với nút.
 - Chữ `text-muted` đo tương phản trên nền ngà và dải tint, không chỉ trên trắng (`P3`).
 
 **H6. Ảnh thật làm phần bán hàng.** ⚑

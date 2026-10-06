@@ -97,7 +97,10 @@ Cách xử, theo thứ tự:
 "Bàn ghế gỗ tự" / "nhiên, đóng vừa" (H1 landing Gỗ Tâm An 06/10/2026, cả 375 lẫn 1440, vì
 `text-balance` chỉ đếm khoảng trắng, không biết "tự nhiên" là một từ). Tiêu đề lớn ba dòng hay dính
 nhất. Soi từng chỗ xuống dòng ở 375 và 1280; chỗ nào chẻ đôi một từ thì dán `&nbsp;` giữa hai tiếng
-của từ đó (`tự&nbsp;nhiên`), không dán cả câu.
+của từ đó (`tự&nbsp;nhiên`), không dán cả câu. **Tên riêng cũng vậy**: tên tiệm, tên sản phẩm,
+địa danh ("Da Xinh", "Thủ Đức") không được tách hai dòng ("Da" / "Xinh gọi lại chốt giờ", H2
+landing Da Xinh 06/10/2026). Tên riêng lặp nhiều chỗ thì bọc một lần trong component
+(`whitespace-nowrap`), không dán `&nbsp;` từng nơi.
 
 Không chỉ tiêu đề: **mô tả hai ba dòng trong cột hẹp** (bước dọc, sidebar, card nhỏ,
 mô tả dưới tiêu đề modal) dính nhiều nhất, vì cột cố định nên dòng nào hụt là hụt ở
