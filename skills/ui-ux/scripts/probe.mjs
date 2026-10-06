@@ -1186,7 +1186,13 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     // Lớp không phải cha mà có gradient (lớp phủ trên ảnh bìa) vẫn bỏ đo: ảnh nằm cạnh nó, không phải cha.
     for (const layer of stack.slice(textIndex)) {
       if (layer === element || element.contains(layer)) continue;
-      if (layer.contains(element)) break;
+      // Cha trong suốt (header trong suốt đè lên ảnh hero) không che gì: đi tiếp xuống lớp dưới nó. Dừng ở cha
+      // đầu tiên có nền thật. Đã báo nhầm link header chữ trắng 1.05:1 trên nền trang, mà dưới nó là ảnh hero.
+      if (layer.contains(element)) {
+        const layerStyle = getComputedStyle(layer);
+        if (layerStyle.backgroundImage !== "none" || readColor(layerStyle.backgroundColor).alpha > 0) break;
+        continue;
+      }
       if (["IMG", "VIDEO", "CANVAS", "svg"].includes(layer.tagName) || getComputedStyle(layer).backgroundImage !== "none") return null;
       if (readColor(getComputedStyle(layer).backgroundColor).alpha > 0) return readAncestorBackdrops(layer);
     }
@@ -3021,7 +3027,25 @@ function measureHiddenScrollHeight() {
   return hiddenHeight;
 }
 
+// Ảnh `loading="lazy"` ngoài màn không tải khi chụp fullPage: ảnh ra ô trắng giữa trang (landing nhiều ảnh, lưới
+// dịch vụ và không gian trắng hết). Cuộn một lượt cho ảnh tải rồi về đỉnh mới chụp.
+async function loadLazyImages(page) {
+  const hasPendingLazyImage = await page.evaluate(() => [...document.images].some((image) => image.loading === "lazy" && !image.complete));
+  if (!hasPendingLazyImage) return;
+
+  await page.evaluate(async () => {
+    for (let top = 0; top < document.documentElement.scrollHeight; top += innerHeight) {
+      window.scrollTo(0, top);
+      await new Promise((resolve) => setTimeout(resolve, 120));
+    }
+    window.scrollTo(0, 0);
+  });
+  await page.waitForFunction(() => [...document.images].every((image) => image.complete), null, { timeout: 5000 }).catch(() => {});
+  await page.waitForTimeout(300);
+}
+
 async function takeFullScreenshot(page, path) {
+  await loadLazyImages(page);
   const viewport = page.viewportSize();
   const hiddenHeight = await page.evaluate(measureHiddenScrollHeight);
   if (hiddenHeight > 1) {

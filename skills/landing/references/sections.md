@@ -160,18 +160,25 @@ Con số chỉ khi có thật hay đánh dấu `GIẢ:` (`H9`). Không số trò
 
 ```html
 <ul class="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-  <li class="group">
+  <li class="group flex flex-col">
     <div class="overflow-hidden rounded-lg">
       <!-- GIẢ: ảnh mẫu -->
-      <img src="…" alt="…" class="aspect-4/5 w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+      <img src="…" alt="…" class="aspect-3/2 w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] sm:aspect-4/5" />
     </div>
     <h3 class="mt-5 …tên card H3…">…</h3>
     <p class="mt-2 text-base/7 text-muted">…tối đa hai dòng…</p>
-    <p class="mt-3 text-sm text-foreground">Từ 450.000đ · 60 phút</p> <!-- chỉ khi người dùng đưa giá, G4 -->
+    <div class="mt-auto flex items-center justify-between gap-4 pt-4 text-sm">
+      <span class="text-foreground">Từ 450.000đ · 60 phút</span> <!-- giá chỉ khi người dùng đưa, G4 -->
+      <a href="#lien-he" class="…">Đặt lịch dịch vụ này →</a>
+    </div>
   </li>
 </ul>
 ```
 
+- **Hàng cuối card (giá, thời lượng, link) dính đáy** bằng `flex flex-col` + `mt-auto`: mô tả dài
+  ngắn khác nhau thì hàng cuối các card trong một hàng vẫn thẳng nhau, không lệch bậc thang.
+- **Dưới `sm` ảnh `aspect-3/2`**, từ `sm` mới `4/5`: bốn card một cột với ảnh dọc là gần 3.000px
+  cuộn ở 375 chỉ để đọc bốn tên dịch vụ.
 - Card không viền, không nền: ảnh và chữ đứng thẳng trên nền trang. Cả card không bấm được; muốn
   đặt dịch vụ thì một link chữ "Đặt lịch dịch vụ này →" dẫn `#lien-he` và chọn sẵn dịch vụ trong
   form.
@@ -213,6 +220,9 @@ carton 3–5 lớp", "In offset 4 màu"), dưới mô tả một dòng thông s�
 
 - 5 ảnh: một lớn, bốn nhỏ. Đầu section H2 nói điều cụ thể ("Năm phòng riêng, không ai đi ngang
   lúc bạn nằm"). Mỗi ảnh `GIẢ:` nếu là ảnh mẫu.
+- **Cả năm ảnh là không gian thật** (phòng, quầy, lối vào, góc chờ; B2B là xưởng, máy, kho), không
+  tĩnh vật nến, khăn, chai lọ (`H6`). Không tìm đủ năm ảnh không gian thì lưới ba ảnh (một lớn,
+  hai nhỏ), đừng lấp bằng tĩnh vật.
 - Không lightbox, không carousel tự trượt (`H10`).
 
 **B. Đội ngũ** (dịch vụ đặt lịch 4/7): 3–4 người, ảnh chân dung `aspect-4/5 rounded-lg`, tên
@@ -254,6 +264,9 @@ B2B (5/7): cách đặt hàng, 4 bước (hay 3). Dải tối được (`H2`).
 </ul>
 ```
 
+- **Avatar cùng một kiểu cho cả hàng**: hoặc ảnh cả ba, hoặc chữ cái đầu cả ba. Đánh giá giả tên
+  Việt thì dùng chữ cái đầu (`components/avatar.md`), vì ảnh randomuser là người phương Tây, ghép
+  với tên Việt nhìn ra ngay là giả (`H6`). Người dùng đưa ảnh khách thật thì dùng ảnh.
 - Card `bg-surface` trên nền ngà hay dải tint, không viền. Câu nói theo font tiêu đề (dịch vụ,
   cửa hàng); B2B dùng sans, kèm chức danh và công ty.
 - Điểm Google (2/7): một dòng trên lưới "4,9 ★ trên Google · 320 đánh giá" **chỉ khi có thật**,
@@ -341,9 +354,9 @@ câu mô tả một dòng           12 Nguyễn Văn A, Q.3    Facebook
 ```
 
 ```html
-<footer class="force-dark bg-background text-foreground pb-24 md:pb-0"> <!-- dịch vụ đặt lịch, B2B: nền tối H5 -->
+<footer class="bg-primary pb-24 text-primary-foreground md:pb-0"> <!-- dịch vụ đặt lịch, B2B: nền tối lấy sắc màu nhấn, H5 -->
   <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[minmax(0,2fr)_repeat(2,minmax(0,1fr))] lg:px-8">…</div>
-  <div class="mx-auto max-w-7xl border-t border-border px-4 py-6 text-sm text-muted sm:px-6 lg:px-8">…</div>
+  <div class="mx-auto max-w-7xl border-t border-primary-foreground/15 px-4 py-6 text-sm text-primary-foreground/70 sm:px-6 lg:px-8">…</div>
 </footer>
 ```
 

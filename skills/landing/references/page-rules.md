@@ -101,8 +101,11 @@ Dòng 7 của brief (cảm giác) quyết ba thứ: nền trang, màu nhấn, fo
 - **Một màu nhấn** (19/21). Màu nhấn ở: nút chính, link, số bước, icon. Không chữ gradient, không
   đốm màu trang trí, không nền gradient (`M12` của `ui-ux` giữ nguyên).
 - **Không trắng tinh cho cửa hàng, dịch vụ đặt lịch** (0/7 cửa hàng dùng trắng tinh).
-- **Footer tối** cho dịch vụ đặt lịch và B2B (5/7 mỗi loại): `.force-dark` (`M33`), không tự đặt
-  mã màu.
+- **Footer tối** cho dịch vụ đặt lịch và B2B (5/7 mỗi loại) **lấy sắc màu nhấn**: `bg-primary
+  text-primary-foreground`, chữ phụ `text-primary-foreground/70`, đường kẻ
+  `border-primary-foreground/15`. Không `.force-dark`: token tối của `ui-ux` ngả xanh lạnh
+  (`#05060f`), đứng dưới trang ngà ấm thành một khối đen lạnh tách khỏi trang. Màu nhấn gần đen
+  (B2B mạnh, wireframe chưa bật Màu) thì nền đó cũng chính là footer tối.
 - Chữ `text-muted` đo tương phản trên nền ngà và dải tint, không chỉ trên trắng (`P3`).
 
 **H6. Ảnh thật làm phần bán hàng.** ⚑
@@ -116,6 +119,12 @@ Dòng 7 của brief (cảm giác) quyết ba thứ: nền trang, màu nhấn, fo
 - Dự án chưa có ảnh thì lấy ảnh mẫu Unsplash theo `S16` của `ui-ux` (tìm thật, `curl -sI` từng
   link), mỗi chỗ một ảnh khác nhau, **comment `GIẢ:` trên từng ảnh** (`H9`): ảnh mẫu không phải
   nơi của khách.
+- **Người trong ảnh mẫu giống khách của trang**: tiệm ở VN thì người châu Á (tìm Unsplash với
+  "asian", "vietnamese"). Trang tên tiếng Việt, đánh giá tên Việt mà mọi khuôn mặt là người mẫu
+  phương Tây thì nhìn ra ngay là ảnh kho, trang thành theme.
+- **Ảnh nói đúng chữ bên cạnh.** Khối nói "năm phòng riêng" thì ảnh là phòng, góc phòng; không
+  tĩnh vật kho ảnh (nến, khăn cuộn, chai lọ, cành lá, hoa đặt trên khăn). Tĩnh vật chỉ được ở card
+  sản phẩm bán kèm. Lưới tĩnh vật spa là thứ làm mọi landing spa giống hệt nhau.
 - `next/image` (hay `<img>` có `width`, `height`) với `alt` nói ảnh cho thấy gì ("Phòng trị liệu
   có giường đôi và cửa sổ ra vườn"). Ảnh hero `priority`, còn lại lazy.
 - **Bo góc ảnh nhỏ** (`rounded-lg` trở xuống) mặc định: cửa hàng và B2B góc gần vuông (5/7 mỗi
