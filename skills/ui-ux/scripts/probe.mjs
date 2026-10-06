@@ -3214,6 +3214,20 @@ function measureLandingPage() {
   const linkTargets = new Set(ctas.filter(([, control]) => control.tagName === "A").map(([, control]) => control.getAttribute("href")));
   if (linkTargets.size > 1) problems.push(`nút chính khác đích: ${[...linkTargets].join(", ")} (H1)`);
 
+  // K11: form liên hệ của landing ô cao 48px, nhãn phải cách ô 8px (`mb-2`). Giữ `space-y-1.5` của form app
+  // (6px) thì nhãn dính ô, câu lỗi dính nhãn của ô kế (ảnh chủ dự án gửi, form showroom 06/10/2026).
+  for (const label of document.querySelectorAll("form label")) {
+    const control = label.htmlFor ? document.getElementById(label.htmlFor) : label.parentElement?.querySelector("input, select, textarea, button[role='combobox']");
+    if (!control || !isShown(label) || !isShown(control) || control.matches("[type='checkbox'], [type='radio']")) continue;
+    const labelRect = label.getBoundingClientRect();
+    const controlRect = control.getBoundingClientRect();
+    const gap = Math.round(controlRect.top - labelRect.bottom);
+    if (controlRect.height >= 44 && gap >= 0 && gap < 8) {
+      problems.push(`nhãn "${normalize(label.textContent).slice(0, 30)}" cách ô ${gap}px, form landing cần 8px (K11)`);
+      break;
+    }
+  }
+
   // H2: mọi section trừ hero cùng padding dọc. Dải nối hero (logo khách, thấp hơn 240px) có nhịp riêng.
   const paddedSections = sections.slice(1).filter((section) => section.getBoundingClientRect().height >= 240);
   const paddingOf = (section) => {
