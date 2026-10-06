@@ -113,7 +113,9 @@ async function launchBrowser(chromium) {
 // ---------- Các phép đo, chạy trong trang ----------
 
 // Tắt transition và animation để đo và chụp ra trạng thái cuối, không phải giữa chừng.
-const freezeMotionCss = "*,*::before,*::after{transition:none!important;animation-duration:0s!important;animation-delay:0s!important;caret-color:transparent!important}";
+// `scroll-behavior:auto`: trang cuộn mượt (`scroll-behavior: smooth`, hay gặp ở landing) làm `scrollIntoView` chạy dần,
+// đo trước và sau khi rê rơi vào hai lúc cuộn khác nhau, ra "rê link header thì khối phía sau dời 1135px" (báo nhầm).
+const freezeMotionCss = "html,body{scroll-behavior:auto!important}*,*::before,*::after{transition:none!important;animation-duration:0s!important;animation-delay:0s!important;caret-color:transparent!important}";
 
 // Probe tắt mọi chuyển động trước khi đo (ảnh chụp ổn định), nên ghi lại `transition` của từng phần tử vào
 // `data-evon-transition` trước đó, để các mục đo chuyển động (18f, 18g) còn đọc được.
@@ -1780,6 +1782,12 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     const rect = bar.getBoundingClientRect();
     if (rect.height < 44 || rect.height > 96 || rect.width < window.innerWidth * 0.4 || rect.top > 8) continue;
     if (readColor(getComputedStyle(bar).backgroundColor).alpha > 0.1) continue;
+    // Header trong suốt đè lên ảnh hero là kiểu của landing (landing H7), không phải header app chưa xong:
+    // dưới thanh có ảnh, video hay lớp gradient trước khi gặp nền đặc thì bỏ qua.
+    const stackUnderBar = document.elementsFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2).filter((layer) => !bar.contains(layer) && !layer.contains(bar));
+    const firstSolidIndex = stackUnderBar.findIndex((layer) => readColor(getComputedStyle(layer).backgroundColor).alpha > 0.9);
+    const layersAboveSolid = firstSolidIndex === -1 ? stackUnderBar : stackUnderBar.slice(0, firstSolidIndex + 1);
+    if (layersAboveSolid.some((layer) => ["IMG", "VIDEO", "CANVAS", "PICTURE"].includes(layer.tagName) || getComputedStyle(layer).backgroundImage !== "none")) continue;
     let behind = bar.parentElement;
     while (behind && readColor(getComputedStyle(behind).backgroundColor).alpha < 0.9) behind = behind.parentElement;
     const behindColor = readColor(getComputedStyle(behind || document.body).backgroundColor);
@@ -2301,6 +2309,7 @@ async function probeHoverStates(page) {
     await page.mouse.move(1, 1);
     const isReady = await locator.scrollIntoViewIfNeeded({ timeout: 800 }).then(() => true, () => false);
     if (!isReady) continue;
+    await finishRunningAnimations(page);
     const before = await page.evaluate(readHoverState, probeId);
     const followerTopsBefore = await page.evaluate(readFollowerTops, probeId);
     const isHovered = await locator.hover({ timeout: 800, force: true }).then(() => true, () => false);
@@ -3044,8 +3053,21 @@ async function loadLazyImages(page) {
   await page.waitForTimeout(300);
 }
 
+// Hiện dần khi cuộn tới bằng `element.animate` (Web Animations) không bị `freezeMotionCss` chặn: cuộn tới khối là
+// nó chạy 400–600ms, đo hay chụp giữa chừng ra khối mờ, lệch 8px ("rê card thì khối phía sau dời 8px", báo nhầm).
+// Chờ một nhịp cho IntersectionObserver gọi xong rồi cho mọi animation hữu hạn chạy tới cuối.
+async function finishRunningAnimations(page) {
+  await page.waitForTimeout(50);
+  await page.evaluate(() => {
+    for (const animation of document.getAnimations()) {
+      if (animation.effect?.getComputedTiming().endTime !== Infinity) animation.finish();
+    }
+  });
+}
+
 async function takeFullScreenshot(page, path) {
   await loadLazyImages(page);
+  await finishRunningAnimations(page);
   const viewport = page.viewportSize();
   const hiddenHeight = await page.evaluate(measureHiddenScrollHeight);
   if (hiddenHeight > 1) {

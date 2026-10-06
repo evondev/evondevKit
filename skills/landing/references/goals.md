@@ -69,9 +69,12 @@ làm nút chính.
 | --- | --- | --- | --- |
 | Dịch vụ đặt lịch | đặt một buổi | **Đặt lịch** (7/7 bắt đầu bằng "Book") | không |
 | Quán | đặt bàn | **Đặt bàn** | viền "Xem thực đơn", cuộn tới khối 5 |
-| Showroom, cửa hàng | hẹn ghé, nhờ tư vấn | **Đặt lịch tư vấn** (showroom), **Nhắn tư vấn** (tiệm nhỏ) | viền "Xem sản phẩm" |
+| Showroom, cửa hàng | hẹn ghé, nhờ tư vấn | **Hẹn ghé showroom** (showroom), **Nhắn tư vấn** (tiệm nhỏ) | viền "Xem sản phẩm" |
 | B2B | xin báo giá | **Nhận báo giá** (4/7 có chữ "quote") | viền "Xem năng lực sản xuất" (6/7 có hai nút) |
 
+- Showroom: khách tới để ngồi thử, sờ tận tay, nên nút gọi đúng việc đó ("Hẹn ghé showroom",
+  showroom nước ngoài ghi "Book a showroom visit"). "Đặt lịch tư vấn" không nói tư vấn ở đâu, khách
+  tưởng ngồi nhà chờ gọi.
 - B2B gia công theo bản vẽ, cơ khí: "Liên hệ tư vấn" được (3/7 dùng "Contact"), vì khách chưa
   biết cần báo giá món gì.
 - **Đích của nút chính là form ở khối Liên hệ** (`#lien-he`), cùng một đích ở mọi chỗ. Người
@@ -83,13 +86,19 @@ mà dẫn sang trang riêng; landing một trang của khách VN thì form phả
 
 | Loại | Ô (theo thứ tự) | Nút gửi |
 | --- | --- | --- |
-| Dịch vụ đặt lịch | Họ tên · Số điện thoại · Dịch vụ quan tâm (select) · Ngày muốn đến (không bắt buộc) | Đặt lịch |
+| Dịch vụ đặt lịch | Họ tên · Số điện thoại · Dịch vụ quan tâm (select, không bắt buộc, mục cuối "Chưa biết, cần tư vấn") · Ngày muốn đến (không bắt buộc) | Đặt lịch |
 | Quán | Họ tên · Số điện thoại · Ngày · Giờ · Số người · Ghi chú (không bắt buộc) | Đặt bàn |
-| Cửa hàng, showroom | Họ tên · Số điện thoại · Cần tư vấn gì (không bắt buộc) | Gửi yêu cầu |
-| B2B | Họ tên · Công ty · Số điện thoại · Email · Sản phẩm cần · Số lượng dự kiến (không bắt buộc) · Ghi chú (không bắt buộc) | Gửi yêu cầu báo giá |
+| Cửa hàng, showroom | Họ tên · Số điện thoại · Cần tư vấn gì (không bắt buộc) | Hẹn ghé showroom / Nhắn tư vấn |
+| B2B | Họ tên · Công ty · Số điện thoại · Email · Sản phẩm cần · Số lượng dự kiến (không bắt buộc) · Ghi chú (không bắt buộc) | Nhận báo giá |
 
+- **Nút gửi cùng chữ nút chính** (`H1`): khách bấm "Hẹn ghé showroom" ở hero, cuộn tới form thì
+  nút cuối form cũng là "Hẹn ghé showroom", không đổi thành "Gửi yêu cầu" (wireframe Gỗ Tâm An
+  06/10/2026: ba chữ cho một việc).
 - **Số điện thoại bắt buộc ở mọi loại**: khách VN được gọi lại hoặc nhắn Zalo, không qua email.
   Email chỉ bắt buộc ở B2B (form B2B nước ngoài 7/7 có email).
+- **Ô nào không ghi "(không bắt buộc)" thì phải chặn khi trống.** Nhãn nói bắt buộc mà bỏ trống vẫn
+  gửi được là khách không biết tin chữ nào. Khách mới chưa biết chọn dịch vụ gì là chuyện thường:
+  để select không bắt buộc, đừng bắt họ đoán.
 - Ô tối đa như bảng (form B2B nước ngoài 5–8 ô, chỉ 1/7 có ô số lượng, 1/7 có tải file). Không
   thêm ô "Bạn biết chúng tôi qua đâu", không thêm captcha nhìn thấy.
 - Chữ nút gửi theo việc, không "Gửi", không "Submit" (6/7 trang nước ngoài ghi "Submit", nhưng

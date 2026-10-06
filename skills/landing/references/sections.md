@@ -267,6 +267,8 @@ B2B (5/7): cách đặt hàng, 4 bước (hay 3). Dải tối được (`H2`).
 - **Avatar cùng một kiểu cho cả hàng**: hoặc ảnh cả ba, hoặc chữ cái đầu cả ba. Đánh giá giả tên
   Việt thì dùng chữ cái đầu (`components/avatar.md`), vì ảnh randomuser là người phương Tây, ghép
   với tên Việt nhìn ra ngay là giả (`H6`). Người dùng đưa ảnh khách thật thì dùng ảnh.
+  Chữ cái đầu **một màu cho cả hàng** (`bg-primary-light text-primary`), không mỗi người một màu
+  như avatar trong app: ba màu tím, vàng, hồng phá luật một màu nhấn của trang (`H5`).
 - Card `bg-surface` trên nền ngà hay dải tint, không viền. Câu nói theo font tiêu đề (dịch vụ,
   cửa hàng); B2B dùng sans, kèm chức danh và công ty.
 - Điểm Google (2/7): một dòng trên lưới "4,9 ★ trên Google · 320 đánh giá" **chỉ khi có thật**,
@@ -346,6 +348,8 @@ bỏ khung, chỉ đường kẻ `border-border-strong`, hai cột từ `lg` (đ
   field cuối `mt-4`.
 - **Nhãn hiện trên ô** (`components/input.md`), không chỉ placeholder. Ô bắt buộc không gắn `*`
   khi mọi ô đều bắt buộc; có ô không bắt buộc thì ghi "(không bắt buộc)" sau nhãn của ô đó.
+- **Câu lỗi một dòng ở 375** (khoảng 40 ký tự): "Nhập số điện thoại để gọi lại" chứ không "Nhập
+  số điện thoại để chúng tôi gọi lại chốt giờ" (xuống hai dòng, đẩy cả form).
 - Số điện thoại: `type="tel" inputmode="tel" autocomplete="tel"`; họ tên `autocomplete="name"`.
 - Select dịch vụ lấy đúng tên các card ở `K5`. Bấm "Đặt lịch dịch vụ này" ở card thì select chọn
   sẵn mục đó.
