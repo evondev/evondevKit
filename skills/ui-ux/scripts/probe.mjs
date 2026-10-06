@@ -3231,6 +3231,27 @@ function measureLandingPage() {
     }
   }
 
+  // T10: tên tiệm (chữ của logo trên header) tách hai dòng trong tiêu đề, câu dẫn ("Da" / "Xinh gọi lại chốt
+  // giờ", H2 landing Da Xinh 06/10/2026). Đo bằng Range: tên nằm trên hai hộp dòng khác nhau là bị chẻ.
+  const brandName = normalize(header?.querySelector("a")?.textContent);
+  if (brandName.includes(" ") && brandName.length <= 30) {
+    const splitPlaces = new Set();
+    for (const block of document.querySelectorAll("h1, h2, h3, p, blockquote, li")) {
+      if (!isShown(block) || block.closest("header, footer, [role='banner']")) continue;
+      const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT);
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        const index = node.textContent.indexOf(brandName);
+        if (index === -1) continue;
+        const range = document.createRange();
+        range.setStart(node, index);
+        range.setEnd(node, index + brandName.length);
+        const lineTops = new Set([...range.getClientRects()].filter((rect) => rect.width > 0).map((rect) => Math.round(rect.top)));
+        if (lineTops.size > 1) splitPlaces.add(normalize(block.textContent).slice(0, 40));
+      }
+    }
+    for (const place of [...splitPlaces].slice(0, 3)) problems.push(`tên "${brandName}" tách hai dòng: "${place}" (T10, bọc whitespace-nowrap)`);
+  }
+
   // H2: mọi section trừ hero cùng padding dọc. Dải nối hero (logo khách, thấp hơn 240px) có nhịp riêng.
   const paddedSections = sections.filter((section) => section !== hero && !section.querySelector("h1") && section.getBoundingClientRect().height >= 240 && !section.closest("[class*='wf-']"));
   const paddingOf = (section) => {
