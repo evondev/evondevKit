@@ -73,7 +73,7 @@ làm nút chính.
 | B2B | xin báo giá | **Nhận báo giá** (4/7 có chữ "quote") | viền "Xem năng lực sản xuất" (6/7 có hai nút) |
 
 - Showroom: khách tới để ngồi thử, sờ tận tay, nên nút gọi đúng việc đó ("Hẹn ghé showroom",
-  showroom nước ngoài ghi "Book a showroom visit"). "Đặt lịch tư vấn" không nói tư vấn ở đâu, khách
+  đúng chữ các showroom đã tra). "Đặt lịch tư vấn" không nói tư vấn ở đâu, khách
   tưởng ngồi nhà chờ gọi.
 - B2B gia công theo bản vẽ, cơ khí: "Liên hệ tư vấn" được (3/7 dùng "Contact"), vì khách chưa
   biết cần báo giá món gì.

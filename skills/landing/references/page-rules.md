@@ -125,6 +125,13 @@ Dòng 7 của brief (cảm giác) quyết ba thứ: nền trang, màu nhấn, fo
 - **Ảnh nói đúng chữ bên cạnh.** Khối nói "năm phòng riêng" thì ảnh là phòng, góc phòng; không
   tĩnh vật kho ảnh (nến, khăn cuộn, chai lọ, cành lá, hoa đặt trên khăn). Tĩnh vật chỉ được ở card
   sản phẩm bán kèm. Lưới tĩnh vật spa là thứ làm mọi landing spa giống hệt nhau.
+- **Vật lớn nhất trong ảnh là thứ chữ nói**, đúng chất liệu, đúng quy mô. Soi từng ảnh mẫu: che
+  chữ đi, nhìn ảnh có đoán ra chữ không. Đã dính ở wireframe showroom gỗ (06/10/2026): H1 "Bàn ghế
+  gỗ tự nhiên" trên ảnh mà vật lớn nhất là sofa nỉ xám; card "Ghế ăn" là ghế bọc nỉ; "xưởng mộc
+  nhỏ" là nhà máy rộng có thợ đội mũ bảo hộ; "Showroom" là phòng khách nhà ở; lưới không gian lấp
+  bằng ảnh món đồ chụp nền trơn. Không tìm được ảnh mẫu đúng thì dùng ảnh gần nhất **và ghi lệch ở
+  comment `GIẢ:`** ("GIẢ: ảnh phòng khách, thay bằng ảnh showroom thật"), đừng chọn ảnh đẹp mà
+  sai chủ thể.
 - `next/image` (hay `<img>` có `width`, `height`) với `alt` nói ảnh cho thấy gì ("Phòng trị liệu
   có giường đôi và cửa sổ ra vườn"). Ảnh hero `priority`, còn lại lazy.
 - **Bo góc ảnh nhỏ** (`rounded-lg` trở xuống) mặc định: cửa hàng và B2B góc gần vuông (5/7 mỗi
@@ -222,5 +229,9 @@ hệ riêng để dẫn sang.
   ("Nhắn Zalo cho Tên tiệm", "Gọi 0900 000 000").
 - **Cùng tông với trang**, không màu xanh Zalo, đỏ, không nhấp nháy, không vòng sóng, không bong
   bóng chữ bật ra tự động. Footer có `pb-24` dưới `md` để nút nổi không che dòng cuối.
+- **Ẩn khi hero còn trong màn**, hiện khi cuộn qua hero (`IntersectionObserver` trên hero, mờ
+  dần). Hàng nút hero `w-full` dưới `sm` nằm sát đáy màn đầu, đúng chỗ nút nổi: wireframe Gỗ Tâm An
+  (06/10/2026) cả ba phương án nút Zalo / Gọi đè lên "Hẹn ghé showroom" ở 375×667 và 375×812.
+  Hero đã có nút chính, nút nổi chưa cần. Probe báo "Nút nổi đè nút khác".
 - **Form ở khối Liên hệ** (`K11`), ô theo `G3`. Không popup form khi vào trang hay khi định thoát
   (0/21 popup đặt lịch; 1/7 popup giảm giá lấy email).

@@ -94,10 +94,16 @@ bì · KCN Tân Tạo"); dịch vụ đặt lịch 4/7 có. Dòng ưu đãi ch�
 
 **C. Panel ảnh cách mép màn** (dịch vụ đặt lịch, cảm giác thanh lịch)
 
-Như A nhưng ảnh nằm trong panel `mx-2 mt-2 rounded-2xl overflow-hidden sm:mx-3` (2/7), chữ trắng
-trên ảnh hay khối chữ đặt trong ô `bg-background` ở góc trái dưới của panel
-(`max-w-lg rounded-xl p-6 sm:p-8`), chữ màu thường. Hero không có header đè (header nằm trên
-panel).
+Như A nhưng ảnh nằm trong panel `rounded-2xl overflow-hidden` (2/7), chữ trắng trên ảnh hay khối
+chữ đặt trong ô `bg-background` ở góc trái dưới của panel (`max-w-lg rounded-xl p-6 sm:p-8`), chữ
+màu thường. Hero không có header đè (header nằm trên panel).
+
+- **Panel cách mép đều bốn phía**: `p-2 sm:p-3` trên `<section>`, không chỉ `px` và `pt`. Thiếu
+  khoảng đáy thì panel dính liền dải nền của section kế (wireframe Gỗ Tâm An 06/10/2026: hở 12px
+  trái phải trên, 0px dưới).
+- **Dưới `sm` khối chữ ra khỏi ảnh**, đứng ngay dưới panel: ảnh `aspect-4/5` trên, chữ dưới. Đặt ô
+  chữ đè lên ảnh ở 375 thì ô chữ che gần hết ảnh, màn đầu chỉ còn một dải tường nâu, mất đúng thứ
+  phương án này bán (ảnh không gian).
 
 ## K3. Dải logo khách ⚑
 
@@ -375,9 +381,15 @@ câu mô tả một dòng           12 Nguyễn Văn A, Q.3    Facebook
 ```html
 <footer class="bg-primary pb-24 text-primary-foreground md:pb-0"> <!-- dịch vụ đặt lịch, B2B: nền tối lấy sắc màu nhấn, H5 -->
   <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[minmax(0,2fr)_repeat(2,minmax(0,1fr))] lg:px-8">…</div>
-  <div class="mx-auto max-w-7xl border-t border-primary-foreground/15 px-4 py-6 text-sm text-primary-foreground/70 sm:px-6 lg:px-8">…</div>
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="border-t border-primary-foreground/15 py-6 text-sm text-primary-foreground/70">…</div>
+  </div>
 </footer>
 ```
+
+- **Đường kẻ nằm trong khung padding**, không đặt `border-t` lên chính khối có `px-*`: đường kẻ
+  phủ cả phần padding, thò ra trước mép chữ 32px ở 1440 (wireframe Gỗ Tâm An 06/10/2026). Probe
+  báo "Đường kẻ thò ra ngoài mép chữ".
 
 - Lặp lại địa chỉ, điện thoại, giờ (khách cuộn xuống đáy tìm, 5/7 dịch vụ đặt lịch để ở footer).
 - Link mạng xã hội chỉ khi người dùng đưa. B2B: tên công ty đầy đủ, mã số thuế khi người dùng đưa
@@ -391,7 +403,7 @@ Luật ở `H13`. Mọi loại trang.
 
 ```html
 <!-- GIẢ: H9, số Zalo và số gọi -->
-<div class="fixed right-4 bottom-4 z-30 flex flex-col gap-3 sm:right-6 sm:bottom-6">
+<div id="lien-he-noi" data-hidden="true" class="fixed right-4 bottom-4 z-30 flex flex-col gap-3 transition-[opacity,translate] duration-300 data-[hidden=true]:pointer-events-none data-[hidden=true]:translate-y-2 data-[hidden=true]:opacity-0 motion-reduce:transition-none sm:right-6 sm:bottom-6">
   <a href="https://zalo.me/0900000000" target="_blank" rel="noopener" aria-label="Nhắn Zalo cho Tên tiệm"
      class="grid size-12 place-items-center rounded-full border border-border-strong bg-surface text-xs font-semibold text-primary shadow-popover hover:bg-surface-hover">Zalo</a>
   <a href="tel:0900000000" aria-label="Gọi 0900 000 000"
@@ -399,5 +411,8 @@ Luật ở `H13`. Mọi loại trang.
 </div>
 ```
 
+- **Ẩn khi hero còn trong màn** (`H13`): bắt đầu `data-hidden="true"`, `IntersectionObserver` trên
+  hero bật lại khi hero ra khỏi màn. Ẩn bằng `opacity-0 translate-y-2 pointer-events-none`,
+  `motion-reduce:transition-none`.
 - Ẩn khi khối Liên hệ đang trong màn hình được (đã có cả form lẫn số ở đó), không bắt buộc.
 - Không tooltip bật tự động, không chấm đỏ thông báo, không vòng sóng (`H12`).

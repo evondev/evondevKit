@@ -56,7 +56,7 @@ Chi tiết ở `references/goals.md`:
 | Loại (`G1`) | Khách để lại gì (`G3`) | Nút chính |
 | --- | --- | --- |
 | **Dịch vụ đặt lịch**: spa, thẩm mỹ, salon, nail, nha khoa, phòng khám | hẹn một buổi | Đặt lịch |
-| **Cửa hàng, quán**: showroom, tiệm hoa, tiệm bánh, quán, nhà hàng | đặt bàn, hẹn ghé, nhờ tư vấn | Đặt bàn / Đặt lịch tư vấn / Nhắn tư vấn |
+| **Cửa hàng, quán**: showroom, tiệm hoa, tiệm bánh, quán, nhà hàng | đặt bàn, hẹn ghé, nhờ tư vấn | Đặt bàn / Hẹn ghé showroom / Nhắn tư vấn |
 | **Doanh nghiệp B2B**: sản xuất, bao bì, in ấn, đồng phục, cơ khí | xin báo giá | Nhận báo giá |
 
 Đề không nói thì **đoán theo bảng**, ghi vào brief kèm chữ *đoán* để người dùng sửa ở cổng 1.

@@ -398,7 +398,7 @@ gộp SaaS hay trang quảng cáo chung.
    ```
 
    Đáp án loại trang: dịch vụ đặt lịch, cửa hàng, B2B. Soi:
-   - **Cổng 1:** đoán đúng loại, bảng section đúng cột `G2`, nút "Đặt lịch" / "Đặt lịch tư vấn" /
+   - **Cổng 1:** đoán đúng loại, bảng section đúng cột `G2`, nút "Đặt lịch" / "Hẹn ghé showroom" /
      "Nhận báo giá" (`G3`), dòng 6 liệt kê thứ giả (địa chỉ, số, ảnh, đánh giá), dòng 7 cảm giác.
    - **Cổng 2:** A, B, C khác nhau ở kiểu hero (`K2`) và thứ tự; ảnh thật, không khối xám; có nhóm
      Trạng thái của form; khung 375 đứng đầu.

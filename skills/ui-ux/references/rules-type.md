@@ -93,6 +93,12 @@ Cách xử, theo thứ tự:
 3. `&nbsp;` giữa hai chữ cuối — chỉ khi hai cách trên không đủ.
 4. Rút gọn câu. Thường đây mới là cách đúng nhất.
 
+**Từ hai tiếng bị chẻ ở chỗ xuống dòng** cũng là chẻ sai nghĩa, kể cả khi không có chữ đơn côi:
+"Bàn ghế gỗ tự" / "nhiên, đóng vừa" (H1 landing Gỗ Tâm An 06/10/2026, cả 375 lẫn 1440, vì
+`text-balance` chỉ đếm khoảng trắng, không biết "tự nhiên" là một từ). Tiêu đề lớn ba dòng hay dính
+nhất. Soi từng chỗ xuống dòng ở 375 và 1280; chỗ nào chẻ đôi một từ thì dán `&nbsp;` giữa hai tiếng
+của từ đó (`tự&nbsp;nhiên`), không dán cả câu.
+
 Không chỉ tiêu đề: **mô tả hai ba dòng trong cột hẹp** (bước dọc, sidebar, card nhỏ,
 mô tả dưới tiêu đề modal) dính nhiều nhất, vì cột cố định nên dòng nào hụt là hụt ở
 mọi màn. Mọi mô tả được xuống dòng đều `text-pretty`, kể cả tên `line-clamp-2` trong
