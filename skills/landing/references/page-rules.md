@@ -184,6 +184,8 @@ thoại giả, đánh giá giả là nói dối khách, và khách gọi nhầm 
   thương hiệu thật, không vẽ logo bịa.
 - **Không bịa** chứng nhận, giấy phép, giải thưởng, điểm Google, mã số thuế: chưa có thì bỏ khối
   đó, không dựng giả.
+- **Không bịa sự gấp:** hạn ưu đãi, đếm ngược, "chỉ còn 3 suất", "12 người đang xem" chỉ khi người
+  dùng đưa số thật. Đếm ngược tự quay lại từ đầu khi hết là nói dối khách (`G6`).
 
 **H10. Màn hẹp.** ⚑ Áp thêm `../ui-ux/references/responsive.md`. Khách của loại trang này phần
 lớn vào từ điện thoại (link quảng cáo, Zalo, Facebook): soi 375 trước 1440.

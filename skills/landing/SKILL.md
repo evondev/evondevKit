@@ -76,7 +76,7 @@ Chưa qua cổng 2 thì **không đụng file nào của dự án**. Wireframe �
 
 ### E1. Brief ⚑
 
-Đọc README, mô tả người dùng gửi, chữ đang có trong dự án. Ghi bảy dòng, mỗi dòng ghi nguồn
+Đọc README, mô tả người dùng gửi, chữ đang có trong dự án. Ghi bảy dòng (tám với dịch vụ đặt lịch), mỗi dòng ghi nguồn
 (*đọc code*, *người dùng nói*, *đoán*):
 
 1. **Doanh nghiệp gì, ở đâu**, một câu ("Spa chăm sóc da ở Quận 3", "Xưởng in bao bì carton ở
@@ -90,6 +90,9 @@ Chưa qua cổng 2 thì **không đụng file nào của dự án**. Wireframe �
    chứng nhận. Người dùng chưa đưa thì ghi *chưa có, sẽ dùng dữ liệu giả và đánh dấu* (`H9`).
 7. **Cảm giác của trang**: ấm thanh lịch, sạch tin cậy, mạnh kỹ thuật, tối sang (`H5`). Quyết nền,
    màu nhấn, font tiêu đề. Mức chuyển động mặc định Nhẹ (`H12`).
+8. **Định vị** (chỉ dịch vụ đặt lịch, `G6`): Chuyên môn, Trải nghiệm hay Ưu đãi. Quyết niềm tin
+   đến từ đâu (bác sĩ, không gian hay ưu đãi), section thêm bớt, chữ nút chính, và đè dòng 7 về
+   lớp nhìn khi hai dòng lệch nhau.
 
 Dòng nào không suy ra được thì hỏi, **tối đa năm câu, gửi một lần**, mỗi câu kèm câu trả lời
 đoán sẵn. Không viết persona, không bịa số liệu.
@@ -119,6 +122,9 @@ component thật, thanh công cụ (Phương án, Màu, Nhấn, Khổ), khung l�
   không ở màu hay bo góc. Ví dụ dịch vụ đặt lịch: A ảnh tràn, đội ngũ sau dịch vụ; B chia đôi ảnh
   vòm, đánh giá lên ngay sau giới thiệu; C panel, thực đơn dịch vụ dạng danh sách (`K5` B). Phương
   án khuyên dùng theo cột mặc định của `G2`.
+- **Dịch vụ đặt lịch mà đề chưa rõ định vị** (`G6`): ba phương án là **ba định vị** (Chuyên môn,
+  Trải nghiệm, Ưu đãi), mỗi cái đúng section và lớp nhìn của nó, để người dùng chọn bằng mắt. Đề
+  đã rõ định vị thì ba phương án nằm trong định vị đó, khác ở hero và thứ tự như trên.
 - **D, E của `U3` thành:** D **trang ngắn**: chỉ hero, dịch vụ, liên hệ, footer; E **bỏ lặp**:
   mỗi ý một chỗ (hero và giới thiệu không nói cùng một câu).
 - **Nhóm Trạng thái** cho form liên hệ: Mặc định, Lỗi, Đã gửi (`K11`).
@@ -150,7 +156,7 @@ Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn. Góp ý theo số kh�
 
 | Nhóm | File | Dùng cho |
 | --- | --- | --- |
-| **G** | `references/goals.md` | Loại trang → bật section nào, thứ tự, chữ nút chính, ô form, giá, thứ phải có thật |
+| **G** | `references/goals.md` | Loại trang → bật section nào, thứ tự, chữ nút chính, ô form, giá, thứ phải có thật, định vị (`G6`) |
 | **K** | `references/sections.md` | Mười ba loại section, mỗi loại 1–3 biến thể có code |
 | **H** | `references/page-rules.md` | Luật chung toàn trang: CTA, nhịp, thang chữ và font, chữ hero, nền và màu, ảnh, header, dữ liệu giả, màn hẹp, chuyển động, nút nổi |
 

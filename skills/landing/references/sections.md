@@ -105,6 +105,26 @@ màu thường. Hero không có header đè (header nằm trên panel).
   chữ đè lên ảnh ở 375 thì ô chữ che gần hết ảnh, màn đầu chỉ còn một dải tường nâu, mất đúng thứ
   phương án này bán (ảnh không gian).
 
+**Khối ưu đãi** (định vị Ưu đãi, `G6`): thay dòng ưu đãi, đứng giữa câu dẫn và hàng nút, trong mọi
+biến thể hero.
+
+```html
+<div class="mt-6 inline-flex flex-col gap-1 rounded-lg bg-surface px-5 py-4 text-foreground">
+  <p class="text-sm font-medium">Khách mới · Trị da mụn 75 phút</p>
+  <p class="flex items-baseline gap-3">
+    <span class="text-3xl font-semibold tabular-nums">299.000đ</span>
+    <span class="text-base text-muted line-through tabular-nums">450.000đ</span>
+  </p>
+  <p class="text-sm text-muted">Áp dụng lần đầu, tới hết 31/10/2026</p> <!-- hạn thật, không có thì bỏ dòng (G6) -->
+</div>
+```
+
+- Một ưu đãi, không ba. Giá ưu đãi to nhất khối, giá cũ gạch nhạt, điều kiện và hạn một dòng nhỏ.
+- Nút chính ngay dưới mang ưu đãi trong chữ ("Đặt lịch – giảm 30%"), cùng chữ ở header và Liên hệ
+  (`H1`). Hết ưu đãi thì người dùng đổi một hằng số, không sửa ba chỗ.
+- Trên ảnh tràn (`K2` A) khối nền `bg-surface` chữ thường, không chữ trắng trên ảnh: số giá phải
+  đọc được ngay.
+
 ## K3. Dải logo khách ⚑
 
 Chỉ B2B (5/7), ngay dưới hero.

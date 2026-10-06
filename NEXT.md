@@ -428,6 +428,11 @@ gộp SaaS hay trang quảng cáo chung.
      1/7 trang spa đã tra có; thanh nút dính đáy 0/21; bộ đếm số là dấu hiệu theme. Chúng thuộc
      riêng định vị "giá tốt" nếu tra ra đúng vậy.
    - Hoạt cảnh mở hộp 3D cho bao bì: chỉ mức Nổi bật, khi người dùng có asset 3D hay minh hoạ.
+   - **Spa xong (06/10/2026):** 15 trang (5 mỗi định vị), giả thuyết đúng: niềm tin đến từ bác sĩ /
+     không gian / ưu đãi, kéo theo section, nút, giá, lớp nhìn. Ghi thành `G6`, khối ưu đãi ở `K2`,
+     `H9` không bịa sự gấp, brief dòng 8, wireframe ba phương án là ba định vị khi đề chưa rõ.
+     Chưa test. Còn: cửa hàng, B2B. Lệch cần tra thêm: thanh nút dính đáy mobile 3/5 trang Chuyên
+     môn (H10 đang ghi 0/21).
 
 **Hướng SaaS (gác 06/10/2026)** — hướng chốt 01/10/2026: không cố phủ mọi kiểu SaaS. Nội dung landing page muôn kiểu nhưng
 khung gần như giống nhau, nên skill chốt một bộ section cố định và chọn section theo mục tiêu

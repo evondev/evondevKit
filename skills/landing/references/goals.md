@@ -114,7 +114,7 @@ mà dẫn sang trang riêng; landing một trang của khách VN thì form phả
   (quán 3/7 có giá). Không đưa thì card không có dòng giá, không để `[cần điền]` ở từng card.
 - B2B: không giá. Dòng nhỏ dưới nút "Báo giá trong 24 giờ làm việc" chỉ khi người dùng hứa vậy.
 - Ưu đãi (giảm giá lần đầu, quà) chỉ khi người dùng đưa: một dòng dưới H1 hay trên nút hero,
-  không đếm ngược, không popup.
+  không popup. Định vị Ưu đãi (`G6`) thì ưu đãi thành khối riêng ở hero.
 
 ## G5. Thứ người dùng phải đưa thật ⚑
 
@@ -126,3 +126,32 @@ dùng chưa đưa thì dựng bằng dữ liệu giả để thấy bố cục, 
 - Đánh giá khách, điểm Google, logo khách hàng, con số (năm kinh nghiệm, số khách, công suất).
 - Chứng nhận (ISO, FSC…), giấy phép, mã số thuế: **không bịa**, chưa có thì bỏ khối.
 - Giá, ưu đãi.
+
+## G6. Định vị của dịch vụ đặt lịch ⚑
+
+Cùng một ngành mà định vị khác thì **niềm tin đến từ thứ khác**, nên bộ section, nút chính, lớp
+nhìn đều khác, không chỉ màu. Đếm từ 15 trang spa, phòng khám thẩm mỹ, da liễu (5 mỗi định vị),
+tra 06/10/2026. Mẫu Ưu đãi phần lớn là trang ưu đãi chạy quảng cáo, không phải trang chủ. **Chỉ có
+cho dịch vụ đặt lịch**; cửa hàng và B2B chưa tra, vẫn theo `G2`.
+
+| | **Chuyên môn** | **Trải nghiệm** (mặc định) | **Ưu đãi** |
+| --- | --- | --- | --- |
+| Nhận ra khi đề nói | bác sĩ, phòng khám, da liễu, điều trị, chứng chỉ | spa, thư giãn, không gian, cao cấp, liệu trình | giảm giá, khuyến mãi, khách mới, combo, gói, chạy quảng cáo |
+| Niềm tin đến từ | bác sĩ có tên và bằng cấp (4/5), hiệp hội, báo chí (3/5) | ảnh không gian, báo chí, giải thưởng (3/5) | ưu đãi và giá (5/5), trước/sau (2/5) |
+| Đổi so với `G2` | Đội ngũ (`K6` B) **bắt buộc**, kèm bằng cấp, ngay sau giới thiệu; dải chứng nhận (`K9`) khi có thật | Không gian (`K6` A) lớn, được lên ngay sau hero; thẻ quà tặng khi người dùng có (3/5) | **Khối ưu đãi ở hero** (`K2`); form ngay sau hero (form trên trang 3/5); trước/sau khi có ảnh thật; giá dịch vụ hiện rõ; header gọn, được bỏ link neo (2/5) |
+| Nút chính | Đặt lịch tư vấn | Đặt lịch | ưu đãi nằm trong chữ nút: "Đặt lịch – giảm 30%" (3/5) |
+| Nút lặp | ~4 lần | 2–3 lần (header, hero, Liên hệ) | ~5 lần (thêm sau trước/sau, sau đánh giá) |
+| Giá | không | không, hay "từ …" | luôn có, giá cũ gạch, giá ưu đãi số to |
+| Lớp nhìn (`H3`, `H5`) | sạch, tin cậy: trắng, navy, **sans** (4/5) | ấm thanh lịch hay tối sang: kem hoặc đen, **serif** mảnh (3/5) | sạch, nền trắng, **sans đậm**, số giá to; vẫn một màu nhấn |
+
+- **Đoán theo bảng**, ghi dòng 8 của brief kèm *đoán*. Không rõ thì Trải nghiệm.
+- **Giống ở cả ba:** lưới dịch vụ, đánh giá ngắn 2–3 câu, địa chỉ và giờ. Không FAQ (0/15),
+  quy trình hiếm (1/15). Ưu đãi định vị nào cũng có thể có (A, B đều có trang để dải "ưu đãi tháng
+  này"); định vị chỉ quyết nó to hay nhỏ.
+- **Ưu đãi phải là ưu đãi thật người dùng đưa.** Đề nói "đang giảm giá" mà không nói bao nhiêu,
+  tới khi nào thì khối ưu đãi để `[cần điền]` ở mức giảm và hạn, không tự đặt "giảm 30%".
+- **Hạn và đếm ngược chỉ khi có hạn thật** (4/5 trang Ưu đãi có hạn, 1/5 có đếm ngược). Không bịa
+  "chỉ còn 3 suất", không đếm ngược tự quay lại từ đầu khi hết (`H9`).
+- Định vị Chuyên môn mà người dùng chưa đưa tên, bằng cấp bác sĩ thì khối đội ngũ dựng tên, ảnh
+  giả có `GIẢ:`, còn dòng bằng cấp để `[cần điền]`: **không bịa bằng cấp** (`H9`).
+
