@@ -411,6 +411,18 @@ gộp SaaS hay trang quảng cáo chung.
    người dùng gửi link trang họ thích kèm "theo mẫu này", skill lấy bố cục và gu của trang đó,
    còn nội dung, ảnh, form, nút nổi và luật `H9` vẫn theo skill. Chưa viết luật trước khi bản hiện
    tại qua test.
+5. [ ] **Trục định vị** (làm ngay sau lượt rà cuối của Mộc Spa; chủ dự án chốt 06/10/2026 sau khi
+   đọc file chiến lược landing lead). Cùng một ngành mà định vị khác thì bộ section khác, không chỉ
+   màu: spa có *phòng khám chuyên môn* (bác sĩ, chứng nhận, kết quả, tư vấn), *spa sang* (ảnh, trải
+   nghiệm, liệu trình, đặt lịch), *spa giá tốt* (nỗi lo, trước/sau, ưu đãi, form). Brief thêm dòng
+   định vị, 2–3 kiểu mỗi loại trang, mỗi kiểu kéo theo section, lớp nhìn, mức chuyển động. Đây là
+   cách chống "đại trà" (dòng cảm giác hiện chỉ đổi lớp nhìn).
+   - **Tra trước, đếm theo định vị:** bộ spa chấm theo CTA, trust, mobile và các category Beauty,
+     Furniture & Interiors của gallery landing (nguồn trong bộ nhớ, không ghi tên vào repo).
+   - **Không lấy thẳng cấu trúc trong file chiến lược làm mặc định:** trước/sau, quy trình, FAQ chỉ
+     1/7 trang spa đã tra có; thanh nút dính đáy 0/21; bộ đếm số là dấu hiệu theme. Chúng thuộc
+     riêng định vị "giá tốt" nếu tra ra đúng vậy.
+   - Hoạt cảnh mở hộp 3D cho bao bì: chỉ mức Nổi bật, khi người dùng có asset 3D hay minh hoạ.
 
 **Hướng SaaS (gác 06/10/2026)** — hướng chốt 01/10/2026: không cố phủ mọi kiểu SaaS. Nội dung landing page muôn kiểu nhưng
 khung gần như giống nhau, nên skill chốt một bộ section cố định và chọn section theo mục tiêu
