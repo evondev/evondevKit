@@ -5,7 +5,7 @@ Mượn khuôn **menu con của sidebar** (`layouts/app.md`): cùng chiều cao 
 nền hover, cùng đường dọc, cùng cách báo mục đang chọn (`N5`).
 
 ```html
-<ul class="space-y-0.5 text-sm"><!-- 2px giữa các hàng, xem list-row.md -->
+<ul class="space-y-1 text-sm"><!-- 4px giữa các hàng, xem list-row.md -->
   <li>
     <button type="button" class="flex h-10 w-full cursor-pointer items-center gap-2 rounded-xl px-2 outline-hidden hover:bg-item-hover" aria-expanded="true">
       <!-- h-10 rounded-xl: cao bằng link sidebar, bo theo F1. ChevronDown size-4 text-muted, xoay -rotate-90 khi đóng. Hàng file: một ô size-4 trống giữ chỗ.
@@ -13,15 +13,15 @@ nền hover, cùng đường dọc, cùng cách báo mục đang chọn (`N5`).
       <!-- FolderOpen / Folder / FileText size-4 shrink-0 -->
       <span class="min-w-0 truncate">Khách hàng doanh nghiệp</span>
     </button>
-    <ul class="ml-4 space-y-0.5 border-l border-border-strong pl-2"><!-- đường dọc chạy ở tâm icon cha -->
+    <ul class="ml-4 space-y-1 border-l border-border-strong pl-2"><!-- đường dọc chạy ở tâm icon cha -->
       …
     </ul>
   </li>
 </ul>
 ```
 
-- **Hàng đang chọn**: nền `bg-secondary` + `font-medium` + **đoạn đường dọc của nó đậm lên `--foreground`**, y như menu con của sidebar. Không tô màu nhấn, không viền. Đoạn đậm là `before:absolute before:inset-y-0 before:w-px before:bg-foreground` trên hàng, lùi sang trái đúng `pl` của danh sách cộng 1px viền (`before:-left-[9px]` với `pl-2`); số âm giữ có chủ ý (`N11` bước 4), comment ngay trên dòng. Cách không âm là mỗi `<li>` tự `border-l` và đoạn đang chọn đổi màu viền, nhưng khe `space-y-0.5` giữa các hàng làm đường dọc đứt từng quãng 2px, còn đổi khe sang `pt-0.5` thì đoạn đậm dài hơn nền hàng 2px.
-- **Rê `hover:bg-item-hover`, đang chọn đậm hơn một bậc `bg-secondary`**, như link sidebar (`I10`; chủ dự án chốt). Cây không có checkbox, nền là dấu chọn duy nhất: rê ra đúng nền đang chọn thì rê qua hàng nào cũng trông như vừa chọn nó. "Rê và đã chọn cùng một nền mờ" chỉ còn cho dòng bảng tick checkbox. Hai hàng cạnh nhau cùng sáng nền (một đang chọn, một đang rê) vẫn xảy ra, nên danh sách **phải có `space-y-0.5`**, nếu không hai hàng dính thành một khối.
+- **Hàng đang chọn**: nền `bg-secondary` + `font-medium` + **đoạn đường dọc của nó đậm lên `--foreground`**, y như menu con của sidebar. Không tô màu nhấn, không viền. Đoạn đậm là `before:absolute before:inset-y-0 before:w-px before:bg-foreground` trên hàng, lùi sang trái đúng `pl` của danh sách cộng 1px viền (`before:-left-[9px]` với `pl-2`); số âm giữ có chủ ý (`N11` bước 4), comment ngay trên dòng. Cách không âm là mỗi `<li>` tự `border-l` và đoạn đang chọn đổi màu viền, nhưng khe `space-y-1` giữa các hàng làm đường dọc đứt từng quãng 4px, còn đổi khe sang `pt-1` thì đoạn đậm dài hơn nền hàng 4px.
+- **Rê `hover:bg-item-hover`, đang chọn đậm hơn một bậc `bg-secondary`**, như link sidebar (`I10`; chủ dự án chốt). Cây không có checkbox, nền là dấu chọn duy nhất: rê ra đúng nền đang chọn thì rê qua hàng nào cũng trông như vừa chọn nó. "Rê và đã chọn cùng một nền mờ" chỉ còn cho dòng bảng tick checkbox. Hai hàng cạnh nhau cùng sáng nền (một đang chọn, một đang rê) vẫn xảy ra, nên danh sách **phải có `space-y-1`** (4px, luật khoá 19), nếu không hai hàng dính thành một khối.
 - **Chevron chỉ ở hàng mở được.** Hàng file vẫn chừa đúng một ô `size-4` để chữ thẳng cột với hàng thư mục. Icon thư mục đổi theo trạng thái: `FolderOpen` khi mở, `Folder` khi đóng. Icon file lấy theo đuôi từ **bảng chung trong `file-upload.md`** (cùng dáng tờ giấy, một màu).
 - **Thư mục rỗng có một hàng chữ xám "Thư mục trống"**, `text-muted`, **thẳng mép chữ của hàng con cùng cấp** — không thụt ít hơn, không có icon. Không có hàng này thì mở thư mục ra chẳng thấy gì đổi, người dùng tưởng bấm hụt (`N2`).
 - **Tên dài cắt giữa, giữ vài ký tự cuối của tên cộng đuôi file** ("bao-cao…quy-3.xlsx", không "bao-cao-doanh….xlsx" bốn chấm), dấu `…` dính liền (`T14`). Tooltip tên đầy đủ **chỉ gắn khi tên thật sự bị cắt** (so `scrollWidth` với `clientWidth`) và không che hàng kế (`N8`). **Tooltip tên dài được xuống dòng, không `whitespace-nowrap`**: `max-w-[min(20rem,calc(100vw-1rem))] whitespace-normal wrap-anywhere`, và `side="right"` hết chỗ thì lật xuống dưới hàng. Tooltip `nowrap` với tên 90 ký tự ở 375px rộng 765px, tràn khỏi màn gần 400px, cắt mất đúng nửa tên nó sinh ra để hiện.

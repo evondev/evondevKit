@@ -29,7 +29,7 @@ trả lời `dựng luôn`."* (tiếng Anh: *"Reply `just build it` to skip the 
 | --- | --- | --- |
 | `U1` Brief | Một khối ngắn: sản phẩm, người dùng, việc chính, nền tảng | Gộp với `U2`, **cổng 1** |
 | `U2` Việc chính của từng màn | Bảng: đến để làm gì, so sánh bằng gì, hành động cuối, quy ước loại sản phẩm | **Cổng 1**: người dùng sửa hoặc trả lời `ok` |
-| `U3` Wireframe | 2–3 phương án bố cục khác nhau thật, nội dung thật, có ảnh; biến thể nội dung D, E; một thanh công cụ: phương án, màu, desktop / mobile, trạng thái, khung lý do | **Cổng 2**: người dùng chọn |
+| `U3` Wireframe | 2–3 phương án bố cục khác nhau thật, nội dung thật, có ảnh; một thanh công cụ: phương án, gọn chữ, bỏ lặp, màu, desktop / mobile, trạng thái, khung lý do | **Cổng 2**: người dùng chọn |
 | `U4` Dựng thật | Code theo phương án đã chọn, probe tới khi danh sách `P` trống | Như cổng 3 của `checklist.md` |
 
 Chưa qua cổng 2 thì **không đụng file nào của dự án**. Wireframe và ảnh để ở
@@ -178,22 +178,33 @@ dòng đó."* Dừng chờ.
 - **Wireframe có đủ trạng thái như bản thật**: một mục đang chọn đánh dấu `aria-current` (hay
   `aria-selected`), có nền rê. Wireframe tĩnh không có rê thì không ai thấy
   "rê trùng nền đang chọn" cho tới khi đã dựng xong.
-- **Probe từng phương án trước khi gửi**, ở 1280 và 375, sửa tới khi sạch các mục: danh sách
-  `P`, rê ra đúng màu mục đang chọn, vạch trái bị bo góc cắt, mục lặp dày chữ, cột dính cuộn
-  riêng, nội dung trôi giữa màn rộng, hàng nút rớt một nút lẻ (`R3`), select và ô ngày gốc (kể cả
-  trong dialog đang đóng), "khung wireframe làm hỏng
-  bản thiết kế" (số đè chữ, `sticky` mất, thanh tràn). Rồi chạy luật Cấu trúc (`V1b` trong `review.md`) bằng
-  mắt. Người dùng không tự thấy "card chữ quá trời" hay "vạch bị cắt" trên wireframe xám, họ
-  chọn theo bố cục rồi vấp lỗi ở bản dựng (năm dòng mỗi mục, vạch trái bị bo cắt, đang chọn và rê
-  cùng một xám; probe đo ra cả hai lỗi đầu trên chính file wireframe). Ghi một dòng khi gửi: *"Probe wireframe: A sạch, B sạch, C sạch"*.
-- **Hai biến thể nội dung, D và E, trên phương án khuyên dùng.** Cùng bố cục, chỉ khác nội
-  dung, để người dùng thấy cạnh nhau cái họ không tự nghĩ ra:
-  - **D, gọn chữ:** mỗi mục chỉ giữ thứ dùng để chọn ở cột "so sánh bằng gì" của `U2`, tối
+- **Probe nhanh từng phương án trước khi gửi**: `probe.mjs "<link phương án>&mau=mau" --quick
+  --widths 1280,375`, ~6 giây mỗi phương án. Sửa tới khi sạch các mục: danh sách `P`, vạch trái bị
+  bo góc cắt, mục lặp dày chữ, cột dính cuộn riêng, nội dung trôi giữa màn rộng, hàng nút rớt một
+  nút lẻ (`R3`), select và ô ngày gốc (kể cả trong dialog đang đóng), "khung wireframe làm hỏng
+  bản thiết kế" (số đè chữ, `sticky` mất, thanh tràn). Đó là lỗi của chính bố cục: để tới `U4`
+  mới sửa thì bản dựng lệch khỏi cái người dùng đã chọn. Người dùng không tự thấy "card chữ quá
+  trời" hay "vạch bị cắt" trên wireframe xám, họ chọn theo bố cục rồi vấp lỗi ở bản dựng (probe
+  đo ra cả hai trên chính file wireframe). Rồi chạy luật Cấu trúc (`V1b` trong `review.md`) bằng
+  mắt. Ghi một dòng khi gửi: *"Probe nhanh: A sạch, B sạch, C sạch"*.
+  **Không probe đủ ở bước này**, cũng không probe nấc Xám (cùng bố cục, chỉ khác màu): `--quick`
+  bỏ Tab, rê, bấm, mở lớp nổi (rê trùng nền đang chọn, lớp nổi tràn, vòng focus), phần đó chiếm
+  phần lớn thời gian đo. Bản dựng không chép rê và lớp nổi từ wireframe mà theo mẫu của skill, và
+  `U4` probe đủ rồi sửa lúc dựng. Probe đủ năm bản ở hai nấc màu mất vài phút trước cổng 2.
+- **Hai công tắc nội dung, Gọn chữ và Bỏ lặp, áp cho mọi phương án** (`?gon=1`, `?bolap=1`,
+  bật cả hai cùng lúc được). Cùng bố cục, chỉ bớt nội dung, để người dùng bật lên là thấy cái họ
+  không tự nghĩ ra, trên đúng phương án họ đang xem:
+  - **Gọn chữ:** mỗi mục chỉ giữ thứ dùng để chọn ở cột "so sánh bằng gì" của `U2`, tối
     đa ba dòng. Phần còn lại để trang hay panel chi tiết.
-  - **E, bỏ lặp:** mỗi thông tin một chỗ trên màn: không lặp giữa mục và panel chi tiết, giữa
+  - **Bỏ lặp:** mỗi thông tin một chỗ trên màn: không lặp giữa mục và panel chi tiết, giữa
     header và sidebar, giữa tên trang và mục đang chọn (`V1b`, "Hai chỗ một việc").
 
-  D và E cũng qua probe như các phương án bố cục.
+  **Không vẽ bản riêng.** Mỗi phương án vẽ đủ nội dung một lần, gắn `data-wf-gon` lên phần ẩn khi
+  gọn chữ, `data-wf-lap` lên chỗ lặp; CSS ẩn theo `body[data-gon="1"]`, `body[data-bolap="1"]`
+  (mẫu dưới). Bản trước là hai phương án D, E chỉ vẽ trên phương án khuyên dùng: người chọn C phải
+  tự hình dung "C gọn chữ", và không xem được cả hai cùng bật. Phương án nào không có gì để gọn
+  hay bỏ lặp thì khung lý do ghi một câu (*"B đã gọn sẵn: mỗi dòng ba thông tin"*): bật mà không
+  đổi gì thì người dùng tưởng công tắc hỏng. Công tắc chỉ ẩn bớt nên không cần probe riêng.
 
 - **Công tắc Màu** (tắt là Xám, bật là Màu), áp cho mọi phương án, không phải bản riêng:
   - **Tắt, Xám:** mặc định lúc mở, chỉ xem bố cục.
@@ -213,8 +224,9 @@ dòng đó."* Dừng chờ.
   **Nhấn: ● ● ●** gồm ba màu gợi ý (chàm `#4f46e5`, xanh ngọc `#0d9488`, cam `#ea580c`), đổi
   `--primary` tại chỗ. Không có nhóm này thì nấc Màu của dự án mới vẫn đen trắng. Màu người dùng
   chọn thành màu nhấn lúc dựng (`brand-tokens.md`); không chọn thì dựng màu đầu, báo một dòng.
-  Đổi màu bằng biến CSS trên `:root[data-mau]`, `:root[data-nhan]` (không trên `body`, xem trên), không vẽ lại. Probe cả hai
-  nấc (tương phản chữ trắng trên nút chính, trên mục đang chọn).
+  Đổi màu bằng biến CSS trên `:root[data-mau]`, `:root[data-nhan]` (không trên `body`, xem trên), không vẽ lại. Probe nhanh ở
+  nấc Màu đo tương phản chữ trắng trên nút chính, trên mục đang chọn, với màu nhấn đầu; hai màu còn lại
+  tự so bằng mắt trên ảnh, chữ trắng trên cam là chỗ hay hụt.
 
   **Dự án chưa có logo** thì thêm nhóm **Logo: 1 · 2 · 3** (`?logo=`): ba dấu theo ba hướng của
   `components/logo.md`, đã kiểm ở 16px, đổi ở mọi chỗ có logo trên trang. Khung lý do có một dòng
@@ -245,7 +257,7 @@ dòng đó."* Dừng chờ.
   56px, nền trắng, viền dưới xám nhạt, chữ 14px, **không dính đỉnh**: thanh dính đè lên sidebar,
   header, panel `sticky top-0` của chính bản thiết kế, người xem thấy sidebar mất logo khi cuộn và
   tưởng bản dựng sẽ vậy. Các nhóm xếp liền từ trái, cách nhau
-  24px, theo thứ tự: Màn (đề nhiều màn) · **Phương án** · **Màu** (công tắc) · Nhấn (dự án chưa có brand) · Logo (dự án chưa có logo) · Khổ · Nav (mobile, ít mục)
+  24px, theo thứ tự: Màn (đề nhiều màn) · **Phương án** · **Gọn chữ · Bỏ lặp** · **Màu** (công tắc) · Nhấn (dự án chưa có brand) · Logo (dự án chưa có logo) · Khổ · Nav (mobile, ít mục)
   · **Trạng thái**.
   - **Đề nhiều màn** (lịch và hồ sơ, danh sách và chi tiết) thì một file, nhóm **Màn** đứng đầu
     (`?man=`), nhãn một hai chữ ("Lịch", "Hồ sơ"); mỗi màn có A, B, C riêng. **Ở 1280 thanh phải
@@ -255,7 +267,7 @@ dòng đó."* Dừng chờ.
     đang bật (`aria-current="page"`) nền trắng, bóng mảnh, chữ đậm đen; nút khác chữ xám. Không
     dải tối, không nút chữ trắng rời rạc: dải tối nặng hơn chính bản thiết kế, kéo mắt khỏi thứ
     cần xem, và mười mấy nút cùng hình đọc không ra nhóm nào.
-  - **Phương án chỉ ghi chữ cái** `A B C D E`, có nhãn "Phương án" xám đứng trước; tên đầy đủ ở
+  - **Phương án chỉ ghi chữ cái** `A B C`, có nhãn "Phương án" xám đứng trước; tên đầy đủ ở
     `title` và ở đầu khung lý do. Phương án khuyên dùng có chấm nhỏ màu nhấn cạnh chữ cái. Tên
     dài trên thanh ("A · Báo cáo một trang (khuyên dùng)") đẩy cả thanh phải cuộn ngang ở 1280.
   - **Khổ có icon**: màn hình trước Desktop, điện thoại trước Mobile (icon 16px, nét 2).
@@ -263,20 +275,27 @@ dòng đó."* Dừng chờ.
     bấm thì ra bốn link. Bốn trạng thái ít đổi, không đáng chiếm bốn nút trên thanh.
   - **Màu là công tắc** có nhãn "Màu" đứng trước, không phải segmented: chỉ còn hai nấc.
     Nhóm Nhấn, Nav không cần nhãn: chữ trong nút đã tự nói.
+  - **Gọn chữ, Bỏ lặp là hai nút bật tắt chung một rãnh**, mỗi nút có ô vuông nhỏ trước chữ, bật
+    thì ô có dấu ✓ và nút nền trắng (`aria-pressed`). Không dùng hai công tắc như Màu (thêm gần
+    100px, thanh không vừa 1280 khi có cả Nhấn và Logo); không dùng segmented trơn (trông như
+    chọn một trong hai, trong khi bật cùng lúc được).
   - **Chữ trên thanh và khung lý do theo tiếng người dùng đang viết (`T27`)**, không theo
     `T24`: đó là lời skill nói với người dùng, không phải chữ của sản phẩm. Mẫu HTML dưới viết
     tiếng Việt; đề tiếng Anh thì đổi hết: Phương án → Option, Màu → Color, Nhấn (`aria-label`
     Chàm, Xanh ngọc, Cam) → Indigo, Teal, Orange, Thanh dưới → Bottom bar, Trạng thái → State
     (Có dữ liệu, Đang tải, Rỗng, Lỗi → Data, Loading, Empty, Error), Khuyên dùng → Recommended,
-    Ưu, nhược → Pros, cons, Ưu / Nhược / Hợp khi → Pros / Cons / Best when, Gợi ý góp ý →
-    Feedback ideas, tên phương án, câu lý do, câu gợi ý cũng tiếng Anh. Tham số URL (`v`, `mau`,
-    `kho`, `tt`…) giữ nguyên. Chữ **trong** bản thiết kế vẫn theo `T24`: dự án đang có nhãn tiếng
+    Gọn chữ, Bỏ lặp → Concise, No repeats, Ưu, nhược → Pros, cons, Ưu / Nhược / Hợp khi → Pros / Cons / Best when, Gợi ý góp ý →
+    Feedback ideas, tên phương án, câu lý do, câu gợi ý cũng tiếng Anh. Tham số URL (`v`, `gon`, `bolap`,
+    `mau`, `kho`, `tt`…) giữ nguyên. Chữ **trong** bản thiết kế vẫn theo `T24`: dự án đang có nhãn tiếng
     Việt thì wireframe tiếng Việt dù đề tiếng Anh. Thanh tiếng Việt trên đề tiếng Anh thì người
     dùng không đọc được nút nào, mà thanh là chỗ duy nhất để chọn.
 
-  Mỗi nút là link giữ nguyên các lựa chọn khác, chỉ đổi đúng tham số của nó. Màn hẹp thì thanh
-  cuộn ngang, không xuống dòng. Mở không tham số thì: phương án khuyên dùng, Màu tắt, Desktop, Có
-  dữ liệu. Thiếu thanh thì người dùng phải tự gõ `?v=`.
+  Mỗi nút là link giữ nguyên các lựa chọn khác, chỉ đổi đúng tham số của nó, **kể cả thứ người
+  dùng đã mở trên khung wireframe**: khung lý do đang mở thì đổi phương án, màu, khổ vẫn mở
+  (`?uu=1`). Người dùng mở Ưu, nhược để so A với B; bấm sang B mà khung đóng lại thì lần nào cũng
+  phải bấm mở lại. Thứ mở thêm sau này (bảng so sánh, ghi chú) cũng giữ theo cách đó. Màn hẹp thì thanh
+  cuộn ngang, không xuống dòng. Mở không tham số thì: phương án khuyên dùng, Gọn chữ và Bỏ lặp tắt,
+  Màu tắt, Desktop, Có dữ liệu. Thiếu thanh thì người dùng phải tự gõ `?v=`.
 
 - **Khung lý do ngay dưới thanh**, không modal (modal che mất bản thiết kế đúng lúc cần nhìn),
   nền xám rất nhạt. **Dòng đóng**: tên phương án đậm đen, nhãn "Khuyên dùng" (chỉ phương án khuyên
@@ -303,9 +322,10 @@ dòng đó."* Dừng chờ.
     <div class="wf-group">
       <span class="wf-label">Phương án</span>
       <span class="wf-set" data-wf-param="v">
-        <a data-value="a" title="A · Lưới card (khuyên dùng)" data-recommended>A</a><a data-value="b" title="B · Danh sách + chi tiết">B</a><a data-value="d" title="D · A gọn chữ">D</a>
+        <a data-value="a" title="A · Lưới card (khuyên dùng)" data-recommended>A</a><a data-value="b" title="B · Danh sách + chi tiết">B</a><a data-value="c" title="C · Bảng">C</a>
       </span>
     </div>
+    <span class="wf-set wf-flags"><a data-wf-toggle="gon" data-on="1" data-off="0">Gọn chữ</a><a data-wf-toggle="bolap" data-on="1" data-off="0">Bỏ lặp</a></span>
     <a class="wf-switch" data-wf-toggle="mau" data-on="mau" data-off="xam" role="switch">Màu <i></i></a>
     <span class="wf-set" data-wf-param="nhan"><a data-value="cham" aria-label="Chàm"><i></i></a><a data-value="ngoc" aria-label="Xanh ngọc"><i></i></a><a data-value="cam" aria-label="Cam"><i></i></a></span>
     <span class="wf-set" data-wf-param="kho">
@@ -355,9 +375,13 @@ dòng đó."* Dừng chờ.
       background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / .2); transition: translate .15s; }
     .wf-switch[aria-checked="true"] i { background: #171717; }
     .wf-switch[aria-checked="true"] i::after { translate: 16px 0; }
-    .wf-set a[aria-current="page"] { background: #fff; color: #171717; font-weight: 500;
+    .wf-set a[aria-current="page"], .wf-flags a[aria-pressed="true"] { background: #fff; color: #171717; font-weight: 500;
       box-shadow: 0 1px 2px rgb(0 0 0 / .08), 0 0 0 1px rgb(0 0 0 / .04); }
     .wf-bar svg { width: 16px; height: 16px; flex-shrink: 0; }
+    /* Ô vuông trước chữ: hai nút bật tắt riêng, không phải chọn một trong hai. */
+    .wf-flags a::before { content: ""; width: 12px; height: 12px; border: 1.5px solid #a3a3a3; border-radius: 3px; }
+    .wf-flags a[aria-pressed="true"]::before { border-color: #171717; background: #171717 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 10px no-repeat; }
+    body[data-gon="1"] [data-wf-gon], body[data-bolap="1"] [data-wf-lap] { display: none; }
     [data-wf-param="v"] a { justify-content: center; min-width: 32px; padding: 0 10px; }
     [data-wf-param="v"] a[data-recommended]::after { content: ""; position: absolute; top: 5px; right: 5px;
       width: 5px; height: 5px; border-radius: 50%; background: #4f46e5; }
@@ -441,27 +465,42 @@ dòng đó."* Dừng chờ.
   </style>
   <script>
     const params = new URLSearchParams(location.search);
-    // Mặc định: phương án khuyên dùng, Xám, màu nhấn gợi ý đầu, Desktop, ☰, Có dữ liệu.
-    const state = { v: "a", mau: "xam", nhan: "cham", kho: "desktop", nav: "menu", tt: "du-lieu" };
+    // Mặc định: phương án khuyên dùng, đủ nội dung, Xám, màu nhấn gợi ý đầu, Desktop, ☰, Có dữ liệu.
+    const state = { v: "a", gon: "0", bolap: "0", mau: "xam", nhan: "cham", kho: "desktop", nav: "menu", tt: "du-lieu", uu: "0" };
     for (const key of Object.keys(state)) state[key] = params.get(key) || state[key];
     Object.assign(document.body.dataset, state);
     Object.assign(document.documentElement.dataset, { mau: state.mau, nhan: state.nhan }); // màu nhấn đổi trên :root
     if (params.has("frame")) document.body.dataset.frame = "1";
-    for (const set of document.querySelectorAll("[data-wf-param]")) {
-      for (const link of set.querySelectorAll("a")) {
-        link.href = `?${new URLSearchParams({ ...state, [set.dataset.wfParam]: link.dataset.value })}`;
-        if (state[set.dataset.wfParam] !== link.dataset.value) continue;
-        link.setAttribute("aria-current", "page");
-        const currentLabel = document.querySelector(`[data-wf-current="${set.dataset.wfParam}"]`);
-        if (currentLabel) currentLabel.textContent = link.textContent;
+    const linkTo = (changes) => `?${new URLSearchParams({ ...state, ...changes })}`;
+    // Gọi lại mỗi khi state đổi tại chỗ (khung lý do mở, đóng), để link nào cũng mang state mới.
+    function updateLinks() {
+      for (const set of document.querySelectorAll("[data-wf-param]")) {
+        for (const link of set.querySelectorAll("a")) {
+          link.href = linkTo({ [set.dataset.wfParam]: link.dataset.value });
+          if (state[set.dataset.wfParam] !== link.dataset.value) continue;
+          link.setAttribute("aria-current", "page");
+          const currentLabel = document.querySelector(`[data-wf-current="${set.dataset.wfParam}"]`);
+          if (currentLabel) currentLabel.textContent = link.textContent;
+        }
+      }
+      // Công tắc Màu, nút Gọn chữ, Bỏ lặp: một link, bấm là sang nấc kia.
+      for (const toggle of document.querySelectorAll("[data-wf-toggle]")) {
+        const param = toggle.dataset.wfToggle;
+        const isOn = state[param] === toggle.dataset.on;
+        toggle.setAttribute(toggle.getAttribute("role") === "switch" ? "aria-checked" : "aria-pressed", String(isOn));
+        toggle.href = linkTo({ [param]: isOn ? toggle.dataset.off : toggle.dataset.on });
       }
     }
-    // Công tắc Màu: một link, bấm là sang nấc kia.
-    for (const toggle of document.querySelectorAll("[data-wf-toggle]")) {
-      const param = toggle.dataset.wfToggle;
-      const isOn = state[param] === toggle.dataset.on;
-      toggle.setAttribute("aria-checked", String(isOn));
-      toggle.href = `?${new URLSearchParams({ ...state, [param]: isOn ? toggle.dataset.off : toggle.dataset.on })}`;
+    updateLinks();
+    // Khung lý do giữ đóng mở khi đổi lựa chọn: ghi vào URL (người dùng chép link cũng giữ), dựng lại link.
+    const reasonBox = document.querySelector("[data-wf-reason]");
+    if (reasonBox) {
+      reasonBox.open = state.uu === "1";
+      reasonBox.addEventListener("toggle", () => {
+        state.uu = reasonBox.open ? "1" : "0";
+        history.replaceState(null, "", linkTo({}));
+        updateLinks();
+      });
     }
     // Menu Trạng thái: thanh cuộn ngang cắt mất khối absolute, nên menu là fixed, đặt ngay dưới nút.
     const statusMenu = document.querySelector(".wf-menu");
@@ -526,17 +565,17 @@ dòng đó."* Dừng chờ.
   ```
   - A · Lưới card + hàng lọc gọn (khuyên dùng): http://localhost:<cổng>/wireframe.html?v=a
   - B · Danh sách + bản đồ: http://localhost:<cổng>/wireframe.html?v=b
-  - D · A gọn chữ: http://localhost:<cổng>/wireframe.html?v=d
+  - C · Bảng: http://localhost:<cổng>/wireframe.html?v=c
   ```
 
-  Kèm một dòng: *"Mỗi trang có thanh trên cùng: bật Màu, xem Mobile, xem Rỗng / Lỗi, và khung lý
-  do có sẵn câu góp ý để chép."*
+  Kèm một dòng: *"Mỗi trang có thanh trên cùng: bật Gọn chữ, Bỏ lặp, bật Màu, xem Mobile, xem
+  Rỗng / Lỗi, và khung lý do có sẵn câu góp ý để chép."*
 
   Mở thử từng link (probe đã mở là được) trước khi gửi. Không chạy được server thì ghi đường
   dẫn tệp `file://…/wireframe.html` và nói tham số `?v=` chọn phương án.
 
-Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn (ví dụ `C + D`, `B + E`). Góp ý theo số khối
-cũng được."* Bản dựng theo nấc Màu. Dừng chờ.
+Kết bằng *"Chọn A, B hay C, kèm Gọn chữ, Bỏ lặp nếu muốn (gửi lại link đang xem là đủ). Góp ý
+theo số khối cũng được."* Bản dựng theo nấc Màu. Dừng chờ.
 
 Người dùng trả lời `ok`, `dựng luôn` mà không ghi chữ cái nào thì dựng **phương án khuyên dùng**,
 màu và nhấn theo mức đã khuyên, không hỏi lại.
@@ -554,7 +593,8 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
 - **Đề nhiều hơn một màn:** chốt hợp đồng nguyên tố `D1` (`system.md`) ở đây, trước khi dựng
   màn đầu tiên. Wireframe đã chọn nói khung, bảng `D1` nói control nào dùng kiểu nào cho cả bộ.
 - Ráp bằng mẫu của skill (`SKILL.md` mục 2). Chạy probe `--sweep --wireframe "<link phương án
-  đã chọn>&mau=mau"` tới khi danh sách `P` trống, tối đa ba vòng. **Mục probe về dáng cũng sửa**, dù không nằm trong `P`: hàng nút
+  đã chọn>&mau=mau"` tới khi danh sách `P` trống, tối đa ba vòng (vòng hai trở đi thêm
+  `--dynamic-widths` theo dòng "Vòng sửa sau" của báo cáo, cổng 3). **Mục probe về dáng cũng sửa**, dù không nằm trong `P`: hàng nút
   header không đồng cỡ, vòng focus, control gốc, lớp nổi không chuyển động, viền trang trí
   đậm, thanh cuộn. Ở `U4` dáng là của skill, nên đó không phải "Lệch hệ để tuỳ" như lúc soi.
   **Danh sách `P` tính cả khung app trên route đó** (header, sidebar,
@@ -568,6 +608,9 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
   và component của bản dựng (`U3`): bản dựng là nó viết lại bằng code dự án. **Không thêm** mục, dòng chữ, badge, nút, khối mà wireframe không có;
   **không bỏ** thứ wireframe có; không đổi thứ tự. Thấy wireframe thiếu gì thì hỏi hoặc ghi
   một dòng lúc giao, không tự chêm vào.
+  **Người dùng chọn kèm Gọn chữ, Bỏ lặp** thì bản dựng là wireframe khi đã bật công tắc đó: phần
+  mang `data-wf-gon`, `data-wf-lap` không dựng, link `--wireframe` giữ `&gon=1`, `&bolap=1` để probe so
+  đúng bản đã chọn.
 - **Khoảng cách, cỡ, màu, chữ chép nguyên từ wireframe, tới từng px** ⚑. Padding của khung trang
   và từng khối, `gap` giữa các khối và trong hàng, chiều cao header, ô tìm, nút, chip, bề rộng
   sidebar, cỡ ảnh card, cỡ, độ đậm, dòng cao của chữ, cỡ icon; màu chữ, nền, viền theo token

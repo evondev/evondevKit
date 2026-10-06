@@ -212,16 +212,16 @@ thu rồi mở sidebar, bấm mở lại. Menu phải nằm sát nút cả hai l
 ```html
 <!-- Khung chỉ padding dọc, mỗi nhóm mục px-1: vạch giữa hai nhóm tự chạm mép (F25, N11) -->
 <div class="min-w-56 rounded-2xl border border-border bg-surface-overlay py-1 shadow-popover">
-  <div class="px-1">
-    <button class="flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm outline-hidden hover:bg-item-hover focus-visible:bg-item-hover">…</button>
+  <div class="flex flex-col gap-1 px-1">
+    <button class="flex min-h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm outline-hidden hover:bg-item-hover focus-visible:bg-item-hover">…</button>
   </div>
   <!-- Vạch chia cùng token với viền khung, không border-strong: đậm hơn viền là vạch nổi hơn khung.
        Khung cũng border-border: bóng shadow-popover đã tách khung khỏi trang. Khung và vạch cùng border-strong
        thì menu kẻ ô như bảng -->
   <hr class="my-1 border-border" />
-  <div class="px-1">
+  <div class="flex flex-col gap-1 px-1">
     <!-- Mục nguy hiểm: lúc thường y như mục khác, rê vào mới đỏ (I4) -->
-    <button class="group flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm text-foreground outline-hidden hover:bg-rose-500/10 hover:text-rose-700 focus-visible:bg-rose-500/10 focus-visible:text-rose-700 dark:hover:text-rose-400 dark:focus-visible:text-rose-400">
+    <button class="group flex min-h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-sm text-foreground outline-hidden hover:bg-rose-500/10 hover:text-rose-700 focus-visible:bg-rose-500/10 focus-visible:text-rose-700 dark:hover:text-rose-400 dark:focus-visible:text-rose-400">
       <i data-lucide="trash-2" class="size-4 shrink-0 text-muted group-hover:text-rose-700 group-focus-visible:text-rose-700 dark:group-hover:text-rose-400 dark:group-focus-visible:text-rose-400"></i>
       Xoá
     </button>
@@ -237,7 +237,8 @@ trượt 4.5:1). Lúc chưa rê thì chữ `--foreground`, icon `text-muted` nh�
 | --- | --- | --- |
 | Khung | `rounded-2xl` 16px | |
 | Khe quanh mục | 4px: `p-1` ở khung; menu có vạch chia thì `py-1` ở khung + `px-1` ở từng nhóm mục | Khe hở giữa nền hover và mép khung; vạch chạm mép mà không cần `-mx-1` (`F25`) |
-| Mục | `h-10` 40px | Cùng chiều cao link sidebar, nút, ô nhập. Mục 36px trông chật |
+| Mục | `min-h-10` 40px, không `h-10` | Cùng chiều cao link sidebar, nút, ô nhập. Mục 36px trông chật. **Chữ dài thì xuống dòng, mục cao theo chữ** (`py-2.5`, icon và dấu `check` bám dòng đầu): `h-10` cố định thì tên ba dòng tràn khỏi mục, đè lên mục dưới (dính 05/10/2026, lọc theo tên khoá học; probe báo "Mục trong lớp nổi cao cố định mà chữ tràn") |
+| Khe giữa hai mục | **`gap-1` 4px** (danh sách `flex flex-col gap-1`), không `gap-0.5` 2px, không dính sát | Mục xuống hai dòng đứng sát nhau thì chữ hai mục liền thành một khối, không đọc ra đâu là ranh giới; 2px vẫn dính. Probe báo "Mục kề nhau cách dưới 4px" |
 | Nền hover của mục | `rounded-xl` 12px | **16 = 12 + 4**, hai góc đồng tâm. Mục cao 40px nên bo 12px (`F1`) |
 
 Dùng shadcn / Radix thì thay cả `hover:` lẫn `focus-visible:` bằng
@@ -259,7 +260,7 @@ sáng trông như lơ lửng giữa khung. **Khối rộng từ ~480px (command 
 khe `p-2`**: ở bề ngang đó khe 4px làm nền sáng thành một thanh chạy gần hết khung,
 góc nền sáng gần chạm góc khung. Xem "Command palette" bên dưới.
 
-**Dropdown dài phải cuộn** thì `max-h-76` và chớp thanh cuộn lúc mở, như select
+**Dropdown dài phải cuộn** thì `max-h-83` và chớp thanh cuộn lúc mở, như select
 (`I18`): mục cuối bị cắt ngang là tín hiệu duy nhất lúc đứng yên.
 
 ### Menu con (dropdown đa cấp)
@@ -549,4 +550,18 @@ lấy số ở bảng này.
 
 - **Panel 500/350ms là số chủ dự án chốt**: 300/200ms thì vụt qua như giật, `linear` 500ms thì cứng và chậm. Đường cong này chạy nhanh ở đầu rồi đậu êm, nên 500ms không thấy chậm. Đừng rút ngắn cho "nhanh hơn".
 - **Sửa chuyển động thì duyệt bằng video, không bằng số đo**: quay tốc độ thật và bản chậm 4 lần (DevTools, Animations, 25%). Giật, lố, nhảy lề chỉ lộ ra trong bản chậm.
+
+### Đề yêu cầu animation mà không nói thư viện
+
+Chọn theo thứ tự, dừng ở bậc đầu tiên làm được việc:
+
+1. **Dự án đã có thư viện chuyển động** (`gsap`, `motion`, `framer-motion`, `react-spring`…, xem `package.json`) thì dùng nó, không cài cái thứ hai (`S9`).
+2. **CSS / Tailwind làm được thì không cài gì**: mở đóng lớp nổi, rê, chuyển tab, mọc dần khi cuộn tới (`IntersectionObserver` + `transition`), các số ở bảng trên.
+3. **Cần thư viện** (timeline nhiều bước nối nhau, chuyển động bám theo cuộn, chữ chạy, số đếm, nền động) thì **ưu tiên gói gọn nhẹ** và đề xuất lúc giao, không hỏi trước:
+   - **GSAP**: timeline và chuyển động theo cuộn. Không phụ thuộc framework; chỉ import plugin cần dùng (`ScrollTrigger`), không nạp cả bộ.
+   - **React Bits**: hiệu ứng dựng sẵn (chữ, nền, con trỏ) cho dự án React. Chép đúng component cần vào dự án, không cài cả bộ; đọc phụ thuộc của nó trước khi chép: component kéo theo thư viện 3D (`three`, `ogl`) thì nặng hơn cả trang, chọn component khác hoặc làm bằng CSS.
+
+   Lúc giao báo một dòng (`S15`): đã dùng gì, vì sao cần, và lựa chọn còn lại. Ví dụ: *"Chữ tiêu đề chạy lần lượt dùng GSAP (chỉ phần lõi). Muốn bỏ thư viện thì đổi sang chữ mờ dần bằng CSS, mất hiệu ứng chạy từng chữ."*
+
+Thư viện nào cũng vẫn theo luật ở trên: chỉ `transform` và `opacity`, có bản `prefers-reduced-motion`, màn app làm việc không nảy.
 

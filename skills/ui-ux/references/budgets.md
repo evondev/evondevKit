@@ -20,7 +20,7 @@ Skill này chỉ lo **màn hình trong app** — dashboard, danh sách, bảng, 
 | Tầng lồng khối | 2 | |
 | Độ dài dòng chữ | 75 ký tự | |
 | Dạng nút | 4 | `outline` (mặc định; icon trái khi glyph gọi đúng hành động), `primary` nền nhấn, `secondary` nền xám, `ghost`. Nút nguy hiểm là `ghost` phủ nền `rose` mờ (`I4`), không phải dạng thứ năm. Cộng nút chỉ-icon. Xem `I1`, `components/button.md` |
-| Bậc spacing | thang 4/8/12/16/20/24/32/40 cho khoảng cách giữa các khối | Bên trong control (nút, badge, danh sách dày) được dùng nửa bậc 2/6/10 (`py-0.5`, `gap-1.5`, `py-2.5`, `space-y-0.5`). Ngoài hai thang này thì không |
+| Bậc spacing | thang 4/8/12/16/20/24/32/40 cho khoảng cách giữa các khối | Bên trong control (nút, badge) được dùng nửa bậc 2/6/10 (`py-0.5`, `gap-1.5`, `py-2.5`). **Khe giữa hai dòng bo góc có nền rê / đang chọn thì tối thiểu 4px, không dùng bậc 2** (luật khoá 19). Ngoài hai thang này thì không |
 
 ---
 

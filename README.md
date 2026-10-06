@@ -1,17 +1,85 @@
-# evondevKit
+# <img src="images/logo-mark.png" alt="" width="32" height="32" align="top"> evondevKit
 
 **English** | [Tiếng Việt](README.vi.md)
+
+![evondevKit / ui-ux: UI dashboard without the AI hassle](images/evondevkit-ui-ux-en-v2.png)
 
 A **`ui-ux`** skill for Claude Code: builds and polishes app UIs (dashboards, lists, tables,
 forms, settings, modals) using your project's own component library and colors.
 
 Overview: [evondev-uiux.vercel.app/en/ui-ux](https://evondev-uiux.vercel.app/en/ui-ux)
 
+## Install
+
+### Claude Code
+
+```bash
+/plugin marketplace add evondev/evondevKit
+/plugin install evon@evondevkit
+```
+
+In the VS Code extension or the desktop app, `/plugin` isn't available: type `/` → **Manage
+plugins** → Marketplaces, add `evondev/evondevKit`, then install `evon` from the Plugins tab.
+
+Invoke with `/evon:ui-ux`.
+
+**Update**
+
+- Terminal: `/plugin marketplace update evondevkit`, then `/reload-plugins` to apply it in the
+  open session.
+- VS Code, desktop app: `/` → **Manage plugins** → Marketplaces → `evondevkit` → refresh icon.
+- From any shell: `claude plugin marketplace update evondevkit`.
+
+`/reload-plugins` only reloads what's already downloaded; it doesn't fetch a new version.
+To skip updating by hand: Marketplaces → `evondevkit` → **Enable auto-update**. Claude Code
+then pulls the latest version every time it starts.
+
+**Uninstall**
+
+```bash
+/plugin uninstall evon@evondevkit
+/plugin marketplace remove evondevkit
+```
+
+The first line removes the skill, the second removes the source too (run it if you won't
+reinstall). Afterwards, start a new session so the skill is no longer loaded.
+
+- VS Code, desktop app: `/` → **Manage plugins** → Plugins tab → `evon` → Uninstall; to
+  remove the source, go to Marketplaces → `evondevkit` → remove.
+- From any shell: `claude plugin uninstall evon@evondevkit`, then
+  `claude plugin marketplace remove evondevkit`.
+
+### Cursor, OpenCode, Codex, Antigravity, ZCode, omp
+
+Run at the project root (`bunx` works in place of `npx`):
+
+```bash
+npx skills add evondev/evondevKit
+```
+
+The command asks which tools to install for, then copies the skill into
+`.agents/skills/ui-ux/`, the folder Cursor, OpenCode, Codex, Antigravity and omp all read
+(ZCode gets `.zcode/skills/ui-ux/`). To preselect tools, add `-a`, e.g.
+`-a cursor -a zcode`. To share it across all projects, add `-g`.
+
+| Tool | Invoke |
+| --- | --- |
+| Cursor, Antigravity | `/ui-ux Build an orders list…` |
+| Codex | `$ui-ux Build an orders list…` |
+| ZCode | `$ui-ux Build an orders list…` (or pick it from the `/` menu) |
+| OpenCode | `Use the ui-ux skill to build an orders list…` |
+| omp | `/skill:ui-ux Build an orders list…` |
+
+Without the name, the tool turns the skill on when the prompt matches its description.
+ZCode doesn't show the skill yet? Open Settings → Skills and click Refresh.
+Update: `npx skills update`. Uninstall: `npx skills remove ui-ux` at the project root; if you
+installed with `-g`, use `npx skills remove -g ui-ux`. The skill is tested most on Claude; other tools work but may
+differ in places.
+
 > **Beta.** Works well for light-theme app UIs: tested on 70 prompts across real projects.
 > Most testing so far used Vietnamese prompts. English prompts follow the same flow but have
 > had less testing. Currently testing: adding dark mode to existing apps.
-> The skill keeps changing as tests come in; get the latest with
-> `/plugin marketplace update evondevkit`. To hear about new versions, click
+> The skill keeps changing as tests come in; get the latest as in **Update** above. To hear about new versions, click
 > **Watch → Custom → Releases** on GitHub. Each release has a few lines on what changed in
 > [Releases](https://github.com/evondev/evondevKit/releases).
 >
@@ -21,18 +89,6 @@ Overview: [evondev-uiux.vercel.app/en/ui-ux](https://evondev-uiux.vercel.app/en/
 > If something looks off, [open an issue](https://github.com/evondev/evondevKit/issues) with a
 > link or screenshot of the screen and the prompt you used.
 
-## Install
-
-```bash
-/plugin marketplace add evondev/evondevKit
-/plugin install evon@evondevkit
-```
-
-Invoke with `/evon:ui-ux`. Update: `/plugin marketplace update evondevkit`.
-
-To skip the update command: `/plugin` → Marketplaces → `evondevkit` → Enable auto-update.
-Claude Code then pulls the latest version every time it starts.
-
 ## Usage
 
 By default the skill works like a designer: **brief → you approve → 2–3 wireframes → you pick →
@@ -40,7 +96,7 @@ build**. Same in English or Vietnamese. To take a different path, say so in the 
 
 | You want | Type | The skill |
 | --- | --- | --- |
-| Build or redo a screen (default) | `/evon:ui-ux Build an orders list: order ID, customer, total, status.` or `/evon:ui-ux Redesign the jobs page.` | Brief → you approve → 2–3 wireframes → you pick (e.g. `C + D`) → builds. Wireframes have a top bar: toggle color, try accent colors, preview mobile (☰ is clickable, bottom bar when there are few items), preview empty / error states, read pros and cons, copy a feedback line. Reply `ok` to build the recommended option |
+| Build or redo a screen (default) | `/evon:ui-ux Build an orders list: order ID, customer, total, status.` or `/evon:ui-ux Redesign the jobs page.` | Brief → you approve → 2–3 wireframes → you pick → builds. Wireframes have a top bar: toggle concise text, no repeats, toggle color, try accent colors, preview mobile (☰ is clickable, bottom bar when there are few items), preview empty / error states, read pros and cons, copy a feedback line. Reply `ok` to build the recommended option |
 | Build right away, no wireframes | `/evon:ui-ux Just build the notification settings screen.` | No wireframes (saves tokens): the skill picks the option it would recommend and builds it. On delivery it says which layout it chose and why |
 | Lock a design system before building many screens | `/evon:ui-ux Build a design system for a clinic management app first, no screens yet.` | Tokens and seven base components (button, badge, input, card, list row, modal, empty state) on a `/design-system` page. No wireframes, one stop for your approval. If the project uses shadcn or its own kit, it adjusts that kit. Later screens are assembled from exactly this set |
 | Find what's wrong with a UI | `/evon:ui-ux Review this page, what's off: http://localhost:3000/orders` | A table of issues with before/after screenshots. Reply `fix 1, 3` before it changes anything |
@@ -80,32 +136,6 @@ does, no wireframes.
 - **Style**: flat by default. Want glassmorphism, gradients or a dark background? Say so in
   the prompt.
 - Works without Tailwind or without a `package.json` (plain HTML, WordPress).
-
-## Using with Cursor, OpenCode, Codex, Antigravity, ZCode, omp
-
-Run at the project root (`bunx` works in place of `npx`):
-
-```bash
-npx skills add evondev/evondevKit
-```
-
-The command asks which tools to install for, then copies the skill into
-`.agents/skills/ui-ux/`, the folder Cursor, OpenCode, Codex, Antigravity and omp all read
-(ZCode gets `.zcode/skills/ui-ux/`). To preselect tools, add `-a`, e.g.
-`-a cursor -a zcode`. To share it across all projects, add `-g`.
-
-| Tool | Invoke |
-| --- | --- |
-| Cursor, Antigravity | `/ui-ux Build an orders list…` |
-| Codex | `$ui-ux Build an orders list…` |
-| ZCode | `$ui-ux Build an orders list…` (or pick it from the `/` menu) |
-| OpenCode | `Use the ui-ux skill to build an orders list…` |
-| omp | `/skill:ui-ux Build an orders list…` |
-
-Without the name, the tool turns the skill on when the prompt matches its description.
-ZCode doesn't show the skill yet? Open Settings → Skills and click Refresh.
-Update: `npx skills update`. The skill is tested most on Claude; other tools work but may
-differ in places.
 
 ---
 

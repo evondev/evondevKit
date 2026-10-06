@@ -170,6 +170,13 @@ bộ nhãn chứ không phải một dòng. Copy không phải tiếng Việt th
 màu nhấn và font chỉ nằm ở một chỗ, lúc giao chỉ ra chỗ đó (`S15`) là họ tự thay.
 **Không bao giờ hỏi số lượng font.**
 
+**Thanh cuộn thì luôn chép, kể cả dự án có token sẵn.** "Dùng token của họ" chỉ áp
+cho màu và font. Khối thanh cuộn trong `tokens.css` (từ `* { --scrollbar-thumb` tới hết
+`.scrollbar-clean`) và component `ScrollbarAutohide` (`I18`) là dáng, không phải brand:
+grep `::-webkit-scrollbar` trong CSS gốc, chưa có hay đang là bản khác thì chép vào.
+Thiếu khối này là trình duyệt vẽ thanh mặc định, to và thô, ở mọi vùng cuộn: trang,
+sidebar, bảng cuộn ngang, dropdown. Trang HTML thuần, wireframe cũng chép.
+
 Dùng thư viện của họ thì cách áp skill là **chỉnh token cho khớp**, cộng vài mặc
 định trái luật. Với shadcn thường là ba chỗ:
 
@@ -252,7 +259,7 @@ probe, bấm mở được; mỗi file layout vẫn chỉ nuôi một bố cục
 | --- | --- |
 | Dashboard, các bước bắt đầu (onboarding checklist), danh sách, bảng, danh sách rỗng, cài đặt, hồ sơ cá nhân, bảo mật (xác thực hai lớp, phiên đăng nhập), khoá API, thành viên và phân quyền, trang lịch (lịch tháng), trang lỗi (404, 403, 500, bảo trì), trang báo cáo (doanh thu, phân tích theo khoảng ngày), đầu trang (đường dẫn + tên + nút), trang chi tiết bản ghi | `references/layouts/app.md` |
 | Đăng nhập, đăng ký, quên mật khẩu, form nhiều trường, form nhiều bước (thanh các bước), trạng thái lỗi | `references/layouts/form.md` |
-| Modal, panel trượt, dropdown, command palette, panel thông báo, toast, **chuyển động mở đóng của mọi khối nổi** (cả select, date picker) | `references/layouts/overlay.md` |
+| Modal, panel trượt, dropdown, command palette, panel thông báo, toast, **chuyển động mở đóng của mọi khối nổi** (cả select, date picker), **đề yêu cầu animation mà không nói thư viện** (mục "Đề yêu cầu animation mà không nói thư viện") | `references/layouts/overlay.md` |
 | Bảng giá, trang chọn gói | `references/layouts/pricing.md` |
 | **Nhiều hơn một màn trong cùng một đề** | Vào nhánh `U` như mọi đề dựng; `references/system.md` — hợp đồng nguyên tố chốt ở `U4`, trước màn đầu tiên. Bố cục mặc định chỉ dùng thẳng ở lối dựng luôn hoặc việc nhỏ |
 

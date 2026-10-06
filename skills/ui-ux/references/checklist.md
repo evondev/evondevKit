@@ -56,6 +56,9 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 
 - [ ] Có `shadow-*` nào trên khối **nằm trong trang** không? Bóng chỉ cho modal/dropdown (`M15`), ngoại lệ trong trang chỉ có ô chọn của tab `segmented` và núm công tắc (`shadow-sm`).
 - [ ] Có token viền nào tự đẻ ra ngoài `--border`, `--border-strong`, `--border-focus` không?
+- [ ] **Thanh cuộn**: grep `::-webkit-scrollbar` trong CSS gốc ra khối của `tokens.css` chưa, `ScrollbarAutohide` đã mount ở gốc app chưa? Mở một vùng cuộn (trang, sidebar, dropdown dài, bảng cuộn ngang): thấy thanh xám mặc định to là thiếu khối (`I18`). Dự án có token sẵn vẫn phải chép.
+- [ ] Có chỗ nào hai khối có viền đứng sát nhau, không khe, thành vạch 2px không (dòng `border-b` dòng cuối chồng viền khung, ô lưới, nhóm nút, header + thanh công cụ)? Chỉ một bên giữ đường giáp ranh: `divide-*` trên cha, lưới `gap-px bg-border`, nút sau `border-l-0` (`F26`).
+- [ ] Có đường kẻ `--border` nào nằm thẳng trên nền trang xám (footer, dải tiêu đề, `<hr>`) không? `--border` nhạt hơn nền xám, ra vệt mờ căm: bỏ đường, tách bằng khoảng trắng, hoặc đổi `border-border-strong` (`M14`).
 - [ ] Có chỗ nào mỗi mục một card không? Gom thành một khung chia đường kẻ (`F3`).
 - [ ] Card chỉ có tiêu đề, không nút ở header: còn `min-h-10` không? Còn thì tiêu đề cách mép trên xa hơn nội dung cách mép dưới, card hẫng đầu (`components/card.md`).
 - [ ] Dòng tiêu đề và nút "Xem tất cả" có nằm **trong** khung không?
@@ -198,7 +201,9 @@ thứ mình định viết, không thấy thứ trình duyệt vẽ ra.
    dưới 10 ký tự, phần tử cùng loại cao lệch nhau 1–4px, chữ cùng cột lệch mép, chỗ bấm
    dưới 32px ở màn cảm ứng, rê chuột làm nhảy bố cục, trang
    tự cuộn khi tải, dấu câu rơi xuống đầu dòng, dấu ngăn (›, /) cách hai bên không đều. Ở 375px nó tự bấm mở menu,
-   hộp chọn, sheet rồi chụp và đo tràn mép, cao quá màn.
+   hộp chọn, sheet rồi chụp và đo tràn mép, cao quá màn. Phép đo động (Tab, rê, bấm, lớp nổi)
+   chỉ chạy ở 375, 768, 1280, khổ khác đo trang đứng yên: đo động ở 1024, 1440, 1920 hầu như
+   không ra thêm lỗi mà kéo dài lượt chạy gấp rưỡi.
    - Dev server chưa chạy thì bật ở nền bằng lệnh dev của dự án. Chưa có playwright thì
      cài vào thư mục tạm theo lệnh script in ra, **không cài vào dự án**.
    - **Dựng theo wireframe đã chọn** (nhánh `U`) thì thêm `--wireframe "<link phương án>&mau=mau"`:
@@ -208,7 +213,9 @@ thứ mình định viết, không thấy thứ trình duyệt vẽ ra.
      có dark mode thì chạy thêm `--dark`.
    - **Sửa rồi chạy lại cho tới khi mục "Việc phải đối chiếu" ở cuối báo cáo trống**
      (danh sách mã `P1`, `P2`… là lỗi hạng Hỏng máy đo ra, `V1` trong `review.md`), tối đa
-     **ba vòng**. Các mục khác probe in ra (theo gu của skill) cũng sửa, vì đây là bản mình
+     **ba vòng**. Vòng hai trở đi thêm `--dynamic-widths` như dòng "Vòng sửa sau" cuối báo cáo in
+     (khổ còn lỗi động, hoặc `none`): phần đứng yên và `--sweep` vẫn đo đủ, chỉ bớt đo động ở khổ
+     đã sạch. Các mục khác probe in ra (theo gu của skill) cũng sửa, vì đây là bản mình
      dựng. Mã `P` nào còn lại sau ba vòng, hay để lại có chủ ý (vd chỗ bấm nhỏ trong bảng
      dày), thì lúc giao ghi từng mã và lý do. Không mã nào được biến mất im lặng.
    - **Mở từng ảnh chụp ra xem**, soi theo mười hai phép thử (`principles.md`). Script chỉ đo

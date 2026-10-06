@@ -46,6 +46,11 @@
      xem P3 trong styles.md. */
   --border-strong: #eaeaea;   /* #f2f2f2 (1.1:1) mờ quá, radio gần như vô hình;
                                  #e4e4e7 (1.27:1) thì đường kẻ sidebar đậm. Chốt ở giữa. */
+  /* Đường kẻ chạy hết hàng tab `underline`. Phủ mờ theo chữ nên tự đậm đúng mức trên mọi nền: trên nền
+     trang #f4f4f6 ra #dedee0 (chênh 22 mức), trên card trắng #e8e8e8 (23). --border-strong trên nền trang
+     chỉ chênh 10, bản dựng #efefef chênh 7: "không thấy luôn" (05/10/2026, chủ dự án duyệt bản chênh 21).
+     Nền tối tự đảo vì --foreground đảo. */
+  --tab-rail: color-mix(in srgb, var(--foreground) 10%, transparent);
 
   /* Lớp nổi nhỏ: dropdown, popover, menu, select, toast, command palette. Nền sáng bằng card;
      nền tối sáng hơn card một bậc (M21). Đi cùng `border border-border` + `shadow-popover`.
@@ -74,6 +79,11 @@
   /* Bề mặt của nút phụ, mục sidebar / tab đang chọn. Đậm hơn --item-hover một bậc. */
   --secondary: #e7e8ec;
   --secondary-hover: #dbdce2;
+  /* Ô tab `boxed` đang chọn. Phủ mờ theo chữ như --tab-rail, nên tự đúng trên mọi nền của dự án: nền
+     trang #f4f4f6 ra #e2e2e4 (chênh 18 mức), card trắng #ececec (19). Không dùng --secondary đặc: trên nền
+     trang nó chỉ chênh 13, tab đang chọn "trùng màu nền" (05/10/2026, bản dựng chênh 10 bị chê, bản sửa
+     chênh 16 được duyệt). Nền tối tự đảo vì --foreground đảo. */
+  --tab-selected: color-mix(in srgb, var(--foreground) 8%, transparent);
 
   /* Nền của ô trạng thái nhỏ nằm trong hàng có hover: ô ngày, ô vuông chuỗi, ô
      rỗng. Đừng dùng --background cho chúng, vì hàng hover cũng về --item-hover (= --background) thì
@@ -273,10 +283,12 @@
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
+  --color-tab-rail: var(--tab-rail);
   --color-chart-fill: var(--chart-fill);
   --color-secondary: var(--secondary);
   --color-secondary-hover: var(--secondary-hover);
   --color-button-hover: var(--button-hover);
+  --color-tab-selected: var(--tab-selected);
 
   /* `border-focus` và `ring-focus` là hai màu khác nhau (viền đặc, ring 10%). Một
      --color-focus thì hai class đọc chung một màu, nên tách theo namespace riêng
