@@ -389,6 +389,14 @@ gộp SaaS hay trang quảng cáo chung.
    Đọc ~/dev/evondevKit/skills/landing/SKILL.md rồi dựng landing page cho Bao Bì Phú Thành, xưởng in thùng carton và hộp giấy ở Long An, nhận đơn từ 500 cái cho shop online và nhà máy thực phẩm.
    ```
 
+   **Đề thứ tư, soi "đại trà"** (user chê theme sẵn nhìn đại trà, 06/10/2026): chạy thêm một spa
+   khác, đặt cạnh trang Mộc Spa. Hai trang trông như một theme đổi chữ là phải sửa skill (dòng
+   cảm giác, phương án wireframe, chữ lấy từ chuyện thật chưa đủ tạo khác biệt):
+
+   ```
+   Đọc ~/dev/evondevKit/skills/landing/SKILL.md rồi dựng landing page cho Lá Thông, tiệm massage và xông thảo dược ở Đà Lạt, mở trong một căn nhà gỗ cũ, khách phần lớn là khách du lịch ở vài ngày.
+   ```
+
    Đáp án loại trang: dịch vụ đặt lịch, cửa hàng, B2B. Soi:
    - **Cổng 1:** đoán đúng loại, bảng section đúng cột `G2`, nút "Đặt lịch" / "Đặt lịch tư vấn" /
      "Nhận báo giá" (`G3`), dòng 6 liệt kê thứ giả (địa chỉ, số, ảnh, đánh giá), dòng 7 cảm giác.
@@ -398,6 +406,11 @@ gộp SaaS hay trang quảng cáo chung.
      ở đâu (`H4`); spa và showroom tiêu đề serif có dấu đúng (`H3`); form đúng ô `G3`; nút Zalo /
      gọi nổi gọn, không nhấp nháy (`H13`); `GIẢ:` trên mọi chỗ giả, số `0900 000 000` (`H9`); probe
      sạch ở 375; tin giao có ba dòng của mục 4 `SKILL.md`.
+4. [ ] **Lối "theo mẫu này"** (làm sau khi test xong bước 3). User đang làm landing bằng cách gõ
+   tên ngành, tìm trang đẹp rồi chép theo, nhưng chưa tìm được trang nào ổn. Thêm một lối ở câu 1:
+   người dùng gửi link trang họ thích kèm "theo mẫu này", skill lấy bố cục và gu của trang đó,
+   còn nội dung, ảnh, form, nút nổi và luật `H9` vẫn theo skill. Chưa viết luật trước khi bản hiện
+   tại qua test.
 
 **Hướng SaaS (gác 06/10/2026)** — hướng chốt 01/10/2026: không cố phủ mọi kiểu SaaS. Nội dung landing page muôn kiểu nhưng
 khung gần như giống nhau, nên skill chốt một bộ section cố định và chọn section theo mục tiêu
