@@ -163,7 +163,10 @@ cụ tách hai, ‹ › ghost, badge có màu sắc cách ~45°; probe bắt n�
    component shadcn đang có. Dòng `Audit:` có nói đã thấy shadcn.
 4. Gửi link cho Claude rà.
 
-### [ ] 5. Nhánh soi: hai dự án mồi còn lại
+### [-] 5. Nhánh soi: hai dự án mồi còn lại: bỏ
+
+Bỏ 06/10/2026: chủ dự án thôi audit `ui-ux` trên các dự án mồi, đã xoá `kho-hang`, `lop-hoc`,
+`tim-phong-sua` và các dự án test cũ khỏi `~/dev/audit-skills`. Phần dưới giữ để tham khảo.
 
 Quy tắc chung ở `BACKLOG.md`, mục "Test cho phase 2". Cả hai dự án đã xong vòng 1 (hai lượt:
 tự mở trang và chỉ đưa ảnh) và đã sửa skill theo kết quả. Còn **vòng 2, chỉ lượt tự mở trang**,
