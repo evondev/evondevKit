@@ -37,7 +37,7 @@ trang thu lead nước ngoài được đánh giá cao (7 dịch vụ đặt l�
 
 | Đề nói | Đi đâu |
 | --- | --- |
-| **Xem giúp landing đang có** ("xem giúp", "review", "chỗ nào chưa ổn", gửi link hay ảnh trang của họ) | Soi theo `ui-ux` nhánh `V` chế độ soi (`../ui-ux/references/review.md`), thước đo là luật `G`, `K`, `H` của skill này. Lập bảng trước/sau, người dùng chọn dòng rồi mới sửa |
+| **Xem giúp landing đang có** ("xem giúp", "review", "chỗ nào chưa ổn", gửi link hay ảnh trang của họ) | Soi theo `ui-ux` nhánh `V` chế độ soi (`../ui-ux/references/review.md`), thước đo là luật `G`, `K`, `H` của skill này, probe kèm `--landing`. Lập bảng trước/sau, người dùng chọn dòng rồi mới sửa |
 | **Dựng luôn, không wireframe** ("dựng luôn", "just build it") | Làm `E1`, `E2`, chọn phương án sẽ khuyên trong đầu, dựng thẳng (`E4`). Lúc giao ghi một dòng: *"Muốn xem các hướng khác thì nhắn `vẽ wireframe`."* |
 | **Sửa một khối** (đổi hero, thêm đánh giá, sửa form) | Câu 2, rồi dựng thẳng khối đó theo `references/sections.md`, không hỏi |
 | **Mọi đề dựng hay làm lại cả trang** | **Mặc định.** Bốn bước `E1`–`E4` dưới |
@@ -113,7 +113,7 @@ dòng đó. Muốn bỏ wireframe, dựng luôn thì trả lời `dựng luôn`.
 
 Làm đúng như `U3` của `../ui-ux/references/design-process.md`: một file HTML, token và
 component thật, thanh công cụ (Phương án, Màu, Nhấn, Khổ), khung lý do, số khối
-`data-wf-block`, link bấm được qua server tĩnh, probe từng phương án trước khi gửi. Khác ở:
+`data-wf-block`, link bấm được qua server tĩnh, probe từng phương án trước khi gửi (`--quick --landing`). Khác ở:
 
 - **Phương án khác nhau ở kiểu hero (`K2` A ảnh tràn, B chia đôi, C panel) và thứ tự section**,
   không ở màu hay bo góc. Ví dụ dịch vụ đặt lịch: A ảnh tràn, đội ngũ sau dịch vụ; B chia đôi ảnh
@@ -136,7 +136,9 @@ Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn. Góp ý theo số kh�
 - Phần tử có mẫu ở `ui-ux` thì mở đúng file đó và chép công thức (bảng mục 2 của
   `../ui-ux/SKILL.md`): nút, ô nhập, select, accordion, avatar, panel trượt mobile.
 - Font tiêu đề serif (dịch vụ, cửa hàng) nạp có subset tiếng Việt (`H3`).
-- Chạy `../ui-ux/scripts/probe.mjs <url> --sweep` và soi ảnh 375, 1280, 1920 như cổng 3. Sửa
+- Chạy `../ui-ux/scripts/probe.mjs <url> --sweep --landing` và soi ảnh 375, 1280, 1920 như cổng 3.
+  **Luôn kèm `--landing`**: bỏ các phép đo chỉ đúng cho màn app, thêm phép đo nút chính cùng chữ cùng
+  đích (`H1`), padding section đều (`H2`), nút nổi đè nút hay ô form khi cuộn (`H13`). Sửa
   tới khi danh sách `P` trống, tối đa ba vòng.
 - Chạy mục 3 dưới trước khi báo xong.
 

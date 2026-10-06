@@ -4,7 +4,11 @@
 //
 //   node probe.mjs <url> [--widths 375,768,1024,1280,1440,1920] [--out <thư mục>] [--dark] [--wait 800] [--dpr 1]
 //                        [--sweep [1440,375,20]] [--wireframe <link phương án đã chọn>] [--quick]
-//                        [--dynamic-widths 1280,375|none]
+//                        [--dynamic-widths 1280,375|none] [--landing]
+//
+// --landing: trang là landing (skill landing). Bỏ các phép đo chỉ đúng cho màn app (header trong suốt, mục lặp dày
+// chữ, khung căn giữa hở hai bên ở màn rộng), thêm phép đo của landing: nút chính cùng chữ cùng đích ở header,
+// hero, khối Liên hệ (H1); padding dọc các section đều (H2); nút Zalo / gọi nổi đè lên nút hay ô form (H13).
 //
 // Phép đo động (Tab, rê chuột, bấm, mở lớp nổi) chiếm phần lớn thời gian mà ít đổi theo bề rộng, nên mặc định
 // chỉ chạy ở các khổ mobile, khổ gần 768 và gần 1280 nhất; khổ khác đo trang đứng yên.
@@ -44,7 +48,7 @@ const maxTabStops = 160;
 const maxFocusChecksPerKind = 2;
 
 function parseArgs(argv) {
-  const options = { url: "", widths: defaultWidths, out: "", isDark: false, waitMs: 800, dpr: 1, playwrightDir: "", sweep: null, wireframeUrl: "", isQuick: false, dynamicWidths: null };
+  const options = { url: "", widths: defaultWidths, out: "", isDark: false, waitMs: 800, dpr: 1, playwrightDir: "", sweep: null, wireframeUrl: "", isQuick: false, isLanding: false, dynamicWidths: null };
   const rest = [...argv];
 
   while (rest.length > 0) {
@@ -62,6 +66,7 @@ function parseArgs(argv) {
     else if (arg === "--pw") options.playwrightDir = rest.shift();
     else if (arg === "--wireframe") options.wireframeUrl = rest.shift();
     else if (arg === "--quick") options.isQuick = true;
+    else if (arg === "--landing") options.isLanding = true;
     else if (arg === "--dynamic-widths") {
       const value = rest.shift() ?? "";
       options.dynamicWidths = new Set(value === "none" ? [] : value.split(",").map(Number));
@@ -3169,6 +3174,114 @@ function measureHiddenScrollHeight() {
   return hiddenHeight;
 }
 
+// ---------- Landing (--landing) ----------
+// Phép đo chỉ đúng cho màn app, ra landing là báo nhầm: header trong suốt đè ảnh hero là kiểu của landing (H7),
+// card dịch vụ năm dòng chữ là bình thường, khung max-w-7xl hở hai bên ở 1920 là khung chung của landing (H2).
+const appOnlyResultKeys = ["transparentHeaders", "denseItems", "floatingContent"];
+
+// Hai hàm dưới chạy trong trang (page.evaluate), nên mỗi hàm tự khai các hàm phụ bên trong.
+function measureLandingPage() {
+  const problems = [];
+  const normalize = (text) => (text || "").trim().replace(/\s+/g, " ");
+  const isShown = (element) => {
+    const rect = element.getBoundingClientRect();
+    const style = getComputedStyle(element);
+
+    return rect.width > 0 && rect.height > 0 && style.visibility !== "hidden" && style.display !== "none" && Number(style.opacity) > 0.05;
+  };
+  // Nền đặc: alpha > 0.5. Số thứ tư trong rgba(), oklab(… / a), color(srgb … / a) là alpha; ba số là alpha 1.
+  const isSolid = (element) => {
+    const numbers = getComputedStyle(element).backgroundColor.match(/[\d.]+/g);
+
+    return Boolean(numbers) && (numbers.length > 3 ? Number(numbers[3]) : 1) > 0.5;
+  };
+  const solidControls = (root) => root
+    ? [...root.querySelectorAll("a[href], button")].filter((control) => isShown(control) && isSolid(control) && normalize(control.textContent).length > 1)
+    : [];
+
+  // H1: một nút đặc trên header; header, hero, nút gửi ở khối Liên hệ cùng chữ, cùng đích.
+  const header = document.querySelector("header, [role='banner']");
+  const headerButtons = solidControls(header);
+  if (headerButtons.length > 1) problems.push(`header có ${headerButtons.length} nút đặc (${headerButtons.map((control) => `"${normalize(control.textContent)}"`).join(", ")}), chỉ một nút chính (H1)`);
+  const sections = [...document.querySelectorAll("section")].filter((section) => !section.parentElement?.closest("section") && isShown(section));
+  const heroButton = solidControls(sections[0])[0];
+  const contactSection = document.querySelector("#lien-he") || document.querySelector("form")?.closest("section");
+  const submitButton = contactSection?.querySelector("button[type='submit'], form button:not([type='button'])");
+  const ctas = [["header", headerButtons[0]], ["hero", heroButton], ["Liên hệ", submitButton]].filter(([, control]) => control && isShown(control));
+  if (new Set(ctas.map(([, control]) => normalize(control.textContent).toLowerCase())).size > 1) {
+    problems.push(`nút chính khác chữ: ${ctas.map(([place, control]) => `${place} "${normalize(control.textContent)}"`).join(", ")} (H1)`);
+  }
+  const linkTargets = new Set(ctas.filter(([, control]) => control.tagName === "A").map(([, control]) => control.getAttribute("href")));
+  if (linkTargets.size > 1) problems.push(`nút chính khác đích: ${[...linkTargets].join(", ")} (H1)`);
+
+  // H2: mọi section trừ hero cùng padding dọc. Dải nối hero (logo khách, thấp hơn 240px) có nhịp riêng.
+  const paddedSections = sections.slice(1).filter((section) => section.getBoundingClientRect().height >= 240);
+  const paddingOf = (section) => {
+    const style = getComputedStyle(section);
+
+    return `${Math.round(parseFloat(style.paddingTop))}/${Math.round(parseFloat(style.paddingBottom))}`;
+  };
+  const paddingCounts = new Map();
+  for (const section of paddedSections) paddingCounts.set(paddingOf(section), (paddingCounts.get(paddingOf(section)) || 0) + 1);
+  const commonPadding = [...paddingCounts.entries()].sort((first, second) => second[1] - first[1])[0]?.[0];
+  for (const section of paddedSections) {
+    if (paddingOf(section) === commonPadding) continue;
+    const heading = normalize(section.querySelector("h2, h3")?.textContent).slice(0, 40);
+    problems.push(`section ${section.id ? `#${section.id} ` : ""}"${heading}" padding dọc ${paddingOf(section)}px, đa số ${commonPadding}px (H2)`);
+  }
+
+  return problems;
+}
+
+// H13: nút Zalo / gọi nổi đè lên nút đặc hay ô form ở chỗ nào đó khi cuộn. Link chữ bị đè thì không báo: nút nổi
+// che chữ là chuyện thường, che nút bấm hay ô đang nhập thì khách không bấm được.
+async function findCoveredByFloatingButtons() {
+  const isShown = (element) => {
+    const rect = element.getBoundingClientRect();
+    const style = getComputedStyle(element);
+
+    return rect.width > 0 && rect.height > 0 && style.visibility !== "hidden" && style.display !== "none" && Number(style.opacity) > 0.05;
+  };
+  const isSolid = (element) => {
+    const numbers = getComputedStyle(element).backgroundColor.match(/[\d.]+/g);
+
+    return Boolean(numbers) && (numbers.length > 3 ? Number(numbers[3]) : 1) > 0.5;
+  };
+  const findFloatRoots = () => [...document.querySelectorAll("body *")].filter((element) => {
+    if (getComputedStyle(element).position !== "fixed" || !isShown(element)) return false;
+    const rect = element.getBoundingClientRect();
+
+    return rect.bottom > innerHeight - 160 && rect.width < innerWidth * 0.4 && element.querySelector("a, button");
+  });
+
+  const covered = new Map();
+  const originalTop = window.scrollY;
+  // Bắt đầu từ nửa màn: màn đầu đã có phép đo 18e2 (nút nổi đè nút khác ở màn đầu).
+  for (let top = Math.round(innerHeight / 2); top < document.documentElement.scrollHeight; top += Math.round(innerHeight / 2)) {
+    window.scrollTo(0, top);
+    await new Promise((resolve) => setTimeout(resolve, 80));
+    const floatRoots = findFloatRoots();
+    if (floatRoots.length === 0) continue;
+    const floatRects = floatRoots.flatMap((root) => [...root.querySelectorAll("a, button")].filter(isShown).map((control) => control.getBoundingClientRect()));
+    const targets = [...document.querySelectorAll("button, input, select, textarea, [role='combobox'], a[href]")].filter((target) => {
+      if (floatRoots.some((root) => root.contains(target)) || !isShown(target) || target.closest("header, [role='banner']")) return false;
+
+      return !target.matches("a, button") || target.matches("[role='combobox']") || isSolid(target);
+    });
+    for (const target of targets) {
+      const rect = target.getBoundingClientRect();
+      const isCovered = floatRects.some((floatRect) => Math.min(rect.right, floatRect.right) - Math.max(rect.left, floatRect.left) > 8 && Math.min(rect.bottom, floatRect.bottom) - Math.max(rect.top, floatRect.top) > 8);
+      if (!isCovered) continue;
+      const name = (target.getAttribute("aria-label") || target.labels?.[0]?.textContent || target.textContent || target.getAttribute("placeholder") || "").trim().replace(/\s+/g, " ").slice(0, 30);
+      const label = `${target.tagName.toLowerCase()} "${name}"`;
+      if (!covered.has(label)) covered.set(label, top);
+    }
+  }
+  window.scrollTo(0, originalTop);
+
+  return [...covered.entries()].map(([label, top]) => `nút nổi đè lên ${label} khi cuộn tới ~${top}px (H13)`);
+}
+
 // Ảnh `loading="lazy"` ngoài màn không tải khi chụp fullPage: ảnh ra ô trắng giữa trang (landing nhiều ảnh, lưới
 // dịch vụ và không gian trắng hết). Cuộn một lượt cho ảnh tải rồi về đỉnh mới chụp.
 async function loadLazyImages(page) {
@@ -3246,6 +3359,7 @@ async function probeWidth(browser, options, width) {
 
   const screenshotPath = join(options.out, `${width}${options.isDark ? "-dark" : ""}.png`);
   await takeFullScreenshot(page, screenshotPath);
+  const landingProblems = options.isLanding ? [...(await page.evaluate(measureLandingPage)), ...(await page.evaluate(findCoveredByFloatingButtons))] : [];
   // Đo dark mode ngay sau khi chụp, lúc trang còn đúng như ảnh: các bước rê, bấm, mở lớp nổi bên dưới
   // có thể đổi trang (đã dính 01/10/2026: tới lượt đo thì biểu đồ tổng quan còn 2/10 khối màu nhấn).
   const darkModeProblemSet = new Set(options.isDark ? [...(await page.evaluate(findDarkModeProblems)), ...(await page.evaluate(findSunkenSelections)), ...(await page.evaluate(findHueDrifts))] : []);
@@ -3289,6 +3403,7 @@ async function probeWidth(browser, options, width) {
     width,
     isDynamic,
     screenshotPath,
+    landingProblems,
     consoleErrors: [...new Set(consoleErrors)],
     ...allMeasurements,
     expandedCount,
@@ -4010,6 +4125,7 @@ function listMustReportItems(results, sweepSteps) {
     for (const layer of result.overflowingLayers) addItem(width, `lớp nổi lòi khỏi màn: ${layer.replace(/ lòi \d+px khỏi màn$/, "")}`);
     for (const problem of result.openerLayerProblems) addItem(width, `lớp nổi mở bằng nút bị vỡ: ${problem}`);
     for (const shift of result.layoutShifts) addItem(width, `rê chuột làm nhảy bố cục: ${shift.replace(/ dời \d+px$/, "")}`);
+    for (const problem of result.landingProblems ?? []) addItem(width, `landing: ${problem.replace(/ khi cuộn tới ~\d+px/, "")}`);
     for (const line of result.lowContrastTexts) addItem(width, `tương phản thấp: ${line}`);
     for (const item of result.clippedBlocks) addItem(width, `khung giấu mất chữ: ${item.element}`);
     for (const item of result.tooShortTexts) addItem(width, `chữ cắt còn quá ngắn: ${item.element}`);
@@ -4110,6 +4226,10 @@ function formatReport(results) {
   for (const result of results) {
     const problems = [];
 
+    if (result.landingProblems?.length > 0) {
+      problems.push(`LANDING (${result.landingProblems.length} chỗ, luật H của skill landing):`);
+      for (const item of result.landingProblems) problems.push(`  ${item}`);
+    }
     if (result.hasHorizontalScroll) {
       problems.push(`CUỘN NGANG: trang rộng ${result.pageScrollWidth}px trên màn ${result.viewportWidth}px.`);
       for (const item of result.overflowingElements) problems.push(`  lòi ra tới ${item.right}px: ${item.element}`);
@@ -4815,6 +4935,7 @@ async function main() {
 
   try {
     for (const width of options.widths) results.push(await probeWidth(browser, options, width));
+    if (options.isLanding) for (const result of results) for (const key of appOnlyResultKeys) result[key] = [];
     if (options.sweep) sweepSteps = await sweepWidths(browser, options);
     if (options.wireframeUrl) wireframeComparisons = await compareWithWireframe(browser, options);
   } catch (error) {
