@@ -329,6 +329,21 @@ bỏ khung, chỉ đường kẻ `border-border-strong`, hai cột từ `lg` (đ
 </section>
 ```
 
+- **Khoảng cách field to hơn form trong app**, vì ô cao 48px và chữ `text-base`. Giữ `space-y-1.5`
+  của `input.md` thì nhãn dính sát ô, câu lỗi dính sát nhãn của ô kế, ba field đọc như một khối:
+
+  ```html
+  <div class="space-y-4">                                  <!-- giữa hai field -->
+    <div class="flex flex-col">
+      <label for="…" class="mb-2 w-fit text-sm font-medium">Họ tên</label>
+      <input id="…" class="…input.md, h-12 text-base…" />
+      <p class="mt-1.5 min-h-5 text-sm text-red-600">…câu lỗi, dòng luôn giữ chỗ…</p>
+    </div>
+  </div>
+  ```
+
+  Nhãn cách ô 8px, ô cách field kế ~42px khi không lỗi: mắt gom nhãn với ô của nó. Nút gửi cách
+  field cuối `mt-4`.
 - **Nhãn hiện trên ô** (`components/input.md`), không chỉ placeholder. Ô bắt buộc không gắn `*`
   khi mọi ô đều bắt buộc; có ô không bắt buộc thì ghi "(không bắt buộc)" sau nhãn của ô đó.
 - Số điện thoại: `type="tel" inputmode="tel" autocomplete="tel"`; họ tên `autocomplete="name"`.
