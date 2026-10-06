@@ -1559,6 +1559,99 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     }
   }
 
+  // 18e2. Nút nổi (fixed, nhỏ, góc màn) đè lên nút hay link của trang ở màn đầu. Landing: nút Zalo / Gọi nổi đè
+  //       hàng nút hero `w-full` ở 375 (wireframe Gỗ Tâm An 06/10/2026, cả ba phương án). Bỏ qua lớp đang ẩn
+  //       (cha `opacity-0` hay `pointer-events-none`) và thanh dính rộng (header, thanh công cụ).
+  const floatingOverlaps = [];
+  const isLiveLayer = (element) => {
+    for (let node = element; node && node !== document.body; node = node.parentElement) {
+      const style = getComputedStyle(node);
+      if (Number(style.opacity) === 0 || style.pointerEvents === "none" || style.visibility === "hidden") return false;
+    }
+    return true;
+  };
+  const isInFixedLayer = (element) => {
+    for (let node = element; node && node !== document.body; node = node.parentElement) {
+      if (getComputedStyle(node).position === "fixed") return node;
+    }
+    return null;
+  };
+  const clickableSelector = "a[href], button, input, select, textarea, [role='button']";
+  const floatingControls = [...document.querySelectorAll(clickableSelector)].filter((element) => {
+    const layer = isInFixedLayer(element);
+    if (!layer || isWireframeChrome(element) || !isVisible(element) || !isLiveLayer(element)) return false;
+    const rect = element.getBoundingClientRect();
+    return layer.getBoundingClientRect().width < viewportWidth * 0.5 && rect.width <= 96 && rect.height <= 96;
+  });
+  if (floatingControls.length > 0) {
+    const pageControls = [...document.querySelectorAll(clickableSelector)].filter((element) => !isInFixedLayer(element) && !isWireframeChrome(element) && isVisible(element));
+    for (const floating of floatingControls) {
+      const floatingRect = floating.getBoundingClientRect();
+      for (const control of pageControls) {
+        if (floatingOverlaps.length >= 4) break;
+        const controlRect = control.getBoundingClientRect();
+        const overlapX = Math.min(floatingRect.right, controlRect.right) - Math.max(floatingRect.left, controlRect.left);
+        const overlapY = Math.min(floatingRect.bottom, controlRect.bottom) - Math.max(floatingRect.top, controlRect.top);
+        if (overlapX >= 8 && overlapY >= 8) floatingOverlaps.push(`${describe(floating)} đè ${Math.round(overlapX)}×${Math.round(overlapY)}px lên ${describe(control)}`);
+      }
+    }
+  }
+
+  // 18e3. Đường kẻ ngang thò ra ngoài mép chữ: khối có `border-t` / `border-b` và `px-*` thì đường kẻ phủ cả phần
+  //       padding, đầu kẻ dừng giữa khoảng trống trước mép chữ (footer `max-w-7xl border-t px-8`: kẻ thò 32px ở
+  //       1440, wireframe Gỗ Tâm An 06/10/2026). Đường kẻ chạm mép khung có nền hay viền (chân card) là đúng.
+  const protrudingRules = [];
+  for (const element of allElements) {
+    if (protrudingRules.length >= 3) break;
+    const style = getComputedStyle(element);
+    const hasRule = ["Top", "Bottom"].some((side) => parseFloat(style[`border${side}Width`]) >= 1 && readColor(style[`border${side}Color`]).alpha > 0 && style[`border${side}Style`] !== "none");
+    if (!hasRule || parseFloat(style.borderLeftWidth) > 0 || parseFloat(style.borderRightWidth) > 0) continue;
+    if (parseFloat(style.paddingLeft) < 12 || readColor(style.backgroundColor).alpha > 0 || style.backgroundImage !== "none" || !isVisible(element)) continue;
+    const rect = element.getBoundingClientRect();
+    if (rect.width < viewportWidth * 0.5 || isInFixedLayer(element)) continue;
+    let textLeft = Infinity;
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+    while (walker.nextNode()) {
+      if (!walker.currentNode.textContent.trim() || !isVisible(walker.currentNode.parentElement)) continue;
+      const range = document.createRange();
+      range.selectNodeContents(walker.currentNode);
+      for (const textRect of range.getClientRects()) if (textRect.width > 0) textLeft = Math.min(textLeft, textRect.left);
+    }
+    if (!Number.isFinite(textLeft) || textLeft - rect.left < 12) continue;
+    let box = element.parentElement;
+    while (box && box !== document.documentElement) {
+      const boxStyle = getComputedStyle(box);
+      if (readColor(boxStyle.backgroundColor).alpha > 0 || boxStyle.backgroundImage !== "none" || parseFloat(boxStyle.borderLeftWidth) > 0) break;
+      box = box.parentElement;
+    }
+    const boxLeft = box ? box.getBoundingClientRect().left : 0;
+    if (rect.left - boxLeft < 8) continue;
+    protrudingRules.push(`kẻ bắt đầu ${Math.round(textLeft - rect.left)}px trước mép chữ, cách mép khung ${Math.round(rect.left - boxLeft)}px: ${describe(element)}`);
+  }
+
+  // 18e4. Lưới card một cột ảnh dọc ở màn hẹp: từ ba card, ảnh rộng gần hết màn mà cao hơn rộng, cả lưới thành
+  //       hàng nghìn px cuộn chỉ để đọc vài tên (sáu card 4/5 là 3.800px ở 375, wireframe Gỗ Tâm An 06/10/2026).
+  //       Dưới `sm` ảnh card để `aspect-3/2` (landing `K5`).
+  const tallMobileCards = [];
+  if (isMobile) {
+    for (const list of allElements) {
+      if (tallMobileCards.length >= 2) break;
+      const items = [...list.children].filter((child) => isVisible(child));
+      if (items.length < 3) continue;
+      const images = items.map((item) => item.querySelector("img"));
+      if (images.some((image) => !image || !isVisible(image))) continue;
+      const lefts = new Set(items.map((item) => Math.round(item.getBoundingClientRect().left)));
+      if (lefts.size !== 1) continue;
+      const isTall = images.every((image) => {
+        const imageRect = image.getBoundingClientRect();
+        return imageRect.width >= viewportWidth * 0.7 && imageRect.height > imageRect.width * 1.1;
+      });
+      if (!isTall) continue;
+      const imageRect = images[0].getBoundingClientRect();
+      tallMobileCards.push(`${items.length} card, ảnh ${Math.round(imageRect.width)}×${Math.round(imageRect.height)}px, cả lưới cao ${Math.round(list.getBoundingClientRect().height)}px: ${describe(list)}`);
+    }
+  }
+
   // 18f. Khung hộp thoại nằm trong lớp nền mờ (scrim) mà cả hai cùng chuyển `opacity`: độ mờ nhân nhau, khung
   //      tan nhanh hơn lớp nền lúc đóng, nhìn giật (28/09/2026). Chỉ đo được khi hộp thoại luôn nằm trong DOM.
   const nestedFadeDialogs = [];
@@ -1948,6 +2041,9 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     transparentHeaders,
     swallowedNumbers,
     floatingContent,
+    floatingOverlaps,
+    protrudingRules,
+    tallMobileCards,
     tinyTexts,
     tinyTextCount,
     autoScrolledAreas,
@@ -4219,6 +4315,18 @@ function formatReport(results) {
     if (result.swallowedNumbers.length > 0) {
       problems.push(`CHỮ CẮT NUỐT MẤT SỐ (${result.swallowedNumbers.length} chỗ, số kèm đơn vị nằm sau dấu …):`);
       for (const item of result.swallowedNumbers) problems.push(`  ${item}`);
+    }
+    if (result.floatingOverlaps?.length > 0) {
+      problems.push(`NÚT NỔI ĐÈ NÚT KHÁC (${result.floatingOverlaps.length} chỗ ở màn đầu; landing: ẩn nút nổi khi hero còn trong màn, H13):`);
+      for (const item of result.floatingOverlaps) problems.push(`  ${item}`);
+    }
+    if (result.protrudingRules?.length > 0) {
+      problems.push(`ĐƯỜNG KẺ THÒ RA NGOÀI MÉP CHỮ (${result.protrudingRules.length} chỗ; đặt border-t lên khối con bên trong khung padding, landing K12):`);
+      for (const item of result.protrudingRules) problems.push(`  ${item}`);
+    }
+    if (result.tallMobileCards?.length > 0) {
+      problems.push(`LƯỚI CARD MỘT CỘT ẢNH DỌC Ở MÀN HẸP (${result.tallMobileCards.length} lưới; dưới sm ảnh aspect-3/2, landing K5):`);
+      for (const item of result.tallMobileCards) problems.push(`  ${item}`);
     }
     if (result.floatingContent.length > 0) {
       problems.push(`NỘI DUNG TRÔI GIỮA MÀN RỘNG (khối chính căn giữa, hở hai bên):`);
