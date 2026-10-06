@@ -122,6 +122,9 @@ Chỉ B2B (5/7), ngay dưới hero.
 
 - 6 logo (5, 4 khi ít). Logo giả là chữ (`H9`); logo thật SVG xám một màu, cao 24–32px.
 - Dải liền hero: padding nhỏ hơn section thường. Không chạy vòng, dưới `sm` lưới 2 cột.
+- **Hero đứng trên dải logo thì bớt đáy** (`pb-10 sm:pb-12 lg:pb-14` thay `pb` của `K2`): giữ đáy
+  hero cũ thì từ ảnh hero tới dòng chữ của dải là 160px ở 1440, dải trôi giữa hai khối, không đọc
+  thành bằng chứng cho hero.
 
 ## K4. Giới thiệu ⚑
 
@@ -147,14 +150,20 @@ Chỉ B2B (5/7), ngay dưới hero.
 **B. Vì sao chọn, kèm con số** (B2B)
 
 H2 và câu dẫn bên trái (`lg:col-span-5`); bên phải (`lg:col-span-7`) 3–4 điểm dạng lưới 2 cột:
-icon 20px (`H8`), tên điểm `font-semibold`, hai dòng mô tả. Dưới cả khối, một hàng 3–4 con số
-cách bằng đường kẻ:
+icon 20px (`H8`), tên điểm `font-semibold`, hai dòng mô tả. Dưới cả khối, một hàng 3–4 con số,
+mỗi số một đường kẻ trên:
 
 ```html
-<dl class="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-lg bg-border lg:grid-cols-4">
-  <div class="bg-background p-6"><dt class="text-sm text-muted">Năm sản xuất</dt><dd class="mt-2 text-3xl font-semibold">18</dd></div>
+<dl class="mt-14 grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
+  <div class="flex flex-col-reverse justify-end border-t border-border-strong pt-6">
+    <dt class="mt-2 text-sm text-muted">Năm sản xuất</dt><dd class="text-3xl font-semibold tabular-nums">18</dd>
+  </div>
 </dl>
 ```
+
+- **Số đứng thẳng mép trái với H2**, không ô có `p-6` ngăn bằng `gap-px` trên nền viền: ô không
+  khung nhìn thấy mà chữ thụt 24px thì hàng số lệch khỏi mép chữ cả section, và `rounded-lg` cắt
+  góc nền viền thành bốn vệt mờ ở góc.
 
 Con số chỉ khi có thật hay đánh dấu `GIẢ:` (`H9`). Không số tròn kiểu "1000+ khách hài lòng".
 
@@ -263,7 +272,7 @@ B2B (5/7): cách đặt hàng, 4 bước (hay 3). Dải tối được (`H2`).
 <ul class="grid gap-6 lg:grid-cols-3">
   <li>
     <figure class="flex h-full flex-col rounded-lg bg-surface p-8">
-      <blockquote class="font-heading text-xl/8 text-foreground">“…một trải nghiệm cụ thể…”</blockquote>
+      <blockquote class="font-heading text-xl/8 text-pretty text-foreground">“…một trải nghiệm cụ thể…”</blockquote> <!-- text-pretty: không trơ "lại.”" một mình dòng cuối -->
       <figcaption class="mt-auto flex items-center gap-3 pt-8">…avatar 40px… <span class="text-sm"><span class="font-medium">Tên</span><span class="text-muted"> · khách từ 2023</span></span></figcaption>
     </figure>
   </li>

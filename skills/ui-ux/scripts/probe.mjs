@@ -1352,6 +1352,42 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     }
   }
 
+  // 16f. Nhãn dính ô, và hai ô đứng cạnh nhau lệch đỉnh vài px. Đã dính 06/10/2026, form báo giá landing B2B:
+  //      `<label>` inline trong `space-y-1.5` (Tailwind v4 đặt margin-bottom lên nhãn, inline bỏ qua margin dọc),
+  //      chữ nhãn cách ô 3px; ô chọn bên cạnh có nhãn `<span class="block">` nên thấp hơn ô nhập 2px.
+  const stuckLabels = [];
+  const fieldControls = [...document.querySelectorAll("input:not([type=checkbox]):not([type=radio]):not([type=hidden]), select, textarea, [role=combobox]")]
+    .filter((control) => isVisible(control) && control.getBoundingClientRect().height >= 32);
+  for (const control of fieldControls) {
+    if (stuckLabels.length >= 4) break;
+    const labelNodes = [...(control.labels || [])];
+    for (const labelId of (control.getAttribute("aria-labelledby") || "").split(/\s+/).filter(Boolean)) {
+      const labelNode = document.getElementById(labelId);
+      if (labelNode) labelNodes.push(labelNode);
+    }
+    const controlRect = control.getBoundingClientRect();
+    for (const labelNode of labelNodes) {
+      if (labelNode.contains(control) || !isVisible(labelNode)) continue;
+      const range = document.createRange();
+      range.selectNodeContents(labelNode);
+      const textRect = range.getBoundingClientRect();
+      const isAbove = textRect.bottom <= controlRect.top + 1 && textRect.left < controlRect.right && textRect.right > controlRect.left;
+      const gap = controlRect.top - textRect.bottom;
+      if (isAbove && gap < 4) stuckLabels.push(`chữ nhãn cách ô ${Math.round(gap * 10) / 10}px, cần từ 4px (nhãn \`block\`, \`components/input.md\`): ${describe(labelNode)}`);
+    }
+  }
+  for (let index = 0; index < fieldControls.length && stuckLabels.length < 6; index++) {
+    const rect = fieldControls[index].getBoundingClientRect();
+    const sideBySide = fieldControls.slice(index + 1).find((other) => {
+      const otherRect = other.getBoundingClientRect();
+      const verticalOverlap = Math.min(rect.bottom, otherRect.bottom) - Math.max(rect.top, otherRect.top);
+      return (otherRect.left >= rect.right - 1 || otherRect.right <= rect.left + 1) && verticalOverlap > Math.min(rect.height, otherRect.height) * 0.8;
+    });
+    if (!sideBySide) continue;
+    const offset = Math.abs(sideBySide.getBoundingClientRect().top - rect.top);
+    if (offset >= 0.5 && offset <= 6) stuckLabels.push(`hai ô cùng hàng lệch đỉnh ${Math.round(offset * 10) / 10}px (nhãn hai ô khác kiểu hiển thị?): ${describe(fieldControls[index])} · ${describe(sideBySide)}`);
+  }
+
   // 16b. Khối cùng component mà bo góc khác nhau (Lệch hệ, `V1` "cùng vai"): gom khối có nền / viền / bóng theo
   //      component, nhận ra bằng `data-slot` (shadcn) hoặc class CSS Module có hash (`_card_x1y2z`,
   //      `glass-card-module__card__AbC12`). Một khối bo khác số đông của chính component đó là bị đè riêng.
@@ -2016,6 +2052,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     faintLines,
     faintSelectedTabs,
     stuckRows,
+    stuckLabels,
     mismatchedRadii,
     browserDefaultControls,
     brokenRules,
@@ -4355,6 +4392,10 @@ function formatReport(results) {
     if (result.stuckRows?.length > 0) {
       problems.push(`DÒNG BO GÓC CÓ NỀN DÍNH NHAU (${result.stuckRows.length} chỗ, dòng đang chọn cách dòng kề dưới 4px: rê dòng kề là hai nền liền một khối; \`components/list-row.md\`, luật khoá 19):`);
       for (const item of result.stuckRows) problems.push(`  ${item}`);
+    }
+    if (result.stuckLabels?.length > 0) {
+      problems.push(`NHÃN DÍNH Ô, Ô CÙNG HÀNG LỆCH ĐỈNH (${result.stuckLabels.length} chỗ):`);
+      for (const item of result.stuckLabels) problems.push(`  ${item}`);
     }
     if (result.faintSelectedTabs?.length > 0) {
       problems.push(`TAB ĐANG CHỌN GẦN TRÙNG NỀN (${result.faintSelectedTabs.length} chỗ; dùng \`bg-tab-selected\`, \`components/small-controls.md\`):`);

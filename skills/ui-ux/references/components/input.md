@@ -36,8 +36,10 @@ Nhãn, ô, câu lỗi. Ba phần, và nhãn phải gắn vào ô theo `I26`:
 
 ```tsx
 <div className="space-y-1.5">
-  {/* w-fit: không có nó thì bấm vào khoảng trắng bên phải chữ cũng focus ô */}
-  <label htmlFor={id} className="w-fit cursor-pointer text-sm font-medium">
+  {/* block: label mặc định là inline, Tailwind v4 space-y đặt margin-bottom lên nó và inline bỏ qua
+      margin dọc, nhãn dính ô 3px thay vì 6px; cạnh ô chọn có nhãn <span class="block"> thì hai ô lệch 2px.
+      w-fit: không có nó thì bấm vào khoảng trắng bên phải chữ cũng focus ô */}
+  <label htmlFor={id} className="block w-fit cursor-pointer text-sm font-medium">
     {label}
   </label>
   <input id={id} className={...} />

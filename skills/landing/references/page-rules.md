@@ -121,7 +121,16 @@ Dòng 7 của brief (cảm giác) quyết ba thứ: nền trang, màu nhấn, fo
   nơi của khách.
 - **Người trong ảnh mẫu giống khách của trang**: tiệm ở VN thì người châu Á (tìm Unsplash với
   "asian", "vietnamese"). Trang tên tiếng Việt, đánh giá tên Việt mà mọi khuôn mặt là người mẫu
-  phương Tây thì nhìn ra ngay là ảnh kho, trang thành theme.
+  phương Tây thì nhìn ra ngay là ảnh kho, trang thành theme. Áp cho **mọi người trong ảnh**, cả
+  thợ, nhân viên, người đứng máy: xưởng ở Long An mà ảnh xưởng là công nhân phương Tây, người
+  trùm khăn hijab thì khách B2B nhận ra ảnh nhà máy nước ngoài.
+- **Ảnh mẫu không mang tên, logo thương hiệu thật** (in trên hộp, áo, biển hiệu, máy). Ở trang
+  bao bì, in ấn, đồng phục thì hộp in sẵn tên một hãng thật đặt ở hero đọc thành "xưởng làm cho
+  hãng này": lời khẳng định bịa (`H9`). Soi phóng to từng ảnh trước khi chọn; hàng in logo thì
+  chọn ảnh hộp trơn hay logo mờ không đọc được.
+- **Ảnh trong một lưới cùng một kiểu chụp**: cùng nền (trơn sáng, hay cảnh thật), cùng ánh sáng,
+  cùng góc nhìn gần đúng. Năm card sản phẩm mà nền trắng, nền be, nền đen, ảnh mockup xám xen
+  nhau thì lưới lổn nhổn như ghép từ năm nguồn, nhìn ra ngay là ảnh kho.
 - **Ảnh nói đúng chữ bên cạnh.** Khối nói "năm phòng riêng" thì ảnh là phòng, góc phòng; không
   tĩnh vật kho ảnh (nến, khăn cuộn, chai lọ, cành lá, hoa đặt trên khăn). Tĩnh vật chỉ được ở card
   sản phẩm bán kèm. Lưới tĩnh vật spa là thứ làm mọi landing spa giống hệt nhau.

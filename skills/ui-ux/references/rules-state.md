@@ -487,7 +487,7 @@ phạm vi ở `../SKILL.md`). Giữ số để các chỗ dẫn `I26` trở đi 
 Ba thứ đi liền nhau, thiếu một cái là lỗi:
 
 ```html
-<label for="email" class="w-fit cursor-pointer text-sm font-medium">Email</label>
+<label for="email" class="block w-fit cursor-pointer text-sm font-medium">Email</label>
 <input id="email" />
 ```
 
