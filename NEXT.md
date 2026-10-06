@@ -434,8 +434,10 @@ gộp SaaS hay trang quảng cáo chung.
    - **Spa xong (06/10/2026):** 15 trang (5 mỗi định vị), giả thuyết đúng: niềm tin đến từ bác sĩ /
      không gian / ưu đãi, kéo theo section, nút, giá, lớp nhìn. Ghi thành `G6`, khối ưu đãi ở `K2`,
      `H9` không bịa sự gấp, brief dòng 8, wireframe ba phương án là ba định vị khi đề chưa rõ.
-     Chưa test. Còn: cửa hàng, B2B. Lệch cần tra thêm: thanh nút dính đáy mobile 3/5 trang Chuyên
-     môn (H10 đang ghi 0/21).
+     Test Da Xinh qua (06/10/2026): ba phương án ra đúng ba định vị. Lệch cần tra thêm: thanh nút
+     dính đáy mobile 3/5 trang Chuyên môn (H10 đang ghi 0/21).
+   - **Nội thất xong (06/10/2026):** 15 trang chủ, ghi thành `G7` (Đóng theo yêu cầu / Showroom thương
+     hiệu / Giá xưởng). Chưa test. Còn: B2B; quán, tiệm hoa, tiệm bánh chưa tra định vị.
 
 **Hướng SaaS (gác 06/10/2026)** — hướng chốt 01/10/2026: không cố phủ mọi kiểu SaaS. Nội dung landing page muôn kiểu nhưng
 khung gần như giống nhau, nên skill chốt một bộ section cố định và chọn section theo mục tiêu

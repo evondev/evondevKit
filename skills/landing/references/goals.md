@@ -158,3 +158,29 @@ cho dịch vụ đặt lịch**; cửa hàng và B2B chưa tra, vẫn theo `G2`.
 - Định vị Chuyên môn mà người dùng chưa đưa tên, bằng cấp bác sĩ thì khối đội ngũ dựng tên, ảnh
   giả có `GIẢ:`, còn dòng bằng cấp để `[cần điền]`: **không bịa bằng cấp** (`H9`).
 
+## G7. Định vị của showroom nội thất ⚑
+
+Như `G6`, cho **showroom nội thất, tủ bếp, đồ gỗ, thiết kế và thi công nội thất** (khách mua món
+lớn, cần xem tận nơi hay khảo sát). Đếm từ 15 trang chủ (5 mỗi định vị), tra 06/10/2026. Quán, tiệm
+hoa, tiệm bánh chưa tra định vị, vẫn theo `G2`.
+
+| | **Đóng theo yêu cầu** | **Showroom thương hiệu** (mặc định) | **Giá xưởng, ưu đãi** |
+| --- | --- | --- | --- |
+| Nhận ra khi đề nói | đóng theo kích thước, thiết kế riêng, thi công trọn gói, gỗ tự nhiên cao cấp | showroom, bộ sưu tập, thương hiệu, mẫu mới | giá xưởng, giá gốc, khuyến mãi, trả góp, giá rẻ, combo |
+| Niềm tin đến từ | công trình đã làm (4/5), tay nghề và chất liệu (4/5), chuyện người sáng lập (3/5); không điểm đánh giá (0/5) | bộ sưu tập, nhà thiết kế (3/5), **địa chỉ showroom có ảnh** (5/5) | điểm đánh giá có số (4/5), báo chí (3/5), năm bảo hành, "làm tại xưởng" |
+| Đổi so với `G2` | **Công trình đã làm** thay khối không gian (`K6` A: tên công trình, khu vực); khối tay nghề, xưởng; quy trình khi người dùng có (1/5 ghi bước, 2/5 dẫn link) | Bộ sưu tập (`K5` A); **mỗi showroom một card** ở khối Liên hệ (`K11`) | **Thanh ưu đãi trên header** (5/5); form ngay hero (3/5); trước/sau khi có ảnh thật (2/5); quy trình 3–4 bước (2/5); số điện thoại trên header (3/5) |
+| Nút chính | Đặt lịch tư vấn; hero được chỉ có ảnh và một câu (3/5), nút đặc ở header và Liên hệ | Hẹn ghé showroom | Nhận báo giá miễn phí / Đặt lịch khảo sát miễn phí |
+| Nút lặp | 1–3 lần | 2–3 lần | 4–6 lần |
+| Form | thêm ô không bắt buộc: Ngân sách dự kiến, Khi nào muốn làm, Ảnh mặt bằng (1/5 có form dài kiểu này) | theo `G3` | theo `G3`, đặt ở hero |
+| Giá | không (0/5) | không, hay "từ …" (1/5) | mức giảm, trả góp 0% (3/5), có hạn (3/5) |
+| Lớp nhìn (`H3`, `H5`) | trắng hay ngà, **serif** hay sans mảnh chữ hoa giãn, ảnh phòng tràn | sans trung tính, ảnh phòng lẫn ảnh sản phẩm tách nền | thanh ưu đãi màu nhấn, **sans đậm**, ảnh người trong phòng |
+| Chuyển động (`H12`) | êm; cuộn kể chuyện chỉ khi xin | video hero khi có (3/5) | thanh dính, kéo so sánh trước/sau |
+
+- **Đoán theo bảng**, ghi dòng 8 của brief kèm *đoán*. Không rõ thì Showroom thương hiệu. Đề nói
+  cả "showroom" lẫn "đóng theo kích thước" thì Đóng theo yêu cầu: khách mua đồ đóng riêng tới
+  showroom để tư vấn, không để chọn món có sẵn.
+- **Giống ở cả ba:** ảnh phòng là thứ bán hàng chính; lưới theo phòng (bếp, phòng ngủ, phòng làm
+  việc); một câu về tay nghề hay sản xuất. FAQ hiếm (1/15).
+- **Công trình đã làm phải là công trình thật.** Chưa có thì ảnh mẫu kèm `GIẢ:`, tên chủ nhà và
+  khu vực để `[cần điền]`, không bịa "Biệt thự anh Minh, Thảo Điền" (`H9`).
+- Thanh ưu đãi, trả góp, hạn: chỉ khi người dùng đưa, như `G6`. Popup ưu đãi không dùng (1/15).

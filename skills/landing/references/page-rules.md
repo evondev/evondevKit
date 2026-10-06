@@ -156,7 +156,8 @@ Dòng 7 của brief (cảm giác) quyết ba thứ: nền trang, màu nhấn, fo
   neo (`#dich-vu`, `#gioi-thieu`, `#danh-gia`, `#lien-he`). Phải cùng: nút chính.
 - **Không số điện thoại trên header** mặc định (2/7, 0/7, 1/7): số nằm ở khối Liên hệ, footer và
   nút gọi nổi (`H13`). B2B được thêm **thanh mảnh trên header** (3/7) cho hotline, email hay một
-  tin thật, `h-9 text-sm`, nền tối hay `bg-primary-light`.
+  tin thật, `h-9 text-sm`, nền tối hay `bg-primary-light`. Định vị Giá xưởng (`G7`) dùng thanh này
+  cho ưu đãi (5/5), nền màu nhấn, và được có số điện thoại trên header (3/5).
 - `sticky top-0 z-40`, nền `bg-background/90 backdrop-blur`, viền dưới `border-b border-border`
   khi đã cuộn (hay luôn có). Cao 64–72px.
 - Hero ảnh tràn (`K2` A): header trong suốt chữ trắng nằm đè lên ảnh khi ở đỉnh trang, cuộn qua
