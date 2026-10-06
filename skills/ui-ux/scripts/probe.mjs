@@ -3204,7 +3204,10 @@ function measureLandingPage() {
   const headerButtons = solidControls(header);
   if (headerButtons.length > 1) problems.push(`header có ${headerButtons.length} nút đặc (${headerButtons.map((control) => `"${normalize(control.textContent)}"`).join(", ")}), chỉ một nút chính (H1)`);
   const sections = [...document.querySelectorAll("section")].filter((section) => !section.parentElement?.closest("section") && isShown(section));
-  const heroButton = solidControls(sections[0])[0];
+  // Hero là section chứa H1, không phải section đầu: wireframe có khung (thanh công cụ, khung lý do) đứng trước,
+  // lấy section đầu thì hero bị đem so padding với section thường (báo nhầm 06/10/2026, wireframe Da Xinh).
+  const hero = sections.find((section) => section.querySelector("h1")) ?? sections[0];
+  const heroButton = solidControls(hero)[0];
   const contactSection = document.querySelector("#lien-he") || document.querySelector("form")?.closest("section");
   const submitButton = contactSection?.querySelector("button[type='submit'], form button:not([type='button'])");
   const ctas = [["header", headerButtons[0]], ["hero", heroButton], ["Liên hệ", submitButton]].filter(([, control]) => control && isShown(control));
@@ -3229,7 +3232,7 @@ function measureLandingPage() {
   }
 
   // H2: mọi section trừ hero cùng padding dọc. Dải nối hero (logo khách, thấp hơn 240px) có nhịp riêng.
-  const paddedSections = sections.slice(1).filter((section) => section.getBoundingClientRect().height >= 240);
+  const paddedSections = sections.filter((section) => section !== hero && !section.querySelector("h1") && section.getBoundingClientRect().height >= 240 && !section.closest("[class*='wf-']"));
   const paddingOf = (section) => {
     const style = getComputedStyle(section);
 

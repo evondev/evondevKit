@@ -141,13 +141,16 @@ cho dịch vụ đặt lịch**; cửa hàng và B2B chưa tra, vẫn theo `G2`.
 | Đổi so với `G2` | Đội ngũ (`K6` B) **bắt buộc**, kèm bằng cấp, ngay sau giới thiệu; dải chứng nhận (`K9`) khi có thật | Không gian (`K6` A) lớn, được lên ngay sau hero; thẻ quà tặng khi người dùng có (3/5) | **Khối ưu đãi ở hero** (`K2`); form ngay sau hero (form trên trang 3/5); trước/sau khi có ảnh thật; giá dịch vụ hiện rõ; header gọn, được bỏ link neo (2/5) |
 | Nút chính | Đặt lịch tư vấn | Đặt lịch | ưu đãi nằm trong chữ nút: "Đặt lịch – giảm 30%" (3/5) |
 | Nút lặp | ~4 lần | 2–3 lần (header, hero, Liên hệ) | ~5 lần (thêm sau trước/sau, sau đánh giá) |
-| Giá | không | không, hay "từ …" | luôn có, giá cũ gạch, giá ưu đãi số to |
+| Giá | không | không, hay "từ …" | giá ưu đãi số to, giá cũ gạch ở khối ưu đãi; card dịch vụ ghi "từ …" khi người dùng đưa giá |
 | Lớp nhìn (`H3`, `H5`) | sạch, tin cậy: trắng, navy, **sans** (4/5) | ấm thanh lịch hay tối sang: kem hoặc đen, **serif** mảnh (3/5) | sạch, nền trắng, **sans đậm**, số giá to; vẫn một màu nhấn |
 
 - **Đoán theo bảng**, ghi dòng 8 của brief kèm *đoán*. Không rõ thì Trải nghiệm.
 - **Giống ở cả ba:** lưới dịch vụ, đánh giá ngắn 2–3 câu, địa chỉ và giờ. Không FAQ (0/15),
   quy trình hiếm (1/15). Ưu đãi định vị nào cũng có thể có (A, B đều có trang để dải "ưu đãi tháng
   này"); định vị chỉ quyết nó to hay nhỏ.
+- **Chưa có giá thì `[cần điền]` chỉ nằm ở khối ưu đãi**, card dịch vụ không có dòng giá (`G4`).
+  Ba card cùng ghi "Từ [cần điền]" cộng khối ưu đãi ba chỗ `[cần điền]` là trang nhìn như bản nháp
+  hỏng, người dùng không thấy được trang thật trông ra sao.
 - **Ưu đãi phải là ưu đãi thật người dùng đưa.** Đề nói "đang giảm giá" mà không nói bao nhiêu,
   tới khi nào thì khối ưu đãi để `[cần điền]` ở mức giảm và hạn, không tự đặt "giảm 30%".
 - **Hạn và đếm ngược chỉ khi có hạn thật** (4/5 trang Ưu đãi có hạn, 1/5 có đếm ngược). Không bịa
