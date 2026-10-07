@@ -161,7 +161,8 @@ Dòng 7 của brief (cảm giác) quyết ba thứ: nền trang, màu nhấn, fo
 - `sticky top-0 z-40`, nền `bg-background/90 backdrop-blur`, viền dưới `border-b border-border`
   khi đã cuộn (hay luôn có). Cao 64–72px.
 - Hero ảnh tràn (`K2` A): header trong suốt chữ trắng nằm đè lên ảnh khi ở đỉnh trang, cuộn qua
-  hero thì về nền đặc. Không làm được trơn tru thì header nền đặc ngay từ đầu.
+  hero thì về nền đặc. Không làm được trơn tru thì header nền đặc ngay từ đầu. Hero kéo lên đúng
+  chiều cao header kể cả viền (`K2` A), không thì đỉnh trang hở một vạch màu nền.
 - Dưới `md`: link vào panel trượt mở bằng ☰ (7/7, `../ui-ux/references/layouts/overlay.md`).
   Nút chính vẫn hiện trên thanh cạnh ☰.
 - Section đích của link neo có `scroll-mt-20`.

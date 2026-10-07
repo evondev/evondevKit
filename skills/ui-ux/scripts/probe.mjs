@@ -3255,6 +3255,18 @@ function measureLandingPage() {
     for (const place of [...splitPlaces].slice(0, 3)) problems.push(`tên "${brandName}" tách hai dòng: "${place}" (T10, bọc whitespace-nowrap)`);
   }
 
+  // K2 A: header trong suốt đè ảnh hero mà hero kéo lên thiếu (header cao 65px vì 1px viền, hero chỉ `-mt-16`):
+  // đỉnh trang hở một vạch màu nền (bản dựng Mộc Việt 07/10/2026). Chỉ đo ở đỉnh trang.
+  if (header && window.scrollY < 1 && hero) {
+    const headerStyle = getComputedStyle(header);
+    const headerAlpha = Number((headerStyle.backgroundColor.match(/[\d.]+/g) || [])[3] ?? 1);
+    const heroTop = hero.getBoundingClientRect().top;
+    const headerBottom = header.getBoundingClientRect().bottom;
+    if (headerAlpha < 0.1 && heroTop > 0.5 && heroTop < headerBottom && hero.querySelector("img, video")) {
+      problems.push(`hero đè dưới header hở ${Math.round(heroTop * 10) / 10}px ở đỉnh trang, lộ màu nền: kéo hero lên đúng chiều cao header kể cả viền (K2 A)`);
+    }
+  }
+
   // H2: mọi section trừ hero cùng padding dọc. Dải nối hero (logo khách, thấp hơn 240px) có nhịp riêng.
   const paddedSections = sections.filter((section) => section !== hero && !section.querySelector("h1") && section.getBoundingClientRect().height >= 240 && !section.closest("[class*='wf-']"));
   const paddingOf = (section) => {

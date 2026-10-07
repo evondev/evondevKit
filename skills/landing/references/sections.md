@@ -19,8 +19,8 @@ mobile:  Tên tiệm                                    [ NÚT ]  ☰
 ```
 
 ```html
-<header class="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
-  <div class="mx-auto flex h-16 max-w-7xl items-center gap-8 px-4 sm:px-6 lg:h-18 lg:px-8">
+<header class="sticky top-0 z-40 h-16 border-b border-border bg-background/90 backdrop-blur lg:h-18"> <!-- chiều cao đặt trên header: gồm cả viền -->
+  <div class="mx-auto flex h-full max-w-7xl items-center gap-8 px-4 sm:px-6 lg:px-8">
     <a href="#" class="font-heading text-lg text-foreground">…logo + tên</a>
     <nav class="ml-auto hidden items-center gap-7 text-sm text-muted md:flex">
       <a href="#dich-vu" class="hover:text-foreground">Dịch vụ</a>
@@ -74,7 +74,10 @@ bì · KCN Tân Tạo"); dịch vụ đặt lịch 4/7 có. Dòng ưu đãi ch�
 
 - Lớp phủ đậm phía chữ (dưới), nhạt phía trên để ảnh còn thấy. Chữ đo trên chỗ ảnh sáng nhất
   (`H11`). Nút viền trên ảnh: `border-white/60 text-white hover:bg-white/10`.
-- Header đè lên ảnh khi ở đỉnh (`H7`): `pt-32` chừa chỗ.
+- Header đè lên ảnh khi ở đỉnh (`H7`): hero kéo lên **đúng chiều cao header** (`-mt-16 lg:-mt-18`,
+  `h-16` đặt trên chính `<header>` như `K1`), `pt-32` chừa chỗ cho chữ. Đặt `h-16` ở div bên trong
+  thì header cao 65px vì thêm 1px viền dưới, hero kéo lên 64px, đỉnh trang hở một vạch 1px màu nền
+  (bản dựng Mộc Việt 07/10/2026).
 - Video (`H12` mức Nổi bật): `<video autoplay muted loop playsinline poster="…">` thay `<img>`.
 
 **B. Chia đôi, chữ trái, ảnh phải** (dịch vụ đặt lịch, B2B có ảnh sản phẩm)
