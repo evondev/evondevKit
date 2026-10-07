@@ -474,6 +474,9 @@ Cảm giác "sống" đến từ demo sản phẩm, không từ trang trí; tran
      án, không số đông (`A2` 7–9 section 8–12 màn, ba khối cho xem sản phẩm làm việc; `A3` demo bấm
      được; `A4` cụm chữ màu nhấn trong H1, lớp chi tiết thủ công; `C8` lên 8; `C10`, `C11`). Dựng lại
      Sổ Tay theo luật mới để so trước / sau, rồi sang đề app AI.
+   - Sổ Tay v2 qua (07/10/2026): 5,9k px, 7 section, hết lỗi đo được; thêm luật tab demo ở đầu
+     khung, thanh kéo chỉ khi cùng bố cục, tab bằng phím mũi tên, màu nhấn không mặc định xanh dương.
+     Tiếp: đề app AI (Ghi Chép, mục tiêu dùng thử).
 
 **Khi quay lại hướng SaaS (ghi 07/10/2026):** người dùng khen landing của chính evondevKit
 (`~/dev/evondev-kit-landingpage`) đẹp, clean, và muốn skill dựng được trang như vậy. Trang đó là
