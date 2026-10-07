@@ -120,7 +120,9 @@ async function launchBrowser(chromium) {
 // Tắt transition và animation để đo và chụp ra trạng thái cuối, không phải giữa chừng.
 // `scroll-behavior:auto`: trang cuộn mượt (`scroll-behavior: smooth`, hay gặp ở landing) làm `scrollIntoView` chạy dần,
 // đo trước và sau khi rê rơi vào hai lúc cuộn khác nhau, ra "rê link header thì khối phía sau dời 1135px" (báo nhầm).
-const freezeMotionCss = "html,body{scroll-behavior:auto!important}*,*::before,*::after{transition:none!important;animation-duration:0s!important;animation-delay:0s!important;caret-color:transparent!important}";
+// `animation-timeline:auto`: khối hiện khi cuộn tới (`animation-timeline: view()`) ngoài khung nhìn đứng ở `opacity: 0`
+// dù thời lượng 0s, phép đo tương phản nhân opacity ra "chữ trùng màu nền" ở mọi khối dưới màn đầu (báo nhầm 07/10/2026).
+const freezeMotionCss = "html,body{scroll-behavior:auto!important}*,*::before,*::after{transition:none!important;animation-duration:0s!important;animation-delay:0s!important;animation-timeline:auto!important;caret-color:transparent!important}";
 
 // Probe tắt mọi chuyển động trước khi đo (ảnh chụp ổn định), nên ghi lại `transition` của từng phần tử vào
 // `data-evon-transition` trước đó, để các mục đo chuyển động (18f, 18g) còn đọc được.
@@ -308,6 +310,10 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     // bóp (báo nhầm 27/09/2026, ô danh mục ở dự án mồi phase 2).
     const controlStyle = getComputedStyle(control);
     if (controlStyle.flexDirection.startsWith("column") && controlStyle.display.includes("flex") && control.getBoundingClientRect().height >= 56) continue;
+    // Nút câu hỏi FAQ (accordion) kéo hết bề ngang: câu hỏi dài xuống dòng ở màn hẹp là đúng (báo nhầm 07/10/2026,
+    // wireframe landing công cụ dòng lệnh).
+    const controlParent = control.parentElement;
+    if (control.hasAttribute("aria-expanded") && controlParent && control.getBoundingClientRect().width >= controlParent.getBoundingClientRect().width * 0.9) continue;
 
     const textNodes = [];
     const walker = document.createTreeWalker(control, NodeFilter.SHOW_TEXT);

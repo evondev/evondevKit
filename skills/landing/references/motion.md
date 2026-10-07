@@ -131,7 +131,7 @@ trang dùng quá tay.
 ```
 
 ```html
-<div class="overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+<div class="overflow-hidden mask-[linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
   <ul class="flex w-max gap-12 motion-safe:animate-marquee hover:[animation-play-state:paused]">
     …danh sách…
     …danh sách lần hai, mỗi mục aria-hidden="true"…

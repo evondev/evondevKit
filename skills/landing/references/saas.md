@@ -46,6 +46,11 @@ chuyện) → đánh giá → FAQ → CTA cuối → footer.
 | FAQ | mua luôn, cài (câu hỏi kỹ thuật), danh sách chờ | 7/18 |
 | CTA cuối | luôn | 14/18 |
 
+- **Một bộ dữ liệu, mỗi khối một góc.** Mảnh ở section dưới lấy cùng dữ liệu với hero (`A5`) nhưng
+  cho thấy thứ hero chưa cho. Hero đã hiện kết quả (bản changelog, bản tóm tắt, bảng đã lọc) thì
+  section dưới không đặt lại nguyên khối kết quả đó: hiện đầu vào, một chi tiết phóng to, hay tính
+  năng khác. Khối "trước / sau" chỉ một chỗ mỗi trang. Cùng một danh sách đọc lại ở màn thứ hai
+  là trang dài thêm mà khách không biết thêm gì.
 - Không có trong bộ nền: bảng so sánh đối thủ, changelog, blog. Người dùng xin thì mượn khuôn gần nhất.
 - Footer chữ khổng lồ (tên sản phẩm cỡ màn hình, 7/18) là kiểu đang bị dùng quá tay: chỉ khi người
   dùng xin.
@@ -114,7 +119,7 @@ card (tính năng "tự nhắc lịch" thì mảnh là tin nhắc đã gửi). K
 ```html
 <ul class="grid gap-4 lg:grid-cols-3">
   <li class="flex flex-col overflow-hidden rounded-2xl bg-background lg:col-span-2"> <!-- card 1 và 4 rộng gấp đôi khi có 4 card -->
-    <div class="relative h-56 overflow-hidden px-6 pt-6 [mask-image:linear-gradient(to_bottom,black_75%,transparent)]" aria-hidden="true" inert>
+    <div class="relative h-56 overflow-hidden px-6 pt-6 mask-[linear-gradient(to_bottom,black_75%,transparent)]" aria-hidden="true" inert>
       <div class="w-[360px] rounded-xl border border-border bg-surface p-4 shadow-popover">…mảnh UI…</div>
     </div>
     <div class="p-6 pt-4">
