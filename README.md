@@ -4,6 +4,12 @@
 
 ![evondevKit / ui-ux: UI dashboard without the AI hassle](images/evondevkit-ui-ux-en-v2.png)
 
+<p align="center"><strong>If you find this useful, you can support the project via MoMo (Vietnam):</strong></p>
+
+<p align="center">
+  <img src="images/momo.jpg" alt="MoMo QR code to support evondevKit" width="240">
+</p>
+
 A **`ui-ux`** skill for Claude Code: builds and polishes app UIs (dashboards, lists, tables,
 forms, settings, modals) using your project's own component library and colors.
 

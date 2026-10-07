@@ -4,6 +4,12 @@
 
 ![evondevKit / ui-ux: UI dashboard không còn mùi AI](images/evondevkit-ui-ux.png)
 
+<p align="center"><strong>Nếu thấy hữu ích, bạn có thể ủng hộ dự án qua MoMo:</strong></p>
+
+<p align="center">
+  <img src="images/momo.jpg" alt="Mã QR MoMo ủng hộ evondevKit" width="240">
+</p>
+
 Skill **`ui-ux`** cho Claude Code: dựng và làm đẹp giao diện app (dashboard, danh sách,
 bảng, form, cài đặt, modal) theo đúng thư viện component và màu của dự án bạn.
 
