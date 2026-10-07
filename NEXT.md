@@ -464,8 +464,8 @@ Cảm giác "sống" đến từ demo sản phẩm, không từ trang trí; tran
 1. [x] Ghi vào skill (07/10/2026): `references/saas.md` (luật `A`), `references/motion.md` (luật `C`,
    công thức lấy từ code landing evondevKit), `G1` thêm loại thứ tư, `SKILL.md` câu 3, brief, wireframe,
    checklist, lúc giao.
-2. [ ] Probe `--landing`: bật giảm chuyển động thì `document.getAnimations()` phải về 0 (trừ hiệu ứng
-   người dùng tự bật); đếm vòng lặp vô hạn, trên 2 thì cảnh báo (`C8`); tìm Lenis còn chạy khi giảm
+2. [x] Probe `--landing` (07/10/2026, thử trên landing evondevKit: không hiệu ứng nào chạy khi giảm chuyển động, 4 vòng lặp nên nới `C8` từ 2 lên 4): bật giảm chuyển động thì `document.getAnimations()` phải về 0 (trừ hiệu ứng
+   người dùng tự bật); đếm vòng lặp vô hạn, trên 4 thì cảnh báo (`C8`); tìm Lenis còn chạy khi giảm
    chuyển động (`C9`).
 3. [ ] Test hai đề trên dự án trống: một công cụ cho dev (mục tiêu cài), một app AI (dùng thử).
 

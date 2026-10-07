@@ -3198,11 +3198,26 @@ function measureLandingPage() {
 
     return Boolean(numbers) && (numbers.length > 3 ? Number(numbers[3]) : 1) > 0.5;
   };
+  // Nút thật: cao 28–64px, chữ 3–40 ký tự. Nút đổi ngôn ngữ "VI" và card link có nền không phải nút chính
+  // (báo nhầm trên landing evondevKit 07/10/2026).
   const solidControls = (root) => root
-    ? [...root.querySelectorAll("a[href], button")].filter((control) => isShown(control) && isSolid(control) && normalize(control.textContent).length > 1)
+    ? [...root.querySelectorAll("a[href], button")].filter((control) => {
+      const height = control.getBoundingClientRect().height;
+      const length = normalize(control.textContent).length;
+
+      return isShown(control) && isSolid(control) && height >= 28 && height <= 64 && length >= 3 && length <= 40;
+    })
     : [];
 
   // H1: một nút đặc trên header; header, hero, nút gửi ở khối Liên hệ cùng chữ, cùng đích.
+  // Nút chính là nút nền đậm nhất trong vùng, không phải nút đầu tiên: pill tin mới nền trắng đứng trước nút
+  // chính màu nhấn trong hero (báo nhầm trên landing evondevKit 07/10/2026).
+  const luminanceOf = (control) => {
+    const [red, green, blue] = (getComputedStyle(control).backgroundColor.match(/[\d.]+/g) || [255, 255, 255]).map(Number);
+
+    return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+  };
+  const primaryOf = (controls) => [...controls].sort((first, second) => luminanceOf(first) - luminanceOf(second))[0];
   const header = document.querySelector("header, [role='banner']");
   const headerButtons = solidControls(header);
   if (headerButtons.length > 1) problems.push(`header có ${headerButtons.length} nút đặc (${headerButtons.map((control) => `"${normalize(control.textContent)}"`).join(", ")}), chỉ một nút chính (H1)`);
@@ -3210,10 +3225,10 @@ function measureLandingPage() {
   // Hero là section chứa H1, không phải section đầu: wireframe có khung (thanh công cụ, khung lý do) đứng trước,
   // lấy section đầu thì hero bị đem so padding với section thường (báo nhầm 06/10/2026, wireframe Da Xinh).
   const hero = sections.find((section) => section.querySelector("h1")) ?? sections[0];
-  const heroButton = solidControls(hero)[0];
+  const heroButton = primaryOf(solidControls(hero));
   const contactSection = document.querySelector("#lien-he") || document.querySelector("form")?.closest("section");
   const submitButton = contactSection?.querySelector("button[type='submit'], form button:not([type='button'])");
-  const ctas = [["header", headerButtons[0]], ["hero", heroButton], ["Liên hệ", submitButton]].filter(([, control]) => control && isShown(control));
+  const ctas = [["header", primaryOf(headerButtons)], ["hero", heroButton], ["Liên hệ", submitButton]].filter(([, control]) => control && isShown(control));
   if (new Set(ctas.map(([, control]) => normalize(control.textContent).toLowerCase())).size > 1) {
     problems.push(`nút chính khác chữ: ${ctas.map(([place, control]) => `${place} "${normalize(control.textContent)}"`).join(", ")} (H1)`);
   }
@@ -3335,6 +3350,75 @@ async function findCoveredByFloatingButtons() {
   return [...covered.entries()].map(([label, top]) => `nút nổi đè lên ${label} khi cuộn tới ~${top}px (H13)`);
 }
 
+// C8: vòng lặp nền tối đa 4 mỗi trang. Đếm theo tên animation vô hạn (50 chấm cùng `pixel-blink` là một vòng
+// lặp), cộng mỗi canvas lớn là một. Bỏ dải chạy (`C5` tính riêng) và con trỏ nhấp nháy, icon xoay nhỏ dưới 12px.
+function findAmbientLoops() {
+  const loopNames = new Set();
+  for (const element of document.querySelectorAll("body *")) {
+    const style = getComputedStyle(element);
+    if (style.animationName === "none" || !style.animationIterationCount.split(",").some((count) => count.trim() === "infinite")) continue;
+    const rect = element.getBoundingClientRect();
+    if (rect.width < 12 && rect.height < 12) continue;
+    for (const name of style.animationName.split(",").map((part) => part.trim())) {
+      if (name !== "none" && !/marquee|caret/i.test(name)) loopNames.add(name);
+    }
+  }
+  const canvasCount = [...document.querySelectorAll("canvas")].filter((canvas) => {
+    const rect = canvas.getBoundingClientRect();
+
+    return rect.width >= 120 && rect.height >= 80;
+  }).length;
+  const total = loopNames.size + canvasCount;
+  if (total <= 4) return [];
+
+  return [`${total} vòng lặp nền (${[...loopNames].slice(0, 5).join(", ")}${canvasCount ? `, ${canvasCount} canvas` : ""}), tối đa 4 (C8)`];
+}
+
+// C1, C9: bật giảm chuyển động thì trang đứng yên. Mở riêng một lượt với `reducedMotion: "reduce"`, cuộn hết
+// trang cho các hiệu ứng theo khung nhìn có dịp chạy, rồi tìm: animation còn chạy, video tự chạy, Lenis, chữ hero
+// còn tự đổi (gõ chữ). Chỉ chạy một lần mỗi lượt probe, ở khổ đầu tiên, cho đỡ tốn máy.
+async function findMotionUnderReducedMotion(browser, options, width) {
+  const isMobile = width < mobileWidthLimit;
+  const context = await browser.newContext({ viewport: { width, height: isMobile ? 812 : 900 }, isMobile, hasTouch: isMobile, reducedMotion: "reduce" });
+  const page = await context.newPage();
+  try {
+    await page.goto(options.url, { waitUntil: "load" });
+    await page.waitForTimeout(options.waitMs);
+    await page.evaluate(async () => {
+      for (let top = 0; top < document.documentElement.scrollHeight; top += innerHeight) {
+        window.scrollTo(0, top);
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      }
+      window.scrollTo(0, 0);
+    });
+    await page.waitForTimeout(400);
+    const heroTextBefore = await page.evaluate(() => (document.querySelector("h1")?.closest("section") ?? document.body).innerText);
+    await page.waitForTimeout(1500);
+
+    return await page.evaluate((heroTextBefore) => {
+      const problems = [];
+      const describeTarget = (target) => target ? `${target.tagName.toLowerCase()}${target.className && typeof target.className === "string" ? "." + target.className.trim().split(/\s+/).slice(0, 2).join(".") : ""}` : "?";
+      const running = new Map();
+      for (const animation of document.getAnimations()) {
+        const timing = animation.effect?.getComputedTiming();
+        if (animation.playState !== "running" || !timing || !(timing.duration > 0)) continue;
+        const name = animation.animationName || animation.transitionProperty || "animate()";
+        if (!running.has(name)) running.set(name, describeTarget(animation.effect.target));
+      }
+      if (running.size > 0) problems.push(`giảm chuyển động mà ${running.size} hiệu ứng vẫn chạy: ${[...running.entries()].slice(0, 4).map(([name, target]) => `${name} (${target})`).join(", ")} (C1)`);
+      const playingVideos = [...document.querySelectorAll("video")].filter((video) => !video.paused);
+      if (playingVideos.length > 0) problems.push(`giảm chuyển động mà ${playingVideos.length} video vẫn tự chạy (C1)`);
+      if (document.documentElement.classList.contains("lenis") || window.lenis) problems.push("giảm chuyển động mà cuộn mượt Lenis vẫn bật (C9)");
+      const heroTextAfter = (document.querySelector("h1")?.closest("section") ?? document.body).innerText;
+      if (heroTextAfter !== heroTextBefore) problems.push("giảm chuyển động mà chữ ở hero vẫn tự đổi (gõ chữ, xoay câu) (C4)");
+
+      return problems;
+    }, heroTextBefore);
+  } finally {
+    await context.close();
+  }
+}
+
 // Ảnh `loading="lazy"` ngoài màn không tải khi chụp fullPage: ảnh ra ô trắng giữa trang (landing nhiều ảnh, lưới
 // dịch vụ và không gian trắng hết). Cuộn một lượt cho ảnh tải rồi về đỉnh mới chụp.
 async function loadLazyImages(page) {
@@ -3412,7 +3496,7 @@ async function probeWidth(browser, options, width) {
 
   const screenshotPath = join(options.out, `${width}${options.isDark ? "-dark" : ""}.png`);
   await takeFullScreenshot(page, screenshotPath);
-  const landingProblems = options.isLanding ? [...(await page.evaluate(measureLandingPage)), ...(await page.evaluate(findCoveredByFloatingButtons))] : [];
+  const landingProblems = options.isLanding ? [...(await page.evaluate(measureLandingPage)), ...(await page.evaluate(findAmbientLoops)), ...(await page.evaluate(findCoveredByFloatingButtons))] : [];
   // Đo dark mode ngay sau khi chụp, lúc trang còn đúng như ảnh: các bước rê, bấm, mở lớp nổi bên dưới
   // có thể đổi trang (đã dính 01/10/2026: tới lượt đo thì biểu đồ tổng quan còn 2/10 khối màu nhấn).
   const darkModeProblemSet = new Set(options.isDark ? [...(await page.evaluate(findDarkModeProblems)), ...(await page.evaluate(findSunkenSelections)), ...(await page.evaluate(findHueDrifts))] : []);
@@ -4990,6 +5074,7 @@ async function main() {
   try {
     for (const width of options.widths) results.push(await probeWidth(browser, options, width));
     if (options.isLanding) for (const result of results) for (const key of appOnlyResultKeys) result[key] = [];
+    if (options.isLanding && results.length > 0) results[0].landingProblems.push(...(await findMotionUnderReducedMotion(browser, options, results[0].width)));
     if (options.sweep) sweepSteps = await sweepWidths(browser, options);
     if (options.wireframeUrl) wireframeComparisons = await compareWithWireframe(browser, options);
   } catch (error) {

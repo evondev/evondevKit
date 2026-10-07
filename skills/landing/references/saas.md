@@ -136,7 +136,8 @@ Mặc định mức **Nhẹ** của `H12`, làm theo `motion.md`:
 - Hero hiện dần (`C2`), khối hiện khi cuộn tới (`C3`).
 - **Demo gõ chữ hay demo dùng được ở hero** (`C4`) khi sản phẩm có ô nhập, lệnh, prompt: ưu tiên
   hơn mọi hiệu ứng trang trí.
-- Tối đa một dải chạy (`C5`), tối đa hai vòng lặp nền (`C8`), tối đa một khối cuộn ghim (`C7`).
+- Tối đa một dải chạy (`C5`), tối đa bốn vòng lặp nền, càng ít càng sạch (`C8`), tối đa một khối
+  cuộn ghim (`C7`).
 - Đếm số (`C6`) chỉ với số thật.
 - Cuộn mượt, GSAP, 3D (`C9`) chỉ khi người dùng xin.
 - Trang dài tối đa ~10 màn ở 1440. Trang 20k px toàn khối ghim và dải chạy là trang khách bỏ giữa chừng.

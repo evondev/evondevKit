@@ -179,8 +179,9 @@ CSS `sticky`).
 
 ## C8. Vòng lặp nền ⚑
 
-Chấm nhấp nháy, lưới điểm sáng, canvas ASCII hay hạt, quay chậm: **tối đa 2 mỗi trang** (trang
-sạch nhất có 0–2; trang 11–29 vòng lặp là trang bị chê nặng).
+Chấm nhấp nháy, lưới điểm sáng, canvas ASCII hay hạt, quay chậm: **ít thôi, tối đa 4 mỗi trang**
+(trang sạch nhất có 0–2; landing evondevKit có 4 và vẫn được khen; trang 11–29 vòng lặp là trang
+bị chê nặng). Đếm theo loại: 50 chấm cùng một nhịp nhấp nháy là một vòng lặp; mỗi canvas lớn là một.
 
 - Canvas giới hạn ~15 khung/giây, chỉ vẽ khi trong khung nhìn, giảm chuyển động thì vẽ một khung đứng.
 - Vòng lặp CSS (`pixel-blink 2.4s`, `spin 14s`) gắn `motion-safe:`.
