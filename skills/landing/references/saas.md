@@ -52,7 +52,7 @@ kể cùng một ý. Trang dưới 6 màn đọc như trang tạm dựng cho có
 | Hàng xen kẽ chữ / giao diện | 3–4 tính năng cần giải thích kỹ | 6/18 |
 | Tab đổi màn sản phẩm | một màn sản phẩm có nhiều chế độ | 5/18 |
 | Cuộn ghim kể chuyện (`C7`), hay hàng bước 1-2-3 có mảnh giao diện | sản phẩm có quy trình nhiều bước | 6/18 |
-| **Trước / sau** có thanh kéo so sánh (`C11`) hay hai cột | sản phẩm biến A thành B (commit → changelog, ghi âm → biên bản, màn cũ → màn mới) | landing evondevKit |
+| **Trước / sau**: thanh kéo (`C11`) khi hai bên cùng bố cục (màn cũ → màn mới, ảnh gốc → ảnh đã xử lý); hai cột có mũi tên khi khác cấu trúc (commit → changelog, ghi âm → biên bản) | sản phẩm biến A thành B | landing evondevKit |
 | **Kết quả thật** có tab (showcase, mẫu đầu ra theo loại đầu vào) | sản phẩm ra sản phẩm (trang, tài liệu, ảnh, báo cáo) | landing evondevKit |
 | Cài đặt từng bước (tab theo công cụ, 2–4 bước, mỗi bước khối lệnh copy) | công cụ cho dev | landing evondevKit |
 | Khối code, terminal | công cụ cho dev | 6/18 (đều là công cụ dev) |
@@ -83,6 +83,12 @@ dưới khung (`segmented control`), bấm là khung đổi đầu ra, chữ gõ
 câu đang hiện. Công cụ dòng lệnh: tab loại dự án (cửa hàng, thư viện, monorepo) đổi lệnh và kết quả
 trong terminal. App AI: tab câu mẫu đổi prompt và câu trả lời. Màn app: tab đổi chế độ xem. Màn
 tĩnh chỉ khi sản phẩm không có đầu vào để đổi (hạ tầng, thư viện UI thì khoe component).
+
+- **Hàng tab nằm ở đầu khung demo** (ngay trên khung, hay trong thanh tiêu đề của khung) và **thấy
+  được ở màn đầu 1440×900 không cuộn**. Tab đặt dưới một terminal cao 500px thì rơi xuống dưới màn
+  đầu, khách không biết demo bấm được; cuộn xuống bấm thì chỗ đổi lại nằm khuất phía trên.
+- Khung demo ở hero cao vừa đủ đầu ra ngắn nhất của các tab, dài hơn thì cuộn trong khung hay
+  tan đáy, không đẩy tab đi.
 
 - Dự án chưa có ảnh chụp thì **dựng màn app giả bằng HTML** từ component của `ui-ux` (sidebar,
   bảng, card số, lịch… theo `../ui-ux/references/layouts/app.md`), dữ liệu đúng sản phẩm. Không khối

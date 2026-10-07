@@ -257,6 +257,11 @@ function getAsciiDensity(x: number, y: number, time: number) {
 Hai khung chồng nhau (ảnh, hay hai mảnh HTML cùng cỡ), khung trước cắt bằng `clip-path: inset(0
 calc(100% - x) 0 0)` tới vị trí thanh. Đây là chỗ khách tự tay làm, nên đáng hơn mọi hiệu ứng tự chạy.
 
+**Chỉ khi hai bên cùng bố cục**: cùng một màn trước và sau khi sửa, ảnh gốc và ảnh đã xử lý, chỗ
+nào bên này thì đúng chỗ đó bên kia. Hai bên khác cấu trúc (danh sách commit → changelog chia mục,
+file ghi âm → biên bản) thì thanh cắt ngang chữ giữa từ ("ng còn nhận chữ cái"), đọc như lỗi hiển
+thị: dùng hai cột cạnh nhau có mũi tên ở giữa, dưới `lg` xếp dọc mũi tên xuống.
+
 - Kéo ở bất kỳ đâu trong khung (`pointerdown` + `setPointerCapture`), không chỉ ở tay nắm.
   `touch-action: pan-y` (`touch-pan-y`) để vuốt dọc trên điện thoại vẫn cuộn trang.
 - Tay nắm là `role="slider"` `tabIndex={0}` có `aria-valuenow`, `aria-label`; phím ← → bước 2%,

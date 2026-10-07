@@ -3375,6 +3375,20 @@ function measureLandingPage() {
     // Viền 1px: tâm đường cách mép ghi nhận 0,5px.
     if (Math.abs(offsetX) > 2 || Math.abs(offsetY) > 2) offCenterMarks.push(`${Math.round(offsetX * 10) / 10}/${Math.round(offsetY * 10) / 10}px`);
   }
+  // A3: hàng tab của demo ở hero phải thấy ở màn đầu không cuộn. Tab đặt dưới terminal cao rơi xuống dưới
+  // màn đầu: khách không biết demo bấm được (thấy ở wireframe landing công cụ dòng lệnh 07/10/2026, tab ở 1130px).
+  // Vùng hero tính từ H1 tới H2 đầu tiên sau nó: khung demo hay nằm ngoài <section> bọc khối chữ.
+  const heroHeading = document.querySelector("h1");
+  const firstSectionHeading = heroHeading && [...document.querySelectorAll("h2")].find((heading) => heroHeading.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING);
+  const isInHero = (element) => heroHeading.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_FOLLOWING
+    && (!firstSectionHeading || element.compareDocumentPosition(firstSectionHeading) & Node.DOCUMENT_POSITION_FOLLOWING);
+  // Chỉ đo từ 1024: ở điện thoại khối chữ hero đã chiếm cả màn đầu.
+  for (const tablist of heroHeading && window.innerWidth >= 1024 ? document.querySelectorAll("[role='tablist']") : []) {
+    if (!isShown(tablist) || !isInHero(tablist)) continue;
+    const tablistBottom = tablist.getBoundingClientRect().bottom + window.scrollY;
+    if (tablistBottom > window.innerHeight) problems.push(`hàng tab demo ở hero "${normalize(tablist.textContent).slice(0, 40)}" nằm dưới màn đầu (đáy ${Math.round(tablistBottom)}px, màn cao ${window.innerHeight}px): đặt ở đầu khung demo (A3)`);
+  }
+
   // A5: ô mảnh giao diện trong card bento cao cố định mà card đứng một mình một hàng: mảnh ngắn chừa khoảng
   // trống lớn trên tiêu đề (thấy ở landing công cụ dòng lệnh 07/10/2026, 375px: hở ~100px).
   const emptySlots = [];
