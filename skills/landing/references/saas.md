@@ -10,6 +10,13 @@ H1 nói cụ thể (`H4`), dữ liệu giả (`H9`), màn hẹp (`H10`), chuyể
 động rút từ 18 landing sản phẩm được khen, trong đó có hai trang gốc mà landing evondevKit trộn lối
 (tra 07/10/2026), cùng code landing evondevKit. Số trong ngoặc là số trang trên tổng của đợt tra đó.
 
+**Độ dày trang và chuyển động theo gu chủ dự án, không theo số đông** (chốt 07/10/2026). Số đông
+cho ra trang sạch mà không ai nhớ: bản dựng theo số đông dài 4,5k px, 4 section, 12 hiệu ứng, chủ dự
+án thấy "chưa wow". Landing evondevKit và trang cá nhân evondev dài ~14k px, 8–10 section, 60–120
+hiệu ứng, và được khen. Thứ làm hai trang đó khác không phải số lượng mà bốn món: chữ màu nhấn
+trong H1 (`A4`), demo bấm được ở hero (`A3`), lớp chi tiết nền thủ công (`A4`), và các khối cho xem
+sản phẩm đang làm việc (`A2`).
+
 ---
 
 ## A1. Mục tiêu và nút chính ⚑
@@ -25,12 +32,17 @@ H1 nói cụ thể (`H4`), dữ liệu giả (`H9`), màn hẹp (`H10`), chuyể
 - Hai nút ở hero (11/18): nút đặc là mục tiêu, nút viền là bước nhẹ hơn. Header **một nút đặc**.
 - Khối lệnh cài: `font-mono`, nền `bg-surface` viền, nút copy chỉ icon bên phải (`components/button.md`),
   copy xong đổi icon `Check` 1,5 giây. Nhiều công cụ cài (npm, pnpm, brew…) thì tab nhỏ phía trên.
-- CTA cuối lặp đúng nút chính (14/18). Không lặp giữa trang trừ khi trang dài hơn 10 màn.
+- CTA cuối lặp đúng nút chính (14/18). Không lặp giữa trang trừ khi trang dài hơn 12 màn.
 
 ## A2. Bộ section và thứ tự ⚑
 
-**Thứ tự mặc định:** header → hero → dải logo hay dải bằng chứng → tính năng → (cuộn ghim kể
-chuyện) → đánh giá → FAQ → CTA cuối → footer.
+**Thứ tự mặc định:** header → hero (demo bấm được) → dải bằng chứng → **cách làm việc** (cuộn ghim
+hay hàng bước) → **trước / sau** → tính năng bento → **kết quả thật** (showcase có tab) → (đánh
+giá) → cài đặt từng bước (công cụ cho dev) → FAQ → CTA cuối → footer.
+
+**Trang 7–9 section giữa hero và footer, dài 8–12 màn ở 1440** (~7–11k px). Ba khối in đậm là "cho
+xem sản phẩm làm việc", bắt buộc ít nhất hai: mỗi khối một góc của cùng sản phẩm, không ba khối
+kể cùng một ý. Trang dưới 6 màn đọc như trang tạm dựng cho có.
 
 | Section | Bật khi | Số đếm |
 | --- | --- | --- |
@@ -39,7 +51,10 @@ chuyện) → đánh giá → FAQ → CTA cuối → footer.
 | Tính năng dạng bento (card có mảnh giao diện) | mặc định 3–4 tính năng chính | 9/18 |
 | Hàng xen kẽ chữ / giao diện | 3–4 tính năng cần giải thích kỹ | 6/18 |
 | Tab đổi màn sản phẩm | một màn sản phẩm có nhiều chế độ | 5/18 |
-| Cuộn ghim kể chuyện (`C7`) | sản phẩm có quy trình nhiều bước | 6/18 |
+| Cuộn ghim kể chuyện (`C7`), hay hàng bước 1-2-3 có mảnh giao diện | sản phẩm có quy trình nhiều bước | 6/18 |
+| **Trước / sau** có thanh kéo so sánh (`C11`) hay hai cột | sản phẩm biến A thành B (commit → changelog, ghi âm → biên bản, màn cũ → màn mới) | landing evondevKit |
+| **Kết quả thật** có tab (showcase, mẫu đầu ra theo loại đầu vào) | sản phẩm ra sản phẩm (trang, tài liệu, ảnh, báo cáo) | landing evondevKit |
+| Cài đặt từng bước (tab theo công cụ, 2–4 bước, mỗi bước khối lệnh copy) | công cụ cho dev | landing evondevKit |
 | Khối code, terminal | công cụ cho dev | 6/18 (đều là công cụ dev) |
 | Đánh giá | người dùng có câu thật; lưới hay một câu lớn, chạy (`C5`) khi trên 6 câu | 12/18 |
 | Pricing ngay trên trang | chỉ mục tiêu Mua luôn | 4/18; trang riêng 14/18 |
@@ -63,11 +78,18 @@ lệnh cài). Canh trái hay canh giữa ngang nhau (9/9).
 **Dưới chữ là sản phẩm** (10/18): màn app, video quay màn hình, hay **demo dùng được** (ô prompt
 gõ câu mẫu, terminal, khung kéo được; 4/18). Demo dùng được là thứ làm trang "sống" nhất (`C4`).
 
+**Mặc định hero có demo bấm được**, không chỉ màn để xem: hàng tab câu mẫu hay loại đầu vào ngay
+dưới khung (`segmented control`), bấm là khung đổi đầu ra, chữ gõ lại (`C4`), nút copy copy đúng
+câu đang hiện. Công cụ dòng lệnh: tab loại dự án (cửa hàng, thư viện, monorepo) đổi lệnh và kết quả
+trong terminal. App AI: tab câu mẫu đổi prompt và câu trả lời. Màn app: tab đổi chế độ xem. Màn
+tĩnh chỉ khi sản phẩm không có đầu vào để đổi (hạ tầng, thư viện UI thì khoe component).
+
 - Dự án chưa có ảnh chụp thì **dựng màn app giả bằng HTML** từ component của `ui-ux` (sidebar,
   bảng, card số, lịch… theo `../ui-ux/references/layouts/app.md`), dữ liệu đúng sản phẩm. Không khối
   xám, không minh hoạ trừu tượng (minh hoạ 5/18, chỉ khi sản phẩm không có màn để khoe, như hạ tầng).
 - Màn giả có **bề rộng cố định bên trong** (`w-[1040px]`), khung ngoài cắt ở màn hẹp: co màn app lại
-  là bảng vỡ, chữ xuống dòng. `aria-hidden` và `inert` vì không bấm được.
+  là bảng vỡ, chữ xuống dòng. Phần chỉ để xem `aria-hidden` và `inert`; hàng tab và nút copy của
+  demo nằm ngoài vùng đó, bấm và Tab tới được.
 - Một màn, đúng việc chính của sản phẩm. 0–2 mảnh nổi chồng mép (thông báo, một con số) lấy đúng
   dữ liệu của màn, ẩn dưới `sm`.
 
@@ -93,11 +115,20 @@ gõ câu mẫu, terminal, khung kéo được; 4/18). Demo dùng được là th
 | Thứ | Số đông | Ghi chú |
 | --- | --- | --- |
 | Nền | sáng (16/18), nửa là trắng ngà hay xám rất nhạt (9/18) | dải tối xen giữa được (7/18), tối cả trang chỉ khi người dùng xin |
-| Màu nhấn | một màu hay đen trắng (14/18) | màu nhấn chỉ ở nút chính, link, chữ nhấn trong H1, icon |
+| Màu nhấn | một màu hay đen trắng (14/18) | màu nhấn ở nút chính, link, icon, và **một cụm chữ trong H1** (mặc định) |
 | Chữ | một font sans, H1 nét 400–500, giãn chữ âm (15/18) | `font-medium tracking-tight` |
-| Cỡ H1 ở 1440 | ~64px (10/18 trong 48–72) | `text-4xl sm:text-5xl lg:text-6xl`; H2 `text-3xl sm:text-4xl lg:text-5xl` |
+| Cỡ H1 ở 1440 | ~64px (10/18 trong 48–72); trang của chủ dự án 72px | `text-4xl sm:text-6xl lg:text-7xl`; H2 `text-3xl sm:text-4xl lg:text-5xl` |
 | Serif tiêu đề | 6/18, đa số sản phẩm AI muốn ấm | được, theo cảm giác (`H5`) |
 | Nhãn chữ mono (`[01 / 08]`, `FEATURES`) | 7/18, cả hai trang gốc | dùng thì mọi H2 đều có |
+
+**Chữ màu nhấn trong H1** (mặc định): cụm nói lời hứa, thường là dòng sau, `text-primary`; H2 được
+một cụm tương tự, tối đa nửa số H2. Một cụm mỗi tiêu đề, không tô cả câu, không gradient chữ.
+
+```html
+<h1 class="text-4xl font-medium tracking-tight text-balance sm:text-6xl lg:text-7xl">
+  Changelog tiếng Việt, <span class="text-primary">viết từ commit git</span>
+</h1>
+```
 
 **Khung lộ ra có chủ ý** (6/18, cả hai trang gốc, và landing evondevKit): một biến thể lớp nhìn
 đáng chọn cho công cụ cho dev, không phải mặc định cho mọi trang.
@@ -132,6 +163,19 @@ gõ câu mẫu, terminal, khung kéo được; 4/18). Demo dùng được là th
 **Lớp nền hero** (lưới mờ 6/18, vầng màu nhấn 5/18): một kiểu mỗi trang, hero và CTA cuối cùng kiểu.
 Không vầng + lưới + ảnh cùng lúc, không đốm màu thứ hai.
 
+**Lớp chi tiết thủ công trên lưới** (mặc định, chỉ từ `lg`): thứ không nói gì về sản phẩm nhưng
+cho thấy có người chăm trang. Chọn 2–3 món, đặt ở **hai bên khối chữ**, không sau chữ (`C8`):
+
+- 2–4 **hình pixel** 4×4 ô 6px nằm giữa ô lưới, ô màu nhấn và ô xám nhấp nháy lệch nhịp (`C10`);
+  hình gợi đúng sản phẩm (con trỏ, cửa sổ, bậc thang, nhánh git).
+- 2 **đám ký tự ASCII** trôi chậm trên canvas hai bên hero, đối xứng (`C10`).
+- 2 **vòng tròn có icon** (`size-11 rounded-full border bg-background`, icon màu nhấn quay chậm)
+  ở giao điểm lưới, đối xứng hai bên H1.
+- Nhãn mono của section nhảy ký tự một lần khi cuộn tới (`C10`).
+
+Mọi món `aria-hidden`, `pointer-events-none`, ẩn dưới `lg`. Lớp này thay cho vầng màu, không chồng
+thêm vầng.
+
 ## A5. Tính năng dạng bento ⚑
 
 Card có **mảnh giao diện** trên, chữ dưới; mảnh là một góc của màn app ở hero, đúng tính năng của
@@ -159,16 +203,18 @@ card (tính năng "tự nhắc lịch" thì mảnh là tin nhắc đã gửi). K
 
 ## A6. Chuyển động cho trang sản phẩm ⚑
 
-Mặc định mức **Nhẹ** của `H12`, làm theo `motion.md`:
+Mặc định **dày hơn mức Nhẹ của `H12`, vẫn chỉ CSS và JavaScript thuần**, làm theo `motion.md`:
 
 - Hero hiện dần (`C2`), khối hiện khi cuộn tới (`C3`).
-- **Demo gõ chữ hay demo dùng được ở hero** (`C4`) khi sản phẩm có ô nhập, lệnh, prompt: ưu tiên
-  hơn mọi hiệu ứng trang trí.
-- Tối đa một dải chạy (`C5`), tối đa bốn vòng lặp nền, càng ít càng sạch (`C8`), tối đa một khối
-  cuộn ghim (`C7`).
+- **Demo bấm được ở hero** (`A3`, `C4`): ưu tiên hơn mọi hiệu ứng trang trí.
+- Lớp chi tiết thủ công (`A4`, `C10`): pixel nhấp nháy, ASCII trôi, icon quay chậm, nhãn nhảy ký tự.
+- Thanh kéo trước / sau (`C11`), một khối cuộn ghim (`C7`), một dải chạy (`C5`).
+- Tối đa 8 vòng lặp nền đếm theo loại (`C8`).
 - Đếm số (`C6`) chỉ với số thật.
 - Cuộn mượt, GSAP, 3D (`C9`) chỉ khi người dùng xin.
-- Trang dài tối đa ~10 màn ở 1440. Trang 20k px toàn khối ghim và dải chạy là trang khách bỏ giữa chừng.
+- Trang 8–12 màn ở 1440 (`A2`). Trang 20k px toàn khối ghim và dải chạy là trang khách bỏ giữa chừng.
+- Người dùng nói "tối giản", "sạch", "nghiêm túc" (tài chính, y tế, doanh nghiệp lớn) thì về mức
+  Nhẹ: bỏ lớp chi tiết thủ công, giữ demo bấm được.
 
 ## A7. Dữ liệu giả của trang sản phẩm ⚑
 

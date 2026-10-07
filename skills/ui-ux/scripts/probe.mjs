@@ -3312,10 +3312,10 @@ function measureLandingPage() {
     const style = getComputedStyle(element);
     const rect = element.getBoundingClientRect();
     if (!rect.width || !rect.height) continue;
-    if (parseFloat(style.borderBottomWidth) > 0 && style.borderBottomStyle !== "none") borderEdges.push({ axis: "y", at: rect.bottom, from: rect.left, to: rect.right });
-    if (parseFloat(style.borderTopWidth) > 0 && style.borderTopStyle !== "none") borderEdges.push({ axis: "y", at: rect.top, from: rect.left, to: rect.right });
-    if (parseFloat(style.borderRightWidth) > 0 && style.borderRightStyle !== "none") borderEdges.push({ axis: "x", at: rect.right, from: rect.top, to: rect.bottom });
-    if (parseFloat(style.borderLeftWidth) > 0 && style.borderLeftStyle !== "none") borderEdges.push({ axis: "x", at: rect.left, from: rect.top, to: rect.bottom });
+    if (parseFloat(style.borderBottomWidth) > 0 && style.borderBottomStyle !== "none") borderEdges.push({ axis: "y", at: rect.bottom, start: rect.bottom - parseFloat(style.borderBottomWidth), from: rect.left, to: rect.right });
+    if (parseFloat(style.borderTopWidth) > 0 && style.borderTopStyle !== "none") borderEdges.push({ axis: "y", at: rect.top, start: rect.top, from: rect.left, to: rect.right });
+    if (parseFloat(style.borderRightWidth) > 0 && style.borderRightStyle !== "none") borderEdges.push({ axis: "x", at: rect.right, start: rect.right - parseFloat(style.borderRightWidth), from: rect.top, to: rect.bottom });
+    if (parseFloat(style.borderLeftWidth) > 0 && style.borderLeftStyle !== "none") borderEdges.push({ axis: "x", at: rect.left, start: rect.left, from: rect.top, to: rect.bottom });
   }
   const doubledGridEdges = [];
   for (const element of document.body.querySelectorAll("*")) {
@@ -3338,7 +3338,13 @@ function measureLandingPage() {
       const isVertical = /to right|90deg/.test(gradient);
       const edge = isVertical ? rect.left : rect.top;
       const [spanFrom, spanTo] = isVertical ? [rect.top, rect.bottom] : [rect.left, rect.right];
-      const touches = borderEdges.some((border) => border.axis === (isVertical ? "x" : "y") && Math.abs(border.at - edge) <= 1.5 && border.from < spanTo && border.to > spanFrom);
+      // Đường đầu ô nằm đè đúng lên viền (lưới lệch ra `-inset-x-px -top-px`) là một đường, không báo; chỉ báo khi
+      // hai đường sát cạnh nhau (báo nhầm trên landing evondevKit 07/10/2026).
+      const touches = borderEdges.some((border) => {
+        const distance = Math.abs(border.start - edge);
+
+        return border.axis === (isVertical ? "x" : "y") && distance >= 0.5 && distance <= 1.5 && border.from < spanTo && border.to > spanFrom;
+      });
       if (touches) doubledGridEdges.push(isVertical ? "mép trái" : "mép trên");
     }
   }
@@ -3386,7 +3392,7 @@ function measureLandingPage() {
   }
   if (emptySlots.length) problems.push(`${emptySlots.length} ô mảnh giao diện trong card một cột hở dưới mảnh ${emptySlots.join(", ")}px: cao cố định chỉ từ lg, dưới lg max-h (A5)`);
   if (offCenterMarks.length) problems.push(`${offCenterMarks.length} dấu + ở góc lệch khỏi giao điểm đường kẻ (ngang/dọc ${[...new Set(offCenterMarks)].slice(0, 3).join(", ")}): dùng icon Plus căn tâm bằng -translate-1/2 (A4)`);
-  if (doubledGridEdges.length) problems.push(`lưới nền kẻ đường ở đầu ô, ${[...new Set(doubledGridEdges)].join(" và ")} chồng lên viền có sẵn thành đường 2px: kẻ đường ở cuối ô (A4)`);
+  if (doubledGridEdges.length) problems.push(`lưới nền kẻ đường ở đầu ô, ${[...new Set(doubledGridEdges)].join(" và ")} chồng lên viền có sẵn thành đường 2px: kẻ đường ở cuối ô, hay lệch lưới 1px cho đường đầu đè lên viền (A4)`);
 
   return problems;
 }
@@ -3440,7 +3446,7 @@ async function findCoveredByFloatingButtons() {
   return [...covered.entries()].map(([label, top]) => `nút nổi đè lên ${label} khi cuộn tới ~${top}px (H13)`);
 }
 
-// C8: vòng lặp nền tối đa 4 mỗi trang. Đếm theo tên animation vô hạn (50 chấm cùng `pixel-blink` là một vòng
+// C8: vòng lặp nền tối đa 8 mỗi trang (nới từ 4 ngày 07/10/2026: landing evondevKit có 7–8 và được khen). Đếm theo tên animation vô hạn (50 chấm cùng `pixel-blink` là một vòng
 // lặp), cộng mỗi canvas lớn là một. Bỏ dải chạy (`C5` tính riêng) và con trỏ nhấp nháy, icon xoay nhỏ dưới 12px.
 function findAmbientLoops() {
   const loopNames = new Set();
@@ -3459,9 +3465,9 @@ function findAmbientLoops() {
     return rect.width >= 120 && rect.height >= 80;
   }).length;
   const total = loopNames.size + canvasCount;
-  if (total <= 4) return [];
+  if (total <= 8) return [];
 
-  return [`${total} vòng lặp nền (${[...loopNames].slice(0, 5).join(", ")}${canvasCount ? `, ${canvasCount} canvas` : ""}), tối đa 4 (C8)`];
+  return [`${total} vòng lặp nền (${[...loopNames].slice(0, 5).join(", ")}${canvasCount ? `, ${canvasCount} canvas` : ""}), tối đa 8 (C8)`];
 }
 
 // C1, C9: bật giảm chuyển động thì trang đứng yên. Mở riêng một lượt với `reducedMotion: "reduce"`, cuộn hết

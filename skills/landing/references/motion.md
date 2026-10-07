@@ -179,9 +179,10 @@ CSS `sticky`).
 
 ## C8. Vòng lặp nền ⚑
 
-Chấm nhấp nháy, lưới điểm sáng, canvas ASCII hay hạt, quay chậm: **ít thôi, tối đa 4 mỗi trang**
-(trang sạch nhất có 0–2; landing evondevKit có 4 và vẫn được khen; trang 11–29 vòng lặp là trang
-bị chê nặng). Đếm theo loại: 50 chấm cùng một nhịp nhấp nháy là một vòng lặp; mỗi canvas lớn là một.
+Chấm nhấp nháy, lưới điểm sáng, canvas ASCII hay hạt, quay chậm: **tối đa 8 mỗi trang, đếm theo
+loại** (trang sạch nhất có 0–2; landing evondevKit có 7–8 và được khen; trang 11–29 vòng lặp là
+trang bị chê nặng). 50 chấm cùng một nhịp nhấp nháy là một vòng lặp; mỗi canvas lớn là một. Trang
+phần mềm mặc định có lớp chi tiết thủ công (`A4`, `C10`); trang thu lead giữ 0–2.
 
 - Canvas giới hạn ~15 khung/giây, chỉ vẽ khi trong khung nhìn, giảm chuyển động thì vẽ một khung đứng.
 - Vòng lặp CSS (`pixel-blink 2.4s`, `spin 14s`) gắn `motion-safe:`.
@@ -199,3 +200,66 @@ Chỉ mức Nổi bật (`H12`), khi người dùng xin.
 - **3D (three.js), Rive, Spline:** cần file người làm bằng editor; AI không tự dựng được mô hình ra
   hồn. Tải sau khi trang đã hiện (`dynamic import`), tắt trên điện thoại.
 - **Con trỏ đổi kiểu:** không dùng (0/18 trang sản phẩm). Đó là kiểu của site agency, portfolio.
+
+## C10. Lớp chi tiết thủ công ⚑
+
+Bốn món trang trí của landing evondevKit (`A4`). Món nào cũng `aria-hidden`, `pointer-events-none`,
+ẩn dưới `lg`, đứng yên khi giảm chuyển động.
+
+**Hình pixel nhấp nháy:** lưới 4×4 ô `size-1.5 rounded-[1px]` cách `gap-[3px]`, mô tả bằng chuỗi
+(`"#"` ô màu nhấn, `"o"` ô `bg-border-strong`, `"."` trống). Mỗi ô nhấp nháy lệch nhịp để không
+nháy cùng lúc. Đặt tâm hình ở tâm một ô lưới nền.
+
+```css
+@theme {
+  --animate-pixel-blink: pixel-blink 2.4s ease-in-out infinite;
+
+  @keyframes pixel-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.15; }
+  }
+}
+```
+
+```tsx
+// Nhịp lệch rải đều trong 2,4 giây theo vị trí ô.
+const blinkDelay = `${(cellIndex * 373) % 2400}ms`;
+<span className="size-1.5 rounded-[1px] bg-primary motion-safe:animate-pixel-blink" style={{ animationDelay: blinkDelay }} />
+```
+
+**Đám ASCII trôi:** canvas ~260×300px hai bên hero (bên phải lật `-scale-x-100`), ô chữ 7×12px,
+`10px` mono, bộ ký tự từ thưa tới đặc `.:-=+*#%`. Độ đặc mỗi ô là vài sóng sin chồng nhau theo
+thời gian nhân với khuôn tròn tan ra mép; dưới ngưỡng ~0,26 thì bỏ trống. Màu chữ là token chữ
+nhạt, alpha theo độ đặc tối đa 0,6, thỉnh thoảng (~0,6%) một ký tự màu nhấn. ~14 khung/giây, chỉ vẽ
+khi trong khung nhìn (`C1`), đọc lại màu khi đổi theme, giảm chuyển động thì vẽ một khung đứng.
+
+```ts
+function getAsciiDensity(x: number, y: number, time: number) {
+  const wave =
+    Math.sin(x * 7 + time * 0.55) * Math.cos(y * 5 - time * 0.4) * 0.5 +
+    Math.sin((x + y) * 11 + time * 0.9) * 0.3 +
+    Math.cos(x * 17 - y * 9 + time * 0.3) * 0.2;
+  const distance = Math.hypot((x - 0.5) * 2, (y - 0.5) * 2);
+
+  return (wave * 0.5 + 0.5) * Math.max(0, 1 - distance);
+}
+```
+
+**Vòng tròn có icon ở giao điểm:** `size-11 rounded-full border border-border bg-background`, tâm
+đặt đúng giao điểm lưới bằng `-translate-1/2`, icon `size-4` màu nhấn `motion-safe:animate-[spin_14s_linear_infinite]`.
+
+**Nhãn mono nhảy ký tự:** khi nhãn section (`[02 / 08] TÍNH NĂNG`) cuộn tới lần đầu, ký tự thứ i
+đứng yên từ nhịp `6 + i`, trước đó là ký tự ngẫu nhiên; mỗi nhịp 40ms, khoảng trắng giữ nguyên.
+**Chỉ cho chữ mono** (mọi ký tự cùng bề ngang, chữ không xô dòng), một lần, server render chữ đủ.
+
+## C11. Thanh kéo trước / sau ⚑
+
+Hai khung chồng nhau (ảnh, hay hai mảnh HTML cùng cỡ), khung trước cắt bằng `clip-path: inset(0
+calc(100% - x) 0 0)` tới vị trí thanh. Đây là chỗ khách tự tay làm, nên đáng hơn mọi hiệu ứng tự chạy.
+
+- Kéo ở bất kỳ đâu trong khung (`pointerdown` + `setPointerCapture`), không chỉ ở tay nắm.
+  `touch-action: pan-y` (`touch-pan-y`) để vuốt dọc trên điện thoại vẫn cuộn trang.
+- Tay nắm là `role="slider"` `tabIndex={0}` có `aria-valuenow`, `aria-label`; phím ← → bước 2%,
+  Shift bước 10%, Home / End về hai mép. Vòng tiêu điểm trên nút tròn của tay nắm.
+- Đường thanh `w-0.5 bg-white` có viền mờ, nút tròn `size-10` icon `ChevronsLeftRight` giữa khung.
+- Nhãn "Trước" / "Sau" ở hai góc dưới, nhãn sau màu nhấn. Khởi đầu 50%, không tự chạy qua lại.

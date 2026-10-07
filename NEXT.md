@@ -468,6 +468,12 @@ Cảm giác "sống" đến từ demo sản phẩm, không từ trang trí; tran
    người dùng tự bật); đếm vòng lặp vô hạn, trên 4 thì cảnh báo (`C8`); tìm Lenis còn chạy khi giảm
    chuyển động (`C9`).
 3. [ ] Test hai đề trên dự án trống: một công cụ cho dev (mục tiêu cài), một app AI (dùng thử).
+   - Sổ Tay (công cụ dòng lệnh, 07/10/2026): wireframe và bản dựng sạch lỗi đo được, nhưng chủ dự án
+     thấy "chưa wow". Đo: 4,5k px, 4 section, 12 hiệu ứng; landing evondevKit và trang cá nhân
+     evondev ~14k px, 8–10 section, 60–120 hiệu ứng. Chốt: mặc định trang phần mềm theo gu chủ dự
+     án, không số đông (`A2` 7–9 section 8–12 màn, ba khối cho xem sản phẩm làm việc; `A3` demo bấm
+     được; `A4` cụm chữ màu nhấn trong H1, lớp chi tiết thủ công; `C8` lên 8; `C10`, `C11`). Dựng lại
+     Sổ Tay theo luật mới để so trước / sau, rồi sang đề app AI.
 
 **Khi quay lại hướng SaaS (ghi 07/10/2026):** người dùng khen landing của chính evondevKit
 (`~/dev/evondev-kit-landingpage`) đẹp, clean, và muốn skill dựng được trang như vậy. Trang đó là

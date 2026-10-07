@@ -220,7 +220,8 @@ lớn vào từ điện thoại (link quảng cáo, Zalo, Facebook): soi 375 tr�
 - Trang **không có dải CTA cuối riêng**: khối Liên hệ (`K11`) đứng cuối, trước footer, làm việc
   đó (dải CTA cuối chỉ 3/7, 3/7, 5/7; form và địa chỉ là thứ khách cần ở cuối trang).
 
-**H12. Chuyển động: ba mức, mặc định Nhẹ.** ⚑ Đè `F22` của `ui-ux` chỉ trong landing.
+**H12. Chuyển động: ba mức, mặc định Nhẹ.** ⚑ Đè `F22` của `ui-ux` chỉ trong landing. Trang sản
+phẩm phần mềm có mặc định riêng, dày hơn (`A6`).
 
 | Mức | Gồm | Khi nào |
 | --- | --- | --- |
