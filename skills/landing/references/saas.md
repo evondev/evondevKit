@@ -130,6 +130,21 @@ tĩnh chỉ khi sản phẩm không có đầu vào để đổi (hạ tầng, t
 | Serif tiêu đề | 6/18, đa số sản phẩm AI muốn ấm | được, theo cảm giác (`H5`) |
 | Nhãn chữ mono (`[01 / 08]`, `FEATURES`) | 7/18, cả hai trang gốc | dùng thì mọi H2 đều có |
 
+**Màu nhấn khi người dùng chưa có brand:** không mặc định xanh dương, chàm, tím (`#1d4ed8`,
+`#4f46e5`, `#7c3aed` và họ hàng). Đó là màu sẵn của hầu hết template và trang AI dựng, khách nhìn là
+thấy trang dựng sẵn; chủ dự án dựng thử thấy "màu xanh không đẹp". Chọn theo tính cách sản phẩm,
+chữ trắng trên nút từ 4.5:1:
+
+| Tính cách | Màu nhấn gợi ý | Chữ trắng |
+| --- | --- | --- |
+| Công cụ cho dev, năng lượng (landing evondevKit dùng cam) | cam đất `#c43d0b` | 5.2:1 |
+| Ghi chép, năng suất, bình tĩnh | xanh lục `#127a4a` | 5.4:1 |
+| Sản phẩm AI, sáng tạo | hồng đậm `#b4235a` | 6.3:1 |
+| Nghiêm túc, tối giản | đen `#111111` | 18.9:1 |
+
+Nhóm **Nhấn** trên thanh công cụ wireframe (`U3`) luôn có ba ô ba họ màu khác nhau, ô đầu (khuyên
+dùng) không phải xanh dương; xanh dương vẫn được làm một ô để người dùng tự chọn.
+
 **Chữ màu nhấn trong H1** (mặc định): cụm nói lời hứa, thường là dòng sau, `text-primary`; H2 được
 một cụm tương tự, tối đa nửa số H2. Một cụm mỗi tiêu đề, không tô cả câu, không gradient chữ.
 
