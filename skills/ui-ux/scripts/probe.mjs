@@ -3369,6 +3369,22 @@ function measureLandingPage() {
     // Viền 1px: tâm đường cách mép ghi nhận 0,5px.
     if (Math.abs(offsetX) > 2 || Math.abs(offsetY) > 2) offCenterMarks.push(`${Math.round(offsetX * 10) / 10}/${Math.round(offsetY * 10) / 10}px`);
   }
+  // A5: ô mảnh giao diện trong card bento cao cố định mà card đứng một mình một hàng: mảnh ngắn chừa khoảng
+  // trống lớn trên tiêu đề (thấy ở landing công cụ dòng lệnh 07/10/2026, 375px: hở ~100px).
+  const emptySlots = [];
+  for (const slot of document.body.querySelectorAll("[aria-hidden='true']")) {
+    const style = getComputedStyle(slot);
+    if (style.overflow !== "hidden" && style.overflowY !== "hidden") continue;
+    if (!style.maskImage || style.maskImage === "none") continue;
+    const card = slot.closest("li");
+    const list = card?.parentElement;
+    if (!card || !list || card.getBoundingClientRect().width < list.getBoundingClientRect().width - 2) continue;
+    const slotRect = slot.getBoundingClientRect();
+    const contentBottom = Math.max(...[...slot.children].map((child) => child.getBoundingClientRect().bottom), slotRect.top);
+    const gap = slotRect.bottom - parseFloat(style.paddingBottom) - contentBottom;
+    if (gap > 48) emptySlots.push(Math.round(gap));
+  }
+  if (emptySlots.length) problems.push(`${emptySlots.length} ô mảnh giao diện trong card một cột hở dưới mảnh ${emptySlots.join(", ")}px: cao cố định chỉ từ lg, dưới lg max-h (A5)`);
   if (offCenterMarks.length) problems.push(`${offCenterMarks.length} dấu + ở góc lệch khỏi giao điểm đường kẻ (ngang/dọc ${[...new Set(offCenterMarks)].slice(0, 3).join(", ")}): dùng icon Plus căn tâm bằng -translate-1/2 (A4)`);
   if (doubledGridEdges.length) problems.push(`lưới nền kẻ đường ở đầu ô, ${[...new Set(doubledGridEdges)].join(" và ")} chồng lên viền có sẵn thành đường 2px: kẻ đường ở cuối ô (A4)`);
 

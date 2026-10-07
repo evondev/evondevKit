@@ -140,7 +140,7 @@ card (tính năng "tự nhắc lịch" thì mảnh là tin nhắc đã gửi). K
 ```html
 <ul class="grid gap-4 lg:grid-cols-3">
   <li class="flex flex-col overflow-hidden rounded-2xl bg-background lg:col-span-2"> <!-- card 1 và 4 rộng gấp đôi khi có 4 card -->
-    <div class="relative h-56 overflow-hidden px-6 pt-6 mask-[linear-gradient(to_bottom,black_75%,transparent)]" aria-hidden="true" inert>
+    <div class="relative max-h-56 overflow-hidden px-6 pt-6 pb-8 mask-[linear-gradient(to_bottom,black_calc(100%-2rem),transparent)] lg:h-56 lg:pb-0" aria-hidden="true" inert>
       <div class="w-[360px] rounded-xl border border-border bg-surface p-4 shadow-popover">…mảnh UI…</div>
     </div>
     <div class="p-6 pt-4">
@@ -153,7 +153,9 @@ card (tính năng "tự nhắc lịch" thì mảnh là tin nhắc đã gửi). K
 
 - 3 card một hàng bằng nhau; 4 card: card 1 và 4 rộng gấp đôi, so le. 5 trở lên: 3–4 vào bento,
   còn lại lưới icon ngắn bên dưới (icon 20px trong ô 40px, không bọc từng ô vào card).
-- Mảnh có bề rộng cố định, tràn thì cắt, đáy tan dần để các card cao bằng nhau.
+- Mảnh có bề rộng cố định, tràn thì cắt, đáy tan dần 2rem. **Cao cố định (`h-56`) chỉ từ `lg`**, khi
+  card đứng cạnh nhau cần bằng đầu; dưới `lg` mỗi card một cột thì ô mảnh cao theo mảnh (`max-h-56`),
+  không thì mảnh ba dòng chừa khoảng trống 100px trên tiêu đề.
 
 ## A6. Chuyển động cho trang sản phẩm ⚑
 
