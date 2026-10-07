@@ -107,6 +107,27 @@ gõ câu mẫu, terminal, khung kéo được; 4/18). Demo dùng được là th
 - Nền hero là **lưới ô** màu viền, tan dần ra mép (`mask-image`), có thể có chấm trong ô.
 - Mỗi section mở bằng nhãn mono đánh số.
 - Màu đường kẻ là `--border` (đường tóc), không đậm hơn.
+- **Mỗi chỗ chỉ một đường.** Lưới kẻ đường ở **cuối ô**, không ở đầu ô: khung lưới nằm sát viền dưới
+  header và đường ray trái, đường đầu ô chồng lên viền thành vạch 2px đậm hơn mọi đường khác.
+
+```html
+<!-- -z-10 để lưới nằm sau chữ; section hero có isolate nên không lọt ra sau nền trang -->
+<div class="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,transparent_calc(100%-1px),var(--border)_calc(100%-1px)),linear-gradient(to_bottom,transparent_calc(100%-1px),var(--border)_calc(100%-1px))] bg-size-[48px_48px] mask-[radial-gradient(ellipse_70%_60%_at_30%_0%,black_20%,transparent_75%)]" aria-hidden="true"></div>
+```
+
+  Cùng lý với đường ngăn section: section có `border-t` thì section trên không thêm `border-b`.
+- **Dấu `+` nằm đúng giao điểm** đường ray và đường ngăn: icon `Plus` (lucide) đặt ở góc rồi căn
+  tâm bằng `-translate-1/2`. Không dùng ký tự "+" với độ lệch đoán (`-top-[7px] -left-[7px]`): bề
+  ngang chữ theo font, dấu lệch 2–3px khỏi đường, nhìn ra ngay khi đường tóc chạy qua.
+
+```html
+<div class="relative border-t border-border">
+  <!-- -translate-1/2 để tâm dấu nằm trên góc -->
+  <Plus class="pointer-events-none absolute top-0 left-0 hidden size-3 -translate-1/2 text-muted xl:block" aria-hidden="true" />
+  <Plus class="pointer-events-none absolute top-0 right-0 hidden size-3 translate-x-1/2 -translate-y-1/2 text-muted xl:block" aria-hidden="true" />
+  …section…
+</div>
+```
 
 **Lớp nền hero** (lưới mờ 6/18, vầng màu nhấn 5/18): một kiểu mỗi trang, hero và CTA cuối cùng kiểu.
 Không vầng + lưới + ảnh cùng lúc, không đốm màu thứ hai.

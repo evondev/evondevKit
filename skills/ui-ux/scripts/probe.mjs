@@ -3304,6 +3304,74 @@ function measureLandingPage() {
     problems.push(`section ${section.id ? `#${section.id} ` : ""}"${heading}" padding dọc ${paddingOf(section)}px, đa số ${commonPadding}px (H2)`);
   }
 
+  // A4: lưới nền kẻ đường ở đầu ô (`var(--border)_1px,transparent_1px`) mà mép khung lưới sát viền có sẵn
+  // (viền dưới header, đường ray hai bên) thì đường đầu chồng lên viền thành 2px, đậm hơn mọi đường khác
+  // (người dùng thấy ở landing công cụ dòng lệnh 07/10/2026: header và ray trái đều đậm).
+  const borderEdges = [];
+  for (const element of document.body.querySelectorAll("*")) {
+    const style = getComputedStyle(element);
+    const rect = element.getBoundingClientRect();
+    if (!rect.width || !rect.height) continue;
+    if (parseFloat(style.borderBottomWidth) > 0 && style.borderBottomStyle !== "none") borderEdges.push({ axis: "y", at: rect.bottom, from: rect.left, to: rect.right });
+    if (parseFloat(style.borderTopWidth) > 0 && style.borderTopStyle !== "none") borderEdges.push({ axis: "y", at: rect.top, from: rect.left, to: rect.right });
+    if (parseFloat(style.borderRightWidth) > 0 && style.borderRightStyle !== "none") borderEdges.push({ axis: "x", at: rect.right, from: rect.top, to: rect.bottom });
+    if (parseFloat(style.borderLeftWidth) > 0 && style.borderLeftStyle !== "none") borderEdges.push({ axis: "x", at: rect.left, from: rect.top, to: rect.bottom });
+  }
+  const doubledGridEdges = [];
+  for (const element of document.body.querySelectorAll("*")) {
+    const style = getComputedStyle(element);
+    const tileSize = parseFloat(style.backgroundSize);
+    if (!style.backgroundImage.includes("linear-gradient") || !(tileSize > 0 && tileSize <= 160)) continue;
+    if (!/^0(%|px) 0(%|px)/.test(style.backgroundPosition)) continue;
+    const rect = element.getBoundingClientRect();
+    const gradients = style.backgroundImage.split(/,\s*(?=linear-gradient)/);
+    // Đường ở đầu ô: màu đầu tiên của gradient là màu đặc dừng ở 1–2px.
+    const startsWithLine = (gradient) => {
+      const firstStop = gradient.match(/^linear-gradient\((?:to (?:right|bottom),\s*|90deg,\s*|180deg,\s*)?((?:rgba?|oklch|oklab|lab|lch|color)\([^)]*\))\s+[12]px/);
+      if (!firstStop) return false;
+      const alpha = firstStop[1].match(/(?:,|\/)\s*([\d.]+)\s*\)$/);
+
+      return !alpha || /^rgba?\([^,]*,[^,]*,[^,]*\)$/.test(firstStop[1]) || Number(alpha[1]) > 0;
+    };
+    for (const gradient of gradients) {
+      if (!startsWithLine(gradient)) continue;
+      const isVertical = /to right|90deg/.test(gradient);
+      const edge = isVertical ? rect.left : rect.top;
+      const [spanFrom, spanTo] = isVertical ? [rect.top, rect.bottom] : [rect.left, rect.right];
+      const touches = borderEdges.some((border) => border.axis === (isVertical ? "x" : "y") && Math.abs(border.at - edge) <= 1.5 && border.from < spanTo && border.to > spanFrom);
+      if (touches) doubledGridEdges.push(isVertical ? "mép trái" : "mép trên");
+    }
+  }
+  // A4: dấu `+` ở góc section phải nằm đúng giao điểm đường ray và đường ngăn. Ký tự "+" đặt bằng độ lệch
+  // đoán (`-top-[7px] -left-[7px]`) lệch 2–3px vì bề ngang chữ theo font (thấy ở landing công cụ dòng lệnh 07/10/2026).
+  const offCenterMarks = [];
+  for (const mark of document.body.querySelectorAll("span, div, svg")) {
+    const style = getComputedStyle(mark);
+    if (style.position !== "absolute" || !isShown(mark)) continue;
+    const isTextPlus = normalize(mark.textContent) === "+" && mark.children.length === 0;
+    const isIconPlus = mark.tagName === "svg" && mark.getBoundingClientRect().width <= 16 && /plus/i.test(mark.getAttribute("class") || "");
+    if (!isTextPlus && !isIconPlus) continue;
+    let markRect = mark.getBoundingClientRect();
+    if (isTextPlus) {
+      const range = document.createRange();
+      range.selectNodeContents(mark);
+      markRect = range.getBoundingClientRect();
+    }
+    const centerX = markRect.left + markRect.width / 2;
+    const centerY = markRect.top + markRect.height / 2;
+    const nearestOffset = (axis, at, along) => borderEdges
+      .filter((border) => border.axis === axis && border.from - 10 <= along && border.to + 10 >= along && Math.abs(border.at - at) <= 10)
+      .map((border) => border.at - at)
+      .sort((first, second) => Math.abs(first) - Math.abs(second))[0];
+    const offsetX = nearestOffset("x", centerX, centerY);
+    const offsetY = nearestOffset("y", centerY, centerX);
+    if (offsetX === undefined || offsetY === undefined) continue;
+    // Viền 1px: tâm đường cách mép ghi nhận 0,5px.
+    if (Math.abs(offsetX) > 2 || Math.abs(offsetY) > 2) offCenterMarks.push(`${Math.round(offsetX * 10) / 10}/${Math.round(offsetY * 10) / 10}px`);
+  }
+  if (offCenterMarks.length) problems.push(`${offCenterMarks.length} dấu + ở góc lệch khỏi giao điểm đường kẻ (ngang/dọc ${[...new Set(offCenterMarks)].slice(0, 3).join(", ")}): dùng icon Plus căn tâm bằng -translate-1/2 (A4)`);
+  if (doubledGridEdges.length) problems.push(`lưới nền kẻ đường ở đầu ô, ${[...new Set(doubledGridEdges)].join(" và ")} chồng lên viền có sẵn thành đường 2px: kẻ đường ở cuối ô (A4)`);
+
   return problems;
 }
 
