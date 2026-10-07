@@ -483,6 +483,9 @@ Cảm giác "sống" đến từ demo sản phẩm, không từ trang trí; tran
      đường ngăn mang hình. Viết lại `A4` (bảng việc sản phẩm → ngôn ngữ hình) và `C10` (công thức từng
      kiểu). Thứ tự test: đề tiếng Anh nhiều section (API giám sát cron, chủ đề khác hẳn trang tham
      khảo để biết skill tự nghĩ), rồi Ghi Chép.
+   - Ghi Chép qua (07/10/2026, app AI, mục tiêu dùng thử): wireframe và bản dựng không lỗi đo được,
+     không lỗi skill mới; ngôn ngữ hình sóng âm → dòng biên bản theo luật mới (wireframe đầu còn chép
+     bộ pixel ASCII vì dựng trước khi luật đổi). Tiếp: đề tiếng Anh Pulsecheck.
 
 **Khi quay lại hướng SaaS (ghi 07/10/2026):** người dùng khen landing của chính evondevKit
 (`~/dev/evondev-kit-landingpage`) đẹp, clean, và muốn skill dựng được trang như vậy. Trang đó là
