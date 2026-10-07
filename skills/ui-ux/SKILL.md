@@ -25,7 +25,7 @@ modal. Không lo trang bán hàng, trừ bảng giá (`references/layouts/pricin
 
 **Landing page, trang giới thiệu doanh nghiệp hay cửa hàng (spa, quán, showroom, công ty sản
 xuất) thì mở skill `landing`** (`../landing/SKILL.md`, gọi bằng `/evon:landing`) và đi theo nó
-từ mục 0 của nó, không theo file này. Landing cho phần mềm cũng sang đó (nó tự báo chưa dạy).
+từ mục 0 của nó, không theo file này. Landing cho phần mềm (SaaS, app, công cụ dev) cũng sang đó.
 Không thấy thư mục đó thì xếp vào nhóm chưa được dạy dưới đây. ⚑
 
 **Đề là loại UI skill chưa được dạy thì báo trước một dòng, rồi vẫn làm.** Gồm: cửa hàng

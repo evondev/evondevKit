@@ -39,7 +39,9 @@ skills/
     └── references/
         ├── goals.md      G — loại trang (dịch vụ đặt lịch, cửa hàng, B2B) → section, nút chính, form
         ├── sections.md   K — mười ba loại section, mỗi loại 1–3 biến thể có code
-        └── page-rules.md H — CTA, nhịp, chữ và font, nền, ảnh thật, dữ liệu giả, chuyển động, nút Zalo nổi
+        ├── page-rules.md H — CTA, nhịp, chữ và font, nền, ảnh thật, dữ liệu giả, chuyển động, nút Zalo nổi
+        ├── saas.md       A — trang sản phẩm phần mềm: mục tiêu, section, hero có sản phẩm, lớp nhìn, bento
+        └── motion.md     C — cách làm từng hiệu ứng, chung cho mọi loại trang
 archive/                  nhánh landing cũ đã gỡ khỏi ui-ux; landing-saas/ bản landing SaaS gác 06/10/2026
 ```
 

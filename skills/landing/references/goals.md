@@ -11,15 +11,19 @@ và form liên hệ ngay trên trang (`G3`, `H13`).
 
 ---
 
-## G1. Ba loại trang ⚑
+## G1. Bốn loại trang ⚑
 
 | Loại | Gồm | Nhận ra khi đề nói |
 | --- | --- | --- |
 | **Dịch vụ đặt lịch** | spa, thẩm mỹ, da liễu, salon tóc, nail, nha khoa, vật lý trị liệu, phòng khám nhỏ | đặt lịch, liệu trình, khách tới làm dịch vụ |
 | **Cửa hàng, quán** | showroom nội thất, bếp, xe; tiệm hoa, tiệm bánh; quán cà phê, nhà hàng | cửa hàng, showroom, quán, ghé, đặt bàn, xem hàng tận nơi |
 | **Doanh nghiệp B2B** | sản xuất, bao bì, in ấn, đồng phục, cơ khí, nhựa, thiết bị, gia công | công ty, nhà máy, xưởng, báo giá, đơn hàng số lượng, khách doanh nghiệp |
+| **Sản phẩm phần mềm** | SaaS, app, công cụ cho dev, sản phẩm AI, template, bộ code | đăng ký, dùng thử, cài, npm, tải app, gói tháng, demo, waitlist |
 
-Đề không nói rõ thì **đoán theo bảng**, ghi vào brief kèm chữ *đoán*. Loại không nằm trong ba nhóm
+**Sản phẩm phần mềm đi theo `references/saas.md` (luật `A`)**, không theo `G2`–`G7`: khách vào để
+dùng thử, cài, mua, không để lại số điện thoại; không form liên hệ, không nút Zalo / gọi nổi.
+
+Đề không nói rõ thì **đoán theo bảng**, ghi vào brief kèm chữ *đoán*. Loại không nằm trong bốn nhóm
 (công ty luật, trung tâm tiếng Anh, khách sạn…) thì lấy loại gần nhất theo cách khách liên hệ:
 hẹn một buổi là dịch vụ đặt lịch, ghé xem là cửa hàng, xin báo giá là B2B. Báo một dòng *"X chưa
 có mẫu riêng, mình theo khung Y"*.

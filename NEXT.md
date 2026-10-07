@@ -441,6 +441,34 @@ gộp SaaS hay trang quảng cáo chung.
      (Đóng theo yêu cầu) sau một vòng sửa probe sạch. Lỗi skill: vạch hở 1px dưới header trong
      suốt, `[cần điền]` lặp từng card. Còn: B2B; quán, tiệm hoa, tiệm bánh chưa tra định vị.
 
+### [ ] 10. Hướng SaaS: loại trang thứ tư của skill landing (bắt đầu 07/10/2026)
+
+B2B thu lead để sau (chủ dự án chốt 07/10/2026). Tra 18 landing sản phẩm được khen, có hai trang
+gốc mà landing evondevKit trộn lối, cộng đọc code landing evondevKit:
+
+| Thấy gì | Số trang /18 |
+| --- | --- |
+| Nền sáng / trắng ngà hay xám rất nhạt / dải tối xen giữa | 16 / 9 / 7 |
+| Một màu nhấn; sans H1 nét 400–500 giãn chữ âm; H1 ~64px | 14; 15; 10 trong 48–72 |
+| Sản phẩm ngay dưới chữ hero / demo dùng được / hai nút ở hero | 10 / 4 / 11 |
+| Khung lộ (đường kẻ hai bên, lưới ô, nhãn mono) | 6–7 |
+| Bento / hàng xen kẽ / tab / cuộn ghim (toàn CSS sticky) | 9 / 6 / 5 / 6 |
+| Pricing trên trang / FAQ / CTA cuối lặp nút chính | 4 / 7 / 14 |
+| Hero hiện dần / hiện khi cuộn / gõ chữ trong demo / dải chạy | ~9 / ~11 / 5 / 7 |
+| GSAP pin / Lenis / con trỏ đổi kiểu / 3D theo cuộn | 0 / 5 / 0 / 1 |
+| Tắt hết khi giảm chuyển động / vẫn chạy | 6 / 6 (Lenis 5/5 không tắt) |
+
+Cảm giác "sống" đến từ demo sản phẩm, không từ trang trí; trang nặng nhất là trang cuộn kể chuyện
+19–26k px; trang sạch nhất có 0–2 vòng lặp nền.
+
+1. [x] Ghi vào skill (07/10/2026): `references/saas.md` (luật `A`), `references/motion.md` (luật `C`,
+   công thức lấy từ code landing evondevKit), `G1` thêm loại thứ tư, `SKILL.md` câu 3, brief, wireframe,
+   checklist, lúc giao.
+2. [ ] Probe `--landing`: bật giảm chuyển động thì `document.getAnimations()` phải về 0 (trừ hiệu ứng
+   người dùng tự bật); đếm vòng lặp vô hạn, trên 2 thì cảnh báo (`C8`); tìm Lenis còn chạy khi giảm
+   chuyển động (`C9`).
+3. [ ] Test hai đề trên dự án trống: một công cụ cho dev (mục tiêu cài), một app AI (dùng thử).
+
 **Khi quay lại hướng SaaS (ghi 07/10/2026):** người dùng khen landing của chính evondevKit
 (`~/dev/evondev-kit-landingpage`) đẹp, clean, và muốn skill dựng được trang như vậy. Trang đó là
 landing sản phẩm cho dev (nút chính là lệnh cài có nút copy; hero có ô prompt và video, trước/sau,

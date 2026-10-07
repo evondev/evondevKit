@@ -228,7 +228,9 @@ lớn vào từ điện thoại (link quảng cáo, Zalo, Facebook): soi 375 tr�
 | **Nhẹ** (mặc định) | section hiện dần khi cuộn tới (mờ → rõ, dịch 16px, 400–600ms, một lần); hover card ảnh phóng nhẹ `scale-[1.03]` trong khung `overflow-hidden` | mọi trang |
 | Nổi bật | video nền hero (B2B 4/7), ảnh trôi chậm khi cuộn, cuộn ghim cảnh (GSAP ScrollTrigger) | chỉ khi người dùng xin, hay có video thật |
 
-- CSS trước; cần điều khiển theo cuộn thì gói `motion` hay GSAP, gọn nhẹ.
+- **Cách làm từng hiệu ứng ở `motion.md` (luật `C`)**: hero hiện dần, hiện khi cuộn tới, gõ chữ
+  trong demo, dải chạy, đếm số, cuộn ghim, vòng lặp nền, cuộn mượt. CSS trước; thư viện chỉ ở mức
+  Nổi bật (`C9`).
 - Mức nào cũng: tôn trọng `prefers-reduced-motion` (tắt hết, hiện ngay); **chữ hero không ẩn chờ
   animation** (hero hiện ngay, chỉ section bên dưới mới hiện dần); không chiếm cuộn; video nền tắt
   tiếng, `playsinline`, có ảnh `poster`, không tải trên kết nối tiết kiệm dữ liệu.

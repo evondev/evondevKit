@@ -1,9 +1,9 @@
 ---
 name: landing
-description: Dựng landing page thu lead giới thiệu doanh nghiệp, cửa hàng như một designer - spa, thẩm mỹ, nha khoa, salon, showroom, tiệm hoa, tiệm bánh, quán, nhà hàng, công ty sản xuất, bao bì, in ấn, cơ khí. Hỏi loại trang (dịch vụ đặt lịch, cửa hàng và quán, doanh nghiệp B2B) và khách để lại gì (đặt lịch, đặt bàn, nhờ tư vấn, nhận báo giá), bật section theo loại đó, 2–3 wireframe có chữ thật và ảnh thật, người dùng chọn rồi mới dựng. Ảnh thật làm phần bán hàng, một nút chính cùng chữ cùng đích, form liên hệ ngắn và nút Zalo / gọi nổi theo thói quen khách VN, địa chỉ giờ mở cửa rõ ràng. Dùng khi dựng, làm lại hay xem giúp landing page, trang giới thiệu doanh nghiệp, trang giới thiệu cửa hàng, website một trang cho spa, quán, công ty, khi người dùng nhắc "landing page", "trang giới thiệu", "trang thu lead", "website cho tiệm", "website công ty", "trang đặt lịch", "trang báo giá", "landing", "evon".
+description: Dựng landing page như một designer, hai nhóm - thu lead giới thiệu doanh nghiệp, cửa hàng (spa, thẩm mỹ, nha khoa, salon, showroom, tiệm hoa, tiệm bánh, quán, nhà hàng, công ty sản xuất, bao bì, in ấn, cơ khí) và landing sản phẩm phần mềm (SaaS, app, công cụ cho dev, sản phẩm AI). Hỏi loại trang (dịch vụ đặt lịch, cửa hàng và quán, doanh nghiệp B2B, sản phẩm phần mềm) và khách làm gì (đặt lịch, đặt bàn, nhờ tư vấn, nhận báo giá, dùng thử, cài, mua, đặt demo), bật section theo loại đó, 2–3 wireframe có chữ thật và ảnh thật, người dùng chọn rồi mới dựng. Ảnh thật làm phần bán hàng, một nút chính cùng chữ cùng đích, form liên hệ ngắn và nút Zalo / gọi nổi theo thói quen khách VN, địa chỉ giờ mở cửa rõ ràng; trang sản phẩm có giao diện sản phẩm hay demo dùng được ở hero, chuyển động nhẹ bằng CSS và tắt hết khi giảm chuyển động. Dùng khi dựng, làm lại hay xem giúp landing page, trang giới thiệu doanh nghiệp, trang giới thiệu cửa hàng, website một trang cho spa, quán, công ty, khi người dùng nhắc "landing page", "trang giới thiệu", "trang thu lead", "website cho tiệm", "website công ty", "trang đặt lịch", "trang báo giá", "landing SaaS", "trang chủ sản phẩm", "waitlist", "homepage", "landing", "evon".
 ---
 
-# Landing page thu lead cho doanh nghiệp, cửa hàng
+# Landing page: thu lead cho doanh nghiệp, cửa hàng; trang sản phẩm phần mềm
 
 > **Chưa đi hết mục 0 thì KHÔNG viết một dòng code nào trong lượt này.**
 > Mặc định làm như một designer: brief kèm **loại trang và cách khách liên hệ**, 2–3 wireframe,
@@ -16,8 +16,9 @@ accordion, avatar, panel trượt, probe và quy trình wireframe đều lấy t
 skill ui-ux đi kèm, cài lại cả bộ evondevKit"* rồi dừng.
 
 Phạm vi: **landing một trang giới thiệu một doanh nghiệp hay cửa hàng có thật, dẫn khách để lại
-liên hệ** (đặt lịch, đặt bàn, nhờ tư vấn, nhận báo giá). Không gồm: landing cho phần mềm / SaaS,
-trang bán hàng chạy quảng cáo một sản phẩm, cửa hàng online có giỏ hàng, blog, trang sự kiện.
+liên hệ** (đặt lịch, đặt bàn, nhờ tư vấn, nhận báo giá), và **landing sản phẩm phần mềm** dẫn khách
+dùng thử, cài, mua, đặt demo (`references/saas.md`). Không gồm: trang bán hàng chạy quảng cáo một
+sản phẩm, cửa hàng online có giỏ hàng, blog, trang sự kiện, site agency, portfolio.
 Những đề đó báo trước một dòng *"loại trang này skill chưa được dạy, mình vẫn làm theo luật chung
 `H`"*, rồi làm.
 
@@ -27,7 +28,8 @@ logic của người dùng: để handler rỗng (`onSubmit`) và `href` giữ c
 
 ⚑ **Mọi luật trong skill này chưa qua vòng test nào.** Bố cục, section và lớp nhìn rút từ 21
 trang thu lead nước ngoài được đánh giá cao (7 dịch vụ đặt lịch, 7 cửa hàng và quán, 7 B2B), tra
-06/10/2026. Nút Zalo / gọi nổi và form trên trang theo thói quen khách VN (`H13`).
+06/10/2026. Nút Zalo / gọi nổi và form trên trang theo thói quen khách VN (`H13`). Trang sản phẩm
+phần mềm rút từ 20 trang đang chạy và 18 trang được khen (tra 01 và 07/10/2026).
 
 ---
 
@@ -58,6 +60,10 @@ Chi tiết ở `references/goals.md`:
 | **Dịch vụ đặt lịch**: spa, thẩm mỹ, salon, nail, nha khoa, phòng khám | hẹn một buổi | Đặt lịch |
 | **Cửa hàng, quán**: showroom, tiệm hoa, tiệm bánh, quán, nhà hàng | đặt bàn, hẹn ghé, nhờ tư vấn | Đặt bàn / Hẹn ghé showroom / Nhắn tư vấn |
 | **Doanh nghiệp B2B**: sản xuất, bao bì, in ấn, đồng phục, cơ khí | xin báo giá | Nhận báo giá |
+| **Sản phẩm phần mềm**: SaaS, app, công cụ cho dev, AI, template | cài, dùng thử, mua, đặt demo, chờ (`A1`) | lệnh cài / Dùng thử miễn phí / Mua / Đặt lịch demo / Đăng ký chờ |
+
+**Sản phẩm phần mềm mở `references/saas.md` (luật `A`)** thay `G2`–`G7`: bỏ form liên hệ, nút Zalo
+nổi, định vị; còn lại đi đúng bốn bước dưới.
 
 Đề không nói thì **đoán theo bảng**, ghi vào brief kèm chữ *đoán* để người dùng sửa ở cổng 1.
 
@@ -76,8 +82,10 @@ Chưa qua cổng 2 thì **không đụng file nào của dự án**. Wireframe �
 
 ### E1. Brief ⚑
 
-Đọc README, mô tả người dùng gửi, chữ đang có trong dự án. Ghi bảy dòng (tám với dịch vụ đặt lịch và showroom nội thất), mỗi dòng ghi nguồn
-(*đọc code*, *người dùng nói*, *đoán*):
+Đọc README, mô tả người dùng gửi, chữ đang có trong dự án. Ghi bảy dòng (tám với dịch vụ đặt
+lịch và showroom nội thất), mỗi dòng ghi nguồn (*đọc code*, *người dùng nói*, *đoán*). Sản phẩm
+phần mềm: dòng 1 là sản phẩm gì, dòng 3 là 3–4 tính năng chính, dòng 5 là mục tiêu và nút theo
+`A1`, dòng 6 theo `A7` (số người dùng, logo khách, lệnh cài), không có dòng 8.
 
 1. **Doanh nghiệp gì, ở đâu**, một câu ("Spa chăm sóc da ở Quận 3", "Xưởng in bao bì carton ở
    Long An").
@@ -127,7 +135,11 @@ component thật, thanh công cụ (Phương án, Màu, Nhấn, Khổ), khung l�
   đã rõ định vị thì ba phương án nằm trong định vị đó, khác ở hero và thứ tự như trên.
 - **D, E của `U3` thành:** D **trang ngắn**: chỉ hero, dịch vụ, liên hệ, footer; E **bỏ lặp**:
   mỗi ý một chỗ (hero và giới thiệu không nói cùng một câu).
-- **Nhóm Trạng thái** cho form liên hệ: Mặc định, Lỗi, Đã gửi (`K11`).
+- **Sản phẩm phần mềm:** phương án khác ở cách hero khoe sản phẩm (màn app dưới chữ, demo dùng
+  được, chữ trái màn app phải), cách xếp tính năng (bento, hàng xen kẽ, cuộn ghim) và lớp nhìn có
+  khung lộ (`A4`) hay không. Không nút nổi.
+- **Nhóm Trạng thái** cho form liên hệ: Mặc định, Lỗi, Đã gửi (`K11`); trang sản phẩm chỉ khi có
+  form email (danh sách chờ).
 - **Không vẽ khối xám cho ảnh.** Ảnh mẫu thật theo `S16` của `ui-ux` ngay từ wireframe: người
   dùng chọn hero vì nhìn thấy không gian, không vì khối xám.
 - **Mỗi phương án là cả trang**, từ header tới footer, có nút nổi (`K13`).
@@ -159,6 +171,8 @@ Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn. Góp ý theo số kh�
 | **G** | `references/goals.md` | Loại trang → bật section nào, thứ tự, chữ nút chính, ô form, giá, thứ phải có thật, định vị (`G6`) |
 | **K** | `references/sections.md` | Mười ba loại section, mỗi loại 1–3 biến thể có code |
 | **H** | `references/page-rules.md` | Luật chung toàn trang: CTA, nhịp, thang chữ và font, chữ hero, nền và màu, ảnh, header, dữ liệu giả, màn hẹp, chuyển động, nút nổi |
+| **A** | `references/saas.md` | Trang sản phẩm phần mềm: mục tiêu và nút, bộ section, hero có sản phẩm, lớp nhìn, bento, chuyển động, dữ liệu giả |
+| **C** | `references/motion.md` | Cách làm từng hiệu ứng: hero hiện dần, hiện khi cuộn, gõ chữ, dải chạy, đếm số, cuộn ghim, vòng lặp nền, cuộn mượt |
 
 **Lấy từ `ui-ux`, không chép:**
 
@@ -183,7 +197,7 @@ Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn. Góp ý theo số kh�
   duyệt ở cổng 1.
 - **Nút cao 40px (`button.md`)** → nút ở hero và khối Liên hệ cao 48px (`H1`).
 - **Chữ không đặt trên ảnh** → được ở hero, có lớp phủ đo tương phản (`H11`).
-- **`F22` (không chuyển động trang trí)** → ba mức, mặc định Nhẹ (`H12`).
+- **`F22` (không chuyển động trang trí)** → ba mức, mặc định Nhẹ (`H12`), cách làm ở `motion.md`.
 
 ---
 
@@ -195,9 +209,11 @@ Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn. Góp ý theo số kh�
   nút đặc.
 - [ ] **H1 và câu dẫn nói làm gì, ở đâu**, không câu chung chung (`H4`).
 - [ ] **Ảnh thật** ở hero và các khối, không khối xám, không minh hoạ (`H6`). Ảnh mẫu đã `GIẢ:`.
-- [ ] **Form liên hệ** đúng ô của `G3`, số điện thoại bắt buộc, ba trạng thái (`K11`). **Nút
-  Zalo / gọi nổi** cùng tông, không nhấp nháy (`H13`).
-- [ ] **Địa chỉ, giờ, số điện thoại** có ở khối Liên hệ và footer; giả thì đánh dấu (`H9`).
+- [ ] Thu lead: **form liên hệ** đúng ô của `G3`, số điện thoại bắt buộc, ba trạng thái (`K11`);
+  **nút Zalo / gọi nổi** cùng tông, không nhấp nháy (`H13`); **địa chỉ, giờ, số điện thoại** ở khối
+  Liên hệ và footer, giả thì đánh dấu (`H9`).
+- [ ] Sản phẩm phần mềm: **hero có sản phẩm** (màn app dựng giống thật hay demo dùng được, `A3`);
+  bật giảm chuyển động thì trang đứng yên (`C1`).
 - [ ] **Nhịp đều**: mọi section cùng padding dọc, cùng khung bề rộng (`H2`).
 - [ ] Đã probe 375 tới 1920 và xem ảnh, **375 trước**. Trang cuộn ngang ở 375 là hỏng (`H10`).
 
@@ -206,7 +222,9 @@ Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn. Góp ý theo số kh�
 Theo `S15` của `ui-ux`, cộng ba dòng riêng của landing, đặt **lên đầu**:
 
 1. *"Loại trang: [dịch vụ đặt lịch]. Nút chính: [Đặt lịch] ở header, hero, khối Liên hệ. Nút
-   Zalo / gọi nổi góc phải dưới."*
+   Zalo / gọi nổi góc phải dưới."* Trang sản phẩm: *"Loại trang: sản phẩm phần mềm, mục tiêu
+   [dùng thử]. Nút chính: [Dùng thử miễn phí] ở header, hero, CTA cuối. Chuyển động: [Nhẹ], tắt hết
+   khi bật giảm chuyển động."*
 2. *"Section đã dựng: …; đã bỏ: … (theo loại trang). Muốn thêm thì nói."*
 3. *"Dữ liệu giả cần thay trước khi chạy thật: [địa chỉ, số điện thoại, Zalo, giờ, ảnh, đánh
    giá, giá]. Đã đánh dấu `GIẢ:` trong code."* (`H9`)
