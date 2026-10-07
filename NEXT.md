@@ -437,7 +437,9 @@ gộp SaaS hay trang quảng cáo chung.
      Test Da Xinh qua (06/10/2026): ba phương án ra đúng ba định vị. Lệch cần tra thêm: thanh nút
      dính đáy mobile 3/5 trang Chuyên môn (H10 đang ghi 0/21).
    - **Nội thất xong (06/10/2026):** 15 trang chủ, ghi thành `G7` (Đóng theo yêu cầu / Showroom thương
-     hiệu / Giá xưởng). Chưa test. Còn: B2B; quán, tiệm hoa, tiệm bánh chưa tra định vị.
+     hiệu / Giá xưởng). Test Mộc Việt qua (07/10/2026): ba phương án đúng ba định vị, bản dựng
+     (Đóng theo yêu cầu) sau một vòng sửa probe sạch. Lỗi skill: vạch hở 1px dưới header trong
+     suốt, `[cần điền]` lặp từng card. Còn: B2B; quán, tiệm hoa, tiệm bánh chưa tra định vị.
 
 **Khi quay lại hướng SaaS (ghi 07/10/2026):** người dùng khen landing của chính evondevKit
 (`~/dev/evondev-kit-landingpage`) đẹp, clean, và muốn skill dựng được trang như vậy. Trang đó là
