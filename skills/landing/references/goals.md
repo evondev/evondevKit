@@ -181,6 +181,7 @@ hoa, tiệm bánh chưa tra định vị, vẫn theo `G2`.
   showroom để tư vấn, không để chọn món có sẵn.
 - **Giống ở cả ba:** ảnh phòng là thứ bán hàng chính; lưới theo phòng (bếp, phòng ngủ, phòng làm
   việc); một câu về tay nghề hay sản xuất. FAQ hiếm (1/15).
-- **Công trình đã làm phải là công trình thật.** Chưa có thì ảnh mẫu kèm `GIẢ:`, tên chủ nhà và
-  khu vực để `[cần điền]`, không bịa "Biệt thự anh Minh, Thảo Điền" (`H9`).
+- **Công trình đã làm phải là công trình thật.** Chưa có thì ảnh mẫu kèm `GIẢ:`, chú thích chỉ ghi
+  loại nhà và món ("Nhà phố · Tủ bếp chữ L"), bỏ dòng khu vực thay vì `[cần điền]` từng card; không
+  bịa "Biệt thự anh Minh, Thảo Điền" (`H9`).
 - Thanh ưu đãi, trả góp, hạn: chỉ khi người dùng đưa, như `G6`. Popup ưu đãi không dùng (1/15).

@@ -186,6 +186,11 @@ thoại giả, đánh giá giả là nói dối khách, và khách gọi nhầm 
   thương hiệu thật, không vẽ logo bịa.
 - **Không bịa** chứng nhận, giấy phép, giải thưởng, điểm Google, mã số thuế: chưa có thì bỏ khối
   đó, không dựng giả.
+- **`[cần điền]` chỉ ở chỗ khối không đứng được nếu thiếu** (mức ưu đãi, bằng cấp bác sĩ, năm mở
+  tiệm trong câu chuyện), mỗi khối tối đa một chỗ. Dữ liệu lặp theo card (giá từng dịch vụ, khu vực
+  từng công trình) chưa có thì **bỏ dòng đó** khỏi card, ghi vào danh sách lúc giao. Ba card cùng
+  "Từ [cần điền]", "Nhà phố · [cần điền]" làm trang nhìn như bản nháp hỏng (wireframe Da Xinh, Mộc
+  Việt 06–07/10/2026).
 - **Không bịa sự gấp:** hạn ưu đãi, đếm ngược, "chỉ còn 3 suất", "12 người đang xem" chỉ khi người
   dùng đưa số thật. Đếm ngược tự quay lại từ đầu khi hết là nói dối khách (`G6`).
 

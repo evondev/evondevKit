@@ -680,7 +680,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   //     `text-pretty`, 6/11 tên trơ một chữ ở dòng hai.
   const orphanWords = [];
   for (const block of document.querySelectorAll("p, h1, h2, h3, h4, h5, li, span, a, label, dd, dt, td")) {
-    if (orphanWords.length >= 10 || block.children.length > 0 || !isVisible(block)) continue;
+    if (orphanWords.length >= 10 || block.children.length > 0 || !isVisible(block) || block.closest(".wf-bar, .wf-reason, .wf-popover, .wf-menu")) continue;
     const text = block.textContent.replace(/\s+/g, " ").trim();
     const lastSpace = text.lastIndexOf(" ");
     if (text.length < 12 || lastSpace < 0) continue;
@@ -1320,6 +1320,9 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   const faintSelectedTabs = [];
   for (const tab of document.querySelectorAll("[role='tab'][aria-selected='true'], [aria-current='page']")) {
     if (faintSelectedTabs.length >= 4 || !isVisible(tab)) continue;
+    // Thanh công cụ và khung lý do của wireframe (design-process.md, U3) không thuộc bản thiết kế: lượt rà wireframe
+    // nào cũng báo tab "A", "Nâu gỗ", "Desktop" của thanh công cụ (06–07/10/2026). Ba phép đo dưới cũng bỏ qua nó.
+    if (tab.closest(".wf-bar, .wf-reason, .wf-popover, .wf-menu")) continue;
     // Link `aria-current` chỉ tính khi nằm trong hàng ngang (tab là link): mục sidebar xếp dọc theo luật riêng.
     const parentStyle = tab.parentElement ? getComputedStyle(tab.parentElement) : null;
     if (tab.getAttribute("role") !== "tab" && !(parentStyle?.display.includes("flex") && parentStyle.flexDirection.startsWith("row"))) continue;
@@ -1337,7 +1340,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   //      Dòng bảng không bo góc thì bỏ qua.
   const stuckRows = [];
   for (const row of document.querySelectorAll("[aria-current]:not([aria-current='false']), [aria-selected='true'], [data-state='active'], [data-active='true']")) {
-    if (stuckRows.length >= 4 || !isVisible(row)) continue;
+    if (stuckRows.length >= 4 || !isVisible(row) || row.closest(".wf-bar, .wf-reason, .wf-popover, .wf-menu")) continue;
     const rowStyle = getComputedStyle(row);
     if (!(parseFloat(rowStyle.borderTopLeftRadius) > 0) || readColor(rowStyle.backgroundColor).alpha < 0.02) continue;
     const rowRect = row.getBoundingClientRect();
@@ -3508,6 +3511,7 @@ function findHeavyDecorativeBorders() {
   const findings = new Map();
   for (const element of document.querySelectorAll("body *")) {
     if (findings.size >= 6) break;
+    if (element.closest(".wf-bar, .wf-reason, .wf-popover, .wf-menu")) continue;
     if (element.matches("input, textarea, select, button, a, label, [role='button'], [role='textbox'], [role='combobox']")) continue;
     // Ô bày viền focus trên trang design system là ví dụ trạng thái, không phải viền trang trí (`D9`, 30/09/2026).
     if (element.closest("[data-demo-state]")) continue;
