@@ -439,6 +439,13 @@ gộp SaaS hay trang quảng cáo chung.
    - **Nội thất xong (06/10/2026):** 15 trang chủ, ghi thành `G7` (Đóng theo yêu cầu / Showroom thương
      hiệu / Giá xưởng). Chưa test. Còn: B2B; quán, tiệm hoa, tiệm bánh chưa tra định vị.
 
+**Khi quay lại hướng SaaS (ghi 07/10/2026):** người dùng khen landing của chính evondevKit
+(`~/dev/evondev-kit-landingpage`) đẹp, clean, và muốn skill dựng được trang như vậy. Trang đó là
+landing sản phẩm cho dev (nút chính là lệnh cài có nút copy; hero có ô prompt và video, trước/sau,
+các bước làm việc, hướng dẫn cài, nguyên tắc, FAQ, CTA cuối), không phải thu lead. Có hai nhóm người
+dùng: chủ tiệm, công ty cần thu lead (đang làm), và người làm sản phẩm cần landing sản phẩm. Làm xong
+thu lead rồi lấy trang này làm một mẫu tham chiếu cùng 20 trang đã tra ở `archive/landing-saas/`.
+
 **Hướng SaaS (gác 06/10/2026)** — hướng chốt 01/10/2026: không cố phủ mọi kiểu SaaS. Nội dung landing page muôn kiểu nhưng
 khung gần như giống nhau, nên skill chốt một bộ section cố định và chọn section theo mục tiêu
 của trang.
