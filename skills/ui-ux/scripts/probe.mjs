@@ -2184,6 +2184,45 @@ function readFocusLookSignature(probeId) {
 
 // Tab qua trang, ghi phần tử còn vẽ vòng focus lúc Tab tới. Skill không vẽ vòng focus (`I13`, chủ dự án chốt
 // 28/09/2026). Ô nhập, textarea, select, combobox được viền + ring mờ; mục menu tô nền, không phải vòng.
+// Tab (`role="tab"`) theo WAI-ARIA: mũi tên trái / phải chuyển sang tab kế (`small-controls.md`). Focus tab đang
+// chọn, bấm → rồi xem focus hay tab đang chọn có đổi không. Tab của demo hero landing chỉ bấm chuột được
+// (thấy ở landing công cụ dòng lệnh 07/10/2026).
+async function findTablistsWithoutArrowKeys(page) {
+  const tablistIds = await page.evaluate(() => [...document.querySelectorAll("[role='tablist']")]
+    .filter((tablist) => tablist.querySelectorAll("[role='tab']").length >= 2 && tablist.getBoundingClientRect().width > 0)
+    .slice(0, 6)
+    .map((tablist) => {
+      if (!tablist.dataset.evonProbeId) tablist.dataset.evonProbeId = String(Math.random()).slice(2);
+
+      return tablist.dataset.evonProbeId;
+    }));
+  const arrowless = [];
+  for (const tablistId of tablistIds) {
+    const before = await page.evaluate((id) => {
+      const tablist = document.querySelector(`[data-evon-probe-id="${id}"]`);
+      const tabs = [...tablist.querySelectorAll("[role='tab']")];
+      const selectedTab = tabs.find((tab) => tab.getAttribute("aria-selected") === "true") || tabs[0];
+      selectedTab.focus();
+
+      return { focusIndex: tabs.indexOf(document.activeElement), selectedIndex: tabs.indexOf(selectedTab), label: tablist.getAttribute("aria-label") || tablist.textContent.trim().replace(/\s+/g, " ").slice(0, 40), lastIndex: tabs.length - 1 };
+    }, tablistId);
+    if (before.focusIndex < 0) continue;
+    await page.keyboard.press(before.focusIndex === before.lastIndex ? "ArrowLeft" : "ArrowRight");
+    await page.waitForTimeout(150);
+    const after = await page.evaluate((id) => {
+      const tabs = [...document.querySelector(`[data-evon-probe-id="${id}"]`).querySelectorAll("[role='tab']")];
+
+      return { focusIndex: tabs.indexOf(document.activeElement), selectedIndex: tabs.findIndex((tab) => tab.getAttribute("aria-selected") === "true") };
+    }, tablistId);
+    if (after.focusIndex === before.focusIndex && after.selectedIndex === before.selectedIndex) arrowless.push(`"${before.label}"`);
+    // Trả tab về như cũ để các bước đo sau thấy đúng trạng thái ban đầu.
+    else await page.evaluate(({ id, index }) => [...document.querySelector(`[data-evon-probe-id="${id}"]`).querySelectorAll("[role='tab']")][index]?.click(), { id: tablistId, index: before.selectedIndex });
+  }
+  await page.evaluate(() => document.activeElement?.blur());
+
+  return arrowless;
+}
+
 async function findDrawnFocusRings(page) {
   const candidates = [];
   const checksByKind = new Map();
@@ -3615,6 +3654,7 @@ async function probeWidth(browser, options, width) {
   const isDynamic = options.dynamicWidths.has(width);
   const isStaticOnly = isMobile || !isDynamic;
   const { drawnRings: drawnFocusRings, unmarkedFocusStops } = isStaticOnly ? { drawnRings: [], unmarkedFocusStops: [] } : await findDrawnFocusRings(page);
+  const arrowlessTablists = isStaticOnly ? [] : await findTablistsWithoutArrowKeys(page);
 
   // Mở khối đang đóng trước khi rê và chạm: cây thư mục nằm trong accordion đóng ở /components thì
   // tooltip tên tệp tràn màn chỉ lộ khi khối đã mở (27/09/2026).
@@ -3656,6 +3696,7 @@ async function probeWidth(browser, options, width) {
     expandedCount,
     drawnFocusRings,
     unmarkedFocusStops,
+    arrowlessTablists,
     hollowLayers: popupLayers.hollow,
     crampedOptions: popupLayers.cramped || [],
     openerLayerProblems: openerLayers.problems,
@@ -4373,6 +4414,7 @@ function listMustReportItems(results, sweepSteps) {
     for (const layer of result.overflowingLayers) addItem(width, `lớp nổi lòi khỏi màn: ${layer.replace(/ lòi \d+px khỏi màn$/, "")}`);
     for (const problem of result.openerLayerProblems) addItem(width, `lớp nổi mở bằng nút bị vỡ: ${problem}`);
     for (const shift of result.layoutShifts) addItem(width, `rê chuột làm nhảy bố cục: ${shift.replace(/ dời \d+px$/, "")}`);
+    for (const tablist of result.arrowlessTablists ?? []) addItem(width, `tab không chuyển bằng phím mũi tên: ${tablist}`);
     for (const problem of result.landingProblems ?? []) addItem(width, `landing: ${problem.replace(/ khi cuộn tới ~\d+px/, "")}`);
     for (const line of result.lowContrastTexts) addItem(width, `tương phản thấp: ${line}`);
     for (const item of result.clippedBlocks) addItem(width, `khung giấu mất chữ: ${item.element}`);
@@ -4585,6 +4627,10 @@ function formatReport(results) {
     if (result.stuckStates.length > 0) {
       problems.push(`BẤM XONG CÒN DẤU THỪA (${result.stuckStates.length} chỗ, chuột đứng yên trên mục vừa chọn):`);
       for (const item of result.stuckStates.slice(0, 6)) problems.push(`  ${item}`);
+    }
+    if (result.arrowlessTablists?.length > 0) {
+      problems.push(`TAB KHÔNG CHUYỂN BẰNG PHÍM MŨI TÊN (${result.arrowlessTablists.length} hàng tab, WAI-ARIA: ← → chuyển và chọn, Home / End về hai đầu, small-controls.md):`);
+      for (const tablist of result.arrowlessTablists) problems.push(`  ${tablist}`);
     }
     if (result.unmarkedFocusStops?.length > 0) {
       problems.push(`TAB TỚI KHÔNG THẤY GÌ (${result.unmarkedFocusStops.length} chỗ, trong khi dự án vẽ vòng focus ở ${result.drawnFocusRings.length} chỗ khác; Lệch hệ, ngoại lệ của I13):`);
@@ -5134,7 +5180,7 @@ function listWireframeMustReportItems(comparisons) {
 }
 
 // Mục chỉ phép đo động (Tab, rê, bấm, lớp nổi) mới ra.
-const dynamicProblemKeys = ["unmarkedFocusStops", "drawnFocusRings", "hollowLayers", "crampedOptions", "openerLayerProblems", "flatOpenedLayers", "layoutShifts", "vanishedChildren", "weakHovers", "blendedHovers", "borderHovers", "overflowingLayers", "shapeMismatches", "hoverLikeSelected", "checkedHoverChanges", "heavyLayerLines", "motionlessLayers", "scrollyLayers", "lostTriggerIcons", "stuckStates"];
+const dynamicProblemKeys = ["unmarkedFocusStops", "arrowlessTablists", "drawnFocusRings", "hollowLayers", "crampedOptions", "openerLayerProblems", "flatOpenedLayers", "layoutShifts", "vanishedChildren", "weakHovers", "blendedHovers", "borderHovers", "overflowingLayers", "shapeMismatches", "hoverLikeSelected", "checkedHoverChanges", "heavyLayerLines", "motionlessLayers", "scrollyLayers", "lostTriggerIcons", "stuckStates"];
 
 function formatDynamicCoverage(results, options) {
   if (options.isQuick) return "Đo nhanh (--quick): chưa đo Tab, rê chuột, bấm, lớp nổi.\n";

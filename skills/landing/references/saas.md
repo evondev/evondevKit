@@ -87,6 +87,9 @@ tĩnh chỉ khi sản phẩm không có đầu vào để đổi (hạ tầng, t
 - **Hàng tab nằm ở đầu khung demo** (ngay trên khung, hay trong thanh tiêu đề của khung) và **thấy
   được ở màn đầu 1440×900 không cuộn**. Tab đặt dưới một terminal cao 500px thì rơi xuống dưới màn
   đầu, khách không biết demo bấm được; cuộn xuống bấm thì chỗ đổi lại nằm khuất phía trên.
+- Hàng tab là tab thật theo `../ui-ux/references/components/small-controls.md`: `role="tablist"`,
+  phím ← → chuyển và chọn luôn, Home / End về hai đầu. Tab tự xoay (`C4`) dừng hẳn khi khách bấm
+  hay focus vào tab.
 - Khung demo ở hero cao vừa đủ đầu ra ngắn nhất của các tab, dài hơn thì cuộn trong khung hay
   tan đáy, không đẩy tab đi.
 
