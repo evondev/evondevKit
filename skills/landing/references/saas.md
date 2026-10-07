@@ -14,7 +14,7 @@ H1 nói cụ thể (`H4`), dữ liệu giả (`H9`), màn hẹp (`H10`), chuyể
 cho ra trang sạch mà không ai nhớ: bản dựng theo số đông dài 4,5k px, 4 section, 12 hiệu ứng, chủ dự
 án thấy "chưa wow". Landing evondevKit và trang cá nhân evondev dài ~14k px, 8–10 section, 60–120
 hiệu ứng, và được khen. Thứ làm hai trang đó khác không phải số lượng mà bốn món: chữ màu nhấn
-trong H1 (`A4`), demo bấm được ở hero (`A3`), lớp chi tiết nền thủ công (`A4`), và các khối cho xem
+trong H1 (`A4`), demo bấm được ở hero (`A3`), ngôn ngữ hình lấy từ sản phẩm (`A4`), và các khối cho xem
 sản phẩm đang làm việc (`A2`).
 
 ---
@@ -187,18 +187,39 @@ một cụm tương tự, tối đa nửa số H2. Một cụm mỗi tiêu đề
 **Lớp nền hero** (lưới mờ 6/18, vầng màu nhấn 5/18): một kiểu mỗi trang, hero và CTA cuối cùng kiểu.
 Không vầng + lưới + ảnh cùng lúc, không đốm màu thứ hai.
 
-**Lớp chi tiết thủ công trên lưới** (mặc định, chỉ từ `lg`): thứ không nói gì về sản phẩm nhưng
-cho thấy có người chăm trang. Chọn 2–3 món, đặt ở **hai bên khối chữ**, không sau chữ (`C8`):
+**Ngôn ngữ hình của trang** (mặc định, chỉ từ `lg`): lớp trang trí cho thấy có người chăm trang.
+⚑ Tra 15 landing sản phẩm được khen (07/10/2026): 9 lấy hình trang trí từ chính việc sản phẩm làm,
+5 trộn, 1 chỉ dùng logo. **Một ngôn ngữ hình mỗi trang, lấy từ việc sản phẩm làm**, không lấy
+một bộ trang trí cố định: bộ pixel và ASCII của landing evondevKit đặt lên trang changelog thì
+trang nào cũng thành anh em sinh đôi của evondevKit, skill thành theme.
 
-- 2–4 **hình pixel** 4×4 ô 6px nằm giữa ô lưới, ô màu nhấn và ô xám nhấp nháy lệch nhịp (`C10`);
-  hình gợi đúng sản phẩm (con trỏ, cửa sổ, bậc thang, nhánh git).
-- 2 **đám ký tự ASCII** trôi chậm trên canvas hai bên hero, đối xứng (`C10`).
-- 2 **vòng tròn có icon** (`size-11 rounded-full border bg-background`, icon màu nhấn quay chậm)
-  ở giao điểm lưới, đối xứng hai bên H1.
-- Nhãn mono của section nhảy ký tự một lần khi cuộn tới (`C10`).
+| Việc sản phẩm làm | Ngôn ngữ hình | Số trang |
+| --- | --- | --- |
+| Tác vụ chạy, agent, tải, hàng đợi | **lưới chấm sáng** theo trạng thái (ô sáng khi việc chạy), chấm nhấp nháy | 4/15 |
+| Hạ tầng, backend, workflow, tích hợp | **sơ đồ nút nối dây**, gói tin chạy dọc dây | 6/15 |
+| Phân phối toàn cầu, người dùng nhiều nơi | **bản đồ hay quả cầu chấm**, chấm toả sáng | 3/15 |
+| Công cụ dòng lệnh, đọc code | **chữ terminal, ASCII** làm nền, nhãn mono nhảy ký tự | 4/15 |
+| Âm thanh, họp, gọi | **sóng âm, cột equaliser** | 1/15 |
+| Lịch, đặt hẹn | **lưới ô lịch** mờ, vòng quỹ đạo mang icon | 1/15 |
+| Số liệu sống (đơn, lượt chạy) | **bảng lật số**, bộ đếm chạy (chỉ số thật, `C6`) | 2/15 |
+| Tên sản phẩm là một hình (đường ray, sổ, ngọn hải đăng) | **ẩn dụ từ tên**, kéo dọc trang làm xương sống | 4/15 |
+
+- **Khung bản vẽ** (đường ray hai bên, dấu `+` ở giao điểm, chú thích mono "FIG. 1") là cái khung,
+  không phải ngôn ngữ hình: đi được với mọi dòng trên.
+- **Đặt ở hai đầu và trong card.** Món lớn ở hero và CTA cuối, hai bên khối chữ, không sau chữ
+  (`C8`). Giữa trang: chuyển động nhỏ trong card bento (chấm nhấp nháy, vòng quay, cột equaliser)
+  và **đường ngăn section mang hình** (dây có gói tin chạy, dải chấm tan, đường ray có ga).
+- **Hình nói đúng sản phẩm của đề:** trang changelog thì nhánh git tự vẽ, commit rơi vào danh
+  sách; trang ghi âm họp thì sóng âm và dòng biên bản hiện dần; trang giám sát cron thì nhịp tim
+  và ô lịch chạy sáng theo lượt chạy. Hỏi: che logo và chữ đi, nhìn hình có đoán ra sản phẩm làm
+  gì không.
+- Ba phương án wireframe được khác nhau ở ngôn ngữ hình; brief và lúc giao ghi một dòng
+  *"Ngôn ngữ hình: [lưới chấm sáng], vì [Sổ Tay chạy theo từng commit]"*.
+- **Không** tia sáng, hạt bụi, khối 3D trừu tượng, trái tim phát sáng: hình đặt lên được mọi
+  sản phẩm đọc thành rẻ. WebGL, video 3D chỉ khi người dùng xin (`C9`).
 
 Mọi món `aria-hidden`, `pointer-events-none`, ẩn dưới `lg`. Lớp này thay cho vầng màu, không chồng
-thêm vầng.
+thêm vầng. Cách làm từng kiểu ở `C10`.
 
 ## A5. Tính năng dạng bento ⚑
 
@@ -231,14 +252,14 @@ Mặc định **dày hơn mức Nhẹ của `H12`, vẫn chỉ CSS và JavaScrip
 
 - Hero hiện dần (`C2`), khối hiện khi cuộn tới (`C3`).
 - **Demo bấm được ở hero** (`A3`, `C4`): ưu tiên hơn mọi hiệu ứng trang trí.
-- Lớp chi tiết thủ công (`A4`, `C10`): pixel nhấp nháy, ASCII trôi, icon quay chậm, nhãn nhảy ký tự.
+- Ngôn ngữ hình lấy từ việc sản phẩm làm (`A4`, `C10`), ở hai đầu trang, trong card và đường ngăn.
 - Thanh kéo trước / sau (`C11`), một khối cuộn ghim (`C7`), một dải chạy (`C5`).
 - Tối đa 8 vòng lặp nền đếm theo loại (`C8`).
 - Đếm số (`C6`) chỉ với số thật.
 - Cuộn mượt, GSAP, 3D (`C9`) chỉ khi người dùng xin.
 - Trang 8–12 màn ở 1440 (`A2`). Trang 20k px toàn khối ghim và dải chạy là trang khách bỏ giữa chừng.
 - Người dùng nói "tối giản", "sạch", "nghiêm túc" (tài chính, y tế, doanh nghiệp lớn) thì về mức
-  Nhẹ: bỏ lớp chi tiết thủ công, giữ demo bấm được.
+  Nhẹ: bỏ ngôn ngữ hình, giữ demo bấm được.
 
 ## A7. Dữ liệu giả của trang sản phẩm ⚑
 

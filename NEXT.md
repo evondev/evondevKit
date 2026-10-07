@@ -477,6 +477,12 @@ Cảm giác "sống" đến từ demo sản phẩm, không từ trang trí; tran
    - Sổ Tay v2 qua (07/10/2026): 5,9k px, 7 section, hết lỗi đo được; thêm luật tab demo ở đầu
      khung, thanh kéo chỉ khi cùng bố cục, tab bằng phím mũi tên, màu nhấn không mặc định xanh dương.
      Tiếp: đề app AI (Ghi Chép, mục tiêu dùng thử).
+   - Chủ dự án thấy hiệu ứng Sổ Tay giống hệt landing evondevKit (C10 chép nguyên bộ pixel, ASCII).
+     Tra 15 landing sản phẩm được khen (07/10/2026): 9 lấy hình trang trí từ việc sản phẩm làm, 5 trộn,
+     1 chỉ logo; một ngôn ngữ hình mỗi trang, món lớn ở hero và CTA cuối, chuyển động nhỏ trong card,
+     đường ngăn mang hình. Viết lại `A4` (bảng việc sản phẩm → ngôn ngữ hình) và `C10` (công thức từng
+     kiểu). Thứ tự test: đề tiếng Anh nhiều section (API giám sát cron, chủ đề khác hẳn trang tham
+     khảo để biết skill tự nghĩ), rồi Ghi Chép.
 
 **Khi quay lại hướng SaaS (ghi 07/10/2026):** người dùng khen landing của chính evondevKit
 (`~/dev/evondev-kit-landingpage`) đẹp, clean, và muốn skill dựng được trang như vậy. Trang đó là

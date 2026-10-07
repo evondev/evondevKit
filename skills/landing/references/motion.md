@@ -182,7 +182,7 @@ CSS `sticky`).
 Chấm nhấp nháy, lưới điểm sáng, canvas ASCII hay hạt, quay chậm: **tối đa 8 mỗi trang, đếm theo
 loại** (trang sạch nhất có 0–2; landing evondevKit có 7–8 và được khen; trang 11–29 vòng lặp là
 trang bị chê nặng). 50 chấm cùng một nhịp nhấp nháy là một vòng lặp; mỗi canvas lớn là một. Trang
-phần mềm mặc định có lớp chi tiết thủ công (`A4`, `C10`); trang thu lead giữ 0–2.
+phần mềm mặc định có ngôn ngữ hình lấy từ sản phẩm (`A4`, `C10`); trang thu lead giữ 0–2.
 
 - Canvas giới hạn ~15 khung/giây, chỉ vẽ khi trong khung nhìn, giảm chuyển động thì vẽ một khung đứng.
 - Vòng lặp CSS (`pixel-blink 2.4s`, `spin 14s`) gắn `motion-safe:`.
@@ -201,10 +201,43 @@ Chỉ mức Nổi bật (`H12`), khi người dùng xin.
   hồn. Tải sau khi trang đã hiện (`dynamic import`), tắt trên điện thoại.
 - **Con trỏ đổi kiểu:** không dùng (0/18 trang sản phẩm). Đó là kiểu của site agency, portfolio.
 
-## C10. Lớp chi tiết thủ công ⚑
+## C10. Ngôn ngữ hình ⚑
 
-Bốn món trang trí của landing evondevKit (`A4`). Món nào cũng `aria-hidden`, `pointer-events-none`,
-ẩn dưới `lg`, đứng yên khi giảm chuyển động.
+Cách làm từng kiểu trong bảng ngôn ngữ hình của `A4`. Chọn **một** kiểu theo việc sản phẩm làm,
+dùng ở hero, CTA cuối, trong card và đường ngăn; không gom nhiều kiểu cho "phong phú". Món nào
+cũng `aria-hidden`, `pointer-events-none`, ẩn dưới `lg`, đứng yên khi giảm chuyển động, chỉ chạy khi
+trong khung nhìn (`C1`).
+
+**Lưới chấm sáng theo trạng thái** (tác vụ, agent, tải): lưới ô `size-1.5` cách `gap-1`, ô
+`bg-border-strong`; vài ô bật `bg-primary` theo nhịp như việc đang chạy (một cột sáng dần là hàng
+đợi xử lý, ô rải rác sáng rồi tắt là các agent). Dùng `setInterval` 400–600ms đổi `data-on` trên
+ô, chuyển màu `transition-colors duration-300`; không dùng `Math.random` mỗi khung.
+
+**Sơ đồ nút nối dây, gói tin chạy** (hạ tầng, workflow): nút là card nhỏ có icon và tên thật của
+sản phẩm (repo, hàng đợi, database), dây là `<path>` SVG `stroke-(--border-strong)`. Gói tin là chấm
+`size-1.5 bg-primary rounded-full` chạy theo dây bằng `offset-path: path(...)` và
+`@keyframes { to { offset-distance: 100% } }` 2–3 giây, lệch nhịp giữa các dây.
+
+**Nét tự vẽ khi cuộn tới** (nhánh git, đường biểu đồ, tuyến đường): `stroke-dasharray` bằng độ
+dài path (`getTotalLength()`), `stroke-dashoffset` từ độ dài về 0 theo `animation-timeline: view()`
+như `C3`. Vẽ một lần, không lặp.
+
+**Sóng âm, cột equaliser** (âm thanh, họp): 16–32 cột `w-1 rounded-full bg-primary`, mỗi cột
+`scaleY` từ 0.2 tới 1 với thời lượng 0.8–1.4s và độ trễ khác nhau (`transform-origin: bottom`
+hay giữa). Sóng tĩnh vẽ bằng SVG từ một mảng biên độ cố định, không ngẫu nhiên mỗi lần tải.
+
+**Bản đồ chấm** (phân phối toàn cầu): bản đồ thế giới bằng chấm SVG tĩnh (lưới chấm, chỉ giữ
+chấm nằm trên lục địa), 3–6 chấm màu nhấn ở thành phố thật của người dùng có vòng `animate-ping`
+chậm (3s). Không quả cầu WebGL trừ khi người dùng xin (`C9`).
+
+**Bảng lật số, bộ đếm sống** (số liệu): chữ số `font-mono tabular-nums` trong ô viền, đổi số thì
+chữ cũ trượt lên mờ đi 200ms; chỉ số thật hay số `GIẢ:` được đánh dấu (`C6`, `A7`).
+
+**Ẩn dụ từ tên** (đường ray, sổ, hải đăng): một hình kéo dọc mép trái suốt trang làm xương sống,
+mỗi section là một "ga" (chấm tròn trên đường), chấm sáng khi section vào khung nhìn
+(`IntersectionObserver`). Chỉ khi tên sản phẩm có hình rõ.
+
+**Chữ terminal, ASCII, pixel** (công cụ dòng lệnh, đọc code; bộ của landing evondevKit):
 
 **Hình pixel nhấp nháy:** lưới 4×4 ô `size-1.5 rounded-[1px]` cách `gap-[3px]`, mô tả bằng chuỗi
 (`"#"` ô màu nhấn, `"o"` ô `bg-border-strong`, `"."` trống). Mỗi ô nhấp nháy lệch nhịp để không

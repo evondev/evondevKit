@@ -172,7 +172,7 @@ Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn. Góp ý theo số kh�
 | **K** | `references/sections.md` | Mười ba loại section, mỗi loại 1–3 biến thể có code |
 | **H** | `references/page-rules.md` | Luật chung toàn trang: CTA, nhịp, thang chữ và font, chữ hero, nền và màu, ảnh, header, dữ liệu giả, màn hẹp, chuyển động, nút nổi |
 | **A** | `references/saas.md` | Trang sản phẩm phần mềm: mục tiêu và nút, bộ section, hero có sản phẩm, lớp nhìn, bento, chuyển động, dữ liệu giả |
-| **C** | `references/motion.md` | Cách làm từng hiệu ứng: hero hiện dần, hiện khi cuộn, gõ chữ, dải chạy, đếm số, cuộn ghim, vòng lặp nền, cuộn mượt, chi tiết thủ công (pixel, ASCII, nhãn nhảy ký tự), thanh kéo trước / sau |
+| **C** | `references/motion.md` | Cách làm từng hiệu ứng: hero hiện dần, hiện khi cuộn, gõ chữ, dải chạy, đếm số, cuộn ghim, vòng lặp nền, cuộn mượt, ngôn ngữ hình theo sản phẩm (lưới chấm, sơ đồ nút, nét tự vẽ, sóng âm, bản đồ chấm, ASCII), thanh kéo trước / sau |
 
 **Lấy từ `ui-ux`, không chép:**
 
@@ -197,8 +197,8 @@ Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn. Góp ý theo số kh�
   duyệt ở cổng 1.
 - **Nút cao 40px (`button.md`)** → nút ở hero và khối Liên hệ cao 48px (`H1`).
 - **Chữ không đặt trên ảnh** → được ở hero, có lớp phủ đo tương phản (`H11`).
-- **`F22` (không chuyển động trang trí)** → ba mức, mặc định Nhẹ (`H12`), trang phần mềm có lớp chi
-  tiết thủ công (`A6`), cách làm ở `motion.md`.
+- **`F22` (không chuyển động trang trí)** → ba mức, mặc định Nhẹ (`H12`), trang phần mềm có ngôn ngữ
+  hình lấy từ sản phẩm (`A6`), cách làm ở `motion.md`.
 
 ---
 
@@ -214,8 +214,8 @@ Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn. Góp ý theo số kh�
   **nút Zalo / gọi nổi** cùng tông, không nhấp nháy (`H13`); **địa chỉ, giờ, số điện thoại** ở khối
   Liên hệ và footer, giả thì đánh dấu (`H9`).
 - [ ] Sản phẩm phần mềm: **hero có demo bấm được** (tab đổi đầu vào, `A3`), **một cụm chữ màu nhấn
-  trong H1** (`A4`), **ít nhất hai khối cho xem sản phẩm làm việc**, trang 8–12 màn (`A2`), lớp chi
-  tiết thủ công từ `lg` (`A4`, `C10`); bật giảm chuyển động thì trang đứng yên (`C1`).
+  trong H1** (`A4`), **ít nhất hai khối cho xem sản phẩm làm việc**, trang 8–12 màn (`A2`), **ngôn
+  ngữ hình lấy từ việc sản phẩm làm**, không chép bộ của trang khác (`A4`, `C10`); bật giảm chuyển động thì trang đứng yên (`C1`).
 - [ ] **Nhịp đều**: mọi section cùng padding dọc, cùng khung bề rộng (`H2`).
 - [ ] Đã probe 375 tới 1920 và xem ảnh, **375 trước**. Trang cuộn ngang ở 375 là hỏng (`H10`).
 
@@ -226,7 +226,7 @@ Theo `S15` của `ui-ux`, cộng ba dòng riêng của landing, đặt **lên đ
 1. *"Loại trang: [dịch vụ đặt lịch]. Nút chính: [Đặt lịch] ở header, hero, khối Liên hệ. Nút
    Zalo / gọi nổi góc phải dưới."* Trang sản phẩm: *"Loại trang: sản phẩm phần mềm, mục tiêu
    [dùng thử]. Nút chính: [Dùng thử miễn phí] ở header, hero, CTA cuối. Chuyển động: [demo bấm
-   được, lớp chi tiết thủ công], tắt hết khi bật giảm chuyển động."*
+   được, ngôn ngữ hình: …], tắt hết khi bật giảm chuyển động."*
 2. *"Section đã dựng: …; đã bỏ: … (theo loại trang). Muốn thêm thì nói."*
 3. *"Dữ liệu giả cần thay trước khi chạy thật: [địa chỉ, số điện thoại, Zalo, giờ, ảnh, đánh
    giá, giá]. Đã đánh dấu `GIẢ:` trong code."* (`H9`)
