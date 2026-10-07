@@ -148,6 +148,11 @@ dùng) không phải xanh dương; xanh dương vẫn được làm một ô đ�
 **Chữ màu nhấn trong H1** (mặc định): cụm nói lời hứa, thường là dòng sau, `text-primary`; H2 được
 một cụm tương tự, tối đa nửa số H2. Một cụm mỗi tiêu đề, không tô cả câu, không gradient chữ.
 
+- **Cụm không gãy dòng để lại mẩu lẻ** ở mọi khổ: một hai chữ màu nhấn trơ cuối dòng trên ("Cuộc họp
+  tới, *để* / *Ghi Chép viết biên bản*") đọc như tô nhầm. Cụm bắt đầu bằng chữ mang nghĩa, không bằng
+  hư từ ("để", "và", "cho", "với"): hư từ để màu thường. Cụm dài hơn nửa dòng ở 375 thì cho cụm xuống
+  dòng riêng (`<br>` trước cụm). Probe `--landing` đo mảnh dòng của cụm, mảnh dưới 30% mảnh dài nhất là lỗi.
+
 ```html
 <h1 class="text-4xl font-medium tracking-tight text-balance sm:text-6xl lg:text-7xl">
   Changelog tiếng Việt, <span class="text-primary">viết từ commit git</span>
@@ -242,6 +247,8 @@ card (tính năng "tự nhắc lịch" thì mảnh là tin nhắc đã gửi). K
 
 - 3 card một hàng bằng nhau; 4 card: card 1 và 4 rộng gấp đôi, so le. 5 trở lên: 3–4 vào bento,
   còn lại lưới icon ngắn bên dưới (icon 20px trong ô 40px, không bọc từng ô vào card).
+- **Card rộng gấp đôi thì mảnh rộng theo** (`lg:w-[560px]`), hay hai mảnh cạnh nhau (đầu vào → kết
+  quả). Mảnh 360px trong card ~600px để trống 40% bên phải, card rộng trông như dựng dở.
 - Mảnh có bề rộng cố định, tràn thì cắt, đáy tan dần 2rem. **Cao cố định (`h-56`) chỉ từ `lg`**, khi
   card đứng cạnh nhau cần bằng đầu; dưới `lg` mỗi card một cột thì ô mảnh cao theo mảnh (`max-h-56`),
   không thì mảnh ba dòng chừa khoảng trống 100px trên tiêu đề.

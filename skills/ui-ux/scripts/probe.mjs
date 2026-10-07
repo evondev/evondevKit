@@ -3280,6 +3280,26 @@ function measureLandingPage() {
   const linkTargets = new Set(ctas.filter(([, control]) => control.tagName === "A").map(([, control]) => control.getAttribute("href")));
   if (linkTargets.size > 1) problems.push(`nút chính khác đích: ${[...linkTargets].join(", ")} (H1)`);
 
+  // A4: cụm chữ màu nhấn trong H1, H2 gãy dòng để lại một mẩu ngắn (một hai chữ màu nhấn trơ ở cuối dòng trên,
+  // hay ở đầu dòng dưới). Đo từng mảnh dòng của cụm: mảnh ngắn hơn 30% mảnh dài nhất là mẩu lẻ (wireframe Ghi
+  // Chép 07/10/2026: "Cuộc họp tới, để / Ghi Chép viết biên bản", chữ "để" xanh trơ cuối dòng ở 375 và 1440).
+  for (const heading of document.querySelectorAll("h1, h2")) {
+    if (!isShown(heading)) continue;
+    const headingColor = getComputedStyle(heading).color;
+    for (const accent of heading.querySelectorAll("span, em, strong, mark")) {
+      // Chỉ đo cụm ngoài cùng: span `whitespace-nowrap` giữ tên sản phẩm nằm trong cụm cùng màu thì bỏ qua.
+      const accentColor = getComputedStyle(accent).color;
+      if (accentColor === headingColor || (accent.parentElement !== heading && getComputedStyle(accent.parentElement).color === accentColor)) continue;
+      const fragments = [...accent.getClientRects()].filter((rect) => rect.width > 0);
+      if (fragments.length < 2) continue;
+      const widest = Math.max(...fragments.map((rect) => rect.width));
+      const shortFragment = [fragments[0], fragments.at(-1)].find((rect) => rect.width < widest * 0.3);
+      if (shortFragment) {
+        problems.push(`cụm màu nhấn "${normalize(accent.textContent)}" trong ${heading.tagName} gãy dòng, trơ mẩu ${Math.round(shortFragment.width)}px (dòng dài nhất ${Math.round(widest)}px): cụm bắt đầu ở đầu dòng hay đổi cụm (A4)`);
+      }
+    }
+  }
+
   // K11: form liên hệ của landing ô cao 48px, nhãn phải cách ô 8px (`mb-2`). Giữ `space-y-1.5` của form app
   // (6px) thì nhãn dính ô, câu lỗi dính nhãn của ô kế (ảnh chủ dự án gửi, form showroom 06/10/2026).
   for (const label of document.querySelectorAll("form label")) {

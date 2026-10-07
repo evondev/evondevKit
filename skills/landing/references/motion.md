@@ -173,6 +173,9 @@ CSS `sticky`).
 
 - Bước đang đọc do `IntersectionObserver` trên từng `li` quyết (`rootMargin: "-45% 0px -45% 0px"`),
   khung phải đổi nội dung bằng chuyển mờ 200ms. Không GSAP pin, không cuộn chiếm quyền (scroll-jacking).
+- **Bước không đang đọc mờ đi** (`opacity-40`, chuyển 200ms), bước đang đọc đậm, từ `lg`. Lúc chuyển
+  bước, khung dính nằm giữa chữ hai bước (chữ bước trước ở trên, bước sau ở dưới, cùng đậm như nhau):
+  khách không biết khung đang nói bước nào.
 - **Dưới `lg` bỏ ghim:** mỗi bước một khối chữ kèm ảnh của chính nó, xếp dọc.
 - Tối đa **một** khối ghim mỗi trang, 3–5 bước. Trang toàn khối ghim là trang 20k px khách bỏ giữa chừng.
 - Giảm chuyển động: khung vẫn dính, chỉ đổi nội dung tức thì, không chuyển mờ.
