@@ -172,6 +172,20 @@ một cụm tương tự, tối đa nửa số H2. Một cụm mỗi tiêu đề
 </h1>
 ```
 
+**Câu tuyên bố có chip chen giữa** (khối giới thiệu dưới hero, một chỗ mỗi trang): đoạn 2–4 dòng
+`text-2xl lg:text-3xl`, chữ thường `text-muted`, vài cụm chính `text-foreground`. Trước 2–4 cụm
+chính là một chip icon cao bằng dòng chữ: logo tích hợp thật, icon tính năng, không chip cho mọi
+danh từ. Chip `aria-hidden`, bỏ chip đi câu vẫn đủ nghĩa. Đi cặp được với câu sáng dần theo cuộn
+(`C14`).
+
+```html
+<p class="text-2xl font-medium tracking-tight text-muted lg:text-3xl">
+  Sổ Tay đọc
+  <span class="mx-1 inline-flex size-[1.1em] items-center justify-center rounded-md border border-border align-[-0.15em]" aria-hidden="true"><GitCommit class="size-[0.7em] text-brand" /></span>
+  <span class="text-foreground">từng commit</span> và viết changelog …
+</p>
+```
+
 **Khung lộ ra có chủ ý** (6/18, cả hai trang gốc, và landing evondevKit): một biến thể lớp nhìn
 (`A8`), không phải mặc định. **Không đi nguyên bộ** khung lộ + lưới nền hero + nhãn `[01 / 07]` +
 hero canh giữa: đó là bộ mặt của landing evondevKit, trang nào cũng mặc thì chủ dự án nhìn là thấy
@@ -223,6 +237,7 @@ trang nào cũng thành anh em sinh đôi của evondevKit, skill thành theme.
 | Lịch, đặt hẹn | **lưới ô lịch** mờ, vòng quỹ đạo mang icon | 1/15 |
 | Số liệu sống (đơn, lượt chạy) | **bảng lật số**, bộ đếm chạy (chỉ số thật, `C6`) | 2/15 |
 | Tên sản phẩm là một hình (đường ray, sổ, ngọn hải đăng) | **ẩn dụ từ tên**, kéo dọc trang làm xương sống | 4/15 |
+| Một lớp nằm giữa (platform, middleware, lớp điều phối) | **tầng xếp chồng nghiêng**, cuộn tới thì khít lại | tra thêm 08/10/2026 |
 
 - **Khung bản vẽ** (đường ray hai bên, dấu `+` ở giao điểm, chú thích mono "FIG. 1") là cái khung,
   không phải ngôn ngữ hình: đi được với mọi dòng trên.
@@ -239,7 +254,8 @@ trang nào cũng thành anh em sinh đôi của evondevKit, skill thành theme.
 - Ba phương án wireframe được khác nhau ở ngôn ngữ hình; brief và lúc giao ghi một dòng
   *"Ngôn ngữ hình: [lưới chấm sáng], vì [Sổ Tay chạy theo từng commit]"*.
 - **Không** tia sáng, hạt bụi, khối 3D trừu tượng, trái tim phát sáng: hình đặt lên được mọi
-  sản phẩm đọc thành rẻ. WebGL, video 3D chỉ khi người dùng xin (`C9`).
+  sản phẩm đọc thành rẻ. WebGL, video 3D chỉ khi người dùng xin (`C9`). Ánh sáng chiếu lên chính
+  sản phẩm một lần lúc tải là ngoại lệ (`C16`).
 
 Mọi món `aria-hidden`, `pointer-events-none`, ẩn dưới `lg`. Lớp này thay cho vầng màu, không chồng
 thêm vầng. Cách làm từng kiểu ở `C10`.
@@ -286,6 +302,8 @@ Mặc định **dày hơn mức Nhẹ của `H12`, vẫn chỉ CSS và JavaScrip
 - **Một khoảnh khắc gắn cuộn** (`A8`, `C13`).
 - Ngôn ngữ hình lấy từ việc sản phẩm làm (`A4`, `C10`), ở hai đầu trang, trong card và đường ngăn.
 - Thanh kéo trước / sau (`C11`), một khối cuộn ghim (`C7`), một dải chạy (`C5`).
+- Sản phẩm bán bằng con số khách tự tính được: một câu tính điền chỗ trống (`C15`).
+- Lớp nhìn tối cả trang hay sân khấu tối: được một khoảnh khắc mở màn chiếu lên sản phẩm (`C16`).
 - Tối đa 8 vòng lặp nền đếm theo loại (`C8`).
 - Đếm số (`C6`) chỉ với số thật.
 - Cuộn mượt, GSAP, 3D (`C9`) chỉ khi người dùng xin.

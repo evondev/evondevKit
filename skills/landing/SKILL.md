@@ -174,7 +174,7 @@ Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn. Góp ý theo số kh�
 | **K** | `references/sections.md` | Mười ba loại section, mỗi loại 1–3 biến thể có code |
 | **H** | `references/page-rules.md` | Luật chung toàn trang: CTA, nhịp, thang chữ và font, chữ hero, nền và màu, ảnh, header, dữ liệu giả, màn hẹp, chuyển động, nút nổi |
 | **A** | `references/saas.md` | Trang sản phẩm phần mềm: mục tiêu và nút, bộ section, hero có sản phẩm, lớp nhìn và màu, bento, chuyển động, dữ liệu giả, bộ mặt riêng mỗi trang |
-| **C** | `references/motion.md` | Cách làm từng hiệu ứng: hero hiện dần, hiện khi cuộn, gõ chữ, dải chạy, đếm số, cuộn ghim, vòng lặp nền, cuộn mượt, ngôn ngữ hình theo sản phẩm (lưới chấm, sơ đồ nút, nét tự vẽ, sóng âm, bản đồ chấm, ASCII), thanh kéo trước / sau, màn sản phẩm sống, màn nghiêng phẳng dần khi cuộn, component có sẵn nên và không nên cài |
+| **C** | `references/motion.md` | Cách làm từng hiệu ứng: hero hiện dần, hiện khi cuộn, gõ chữ, dải chạy, đếm số, cuộn ghim, vòng lặp nền, cuộn mượt, ngôn ngữ hình theo sản phẩm (lưới chấm, sơ đồ nút, nét tự vẽ, sóng âm, bản đồ chấm, tầng xếp chồng nghiêng, ASCII), thanh kéo trước / sau, màn sản phẩm sống, màn nghiêng phẳng dần khi cuộn, component có sẵn nên và không nên cài, câu tính điền chỗ trống, khoảnh khắc mở màn |
 
 **Lấy từ `ui-ux`, không chép:**
 

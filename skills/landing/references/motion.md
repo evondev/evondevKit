@@ -246,6 +246,45 @@ chữ cũ trượt lên mờ đi 200ms; chỉ số thật hay số `GIẢ:` đư
 mỗi section là một "ga" (chấm tròn trên đường), chấm sáng khi section vào khung nhìn
 (`IntersectionObserver`). Chỉ khi tên sản phẩm có hình rõ.
 
+**Tầng xếp chồng nghiêng** (một lớp nằm giữa: platform, middleware, lớp điều phối giữa đội và hạ
+tầng): 3–5 tấm mỏng xếp chồng, nhìn nghiêng kiểu bản vẽ kỹ thuật, mỗi tấm một tầng có tên thật
+(đội của khách → sản phẩm → dữ liệu → hạ tầng). Tầng của sản phẩm nền đặc hay viền màu nhấn, có
+icon các tích hợp thật; tầng khác viền mảnh `border-border-strong`, nền trong. Trên tấm chỉ tên tầng
+2–3 chữ và một dòng phụ; giải thích dài để ở cột chữ bên cạnh, chữ nghiêng khó đọc. Cuộn tới thì các
+tầng từ tách xa khít lại (một lần, có thể là khoảnh khắc gắn cuộn của `A8`). Dưới `lg` xếp phẳng
+thành cột, không nghiêng; giảm chuyển động thì đứng ở trạng thái đã khít.
+
+```css
+@keyframes stack-close {
+  from { transform: translateZ(calc(var(--layer) * 140px)); }
+  to { transform: translateZ(calc(var(--layer) * 56px)); }
+}
+
+/* Khung ngoài không xoay giữ timeline; khung trong xoay nghiêng. */
+.layer-stack { view-timeline: --layer-stack block; }
+.layer-stack-tilt { transform: rotateX(55deg) rotateZ(-40deg); transform-style: preserve-3d; }
+.layer-stack-tilt > * { transform: translateZ(calc(var(--layer) * 56px)); }
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .layer-stack-tilt > * {
+      animation: stack-close linear both;
+      animation-timeline: --layer-stack;
+      animation-range: entry 10% cover 50%;
+    }
+  }
+}
+```
+
+```tsx
+// --layer: 0 là tầng dưới cùng.
+<div className="layer-stack"><div className="layer-stack-tilt">
+  {stackLayers.map((layer, layerIndex) => (
+    <div key={layer.name} style={{ "--layer": layerIndex } as React.CSSProperties}>…</div>
+  ))}
+</div></div>
+```
+
 **Chữ terminal, ASCII, pixel** (công cụ dòng lệnh, đọc code; bộ của landing evondevKit):
 
 **Hình pixel nhấp nháy:** lưới 4×4 ô `size-1.5 rounded-[1px]` cách `gap-[3px]`, mô tả bằng chuỗi
@@ -423,3 +462,48 @@ sáng nền, cực quang, đèn chụp, lốc xoáy, pháo giấy, lưới lùi 
 `retro-grid`, `warp-background`, `confetti`; AC `sparkles`, `background-beams`, `vortex`, `aurora`,
 `shooting-stars`, `lamp`), nền shader của React Bits (`Hyperspeed`, `Galaxy`, `Ballpit`,
 `SplashCursor`, `LetterGlitch`) và đa số nền WebGL của Originkit: kiểu site agency, portfolio.
+Ánh sáng chiếu lên chính sản phẩm, chạy một lần lúc tải, là chuyện khác: `C16`.
+
+## C15. Câu tính điền chỗ trống ⚑
+
+⚑ Tra thêm 8 landing sản phẩm được khen (08/10/2026). Một câu khách tự đổi số trong đó, kết quả
+nhảy theo: *"Nếu đã đầu tư [100.000.000 ₫] ở chế độ [Cân bằng] thì hôm nay thành [526.449.400 ₫]
++426%"*. Giống `C11`, khách tự tay làm nên đáng hơn hiệu ứng tự chạy.
+
+- **Chỉ khi sản phẩm bán bằng con số khách tự tính được** (tiết kiệm chi phí, giờ công bớt, lợi
+  nhuận) và có công thức đáng tin. Không có công thức thì không làm: câu tính bịa số là lời hứa giả.
+- Câu cỡ `text-2xl lg:text-3xl`, 2–3 ô điền, một ô kết quả. Ô điền là `inline-flex` viền mảnh cùng
+  cỡ chữ câu, `tabular-nums`, `whitespace-nowrap`, rộng theo nội dung (`field-sizing: content`); ô
+  số là input, ô chọn là nút mở popover. Ô kết quả màu nhấn, kèm mức thay đổi.
+- Kết quả đổi trong 300ms (số chạy ngắn như `C6`) hay đổi ngay; có `aria-live="polite"`. Mỗi ô có
+  `aria-label` đủ nghĩa ("Số tiền đầu tư").
+- Số và công thức thật, hay ghi `GIẢ:` (`A7`). Dưới câu một dòng `text-sm text-muted` nói cách
+  tính; sản phẩm tài chính thêm "không phải cam kết lợi nhuận".
+- Server render đủ câu với giá trị mặc định. Ở 375 câu xuống dòng tự nhiên, không ô nào vỡ đôi.
+- Biểu đồ nhỏ bên dưới vẽ lại theo đầu vào thì được, không bắt buộc. Một câu tính mỗi trang.
+
+## C16. Khoảnh khắc mở màn ⚑
+
+Chạy một lần lúc tải trang, ánh sáng rơi lên **chính sản phẩm hay tên sản phẩm**: chùm sáng từ trên
+rọi xuống hộp đăng nhập rồi hộp trồi lên; biển chữ tên sản phẩm bật sáng như đèn neon (chập chờn
+hai nhịp rồi sáng hẳn). Đây là ngoại lệ của luật không dùng đèn chụp, tia sáng ở `C14` và `A4`:
+thứ bị cấm là đèn làm nền, không chiếu vào gì, lặp mãi. Ở đây ánh sáng có đích, chạy xong thì
+đứng yên, vầng sáng tĩnh được giữ lại.
+
+```css
+@keyframes spot-on {
+  from { opacity: 0; transform: scaleY(0.6); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes neon-on {
+  0%, 18%, 26% { opacity: 0.25; }
+  20%, 30%, 100% { opacity: 1; }
+}
+```
+
+- Chỉ ở lớp nhìn tối cả trang hay sân khấu tối (`A8`); trang sáng không có chỗ cho ánh sáng.
+- Một mở màn mỗi trang, tổng 1–1,6 giây, `transform-origin: top` cho chùm sáng. H1 vẫn đọc được
+  trong ~1,2 giây (`C2`): ánh sáng chỉ trên sản phẩm, không làm chữ chờ.
+- Sản phẩm đã render sẵn, mở màn chỉ đổi `opacity`, `transform`, `filter`; giảm chuyển động thì
+  đứng ngay ở trạng thái sáng.
