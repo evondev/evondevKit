@@ -31,7 +31,9 @@ sản phẩm đang làm việc (`A2`).
 
 - Hai nút ở hero (11/18): nút đặc là mục tiêu, nút viền là bước nhẹ hơn. Header **một nút đặc**.
 - Khối lệnh cài: `font-mono`, nền `bg-surface` viền, nút copy chỉ icon bên phải (`components/button.md`),
-  copy xong đổi icon `Check` 1,5 giây. Nhiều công cụ cài (npm, pnpm, brew…) thì tab nhỏ phía trên.
+  copy xong đổi icon `Check` 1,5 giây. **Lệnh dài hơn khung thì nút copy đứng ngoài vùng cuộn**:
+  `flex`, chữ `min-w-0 flex-1 overflow-x-auto whitespace-pre`, nút `shrink-0`; không đặt nút tuyệt
+  đối đè lên chữ đang cuộn (chữ chạy xuống dưới nút ở 375). Nhiều công cụ cài (npm, pnpm, brew…) thì tab nhỏ phía trên.
 - CTA cuối lặp đúng nút chính (14/18). Không lặp giữa trang trừ khi trang dài hơn 12 màn.
 
 ## A2. Bộ section và thứ tự ⚑
@@ -97,7 +99,9 @@ tĩnh chỉ khi sản phẩm không có đầu vào để đổi (hạ tầng, t
   bảng, card số, lịch… theo `../ui-ux/references/layouts/app.md`), dữ liệu đúng sản phẩm. Không khối
   xám, không minh hoạ trừu tượng (minh hoạ 5/18, chỉ khi sản phẩm không có màn để khoe, như hạ tầng).
 - Màn giả có **bề rộng cố định bên trong** (`w-[1040px]`), khung ngoài cắt ở màn hẹp: co màn app lại
-  là bảng vỡ, chữ xuống dòng. Phần chỉ để xem `aria-hidden` và `inert`; hàng tab và nút copy của
+  là bảng vỡ, chữ xuống dòng. **Dưới `sm` bỏ sidebar của màn giả** (`hidden sm:block`, lưới đổi còn
+  một cột) để phần việc chính (bảng, biên bản, danh sách) lấp khung: sidebar 220px trong khung 343px
+  chiếm 64%, tên job trong bảng bị cắt còn "user-cleanu". Phần chỉ để xem `aria-hidden` và `inert`; hàng tab và nút copy của
   demo nằm ngoài vùng đó, bấm và Tab tới được.
 - Một màn, đúng việc chính của sản phẩm. 0–2 mảnh nổi chồng mép (thông báo, một con số) lấy đúng
   dữ liệu của màn, ẩn dưới `sm`.

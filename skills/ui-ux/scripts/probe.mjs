@@ -3518,6 +3518,39 @@ function measureLandingPage() {
   }
   for (const heights of unevenRows.slice(0, 3)) problems.push(`mảnh giao diện trong một hàng card cao lệch nhau ${heights}px: mảnh kéo đầy ô (h-full), mảnh ngắn thêm dòng thật (A5)`);
 
+  // A3: màn app giả bề rộng cố định (`inert`) bị khung cắt mà cột sidebar chiếm quá 40% phần thấy được: bảng
+  // việc chính bị cắt tên (landing dịch vụ giám sát 08/10/2026, 375px: sidebar 220px trong khung 343px).
+  for (const screen of document.querySelectorAll("[inert]")) {
+    let clipper = screen.parentElement;
+    while (clipper && getComputedStyle(clipper).overflow === "visible") clipper = clipper.parentElement;
+    if (!clipper) continue;
+    const screenRect = screen.getBoundingClientRect();
+    const clipRect = clipper.getBoundingClientRect();
+    if (screenRect.width <= clipRect.width + 4 || screenRect.height < 200) continue;
+    const sidebar = [...screen.querySelectorAll("aside, nav, div, section")].find((column) => {
+      const columnRect = column.getBoundingClientRect();
+
+      return Math.abs(columnRect.left - screenRect.left) < 2 && columnRect.width < screenRect.width * 0.35 && columnRect.height > screenRect.height * 0.6 && isShown(column);
+    });
+    if (!sidebar) continue;
+    const sidebarRect = sidebar.getBoundingClientRect();
+    const visibleSidebar = Math.min(sidebarRect.right, clipRect.right) - Math.max(sidebarRect.left, clipRect.left);
+    if (visibleSidebar > clipRect.width * 0.4) problems.push(`màn app giả bị cắt, sidebar chiếm ${Math.round((visibleSidebar / clipRect.width) * 100)}% khung: dưới sm bỏ sidebar cho bảng việc chính lấp khung (A3)`);
+  }
+
+  // A1: nút copy đặt tuyệt đối đè lên khối lệnh đang cuộn ngang: chữ chạy xuống dưới nút (landing dịch vụ giám
+  // sát 08/10/2026, 375px).
+  for (const button of document.querySelectorAll("button")) {
+    if (getComputedStyle(button).position !== "absolute" || !isShown(button)) continue;
+    const buttonRect = button.getBoundingClientRect();
+    const scroller = [...(button.parentElement?.querySelectorAll("pre, code, div") || [])].find((element) => !element.contains(button) && element.scrollWidth > element.clientWidth + 4 && getComputedStyle(element).overflowX !== "visible");
+    if (!scroller) continue;
+    const scrollerRect = scroller.getBoundingClientRect();
+    const overlap = Math.min(buttonRect.right, scrollerRect.right) - Math.max(buttonRect.left, scrollerRect.left);
+    const verticalOverlap = Math.min(buttonRect.bottom, scrollerRect.bottom) - Math.max(buttonRect.top, scrollerRect.top);
+    if (overlap > 8 && verticalOverlap > 8) problems.push(`nút "${normalize(button.getAttribute("aria-label") || button.textContent).slice(0, 24)}" đè lên khối chữ đang cuộn ngang: để nút ngoài vùng cuộn (flex, chữ min-w-0 flex-1 overflow-x-auto, nút shrink-0) (A1)`);
+  }
+
   // A5: ô mảnh giao diện trong card bento cao cố định mà card đứng một mình một hàng: mảnh ngắn chừa khoảng
   // trống lớn trên tiêu đề (thấy ở landing công cụ dòng lệnh 07/10/2026, 375px: hở ~100px).
   const emptySlots = [];
