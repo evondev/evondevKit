@@ -14,9 +14,10 @@ cuộn kể chuyện dài 19–26k px; trang sạch nhất có 0–2 vòng lặp
 
 ## C1. Bốn điều cho mọi hiệu ứng ⚑
 
-1. **CSS trước, JavaScript sau, thư viện sau cùng.** Hiệu ứng nào làm được bằng `@keyframes` hay
+1. **CSS trước, JavaScript sau, thư viện khi đáng.** Hiệu ứng nào làm được bằng `@keyframes` hay
    `animation-timeline` thì không thêm gói. Landing evondevKit chạy hết bằng CSS, `requestAnimationFrame`
-   và `IntersectionObserver`, không thư viện nào.
+   và `IntersectionObserver`, không thư viện nào. Component có sẵn chỉ khi viết tay đắt hơn hẳn và
+   component qua ba cửa của `C14` (giấy phép, phụ thuộc, giảm chuyển động).
 2. **Chỉ chạy khi thấy được.** Gõ chữ, canvas, đếm số, vòng lặp: khởi động khi vào khung nhìn,
    dừng khi ra (`IntersectionObserver`). Tab ẩn thì trình duyệt tự dừng `requestAnimationFrame`.
 3. **Giảm chuyển động là tắt hết.** Người bật `prefers-reduced-motion: reduce` thấy trang đứng yên ở
@@ -360,3 +361,62 @@ tới thì phẳng dần về thẳng. Thuần CSS, tiến độ theo cuộn, m�
 - Gắn trên khung màn (`lg:tilt-in`), dưới `lg` để phẳng: màn hẹp nghiêng làm chữ trong màn nhỏ đi.
 - Khung bọc không `overflow-hidden` theo chiều dọc, không thì bóng và mép trên bị cắt khi nghiêng.
 - Trình duyệt chưa hỗ trợ hay giảm chuyển động: màn thẳng ngay.
+
+## C14. Component có sẵn ⚑
+
+⚑ Đọc source bốn thư viện component có chuyển động (08/10/2026): Magic UI (MIT, cài qua shadcn),
+Aceternity UI (bản miễn phí dùng thương mại được, cấm phân phối lại source), React Bits (MIT kèm
+Commons Clause: dùng trong sản phẩm được, cấm bán hay phân phối lại chính component), Originkit
+(phải đăng nhập, gói miễn phí 10 lần chép mỗi ngày, cấm làm template). Cả bốn hợp Tailwind v4 và
+React 19 qua shadcn CLI.
+
+**Ba cửa trước khi cài:**
+
+1. **Giấy phép**: cài bằng lệnh vào dự án của người dùng; **không chép source các thư viện này vào
+   skill** hay vào template đem bán. Ghi tên thư viện và giấy phép ở dòng lúc giao.
+2. **Phụ thuộc**: `motion` chấp nhận được (một gói, dùng chung cho mọi component). WebGL (`three`,
+   `ogl`, `cobe`), `gsap`, hạt (`tsparticles`) chỉ khi người dùng xin (`C9`): một hiệu ứng kéo theo
+   hàng trăm KB. Đọc `dependencies` trong lệnh shadcn trước khi cài: có component kéo cả thư viện
+   nhận diện khuôn mặt cho một nền trang trí.
+3. **Giảm chuyển động**: chỉ khoảng 6/79 file của Magic UI và gần như không file nào của Aceternity
+   tự tắt khi `prefers-reduced-motion`. Bọc trang trong `<MotionConfig reducedMotion="user">` (tắt
+   chuyển động `transform` của component dùng `motion`), còn vòng `setInterval` (gõ chữ, đếm số,
+   danh sách tự chạy) thì tự chặn bằng `usePrefersReducedMotion` (`C1`). Probe `--landing` đo lượt
+   giảm chuyển động: còn chạy là lỗi.
+
+**Công thức → component có sẵn** (MU Magic UI, AC Aceternity, RB React Bits; "tự tắt" là component
+tự tôn trọng giảm chuyển động):
+
+| Công thức | Dùng | Ghi chú |
+| --- | --- | --- |
+| `C4` gõ chữ trong demo | AC `terminal` (không phụ thuộc), MU `terminal` + `typing-animation` | không tự tắt; khung prompt có tab vẫn viết tay theo `A3` |
+| `C5` dải chạy | RB `LogoLoop` (không phụ thuộc, tự tắt, dừng khi rê), MU `marquee` | `C5` tay chỉ vài dòng CSS, ngang nhau |
+| `C6` đếm số | MU `number-ticker`, RB `Counter` (số lăn) | `motion`, không tự tắt |
+| `C10` sơ đồ nút, gói tin | **MU `animated-beam`** (vệt sáng chạy theo dây SVG giữa hai phần tử) | khớp nhất; viết tay tốn công nhất |
+| `C10` bản đồ chấm | MU `dotted-map` (SVG, chấm toả bằng `<animate>`) | quả cầu (`globe`, WebGL) chỉ khi xin |
+| `C10` bảng lật số | RB `SplitFlapText` (không phụ thuộc, tự tắt) | |
+| `C10` lưới chấm, ASCII | MU `flickering-grid`, `glyph-matrix` (canvas) | nháy ngẫu nhiên, không theo trạng thái: chỉ làm nền, lưới chấm theo trạng thái viết tay |
+| `C11` trước / sau | viết tay theo `C11` | AC `compare` kéo theo thư viện hạt nặng |
+| `C12` màn sản phẩm sống | MU `animated-list` (thông báo trượt vào lần lượt), RB `SwipeToast` (tự tắt) | bảng chèn dòng, đổi trạng thái thì viết tay |
+| `C13` màn nghiêng phẳng dần | viết tay bằng CSS `view()` theo `C13` | AC `container-scroll-animation` cùng ý (xoay 20°→0) nhưng dùng JS, khung cao cố định 60–80rem, không tự tắt |
+| `C7` cuộn ghim | viết tay theo `C7` | AC `sticky-scroll-reveal` cuộn trong hộp riêng, không theo trang |
+| Khung thiết bị cho màn sản phẩm | MU `safari`, `iphone` (không chuyển động, không phụ thuộc) | |
+
+Chưa có ở thư viện nào: lưới ô lịch, sóng âm làm nền, nét git hay biểu đồ tự vẽ, bảng chèn dòng
+đổi trạng thái: viết tay theo `C10`, `C12`.
+
+**Thêm điểm nhấn được, mỗi trang tối đa hai món** (khác trang trí: gắn vào thứ khách đang xem):
+
+- **Viền sáng chạy quanh card nổi bật** (gói giá khuyên dùng, card tính năng chính): MU `border-beam`
+  (`motion`) hay `shine-border` (tự tắt). Một card mỗi trang.
+- **Đèn rọi theo chuột trên card bento**: RB `SpotlightCard` (không phụ thuộc), AC `glowing-effect`
+  (viền sáng theo chuột). Chỉ trên máy có chuột, không trên màn chạm.
+- **Một câu tuyên bố sáng dần theo cuộn**: MU `text-reveal` (chữ ghim, từng từ đậm dần). Một câu,
+  ngắn, không dùng cho đoạn văn.
+- Công cụ cho dev: MU `code-comparison` (trước / sau bằng code), `file-tree`.
+
+**Không dùng** (trang trí đặt lên sản phẩm nào cũng được, đọc thành rẻ, `A4`): hạt, sao băng, tia
+sáng nền, cực quang, đèn chụp, lốc xoáy, pháo giấy, lưới lùi xa (MU `particles`, `meteors`,
+`retro-grid`, `warp-background`, `confetti`; AC `sparkles`, `background-beams`, `vortex`, `aurora`,
+`shooting-stars`, `lamp`), nền shader của React Bits (`Hyperspeed`, `Galaxy`, `Ballpit`,
+`SplashCursor`, `LetterGlitch`) và đa số nền WebGL của Originkit: kiểu site agency, portfolio.

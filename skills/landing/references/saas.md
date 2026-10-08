@@ -281,6 +281,8 @@ Mặc định **dày hơn mức Nhẹ của `H12`, vẫn chỉ CSS và JavaScrip
 - Tối đa 8 vòng lặp nền đếm theo loại (`C8`).
 - Đếm số (`C6`) chỉ với số thật.
 - Cuộn mượt, GSAP, 3D (`C9`) chỉ khi người dùng xin.
+- Component có sẵn (sơ đồ nút có vệt sáng, bản đồ chấm, danh sách thông báo, viền sáng card nổi
+  bật) qua ba cửa của `C14`; không cài hạt, tia sáng, nền shader.
 - Trang 8–12 màn ở 1440 (`A2`). Trang 20k px toàn khối ghim và dải chạy là trang khách bỏ giữa chừng.
 - Người dùng nói "tối giản", "sạch", "nghiêm túc" (tài chính, y tế, doanh nghiệp lớn) thì về mức
   Nhẹ: bỏ ngôn ngữ hình, giữ demo bấm được.
