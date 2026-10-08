@@ -78,7 +78,7 @@ lệnh cài). Canh trái hay canh giữa ngang nhau (9/9).
 **Dưới chữ là sản phẩm** (10/18): màn app, video quay màn hình, hay **demo dùng được** (ô prompt
 gõ câu mẫu, terminal, khung kéo được; 4/18). Demo dùng được là thứ làm trang "sống" nhất (`C4`).
 
-**Mặc định hero có demo bấm được**, không chỉ màn để xem: hàng tab câu mẫu hay loại đầu vào ngay
+Bố cục hero chọn theo `A8` (canh giữa chỉ là một trong năm kiểu). **Mặc định hero có demo bấm được**, không chỉ màn để xem: hàng tab câu mẫu hay loại đầu vào ngay
 dưới khung (`segmented control`), bấm là khung đổi đầu ra, chữ gõ lại (`C4`), nút copy copy đúng
 câu đang hiện. Công cụ dòng lệnh: tab loại dự án (cửa hàng, thư viện, monorepo) đổi lệnh và kết quả
 trong terminal. App AI: tab câu mẫu đổi prompt và câu trả lời. Màn app: tab đổi chế độ xem. Màn
@@ -130,20 +130,25 @@ tĩnh chỉ khi sản phẩm không có đầu vào để đổi (hạ tầng, t
 | Serif tiêu đề | 6/18, đa số sản phẩm AI muốn ấm | được, theo cảm giác (`H5`) |
 | Nhãn chữ mono (`[01 / 08]`, `FEATURES`) | 7/18, cả hai trang gốc | dùng thì mọi H2 đều có |
 
-**Màu nhấn khi người dùng chưa có brand:** không mặc định xanh dương, chàm, tím (`#1d4ed8`,
-`#4f46e5`, `#7c3aed` và họ hàng). Đó là màu sẵn của hầu hết template và trang AI dựng, khách nhìn là
-thấy trang dựng sẵn; chủ dự án dựng thử thấy "màu xanh không đẹp". Chọn theo tính cách sản phẩm,
-chữ trắng trên nút từ 4.5:1:
+**Màu nhấn khi người dùng chưa có brand:** ba ô của nhóm **Nhấn** trên thanh công cụ wireframe
+(`U3`) là bộ chủ dự án chốt (08/10/2026), ô đầu khuyên dùng theo tính cách sản phẩm:
 
-| Tính cách | Màu nhấn gợi ý | Chữ trắng |
-| --- | --- | --- |
-| Công cụ cho dev, năng lượng (landing evondevKit dùng cam) | cam đất `#c43d0b` | 5.2:1 |
-| Ghi chép, năng suất, bình tĩnh | xanh lục `#127a4a` | 5.4:1 |
-| Sản phẩm AI, sáng tạo | hồng đậm `#b4235a` | 6.3:1 |
-| Nghiêm túc, tối giản | đen `#111111` | 18.9:1 |
+| Ô | `--brand` (màu người dùng thấy) | `--primary` (nền nút chữ trắng, link chữ nhỏ) | Hợp với |
+| --- | --- | --- | --- |
+| Cam | `#fa5d18` | `#d93d00` (4.5:1) | công cụ cho dev, hạ tầng, giám sát |
+| Tím | `#8a5df6` | `#8456ef` (4.6:1) | sản phẩm AI, sáng tạo |
+| Xanh | `#2979ff` | `#1e6ff4` (4.5:1) | năng suất, ghi chép, cộng tác |
 
-Nhóm **Nhấn** trên thanh công cụ wireframe (`U3`) luôn có ba ô ba họ màu khác nhau, ô đầu (khuyên
-dùng) không phải xanh dương; xanh dương vẫn được làm một ô để người dùng tự chọn.
+- **Hai token, một sắc.** `--brand` là đúng mã người dùng chọn, dùng cho chữ nhấn cỡ từ 36px
+  (cụm màu nhấn trong H1, H2), ngôn ngữ hình (`C10`), icon, vạch, chấm. `--primary` là cùng sắc hạ
+  độ sáng OKLCH tới khi chữ trắng đạt 4.5:1, dùng cho nền nút chữ trắng, link và chữ nhấn cỡ nhỏ:
+  chữ trắng trên `#fa5d18` chỉ 3.2:1, nút cam sáng đọc mờ. Ba mã trên đã tính sẵn; màu khác thì
+  tính lại theo cách đó.
+- Người dùng đưa brand thì brand là `--brand`, `--primary` tính như trên.
+- Khai cả hai trên `.landing` và cho Tailwind thấy `--brand`: `@theme inline { --color-brand: var(--brand); }`
+  (ra `text-brand`, `bg-brand`, `stroke-brand`).
+- Không lấy xanh dương mặc định của Tailwind (`#1d4ed8`, `#2563eb`, `#4f46e5`) khi người dùng chưa
+  chọn: màu sẵn của template, chủ dự án dựng thử thấy "màu xanh không đẹp".
 
 **Chữ màu nhấn trong H1** (mặc định): cụm nói lời hứa, thường là dòng sau, `text-primary`; H2 được
 một cụm tương tự, tối đa nửa số H2. Một cụm mỗi tiêu đề, không tô cả câu, không gradient chữ.
@@ -155,12 +160,14 @@ một cụm tương tự, tối đa nửa số H2. Một cụm mỗi tiêu đề
 
 ```html
 <h1 class="text-4xl font-medium tracking-tight text-balance sm:text-6xl lg:text-7xl">
-  Changelog tiếng Việt, <span class="text-primary">viết từ commit git</span>
+  Changelog tiếng Việt, <span class="text-brand">viết từ commit git</span>
 </h1>
 ```
 
 **Khung lộ ra có chủ ý** (6/18, cả hai trang gốc, và landing evondevKit): một biến thể lớp nhìn
-đáng chọn cho công cụ cho dev, không phải mặc định cho mọi trang.
+(`A8`), không phải mặc định. **Không đi nguyên bộ** khung lộ + lưới nền hero + nhãn `[01 / 07]` +
+hero canh giữa: đó là bộ mặt của landing evondevKit, trang nào cũng mặc thì chủ dự án nhìn là thấy
+"y hệt mẫu trước". Trong ba phương án wireframe, tối đa một phương án dùng khung lộ.
 
 - Nội dung trong khung cố định (~1112px) có **hai đường kẻ dọc hai bên** suốt trang, dấu `+` ở góc
   mỗi section, đường kẻ ngang ngăn section thay khoảng trắng to.
@@ -189,7 +196,7 @@ một cụm tương tự, tối đa nửa số H2. Một cụm mỗi tiêu đề
 </div>
 ```
 
-**Lớp nền hero** (lưới mờ 6/18, vầng màu nhấn 5/18): một kiểu mỗi trang, hero và CTA cuối cùng kiểu.
+**Lớp nền hero** (lưới mờ 6/18, vầng màu nhấn 5/18): một kiểu mỗi trang.
 Không vầng + lưới + ảnh cùng lúc, không đốm màu thứ hai.
 
 **Ngôn ngữ hình của trang** (mặc định, chỉ từ `lg`): lớp trang trí cho thấy có người chăm trang.
@@ -211,8 +218,11 @@ trang nào cũng thành anh em sinh đôi của evondevKit, skill thành theme.
 
 - **Khung bản vẽ** (đường ray hai bên, dấu `+` ở giao điểm, chú thích mono "FIG. 1") là cái khung,
   không phải ngôn ngữ hình: đi được với mọi dòng trên.
-- **Đặt ở hai đầu và trong card.** Món lớn ở hero và CTA cuối, hai bên khối chữ, không sau chữ
-  (`C8`). Giữa trang: chuyển động nhỏ trong card bento (chấm nhấp nháy, vòng quay, cột equaliser)
+- **Đặt ở hai đầu và trong card.** Món lớn ở hero và CTA cuối, hai bên khối chữ, **không chạm chữ**
+  (`C8`: đường nhịp tim chạy xuyên qua chữ cuối H1 là lỗi probe đo được). **CTA cuối không lặp lại
+  món của hero**: cùng ngôn ngữ hình, khác hình và khác bố cục (hero lưới ô lịch hai bên chữ thì CTA
+  cuối là bảng trạng thái chuyển dần sang xanh trên nền tối, chữ trái nút phải). Ba trang liền
+  nhau đều "CTA canh giữa, trang trí hai bên" thì chủ dự án thấy "giống mấy trang vừa làm". Giữa trang: chuyển động nhỏ trong card bento (chấm nhấp nháy, vòng quay, cột equaliser)
   và **đường ngăn section mang hình** (dây có gói tin chạy, dải chấm tan, đường ray có ga).
 - **Hình nói đúng sản phẩm của đề:** trang changelog thì nhánh git tự vẽ, commit rơi vào danh
   sách; trang ghi âm họp thì sóng âm và dòng biên bản hiện dần; trang giám sát cron thì nhịp tim
@@ -249,6 +259,11 @@ card (tính năng "tự nhắc lịch" thì mảnh là tin nhắc đã gửi). K
   còn lại lưới icon ngắn bên dưới (icon 20px trong ô 40px, không bọc từng ô vào card).
 - **Card rộng gấp đôi thì mảnh rộng theo** (`lg:w-[560px]`), hay hai mảnh cạnh nhau (đầu vào → kết
   quả). Mảnh 360px trong card ~600px để trống 40% bên phải, card rộng trông như dựng dở.
+- **Mảnh trong một hàng cao bằng nhau** (bento, hàng bước 1-2-3, card so sánh): mảnh kéo đầy ô
+  (`h-full`, nội dung căn trên), không để mảnh ba dòng lệnh cao 106px đứng cạnh hai mảnh 194px. Ô
+  bằng nhau mà khung mảnh lệch nhau vẫn đọc thành "cục cao cục thấp" (chủ dự án thấy ở hàng bước
+  của trang giám sát). Mảnh ngắn vì ít nội dung thì thêm dòng thật (output của lệnh, dòng log), đừng
+  độn trống.
 - Mảnh có bề rộng cố định, tràn thì cắt, đáy tan dần 2rem. **Cao cố định (`h-56`) chỉ từ `lg`**, khi
   card đứng cạnh nhau cần bằng đầu; dưới `lg` mỗi card một cột thì ô mảnh cao theo mảnh (`max-h-56`),
   không thì mảnh ba dòng chừa khoảng trống 100px trên tiêu đề.
@@ -258,7 +273,9 @@ card (tính năng "tự nhắc lịch" thì mảnh là tin nhắc đã gửi). K
 Mặc định **dày hơn mức Nhẹ của `H12`, vẫn chỉ CSS và JavaScript thuần**, làm theo `motion.md`:
 
 - Hero hiện dần (`C2`), khối hiện khi cuộn tới (`C3`).
-- **Demo bấm được ở hero** (`A3`, `C4`): ưu tiên hơn mọi hiệu ứng trang trí.
+- **Demo bấm được ở hero** (`A3`, `C4`), và **màn sản phẩm sống** (`A8`, `C12`): ưu tiên hơn mọi
+  hiệu ứng trang trí.
+- **Một khoảnh khắc gắn cuộn** (`A8`, `C13`).
 - Ngôn ngữ hình lấy từ việc sản phẩm làm (`A4`, `C10`), ở hai đầu trang, trong card và đường ngăn.
 - Thanh kéo trước / sau (`C11`), một khối cuộn ghim (`C7`), một dải chạy (`C5`).
 - Tối đa 8 vòng lặp nền đếm theo loại (`C8`).
@@ -279,3 +296,39 @@ Theo `H9`, thêm:
 - Lệnh cài, tên gói npm, link GitHub: người dùng chưa đưa thì `[cần điền]`, không bịa tên gói (khách
   copy chạy là cài nhầm gói người khác).
 - "Không cần thẻ", "Huỷ lúc nào cũng được", "Hoàn tiền 30 ngày": chỉ khi người dùng nói.
+
+## A8. Mỗi trang một bộ mặt ⚑
+
+Ba bản dựng thử liền nhau (công cụ dòng lệnh, app ghi âm, dịch vụ giám sát) ra cùng một khung:
+hero canh giữa trên lưới nền, đường ray hai bên, nhãn `[01 / 07]`, H1 hai dòng dòng sau màu nhấn,
+demo có tab, H2 canh trái, ba card bước, bento, FAQ hai cột, CTA canh giữa có trang trí hai bên.
+Chỉ nội dung và hình trang trí đổi. Chủ dự án nhận ra ngay "styles y hệt, như lấy landing evondevKit
+làm mẫu", và "chưa wow, chuyển động còn thô". Trang khác nhau ở **bộ mặt**, không chỉ ở chữ.
+
+**Ba trục, ba phương án wireframe khác nhau ở cả ba** (không chỉ khác bố cục tính năng):
+
+| Trục | Lựa chọn |
+| --- | --- |
+| **Bố cục hero** | canh giữa, sản phẩm dưới chữ · chia đôi, chữ trái và sản phẩm sống phải · sân khấu tối (hero nền tối tràn mép, sản phẩm sáng giữa sân khấu) · màn sản phẩm lớn nghiêng, phẳng dần khi cuộn (`C13`) · chữ cực lớn kiểu tạp chí, sản phẩm chen giữa dòng |
+| **Lớp nhìn** | khung lộ (đường ray, `+`, nhãn mono) · phẳng sáng có hai dải tối xen giữa · tối cả trang · mềm (nền xám nhạt, card trắng bo lớn, bóng mềm) · tạp chí (serif tiêu đề, khoảng trắng rộng, ảnh sản phẩm tràn) |
+| **Ngôn ngữ hình** | theo việc sản phẩm làm (`A4`, `C10`) |
+
+- Khung lộ, hero canh giữa và lưới nền là bộ mặt landing evondevKit: một phương án được mượn
+  **một** trong ba, không cả bộ (`A4`).
+- Nhịp section cũng đổi theo lớp nhìn: tối cả trang thì section ngăn bằng khoảng trắng và tiêu đề
+  lớn, không đường kẻ; mềm thì mỗi section là một khối nền bo góc; phẳng sáng thì dải tối là chỗ
+  đặt khối "cho xem sản phẩm làm việc".
+- Brief và khung lý do wireframe ghi ba trục của từng phương án: *"B · chia đôi, tối cả trang,
+  bảng trạng thái nhấp nháy"*.
+
+**Thứ làm "wow": sản phẩm đang sống, và một khoảnh khắc gắn với cuộn.**
+
+- **Màn sản phẩm sống ở hero** (`C12`): không chỉ gõ chữ trong terminal. Dòng mới chèn vào bảng,
+  trạng thái đổi màu, thông báo trượt vào góc, con số tăng, đúng chuyện sản phẩm làm hằng ngày
+  (job chạy xong thì dòng xanh, trễ thì vàng rồi bật thông báo Slack). Khách thấy sản phẩm làm việc
+  trước khi đọc chữ.
+- **Một khoảnh khắc gắn cuộn mỗi trang** (`C13`): màn sản phẩm nghiêng phẳng dần khi cuộn tới, khối
+  ghim đổi trạng thái theo bước (`C7`), hay nét tự vẽ chạy theo cuộn (`C10`). Một chỗ, đặt ở khối
+  "cho xem sản phẩm làm việc" đáng nhất, không rải khắp trang.
+- Thêm trang trí không làm trang wow hơn: ba trang thử đầy chấm nhấp nháy vẫn "thô". Chuyển động
+  đáng tiền là chuyển động **của sản phẩm**.

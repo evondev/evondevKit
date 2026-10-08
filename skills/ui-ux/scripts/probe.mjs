@@ -3448,6 +3448,76 @@ function measureLandingPage() {
     if (tablistBottom > window.innerHeight) problems.push(`hàng tab demo ở hero "${normalize(tablist.textContent).slice(0, 40)}" nằm dưới màn đầu (đáy ${Math.round(tablistBottom)}px, màn cao ${window.innerHeight}px): đặt ở đầu khung demo (A3)`);
   }
 
+  // C8: hình trang trí (`aria-hidden`, nằm tuyệt đối) không chạm chữ H1, H2, câu dẫn. Đường nhịp tim chạy xuyên
+  // chữ cuối H1 ở hero và CTA cuối (thấy ở wireframe landing dịch vụ giám sát 08/10/2026). Bỏ lớp nền phủ cả
+  // khối (lưới, vầng màu): chỉ tính hình hẹp hơn 60% bề ngang màn.
+  const headingRects = [];
+  for (const heading of document.querySelectorAll("h1, h2")) {
+    if (!isShown(heading)) continue;
+    const range = document.createRange();
+    range.selectNodeContents(heading);
+    for (const rect of range.getClientRects()) if (rect.width > 4) headingRects.push({ rect, text: normalize(heading.textContent).slice(0, 40) });
+  }
+  const touchedHeadings = new Set();
+  // Hình có thể là chính khối `aria-hidden` hay một svg / canvas / khối tuyệt đối bên trong nó.
+  for (const ornament of document.querySelectorAll("[aria-hidden='true'], [aria-hidden='true'] svg, [aria-hidden='true'] canvas, [aria-hidden='true'] *")) {
+    const style = getComputedStyle(ornament);
+    const isDrawing = ornament.tagName === "svg" || ornament.tagName === "CANVAS";
+    if ((!isDrawing && style.position !== "absolute") || !isShown(ornament)) continue;
+    if (ornament.closest("h1, h2, button, a") || ornament.querySelector("h1, h2")) continue;
+    const ornamentRect = ornament.getBoundingClientRect();
+    if (ornamentRect.width < 8 || ornamentRect.height < 8) continue;
+    if (ornamentRect.width >= window.innerWidth * 0.6) continue;
+    for (const { rect, text } of headingRects) {
+      const overlapLeft = Math.max(rect.left, ornamentRect.left);
+      const overlapTop = Math.max(rect.top, ornamentRect.top);
+      const overlapX = Math.min(rect.right, ornamentRect.right) - overlapLeft;
+      const overlapY = Math.min(rect.bottom, ornamentRect.bottom) - overlapTop;
+      if (overlapX <= 6 || overlapY <= 6) continue;
+      // Canvas phủ rộng mà chỉ vẽ ở mép (đám ASCII hình vành khăn): đọc điểm ảnh ở vùng chồng, trống thì không chạm
+      // (báo nhầm CTA cuối landing evondevKit 08/10/2026). Canvas khác nguồn đọc không được thì bỏ qua.
+      if (ornament.tagName === "CANVAS") {
+        try {
+          const scale = ornament.width / ornamentRect.width;
+          const pixels = ornament.getContext("2d")?.getImageData((overlapLeft - ornamentRect.left) * scale, (overlapTop - ornamentRect.top) * scale, Math.max(1, overlapX * scale), Math.max(1, overlapY * scale)).data;
+          if (!pixels) continue;
+          let isDrawn = false;
+          for (let index = 3; index < pixels.length; index += 4) if (pixels[index] > 24) { isDrawn = true; break; }
+          if (!isDrawn) continue;
+        } catch {
+          continue;
+        }
+      }
+      touchedHeadings.add(text);
+    }
+  }
+  for (const text of [...touchedHeadings].slice(0, 3)) problems.push(`hình trang trí chạm chữ tiêu đề "${text}": dời ra hai bên khối chữ (C8)`);
+
+  // A5: mảnh giao diện trong một hàng card (bento, hàng bước) cao lệch nhau: ô bằng nhau mà khung mảnh 106px
+  // đứng cạnh hai khung 194px đọc thành "cục cao cục thấp" (chủ dự án thấy ở trang dịch vụ giám sát 08/10/2026).
+  const unevenRows = [];
+  for (const list of document.querySelectorAll("ul, ol, div")) {
+    const cards = [...list.children].filter((child) => child.getBoundingClientRect().width > 160 && isShown(child));
+    if (cards.length < 2) continue;
+    const rowTop = Math.round(cards[0].getBoundingClientRect().top);
+    const rowCards = cards.filter((card) => Math.abs(card.getBoundingClientRect().top - rowTop) < 2);
+    if (rowCards.length < 2) continue;
+    const fragments = rowCards.map((card) => {
+      const slot = card.firstElementChild;
+      if (!slot || !(slot.getAttribute("aria-hidden") === "true" || slot.hasAttribute("inert"))) return null;
+
+      return slot.firstElementChild;
+    });
+    if (fragments.some((fragment) => !fragment)) continue;
+    const heights = fragments.map((fragment) => Math.round(fragment.getBoundingClientRect().height));
+    // Mảnh căn giữa ô (minh hoạ nhỏ, không khung) cao khác nhau là bố cục có chủ ý (báo nhầm hàng luật ở landing
+    // evondevKit); chỉ báo khi mảnh căn đỉnh mà đáy so le.
+    const fragmentTops = fragments.map((fragment) => fragment.getBoundingClientRect().top);
+    const isTopAligned = Math.max(...fragmentTops) - Math.min(...fragmentTops) < 4;
+    if (isTopAligned && Math.max(...heights) - Math.min(...heights) > 32) unevenRows.push(heights.join("/"));
+  }
+  for (const heights of unevenRows.slice(0, 3)) problems.push(`mảnh giao diện trong một hàng card cao lệch nhau ${heights}px: mảnh kéo đầy ô (h-full), mảnh ngắn thêm dòng thật (A5)`);
+
   // A5: ô mảnh giao diện trong card bento cao cố định mà card đứng một mình một hàng: mảnh ngắn chừa khoảng
   // trống lớn trên tiêu đề (thấy ở landing công cụ dòng lệnh 07/10/2026, 375px: hở ~100px).
   const emptySlots = [];

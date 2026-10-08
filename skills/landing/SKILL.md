@@ -135,9 +135,11 @@ component thật, thanh công cụ (Phương án, Màu, Nhấn, Khổ), khung l�
   đã rõ định vị thì ba phương án nằm trong định vị đó, khác ở hero và thứ tự như trên.
 - **D, E của `U3` thành:** D **trang ngắn**: chỉ hero, dịch vụ, liên hệ, footer; E **bỏ lặp**:
   mỗi ý một chỗ (hero và giới thiệu không nói cùng một câu).
-- **Sản phẩm phần mềm:** phương án khác ở cách hero khoe sản phẩm (màn app dưới chữ, demo dùng
-  được, chữ trái màn app phải), cách xếp tính năng (bento, hàng xen kẽ, cuộn ghim) và lớp nhìn có
-  khung lộ (`A4`) hay không. Không nút nổi.
+- **Sản phẩm phần mềm:** ba phương án khác nhau ở **cả ba trục của `A8`**: bố cục hero, lớp nhìn,
+  ngôn ngữ hình; tối đa một phương án dùng khung lộ, không phương án nào mặc nguyên bộ mặt landing
+  evondevKit (hero canh giữa + lưới nền + đường ray + nhãn `[01 / 07]`). Hero có màn sản phẩm sống
+  (`C12`), trang có một khoảnh khắc gắn cuộn (`C13`). Khung lý do ghi ba trục từng phương án. Nhóm
+  Nhấn theo bảng màu của `A4`. Không nút nổi.
 - **Nhóm Trạng thái** cho form liên hệ: Mặc định, Lỗi, Đã gửi (`K11`); trang sản phẩm chỉ khi có
   form email (danh sách chờ).
 - **Không vẽ khối xám cho ảnh.** Ảnh mẫu thật theo `S16` của `ui-ux` ngay từ wireframe: người
@@ -171,8 +173,8 @@ Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn. Góp ý theo số kh�
 | **G** | `references/goals.md` | Loại trang → bật section nào, thứ tự, chữ nút chính, ô form, giá, thứ phải có thật, định vị (`G6`) |
 | **K** | `references/sections.md` | Mười ba loại section, mỗi loại 1–3 biến thể có code |
 | **H** | `references/page-rules.md` | Luật chung toàn trang: CTA, nhịp, thang chữ và font, chữ hero, nền và màu, ảnh, header, dữ liệu giả, màn hẹp, chuyển động, nút nổi |
-| **A** | `references/saas.md` | Trang sản phẩm phần mềm: mục tiêu và nút, bộ section, hero có sản phẩm, lớp nhìn, bento, chuyển động, dữ liệu giả |
-| **C** | `references/motion.md` | Cách làm từng hiệu ứng: hero hiện dần, hiện khi cuộn, gõ chữ, dải chạy, đếm số, cuộn ghim, vòng lặp nền, cuộn mượt, ngôn ngữ hình theo sản phẩm (lưới chấm, sơ đồ nút, nét tự vẽ, sóng âm, bản đồ chấm, ASCII), thanh kéo trước / sau |
+| **A** | `references/saas.md` | Trang sản phẩm phần mềm: mục tiêu và nút, bộ section, hero có sản phẩm, lớp nhìn và màu, bento, chuyển động, dữ liệu giả, bộ mặt riêng mỗi trang |
+| **C** | `references/motion.md` | Cách làm từng hiệu ứng: hero hiện dần, hiện khi cuộn, gõ chữ, dải chạy, đếm số, cuộn ghim, vòng lặp nền, cuộn mượt, ngôn ngữ hình theo sản phẩm (lưới chấm, sơ đồ nút, nét tự vẽ, sóng âm, bản đồ chấm, ASCII), thanh kéo trước / sau, màn sản phẩm sống, màn nghiêng phẳng dần khi cuộn |
 
 **Lấy từ `ui-ux`, không chép:**
 
@@ -215,7 +217,8 @@ Kết bằng *"Chọn A, B hay C, kèm D, E nếu muốn. Góp ý theo số kh�
   Liên hệ và footer, giả thì đánh dấu (`H9`).
 - [ ] Sản phẩm phần mềm: **hero có demo bấm được** (tab đổi đầu vào, `A3`), **một cụm chữ màu nhấn
   trong H1** (`A4`), **ít nhất hai khối cho xem sản phẩm làm việc**, trang 8–12 màn (`A2`), **ngôn
-  ngữ hình lấy từ việc sản phẩm làm**, không chép bộ của trang khác (`A4`, `C10`); bật giảm chuyển động thì trang đứng yên (`C1`).
+  ngữ hình lấy từ việc sản phẩm làm**, không chép bộ của trang khác (`A4`, `C10`); **bộ mặt riêng**
+  (bố cục hero, lớp nhìn, `A8`), màn sản phẩm sống (`C12`); bật giảm chuyển động thì trang đứng yên (`C1`).
 - [ ] **Nhịp đều**: mọi section cùng padding dọc, cùng khung bề rộng (`H2`).
 - [ ] Đã probe 375 tới 1920 và xem ảnh, **375 trước**. Trang cuộn ngang ở 375 là hỏng (`H10`).
 

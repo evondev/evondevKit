@@ -189,7 +189,9 @@ phần mềm mặc định có ngôn ngữ hình lấy từ sản phẩm (`A4`, 
 
 - Canvas giới hạn ~15 khung/giây, chỉ vẽ khi trong khung nhìn, giảm chuyển động thì vẽ một khung đứng.
 - Vòng lặp CSS (`pixel-blink 2.4s`, `spin 14s`) gắn `motion-safe:`.
-- Không đặt vòng lặp sau chữ đang cần đọc (H1, câu dẫn): mắt bị kéo khỏi chữ.
+- Không đặt vòng lặp sau chữ đang cần đọc (H1, câu dẫn): mắt bị kéo khỏi chữ. **Không chạm chữ**: cả
+  đường mảnh, SVG rộng cũng không giao khung chữ H1, H2, câu dẫn (đường nhịp tim chạy xuyên chữ
+  cuối H1 ở hero và CTA cuối là lỗi probe `--landing` đo được).
 
 ## C9. Cuộn mượt, GSAP, 3D ⚑
 
@@ -304,3 +306,57 @@ thị: dùng hai cột cạnh nhau có mũi tên ở giữa, dưới `lg` xếp 
   Shift bước 10%, Home / End về hai mép. Vòng tiêu điểm trên nút tròn của tay nắm.
 - Đường thanh `w-0.5 bg-white` có viền mờ, nút tròn `size-10` icon `ChevronsLeftRight` giữa khung.
 - Nhãn "Trước" / "Sau" ở hai góc dưới, nhãn sau màu nhấn. Khởi đầu 50%, không tự chạy qua lại.
+
+## C12. Màn sản phẩm sống ⚑
+
+Màn app giả ở hero (`A3`) chạy một **kịch bản ngắn** đúng chuyện sản phẩm làm hằng ngày (`A8`): job
+chạy xong thì dòng xanh, job trễ thì chấm vàng rồi thông báo Slack trượt vào; cuộc họp kết thúc thì
+biên bản hiện từng dòng; commit mới thì changelog thêm mục.
+
+- **Kịch bản cố định**, mảng sự kiện có mốc thời gian, 8–12 giây rồi vòng lại; không `Math.random`
+  (mỗi lần tải một kiểu, chụp ảnh không ổn định).
+
+  ```ts
+  const heroScript: HeroEvent[] = [
+    { at: 0, type: "row-insert", row: { job: "nightly-db-backup", status: "ok" } },
+    { at: 2400, type: "status", job: "invoice-sync", status: "late" },
+    { at: 3600, type: "toast", text: "invoice-sync is 12 min late" },
+    { at: 7000, type: "status", job: "invoice-sync", status: "ok" },
+  ];
+  ```
+- Mỗi sự kiện một thay đổi nhỏ, có chuyển động 200–300ms: dòng mới mở từ `grid-rows-[0fr]` sang
+  `grid-rows-[1fr]`, chấm trạng thái `transition-colors`, thông báo trượt vào góc khung (lệch 8px +
+  mờ → rõ) rồi tự đi sau 3 giây, con số tăng như `C6`.
+- **Khung cao cố định**: dòng mới đẩy dòng cuối ra khỏi khung (`overflow-hidden`), khung không đổi
+  chiều cao, trang bên dưới không nhảy.
+- Chỉ chạy khi khung trong khung nhìn (`C1`); **dừng khi khách rê chuột vào khung, focus hay bấm
+  tab** của demo (`C4`), chạy lại khi rời đi.
+- Server render và giảm chuyển động: đứng ở một khung giữa kịch bản có đủ các trạng thái (dòng
+  xanh, dòng vàng, thông báo), không chạy.
+
+## C13. Màn nghiêng phẳng dần khi cuộn ⚑
+
+Màn sản phẩm lớn (hero kiểu nghiêng, hay khối "cho xem sản phẩm làm việc") nằm nghiêng ra sau, cuộn
+tới thì phẳng dần về thẳng. Thuần CSS, tiến độ theo cuộn, một chỗ mỗi trang (`A8`).
+
+```css
+@keyframes tilt-flat {
+  from { transform: perspective(1400px) rotateX(16deg) scale(0.94); opacity: 0.7; }
+  to { transform: none; opacity: 1; }
+}
+
+@utility tilt-in {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      transform-origin: 50% 0;
+      animation: tilt-flat linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 40%;
+    }
+  }
+}
+```
+
+- Gắn trên khung màn (`lg:tilt-in`), dưới `lg` để phẳng: màn hẹp nghiêng làm chữ trong màn nhỏ đi.
+- Khung bọc không `overflow-hidden` theo chiều dọc, không thì bóng và mép trên bị cắt khi nghiêng.
+- Trình duyệt chưa hỗ trợ hay giảm chuyển động: màn thẳng ngay.
