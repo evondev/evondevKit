@@ -34,6 +34,11 @@ thật ở hero 20/21, một màu nhấn 19/21, không trang nào có nút gọi
 </div>
 ```
 
+- **Tiêu đề section chung một trục trái.** Trang canh trái thì mọi H2 bắt đầu ở mép trái khung;
+  khối nào hẹp lại (FAQ, câu hỏi) thì giữ mép trái, hẹp ở bên phải (`max-w-3xl` không `mx-auto`),
+  hay chia hai cột tiêu đề trái, nội dung phải. Khối FAQ canh giữa hẹp giữa một trang canh trái
+  đọc thành "bị thụt vào" (H2 ở 336px giữa các H2 ở 112px). Canh giữa chỉ khi cả khối canh giữa
+  có chủ ý (CTA cuối), chữ cũng `text-center`.
 - **Nền trang là `bg-background` của trang**, không phải xám của app: `H5` đặt lại token này
   thành trắng ngà ấm hay trắng theo loại trang. Card, form đứng trên nền đó là `bg-surface`.
 - **Dải nền**: tối đa **hai** dải phủ hết bề ngang mỗi trang, màu `bg-primary-light` (tint nhạt

@@ -3551,6 +3551,54 @@ function measureLandingPage() {
     if (overlap > 8 && verticalOverlap > 8) problems.push(`nút "${normalize(button.getAttribute("aria-label") || button.textContent).slice(0, 24)}" đè lên khối chữ đang cuộn ngang: để nút ngoài vùng cuộn (flex, chữ min-w-0 flex-1 overflow-x-auto, nút shrink-0) (A1)`);
   }
 
+  // H2: tiêu đề section chung một trục trái. H2 canh trái mà lệch khỏi trục đa số (khối FAQ canh giữa hẹp giữa
+  // trang canh trái, H2 ở 336px giữa các H2 ở 112px: chủ dự án thấy "bị thụt vào", 08/10/2026). H2 `text-center`
+  // là khối canh giữa có chủ ý, không tính.
+  // Chữ nằm giữa màn (đo tâm của chính dòng chữ, không của hộp) là khối canh giữa bằng flex hay mx-auto, không tính.
+  const isTextCentered = (heading) => {
+    const range = document.createRange();
+    range.selectNodeContents(heading);
+    const textRect = range.getBoundingClientRect();
+
+    return Math.abs(textRect.left + textRect.width / 2 - window.innerWidth / 2) < 16;
+  };
+  const leftAlignedHeadings = [...document.querySelectorAll("h2")].filter((heading) => isShown(heading) && !["center", "-webkit-center"].includes(getComputedStyle(heading).textAlign) && !isTextCentered(heading));
+  if (leftAlignedHeadings.length >= 3) {
+    const leftCounts = new Map();
+    for (const heading of leftAlignedHeadings) {
+      const left = Math.round(heading.getBoundingClientRect().left / 4) * 4;
+      leftCounts.set(left, (leftCounts.get(left) || 0) + 1);
+    }
+    const [commonLeft, commonCount] = [...leftCounts.entries()].sort((first, second) => second[1] - first[1])[0];
+    // Chỉ đo khi đa số H2 (từ 60%) cùng một trục: trang canh giữa có H2 rải mười vị trí (landing evondevKit), không có
+    // trục để so. Khối hai cột có nhãn hay chữ nằm đúng trục chung là bố cục có chủ ý, không tính.
+    const hasCommonAxis = commonCount >= Math.max(3, leftAlignedHeadings.length * 0.6);
+    const hasTextOnAxis = (heading) => [...(heading.closest("section") || heading.parentElement).querySelectorAll("p, span, div")].some((element) => {
+      const elementRect = element.getBoundingClientRect();
+
+      return element.children.length === 0 && normalize(element.textContent).length > 1 && Math.abs(elementRect.left - commonLeft) < 8 && isShown(element);
+    });
+    for (const heading of hasCommonAxis ? leftAlignedHeadings : []) {
+      const offset = Math.round(heading.getBoundingClientRect().left - commonLeft);
+      if (Math.abs(offset) > 24 && !hasTextOnAxis(heading)) problems.push(`H2 "${normalize(heading.textContent).slice(0, 36)}" lệch ${offset}px khỏi trục trái chung của các section: giữ mép trái, hẹp ở bên phải (H2)`);
+    }
+  }
+
+  // A8: trang tối cả trang mà các section dưới hero nền trống, không họa tiết (vầng màu, lưới chấm, hình trang trí):
+  // chủ dự án thấy "nền tối hết, chưa thấy họa tiết" (08/10/2026, 7/7 section nền trống).
+  const pageBackground = getComputedStyle(document.body).backgroundColor.match(/[\d.]+/g)?.map(Number) || [255, 255, 255];
+  const isDarkPage = (0.2126 * pageBackground[0] + 0.7152 * pageBackground[1] + 0.0722 * pageBackground[2]) / 255 < 0.15;
+  if (isDarkPage) {
+    const sectionsBelowHero = [...document.querySelectorAll("main section, body > section")].filter((section) => isShown(section) && !section.querySelector("h1") && section.getBoundingClientRect().height > 200);
+    const texturedCount = sectionsBelowHero.filter((section) => [section, ...section.querySelectorAll("*")].some((element) => {
+      const style = getComputedStyle(element);
+      const isDecor = element.getAttribute("aria-hidden") === "true" && (style.position === "absolute" || element.tagName === "svg" || element.tagName === "CANVAS") && element.getBoundingClientRect().width > 120;
+
+      return style.backgroundImage.includes("gradient") || style.backgroundImage.includes("url(") || isDecor;
+    })).length;
+    if (sectionsBelowHero.length >= 4 && texturedCount < 2) problems.push(`trang tối mà ${sectionsBelowHero.length - texturedCount}/${sectionsBelowHero.length} section dưới hero nền trống: thêm vầng màu --brand mờ, lưới chấm tan ra mép ở 2–3 section (A8)`);
+  }
+
   // A5: ô mảnh giao diện trong card bento cao cố định mà card đứng một mình một hàng: mảnh ngắn chừa khoảng
   // trống lớn trên tiêu đề (thấy ở landing công cụ dòng lệnh 07/10/2026, 375px: hở ~100px).
   const emptySlots = [];

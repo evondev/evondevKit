@@ -82,8 +82,8 @@ sẵn như thường.
 
 ```css
 @keyframes reveal-up {
-  from { opacity: 0; transform: translateY(18px); }
-  to { opacity: 1; transform: none; }
+  from { opacity: 0; transform: translateY(40px) scale(0.98); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: none; }
 }
 
 @utility reveal {
@@ -91,16 +91,20 @@ sẵn như thường.
     @media (prefers-reduced-motion: no-preference) {
       animation: reveal-up linear both;
       animation-timeline: view();
-      animation-range: entry 0% entry 45%;
+      animation-range: entry 15% cover 35%;
     }
   }
 }
 ```
 
-- Gắn `reveal` lên **khối con** (card, hàng, ảnh), không lên cả section: cả section mờ thì đầu
-  section (H2) cũng mờ theo.
-- Card trong một lưới hiện **cùng lúc**, không lệch từng cái: lệch 80ms × 6 card là khách chờ nửa
-  giây mới đọc được card cuối.
+- **Biên độ đủ để thấy**: dịch 40px, mờ 4px, chạy xong khi khối lên tới khoảng phần tư dưới màn
+  (`cover 35%`). Bản cũ dịch 18px và xong ngay khi khối vừa ló đáy màn (`entry 45%`): 13 khối có
+  hiệu ứng mà chủ dự án cuộn cả trang nói "khi scroll chưa có animation".
+- Gắn `reveal` lên **khối con** (card, hàng, ảnh, khối demo), không lên cả section: cả section mờ thì
+  đầu section (H2) cũng mờ theo. Tiêu đề section hiện trước, khối con sau.
+- Card trong một lưới **lệch theo cuộn, không theo thời gian**: card thứ hai, thứ ba lùi khoảng
+  hiện 5% (`[animation-range:entry_20%_cover_40%]`, `entry 25% cover 45%`), tối đa ba nấc. Lệch
+  theo cuộn không bắt khách chờ: dừng tay là thứ tự đứng yên ở đó.
 - Không hiện lại khi cuộn ngược lên (`view()` tự giữ trạng thái theo vị trí, không nháy).
 
 ## C4. Gõ chữ trong demo ⚑

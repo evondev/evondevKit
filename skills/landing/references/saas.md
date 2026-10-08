@@ -299,7 +299,8 @@ Mặc định **dày hơn mức Nhẹ của `H12`, vẫn chỉ CSS và JavaScrip
 - Hero hiện dần (`C2`), khối hiện khi cuộn tới (`C3`).
 - **Demo bấm được ở hero** (`A3`, `C4`), và **màn sản phẩm sống** (`A8`, `C12`): ưu tiên hơn mọi
   hiệu ứng trang trí.
-- **Một khoảnh khắc gắn cuộn** (`A8`, `C13`).
+- **2–3 khoảnh khắc gắn cuộn**, mỗi khối cho xem sản phẩm làm việc một cái (`A8`, `C13`), và `C3`
+  đủ biên độ cho mọi khối con.
 - Ngôn ngữ hình lấy từ việc sản phẩm làm (`A4`, `C10`), ở hai đầu trang, trong card và đường ngăn.
 - Thanh kéo trước / sau (`C11`), một khối cuộn ghim (`C7`), một dải chạy (`C5`).
 - Sản phẩm bán bằng con số khách tự tính được: một câu tính điền chỗ trống (`C15`).
@@ -341,6 +342,11 @@ làm mẫu", và "chưa wow, chuyển động còn thô". Trang khác nhau ở *
 | **Lớp nhìn** | khung lộ (đường ray, `+`, nhãn mono) · phẳng sáng có hai dải tối xen giữa · tối cả trang · mềm (nền xám nhạt, card trắng bo lớn, bóng mềm) · tạp chí (serif tiêu đề, khoảng trắng rộng, ảnh sản phẩm tràn) |
 | **Ngôn ngữ hình** | theo việc sản phẩm làm (`A4`, `C10`) |
 
+- **Tối cả trang phải có nguồn sáng và họa tiết**, không đen phẳng: vầng màu `--brand` rất mờ
+  (8–12% alpha) sau màn sản phẩm ở hero và sau khối nổi bật; lưới chấm hay ô tan ra mép ở 2–3
+  section; mép trên card sáng một sợi (`shadow-[inset_0_1px_0_rgb(255_255_255/0.06)]`); ngôn ngữ
+  hình ở đường ngăn (`A4`). Bản dựng tối mà cả 7 section nền trống thì chủ dự án thấy "nền tối hết,
+  chưa thấy họa tiết". Probe `--landing` đếm.
 - Khung lộ, hero canh giữa và lưới nền là bộ mặt landing evondevKit: một phương án được mượn
   **một** trong ba, không cả bộ (`A4`).
 - Nhịp section cũng đổi theo lớp nhìn: tối cả trang thì section ngăn bằng khoảng trắng và tiêu đề
@@ -355,8 +361,10 @@ làm mẫu", và "chưa wow, chuyển động còn thô". Trang khác nhau ở *
   trạng thái đổi màu, thông báo trượt vào góc, con số tăng, đúng chuyện sản phẩm làm hằng ngày
   (job chạy xong thì dòng xanh, trễ thì vàng rồi bật thông báo Slack). Khách thấy sản phẩm làm việc
   trước khi đọc chữ.
-- **Một khoảnh khắc gắn cuộn mỗi trang** (`C13`): màn sản phẩm nghiêng phẳng dần khi cuộn tới, khối
-  ghim đổi trạng thái theo bước (`C7`), hay nét tự vẽ chạy theo cuộn (`C10`). Một chỗ, đặt ở khối
-  "cho xem sản phẩm làm việc" đáng nhất, không rải khắp trang.
+- **Mỗi khối "cho xem sản phẩm làm việc" một khoảnh khắc gắn cuộn**, 2–3 mỗi trang: màn sản phẩm
+  nghiêng phẳng dần (`C13`), khối ghim đổi trạng thái theo bước (`C7`), cột biểu đồ mọc lên và nét tự
+  vẽ theo cuộn (`C10`), mũi tên trước / sau tự vẽ, dòng thời gian tô dần. Hai khối liền nhau không
+  cùng một kiểu. Cộng với `C3` cho mọi khối con: trang chỉ có một màn nghiêng ở đầu thì từ section
+  hai trở đi đọc như trang đứng yên.
 - Thêm trang trí không làm trang wow hơn: ba trang thử đầy chấm nhấp nháy vẫn "thô". Chuyển động
   đáng tiền là chuyển động **của sản phẩm**.
