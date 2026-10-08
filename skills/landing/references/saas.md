@@ -144,6 +144,10 @@ tĩnh chỉ khi sản phẩm không có đầu vào để đổi (hạ tầng, t
   độ sáng OKLCH tới khi chữ trắng đạt 4.5:1, dùng cho nền nút chữ trắng, link và chữ nhấn cỡ nhỏ:
   chữ trắng trên `#fa5d18` chỉ 3.2:1, nút cam sáng đọc mờ. Ba mã trên đã tính sẵn; màu khác thì
   tính lại theo cách đó.
+- **Vùng tối** (tối cả trang, dải tối, sân khấu tối): chữ nhấn cỡ nhỏ (link, nhãn "Step 1", "With
+  Pulsecheck") dùng `text-brand`, và `--brand` trong vùng tối là **bản nâng sáng** tới 4.5:1 trên nền
+  tối tới `#262a31`: cam giữ `#fa5d18`, tím `#9f79ff`, xanh `#4490ff`. Chữ `#2979ff` trên nền
+  `#15181e` chỉ 4.46:1, trên card `#1e2126` 4.05:1: probe báo. Nút chữ trắng vẫn `--primary`.
 - Người dùng đưa brand thì brand là `--brand`, `--primary` tính như trên.
 - Khai cả hai trên `.landing` và cho Tailwind thấy `--brand`: `@theme inline { --color-brand: var(--brand); }`
   (ra `text-brand`, `bg-brand`, `stroke-brand`).

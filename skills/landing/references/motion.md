@@ -174,7 +174,10 @@ CSS `sticky`).
 
 - Bước đang đọc do `IntersectionObserver` trên từng `li` quyết (`rootMargin: "-45% 0px -45% 0px"`),
   khung phải đổi nội dung bằng chuyển mờ 200ms. Không GSAP pin, không cuộn chiếm quyền (scroll-jacking).
-- **Bước không đang đọc mờ đi** (`opacity-40`, chuyển 200ms), bước đang đọc đậm, từ `lg`. Lúc chuyển
+- **Bước không đang đọc nhạt đi bằng màu chữ, không bằng `opacity`**: tiêu đề và đoạn sang
+  `text-muted`, số bước và mảnh mất màu nhấn; bước đang đọc `text-foreground`, số bước màu nhấn.
+  Chuyển `transition-colors` 200ms, từ `lg`. `opacity-40` đưa chữ phụ xuống 1.75:1, khách không đọc
+  được bước sắp tới (probe báo tương phản). Lúc chuyển
   bước, khung dính nằm giữa chữ hai bước (chữ bước trước ở trên, bước sau ở dưới, cùng đậm như nhau):
   khách không biết khung đang nói bước nào.
 - **Dưới `lg` bỏ ghim:** mỗi bước một khối chữ kèm ảnh của chính nó, xếp dọc.
