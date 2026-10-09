@@ -1,6 +1,6 @@
 ---
 name: ui-ux
-description: Gu UI/UX cho app — dashboard, danh sách, bảng, form, cài đặt, modal, trang lướt để chọn. Mặc định như một designer - brief, 2–3 wireframe, người dùng chọn rồi mới dựng. Lối khác khi đề nói rõ - soi UI đang có ("xem giúp", "review"), dựng lại giữ brand ("giữ brand", "keep the brand") hay theo gu skill ("bỏ style cũ"), refactor giữ nguyên hình, dựng luôn ("dựng luôn", "just build it"), design system trước ("UI kit", "component library"), logo đơn giản ("làm logo"), sửa một component. Mặc định flat; làm được glass, gradient, nổi, nền tối. Landing page, cửa hàng online, blog chưa được dạy - vẫn làm, báo trước. Dùng khi dựng, làm lại, sửa giao diện app, xem ảnh hay link app, hoặc nhắc "làm UI cho đẹp", "dựng màn", "thiết kế", "làm lại UX", "nhìn rối", "build a page", "design this screen", "redesign", "make it look good", "ecommerce", "ui-ux", "evon".
+description: Gu UI/UX cho app — dashboard, danh sách, bảng, form, cài đặt, modal, trang lướt để chọn, và app điện thoại (bản mẫu HTML trong khung máy). Mặc định như một designer - brief, 2–3 wireframe, người dùng chọn rồi mới dựng. Lối khác khi đề nói rõ - soi UI đang có ("xem giúp", "review"), dựng lại giữ brand ("giữ brand", "keep the brand") hay theo gu skill ("bỏ style cũ"), refactor giữ nguyên hình, dựng luôn ("dựng luôn", "just build it"), design system trước ("UI kit", "component library"), logo đơn giản ("làm logo"), sửa một component. Mặc định flat; làm được glass, gradient, nổi, nền tối. Landing page, cửa hàng online, blog chưa được dạy - vẫn làm, báo trước. Dùng khi dựng, làm lại, sửa giao diện app, xem ảnh hay link app, hoặc nhắc "làm UI cho đẹp", "dựng màn", "thiết kế", "làm lại UX", "nhìn rối", "build a page", "design this screen", "redesign", "make it look good", "ecommerce", "app mobile", "app điện thoại", "iOS", "Android", "mobile app", "ui-ux", "evon".
 ---
 
 # UI/UX cho hệ thống dashboard
@@ -22,6 +22,10 @@ và **ràng buộc bằng con số** để phần còn lại tự sạch.
 
 Phạm vi: **màn hình trong app**. Dashboard, danh sách, bảng, form, cài đặt,
 modal. Không lo trang bán hàng, trừ bảng giá (`references/layouts/pricing.md`).
+
+**App điện thoại** ("app mobile", "app điện thoại", "iOS", "Android", ảnh màn điện thoại): vẫn đi đúng
+lối của câu 1 (mặc định nhánh `U`), cộng mở `references/mobile.md` (luật `J`). Đầu ra là bản mẫu HTML
+trong khung điện thoại, mỗi màn một đường dẫn, theo `references/layouts/mobile-app.html`. ⚑
 
 **Đề là loại UI skill chưa được dạy thì báo trước một dòng, rồi vẫn làm.** Gồm: landing
 page, trang giới thiệu, trang chủ website; cửa hàng online phía người mua (trang chủ shop,
@@ -409,6 +413,7 @@ thì một trong hai chỗ là sai.
 | **L** | `references/refactor.md` | Refactor codebase đã có |
 | **U** | `references/design-process.md` | Thiết kế từ đầu: brief, việc chính của từng màn, wireframe phương án, dựng |
 | **W** | `references/tailwind-v4-traps.md` | Bẫy Tailwind v4 khi có CSS cũ |
+| **J** | `references/mobile.md` | App điện thoại: khung máy và mép chừa, thanh tab, đầu màn, kích cỡ cho ngón tay, hành động chính, sheet, phản hồi khi nhấn ⚑ |
 | **P** | `references/styles.md` | Phong cách thị giác: flat, nổi, glass, gradient, tối. Luật nào được đè, bẫy riêng, **tương phản** |
 
 **Luôn mở, mọi task:**
@@ -461,7 +466,7 @@ tử chưa có file thì theo luồng **"Dựng một thứ chưa có mẫu"** �
 năm câu bằng mắt, lúc giao nói một dòng *"X chưa có mẫu đã duyệt, mình mượn khuôn của Y"*.
 
 **Code mẫu đã duyệt** (chỉ mở sau khi chốt loại màn hình, luật `S11`):
-`references/layouts/app-kanban.html`
+`references/layouts/app-kanban.html`, `references/layouts/mobile-app.html` (app điện thoại, `J`)
 
 ---
 

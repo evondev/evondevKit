@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <!-- viewport-fit=cover: chạy trên điện thoại thật thì nội dung tràn dưới tai thỏ, tự chừa bằng env(safe-area-inset-*). -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Chi Tiêu — app mẫu</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <style>
+      /* ===== KHỐI ĐỔI THƯƠNG HIỆU, chép từ references/tokens.css (nền sáng). ===== */
+      :root {
+        --app-font: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+        --primary: #181818;
+        --primary-hover: #2e2e2e;
+        --primary-foreground: #ffffff;
+
+        --background: #f4f4f6;
+        --surface: #ffffff;
+        --foreground: #2c2c2c;
+        --muted: #707070;
+        --border: #f0f0f2;
+        --border-strong: #eaeaea;
+        --secondary: #e7e8ec;
+        --danger: #c70036;
+        --danger-bg: rgb(255 32 86 / 0.1);
+        --success: #00875a;
+
+        /* Màu nhận diện danh mục (M34): nền nhạt + icon đậm cùng sắc, icon đạt 4.5:1 trên nền của nó. */
+        --cat-amber-bg: #fff1d6; --cat-amber: #a35c00;
+        --cat-blue-bg: #e3efff;  --cat-blue: #1d5fbf;
+        --cat-rose-bg: #ffe4ec;  --cat-rose: #b4234d;
+        --cat-green-bg: #dff5ea;
+        --avatar-bg: #ffd8c2;    --avatar-text: #8a3b12;
+
+        /* Nền quanh khung máy (chỉ màn rộng, không thuộc app). */
+        --frame-page: #e9e9ec;
+        --frame-muted: #565656;  /* chữ phụ trên --frame-page, 5.9:1; --muted trên nền này chỉ 4.09:1 */
+      }
+      /* ===== HẾT KHỐI ĐỔI THƯƠNG HIỆU ===== */
+
+      /* ===== KHUNG MÁY (J1). Hai chế độ:
+         - Màn hẹp (điện thoại thật, probe 390): màn tràn hết, chừa tai thỏ và thanh home bằng env().
+         - Màn rộng (máy tính): màn 390×844 nằm trong khung điện thoại, vẽ thanh trạng thái 47px và thanh home 34px. ===== */
+      :root { --inset-top: env(safe-area-inset-top, 0px); --inset-bottom: env(safe-area-inset-bottom, 0px); }
+      .device { position: relative; width: 100%; height: 100dvh; overflow: hidden; background: var(--background); }
+      .status-bar, .home-indicator { display: none; }
+      @media (min-width: 500px) {
+        :root { --inset-top: 47px; --inset-bottom: 34px; }
+        .device { width: 390px; height: 844px; border-radius: 48px; box-shadow: 0 0 0 10px #1c1c1e, 0 0 0 11px #3a3a3c, 0 30px 60px -10px rgb(0 0 0 / 0.35); }
+        .status-bar { display: flex; }
+        .home-indicator { display: block; }
+      }
+
+      /* Màn: mỗi màn là một lớp phủ kín khung; màn đang xem có .is-active. Đẩy màn con vào từ phải (J3). */
+      .screen { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--background); visibility: hidden; }
+      .screen.is-active { visibility: visible; }
+      @media (prefers-reduced-motion: no-preference) {
+        .screen.is-pushed.is-active { animation: push-in 300ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .sheet { transition: translate 320ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .scrim { transition: opacity 240ms ease; }
+      }
+      @keyframes push-in { from { translate: 30% 0; opacity: 0.6; } to { translate: 0 0; opacity: 1; } }
+
+      /* Vùng cuộn: chừa đỉnh cho tai thỏ, chừa đáy cho thanh tab nổi + thanh home (J2). */
+      .scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+      .scroll::-webkit-scrollbar { display: none; }
+      .pad-top { padding-top: var(--inset-top); }
+      .pad-tabbar { padding-bottom: calc(var(--inset-bottom) + 96px); }
+      .pad-bottom { padding-bottom: calc(var(--inset-bottom) + 16px); }
+      .above-home { bottom: calc(var(--inset-bottom) + 8px); }
+
+      /* Sheet (J6): trượt từ đáy, bo 28px hai góc trên, thanh kéo 36×5, lớp phủ đen 40%. */
+      .sheet { translate: 0 100%; }
+      .sheet.is-open { translate: 0 0; }
+      .scrim { opacity: 0; pointer-events: none; }
+      .scrim.is-open { opacity: 1; pointer-events: auto; }
+
+      /* Nhấn: co nhẹ (đúng như chạm thật), nút tối thì sáng lên một bậc. */
+      .press { transition: scale 120ms cubic-bezier(0.23, 1, 0.32, 1), background-color 150ms ease; -webkit-tap-highlight-color: transparent; }
+      .press:active { scale: 0.97; }
+      @media (prefers-reduced-motion: reduce) { .press:active { scale: 1; } }
+    </style>
+
+    <style type="text/tailwindcss">
+      @theme inline {
+        --font-sans: var(--app-font);
+        --color-primary: var(--primary);
+        --color-primary-hover: var(--primary-hover);
+        --color-primary-foreground: var(--primary-foreground);
+        --color-background: var(--background);
+        --color-surface: var(--surface);
+        --color-foreground: var(--foreground);
+        --color-muted: var(--muted);
+        --color-border: var(--border);
+        --color-border-strong: var(--border-strong);
+        --color-secondary: var(--secondary);
+        --color-danger: var(--danger);
+        --color-danger-bg: var(--danger-bg);
+        --color-success: var(--success);
+      }
+    </style>
+  </head>
+
+  <body class="bg-background font-sans text-foreground antialiased min-[500px]:flex min-[500px]:min-h-screen min-[500px]:items-center min-[500px]:justify-center min-[500px]:gap-12 min-[500px]:bg-(--frame-page) min-[500px]:py-10">
+    <!-- Danh sách màn: chỉ ở màn rộng, để người duyệt nhảy thẳng tới từng màn. Không thuộc app. -->
+    <nav class="hidden w-48 text-sm min-[900px]:block" aria-label="Màn trong bản mẫu">
+      <p class="mb-3 font-medium">Chi Tiêu · 5 màn</p>
+      <ol class="space-y-1 text-(--frame-muted)">
+        <li><a href="#home" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">1. Tổng quan</a></li>
+        <li><a href="#detail" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">2. Chi tiết giao dịch</a></li>
+        <li><a href="#add" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">3. Thêm giao dịch (sheet)</a></li>
+        <li><a href="#stats" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">4. Thống kê</a></li>
+        <li><a href="#settings" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">5. Cài đặt</a></li>
+      </ol>
+    </nav>
+
+    <div class="device">
+      <!-- Thanh trạng thái giả (chỉ khung máy tính): 47px, giờ trái, sóng / pin phải. -->
+      <div class="status-bar pointer-events-none absolute inset-x-0 top-0 z-40 h-[47px] items-center justify-between px-8 pt-1 text-[15px] font-semibold" aria-hidden="true">
+        <span>9:41</span>
+        <span class="flex items-center gap-1.5"><i data-lucide="signal" class="size-4"></i><i data-lucide="wifi" class="size-4"></i><i data-lucide="battery-full" class="size-5"></i></span>
+      </div>
+
+      <!-- ================= 1. TỔNG QUAN (tab 1) ================= -->
+      <section class="screen" data-screen="home" aria-label="Tổng quan">
+        <div class="scroll pad-top pad-tabbar">
+          <!-- Đầu màn gốc (J3): lời chào nhỏ + tiêu đề lớn canh trái, avatar phải. -->
+          <header class="flex items-start justify-between px-4 pt-3">
+            <div>
+              <p class="text-sm text-muted">Chào buổi sáng, Lan</p>
+              <h1 class="mt-0.5 text-[32px]/[38px] font-semibold tracking-tight">Tháng 10</h1>
+            </div>
+            <a href="#settings" class="press mt-1 grid size-11 place-items-center rounded-full bg-(--avatar-bg) text-[15px] font-semibold text-(--avatar-text)" aria-label="Tài khoản">L</a>
+          </header>
+
+          <!-- Thẻ số chính (J5): một con số lớn nhất màn, kèm ngân sách còn lại. -->
+          <div class="mx-4 mt-5 rounded-[20px] bg-primary p-5 text-primary-foreground">
+            <p class="text-sm text-white/70">Đã chi tháng này</p>
+            <p class="mt-1 text-[36px]/[42px] font-semibold tracking-tight tabular-nums">8.450.000 <span class="text-2xl font-medium text-white/70">đ</span></p>
+            <div class="mt-4 h-1.5 overflow-hidden rounded-full bg-white/15"><div class="h-full w-[70%] rounded-full bg-white"></div></div>
+            <p class="mt-2 flex justify-between text-[13px] text-white/70"><span>70% ngân sách</span><span class="tabular-nums">Còn 3.550.000 đ</span></p>
+          </div>
+
+          <!-- Dải ngày trong tuần (J5): bảy ô bấm được, hôm nay đậm, ngày có chi tiêu có chấm. -->
+          <div class="mt-6 flex items-center justify-between px-4">
+            <h2 class="text-[20px]/[25px] font-semibold">Tuần này</h2>
+            <span class="text-sm text-muted tabular-nums">6–12/10</span>
+          </div>
+          <div class="mt-3 grid grid-cols-7 gap-1.5 px-4" role="tablist" aria-label="Ngày trong tuần">
+            <button role="tab" aria-selected="false" class="press flex h-16 flex-col items-center justify-center gap-1 rounded-2xl bg-surface text-muted"><span class="text-xs">T2</span><span class="text-base font-semibold text-foreground tabular-nums">6</span><span class="size-1 rounded-full bg-muted"></span></button>
+            <button role="tab" aria-selected="false" class="press flex h-16 flex-col items-center justify-center gap-1 rounded-2xl bg-surface text-muted"><span class="text-xs">T3</span><span class="text-base font-semibold text-foreground tabular-nums">7</span><span class="size-1 rounded-full bg-muted"></span></button>
+            <button role="tab" aria-selected="false" class="press flex h-16 flex-col items-center justify-center gap-1 rounded-2xl bg-surface text-muted"><span class="text-xs">T4</span><span class="text-base font-semibold text-foreground tabular-nums">8</span><span class="size-1 rounded-full bg-transparent"></span></button>
+            <button role="tab" aria-selected="true" class="press flex h-16 flex-col items-center justify-center gap-1 rounded-2xl bg-primary text-white/70"><span class="text-xs">T5</span><span class="text-base font-semibold text-white tabular-nums">9</span><span class="size-1 rounded-full bg-white"></span></button>
+            <button role="tab" aria-selected="false" class="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl text-muted/60" disabled><span class="text-xs">T6</span><span class="text-base font-semibold tabular-nums">10</span><span class="size-1"></span></button>
+            <button role="tab" aria-selected="false" class="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl text-muted/60" disabled><span class="text-xs">T7</span><span class="text-base font-semibold tabular-nums">11</span><span class="size-1"></span></button>
+            <button role="tab" aria-selected="false" class="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl text-muted/60" disabled><span class="text-xs">CN</span><span class="text-base font-semibold tabular-nums">12</span><span class="size-1"></span></button>
+          </div>
+
+          <!-- Danh sách nhóm trong thẻ (J4): dòng 64px, icon tròn 40px, tên + giờ trái, số tiền phải. -->
+          <div class="mt-6 flex items-center justify-between px-4">
+            <h2 class="text-[20px]/[25px] font-semibold">Hôm nay</h2>
+            <a href="#stats" class="press -mr-2 inline-flex h-11 items-center px-2 text-sm font-medium text-muted">Xem tất cả</a>
+          </div>
+          <ul class="mx-4 mt-2 divide-y divide-border overflow-hidden rounded-[20px] bg-surface">
+            <li><a href="#detail" class="press flex min-h-16 items-center gap-3 px-4 py-3 active:bg-background">
+              <span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-amber-bg) text-(--cat-amber)"><i data-lucide="coffee" class="size-5"></i></span>
+              <span class="min-w-0 flex-1"><span class="block truncate text-base font-medium">Cà phê sáng</span><span class="block text-[13px] text-muted">Ăn uống · 8:15</span></span>
+              <span class="shrink-0 text-base font-medium tabular-nums">−45.000 đ</span>
+            </a></li>
+            <li><a href="#detail" class="press flex min-h-16 items-center gap-3 px-4 py-3 active:bg-background">
+              <span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-blue-bg) text-(--cat-blue)"><i data-lucide="car" class="size-5"></i></span>
+              <span class="min-w-0 flex-1"><span class="block truncate text-base font-medium">Grab đi làm</span><span class="block text-[13px] text-muted">Đi lại · 8:40</span></span>
+              <span class="shrink-0 text-base font-medium tabular-nums">−62.000 đ</span>
+            </a></li>
+            <li><a href="#detail" class="press flex min-h-16 items-center gap-3 px-4 py-3 active:bg-background">
+              <span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-rose-bg) text-(--cat-rose)"><i data-lucide="shopping-bag" class="size-5"></i></span>
+              <span class="min-w-0 flex-1"><span class="block truncate text-base font-medium">Đi chợ cuối tuần cho cả nhà, mua thêm rau và trái cây</span><span class="block text-[13px] text-muted">Đi chợ · 11:02</span></span>
+              <span class="shrink-0 text-base font-medium tabular-nums">−386.000 đ</span>
+            </a></li>
+            <li><a href="#detail" class="press flex min-h-16 items-center gap-3 px-4 py-3 active:bg-background">
+              <span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-green-bg) text-success"><i data-lucide="wallet" class="size-5"></i></span>
+              <span class="min-w-0 flex-1"><span class="block truncate text-base font-medium">Tiền thưởng dự án</span><span class="block text-[13px] text-muted">Thu nhập · 14:30</span></span>
+              <span class="shrink-0 text-base font-medium text-success tabular-nums">+2.000.000 đ</span>
+            </a></li>
+          </ul>
+        </div>
+
+      </section>
+
+      <!-- ================= 2. CHI TIẾT GIAO DỊCH (màn con, đẩy vào từ phải) ================= -->
+      <section class="screen is-pushed" data-screen="detail" aria-label="Chi tiết giao dịch">
+        <!-- Thanh trên màn con (J3): 44px, nút quay lại trái, tiêu đề giữa 17px, hành động phụ phải. -->
+        <header class="pad-top shrink-0 bg-background">
+          <div class="flex h-11 items-center justify-between px-2">
+            <a href="#home" class="press inline-flex h-11 items-center gap-0.5 rounded-full pr-3 pl-1 text-base" aria-label="Quay lại Tổng quan"><i data-lucide="chevron-left" class="size-6"></i>Tổng quan</a>
+            <p class="absolute left-1/2 -translate-x-1/2 text-[17px] font-semibold">Giao dịch</p>
+            <button class="press grid size-11 place-items-center rounded-full" aria-label="Sửa"><i data-lucide="pencil" class="size-5"></i></button>
+          </div>
+        </header>
+        <div class="scroll pad-bottom">
+          <div class="flex flex-col items-center px-4 pt-6 pb-8 text-center">
+            <span class="grid size-16 place-items-center rounded-full bg-(--cat-rose-bg) text-(--cat-rose)"><i data-lucide="shopping-bag" class="size-7"></i></span>
+            <p class="mt-4 text-[36px]/[42px] font-semibold tracking-tight tabular-nums">−386.000 đ</p>
+            <p class="mt-1 text-base text-pretty text-muted">Đi chợ cuối tuần cho cả nhà, mua thêm rau và trái cây</p>
+          </div>
+          <dl class="mx-4 divide-y divide-border overflow-hidden rounded-[20px] bg-surface text-base">
+            <div class="flex min-h-14 items-center justify-between gap-4 px-4"><dt class="text-muted">Danh mục</dt><dd class="font-medium">Đi chợ</dd></div>
+            <div class="flex min-h-14 items-center justify-between gap-4 px-4"><dt class="text-muted">Thời gian</dt><dd class="font-medium tabular-nums">09/10 · 11:02</dd></div>
+            <div class="flex min-h-14 items-center justify-between gap-4 px-4"><dt class="text-muted">Ví</dt><dd class="font-medium">Tiền mặt</dd></div>
+            <div class="flex min-h-14 items-center justify-between gap-4 px-4"><dt class="text-muted">Chia với</dt><dd class="font-medium">Minh, Hà</dd></div>
+          </dl>
+          <p class="mx-4 mt-3 text-[13px] text-muted">Ảnh hoá đơn và ghi chú thêm nằm trong mục Sửa.</p>
+          <!-- Việc nguy hiểm: đỏ nhạt (I4), đứng riêng cuối màn, cách xa nút chính. -->
+          <button class="press mx-4 mt-8 flex h-[52px] w-[calc(100%-2rem)] items-center justify-center gap-2 rounded-2xl bg-danger-bg text-base font-medium text-danger">
+            <i data-lucide="trash-2" class="size-5"></i>Xoá giao dịch
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= 4. THỐNG KÊ (tab 2) ================= -->
+      <section class="screen" data-screen="stats" aria-label="Thống kê">
+        <div class="scroll pad-top pad-tabbar">
+          <header class="px-4 pt-3"><h1 class="text-[32px]/[38px] font-semibold tracking-tight">Thống kê</h1></header>
+          <!-- Điều khiển phân đoạn (J4): cao 36px, tối đa 5 mục, nền rãnh xám, mục chọn nền trắng. Chữ mọi mục
+               cùng --foreground: --muted trên rãnh --secondary chỉ 4.04:1. -->
+          <div class="mx-4 mt-4 grid grid-cols-3 rounded-xl bg-secondary p-1 text-sm font-medium" role="tablist" aria-label="Khoảng thời gian">
+            <button role="tab" aria-selected="false" class="press h-9 rounded-lg">Tuần</button>
+            <button role="tab" aria-selected="true" class="press h-9 rounded-lg bg-surface shadow-[0_1px_3px_rgb(0_0_0/0.08)]">Tháng</button>
+            <button role="tab" aria-selected="false" class="press h-9 rounded-lg">Năm</button>
+          </div>
+          <div class="mx-4 mt-4 rounded-[20px] bg-surface p-5">
+            <p class="text-sm text-muted">Chi tiêu theo tuần</p>
+            <p class="mt-1 text-2xl font-semibold tabular-nums">8.450.000 đ</p>
+            <div class="mt-5 flex h-36 items-end gap-3" aria-hidden="true">
+              <div class="flex h-full flex-1 flex-col items-center justify-end gap-2"><div class="w-full rounded-lg bg-secondary" style="height: 58%"></div><span class="text-xs text-muted">T1</span></div>
+              <div class="flex h-full flex-1 flex-col items-center justify-end gap-2"><div class="w-full rounded-lg bg-secondary" style="height: 82%"></div><span class="text-xs text-muted">T2</span></div>
+              <div class="flex h-full flex-1 flex-col items-center justify-end gap-2"><div class="w-full rounded-lg bg-secondary" style="height: 46%"></div><span class="text-xs text-muted">T3</span></div>
+              <div class="flex h-full flex-1 flex-col items-center justify-end gap-2"><div class="w-full rounded-lg bg-primary" style="height: 70%"></div><span class="text-xs font-medium">T4</span></div>
+              <div class="flex h-full flex-1 flex-col items-center justify-end gap-2"><div class="w-full rounded-lg border border-dashed border-border-strong" style="height: 18%"></div><span class="text-xs text-muted">T5</span></div>
+            </div>
+          </div>
+          <h2 class="mt-6 px-4 text-[20px]/[25px] font-semibold">Theo danh mục</h2>
+          <ul class="mx-4 mt-2 divide-y divide-border overflow-hidden rounded-[20px] bg-surface">
+            <li class="flex min-h-16 items-center gap-3 px-4 py-3"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-rose-bg) text-(--cat-rose)"><i data-lucide="shopping-bag" class="size-5"></i></span><span class="min-w-0 flex-1"><span class="flex justify-between text-base font-medium"><span>Đi chợ</span><span class="tabular-nums">3.120.000 đ</span></span><span class="mt-2 block h-1.5 overflow-hidden rounded-full bg-secondary"><span class="block h-full w-[37%] rounded-full bg-primary"></span></span></span></li>
+            <li class="flex min-h-16 items-center gap-3 px-4 py-3"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-amber-bg) text-(--cat-amber)"><i data-lucide="coffee" class="size-5"></i></span><span class="min-w-0 flex-1"><span class="flex justify-between text-base font-medium"><span>Ăn uống</span><span class="tabular-nums">2.480.000 đ</span></span><span class="mt-2 block h-1.5 overflow-hidden rounded-full bg-secondary"><span class="block h-full w-[29%] rounded-full bg-primary"></span></span></span></li>
+            <li class="flex min-h-16 items-center gap-3 px-4 py-3"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-blue-bg) text-(--cat-blue)"><i data-lucide="car" class="size-5"></i></span><span class="min-w-0 flex-1"><span class="flex justify-between text-base font-medium"><span>Đi lại</span><span class="tabular-nums">1.350.000 đ</span></span><span class="mt-2 block h-1.5 overflow-hidden rounded-full bg-secondary"><span class="block h-full w-[16%] rounded-full bg-primary"></span></span></span></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= 5. CÀI ĐẶT (tab 3) ================= -->
+      <section class="screen" data-screen="settings" aria-label="Cài đặt">
+        <div class="scroll pad-top pad-tabbar">
+          <header class="px-4 pt-3"><h1 class="text-[32px]/[38px] font-semibold tracking-tight">Cài đặt</h1></header>
+          <a href="#settings" class="press mx-4 mt-4 flex items-center gap-3 rounded-[20px] bg-surface p-4">
+            <span class="grid size-14 shrink-0 place-items-center rounded-full bg-(--avatar-bg) text-lg font-semibold text-(--avatar-text)">L</span>
+            <span class="min-w-0 flex-1"><span class="block text-[17px] font-semibold">Nguyễn Thị Lan</span><span class="block truncate text-sm text-muted">lan.nguyen@gmail.com</span></span>
+            <i data-lucide="chevron-right" class="size-5 shrink-0 text-muted"></i>
+          </a>
+          <!-- Nhóm dòng (J4): tiêu đề nhóm 13px viết hoa nhỏ, các dòng 56px trong một thẻ, chevron khi dẫn sang màn khác. -->
+          <h2 class="mt-6 px-8 text-[13px] font-medium text-muted">CHI TIÊU</h2>
+          <ul class="mx-4 mt-2 divide-y divide-border overflow-hidden rounded-[20px] bg-surface text-base">
+            <li><a href="#settings" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="target" class="size-5 text-muted"></i><span class="flex-1">Ngân sách tháng</span><span class="text-muted tabular-nums">12.000.000 đ</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+            <li><a href="#settings" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="tags" class="size-5 text-muted"></i><span class="flex-1">Danh mục</span><span class="text-muted">9</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+            <li><a href="#settings" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="wallet" class="size-5 text-muted"></i><span class="flex-1">Ví và tài khoản</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+          </ul>
+          <h2 class="mt-6 px-8 text-[13px] font-medium text-muted">THÔNG BÁO</h2>
+          <ul class="mx-4 mt-2 divide-y divide-border overflow-hidden rounded-[20px] bg-surface text-base">
+            <li><label class="flex min-h-14 cursor-pointer items-center gap-3 px-4"><i data-lucide="bell" class="size-5 text-muted"></i><span class="flex-1">Nhắc ghi chi tiêu lúc 21:00</span><input type="checkbox" class="peer sr-only" checked /><span class="relative h-[31px] w-[51px] shrink-0 rounded-full bg-secondary transition-colors peer-checked:bg-success after:absolute after:top-[2px] after:left-[2px] after:size-[27px] after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:after:translate-x-5"></span></label></li>
+            <li><label class="flex min-h-14 cursor-pointer items-center gap-3 px-4"><i data-lucide="triangle-alert" class="size-5 text-muted"></i><span class="flex-1">Báo khi vượt 80% ngân sách</span><input type="checkbox" class="peer sr-only" /><span class="relative h-[31px] w-[51px] shrink-0 rounded-full bg-secondary transition-colors peer-checked:bg-success after:absolute after:top-[2px] after:left-[2px] after:size-[27px] after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:after:translate-x-5"></span></label></li>
+          </ul>
+          <!-- Đăng xuất: chữ đỏ trong thẻ riêng ở cuối (I4). -->
+          <button class="press mx-4 mt-6 flex min-h-14 w-[calc(100%-2rem)] items-center justify-center rounded-[20px] bg-surface text-base font-medium text-danger">Đăng xuất</button>
+          <p class="mt-4 text-center text-[13px] text-muted">Phiên bản 2.4.0</p>
+        </div>
+      </section>
+
+      <!-- ================= THANH TAB NỔI (J2): 64px, tách mép 16px, bo tròn, 3 mục có chữ. Hành động chính của tab
+           (J5) là nút tròn 64px đứng riêng bên phải cùng hàng, không nằm trong thanh tab (thanh tab chỉ để đi lại)
+           và không nổi đè lên nội dung. ================= -->
+      <a href="#add" class="press above-home absolute right-4 z-30 grid size-16 place-items-center rounded-full bg-primary text-primary-foreground shadow-[0_8px_24px_-8px_rgb(0_0_0/0.45)]" aria-label="Thêm giao dịch" data-fab>
+        <i data-lucide="plus" class="size-7"></i>
+      </a>
+      <nav class="above-home absolute left-4 right-[92px] z-30 grid h-16 grid-cols-3 rounded-full bg-surface/90 px-2 shadow-[0_0_0_1px_rgb(0_0_0/0.04),0_8px_24px_-8px_rgb(0_0_0/0.18)] backdrop-blur-xl" aria-label="Điều hướng chính" data-tabbar>
+        <a href="#home" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground" data-tab="home"><i data-lucide="house" class="size-6"></i><span class="text-[11px] font-medium">Tổng quan</span></a>
+        <a href="#stats" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground" data-tab="stats"><i data-lucide="chart-column" class="size-6"></i><span class="text-[11px] font-medium">Thống kê</span></a>
+        <a href="#settings" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground" data-tab="settings"><i data-lucide="settings" class="size-6"></i><span class="text-[11px] font-medium">Cài đặt</span></a>
+      </nav>
+
+      <!-- ================= 3. THÊM GIAO DỊCH (sheet, J6) ================= -->
+      <div class="scrim absolute inset-0 z-40 bg-black/40" data-scrim></div>
+      <section class="sheet absolute inset-x-0 bottom-0 z-50 flex max-h-[92%] flex-col rounded-t-[28px] bg-surface" role="dialog" aria-modal="true" aria-label="Thêm giao dịch" data-sheet>
+        <div class="flex justify-center pt-2"><span class="h-[5px] w-9 rounded-full bg-border-strong" aria-hidden="true"></span></div>
+        <div class="flex h-11 items-center justify-between px-2">
+          <a href="#home" class="press inline-flex h-11 items-center rounded-full px-3 text-base text-muted" data-close>Huỷ</a>
+          <p class="text-[17px] font-semibold">Thêm giao dịch</p>
+          <span class="w-14"></span>
+        </div>
+        <div class="overflow-y-auto px-4 pb-4">
+          <label class="mt-3 block text-center">
+            <span class="text-sm text-muted">Số tiền</span>
+            <span class="mt-1 flex items-baseline justify-center gap-1"><input inputmode="numeric" value="45.000" class="min-w-16 bg-transparent [field-sizing:content] text-center text-[40px]/[48px] font-semibold tracking-tight tabular-nums outline-none" aria-label="Số tiền" /><span class="text-2xl font-medium text-muted">đ</span></span>
+          </label>
+          <p class="mt-5 text-sm font-medium">Danh mục</p>
+          <div class="mt-2 grid grid-cols-4 gap-2" role="radiogroup" aria-label="Danh mục">
+            <button role="radio" aria-checked="true" class="press flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-2xl bg-primary text-[13px] text-primary-foreground"><i data-lucide="coffee" class="size-5"></i>Ăn uống</button>
+            <button role="radio" aria-checked="false" class="press flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-2xl bg-background text-[13px]"><i data-lucide="car" class="size-5"></i>Đi lại</button>
+            <button role="radio" aria-checked="false" class="press flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-2xl bg-background text-[13px]"><i data-lucide="shopping-bag" class="size-5"></i>Đi chợ</button>
+            <button role="radio" aria-checked="false" class="press flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-2xl bg-background text-[13px]"><i data-lucide="ellipsis" class="size-5"></i>Khác</button>
+          </div>
+          <label class="mt-5 block"><span class="text-sm font-medium">Ghi chú</span>
+            <input class="mt-2 h-[52px] w-full rounded-2xl border border-border-strong bg-surface px-4 text-base outline-none placeholder:text-muted focus:border-primary" placeholder="Ví dụ: cà phê với khách" />
+          </label>
+          <button class="press mt-3 flex h-14 w-full items-center gap-3 rounded-2xl bg-background px-4 text-base"><i data-lucide="calendar" class="size-5 text-muted"></i><span class="flex-1 text-left">Hôm nay, 09/10</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></button>
+        </div>
+        <!-- Nút chính dính đáy sheet, trên thanh home (J5): 52px, cách hai mép 16px, không tràn sát mép. -->
+        <div class="border-t border-border px-4 pt-3" style="padding-bottom: calc(var(--inset-bottom) + 12px)">
+          <a href="#home" class="press flex h-[52px] items-center justify-center rounded-2xl bg-primary text-base font-semibold text-primary-foreground" data-save>Lưu giao dịch</a>
+        </div>
+      </section>
+
+      <!-- Thông báo ngắn (J7): trên thanh tab, giữa, tự đi sau 4 giây. -->
+      <div class="pointer-events-none absolute inset-x-4 z-[60] flex justify-center" style="bottom: calc(var(--inset-bottom) + 88px)" aria-live="polite">
+        <p class="translate-y-2 rounded-full bg-foreground px-4 py-3 text-sm font-medium text-white opacity-0 shadow-lg transition-all duration-200" data-toast>Đã lưu giao dịch 45.000 đ</p>
+      </div>
+
+      <div class="home-indicator pointer-events-none absolute bottom-2 left-1/2 z-[70] h-[5px] w-[134px] -translate-x-1/2 rounded-full bg-foreground" aria-hidden="true"></div>
+    </div>
+
+    <script>
+      lucide.createIcons();
+
+      // Điều hướng bằng hash: #home, #stats, #settings là tab; #detail là màn con; #add mở sheet trên màn đang xem.
+      const tabScreens = ["home", "stats", "settings"];
+      const sheet = document.querySelector("[data-sheet]");
+      const scrim = document.querySelector("[data-scrim]");
+      const tabbar = document.querySelector("[data-tabbar]");
+      const fab = document.querySelector("[data-fab]");
+      let baseScreen = "home";
+
+      function showScreen(name) {
+        document.querySelectorAll("[data-screen]").forEach((screen) => screen.classList.toggle("is-active", screen.dataset.screen === name));
+        document.querySelectorAll("[data-tab]").forEach((tab) => {
+          if (tab.dataset.tab === name) tab.setAttribute("aria-current", "page");
+          else tab.removeAttribute("aria-current");
+        });
+        // Màn con không có thanh tab (J2): nó thuộc luồng của tab cha, quay lại bằng nút trái.
+        tabbar.hidden = !tabScreens.includes(name);
+        // Nút thêm chỉ ở tab có việc thêm (Tổng quan); tab khác thanh tab giãn hết bề ngang.
+        fab.hidden = name !== "home";
+        tabbar.classList.toggle("right-[92px]", name === "home");
+        tabbar.classList.toggle("right-4", name !== "home");
+      }
+
+      function route() {
+        const name = location.hash.slice(1) || "home";
+        const isSheet = name === "add";
+        if (!isSheet) baseScreen = name;
+        showScreen(isSheet ? baseScreen : name);
+        sheet.classList.toggle("is-open", isSheet);
+        scrim.classList.toggle("is-open", isSheet);
+        sheet.inert = !isSheet;
+      }
+
+      window.addEventListener("hashchange", route);
+      scrim.addEventListener("click", () => { location.hash = baseScreen; });
+      document.querySelector("[data-save]").addEventListener("click", () => {
+        const toast = document.querySelector("[data-toast]");
+        setTimeout(() => toast.classList.remove("opacity-0", "translate-y-2"), 250);
+        setTimeout(() => toast.classList.add("opacity-0", "translate-y-2"), 4250);
+      });
+      route();
+    </script>
+  </body>
+</html>
