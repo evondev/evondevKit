@@ -111,7 +111,7 @@
 
   <body class="bg-background font-sans text-foreground antialiased min-[500px]:flex min-[500px]:min-h-screen min-[500px]:items-center min-[500px]:justify-center min-[500px]:gap-12 min-[500px]:bg-(--frame-page) min-[500px]:py-10">
     <!-- Danh sách màn: chỉ ở màn rộng, để người duyệt nhảy thẳng tới từng màn. Không thuộc app. -->
-    <nav class="hidden w-48 text-sm min-[900px]:block" aria-label="Màn trong bản mẫu">
+    <nav class="wf-screens hidden w-48 text-sm min-[900px]:block" aria-label="Màn trong bản mẫu">
       <p class="mb-3 font-medium">Chi Tiêu · 5 màn</p>
       <ol class="space-y-1 text-(--frame-muted)">
         <li><a href="#home" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">1. Tổng quan</a></li>
@@ -128,6 +128,8 @@
         <span>9:41</span>
         <span class="flex items-center gap-1.5"><i data-lucide="signal" class="size-4"></i><i data-lucide="wifi" class="size-4"></i><i data-lucide="battery-full" class="size-5"></i></span>
       </div>
+      <!-- Dải nền dưới thanh trạng thái (J1): nội dung cuộn lên mờ dần dưới dải này, không đè giờ và pin. Máy thật cũng cần. -->
+      <div class="status-cover pointer-events-none absolute inset-x-0 top-0 z-30 h-(--inset-top) bg-background/85 backdrop-blur-xl" aria-hidden="true"></div>
 
       <!-- ================= 1. TỔNG QUAN (tab 1) ================= -->
       <section class="screen" data-screen="home" aria-label="Tổng quan">

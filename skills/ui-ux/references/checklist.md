@@ -48,7 +48,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] **Cả màn có chỗ nào dùng màu nhấn không?** Không có là chưa quyết định, không phải tối giản (`D5`).
 - [ ] Có khối nào được tô nền màu chỉ để phân loại không? Phân loại bằng icon + chữ (`M5`).
 - [ ] Grep mã hex. Chỉ được có trong khối đổi thương hiệu ở đầu file.
-- [ ] **App điện thoại (`J`)**: dựng trong khung của `mobile-app.html` chưa (mép chừa bằng `--inset-top` / `--inset-bottom`)? Thanh tab 3–5 mục có chữ, chỉ ở màn gốc, không nút "+" trong thanh? Chữ thân 16, không chữ dưới 11, mọi chỗ bấm ≥ 44px? Hành động chính không nổi đè lên nội dung? Đã chạy `probe.mjs --mobile --widths 390,1280` (đi qua từng màn, ở 390 và khung máy tính) và xem ảnh `mobile-*.png` chưa?
+- [ ] **App điện thoại (`J`)**: dựng trong khung của `mobile-app.html` chưa (mép chừa bằng `--inset-top` / `--inset-bottom`)? Thanh tab 3–5 mục có chữ, chỉ ở màn gốc, không nút "+" trong thanh? Chữ thân 16, không chữ dưới 11, mọi chỗ bấm ≥ 44px? Hành động chính không nổi đè lên nội dung? Cuộn màn gốc lên, chữ có lướt dưới dải nền `.status-cover` chứ không đè giờ và pin? Tên trong dòng danh sách có bị cắt `…` không? Đã chạy `probe.mjs --mobile --widths 390,1280` (đi qua từng màn, ở 390 và khung máy tính) và xem ảnh `mobile-*.png` chưa?
 - [ ] Mọi mã hex có đúng 6 hoặc 8 ký tự sau `#` không? Lệch là CSS chết âm thầm.
 - [ ] Khối thương hiệu có khớp **từng ký tự** với `tokens.css` không?
 - [ ] Có chữ `text-muted` nào nằm trên nền xám đậm hơn nền trang không (`--secondary`, lớp phủ `foreground/5`–`/8`, `--background-hover`)? Có thì đổi sang `text-foreground/70` (`styles.md`).
