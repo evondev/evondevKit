@@ -92,6 +92,9 @@ chưa), và **phong cách** (dự án đang flat, glass, gradient hay tối).
 ls package.json 2>/dev/null || echo "KHÔNG CÓ package.json — xem dòng cuối bảng"
 cat package.json 2>/dev/null | grep -E '"(tailwindcss|@radix-ui|@mui|antd|@chakra|bootstrap)"'
 ls components/ui src/components/ui 2>/dev/null          # dấu hiệu shadcn
+# app điện thoại: React Native / Expo, Flutter (J9 trong references/mobile.md)
+cat package.json 2>/dev/null | grep -E '"(react-native|expo|nativewind|@react-navigation/[a-z-]+|@gorhom/bottom-sheet|react-native-safe-area-context)"'
+ls pubspec.yaml lib/main.dart 2>/dev/null && grep -E "^\s+(flutter|cupertino_icons|go_router|google_fonts):" pubspec.yaml
 # thư viện chuyên dụng: biểu đồ, lịch/ngày, bảng, danh sách ảo
 cat package.json 2>/dev/null | grep -E '"(recharts|chart\.js|react-chartjs-2|echarts[a-z-]*|@tremor/react|@nivo/[a-z]+|victory|react-apexcharts|react-day-picker|react-datepicker|@mantine/dates|@fullcalendar/[a-z]+|react-big-calendar|date-fns|dayjs|@tanstack/react-table|@tanstack/react-virtual|react-window|react-virtuoso|ag-grid-react)"'
 grep -rn "@import\|@theme\|--primary\|--brand\|font-family" \
