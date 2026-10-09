@@ -4,7 +4,13 @@
 //
 //   node probe.mjs <url> [--widths 375,768,1024,1280,1440,1920] [--out <thư mục>] [--dark] [--wait 800] [--dpr 1]
 //                        [--sweep [1440,375,20]] [--wireframe <link phương án đã chọn>] [--quick]
-//                        [--dynamic-widths 1280,375|none]
+//                        [--dynamic-widths 1280,375|none] [--mobile]
+//
+// --mobile: bản mẫu app điện thoại theo layouts/mobile-app.html (luật J, references/mobile.md). Ngoài các khổ của
+// --widths, mở TỪNG MÀN (mỗi [data-screen] và mỗi hash dẫn tới sheet như #add) ở 390×844 giả lập chạm và ở khung
+// máy tính 1280, chụp từng màn, đo: chữ dưới 11px, chữ ô nhập dưới 16px, chỗ bấm dưới 44px, thanh tab (3–5 mục,
+// mục nào cũng có chữ, không nút hành động trong thanh, không có ở màn con), nút nổi đè lên chữ, dòng cuối không
+// cuộn ra khỏi thanh tab được, chữ hay chỗ bấm chui vào vùng tai thỏ / thanh home của khung.
 //
 // Phép đo động (Tab, rê chuột, bấm, mở lớp nổi) chiếm phần lớn thời gian mà ít đổi theo bề rộng, nên mặc định
 // chỉ chạy ở các khổ mobile, khổ gần 768 và gần 1280 nhất; khổ khác đo trang đứng yên.
@@ -44,7 +50,7 @@ const maxTabStops = 160;
 const maxFocusChecksPerKind = 2;
 
 function parseArgs(argv) {
-  const options = { url: "", widths: defaultWidths, out: "", isDark: false, waitMs: 800, dpr: 1, playwrightDir: "", sweep: null, wireframeUrl: "", isQuick: false, dynamicWidths: null };
+  const options = { url: "", widths: defaultWidths, out: "", isDark: false, waitMs: 800, dpr: 1, playwrightDir: "", sweep: null, wireframeUrl: "", isQuick: false, dynamicWidths: null, isMobileApp: false };
   const rest = [...argv];
 
   while (rest.length > 0) {
@@ -62,6 +68,7 @@ function parseArgs(argv) {
     else if (arg === "--pw") options.playwrightDir = rest.shift();
     else if (arg === "--wireframe") options.wireframeUrl = rest.shift();
     else if (arg === "--quick") options.isQuick = true;
+    else if (arg === "--mobile") options.isMobileApp = true;
     else if (arg === "--dynamic-widths") {
       const value = rest.shift() ?? "";
       options.dynamicWidths = new Set(value === "none" ? [] : value.split(",").map(Number));
@@ -3035,6 +3042,183 @@ async function takeFullScreenshot(page, path) {
   }
 }
 
+// ---------- App điện thoại (--mobile, luật J) ----------
+
+// Chạy trong trang, màn đang hiện là .screen.is-active (hay cả trang nếu không có khung mẫu).
+function measureMobileScreen({ isFrame, minTap }) {
+  const problems = [];
+  const device = document.querySelector(".device") || document.body;
+  const deviceRect = device.getBoundingClientRect();
+  const isShown = (element) => {
+    const rect = element.getBoundingClientRect();
+    if (rect.width < 1 || rect.height < 1) return false;
+    for (let node = element; node && node !== document.body; node = node.parentElement) {
+      const style = getComputedStyle(node);
+      if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity) < 0.05 || node.hidden) return false;
+    }
+    // Ngoài khung máy (danh sách màn của người duyệt) không thuộc app.
+    return rect.right > deviceRect.left && rect.left < deviceRect.right && rect.bottom > deviceRect.top && rect.top < deviceRect.bottom;
+  };
+  const isDecor = (element) => Boolean(element.closest("[aria-hidden='true'], .status-bar, .home-indicator"));
+  const isInert = (element) => Boolean(element.closest("[inert]"));
+  const describe = (element) => `${element.tagName.toLowerCase()} "${(element.getAttribute("aria-label") || element.textContent || "").trim().replace(/\s+/g, " ").slice(0, 30)}"`;
+
+  // J4: chữ dưới 11px; chữ ô nhập dưới 16px (trình duyệt di động tự phóng to khi focus).
+  const tinyTexts = new Set();
+  const walker = document.createTreeWalker(device, NodeFilter.SHOW_TEXT);
+  while (walker.nextNode()) {
+    const node = walker.currentNode;
+    const parent = node.parentElement;
+    if (!node.data.trim() || !parent || isDecor(parent) || !isShown(parent)) continue;
+    if (parseFloat(getComputedStyle(parent).fontSize) < 11) tinyTexts.add(`"${node.data.trim().slice(0, 24)}" ${getComputedStyle(parent).fontSize}`);
+  }
+  for (const text of [...tinyTexts].slice(0, 4)) problems.push(`chữ dưới 11px: ${text} (J4)`);
+  for (const field of device.querySelectorAll("input:not([type=checkbox]):not([type=radio]):not([type=range]), textarea, select")) {
+    if (!isShown(field) || isInert(field) || field.classList.contains("sr-only")) continue;
+    const size = parseFloat(getComputedStyle(field).fontSize);
+    if (size < 16) problems.push(`ô nhập ${describe(field)} chữ ${size}px: dưới 16px trình duyệt di động phóng to khi chạm vào (J4)`);
+  }
+
+  // J4: chỗ bấm dưới 44px (cao hay rộng). Bỏ link chữ nằm trong đoạn văn.
+  const smallTaps = [];
+  for (const control of device.querySelectorAll("a[href], button, [role='tab'], [role='radio'], [role='switch'], label:has(input)")) {
+    if (!isShown(control) || isInert(control) || isDecor(control)) continue;
+    if (control.closest("p") && control.tagName === "A") continue;
+    const rect = control.getBoundingClientRect();
+    if (rect.height < minTap - 0.5 || rect.width < minTap - 0.5) smallTaps.push(`${describe(control)} ${Math.round(rect.width)}×${Math.round(rect.height)}`);
+  }
+  for (const item of smallTaps.slice(0, 5)) problems.push(`chỗ bấm dưới ${minTap}px: ${item} (J4)`);
+
+  // J2: thanh tab = khối nav dính đáy có từ hai link.
+  const screen = document.querySelector(".screen.is-active");
+  const tabbar = [...device.querySelectorAll("nav")].find((nav) => {
+    if (!isShown(nav)) return false;
+    const rect = nav.getBoundingClientRect();
+    const position = getComputedStyle(nav).position;
+
+    return (position === "absolute" || position === "fixed") && deviceRect.bottom - rect.bottom < 140 && nav.querySelectorAll("a, button").length >= 2;
+  });
+  const screenName = screen?.dataset.screen;
+  const tabTargets = tabbar ? [...tabbar.querySelectorAll("a[href^='#']")].map((link) => link.getAttribute("href").slice(1)) : [];
+  if (tabbar) {
+    const items = [...tabbar.querySelectorAll("a, button")].filter(isShown);
+    if (items.length < 3 || items.length > 5) problems.push(`thanh tab có ${items.length} mục, cần 3–5 (J2)`);
+    for (const item of items) {
+      const label = [...item.querySelectorAll("span, p")].map((element) => element.textContent.trim()).find((text) => text.length >= 2) || (item.textContent.trim().length >= 2 ? item.textContent.trim() : "");
+      if (!label) problems.push(`mục thanh tab ${describe(item)} không có chữ: mục nào cũng có chữ dưới icon (J2)`);
+      if (item.tagName === "BUTTON" || /^#(add|new|create|them)/i.test(item.getAttribute("href") || "") || /^\+$|thêm|add|new/i.test(item.getAttribute("aria-label") || "")) problems.push(`thanh tab chứa hành động ${describe(item)}: thanh tab chỉ để đi lại, nút thêm đứng riêng cạnh thanh (J2, J5)`);
+    }
+    if (screenName && tabTargets.length > 0 && !tabTargets.includes(screenName)) problems.push(`màn con "${screenName}" vẫn hiện thanh tab: chỉ màn gốc của tab có thanh tab (J2)`);
+  }
+
+  // J5: nút nổi (tuyệt đối / cố định, không phải thanh tab, không phải thông báo) đè lên chữ của màn.
+  const floaters = [...device.querySelectorAll("a, button")].filter((element) => {
+    if (!isShown(element) || isInert(element) || (tabbar && tabbar.contains(element))) return false;
+    const position = getComputedStyle(element).position;
+
+    if ((position !== "absolute" && position !== "fixed") || element.closest("[role='dialog']")) return false;
+    // Nút cùng dải với thanh tab (nút thêm đứng cạnh thanh) thuộc thanh đáy: nội dung cuộn qua dưới nó như cuộn qua
+    // dưới thanh tab, không tính là đè (báo nhầm mẫu mobile-app.html 09/10/2026).
+    if (tabbar) {
+      const floatRect = element.getBoundingClientRect();
+      const barRect = tabbar.getBoundingClientRect();
+      if (floatRect.bottom > barRect.top && floatRect.top < barRect.bottom) return false;
+    }
+
+    return true;
+  });
+  const textLeaves = screen ? [...screen.querySelectorAll("span, p, h1, h2, h3, dt, dd, li")].filter((element) => element.children.length === 0 && element.textContent.trim() && isShown(element) && !isInert(element)) : [];
+  for (const floater of floaters) {
+    const floatRect = floater.getBoundingClientRect();
+    const covered = textLeaves.find((leaf) => {
+      if (floater.contains(leaf)) return false;
+      const rect = leaf.getBoundingClientRect();
+
+      return rect.left < floatRect.right - 2 && rect.right > floatRect.left + 2 && rect.top < floatRect.bottom - 2 && rect.bottom > floatRect.top + 2;
+    });
+    if (covered) problems.push(`nút nổi ${describe(floater)} đè lên chữ "${covered.textContent.trim().slice(0, 24)}": đặt cạnh thanh tab hay dính đáy, không nổi trên nội dung (J5)`);
+  }
+
+  // J2: cuộn hết vùng cuộn, dòng cuối phải ra khỏi thanh tab.
+  const scroller = screen?.querySelector(".scroll") || screen;
+  if (tabbar && scroller && scroller.scrollHeight > scroller.clientHeight) {
+    scroller.scrollTop = scroller.scrollHeight;
+    const lastLeaf = [...textLeaves].sort((first, second) => second.getBoundingClientRect().bottom - first.getBoundingClientRect().bottom)[0];
+    const tabTop = tabbar.getBoundingClientRect().top;
+    if (lastLeaf && lastLeaf.getBoundingClientRect().bottom > tabTop + 1) problems.push(`cuộn hết mà "${lastLeaf.textContent.trim().slice(0, 24)}" vẫn nằm dưới thanh tab: vùng cuộn chừa đáy inset + 96px (.pad-tabbar, J2)`);
+    scroller.scrollTop = 0;
+  }
+
+  // J1: khung máy tính, chữ hay chỗ bấm chui vào vùng tai thỏ (47px) hay thanh home (34px).
+  if (isFrame && screen) {
+    const insetTop = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--inset-top")) || 0;
+    const insetBottom = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--inset-bottom")) || 0;
+    const intruders = [...screen.querySelectorAll("a, button, span, p, h1, h2, input")].filter((element) => {
+      if (!isShown(element) || isInert(element) || isDecor(element) || element.children.length > 0 && !element.matches("a, button, input")) return false;
+      const rect = element.getBoundingClientRect();
+      // Chỉ xét lúc chưa cuộn: phần nội dung cuộn qua tai thỏ là bình thường.
+      return rect.top < deviceRect.top + insetTop - 1 || rect.bottom > deviceRect.bottom - insetBottom + 1 && rect.top < deviceRect.bottom;
+    }).filter((element) => !element.closest(".scroll") || element.getBoundingClientRect().top < deviceRect.top + insetTop - 1);
+    for (const element of intruders.slice(0, 3)) problems.push(`${describe(element)} nằm trong vùng ${element.getBoundingClientRect().top < deviceRect.top + insetTop ? "tai thỏ" : "thanh home"} của khung: chừa bằng --inset-top / --inset-bottom (J1)`);
+  }
+
+  if (device.scrollWidth > device.clientWidth + 1) problems.push(`màn cuộn ngang ${device.scrollWidth - device.clientWidth}px (J1)`);
+
+  return { screen: screenName || "", problems };
+}
+
+async function probeMobileApp(browser, options) {
+  const base = options.url.split("#")[0];
+  const discover = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const discoverPage = await discover.newPage();
+  await discoverPage.goto(base, { waitUntil: "load" });
+  await discoverPage.waitForTimeout(options.waitMs);
+  const hashes = await discoverPage.evaluate(() => {
+    const names = [...document.querySelectorAll("[data-screen]")].map((screen) => screen.dataset.screen);
+    const links = [...document.querySelectorAll("a[href^='#']")].map((link) => link.getAttribute("href").slice(1)).filter((name) => name && !names.includes(name));
+
+    return [...new Set([...names, ...links])].filter((name) => !/^main$|^top$/.test(name));
+  });
+  await discover.close();
+
+  const screens = [];
+  for (const [label, contextOptions, isFrame] of [["390", { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: options.dpr }, false], ["khung 1280", { viewport: { width: 1280, height: 960 }, deviceScaleFactor: options.dpr }, true]]) {
+    const context = await browser.newContext(contextOptions);
+    const page = await context.newPage();
+    for (const hash of hashes.length > 0 ? hashes : [""]) {
+      await page.goto(`${base}${hash ? `#${hash}` : ""}`, { waitUntil: "load" });
+      await page.waitForTimeout(options.waitMs);
+      await page.addStyleTag({ content: freezeMotionCss });
+      await page.waitForTimeout(150);
+      const result = await page.evaluate(measureMobileScreen, { isFrame, minTap: 44 });
+      const shotPath = join(options.out, `mobile-${isFrame ? "frame" : "390"}-${hash || "start"}.png`);
+      await page.screenshot({ path: shotPath });
+      screens.push({ view: label, hash: hash || "start", shotPath, problems: result.problems });
+    }
+    await context.close();
+  }
+
+  return screens;
+}
+
+function formatMobileReport(screens) {
+  const lines = ["\n=== APP ĐIỆN THOẠI (luật J, references/mobile.md) ==="];
+  const byMessage = new Map();
+  for (const screen of screens) {
+    for (const problem of screen.problems) {
+      const key = problem;
+      if (!byMessage.has(key)) byMessage.set(key, []);
+      byMessage.get(key).push(`#${screen.hash} ${screen.view}`);
+    }
+  }
+  if (byMessage.size === 0) lines.push("Không lỗi J đo được ở các màn.");
+  let index = 1;
+  for (const [problem, where] of byMessage) lines.push(`J${index++} [${[...new Set(where)].join(", ")}] ${problem}`);
+  lines.push(`Ảnh từng màn: ${[...new Set(screens.map((screen) => dirname(screen.shotPath)))][0] || ""}/mobile-*.png`);
+
+  return lines.join("\n");
+}
+
 async function probeWidth(browser, options, width) {
   const isMobile = width < mobileWidthLimit;
   const context = await browser.newContext({
@@ -4617,11 +4801,13 @@ async function main() {
   const results = [];
   let sweepSteps = [];
   let wireframeComparisons = [];
+  let mobileScreens = [];
 
   try {
     for (const width of options.widths) results.push(await probeWidth(browser, options, width));
     if (options.sweep) sweepSteps = await sweepWidths(browser, options);
     if (options.wireframeUrl) wireframeComparisons = await compareWithWireframe(browser, options);
+    if (options.isMobileApp) mobileScreens = await probeMobileApp(browser, options);
   } catch (error) {
     console.error(`Không mở được ${options.url}: ${error.message.split("\n")[0]}. Dev server đã chạy chưa?`);
     process.exit(2);
@@ -4629,11 +4815,12 @@ async function main() {
     await browser.close();
   }
 
-  writeFileSync(join(options.out, "report.json"), JSON.stringify({ widths: results, sweep: sweepSteps, wireframe: wireframeComparisons }, null, 2));
+  writeFileSync(join(options.out, "report.json"), JSON.stringify({ widths: results, sweep: sweepSteps, wireframe: wireframeComparisons, mobile: mobileScreens }, null, 2));
   console.log(formatDynamicCoverage(results, options));
   console.log(formatReport(results));
   if (sweepSteps.length > 0) console.log(formatSweepReport(sweepSteps, options.sweep.step));
   if (wireframeComparisons.length > 0) console.log(formatWireframeReport(wireframeComparisons));
+  if (options.isMobileApp) console.log(formatMobileReport(mobileScreens));
   const mustReportItems = [...listMustReportItems(results, sweepSteps), ...listWireframeMustReportItems(wireframeComparisons)];
   console.log(formatMustReportList(mustReportItems, options.sweep?.step ?? 20));
   console.log(formatNextRoundHint(results, options));

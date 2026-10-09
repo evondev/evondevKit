@@ -27,6 +27,10 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   màn bên trái để người duyệt nhảy thẳng tới. Wireframe phương án (`U4`) cũng trong khung này, ba phương án
   khác nhau ở điều hướng và màn gốc.
 - **Không hover**: màn chạm không có rê chuột. Phản hồi là lúc nhấn (`J7`).
+- **Kiểm bằng probe chế độ mobile** trước khi giao: `node scripts/probe.mjs <file hay link> --mobile --widths 390,1280`.
+  Nó mở từng màn (mỗi `data-screen` và hash dẫn tới sheet) ở 390×844 giả lập chạm và ở khung 1280, chụp từng
+  màn, đo các luật `J` đo được: chữ dưới 11px, chữ ô nhập dưới 16px, chỗ bấm dưới 44px, thanh tab, nút nổi đè
+  chữ, dòng cuối kẹt dưới thanh tab, chữ chui vào vùng tai thỏ / thanh home.
 
 ## J2. Điều hướng chính: thanh tab
 
@@ -69,7 +73,7 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
 | Thẻ | `rounded-[20px]`, đệm 16–20 | |
 | Ô nhập | cao **52**, `rounded-2xl`, chữ 16 | chữ 16 để trình duyệt di động không tự phóng to khi focus |
 | Nút chính | cao **52**, `rounded-2xl`, chữ 16 `font-semibold` | |
-| Điều khiển phân đoạn | cao 36 trong rãnh 44 `bg-secondary`, tối đa 5 mục | chữ hoặc icon, không cả hai; chữ mục chưa chọn vẫn `--foreground` (`--muted` trên rãnh chỉ 4.04:1), mục chọn nền trắng |
+| Điều khiển phân đoạn | rãnh 44 `bg-secondary`, **nút cao trọn 44** (`p-1`), viên chọn 36 nằm trong nút; tối đa 5 mục | chữ hoặc icon, không cả hai; chữ mục chưa chọn vẫn `--foreground` (`--muted` trên rãnh chỉ 4.04:1), mục chọn nền trắng |
 | Công tắc | 51×31 | bật là màu thành công hay `--primary` |
 | Sheet | bo 28 hai góc trên, thanh kéo 36×5 | `J6` |
 

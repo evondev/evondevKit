@@ -231,10 +231,11 @@
           <header class="px-4 pt-3"><h1 class="text-[32px]/[38px] font-semibold tracking-tight">Thống kê</h1></header>
           <!-- Điều khiển phân đoạn (J4): cao 36px, tối đa 5 mục, nền rãnh xám, mục chọn nền trắng. Chữ mọi mục
                cùng --foreground: --muted trên rãnh --secondary chỉ 4.04:1. -->
-          <div class="mx-4 mt-4 grid grid-cols-3 rounded-xl bg-secondary p-1 text-sm font-medium" role="tablist" aria-label="Khoảng thời gian">
-            <button role="tab" aria-selected="false" class="press h-9 rounded-lg">Tuần</button>
-            <button role="tab" aria-selected="true" class="press h-9 rounded-lg bg-surface shadow-[0_1px_3px_rgb(0_0_0/0.08)]">Tháng</button>
-            <button role="tab" aria-selected="false" class="press h-9 rounded-lg">Năm</button>
+          <div class="mx-4 mt-4 grid h-11 grid-cols-3 rounded-xl bg-secondary text-sm font-medium" role="tablist" aria-label="Khoảng thời gian">
+            <!-- Nút cao trọn 44px (chỗ bấm J4), viên chọn 36px nằm trong nút nhờ p-1: đệm của rãnh không thành chỗ chết. -->
+            <button role="tab" aria-selected="false" class="press group p-1"><span class="flex h-full items-center justify-center rounded-lg group-aria-selected:bg-surface group-aria-selected:shadow-[0_1px_3px_rgb(0_0_0/0.08)]">Tuần</span></button>
+            <button role="tab" aria-selected="true" class="press group p-1"><span class="flex h-full items-center justify-center rounded-lg group-aria-selected:bg-surface group-aria-selected:shadow-[0_1px_3px_rgb(0_0_0/0.08)]">Tháng</span></button>
+            <button role="tab" aria-selected="false" class="press group p-1"><span class="flex h-full items-center justify-center rounded-lg group-aria-selected:bg-surface group-aria-selected:shadow-[0_1px_3px_rgb(0_0_0/0.08)]">Năm</span></button>
           </div>
           <div class="mx-4 mt-4 rounded-[20px] bg-surface p-5">
             <p class="text-sm text-muted">Chi tiêu theo tuần</p>
