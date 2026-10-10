@@ -27,6 +27,12 @@ trắng, nên **mỗi cột, mỗi phần phải có con số đi kèm** (số t
 trong bảng chú giải donut); màu nhạt không bao giờ là thứ duy nhất mang giá trị
 (`N4`). Chấm chú giải dùng đúng class của cột.
 
+**Thanh chia theo các bước của một quy trình** (chờ xác nhận → đang làm → xong, kèm huỷ): bước mang nghĩa trạng
+thái giữ màu trạng thái (chờ `--warning`, xong `--success`, huỷ `--danger`, `M7`); các bước đang làm dở ở giữa
+là đậm nhạt của `--chart-fill` theo thứ tự, bước sau đậm hơn (bảng bậc ở trên). Không tô các bước giữa bằng xám:
+xám đọc thành "chưa tô" hay "không hoạt động", thanh trông như làm dở. Chấm cạnh tên bước trong danh sách dưới
+thanh dùng đúng màu của đoạn đó.
+
 **Phân loại từ 5 nhóm trở lên thì mỗi nhóm một sắc.** Ngành, kênh, quốc gia, loại
 khách: năm bậc đậm nhạt của một màu thì bậc 4 và bậc 5 mắt không tách được nữa, chấm
 màu trong bảng không còn chỉ về đúng thanh nào. Các app phân tích phổ biến đều tô mỗi

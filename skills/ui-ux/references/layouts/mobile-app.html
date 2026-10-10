@@ -40,6 +40,11 @@
         --cat-green-bg: #dff5ea;
         --avatar-bg: #ffd8c2;    --avatar-text: #8a3b12;
 
+        /* Thẻ số chính (J5): nền tối trung tính, không theo màu nhấn. Thanh tiến độ trong thẻ trắng khi màu nhấn
+           trung tính; dự án có màu nhấn rực thì đổi thành color-mix(in oklab, var(--primary) 70%, white). */
+        --hero-bg: #1c1c1e;
+        --hero-accent: #ffffff;
+
         /* Nền quanh khung máy (chỉ màn rộng, không thuộc app). */
         --frame-page: #e9e9ec;
         --frame-muted: #565656;  /* chữ phụ trên --frame-page, 5.9:1; --muted trên nền này chỉ 4.09:1 */
@@ -144,10 +149,10 @@
           </header>
 
           <!-- Thẻ số chính (J5): một con số lớn nhất màn, kèm ngân sách còn lại. -->
-          <div class="mx-4 mt-5 rounded-[20px] bg-primary p-5 text-primary-foreground">
+          <div class="mx-4 mt-5 rounded-[20px] bg-(--hero-bg) p-5 text-white">
             <p class="text-sm text-white/70">Đã chi tháng này</p>
             <p class="mt-1 text-[36px]/[42px] font-semibold tracking-tight tabular-nums">8.450.000 <span class="text-2xl font-medium text-white/70">đ</span></p>
-            <div class="mt-4 h-1.5 overflow-hidden rounded-full bg-white/15"><div class="h-full w-[70%] rounded-full bg-white"></div></div>
+            <div class="mt-4 h-1.5 overflow-hidden rounded-full bg-white/15"><div class="h-full w-[70%] rounded-full bg-(--hero-accent)"></div></div>
             <p class="mt-2 flex justify-between text-[13px] text-white/70"><span>70% ngân sách</span><span class="tabular-nums">Còn 3.550.000 đ</span></p>
           </div>
 

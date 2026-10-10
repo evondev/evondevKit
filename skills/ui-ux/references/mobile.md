@@ -94,8 +94,12 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
     ngăn trên. Không tràn sát hai mép màn.
 - **Việc nguy hiểm** (xoá, đăng xuất) đứng riêng ở cuối màn, đỏ nhạt `bg-danger-bg text-danger` hay chữ đỏ
   trong thẻ riêng (`I4`), không cạnh nút chính.
-- **Thẻ số chính** cho màn có một con số quan trọng (đã chi, số dư, số bước): một thẻ `bg-primary` ở đầu màn,
-  con số lớn nhất màn (`J4`), kèm một thanh tiến độ hay một dòng so sánh. Một thẻ như vậy mỗi màn.
+- **Thẻ số chính** cho màn có một con số quan trọng (đã chi, số dư, số bước): một thẻ ở đầu màn, con số lớn
+  nhất màn (`J4`), kèm một thanh tiến độ hay một dòng so sánh. Một thẻ như vậy mỗi màn.
+  - **Nền tối trung tính `--hero-bg` (#1c1c1e), chữ trắng, không tô bằng màu nhấn** (chủ dự án chọn). Màu nhấn
+    rực (tím, hồng, cam) làm nền thì thẻ thành mảng màu lớn nhất màn, nhìn thô; màu nhấn chỉ ở thanh tiến độ
+    trong thẻ (`--hero-accent`: trắng khi màu nhấn trung tính, `color-mix(in oklab, var(--primary) 70%, white)`
+    khi màu nhấn rực, để thanh đủ sáng trên nền tối).
 
 ## J6. Sheet
 
@@ -117,7 +121,7 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
 
 Dùng (gặp ở phần lớn ảnh mẫu, hợp quy ước):
 - Dòng chào nhỏ trên tiêu đề lớn, avatar góc phải ở màn đầu tiên.
-- Thẻ số chính nền màu nhấn ở đầu màn (`J5`).
+- Thẻ số chính nền tối ở đầu màn (`J5`).
 - **Dải ngày trong tuần** (7 ô cao 64 bo 16, hôm nay nền `--primary`, ngày có dữ liệu có chấm, ngày tương lai
   mờ và khoá) cho app theo ngày: thói quen, việc cần làm, chi tiêu, thể dục.
 - Icon danh mục trong vòng tròn 40px nền nhạt của một sắc riêng, chữ icon đậm cùng sắc (đạt 4.5:1).
