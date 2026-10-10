@@ -44,6 +44,9 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   `backdrop-blur-xl`, viền 4% và bóng mềm. Kiểu thanh nổi là kiểu của iOS hiện hành và phần lớn ảnh mẫu.
 - **Thanh tab chỉ để đi lại.** Hành động (thêm, quét, đăng) không nằm trong thanh tab, kể cả nút "+" giữa
   thanh hay gặp ở ảnh mẫu: dùng nút tròn đứng riêng cạnh thanh (`J5`).
+- **Nhãn mỗi mục có chỗ thở**: hai nhãn kề nhau cách từ 8px, nhãn đầu và cuối cách mép bo của thanh từ 8px.
+  Thanh rộng 358px chứa vừa 5 nhãn hai chữ ("Tổng quan", "Nhân viên"); thanh thu lại cho nút tròn chỉ còn
+  282px, 5 nhãn dính nhau thành một dải và nhãn đầu lấn vào chỗ bo.
 - **Chỉ màn gốc của tab có thanh tab.** Màn con (chi tiết, sửa) ẩn thanh tab, quay lại bằng nút trái ở thanh
   trên (`J3`). Sheet phủ lên thanh tab.
 - Vùng cuộn của màn có thanh tab chừa đáy `inset-bottom + 96px` (`.pad-tabbar`): dòng cuối cuộn lên được
@@ -84,7 +87,8 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
 
 - **Mỗi màn một hành động chính** (`I2`).
   - Ở **màn gốc có việc thêm**: nút tròn 64px `bg-primary` **đứng riêng bên phải thanh tab, cùng hàng**;
-    thanh tab thu lại (`right-[92px]`). Nút nổi đè lên danh sách (góc phải trên thanh tab) che mất số tiền
+    thanh tab thu lại (`right-[92px]`). **Chỉ khi thanh có tối đa 4 mục.** Thanh 5 mục giữ rộng hết, nút thêm
+    là nút icon `plus` 44px bên phải tiêu đề lớn của màn gốc đó (`J3`). Nút nổi đè lên danh sách (góc phải trên thanh tab) che mất số tiền
     của dòng cuối.
   - Ở **form, sheet, màn xác nhận**: nút 52px **dính đáy**, cách hai mép 16px, đáy chừa thanh home, có vạch
     ngăn trên. Không tràn sát hai mép màn.

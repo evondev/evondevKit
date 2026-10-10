@@ -3119,6 +3119,26 @@ function measureMobileScreen({ isFrame, minTap }) {
       if (!label) problems.push(`mục thanh tab ${describe(item)} không có chữ: mục nào cũng có chữ dưới icon (J2)`);
       if (item.tagName === "BUTTON" || /^#(add|new|create|them)/i.test(item.getAttribute("href") || "") || /^\+$|thêm|add|new/i.test(item.getAttribute("aria-label") || "")) problems.push(`thanh tab chứa hành động ${describe(item)}: thanh tab chỉ để đi lại, nút thêm đứng riêng cạnh thanh (J2, J5)`);
     }
+    // J2: nhãn kề nhau cách từ 8px, nhãn hai đầu cách mép bo của thanh từ 8px. Đo bằng Range trên chữ, không bằng
+    // khung mục: thanh thu lại cho nút tròn mà có 5 mục thì nhãn tràn khung mục (bản dựng studio 10/10/2026).
+    const barRect = tabbar.getBoundingClientRect();
+    const labelRects = items.map((item) => {
+      const label = [...item.querySelectorAll("span, p")].find((element) => element.children.length === 0 && element.textContent.trim().length >= 2);
+      if (!label) return null;
+      const range = document.createRange();
+      range.selectNodeContents(label);
+
+      return { text: label.textContent.trim(), rect: range.getBoundingClientRect() };
+    }).filter(Boolean).sort((first, second) => first.rect.left - second.rect.left);
+    const crampedLabels = [];
+    labelRects.forEach((label, index) => {
+      const next = labelRects[index + 1];
+      if (next && next.rect.left - label.rect.right < 8) crampedLabels.push(`"${label.text}" cách "${next.text}" ${Math.round(next.rect.left - label.rect.right)}px`);
+    });
+    const edgeGaps = labelRects.length > 0 ? [labelRects[0].rect.left - barRect.left, barRect.right - labelRects.at(-1).rect.right] : [];
+    if (edgeGaps.some((gap) => gap < 8)) crampedLabels.push(`nhãn hai đầu cách mép thanh ${edgeGaps.map(Math.round).join(" / ")}px`);
+    if (crampedLabels.length > 0) problems.push(`nhãn thanh tab chật (${crampedLabels.slice(0, 3).join(", ")}): nhãn cách nhau từ 8px, cách mép bo từ 8px; thanh 5 mục thì không thu lại cho nút tròn (J2, J5)`);
+
     // Màn gốc thứ hai của cùng tab (hai đoạn của segmented, hash riêng) vẫn có mục đang chọn: không phải màn con.
     const hasCurrentTab = Boolean(tabbar.querySelector("[aria-current]:not([aria-current='false']), [aria-selected='true']"));
     if (screenName && tabTargets.length > 0 && !tabTargets.includes(screenName) && !hasCurrentTab) problems.push(`màn con "${screenName}" vẫn hiện thanh tab: chỉ màn gốc của tab có thanh tab (J2)`);
