@@ -26,6 +26,12 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
 - **Dải nền dưới thanh trạng thái** (`.status-cover`, cao `--inset-top`, `bg-background/85 backdrop-blur-xl`,
   nằm trên vùng cuộn, dưới lớp phủ của sheet), có ở cả khung lẫn máy thật. Màn gốc cuộn từ đỉnh nên nội dung
   chạy dưới tai thỏ. Đừng bỏ dải này: chữ cuộn lên đè thẳng lên giờ và pin.
+- **Nền màn trắng** (`--screen-bg` = `--surface`), nội dung nằm thẳng trên nền, tách bằng khoảng trống và vạch
+  mảnh. **Nền xám `--background` chỉ cho màn danh sách nhóm** (cài đặt, tài khoản, form chia nhóm): thêm
+  `.is-grouped` vào màn, các dòng trong thẻ trắng (`J4`). Đây là quy ước của iOS (nền grouped chỉ cho bảng
+  nhóm, còn lại là nền hệ thống trắng) và của app thật: màn chọn giờ, lịch hẹn, trang chủ của các app đặt lịch
+  lớn đều nền trắng. Trên nền trắng, thẻ và ô chọn có viền mảnh `ring-1 ring-inset ring-border-strong`. Đừng để
+  nền xám thẻ trắng ở mọi màn như dashboard: màn nhạt, thiếu sức sống, trông như trang quản trị.
 - Mỗi màn là một `section[data-screen]`, chuyển màn bằng hash (`#home`, `#detail`); màn rộng có danh sách
   màn bên trái (`nav.wf-screens`, probe không đo phần này) để người duyệt nhảy thẳng tới. Wireframe phương án (`U4`) cũng trong khung này, ba phương án
   khác nhau ở điều hướng và màn gốc.
@@ -75,7 +81,7 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
 | Nhãn thanh tab, chữ nhỏ nhất | 11 | **không chữ nào dưới 11** |
 | Số lớn của thẻ số chính | 36/42, 600, `tabular-nums` | |
 | Dòng danh sách | **56** một dòng, **64** hai dòng | icon tròn 40px, số tiền phải `tabular-nums`. Tên xuống dòng hết, không `line-clamp`, mô tả cũng vậy (`T14`): màn chạm không rê chuột để đọc `title`, tên dịch vụ đang chọn để trả tiền mà cụt thì không biết mình mua gì |
-| Danh sách nhóm | các dòng trong **một thẻ** `rounded-[20px] bg-surface`, `divide-y` | tiêu đề nhóm 13px `text-muted` viết hoa, thụt 32px |
+| Danh sách nhóm | màn `.is-grouped` (nền xám), các dòng trong **một thẻ** `rounded-[20px] bg-surface`, `divide-y` | tiêu đề nhóm 13px `text-muted` viết hoa, thụt 32px |
 | Thẻ | `rounded-[20px]`, đệm 16–20 | |
 | Ô nhập | cao **52**, `rounded-2xl`, chữ 16 | chữ 16 để trình duyệt di động không tự phóng to khi focus |
 | Nút chính | cao **52**, `rounded-2xl`, chữ 16 `font-semibold` | |
@@ -124,12 +130,20 @@ Dùng (gặp ở phần lớn ảnh mẫu, hợp quy ước):
 - Thẻ số chính nền tối ở đầu màn (`J5`).
 - **Dải ngày trong tuần** (7 ô cao 64 bo 16, hôm nay nền `--primary`, ngày có dữ liệu có chấm, ngày tương lai
   mờ và khoá) cho app theo ngày: thói quen, việc cần làm, chi tiêu, thể dục.
+- **Chọn giờ** (đặt lịch, đặt bàn, đặt sân): dải ngày trong tuần ở trên, dưới là **chỉ giờ còn trống**, ô viền bo
+  tròn 3–4 cột, giờ đang chọn tô đặc `--primary`. Giờ đã kín thì giấu, không gạch ngang hay làm mờ (phần lớn app
+  đặt lịch thật và ảnh mẫu): gạch ngang lẫn giữa giờ trống làm màn nhiễu, mắt phải lọc. Nhiều giờ thì chia
+  sáng / chiều / tối; buổi hết giờ ghi một dòng "Đã kín". Ngày kín cả ngày thì ô ngày mờ kèm chữ "Kín".
+- **Ảnh thật dùng to**: app có hình (tiệm, món, phòng, người làm) thì trang chủ có ảnh tiệm hay ưu đãi cao
+  140–180px, thẻ dịch vụ và người làm có ảnh, không chỉ avatar 40px. Ảnh lớn là thứ làm app trông "muốn dùng";
+  màu nhấn thì chỉ ở nút và chỗ đang chọn.
 - Icon danh mục trong vòng tròn 40px nền nhạt của một sắc riêng, chữ icon đậm cùng sắc (đạt 4.5:1).
 
 Không dùng (đẹp trong ảnh, hỏng trên máy thật):
 - Chữ 9–10px, chữ pastel trên nền pastel (dưới 4.5:1).
 - Minh hoạ 3D, nhân vật trang trí chiếm nửa màn ở màn làm việc. Chỉ ở màn chào lần đầu, trạng thái rỗng.
 - Nhiều màu nhấn trên một màn; thanh tab không có chữ; nút "+" nằm giữa thanh tab.
+- Dải đầu màn tô màu nhấn, nút gradient, bóng đậm: kiểu cũ, ảnh mẫu được khen không còn dùng.
 
 ## J9. Chuyển sang code React Native, Flutter ⚑
 

@@ -3144,6 +3144,22 @@ function measureMobileScreen({ isFrame, minTap }) {
     if (screenName && tabTargets.length > 0 && !tabTargets.includes(screenName) && !hasCurrentTab) problems.push(`màn con "${screenName}" vẫn hiện thanh tab: chỉ màn gốc của tab có thanh tab (J2)`);
   }
 
+  // J1: nền màn sáng mà xám (thẻ trắng trên nền xám kiểu dashboard) chỉ cho màn danh sách nhóm `.is-grouped`.
+  if (screen && !screen.classList.contains("is-grouped")) {
+    const channels = (getComputedStyle(screen).backgroundColor.match(/[\d.]+/g) || []).map(Number);
+    const [red, green, blue, alpha = 1] = channels;
+    const lightness = (Math.max(red, green, blue) + Math.min(red, green, blue)) / 2;
+    if (alpha > 0.5 && lightness >= 200 && lightness < 250) problems.push(`màn nền xám rgb(${red}, ${green}, ${blue}) mà không phải danh sách nhóm: nền màn trắng, xám chỉ cho màn .is-grouped (cài đặt, tài khoản) (J1)`);
+  }
+
+  // J8: chọn giờ chỉ hiện giờ trống. Nút giờ gạch ngang ("8:00" có line-through) là giờ kín để lẫn vào.
+  const struckSlots = screen ? [...screen.querySelectorAll("button, a, [role='radio'], [role='option']")].filter((control) => {
+    if (!isShown(control) || !/^\s*\d{1,2}[:h]\d{2}\s*$/.test(control.textContent)) return false;
+
+    return [control, ...control.querySelectorAll("*")].some((element) => getComputedStyle(element).textDecorationLine.includes("line-through"));
+  }) : [];
+  if (struckSlots.length >= 2) problems.push(`${struckSlots.length} ô giờ gạch ngang (${struckSlots.slice(0, 3).map((slot) => slot.textContent.trim()).join(", ")}): giấu giờ đã kín, chỉ hiện giờ trống (J8)`);
+
   // J5: nút nổi (tuyệt đối / cố định, không phải thanh tab, không phải thông báo) đè lên chữ của màn.
   const floaters = [...device.querySelectorAll("a, button")].filter((element) => {
     if (!isShown(element) || isInert(element) || (tabbar && tabbar.contains(element))) return false;
