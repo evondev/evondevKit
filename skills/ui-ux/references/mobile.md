@@ -37,7 +37,7 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   khác nhau ở điều hướng và màn gốc.
 - **Không hover**: màn chạm không có rê chuột. Phản hồi là lúc nhấn (`J7`).
 - **Kiểm bằng probe chế độ mobile** trước khi giao: `node scripts/probe.mjs <file hay link> --mobile --widths 390,1280`.
-  Nó mở từng màn (mỗi `data-screen` và hash dẫn tới sheet) ở 390×844 giả lập chạm và ở khung 1280, chụp từng
+  Nó mở từng màn (mỗi `data-screen` và hash dẫn tới sheet) ở 390×844 và 360×640 (Android giá rẻ, máy cũ) giả lập chạm và ở khung 1280, chụp từng
   màn, đo các luật `J` đo được: chữ dưới 11px, chữ ô nhập dưới 16px, chỗ bấm dưới 44px, thanh tab, nút nổi đè
   chữ, dòng cuối kẹt dưới thanh tab, chữ chui vào vùng tai thỏ / thanh home.
 
@@ -131,7 +131,10 @@ Dùng (gặp ở phần lớn ảnh mẫu, hợp quy ước):
 - Dòng chào nhỏ trên tiêu đề lớn, avatar góc phải ở màn đầu tiên.
 - Thẻ số chính nền tối ở đầu màn (`J5`).
 - **Dải ngày trong tuần** (7 ô cao 64 bo 16, hôm nay nền `--primary`, ngày có dữ liệu có chấm, ngày tương lai
-  mờ và khoá) cho app theo ngày: thói quen, việc cần làm, chi tiêu, thể dục.
+  mờ và khoá) cho app theo ngày: thói quen, việc cần làm, chi tiêu, thể dục. Bảy ô là `grid grid-cols-7`
+  không gap, mỗi ô viền trong suốt 3px `bg-clip-padding` (như `mobile-app.html`): khe giữa ô vẫn 6px mà cả cột
+  là chỗ bấm, ở khổ 360 mỗi cột 47px. Đừng xếp `flex` cuộn ngang: ở 360 hàng lố 16px, ô cuối dính mép như bị
+  cắt; `gap-1.5` thì ô còn 42px, dưới 44.
 - **Chọn giờ** (đặt lịch, đặt bàn, đặt sân): dải ngày trong tuần ở trên, dưới là **chỉ giờ còn trống**, ô viền bo
   tròn 3–4 cột, giờ đang chọn tô đặc `--primary`. Giờ đã kín thì giấu, không gạch ngang hay làm mờ (phần lớn app
   đặt lịch thật và ảnh mẫu): gạch ngang lẫn giữa giờ trống làm màn nhiễu, mắt phải lọc. Nhiều giờ thì chia

@@ -3239,6 +3239,17 @@ function measureMobileScreen({ isFrame, minTap }) {
 
   if (device.scrollWidth > device.clientWidth + 1) problems.push(`màn cuộn ngang ${device.scrollWidth - device.clientWidth}px (J1)`);
 
+  // J8: hàng cuộn ngang chỉ lố vài px: ô cuối dính mép màn, trông như bị cắt mà vuốt gần như không đi. Vừa thì
+  // xếp lưới cho vừa khung (dải 7 ngày `grid-cols-7`), nhiều thì để lộ rõ nửa ô tiếp theo.
+  for (const row of screen ? screen.querySelectorAll("*") : []) {
+    if (!isShown(row) || !["auto", "scroll"].includes(getComputedStyle(row).overflowX)) continue;
+    const extra = row.scrollWidth - row.clientWidth;
+    if (extra > 1 && extra <= 24 && row.children.length >= 3) {
+      problems.push(`hàng cuộn ngang chỉ lố ${extra}px (${describe(row)}): ô cuối dính mép như bị cắt; xếp lưới cho vừa khung hoặc để lộ rõ nửa ô (J8)`);
+      break;
+    }
+  }
+
   return { screen: screenName || "", problems };
 }
 
@@ -3257,7 +3268,13 @@ async function probeMobileApp(browser, options) {
   await discover.close();
 
   const screens = [];
-  for (const [label, contextOptions, isFrame] of [["390", { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: options.dpr }, false], ["khung 1280", { viewport: { width: 1280, height: 960 }, deviceScaleFactor: options.dpr }, true]]) {
+  // 360×640: Android giá rẻ, máy cũ (khổ hẹp nhất còn phổ biến). Hàng 7 ô vừa ở 390 có thể lố ở đây.
+  const runs = [
+    ["390", { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: options.dpr }, false],
+    ["360", { viewport: { width: 360, height: 640 }, isMobile: true, hasTouch: true, deviceScaleFactor: options.dpr }, false],
+    ["khung 1280", { viewport: { width: 1280, height: 960 }, deviceScaleFactor: options.dpr }, true],
+  ];
+  for (const [label, contextOptions, isFrame] of runs) {
     const context = await browser.newContext(contextOptions);
     const page = await context.newPage();
     for (const hash of hashes.length > 0 ? hashes : [""]) {
@@ -3266,7 +3283,7 @@ async function probeMobileApp(browser, options) {
       await page.addStyleTag({ content: freezeMotionCss });
       await page.waitForTimeout(150);
       const result = await page.evaluate(measureMobileScreen, { isFrame, minTap: 44 });
-      const shotPath = join(options.out, `mobile-${isFrame ? "frame" : "390"}-${hash || "start"}.png`);
+      const shotPath = join(options.out, `mobile-${isFrame ? "frame" : label}-${hash || "start"}.png`);
       await page.screenshot({ path: shotPath });
       screens.push({ view: label, hash: hash || "start", shotPath, problems: result.problems });
     }
