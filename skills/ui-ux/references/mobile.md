@@ -65,6 +65,8 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   Phải là avatar 44px dẫn tới tài khoản hay một nút icon, không hơn hai thứ.
 - **Màn con: thanh trên 44px**: trái là nút quay lại (chevron 24px + tên màn cha, cao 44px), giữa là tiêu đề
   17px `font-semibold`, phải tối đa **một** nút icon 44px. Tên màn cha dài quá 12 ký tự thì chỉ để chevron.
+- **Luồng nhiều bước** (đặt lịch, thanh toán): thanh bước mảnh ngay dưới thanh trên, tiêu đề là tên bước. Không
+  thêm dòng "Bước 2/3 · Thợ và giờ": tiêu đề, thanh bước và dòng này nói cùng một ý ba lần.
 - Vào màn con **trượt từ phải** 300ms (`push-in`); giảm chuyển động thì hiện ngay.
 
 ## J4. Kích cỡ cho ngón tay
@@ -133,7 +135,8 @@ Dùng (gặp ở phần lớn ảnh mẫu, hợp quy ước):
 - **Chọn giờ** (đặt lịch, đặt bàn, đặt sân): dải ngày trong tuần ở trên, dưới là **chỉ giờ còn trống**, ô viền bo
   tròn 3–4 cột, giờ đang chọn tô đặc `--primary`. Giờ đã kín thì giấu, không gạch ngang hay làm mờ (phần lớn app
   đặt lịch thật và ảnh mẫu): gạch ngang lẫn giữa giờ trống làm màn nhiễu, mắt phải lọc. Nhiều giờ thì chia
-  sáng / chiều / tối; buổi hết giờ ghi một dòng "Đã kín". Ngày kín cả ngày thì ô ngày mờ kèm chữ "Kín".
+  sáng / chiều / tối; buổi hết giờ là một hàng "Sáng · Đã kín" (tên buổi và chữ `text-muted` cùng hàng), không để
+  tên buổi một dòng rồi "Đã kín" lơ lửng dòng dưới. Ngày kín cả ngày thì ô ngày mờ kèm chữ "Kín".
 - **Ảnh thật dùng to**: app có hình (tiệm, món, phòng, người làm) thì trang chủ có ảnh tiệm hay ưu đãi cao
   140–180px, thẻ dịch vụ và người làm có ảnh, không chỉ avatar 40px. Ảnh lớn là thứ làm app trông "muốn dùng";
   màu nhấn thì chỉ ở nút và chỗ đang chọn.
