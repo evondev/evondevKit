@@ -1574,6 +1574,39 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     misalignedSnapRows.push(`lề nội dung ${contentInset}px, điểm hít ${scrollPaddingLeft}px: ${describe(element)}`);
   }
 
+  // 18o. Khối nhấc lên hay phóng to khi rê (F22): trong khung cuộn ngang hay cha overflow-hidden thì mất
+  //      một khúc viền trên (hàng card cuộn ngang, 12/10/2026). Đo tĩnh theo class Tailwind và luật CSS
+  //      `:hover` phẳng, để --quick cũng bắt. Icon nhỏ (mũi tên nhích) không tính.
+  const liftingHovers = [];
+  const liftClassPattern = /(^|\s)(group-)?hover:-?(translate-y|scale)-/;
+  const flatHoverSelectors = [];
+  const collectHoverRules = (rules) => {
+    for (const rule of rules || []) {
+      if (rule.selectorText?.includes(":hover") && ["transform", "translate", "scale"].some((property) => rule.style.getPropertyValue(property) && rule.style.getPropertyValue(property) !== "none")) {
+        flatHoverSelectors.push(rule.selectorText.replace(/:hover/g, ""));
+      }
+      if (rule.cssRules && !rule.selectorText) collectHoverRules(rule.cssRules);
+    }
+  };
+  for (const sheet of document.styleSheets) {
+    try { collectHoverRules(sheet.cssRules); } catch { /* sheet khác origin không đọc được */ }
+  }
+  const flatHoverElements = new Set(flatHoverSelectors.flatMap((selector) => {
+    try { return [...document.querySelectorAll(selector)]; } catch { return []; }
+  }));
+  const seenLiftClasses = new Set();
+  for (const element of allElements) {
+    if (liftingHovers.length >= 4) break;
+    const className = typeof element.className === "string" ? element.className : element.getAttribute("class") || "";
+    if (!liftClassPattern.test(className) && !flatHoverElements.has(element)) continue;
+    const { width, height } = element.getBoundingClientRect();
+    if (width < 48 && height < 48) continue;
+    const liftClass = className.split(/\s+/).find((token) => liftClassPattern.test(` ${token}`)) || "luật :hover";
+    if (seenLiftClasses.has(liftClass)) continue;
+    seenLiftClasses.add(liftClass);
+    liftingHovers.push(`${liftClass}: ${describe(element)}`);
+  }
+
   // 18m. Tiêu đề to bị ép trong cột hẹp ở mobile: card ảnh cạnh chữ giữ bố cục ngang ở 375, cột chữ còn
   //      ~180px, tiêu đề 30px ba dòng, nhãn phụ hai dòng, ảnh lơ lửng giữa (wireframe, 12/10/2026). Đo chữ
   //      từ 20px, từ 3 dòng, rộng dưới 60% màn.
@@ -1980,6 +2013,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     unfadedScrollers,
     squeezedHeadings,
     misalignedSnapRows,
+    liftingHovers,
     nestedFadeDialogs,
     untransitionedMotion,
     heavySeparators,
@@ -3912,6 +3946,7 @@ function listMustReportItems(results, sweepSteps) {
     for (const item of result.unfadedScrollers || []) addItem(width, `hàng cuộn ngang không mờ mép, không biết còn mục: ${item}`);
     for (const item of result.squeezedHeadings || []) addItem(width, `tiêu đề bị ép trong cột hẹp: ${item}`);
     for (const item of result.misalignedSnapRows || []) addItem(width, `hàng cuộn hít lệch lề, thả tay card giật sát mép: ${item}`);
+    for (const item of result.liftingHovers || []) addItem(width, `khối nhấc lên khi rê (F22, trong khung cuộn mất mép trên): ${item}`);
     // Nền rê yếu: cổng 3 lúc dựng phải sửa, bảng soi thì xếp Gu (review.md, sau bảng V1, 30/09/2026).
     for (const item of result.weakHovers || []) addItem(width, `nền rê gần như không thấy (soi: Gu): ${item}`);
     // Nút viền rê thành nút đặc cùng màu viền là kiểu hay gặp, không vỡ gì: giữ ở Gu.
@@ -4242,6 +4277,10 @@ function formatReport(results) {
     if (result.misalignedSnapRows?.length > 0) {
       problems.push(`HÀNG CUỘN HÍT LỆCH LỀ (${result.misalignedSnapRows.length} hàng; khung cuộn thêm scroll-px bằng lề nội dung, responsive.md R6):`);
       for (const item of result.misalignedSnapRows) problems.push(`  ${item}`);
+    }
+    if (result.liftingHovers?.length > 0) {
+      problems.push(`KHỐI NHẤC LÊN / PHÓNG TO KHI RÊ (${result.liftingHovers.length} kiểu; rê thì đổi viền hay nền, rules-form.md F22):`);
+      for (const item of result.liftingHovers) problems.push(`  ${item}`);
     }
     if (result.stickyScrollColumns.length > 0) {
       problems.push(`CỘT DÍNH MÀ CUỘN RIÊNG (${result.stickyScrollColumns.length} cột, thanh cuộn riêng hiện thường trực; cột dài hơn màn thì để cuộn theo trang):`);
