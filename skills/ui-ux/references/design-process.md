@@ -182,7 +182,9 @@ dòng đó."* Dừng chờ.
   --widths 1280,375`, ~6 giây mỗi phương án. Sửa tới khi sạch các mục: danh sách `P`, vạch trái bị
   bo góc cắt, mục lặp dày chữ, cột dính cuộn riêng, nội dung trôi giữa màn rộng, hàng nút rớt một
   nút lẻ (`R3`), select và ô ngày gốc (kể cả trong dialog đang đóng), "khung wireframe làm hỏng
-  bản thiết kế" (số đè chữ, `sticky` mất, thanh tràn). Đó là lỗi của chính bố cục: để tới `U4`
+  bản thiết kế" (số đè chữ, `sticky` mất, thanh tràn), **cuộn ngang ở 375** (người dùng bấm Mobile
+  là thấy trang trượt ngang trong khung; lỗi hay gặp nhất là `grid` trơn thiếu `grid-cols-1`, luật
+  `R2`). Link có `kho=mobile` thì probe tự đo `kho=desktop`, vì khung Mobile là iframe. Đó là lỗi của chính bố cục: để tới `U4`
   mới sửa thì bản dựng lệch khỏi cái người dùng đã chọn. Người dùng không tự thấy "card chữ quá
   trời" hay "vạch bị cắt" trên wireframe xám, họ chọn theo bố cục rồi vấp lỗi ở bản dựng (probe
   đo ra cả hai trên chính file wireframe). Rồi chạy luật Cấu trúc (`V1b` trong `review.md`) bằng
@@ -512,7 +514,7 @@ dòng đó."* Dừng chờ.
     if (state.kho === "mobile" && !params.has("frame")) {
       const frameSource = `?${new URLSearchParams({ ...state, kho: "desktop", frame: "1" })}`;
       document.getElementById("wf-design").innerHTML =
-        `<div style="display:grid;place-items:center;padding:24px"><iframe src="${frameSource}" title="Mobile" style="width:375px;height:812px;border:1px solid #ddd;border-radius:24px;background:#fff"></iframe></div>`;
+        `<div style="display:grid;place-items:center;padding:24px"><iframe src="${frameSource}" title="Mobile" style="width:375px;max-width:100%;height:812px;border:1px solid #ddd;border-radius:24px;background:#fff"></iframe></div>`;
     }
     // ☰ trong khung mobile mở panel trượt; bấm lớp phủ hay Esc thì đóng.
     for (const toggle of document.querySelectorAll("[data-wf-menu]")) {

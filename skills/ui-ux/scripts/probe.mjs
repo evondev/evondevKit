@@ -69,6 +69,14 @@ function parseArgs(argv) {
     else if (!arg.startsWith("--")) options.url = arg;
   }
 
+  // Wireframe ở Khổ Mobile chỉ là iframe 375: probe không đo được bên trong, chỉ báo "iframe lòi ra", và
+  // bản thiết kế tràn ngang trong khung lọt qua (đo 12/10/2026). Đo thẳng trang ở khổ desktop, ở 375 media
+  // query chạy y như trong khung.
+  if (/[?&]kho=mobile\b/.test(options.url) && !/[?&]frame=/.test(options.url)) {
+    options.url = options.url.replace(/([?&]kho=)mobile\b/, "$1desktop");
+    console.log(`Link wireframe Khổ Mobile là iframe, đo thẳng trang: ${options.url}`);
+  }
+
   if (!options.out) options.out = join(tmpdir(), `evon-probe-${Date.now()}`);
   if (options.isQuick) options.dynamicWidths = new Set();
   if (!options.dynamicWidths) options.dynamicWidths = pickDefaultDynamicWidths(options.widths);
@@ -1533,6 +1541,57 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     mouseUnreachableScrollers.push(`khung ${element.clientWidth}px, nội dung ${element.scrollWidth}px, khuất ${element.scrollWidth - element.clientWidth}px: ${describe(element)}`);
   }
 
+  // 18l. Hàng cuộn ngang (tab, chip) còn mục khuất mà mép không mờ (responsive.md, "Hàng cuộn ngang thì
+  //      mép mờ dần"): mép cắt thẳng qua chữ "Khởi nghiệ|", người dùng không biết còn mục phía sau
+  //      (wireframe tab danh mục ở 375, 12/10/2026). Mask đặt trên khung hay một trong hai tầng cha đều tính.
+  //      Chỉ hàng thấp dưới 120px: bảng cuộn ngang có luật riêng (R9).
+  const unfadedScrollers = [];
+  for (const element of allElements) {
+    if (unfadedScrollers.length >= 4) break;
+    const style = getComputedStyle(element);
+    if (!["auto", "scroll"].includes(style.overflowX) || !isVisible(element) || element.clientHeight >= 120) continue;
+    if (element.scrollWidth <= element.clientWidth + 4) continue;
+    const hasMask = [element, element.parentElement, element.parentElement?.parentElement]
+      .some((node) => node && [getComputedStyle(node).maskImage, getComputedStyle(node).webkitMaskImage].some((mask) => mask && mask !== "none"));
+    if (hasMask) continue;
+    unfadedScrollers.push(`khung ${element.clientWidth}px, khuất ${element.scrollWidth - element.clientWidth}px: ${describe(element)}`);
+  }
+
+  // 18n. Hàng cuộn có hít mà điểm hít lệch lề nội dung: `snap-x` + `snap-start` thiếu `scroll-px`, thả tay
+  //      là card giật sát mép khung (wireframe hàng card, 12/10/2026). So mép trái mục đầu lúc chưa cuộn
+  //      (chính là lề nội dung) với scroll-padding-left của khung.
+  const misalignedSnapRows = [];
+  for (const element of allElements) {
+    if (misalignedSnapRows.length >= 4) break;
+    const style = getComputedStyle(element);
+    if (!style.scrollSnapType.startsWith("x") && !style.scrollSnapType.startsWith("both")) continue;
+    if (!isVisible(element) || element.scrollWidth <= element.clientWidth + 4) continue;
+    const firstSnapItem = [...element.querySelectorAll("*")].find((item) => getComputedStyle(item).scrollSnapAlign.split(" ").includes("start"));
+    if (!firstSnapItem) continue;
+    const contentInset = Math.round(firstSnapItem.getBoundingClientRect().left - element.getBoundingClientRect().left + element.scrollLeft);
+    const scrollPaddingLeft = parseFloat(style.scrollPaddingLeft) || 0;
+    if (contentInset <= 2 || Math.abs(contentInset - scrollPaddingLeft) <= 2) continue;
+    misalignedSnapRows.push(`lề nội dung ${contentInset}px, điểm hít ${scrollPaddingLeft}px: ${describe(element)}`);
+  }
+
+  // 18m. Tiêu đề to bị ép trong cột hẹp ở mobile: card ảnh cạnh chữ giữ bố cục ngang ở 375, cột chữ còn
+  //      ~180px, tiêu đề 30px ba dòng, nhãn phụ hai dòng, ảnh lơ lửng giữa (wireframe, 12/10/2026). Đo chữ
+  //      từ 20px, từ 3 dòng, rộng dưới 60% màn.
+  const squeezedHeadings = [];
+  for (const element of isMobile ? allElements : []) {
+    if (squeezedHeadings.length >= 4) break;
+    const hasOwnText = [...element.childNodes].some((node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
+    if (!hasOwnText || !isVisible(element)) continue;
+    const style = getComputedStyle(element);
+    const fontSize = parseFloat(style.fontSize);
+    if (fontSize < 20) continue;
+    const lineHeight = parseFloat(style.lineHeight) || fontSize * 1.2;
+    const { width, height } = element.getBoundingClientRect();
+    const lineCount = Math.round(height / lineHeight);
+    if (lineCount < 3 || width >= viewportWidth * 0.6) continue;
+    squeezedHeadings.push(`chữ ${Math.round(fontSize)}px ${lineCount} dòng trong cột ${Math.round(width)}px: ${describe(element)}`);
+  }
+
   // 18e. Nội dung trôi giữa màn rộng: khối nội dung chính có trần bề rộng và căn giữa, hở hai bên từ
   //      120px. Cạnh sidebar thì thành khoảng trống giữa sidebar và nội dung (`mx-auto max-w-300`, 28/09/2026).
   //      Chỉ xét khối rộng từ 900px: cột form, cài đặt hẹp căn giữa là mẫu riêng của từng trang.
@@ -1918,6 +1977,9 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     styledNativeSelects,
     stickyScrollColumns,
     mouseUnreachableScrollers,
+    unfadedScrollers,
+    squeezedHeadings,
+    misalignedSnapRows,
     nestedFadeDialogs,
     untransitionedMotion,
     heavySeparators,
@@ -3847,6 +3909,9 @@ function listMustReportItems(results, sweepSteps) {
     for (const item of result.hoverLikeSelected || []) addItem(width, `rê ra đúng màu mục đang chọn: ${item}`);
     for (const item of result.checkedHoverChanges || []) addItem(width, `rê vào ô đã chọn làm mất màu nhấn: ${item}`);
     for (const item of result.mouseUnreachableScrollers || []) addItem(width, `hàng cuộn ngang chuột không tới được: ${item.replace(/, nội dung .*?: /, ": ")}`);
+    for (const item of result.unfadedScrollers || []) addItem(width, `hàng cuộn ngang không mờ mép, không biết còn mục: ${item}`);
+    for (const item of result.squeezedHeadings || []) addItem(width, `tiêu đề bị ép trong cột hẹp: ${item}`);
+    for (const item of result.misalignedSnapRows || []) addItem(width, `hàng cuộn hít lệch lề, thả tay card giật sát mép: ${item}`);
     // Nền rê yếu: cổng 3 lúc dựng phải sửa, bảng soi thì xếp Gu (review.md, sau bảng V1, 30/09/2026).
     for (const item of result.weakHovers || []) addItem(width, `nền rê gần như không thấy (soi: Gu): ${item}`);
     // Nút viền rê thành nút đặc cùng màu viền là kiểu hay gặp, không vỡ gì: giữ ở Gu.
@@ -4165,6 +4230,18 @@ function formatReport(results) {
     if (result.mouseUnreachableScrollers?.length > 0) {
       problems.push(`HÀNG CUỘN NGANG CHUỘT KHÔNG TỚI ĐƯỢC (${result.mouseUnreachableScrollers.length} hàng, thanh cuộn ẩn, không nút mũi tên; responsive.md sau R10):`);
       for (const item of result.mouseUnreachableScrollers) problems.push(`  ${item}`);
+    }
+    if (result.unfadedScrollers?.length > 0) {
+      problems.push(`HÀNG CUỘN NGANG KHÔNG MỜ MÉP (${result.unfadedScrollers.length} hàng, mép cắt thẳng qua chữ; mask-image 32px, responsive.md sau R10):`);
+      for (const item of result.unfadedScrollers) problems.push(`  ${item}`);
+    }
+    if (result.squeezedHeadings?.length > 0) {
+      problems.push(`TIÊU ĐỀ BỊ ÉP TRONG CỘT HẸP (${result.squeezedHeadings.length} chỗ; card ảnh cạnh chữ ở mobile thì xếp dọc, responsive.md R5):`);
+      for (const item of result.squeezedHeadings) problems.push(`  ${item}`);
+    }
+    if (result.misalignedSnapRows?.length > 0) {
+      problems.push(`HÀNG CUỘN HÍT LỆCH LỀ (${result.misalignedSnapRows.length} hàng; khung cuộn thêm scroll-px bằng lề nội dung, responsive.md R6):`);
+      for (const item of result.misalignedSnapRows) problems.push(`  ${item}`);
     }
     if (result.stickyScrollColumns.length > 0) {
       problems.push(`CỘT DÍNH MÀ CUỘN RIÊNG (${result.stickyScrollColumns.length} cột, thanh cuộn riêng hiện thường trực; cột dài hơn màn thì để cuộn theo trang):`);
