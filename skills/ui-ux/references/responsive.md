@@ -11,7 +11,7 @@ chê. Vòng tra tấn bắt buộc nằm ở `checklist.md` cổng 3.
 
 Triệu chứng dễ nhận nhất: cuộn sang ngang thì thấy **một mảng trống** bên phải, vì có một phần tử nào đó rộng hơn màn đẩy cả trang ra. Thấy mảng trống đó là biết ngay có thứ gì đang tràn, đi tìm bằng cách bỏ dần `min-w-0` ra. Nội dung thật sự rộng thì cho cuộn trong khung riêng `overflow-x-auto`, đừng để nó đẩy cả trang. Kiểm ở 375px **trước khi** báo xong.
 
-**R2. Lưới xuống một cột ở mobile.** Mặc định `grid-cols-1`, rồi mới `sm:grid-cols-2` và `lg:grid-cols-4`. Ngoại lệ: hàng ô số liệu 2×2 ở mobile khi mọi số vừa ô (`components/charts.md`, "Ô số liệu ở màn hẹp").
+**R2. Lưới xuống một cột ở mobile.** Mặc định `grid-cols-1`, rồi mới `sm:grid-cols-2` và `lg:grid-cols-4`. **Không bao giờ để `grid` trơn chờ `lg:` mới khai cột** (`grid gap-8 lg:grid-cols-[1.1fr_1fr]`): cột ngầm là `auto`, nở theo phần tử rộng nhất bên trong (ô tìm cạnh nút, hàng chip, bảng), cả trang trượt ngang ở 375. `grid-cols-1` của Tailwind là `minmax(0, 1fr)`, ép cột vừa màn. Cột tự viết bằng `[...]` cũng dùng `minmax(0,1fr)`, không dùng `1fr` trơn. Ngoại lệ: hàng ô số liệu 2×2 ở mobile khi mọi số vừa ô (`components/charts.md`, "Ô số liệu ở màn hẹp").
 
 **R3. Không để phần tử rớt hàng lẻ.** Wrap mà còn dư một cái đứng một mình ở hàng dưới thì đọc ra là lỗi, không phải là thiết kế.
 
@@ -28,6 +28,8 @@ Triệu chứng dễ nhận nhất: cuộn sang ngang thì thấy **một mảng
 2. Ảnh chữ nhật đổi thành **vuông nhỏ**, `h-16 w-16` hoặc `h-20 w-20`, đừng giữ tỉ lệ ngang rồi bóp lại.
 3. Giảm cỡ chữ một bậc.
 4. Cắt tiêu đề còn tối đa hai dòng bằng `line-clamp-2`.
+
+**Card ảnh cạnh chữ (ảnh ngang bên trái, tiêu đề to bên phải) thì ở mobile xếp dọc**: ảnh lên trên, rộng hết card, chữ xuống dưới (`flex-col sm:flex-row`). Giữ bố cục ngang ở 375 thì cột chữ còn chừng 180px: tiêu đề 30px vỡ ba dòng, nhãn phụ hai dòng, ảnh lơ lửng giữa một khối chữ cao gấp đôi nó. Muốn giữ ngang (dòng danh sách) thì đi bước 2 và 3: ảnh vuông nhỏ, tiêu đề `text-base`, căn đỉnh (`items-start`). Probe đo: chữ từ 20px mà ba dòng trong cột hẹp hơn 60% màn.
 
 Và luôn giữ: **ngày tháng, nhãn phụ phải nhỏ hơn tiêu đề ít nhất một bậc.** Tiêu đề `text-sm` thì ngày `text-xs`. Bằng nhau là mắt không biết đọc cái nào trước.
 
@@ -54,6 +56,13 @@ gom vào một `<div class="px-3 sm:px-5">`. Khối nằm giữa khung trang và
 nới `max-w` thêm đúng phần lấn ra hai bên, không thì các khối anh em hẹp lại.
 
 Cách khác cũng được: chèn phần tử đệm cuối hàng, `<div class="w-3 shrink-0 sm:w-5" aria-hidden="true"></div>`.
+
+**Hàng cuộn có hít (`snap-x` + `snap-start`) thì khung cuộn mang `scroll-px` bằng đúng lề nội dung**
+(`scroll-px-4` với lề 16px). Thiếu thì trình duyệt hít mép card vào **mép khung cuộn**, mà khung cuộn
+chạm mép màn: cuộn qua thả tay là card giật sát lề, lệch khỏi tiêu đề khối phía trên, mỗi lần cuộn
+một lần giật (wireframe hàng card challenge, 12/10/2026). Cách cũ `pl-4` trên hàng trong cũng không
+đủ, `scroll-padding` mới là chỗ hít dừng. Mẫu đủ: `<div class="snap-x snap-mandatory scroll-px-4
+overflow-x-auto"><div class="flex gap-4 px-4">…card `snap-start shrink-0`…</div></div>`.
 
 ---
 
