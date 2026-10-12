@@ -142,6 +142,14 @@ dòng đó."* Dừng chờ.
 - **Tính cả khung app vào bề ngang.** App đã có sidebar điều hướng mà phương án thêm một cột
   lọc bên trái thì ghi rõ ở dòng đánh đổi: hai cột trái, nội dung còn lại bao nhiêu px ở 1280.
 - **Đánh dấu một phương án khuyên dùng**, kèm một câu vì sao (bám `U2`).
+  Không có phương án không nhược điểm: khuyên dùng là phương án có nhược điểm rơi vào việc
+  người dùng ít làm nhất, không phải phương án ít nhược điểm nhất trên giấy.
+- **Ghép khi hai cái hay không đụng nhau.** Hai phương án hay ở hai chỗ khác nhau (A có bố cục
+  tốt, B có thanh lọc tốt) và ghép lại không thêm khối, không chật thêm thì ghi thêm một dòng
+  lúc gửi wireframe: *"Ghép A + B: bố cục của A, thanh lọc của B. Mất: …"*. Không vẽ thành
+  phương án thứ tư; người dùng chọn dòng ghép thì dựng theo nó. Hai cái hay giành cùng một chỗ,
+  hay ghép vào thì thêm cột, thêm khối, thì không ghép: gom hết cái hay vào một màn là rối,
+  rối là nhược điểm nặng nhất. Không có cặp nào ghép được thì bỏ dòng này, không ép.
 - Một file HTML, mọi lựa chọn nằm trên tham số (`?v=a&mau=xam&kho=desktop&tt=du-lieu`) để probe
   mở được từng cái, và người dùng chép link gửi đi thì mở ra đúng cái đang xem.
 - **Đánh số từng khối chính** (header, hàng lọc, danh sách, panel, chân trang…): `data-wf-block="1"`,
