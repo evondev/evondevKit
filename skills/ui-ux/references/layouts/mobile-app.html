@@ -70,26 +70,37 @@
       .screen { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--screen-bg); visibility: hidden; }
       .screen.is-grouped { --screen-bg: var(--background); }
       .screen.is-active { visibility: visible; }
+      /* Chuyển động (J10): vào đường giảm tốc, ra đường tăng tốc và nhanh hơn. */
       @media (prefers-reduced-motion: no-preference) {
         .screen.is-pushed.is-active { animation: push-in 300ms cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .sheet { transition: translate 320ms cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .scrim { transition: opacity 240ms ease; }
+        .sheet { transition: translate 250ms cubic-bezier(0.3, 0, 1, 1); }
+        .sheet.is-open { transition: translate 320ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .screen.is-pushed.is-active { animation: fade-in 200ms ease; }
       }
       @keyframes push-in { from { translate: 30% 0; opacity: 0.6; } to { translate: 0 0; opacity: 1; } }
+      @keyframes fade-in { from { opacity: 0; } }
 
       /* Vùng cuộn: chừa đỉnh cho tai thỏ, chừa đáy cho thanh tab nổi + thanh home (J2). */
       .scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
       .scroll::-webkit-scrollbar { display: none; }
       .pad-top { padding-top: var(--inset-top); }
       .pad-tabbar { padding-bottom: calc(var(--inset-bottom) + 96px); }
+      /* Màn ẩn thanh tab (form, thanh toán, luồng nhiều bước: J2) chỉ chừa thanh home. */
       .pad-bottom { padding-bottom: calc(var(--inset-bottom) + 16px); }
       .above-home { bottom: calc(var(--inset-bottom) + 8px); }
 
       /* Sheet (J6): trượt từ đáy, bo 28px hai góc trên, thanh kéo 36×5, lớp phủ đen 40%. */
       .sheet { translate: 0 100%; }
       .sheet.is-open { translate: 0 0; }
-      .scrim { opacity: 0; pointer-events: none; }
-      .scrim.is-open { opacity: 1; pointer-events: auto; }
+      .scrim { opacity: 0; pointer-events: none; transition: opacity 200ms ease; }
+      .scrim.is-open { opacity: 1; pointer-events: auto; transition-duration: 240ms; }
+      /* Giảm chuyển động: sheet mờ dần tại chỗ thay cho trượt (J10), không hiện "phựt". */
+      @media (prefers-reduced-motion: reduce) {
+        .sheet { translate: 0 0; opacity: 0; visibility: hidden; transition: opacity 200ms ease, visibility 200ms; }
+        .sheet.is-open { opacity: 1; visibility: visible; }
+      }
 
       /* Nhấn: co nhẹ (đúng như chạm thật), nút tối thì sáng lên một bậc. */
       .press { transition: scale 120ms cubic-bezier(0.23, 1, 0.32, 1), background-color 150ms ease; -webkit-tap-highlight-color: transparent; }
@@ -206,7 +217,7 @@
 
       </section>
 
-      <!-- ================= 2. CHI TIẾT GIAO DỊCH (màn con, đẩy vào từ phải) ================= -->
+      <!-- ================= 2. CHI TIẾT GIAO DỊCH (màn con để xem, đẩy vào từ phải, giữ thanh tab: J2) ================= -->
       <section class="screen is-pushed" data-screen="detail" aria-label="Chi tiết giao dịch">
         <!-- Thanh trên màn con (J3): 44px, nút quay lại trái, tiêu đề giữa 17px, hành động phụ phải. -->
         <header class="pad-top shrink-0 bg-(--screen-bg)">
@@ -216,7 +227,7 @@
             <button class="press grid size-11 place-items-center rounded-full" aria-label="Sửa"><i data-lucide="pencil" class="size-5"></i></button>
           </div>
         </header>
-        <div class="scroll pad-bottom">
+        <div class="scroll pad-tabbar">
           <div class="flex flex-col items-center px-4 pt-6 pb-8 text-center">
             <span class="grid size-16 place-items-center rounded-full bg-(--cat-rose-bg) text-(--cat-rose)"><i data-lucide="shopping-bag" class="size-7"></i></span>
             <p class="mt-4 text-[36px]/[42px] font-semibold tracking-tight tabular-nums">−386.000 đ</p>
@@ -352,6 +363,9 @@
 
       // Điều hướng bằng hash: #home, #stats, #settings là tab; #detail là màn con; #add mở sheet trên màn đang xem.
       const tabScreens = ["home", "stats", "settings"];
+      // Màn con để xem thuộc tab nào (J2): giữ thanh tab, sáng mục của tab cha. Màn phải làm cho xong (form, thanh toán)
+      // không có trong đây nên ẩn thanh tab.
+      const parentTabs = { detail: "home" };
       const sheet = document.querySelector("[data-sheet]");
       const scrim = document.querySelector("[data-scrim]");
       const tabbar = document.querySelector("[data-tabbar]");
@@ -360,12 +374,12 @@
 
       function showScreen(name) {
         document.querySelectorAll("[data-screen]").forEach((screen) => screen.classList.toggle("is-active", screen.dataset.screen === name));
+        const currentTab = tabScreens.includes(name) ? name : parentTabs[name];
         document.querySelectorAll("[data-tab]").forEach((tab) => {
-          if (tab.dataset.tab === name) tab.setAttribute("aria-current", "page");
+          if (tab.dataset.tab === currentTab) tab.setAttribute("aria-current", "page");
           else tab.removeAttribute("aria-current");
         });
-        // Màn con không có thanh tab (J2): nó thuộc luồng của tab cha, quay lại bằng nút trái.
-        tabbar.hidden = !tabScreens.includes(name);
+        tabbar.hidden = !currentTab;
         // Nút thêm chỉ ở tab có việc thêm (Tổng quan); tab khác thanh tab giãn hết bề ngang.
         fab.hidden = name !== "home";
         tabbar.classList.toggle("right-[92px]", name === "home");

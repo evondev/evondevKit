@@ -1,9 +1,10 @@
 # Soi UI đang có — luật V
 
-Mở file này khi đề nói rõ một trong ba việc (bảng câu 1 của `SKILL.md`): muốn biết **UI
+Mở file này khi đề nói rõ một trong bốn việc (bảng câu 1 của `SKILL.md`): muốn biết **UI
 đang có trông ổn chưa** ("xem giúp", "review", "chỗ nào chưa ổn", "sao trông kỳ", "nhìn rối",
 gửi ảnh hay link app của chính họ nhờ xem), muốn **làm lại mà giữ brand / giữ giao diện**,
-hoặc muốn **dựng lại theo gu skill, bỏ style cũ**.
+muốn **dựng lại theo gu skill, bỏ style cũ**, hoặc muốn **so bản mới với bản gốc** xem bên
+nào hơn (`V6`).
 Đề chỉ nói "làm lại cho đẹp", "dựng lại theo skill" thì là nhánh `U` mặc định, không phải đây.
 
 Khác nhánh `L` (`refactor.md`): `L` dọn code và **giữ nguyên hình**. `V` soi hình,
@@ -526,3 +527,101 @@ figure img{display:block;height:320px;width:auto;border-radius:8px}figcaption{pa
 - Sửa xong thì chụp lại cùng khổ (có dark thì chụp cả hai chế độ), đặt ảnh trước và
   sau cạnh nhau, rồi chạy lại probe trên route đó để chắc lỗi đã hết mà không đẻ lỗi
   mới.
+
+---
+
+## V6. So bản gốc với bản mới ⚑
+
+Vào khi đề có **hai bản và hỏi bên nào hơn**: "so với bản gốc", "so với trang gốc / bản cũ",
+"có gì hơn", "hơn hay thua", "đã ổn chưa so với…", "compare with the original", "is it better
+than before". Thường đến sau một lần dựng lại (nhánh `U` hay hai chế độ dựng lại). Đề chỉ hỏi
+"đã ổn chưa" mà không nhắc bản gốc thì là chế độ soi.
+
+Giống soi: chụp, đo, lập bảng luôn, **không đụng file nào** tới khi người dùng chọn dòng. Khác
+soi: mỗi dòng là **một tiêu chí chấm cả hai bản**, không phải một lỗi của một bản. Soi chỉ trả
+lời "bản mới còn lỗi gì"; người hỏi "có gì hơn" muốn biết đổi xong được gì, mất gì.
+
+**Lấy bản gốc**, theo thứ tự:
+
+1. Trang gốc còn chạy (URL thật, link người dùng gửi): chụp thẳng.
+2. Bản gốc chỉ còn trong git: tìm commit trước lần dựng lại bằng `git log -- <file của route>`,
+   rồi `git worktree add "$TMPDIR/evon-goc" <commit>`, cài, chạy ở cổng khác, chụp. **Chạy lần
+   lượt, không bật hai dev server cùng lúc**: chụp bản gốc xong thì tắt, rồi mới chụp bản mới.
+   Xong thì `git worktree remove`. Không chắc commit nào là gốc thì hỏi một câu.
+3. Chỉ còn ảnh: ảnh "trước" của lần dựng lại (`$TMPDIR/evon-review`) hay ảnh người dùng gửi. Dùng
+   được, nhưng dòng cần đo trên trang (tương phản, tràn, vùng bấm ở khổ khác) ghi *thấy trong
+   ảnh* hoặc bỏ, theo `V2`.
+
+**Chụp hai bản như nhau** ⚑: cùng khổ (khổ mặc định của probe; app điện thoại thêm `--mobile`),
+cùng dữ liệu, cùng trạng thái (đã đăng nhập, tab đang mở), cùng chế độ sáng / tối. Chạy probe cả
+hai bản, giữ hai danh sách `P`. Hai bản khác dữ liệu (gốc dữ liệu thật, mới dữ liệu mẫu) thì
+nói một dòng ở mở đầu, và không chấm dòng nào phụ thuộc dữ liệu (độ dài trang, số dòng).
+
+**Tiêu chí mặc định**, bỏ dòng nào trang không có. Mỗi dòng chấm hai bản bằng **cùng một phép đo**:
+
+| Tiêu chí | Đo bằng |
+| --- | --- |
+| Việc chính nổi lên | màn đầu ở 1440 và 375: thứ người dùng đến để làm có nằm trong màn đầu không, mấy thứ cùng nổi (cùng màu nhấn, cùng cỡ tiêu đề) |
+| Thứ bậc chữ | số cỡ chữ, số độ đậm đang dùng; cỡ tiêu đề so với chữ thường |
+| Nhịp và mật độ | chiều cao trang ở 1440 và 375; số khối thấy trong màn đầu; khoảng cách giữa các khối cùng loại có đều không |
+| Hỏng đo được | số mã `P` mỗi bản, tách theo khổ (tương phản, tràn, vùng bấm, chữ cắt) |
+| Khổ hẹp | `--sweep`: khoảng bề rộng có lỗi của mỗi bản |
+| Nhất quán | cùng vai mà khác giá trị (bo góc, màu, cỡ nút), đếm như hạng Lệch hệ (`V1`) |
+| Nhận diện | bảng vai màu: vai nào bản mới đổi so với gốc |
+| Nội dung | chữ, link, nút, ảnh có ở gốc mà bản mới không có |
+| Tương tác | lớp nổi, rê chuột, focus, chuyển động: probe đo được gì ở mỗi bên |
+
+Số chữ và nội dung thì đếm bằng Playwright, cùng khổ, cùng đoạn code cho hai bản:
+
+```js
+// page.evaluate ở từng khổ, chạy y hệt trên bản gốc và bản mới
+const textElements = [...document.querySelectorAll("body *")].filter((element) =>
+  element.getClientRects().length &&
+  [...element.childNodes].some((node) => node.nodeType === 3 && node.textContent.trim()));
+const fontSizes = new Set(textElements.map((element) => getComputedStyle(element).fontSize));
+const fontWeights = new Set(textElements.map((element) => getComputedStyle(element).fontWeight));
+const texts = textElements.map((element) => element.textContent.trim().replace(/\s+/g, " "));
+const actionCount = [...document.querySelectorAll("a[href], button")]
+  .filter((element) => element.getClientRects().length).length;
+const pageHeight = document.documentElement.scrollHeight;
+// chữ có ở gốc mà không có ở bản mới → dòng Nội dung
+```
+
+**Nội dung mất là bản mới thua**, trừ khi người dùng đã chọn bỏ (một dòng Cấu trúc đã chọn ở
+`V1b`). Khi đó ghi Hoà, cột Bản mới ghi "đã bỏ theo dòng N".
+
+**Không khen bản mình dựng** ⚑. Người chấm cũng là người dựng, nên dễ nghiêng về bản mới.
+
+- **Mỗi ô là số đo hoặc chỉ vào ảnh.** "Thoáng hơn", "hiện đại hơn", "đẹp hơn" không phải căn
+  cứ. Dòng không đo được mà phải chấm bằng mắt thì cột Nguồn ghi *mắt*; phân vân thì chấm Hoà.
+- **Phải đi tìm dòng thua.** Trước khi giao, mở lại ảnh gốc và tự hỏi bản gốc làm tốt gì mà bản
+  mới bỏ mất: cá tính, ảnh lớn, chữ nổi, nhiều thông tin hơn trong màn đầu, ít bước bấm hơn,
+  việc chính gần tay hơn. Không tìm ra thì ghi một dòng dưới bảng: *"Đã tìm dòng thua ở X, Y, Z,
+  không thấy"*. Bảng toàn Mới hơn mà không có dòng đó thì chưa được giao.
+- **Số có lợi cho bản gốc lên bảng y nguyên.** Bản mới nhiều mã `P` hơn ở 375 thì dòng đó bản
+  mới thua, không giải thích cho qua.
+
+**Trang skill chưa được dạy** (landing, trang chủ website, cửa hàng, blog, đầu `SKILL.md`): các
+dòng đo được vẫn chấm như trên. Dòng thuộc gu marketing (ảnh, khẩu hiệu, độ ấn tượng) chấm bằng
+mắt, độ tin thấp; nói một dòng ở mở đầu.
+
+**Giao**:
+
+1. **Mở đầu**: hai bản lấy từ đâu (URL, commit, ảnh), đã chụp khổ nào, chỗ nào khác dữ liệu.
+2. **Kết luận một câu trước bảng**: hơn mấy dòng, thua mấy, hoà mấy, và đã nên thay bản gốc chưa.
+   *"Bản mới hơn 5 dòng, thua 2, hoà 2. Chưa nên thay hẳn: dòng 1 mất khối đánh giá của khách."*
+3. **Bảng**: Gốc hơn trước, Hoà, Mới hơn cuối. Chỗ cần làm lên đầu.
+
+   | # | Tiêu chí | Bản gốc | Bản mới | Bên hơn | Nguồn | Ảnh |
+   | --- | --- | --- | --- | --- | --- | --- |
+   | 1 | Nội dung | 3 card đánh giá của khách ở màn thứ hai | không có | Gốc | đo | [gốc](…) · [mới](…) |
+   | 2 | Hỏng đo được | 375: 2 mã `P` | 375: 5 mã `P`, chữ trong nút đặt lịch bị cắt | Gốc | đo | [gốc](…) · [mới](…) |
+   | 6 | Việc chính nổi lên | 1440: nút đặt lịch nằm dưới màn đầu 240px | trong màn đầu, chỉ một nút màu nhấn | Mới | đo | [gốc](…) · [mới](…) |
+
+   - Ô ghi số hoặc cái người dùng cuối thấy, không ghi tên luật.
+   - Ảnh theo `V5`: link bấm được, `so-sanh.html` mỗi dòng hai ảnh gốc / mới cùng khổ, cùng chiều cao.
+4. **Đề xuất cho từng dòng Gốc hơn** (và dòng Hoà có cách làm tốt hơn cả hai), đánh số theo dòng:
+   *"1 · thêm lại khối đánh giá, dựng theo card của bản mới"*. Sửa đúng chỗ thua trên bản mới,
+   không đề xuất quay về bản gốc nguyên khối.
+5. **Kết**: *"Trả lời số dòng muốn sửa, ví dụ `sửa 1, 2`."* Sửa xong theo "Người dùng chọn xong"
+   của `V5`, chụp lại bản mới và chấm lại đúng các dòng đó.

@@ -9,7 +9,7 @@
 // --mobile: bản mẫu app điện thoại theo layouts/mobile-app.html (luật J, references/mobile.md). Ngoài các khổ của
 // --widths, mở TỪNG MÀN (mỗi [data-screen] và mỗi hash dẫn tới sheet như #add) ở 390×844 giả lập chạm và ở khung
 // máy tính 1280, chụp từng màn, đo: chữ dưới 11px, chữ ô nhập dưới 16px, chỗ bấm dưới 44px, thanh tab (3–5 mục,
-// mục nào cũng có chữ, không nút hành động trong thanh, không có ở màn con), nút nổi đè lên chữ, dòng cuối không
+// mục nào cũng có chữ, không nút hành động trong thanh, màn con giữ thanh thì sáng tab cha, không cạnh nút dính đáy), nút nổi đè lên chữ, dòng cuối không
 // cuộn ra khỏi thanh tab được, chữ hay chỗ bấm chui vào vùng tai thỏ / thanh home của khung, cuộn xuống mà chữ
 // chạy dưới thanh trạng thái không có dải nền che. Trong khung `.device` bỏ các phép đo của web: vòng focus (màn
 // chạm), sàn chữ 12px (nhãn thanh tab 11), header trong suốt (tiêu đề lớn), bóng của sheet.
@@ -3169,6 +3169,8 @@ function measureMobileScreen({ isFrame, minTap }) {
   const isDecor = (element) => Boolean(element.closest("[aria-hidden='true'], .status-bar, .home-indicator"));
   const isInert = (element) => Boolean(element.closest("[inert]"));
   const describe = (element) => `${element.tagName.toLowerCase()} "${(element.getAttribute("aria-label") || element.textContent || "").trim().replace(/\s+/g, " ").slice(0, 30)}"`;
+  // Khối nổi nằm ngay trên thanh tab (khe ≤ 24px), rộng từ 80% thanh: thanh giỏ hàng của app đặt món (J11).
+  const isDockedAboveTabbar = (floatRect, barRect) => floatRect.bottom <= barRect.top + 1 && barRect.top - floatRect.bottom <= 24 && floatRect.width >= barRect.width * 0.8;
 
   // J4: chữ dưới 11px; chữ ô nhập dưới 16px (trình duyệt di động tự phóng to khi focus).
   const tinyTexts = new Set();
@@ -3235,9 +3237,21 @@ function measureMobileScreen({ isFrame, minTap }) {
     if (edgeGaps.some((gap) => gap < 8)) crampedLabels.push(`nhãn hai đầu cách mép thanh ${edgeGaps.map(Math.round).join(" / ")}px`);
     if (crampedLabels.length > 0) problems.push(`nhãn thanh tab chật (${crampedLabels.slice(0, 3).join(", ")}): nhãn cách nhau từ 8px, cách mép bo từ 8px; thanh 5 mục thì không thu lại cho nút tròn (J2, J5)`);
 
-    // Màn gốc thứ hai của cùng tab (hai đoạn của segmented, hash riêng) vẫn có mục đang chọn: không phải màn con.
+    // Màn con để xem giữ thanh tab nhưng phải sáng mục của tab cha (J2).
     const hasCurrentTab = Boolean(tabbar.querySelector("[aria-current]:not([aria-current='false']), [aria-selected='true']"));
-    if (screenName && tabTargets.length > 0 && !tabTargets.includes(screenName) && !hasCurrentTab) problems.push(`màn con "${screenName}" vẫn hiện thanh tab: chỉ màn gốc của tab có thanh tab (J2)`);
+    const isChildScreen = Boolean(screenName) && tabTargets.length > 0 && !tabTargets.includes(screenName);
+    if (isChildScreen && !hasCurrentTab) problems.push(`màn con "${screenName}" hiện thanh tab mà không mục nào sáng: giữ thanh tab thì sáng mục của tab cha (J2)`);
+
+    // Màn con có nút chính dính đáy (form, giỏ hàng, thanh toán) là việc phải làm cho xong: ẩn thanh tab (J2, J5).
+    // Nút dính đáy = nút rộng từ 80% khung, cao từ 48, sát đáy, không nằm trong vùng cuộn. Màn gốc bỏ qua vì thanh
+    // giỏ hàng của app đặt món (J11) cũng rộng và sát đáy.
+    const stickyAction = isChildScreen ? [...screen.querySelectorAll("button, a")].find((control) => {
+      if (!isShown(control) || control.closest(".scroll")) return false;
+      const rect = control.getBoundingClientRect();
+
+      return rect.width >= deviceRect.width * 0.8 && rect.height >= 48 && deviceRect.bottom - rect.bottom < 140;
+    }) : null;
+    if (stickyAction) problems.push(`màn con "${screenName}" có nút dính đáy ${describe(stickyAction)} mà vẫn hiện thanh tab: form, giỏ hàng, thanh toán ẩn thanh tab (J2, J5)`);
   }
 
   // J1: nền màn sáng mà xám (thẻ trắng trên nền xám kiểu dashboard) chỉ cho màn danh sách nhóm `.is-grouped`.
@@ -3268,6 +3282,8 @@ function measureMobileScreen({ isFrame, minTap }) {
       const floatRect = element.getBoundingClientRect();
       const barRect = tabbar.getBoundingClientRect();
       if (floatRect.bottom > barRect.top && floatRect.top < barRect.bottom) return false;
+      // Thanh giỏ hàng (J11) xếp ngay trên thanh tab, cùng bề ngang: thuộc dải đáy, vùng cuộn chừa thêm chỗ cho nó.
+      if (isDockedAboveTabbar(floatRect, barRect)) return false;
     }
 
     return true;
@@ -3289,8 +3305,11 @@ function measureMobileScreen({ isFrame, minTap }) {
   if (tabbar && scroller && scroller.scrollHeight > scroller.clientHeight) {
     scroller.scrollTop = scroller.scrollHeight;
     const lastLeaf = [...textLeaves].sort((first, second) => second.getBoundingClientRect().bottom - first.getBoundingClientRect().bottom)[0];
-    const tabTop = tabbar.getBoundingClientRect().top;
-    if (lastLeaf && lastLeaf.getBoundingClientRect().bottom > tabTop + 1) problems.push(`cuộn hết mà "${lastLeaf.textContent.trim().slice(0, 24)}" vẫn nằm dưới thanh tab: vùng cuộn chừa đáy inset + 96px (.pad-tabbar, J2)`);
+    const barRect = tabbar.getBoundingClientRect();
+    // Có thanh giỏ hàng xếp trên thanh tab thì dòng cuối phải ra khỏi cả thanh giỏ.
+    const dockTops = [...device.querySelectorAll("a, button")].filter((element) => isShown(element) && !tabbar.contains(element) && ["absolute", "fixed"].includes(getComputedStyle(element).position)).map((element) => element.getBoundingClientRect()).filter((rect) => isDockedAboveTabbar(rect, barRect)).map((rect) => rect.top);
+    const tabTop = Math.min(barRect.top, ...dockTops);
+    if (lastLeaf && lastLeaf.getBoundingClientRect().bottom > tabTop + 1) problems.push(`cuộn hết mà "${lastLeaf.textContent.trim().slice(0, 24)}" vẫn nằm dưới thanh tab${dockTops.length > 0 ? " và thanh giỏ" : ""}: vùng cuộn chừa đáy inset + 96px (.pad-tabbar, J2), có thanh giỏ thì + 160px (.pad-cartbar, J11)`);
     scroller.scrollTop = 0;
   }
 

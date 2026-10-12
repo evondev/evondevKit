@@ -310,9 +310,11 @@ báo lỗi rồi sửa, không chạy vòng test riêng.
 Bỏ 01/10/2026. Không tự test, người dùng các công cụ đó gặp lỗi thì báo qua issue GitHub rồi
 sửa. Trang landing đã ghi rõ là chưa tự test.
 
-### [ ] 9. Skill landing page riêng (làm ngay sau bước 5)
+### [-] 9. Skill landing page riêng: ngưng
 
-Làm ngay khi bước 5 xong. Làm thành **skill thứ hai** (`evon:landing`),
+Ngưng 09/10/2026, dồn sức cho dashboard. Hướng làm bên dưới giữ lại để sau này đọc.
+
+Làm thành **skill thứ hai** (`evon:landing`),
 không gộp vào `ui-ux` vì luật hai bên đá nhau. Cách thêm plugin thứ hai ở cuối `DEVELOP.md`.
 
 **Hướng chốt 01/10/2026:** không cố phủ mọi kiểu SaaS. Nội dung landing page muôn kiểu nhưng
