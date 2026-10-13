@@ -256,6 +256,15 @@ Chế độ soi không có hạng này. Người dùng đã nói "dựng lại" 
 muốn biết màn **sắp xếp** có ổn không: khối nào quá tải, chỗ nào tranh nhau, control nào
 sai loại. Probe không đo được mấy thứ này, phải soi ảnh và đọc code.
 
+**Tra quy ước trước khi viết dòng Cấu trúc** ⚑. Màn đang có chỉ cho thấy dự án đã làm gì,
+không cho thấy nó thiếu gì so với app cùng loại. Nên với mỗi route dựng lại, **tra thật** 2–3
+sản phẩm cùng loại (WebSearch / WebFetch trang thật, trang tài liệu, ảnh chụp), chỉ cho việc
+chính của màn đó: người dùng so bằng gì, lọc và sắp xếp nằm đâu, hành động chính đặt đâu,
+trạng thái rỗng và đang tải trông thế nào. Ghi kết quả thành quy ước, **không ghi tên sản
+phẩm** vào code hay file của dự án. Không có công cụ tìm web thì ghi *"theo trí nhớ, cần
+kiểm"* và làm tiếp, không chặn. Mỗi chỗ màn lệch quy ước thành một dòng loại "Lệch quy ước"
+ở bảng dưới, cột Nguồn ghi `tra` hay `theo trí nhớ`.
+
 | Loại | Dấu hiệu | Sửa theo hướng |
 | --- | --- | --- |
 | Tín hiệu tranh nhau (`N3`) | Trong một khối có từ ba thứ cùng dùng tín hiệu đắt (màu nhấn, tô đặc, chữ lớn đậm), hoặc hai nút cùng mức nhấn đứng cạnh nhau | Giữ một thứ nổi nhất. Hai nút thì một nút chính, một nút phụ (`I1`). **Hạ mức nhấn, không đổi màu** |
@@ -266,6 +275,7 @@ sai loại. Probe không đo được mấy thứ này, phải soi ảnh và đ�
 | Đặt sai chỗ | Control nằm xa thứ nó điều khiển (sắp xếp, lọc tách khỏi danh sách), nhãn cùng hàng lệch cao, một khung trộn nhiều kiểu bố trí | Đặt sát thứ nó điều khiển. Cùng hàng thì cùng mép trên |
 | Màu trang trí tranh với màu vai | Icon, hình minh hoạ, nền ô icon mỗi cái một màu, nhiều tới mức nút chính và giá không còn là thứ nổi nhất | Gom màu trang trí về một hoặc hai tông của brand. **Chỉ màu ngoài bảng vai màu**, màu trong bảng giữ nguyên |
 | Khối quảng bá lấn nội dung | Banner chiếm quá nửa màn đầu, nói một ý hai lần (con số ở tiêu đề và trong hình), nhiều hơn một nút, chữ trong hình minh hoạ bị cắt | Thu chiều cao, một tiêu đề một nút, bỏ chỗ lặp. Hình minh hoạ là của họ: không vẽ lại, chỉ đổi khung và chữ quanh nó |
+| Lệch quy ước | Màn làm khác cách số đông app cùng loại làm (theo bước tra ở trên): thứ dùng để chọn nằm chìm, sắp xếp tách khỏi danh sách, hành động chính khác chỗ quen, rỗng hay đang tải chỉ là màn trắng | Theo quy ước đã tra. Chỉ đổi hình và bố trí: cần handler, field hay câu chữ mới (ô sắp xếp chưa có logic, câu rỗng chưa ai viết) thì **không dựng**, nhắc một dòng dưới bảng cho người dùng tự làm (`N10`) |
 
 - Mỗi dòng chỉ đúng chỗ (route, khối, `file:line`) và nói bằng cái người dùng cuối vấp.
   "Card nhìn rối" chưa phải một dòng.
@@ -277,6 +287,9 @@ sai loại. Probe không đo được mấy thứ này, phải soi ảnh và đ�
   chọn sẵn ✓. Dòng bỏ, ẩn hay gộp thông tin, và dòng gom màu trang trí, thì **không chọn
   sẵn**: đó là quyết định sản phẩm và nhận diện, người dùng tự thêm. Luật này chỉ cho
   dòng Cấu trúc: dòng Gu ở chế độ dựng lại vẫn **chọn sẵn** như bảng "Ba chế độ".
+- **Dòng Lệch quy ước theo chế độ.** Giữ brand đã hứa giữ khung trang, nên dòng loại này
+  **không chọn sẵn**: người dùng đọc rồi tự thêm. Theo gu skill thì chọn sẵn như dòng sắp
+  lại, trừ dòng bỏ hay gộp thông tin (vẫn theo luật ở trên).
 - **Một dòng một quyết định.** "Bỏ tên trang trên header, và đổi màu chip đang chọn" là hai
   dòng: người dùng có thể muốn cái này mà không muốn cái kia.
 - **Đi đủ các loại trong bảng trên từng route đã soi**, không chỉ route nhiều control. Khối quảng bá
@@ -485,7 +498,8 @@ figure img{display:block;height:320px;width:auto;border-radius:8px}figcaption{pa
 
 1. **Mở đầu**, mỗi thứ một dòng: dòng `Audit:` (stack, hệ token ở đâu, phong cách,
    dark mode: có / chỉ khai báo / không), đã soi route nào ở khổ nào, chỗ nào chưa soi
-   được và vì sao.
+   được và vì sao. Hai chế độ dựng lại thêm dòng `Quy ước:` đã tra mấy sản phẩm cùng
+   loại hay theo trí nhớ (`V1b`), không nêu tên sản phẩm.
 2. **Bảng**: xếp Hỏng trước, rồi Lệch hệ, Cấu trúc, Gọn và Có màu (chỉ ở chế độ dựng lại,
    `V1b`, `V1c`, `V1d`), Gu cuối.
 
