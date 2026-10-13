@@ -283,6 +283,8 @@ dòng đó."* Dừng chờ.
   - **Khổ có icon**: màn hình trước Desktop, điện thoại trước Mobile (icon 16px, nét 2).
   - **Trạng thái là menu thả**, nhãn xám "Trạng thái:" kèm giá trị đang xem đậm và mũi tên nhỏ;
     bấm thì ra bốn link. Bốn trạng thái ít đổi, không đáng chiếm bốn nút trên thanh.
+  - **Nút trong rãnh và mục trong menu Trạng thái cách nhau 4px** (luật chốt 19): hai nút cùng nền
+    trắng (Gọn chữ, Bỏ lặp cùng bật) hay mục rê cạnh mục đang xem mà dính sát thì đọc thành một khối.
   - **Màu là công tắc** có nhãn "Màu" đứng trước, không phải segmented: chỉ còn hai nấc.
     Nhóm Nhấn, Nav không cần nhãn: chữ trong nút đã tự nói.
   - **Gọn chữ, Bỏ lặp là hai nút bật tắt chung một rãnh**, mỗi nút có ô vuông nhỏ trước chữ, bật
@@ -375,7 +377,7 @@ dòng đó."* Dừng chờ.
       color: #737373; font: 14px/1 system-ui, -apple-system, sans-serif; }
     .wf-bar *, .wf-reason * { box-sizing: border-box; }
     .wf-group { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-    .wf-set { display: flex; align-items: center; gap: 2px; flex-shrink: 0; padding: 3px; border-radius: 10px; background: #f4f4f5; }
+    .wf-set { display: flex; align-items: center; gap: 4px; flex-shrink: 0; padding: 3px; border-radius: 10px; background: #f4f4f5; }
     .wf-set a { position: relative; display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px;
       border-radius: 7px; color: #737373; text-decoration: none; }
     .wf-set a:hover { color: #171717; }
@@ -405,7 +407,7 @@ dòng đó."* Dừng chờ.
     .wf-menu summary::-webkit-details-marker { display: none; }
     .wf-menu summary:hover, .wf-menu[open] summary { background: #f4f4f5; }
     .wf-menu b { color: #171717; font-weight: 500; }
-    .wf-popover { position: fixed; z-index: 60; display: grid; min-width: 168px; padding: 4px; background: #fff;
+    .wf-popover { position: fixed; z-index: 60; display: grid; gap: 4px; min-width: 168px; padding: 4px; background: #fff;
       border: 1px solid #e5e5e5; border-radius: 10px; box-shadow: 0 8px 24px rgb(0 0 0 / .08); }
     .wf-popover a { display: flex; align-items: center; height: 34px; padding: 0 10px; border-radius: 6px; color: #404040; text-decoration: none; }
     .wf-popover a:hover, .wf-popover a[aria-current="page"] { background: #f4f4f5; color: #171717; }
