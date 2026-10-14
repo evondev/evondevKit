@@ -29,7 +29,7 @@ trả lời `dựng luôn`."* (tiếng Anh: *"Reply `just build it` to skip the 
 | --- | --- | --- |
 | `U1` Brief | Một khối ngắn: sản phẩm, người dùng, việc chính, nền tảng | Gộp với `U2`, **cổng 1** |
 | `U2` Việc chính của từng màn | Bảng: đến để làm gì, so sánh bằng gì, hành động cuối, quy ước loại sản phẩm | **Cổng 1**: người dùng sửa hoặc trả lời `ok` |
-| `U3` Wireframe | 2–3 phương án bố cục khác nhau thật, nội dung thật, có ảnh; một thanh công cụ: phương án, gọn chữ, bỏ lặp, màu, desktop / mobile, trạng thái, khung lý do | **Cổng 2**: người dùng chọn |
+| `U3` Wireframe | 2–3 phương án bố cục khác nhau thật, nội dung thật, có ảnh; một thanh công cụ: phương án, gọn chữ, bỏ lặp, màu, desktop / mobile, trạng thái, khung lý do; tự rà đủ như lối rà trước khi gửi | **Cổng 2**: người dùng chọn |
 | `U4` Dựng thật | Code theo phương án đã chọn, probe tới khi danh sách `P` trống | Như cổng 3 của `checklist.md` |
 
 Chưa qua cổng 2 thì **không đụng file nào của dự án**. Wireframe và ảnh để ở
@@ -196,11 +196,23 @@ dòng đó."* Dừng chờ.
   mới sửa thì bản dựng lệch khỏi cái người dùng đã chọn. Người dùng không tự thấy "card chữ quá
   trời" hay "vạch bị cắt" trên wireframe xám, họ chọn theo bố cục rồi vấp lỗi ở bản dựng (probe
   đo ra cả hai trên chính file wireframe). Rồi chạy luật Cấu trúc (`V1b` trong `review.md`) bằng
-  mắt. Ghi một dòng khi gửi: *"Probe nhanh: A sạch, B sạch, C sạch"*.
-  **Không probe đủ ở bước này**, cũng không probe nấc Xám (cùng bố cục, chỉ khác màu): `--quick`
-  bỏ Tab, rê, bấm, mở lớp nổi (rê trùng nền đang chọn, lớp nổi tràn, vòng focus), phần đó chiếm
-  phần lớn thời gian đo. Bản dựng không chép rê và lớp nổi từ wireframe mà theo mẫu của skill, và
-  `U4` probe đủ rồi sửa lúc dựng. Probe đủ năm bản ở hai nấc màu mất vài phút trước cổng 2.
+  mắt. Không probe nấc Xám: cùng bố cục, chỉ khác màu.
+- **Tự rà trước cổng 2, như lúc người dùng gõ "rà lại wireframe"** ⚑. Probe nhanh xong, mỗi
+  phương án ở nấc Màu đi đúng lối rà của `review.md` `V3`: `probe.mjs "<link phương án>&mau=mau"
+  --sweep` (đủ Tab, rê, bấm, mở lớp nổi, quét 1440→375), mở ảnh 375, 768, 1280 và các khung
+  sweep báo lỗi ra soi bằng mắt: hàng lệch, khối vỡ giữa hai khổ, nền rê trùng nền đang chọn
+  hay trùng nền card, lớp nổi tràn mép. Chỉ probe nhanh thì người dùng mở wireframe ra vẫn thấy
+  ngay mấy lỗi đó, phải gõ thêm một lệnh rà mới ra hết, và mỗi lần rà lại ra thêm một mớ.
+  - **Có công cụ Agent thì giao mỗi phương án cho một subagent mới, chạy song song**: đưa link,
+    đường dẫn skill, dặn làm theo `V3` và `V1b`, chỉ báo lỗi kèm khổ màn và cách sửa, không sửa
+    file. Mắt mới không bênh cái vừa vẽ, và ba phương án song song không cộng dồn thời gian.
+    Không có Agent thì tự rà từng phương án.
+  - Sửa hết lỗi được báo rồi rà lại, **tối đa hai vòng**. Vòng hai còn lỗi thì ghi vào khung lý do
+    của phương án đó, không giấu.
+  - Lỗi mắt thấy mà probe không báo (lệch px, nền rê trùng, cắt chữ) thì thêm phép đo vào
+    `probe.mjs`, để lần sau probe nhanh bắt luôn.
+  - Ghi một dòng khi gửi: *"Tự rà: A sạch, B sửa 2 chỗ (hàng lọc lệch ở 768, rê trùng nền mục
+    đang chọn), C sạch"*.
 - **Hai công tắc nội dung, Gọn chữ và Bỏ lặp, áp cho mọi phương án** (`?gon=1`, `?bolap=1`,
   bật cả hai cùng lúc được). Cùng bố cục, chỉ bớt nội dung, để người dùng bật lên là thấy cái họ
   không tự nghĩ ra, trên đúng phương án họ đang xem:

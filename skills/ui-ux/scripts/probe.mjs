@@ -12,8 +12,8 @@
 // khổ vòng trước còn lỗi động (cuối báo cáo in sẵn lệnh).
 //
 // --quick: chỉ đo trang đứng yên (bố cục, chữ, tràn, tương phản, control gốc kể cả trong lớp đang ẩn), bỏ Tab,
-// rê chuột, bấm, mở lớp nổi. Dùng cho wireframe trước khi gửi (design-process.md, U3): ~4 lần nhanh hơn,
-// phần động để U4 đo đủ.
+// rê chuột, bấm, mở lớp nổi. Vòng đầu cho wireframe (design-process.md, U3): ~4 lần nhanh hơn, rồi bước
+// tự rà của U3 chạy --sweep đủ phần động trước khi gửi.
 //
 // --wireframe: so bản dựng với wireframe đã chọn (design-process.md, U4) ở 1440 và 375: khoảng nào cao thấp khác,
 // chữ nào đổi hay thiếu, cỡ chữ, độ đậm nào khác; link có mau=mau thì so cả màu chữ, màu icon, nền. Ghi vào danh sách P.

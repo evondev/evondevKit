@@ -23,6 +23,7 @@ bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
 - [ ] Đề bài có từ nào mơ hồ không (bảng, thẻ, danh sách, khung, trang, lịch)?
 - [ ] Đề để hở: đã dựng **đủ bộ khối mặc định** trong file layout chưa, hay làm mỏng dính (`S5`)? Không hỏi phạm vi.
 - [ ] Nhánh `U`, wireframe: dữ liệu mẫu có mục ở trạng thái suy từ giờ (trễ, quá hạn) không; số khối có đè chữ không; sidebar, panel `sticky` còn dính khi cuộn không; thanh công cụ vừa một dòng ở 1280 không (`U3`)?
+- [ ] Nhánh `U`, wireframe: đã tự rà từng phương án ở nấc Màu bằng `--sweep` và soi ảnh 375, 768, 1280 chưa (rê, lớp nổi, hàng lệch), sửa xong mới gửi, tin gửi có dòng "Tự rà" (`U3`)?
 - [ ] Nhánh `U`: đã dựng đúng **phương án wireframe đã chọn** chưa, hay tự bịa (`U4`)? Lối dựng luôn: dựng theo phương án sẽ khuyên, báo một dòng "Bố cục: … vì …". Việc nhỏ hơn một màn: **bố cục mặc định** trong file layout, báo một dòng "muốn kiểu khác thì nói".
 - [ ] Dự án đã có UI (nhánh `U` hay dựng lại): tin giao có dòng **`Dáng:`** đi qua bảng "Dáng lấy từ skill, không từ CSS cũ" (`review.md`) chưa? Dropdown, checkbox, viền card, thanh cuộn, nút header lấy theo mẫu của skill, hay còn CSS cũ của dự án?
 - [ ] Cùng ca đó: tin giao có mục **"Còn thấy"** (`U4`) chưa? Thứ bản dựng không được tự sửa (bớt thông tin, gom màu trang trí, badge nhiều màu tranh với giá) đã nêu thành dòng đánh số, hay giữ nguyên mà im lặng?
