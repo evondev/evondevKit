@@ -75,7 +75,10 @@ thì thêm `-a`, ví dụ `-a cursor -a zcode`. Dùng chung cho mọi dự án t
 | omp | `/skill:ui-ux Dựng màn danh sách đơn hàng…` |
 
 Không gọi tên thì công cụ tự bật skill khi đề khớp mô tả. ZCode chưa thấy skill thì vào
-Settings → Skills bấm Refresh. Lấy bản mới: `npx skills update`. Gỡ: `npx skills remove ui-ux`
+Settings → Skills bấm Refresh. Lấy bản mới: `npx skills update`. Có bản mới thì skill tự báo:
+mỗi ngày tối đa một lần, nó đọc file version trên GitHub (không gửi gì đi) và thêm một dòng kèm
+lệnh cập nhật vào câu trả lời. Nó không tự cài. Muốn tắt thì đặt biến môi trường
+`EVONDEVKIT_NO_UPDATE_CHECK=1`. Gỡ: `npx skills remove ui-ux`
 ở thư mục gốc dự án, cài bằng `-g` thì gỡ bằng `npx skills remove -g ui-ux`.
 Skill mới được test kỹ trên Claude, công cụ khác chạy được nhưng có thể lệch vài chỗ.
 

@@ -47,6 +47,21 @@ trạng thái một ví dụ tĩnh** cạnh nhau, không dựng bản bấm đư
 
 ---
 
+## Trước mục 0 — báo bản mới ⚑
+
+Lần đầu gọi skill trong một phiên, chạy `node <thư mục skill này>/scripts/check-update.mjs`.
+Đây không phải một bước của mục 0, chạy cùng lúc với lệnh khác cũng được.
+
+- Không in gì: im lặng, không nhắc tới.
+- In ra `UPDATE <cũ> -> <mới> | <lệnh>`: câu trả lời mở đầu bằng đúng một dòng, theo ngôn ngữ
+  của đề: "Skill ui-ux có bản mới <mới> (đang dùng <cũ>), cập nhật: `<lệnh>`". Dòng này đứng trước
+  cả câu báo loại UI chưa được dạy. Rồi làm tiếp việc chính ngay trong lượt đó.
+- **Không hỏi, không tự chạy lệnh cập nhật.** Người dùng muốn thì tự chạy. Cập nhật giữa chừng
+  làm luật đổi ngay trong lúc đang dựng.
+- Không có Node, lệnh lỗi hay bị từ chối quyền: bỏ qua, không báo.
+
+---
+
 ## 0. Bốn câu hỏi, đúng thứ tự này
 
 ### Câu 1 — Đề đi lối nào? Mặc định là như một designer
