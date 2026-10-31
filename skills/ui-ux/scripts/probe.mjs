@@ -746,6 +746,24 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     }
   }
 
+  // 6d. Ô số tiền to có đơn vị đứng sau ("0 đ" giữa sheet): ô rộng cố định, chữ căn giữa trong ô nên "đ" đứng xa
+  //     số. Đo từ mép phải của chữ (canvas đo theo font của ô) tới mép trái đơn vị. Đã dính 31/10/2026: app chia
+  //     tiền bỏ `field-sizing: content`, ô 64px, "0" cách "đ" 23px, gõ số dài thì xa hơn.
+  const loosenedUnits = [];
+  const measureCanvas = document.createElement("canvas").getContext("2d");
+  for (const input of document.querySelectorAll('input[inputmode="numeric"], input[inputmode="decimal"]')) {
+    if (loosenedUnits.length >= 5 || !isVisible(input)) continue;
+    const unit = input.nextElementSibling;
+    const style = getComputedStyle(input);
+    if (!unit || !isVisible(unit) || unit.textContent.trim().length > 3 || style.textAlign === "left" || style.textAlign === "start") continue;
+    measureCanvas.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+    const textWidth = measureCanvas.measureText(input.value || input.placeholder).width;
+    const inputRect = input.getBoundingClientRect();
+    const textRight = style.textAlign === "center" ? inputRect.left + inputRect.width / 2 + textWidth / 2 : inputRect.right - parseFloat(style.paddingRight);
+    const gap = unit.getBoundingClientRect().left - textRight;
+    if (gap > 12) loosenedUnits.push(`"${input.value || input.placeholder}" cách "${unit.textContent.trim()}" ${Math.round(gap)}px (ô ${Math.round(inputRect.width)}px): ${describe(input)}`);
+  }
+
   // 7. Ô nhập lệch mép với nút rộng hết khung trong cùng form / hộp thoại: màn hẹp nút xếp dọc
   //    rộng hết, còn ô nằm trong cột chữ thụt sau icon (hộp xác nhận có ô gõ lại tên: ô 239px ở
   //    x=96, nút 295px ở x=40, đo 26/09/2026). Nút tự co theo chữ (màn rộng) thì không so.
@@ -2040,6 +2058,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   return {
     orphanWords,
     splitAmounts,
+    loosenedUnits,
     invisibleFrames,
     faintLines,
     faintSelectedTabs,
@@ -3393,6 +3412,20 @@ function measureMobileScreen({ isFrame, minTap }) {
     }
   }
 
+  // J13: ô số tiền to có đơn vị đứng sau mà ô rộng cố định, chữ căn giữa nên "đ" đứng xa số (cùng phép 6d ở phép
+  // đo chung; ô này hay nằm trong sheet, phép đo chung chỉ thấy màn đầu).
+  const measureCanvas = document.createElement("canvas").getContext("2d");
+  for (const input of device.querySelectorAll('input[inputmode="numeric"], input[inputmode="decimal"]')) {
+    const unit = input.nextElementSibling;
+    const style = getComputedStyle(input);
+    if (!isShown(input) || !unit || !isShown(unit) || unit.textContent.trim().length > 3 || style.textAlign !== "center") continue;
+    measureCanvas.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+    const inputRect = input.getBoundingClientRect();
+    const textRight = inputRect.left + inputRect.width / 2 + measureCanvas.measureText(input.value || input.placeholder).width / 2;
+    const gap = unit.getBoundingClientRect().left - textRight;
+    if (gap > 12) problems.push(`"${input.value || input.placeholder}" cách "${unit.textContent.trim()}" ${Math.round(gap)}px trong ô số tiền ${Math.round(inputRect.width)}px: ô co theo chữ, field-sizing: content (J13)`);
+  }
+
   return { screen: screenName || "", problems };
 }
 
@@ -4417,6 +4450,10 @@ function formatReport(results) {
     if (result.splitAmounts?.length > 0) {
       problems.push(`SỐ VÀ ĐƠN VỊ TÁCH DÒNG (${result.splitAmounts.length} chỗ, nối bằng &nbsp; hay bọc whitespace-nowrap, T16):`);
       for (const item of result.splitAmounts.slice(0, 5)) problems.push(`  ${item}`);
+    }
+    if (result.loosenedUnits?.length > 0) {
+      problems.push(`ĐƠN VỊ ĐỨNG XA SỐ TRONG Ô SỐ TIỀN (${result.loosenedUnits.length} chỗ, ô co theo chữ: field-sizing: content, J13):`);
+      for (const item of result.loosenedUnits) problems.push(`  ${item}`);
     }
     if (result.misalignedFields.length > 0) {
       problems.push(`Ô NHẬP LỆCH MÉP VỚI NÚT RỘNG HẾT KHUNG (${result.misalignedFields.length} khung, ô và nút phải cùng mép trái phải):`);

@@ -145,6 +145,11 @@ thanh tab và thanh trên giữ `h-*` cố định: nền tảng cũng giữ c�
 - Cao tối đa 92% màn, phần giữa cuộn riêng; sheet ngắn thì cao theo nội dung.
 - Sheet cho việc ngắn trên màn đang xem (thêm, lọc, chọn); việc dài nhiều bước thì là màn con.
 
+- **Đóng khi đã gõ thì hỏi.** Sheet có ô đã nhập (số tiền, mô tả) mà bấm "Huỷ", vuốt xuống hay chạm lớp phủ thì không
+  đóng ngay: hiện hộp hỏi (`J7`) "Bỏ khoản chi này?", hai nút **"Bỏ"** chữ đỏ (`I4`: mất thứ vừa gõ) và **"Tiếp tục
+  nhập"**. Chưa gõ gì thì đóng luôn, không hỏi. Cả hai nền tảng làm vậy (iOS chặn vuốt đóng sheet đang có thay đổi;
+  Android hỏi bỏ bản nháp khi đóng màn nhập). Gõ xong số tiền mà lỡ tay chạm lớp phủ là mất trắng, người dùng
+  phải nhớ lại và gõ từ đầu.
 ## J7. Phản hồi
 
 - **Nhấn**: mọi thứ bấm được co `scale(0.97)` 120ms (`.press`), dòng danh sách thêm nền `active:bg-background`.
@@ -410,6 +415,9 @@ người dùng gặp ngay lần gõ đầu.
   Form nhiều ô không tự bật bàn phím: người dùng cần nhìn hết form trước.
 - Cuộn danh sách hay bấm ra ngoài ô thì cụp bàn phím (`keyboardDismissMode="on-drag"`, `onTapOutside`).
 - **Wireframe và bản mẫu vẽ bàn phím** ở màn hay sheet bật bàn phím sẵn: khối `bg-[#d1d3d9]` dính đáy khung, cao
+- **Ô số tiền to giữa sheet co theo chữ** (`[field-sizing:content] min-w-8 text-center`, như `mobile-app.html`), đơn vị
+  "đ" cách số 4px (`gap-1`). Ô rộng cố định thì số căn giữa trong ô, "đ" đứng trơ cách xa 20–40px tuỳ số dài ngắn.
+  Trình duyệt chưa có `field-sizing` thì đo chữ và đặt `width` bằng JS mỗi lần gõ. Probe báo "cách "đ" …px".
   khoảng 290px (bàn phím số ở khung 390×844; bàn phím chữ có hàng gợi ý khoảng 335px), che phần dưới như máy thật;
   bấm ra ngoài ô thì cụp. Màn có nút dính đáy thì nút nằm ngay trên khối đó. Không vẽ thì người duyệt thấy cả form,
   chọn phương án mà không biết lúc gõ số tiền chỉ còn thấy nửa trên, hàng chọn người nằm dưới bàn phím.
