@@ -196,10 +196,30 @@ if (explicitFiles.length) targets = new Map(explicitFiles.map((path) => [path, "
 else if (isAll) targets = new Map(listSkillMarkdown(skillDir).map((path) => [path, "all"]));
 else targets = collectChangedLines();
 
+// Người cài bằng `npx skills add` chỉ có thư mục skill, nên version nằm ở hai chỗ: plugin.json cho
+// marketplace, skills/ui-ux/VERSION cho check-update.mjs. Tăng một chỗ quên chỗ kia thì bên kia
+// báo sai bản.
+function lintVersionFiles() {
+  const pluginVersion = JSON.parse(readFileSync(".claude-plugin/plugin.json", "utf8")).version;
+  const skillVersion = readFileSync(join(skillDir, "VERSION"), "utf8").trim();
+
+  if (pluginVersion === skillVersion) return [];
+
+  return [
+    {
+      path: join(skillDir, "VERSION"),
+      line: 1,
+      problem: `VERSION (${skillVersion}) lệch plugin.json (${pluginVersion}): tăng version thì sửa cả hai.`,
+      text: skillVersion,
+    },
+  ];
+}
+
 // locked-rules.md là chỗ ghi các lý lẽ đã bác, chính nó không phải spec.
 const findings = [...targets]
   .filter(([path]) => !path.endsWith("locked-rules.md"))
-  .flatMap(([path, changedLines]) => lintFile(path, changedLines));
+  .flatMap(([path, changedLines]) => lintFile(path, changedLines))
+  .concat(lintVersionFiles());
 
 if (!findings.length) {
   console.log(`lint-skill: không bắt được câu nào (${targets.size} file). Máy chỉ đọc chữ, vẫn phải tự đọc lại.`);

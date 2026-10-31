@@ -29,7 +29,7 @@ trả lời `dựng luôn`."* (tiếng Anh: *"Reply `just build it` to skip the 
 | --- | --- | --- |
 | `U1` Brief | Một khối ngắn: sản phẩm, người dùng, việc chính, nền tảng | Gộp với `U2`, **cổng 1** |
 | `U2` Việc chính của từng màn | Bảng: đến để làm gì, so sánh bằng gì, hành động cuối, quy ước loại sản phẩm | **Cổng 1**: người dùng sửa hoặc trả lời `ok` |
-| `U3` Wireframe | 2–3 phương án bố cục khác nhau thật, nội dung thật, có ảnh; một thanh công cụ: phương án, gọn chữ, bỏ lặp, màu, desktop / mobile, trạng thái, khung lý do | **Cổng 2**: người dùng chọn |
+| `U3` Wireframe | 2–3 phương án bố cục khác nhau thật, nội dung thật, có ảnh; một thanh công cụ: phương án, gọn chữ, bỏ lặp, màu, desktop / mobile, trạng thái, khung lý do; tự rà đủ như lối rà trước khi gửi | **Cổng 2**: người dùng chọn |
 | `U4` Dựng thật | Code theo phương án đã chọn, probe tới khi danh sách `P` trống | Như cổng 3 của `checklist.md` |
 
 Chưa qua cổng 2 thì **không đụng file nào của dự án**. Wireframe và ảnh để ở
@@ -142,6 +142,14 @@ dòng đó."* Dừng chờ.
 - **Tính cả khung app vào bề ngang.** App đã có sidebar điều hướng mà phương án thêm một cột
   lọc bên trái thì ghi rõ ở dòng đánh đổi: hai cột trái, nội dung còn lại bao nhiêu px ở 1280.
 - **Đánh dấu một phương án khuyên dùng**, kèm một câu vì sao (bám `U2`).
+  Không có phương án không nhược điểm: khuyên dùng là phương án có nhược điểm rơi vào việc
+  người dùng ít làm nhất, không phải phương án ít nhược điểm nhất trên giấy.
+- **Ghép khi hai cái hay không đụng nhau.** Hai phương án hay ở hai chỗ khác nhau (A có bố cục
+  tốt, B có thanh lọc tốt) và ghép lại không thêm khối, không chật thêm thì ghi thêm một dòng
+  lúc gửi wireframe: *"Ghép A + B: bố cục của A, thanh lọc của B. Mất: …"*. Không vẽ thành
+  phương án thứ tư; người dùng chọn dòng ghép thì dựng theo nó. Hai cái hay giành cùng một chỗ,
+  hay ghép vào thì thêm cột, thêm khối, thì không ghép: gom hết cái hay vào một màn là rối,
+  rối là nhược điểm nặng nhất. Không có cặp nào ghép được thì bỏ dòng này, không ép.
 - Một file HTML, mọi lựa chọn nằm trên tham số (`?v=a&mau=xam&kho=desktop&tt=du-lieu`) để probe
   mở được từng cái, và người dùng chép link gửi đi thì mở ra đúng cái đang xem.
 - **Đánh số từng khối chính** (header, hàng lọc, danh sách, panel, chân trang…): `data-wf-block="1"`,
@@ -188,11 +196,23 @@ dòng đó."* Dừng chờ.
   mới sửa thì bản dựng lệch khỏi cái người dùng đã chọn. Người dùng không tự thấy "card chữ quá
   trời" hay "vạch bị cắt" trên wireframe xám, họ chọn theo bố cục rồi vấp lỗi ở bản dựng (probe
   đo ra cả hai trên chính file wireframe). Rồi chạy luật Cấu trúc (`V1b` trong `review.md`) bằng
-  mắt. Ghi một dòng khi gửi: *"Probe nhanh: A sạch, B sạch, C sạch"*.
-  **Không probe đủ ở bước này**, cũng không probe nấc Xám (cùng bố cục, chỉ khác màu): `--quick`
-  bỏ Tab, rê, bấm, mở lớp nổi (rê trùng nền đang chọn, lớp nổi tràn, vòng focus), phần đó chiếm
-  phần lớn thời gian đo. Bản dựng không chép rê và lớp nổi từ wireframe mà theo mẫu của skill, và
-  `U4` probe đủ rồi sửa lúc dựng. Probe đủ năm bản ở hai nấc màu mất vài phút trước cổng 2.
+  mắt. Không probe nấc Xám: cùng bố cục, chỉ khác màu.
+- **Tự rà trước cổng 2, như lúc người dùng gõ "rà lại wireframe"** ⚑. Probe nhanh xong, mỗi
+  phương án ở nấc Màu đi đúng lối rà của `review.md` `V3`: `probe.mjs "<link phương án>&mau=mau"
+  --sweep` (đủ Tab, rê, bấm, mở lớp nổi, quét 1440→375), mở ảnh 375, 768, 1280 và các khung
+  sweep báo lỗi ra soi bằng mắt: hàng lệch, khối vỡ giữa hai khổ, nền rê trùng nền đang chọn
+  hay trùng nền card, lớp nổi tràn mép. Chỉ probe nhanh thì người dùng mở wireframe ra vẫn thấy
+  ngay mấy lỗi đó, phải gõ thêm một lệnh rà mới ra hết, và mỗi lần rà lại ra thêm một mớ.
+  - **Có công cụ Agent thì giao mỗi phương án cho một subagent mới, chạy song song**: đưa link,
+    đường dẫn skill, dặn làm theo `V3` và `V1b`, chỉ báo lỗi kèm khổ màn và cách sửa, không sửa
+    file. Mắt mới không bênh cái vừa vẽ, và ba phương án song song không cộng dồn thời gian.
+    Không có Agent thì tự rà từng phương án.
+  - Sửa hết lỗi được báo rồi rà lại, **tối đa hai vòng**. Vòng hai còn lỗi thì ghi vào khung lý do
+    của phương án đó, không giấu.
+  - Lỗi mắt thấy mà probe không báo (lệch px, nền rê trùng, cắt chữ) thì thêm phép đo vào
+    `probe.mjs`, để lần sau probe nhanh bắt luôn.
+  - Ghi một dòng khi gửi: *"Tự rà: A sạch, B sửa 2 chỗ (hàng lọc lệch ở 768, rê trùng nền mục
+    đang chọn), C sạch"*.
 - **Hai công tắc nội dung, Gọn chữ và Bỏ lặp, áp cho mọi phương án** (`?gon=1`, `?bolap=1`,
   bật cả hai cùng lúc được). Cùng bố cục, chỉ bớt nội dung, để người dùng bật lên là thấy cái họ
   không tự nghĩ ra, trên đúng phương án họ đang xem:
@@ -275,6 +295,8 @@ dòng đó."* Dừng chờ.
   - **Khổ có icon**: màn hình trước Desktop, điện thoại trước Mobile (icon 16px, nét 2).
   - **Trạng thái là menu thả**, nhãn xám "Trạng thái:" kèm giá trị đang xem đậm và mũi tên nhỏ;
     bấm thì ra bốn link. Bốn trạng thái ít đổi, không đáng chiếm bốn nút trên thanh.
+  - **Nút trong rãnh và mục trong menu Trạng thái cách nhau 4px** (luật chốt 19): hai nút cùng nền
+    trắng (Gọn chữ, Bỏ lặp cùng bật) hay mục rê cạnh mục đang xem mà dính sát thì đọc thành một khối.
   - **Màu là công tắc** có nhãn "Màu" đứng trước, không phải segmented: chỉ còn hai nấc.
     Nhóm Nhấn, Nav không cần nhãn: chữ trong nút đã tự nói.
   - **Gọn chữ, Bỏ lặp là hai nút bật tắt chung một rãnh**, mỗi nút có ô vuông nhỏ trước chữ, bật
@@ -367,7 +389,7 @@ dòng đó."* Dừng chờ.
       color: #737373; font: 14px/1 system-ui, -apple-system, sans-serif; }
     .wf-bar *, .wf-reason * { box-sizing: border-box; }
     .wf-group { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-    .wf-set { display: flex; align-items: center; gap: 2px; flex-shrink: 0; padding: 3px; border-radius: 10px; background: #f4f4f5; }
+    .wf-set { display: flex; align-items: center; gap: 4px; flex-shrink: 0; padding: 3px; border-radius: 10px; background: #f4f4f5; }
     .wf-set a { position: relative; display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px;
       border-radius: 7px; color: #737373; text-decoration: none; }
     .wf-set a:hover { color: #171717; }
@@ -397,7 +419,7 @@ dòng đó."* Dừng chờ.
     .wf-menu summary::-webkit-details-marker { display: none; }
     .wf-menu summary:hover, .wf-menu[open] summary { background: #f4f4f5; }
     .wf-menu b { color: #171717; font-weight: 500; }
-    .wf-popover { position: fixed; z-index: 60; display: grid; min-width: 168px; padding: 4px; background: #fff;
+    .wf-popover { position: fixed; z-index: 60; display: grid; gap: 4px; min-width: 168px; padding: 4px; background: #fff;
       border: 1px solid #e5e5e5; border-radius: 10px; box-shadow: 0 8px 24px rgb(0 0 0 / .08); }
     .wf-popover a { display: flex; align-items: center; height: 34px; padding: 0 10px; border-radius: 6px; color: #404040; text-decoration: none; }
     .wf-popover a:hover, .wf-popover a[aria-current="page"] { background: #f4f4f5; color: #171717; }

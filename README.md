@@ -78,7 +78,10 @@ The command asks which tools to install for, then copies the skill into
 
 Without the name, the tool turns the skill on when the prompt matches its description.
 ZCode doesn't show the skill yet? Open Settings → Skills and click Refresh.
-Update: `npx skills update`. Uninstall: `npx skills remove ui-ux` at the project root; if you
+Update: `npx skills update`. The skill tells you itself when a newer version is out: once a day
+at most, it reads the version file on GitHub (nothing is sent) and adds one line with the update
+command to its reply. It never installs on its own. To turn this off, set
+`EVONDEVKIT_NO_UPDATE_CHECK=1`. Uninstall: `npx skills remove ui-ux` at the project root; if you
 installed with `-g`, use `npx skills remove -g ui-ux`. The skill is tested most on Claude; other tools work but may
 differ in places.
 

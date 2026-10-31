@@ -11,9 +11,11 @@ Ghi chú cho người sửa skill. Người dùng skill đọc `README.md`.
 skills/
 └── ui-ux/                → gọi bằng /evon:ui-ux
     ├── SKILL.md          bộ định tuyến: 4 câu hỏi vào việc, luật phạm vi, bảng mở doc
+    ├── VERSION           version cho người cài bằng npx skills, phải khớp plugin.json
     ├── scripts/
     │   ├── probe.mjs     mở trang thật ở 6 bề rộng, đo lỗi đo được, chụp ảnh, quét bề rộng
-    │   └── lint-skill.mjs soát câu chữ của skill trước khi commit
+    │   ├── lint-skill.mjs soát câu chữ của skill, và VERSION khớp plugin.json, trước khi commit
+    │   └── check-update.mjs báo bản mới cho người cài bằng npx skills (so VERSION với master)
     └── references/
         ├── principles.md           N — mười hai nguyên tắc đứng sau mọi luật, phép thử cho thứ chưa có mẫu
         ├── review.md               V — soi UI đang có, ba chế độ, bảng trước/sau
@@ -68,7 +70,8 @@ Skill đã có người dùng (01/10/2026): **lần push nào cũng tăng `versi
 | Mốc lớn: nhánh mới, cả một mảng mới, đổi cấu trúc skill | minor: `0.2.x → 0.3.0` | dark mode, nhánh soi, design system trước |
 
 1. Commit bình thường. Commit chưa push thì chưa tới tay người dùng.
-2. Trước khi push, tăng `version` một nấc theo bảng, tính cho **cả các commit chưa push**:
+2. Trước khi push, tăng `version` một nấc theo bảng, ở **cả** `plugin.json` lẫn
+   `skills/ui-ux/VERSION` (lint báo nếu lệch), tính cho **cả các commit chưa push**:
    trong đó có một mốc lớn thì tăng minor. Commit tăng version kèm luôn commit cuối, hoặc
    một commit riêng.
 3. Push xong thì gắn tag và tạo GitHub Release, người bấm Watch → Releases sẽ được báo:
