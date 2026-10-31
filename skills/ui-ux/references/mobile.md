@@ -118,7 +118,8 @@ thanh tab và thanh trên giữ `h-*` cố định: nền tảng cũng giữ c�
     là nút icon `plus` 44px bên phải tiêu đề lớn của màn gốc đó (`J3`). Nút nổi đè lên danh sách (góc phải trên thanh tab) che mất số tiền
     của dòng cuối.
   - Ở **form, sheet, màn xác nhận**: nút 52px **dính đáy**, cách hai mép 16px, đáy chừa thanh home, có vạch
-    ngăn trên. Không tràn sát hai mép màn. Bàn phím mở thì nút nằm ngay trên bàn phím (`J13`).
+    ngăn trên. Không tràn sát hai mép màn. Bàn phím mở thì nút nằm ngay trên bàn phím (`J13`). Trừ sheet nhiều ô bật
+    bàn phím sẵn: "Lưu" chữ ở góc phải hàng đầu (`J6`).
 - **Việc nguy hiểm** (xoá, đăng xuất) đứng riêng ở cuối màn, đỏ nhạt `bg-danger-bg text-danger` hay chữ đỏ
   trong thẻ riêng (`I4`), không cạnh nút chính.
 - **Thẻ số chính** cho màn có một con số quan trọng (đã chi, số dư, số bước): một thẻ ở đầu màn, con số lớn
@@ -135,9 +136,12 @@ thanh tab và thanh trên giữ `h-*` cố định: nền tảng cũng giữ c�
   **một chỗ duy nhất**, không vừa trên đầu vừa dưới đáy:
   - **Sheet không gõ** (chọn, lọc, xác nhận): nút dính đáy sheet (`J5`).
   - **Sheet một ô** (số điện thoại, mã): nút ngay dưới ô (`J12`).
-  - **Sheet nhiều ô mà ô đầu bật bàn phím sẵn** (thêm khoản chi, thêm việc): nút dính đáy như sheet không gõ, và
-    **bàn phím mở thì nút nằm ngay trên bàn phím** (`J13`), không bị che. Wireframe vẽ đúng lúc đó: bàn phím ở đáy,
-    nút ngay trên, phần còn thấy của form ở giữa.
+  - **Sheet nhiều ô mà ô đầu bật bàn phím sẵn** (thêm khoản chi, thêm giao dịch, thêm việc): nút chữ "Lưu" ở
+    **góc phải hàng đầu**, đối xứng với "Huỷ": `h-11 px-3 text-base font-semibold text-primary`, mờ `opacity-40`
+    khi chưa đủ để lưu (số tiền trống). Không thêm nút to dưới đáy. Đây là quy ước của cả hai nền tảng: sheet iOS đặt
+    Huỷ trái, Xong phải trên thanh đầu; màn nhập toàn màn của Android đặt X trái, Lưu phải. Bàn phím ăn gần nửa
+    màn: nút dính đáy phải đẩy lên theo bàn phím mà vẫn chiếm thêm 76px của phần form còn thấy; nút trên đầu lúc
+    nào cũng thấy, gõ xong số tiền là lưu được ngay.
 - Cao tối đa 92% màn, phần giữa cuộn riêng; sheet ngắn thì cao theo nội dung.
 - Sheet cho việc ngắn trên màn đang xem (thêm, lọc, chọn); việc dài nhiều bước thì là màn con.
 
@@ -400,12 +404,12 @@ người dùng gặp ngay lần gõ đầu.
   `send`; Enter ở ô cuối làm đúng việc của nút chính.
 - **Bàn phím mở thì ô đang gõ và nút chính vẫn thấy.** Nút dính đáy của form (`J5`) đẩy lên nằm ngay trên bàn phím,
   vùng cuộn co lại để ô đang gõ không chui dưới bàn phím. Sheet có ô nhập theo `J6` (một ô: nút ngay dưới ô; nhiều
-  ô: nút dính đáy, lên theo bàn phím). Sang code:
+  ô bật bàn phím sẵn: "Lưu" góc phải hàng đầu). Sang code:
   `KeyboardAvoidingView` hay `react-native-keyboard-controller`; Flutter giữ `resizeToAvoidBottomInset` mặc định.
 - **Màn hay sheet chỉ có một ô chính** (tìm kiếm, số tiền ở sheet thêm, mã OTP) thì focus sẵn, bàn phím lên luôn.
   Form nhiều ô không tự bật bàn phím: người dùng cần nhìn hết form trước.
 - Cuộn danh sách hay bấm ra ngoài ô thì cụp bàn phím (`keyboardDismissMode="on-drag"`, `onTapOutside`).
 - **Wireframe và bản mẫu vẽ bàn phím** ở màn hay sheet bật bàn phím sẵn: khối `bg-[#d1d3d9]` dính đáy khung, cao
   khoảng 290px (bàn phím số ở khung 390×844; bàn phím chữ có hàng gợi ý khoảng 335px), che phần dưới như máy thật;
-  bấm ra ngoài ô thì cụp. Nút chính dính đáy nằm ngay trên khối đó. Không vẽ thì người duyệt thấy cả form, chọn
-  phương án mà không biết lúc gõ số tiền chỉ còn thấy nửa trên, hàng chọn người nằm dưới bàn phím.
+  bấm ra ngoài ô thì cụp. Màn có nút dính đáy thì nút nằm ngay trên khối đó. Không vẽ thì người duyệt thấy cả form,
+  chọn phương án mà không biết lúc gõ số tiền chỉ còn thấy nửa trên, hàng chọn người nằm dưới bàn phím.
