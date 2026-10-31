@@ -5,7 +5,8 @@ Màn của **app điện thoại**: đề nói "app mobile", "app điện thoạ
 đường dẫn, bấm qua lại được: để xem, duyệt, rồi người dùng tự chuyển sang code của nền tảng họ chọn.
 
 Mọi luật khác của skill vẫn áp (màu, token, chữ tiếng Việt, trạng thái, dữ liệu giả, `I4`), file này
-chỉ nói chỗ **khác web**: khung máy, điều hướng, kích cỡ cho ngón tay, sheet, hành động chính.
+chỉ nói chỗ **khác web**: khung máy, điều hướng, kích cỡ cho ngón tay, sheet, hành động chính, app quản lý
+nhiều dữ liệu (`J14`).
 
 **Code mẫu đã duyệt: `layouts/mobile-app.html`** (app ghi chi tiêu, 5 màn: tổng quan, chi tiết, sheet
 thêm, thống kê, cài đặt). Chép khung và công thức từ đó, thay nội dung theo đề. App đặt món, đồ uống, bán hàng
@@ -51,7 +52,8 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
 
 - **Thanh tab 3–5 mục, mục nào cũng có chữ** (11px, `font-medium`) dưới icon 24px. Không menu ba gạch thay
   thanh tab, không mục "Thêm" chứa phần còn lại, không tab chỉ có icon. Mục đang chọn `text-foreground`,
-  còn lại `text-muted`; không đổi icon sang bản tô đặc kiểu riêng từng mục.
+  còn lại `text-muted`. Mục đang chọn **được** tô đặc icon (`fill="currentColor"`) như thanh tab iOS, chỉ khi icon là
+  hình kín (nhà, chuông, người); cả thanh một kiểu, icon nét hở (biểu đồ, lưới) thì giữ nét cho mọi mục.
 - **Thanh tab nổi**: cao 64px, cách hai mép và thanh home 16px / 8px, `rounded-full`, nền `bg-surface/90`
   `backdrop-blur-xl`, viền 4% và bóng mềm. Kiểu thanh nổi là kiểu của iOS hiện hành và phần lớn ảnh mẫu.
 - **Thanh tab chỉ để đi lại.** Hành động (thêm, quét, đăng) không nằm trong thanh tab, kể cả nút "+" giữa
@@ -77,8 +79,10 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
 - **Màn gốc của tab: tiêu đề lớn canh trái** `text-[32px]/[38px] font-semibold tracking-tight`, ngắn (≤ 15
   ký tự: "Thống kê", "Cài đặt", "Tháng 10"). Trên nó được một dòng nhỏ `text-sm text-muted` (lời chào, ngày).
   Phải là avatar 44px dẫn tới tài khoản hay một nút icon, không hơn hai thứ.
-- **Màn con: thanh trên 44px**: trái là nút quay lại (chevron 24px + tên màn cha, cao 44px), giữa là tiêu đề
-  17px `font-semibold`, phải tối đa **một** nút icon 44px. Tên màn cha dài quá 12 ký tự thì chỉ để chevron.
+- **Màn con: thanh trên 44px**: trái là nút quay lại, giữa là tiêu đề 17px `font-semibold`, phải tối đa **một**
+  nút icon 44px. Nút quay lại một trong hai kiểu, cả app một kiểu: chevron 24px + tên màn cha (cao 44px; tên dài quá
+  12 ký tự thì chỉ chevron), hoặc **chỉ chevron trong nút tròn 44px** `rounded-full bg-secondary` như iOS hiện hành và
+  phần lớn ảnh mẫu mới. Nút tròn hợp màn có ảnh tràn đầu (nền ảnh nào cũng thấy nút).
 - **Luồng nhiều bước** (đặt lịch, thanh toán): thanh bước mảnh ngay dưới thanh trên, tiêu đề là tên bước. Không
   thêm dòng "Bước 2/3 · Thợ và giờ": tiêu đề, thanh bước và dòng này nói cùng một ý ba lần.
 - Vào màn con **trượt từ phải** 300ms (`push-in`); giảm chuyển động thì mờ dần 200ms thay cho trượt (`J10`).
@@ -119,7 +123,7 @@ thanh tab và thanh trên giữ `h-*` cố định: nền tảng cũng giữ c�
     của dòng cuối.
   - Ở **form, sheet, màn xác nhận**: nút 52px **dính đáy**, cách hai mép 16px, đáy chừa thanh home, có vạch
     ngăn trên. Không tràn sát hai mép màn. Bàn phím mở thì nút nằm ngay trên bàn phím (`J13`). Trừ sheet nhiều ô bật
-    bàn phím sẵn: "Lưu" chữ ở góc phải hàng đầu (`J6`).
+    bàn phím sẵn: "Lưu" chữ ở góc phải hàng đầu (`J6`), và màn sửa các trường của một bản ghi (`J14`).
 - **Việc nguy hiểm** (xoá, đăng xuất) đứng riêng ở cuối màn, đỏ nhạt `bg-danger-bg text-danger` hay chữ đỏ
   trong thẻ riêng (`I4`), không cạnh nút chính.
 - **Thẻ số chính** cho màn có một con số quan trọng (đã chi, số dư, số bước): một thẻ ở đầu màn, con số lớn
@@ -134,7 +138,11 @@ thanh tab và thanh trên giữ `h-*` cố định: nền tảng cũng giữ c�
 - Trượt từ đáy 320ms, lớp phủ `bg-black/40`; bấm lớp phủ hay "Huỷ" thì đóng. **Một sheet một lúc.**
 - Thanh kéo 36×5 giữa mép trên; hàng đầu 44px: "Huỷ" trái, tiêu đề giữa 17px. Nút chính đặt theo bàn phím,
   **một chỗ duy nhất**, không vừa trên đầu vừa dưới đáy:
-  - **Sheet không gõ** (chọn, lọc, xác nhận): nút dính đáy sheet (`J5`).
+  - **Sheet chọn một** (sắp xếp, chọn đơn vị, đổi trạng thái): hàng đầu là tiêu đề trái 17px, nút X 44px phải, không
+    "Huỷ". Các dòng 56px, dòng đang chọn có ✓ phải; **bấm dòng là áp dụng và đóng**, không nút. Mục cần giải thích
+    thì dòng hai tầng (tên, một câu `text-muted`).
+  - **Menu ⋯** cũng là sheet chọn một: dòng icon 24px + nhãn, việc nguy hiểm chữ đỏ **đứng cuối** (`I4`).
+  - **Sheet chọn nhiều, lọc, xác nhận** (không gõ): ô tick mỗi dòng, nút "Xong" / "Áp dụng" dính đáy sheet (`J5`).
   - **Sheet một ô** (số điện thoại, mã): nút ngay dưới ô (`J12`).
   - **Sheet nhiều ô mà ô đầu bật bàn phím sẵn** (thêm khoản chi, thêm giao dịch, thêm việc): nút chữ "Lưu" ở
     **góc phải hàng đầu**, đối xứng với "Huỷ": `h-11 px-3 text-base font-semibold text-primary`, mờ `opacity-40`
@@ -144,12 +152,12 @@ thanh tab và thanh trên giữ `h-*` cố định: nền tảng cũng giữ c�
     nào cũng thấy, gõ xong số tiền là lưu được ngay.
 - Cao tối đa 92% màn, phần giữa cuộn riêng; sheet ngắn thì cao theo nội dung.
 - Sheet cho việc ngắn trên màn đang xem (thêm, lọc, chọn); việc dài nhiều bước thì là màn con.
-
 - **Đóng khi đã gõ thì hỏi.** Sheet có ô đã nhập (số tiền, mô tả) mà bấm "Huỷ", vuốt xuống hay chạm lớp phủ thì không
   đóng ngay: hiện hộp hỏi (`J7`) "Bỏ khoản chi này?", hai nút **"Bỏ"** chữ đỏ (`I4`: mất thứ vừa gõ) và **"Tiếp tục
   nhập"**. Chưa gõ gì thì đóng luôn, không hỏi. Cả hai nền tảng làm vậy (iOS chặn vuốt đóng sheet đang có thay đổi;
   Android hỏi bỏ bản nháp khi đóng màn nhập). Gõ xong số tiền mà lỡ tay chạm lớp phủ là mất trắng, người dùng
   phải nhớ lại và gõ từ đầu.
+
 ## J7. Phản hồi
 
 - **Nhấn**: mọi thứ bấm được co `scale(0.97)` 120ms (`.press`), dòng danh sách thêm nền `active:bg-background`.
@@ -414,10 +422,92 @@ người dùng gặp ngay lần gõ đầu.
 - **Màn hay sheet chỉ có một ô chính** (tìm kiếm, số tiền ở sheet thêm, mã OTP) thì focus sẵn, bàn phím lên luôn.
   Form nhiều ô không tự bật bàn phím: người dùng cần nhìn hết form trước.
 - Cuộn danh sách hay bấm ra ngoài ô thì cụp bàn phím (`keyboardDismissMode="on-drag"`, `onTapOutside`).
-- **Wireframe và bản mẫu vẽ bàn phím** ở màn hay sheet bật bàn phím sẵn: khối `bg-[#d1d3d9]` dính đáy khung, cao
 - **Ô số tiền to giữa sheet co theo chữ** (`[field-sizing:content] min-w-8 text-center`, như `mobile-app.html`), đơn vị
   "đ" cách số 4px (`gap-1`). Ô rộng cố định thì số căn giữa trong ô, "đ" đứng trơ cách xa 20–40px tuỳ số dài ngắn.
   Trình duyệt chưa có `field-sizing` thì đo chữ và đặt `width` bằng JS mỗi lần gõ. Probe báo "cách "đ" …px".
+- **Wireframe và bản mẫu vẽ bàn phím** ở màn hay sheet bật bàn phím sẵn: khối `bg-[#d1d3d9]` dính đáy khung, cao
   khoảng 290px (bàn phím số ở khung 390×844; bàn phím chữ có hàng gợi ý khoảng 335px), che phần dưới như máy thật;
   bấm ra ngoài ô thì cụp. Màn có nút dính đáy thì nút nằm ngay trên khối đó. Không vẽ thì người duyệt thấy cả form,
   chọn phương án mà không biết lúc gõ số tiền chỉ còn thấy nửa trên, hàng chọn người nằm dưới bàn phím.
+
+## J14. App quản lý, nhập liệu ⚑
+
+Kho, sổ sách, chấm công, ghi chép theo ngày: dữ liệu nhiều trường, người dùng nhập số liên tục. Đối chiếu khoảng
+450 màn đọc được của năm app được khen (ghi chép theo ngày, quản lý cửa hàng, ngân hàng, mạng xã hội, hẹn hò); chỉ
+ghi chỗ từ hai app trở lên làm giống nhau hay khớp quy ước iOS / Android. Mọi số đo vẫn theo `J4`.
+
+**Dời app web sang điện thoại**
+- **Sidebar thành thanh tab** (`J2`): 3–5 mục dùng hằng ngày lên thanh, mục còn lại vào tab cuối (Tài khoản, màn
+  nhóm `.is-grouped`). Không giữ cột icon dọc bên trái, càng không hai cột chồng nhau: ở khổ 390 hai cột ăn 1/3 màn,
+  nội dung còn lại bóp chữ dựng đứng từng ký tự.
+- **Tab con của một mục** (Kho / Xuất / Nhật ký / Nhà cung cấp) là điều khiển phân đoạn ngay dưới tiêu đề (`J4`,
+  tối đa 4 mục chữ ngắn), nhiều hơn hay chữ dài thì hàng chip cuộn ngang. Không xếp dọc thành khối nút chiếm nửa màn.
+- **Lọc** là hàng chip cuộn ngang dưới ô tìm, mỗi chip một điều kiện ("Loại ▾", "Tháng 10 ▾"), bấm mở sheet chọn
+  (`J6`); chip chưa lọc chỉ viền, chip đang lọc tô đặc. **Đầu hàng là nút icon lọc** 44px mở màn lọc đủ mọi điều kiện,
+  có số điều kiện đang áp. Sắp xếp là một chip "Mới nhất ⇕" mở sheet chọn một. Không thanh công cụ nhiều nút icon
+  không chữ.
+- **Bộ lọc dùng hằng ngày thành tab** ngay trên danh sách (Tất cả / Chưa xuất / Sắp hết), điều khiển phân đoạn hay
+  hàng chữ cuộn ngang; người dùng mở app là một chạm tới đúng việc, không phải dựng lọc mỗi lần.
+- **Điều kiện đang áp hiện thành chip có ⊗** dưới hàng lọc ("Cát ⊗", "Tháng 10 ⊗"), bấm ⊗ bỏ đúng điều kiện đó.
+
+**Tìm**
+- Ô tìm trống thì hiện "Tìm gần đây" (mỗi dòng có ⊗ xoá, đầu khối "Xoá hết") rồi gợi ý, không để trắng. Đang gõ thì
+  kết quả chia khối theo loại, mỗi khối tiêu đề kèm "Xem tất cả ›"; nhiều loại thì chip phạm vi có số đếm ("Vật tư 7",
+  "Phiếu 3").
+- **Tìm hay tạo trong một ô** (chọn loại, nhà cung cấp, nhãn): gõ tên chưa có thì dòng đầu kết quả là
+  "+ Thêm "Cát vàng"", bấm là tạo và chọn luôn. Không bắt rời màn sang form tạo riêng.
+
+**Dữ liệu nhiều cột: danh sách dòng, không bảng**
+- Bảng 6–8 cột của web thành **dòng hai tầng** (`J4`, 64px): tên 16px trên, dòng phụ 13px `text-muted` ghép
+  2–3 trường bằng "·" ("Xi măng PCB40 · Tấn"), **số quan trọng nhất** bên phải 16px `font-semibold tabular-nums`, số
+  thứ hai ngay dưới 13px nếu cần ("Tồn 2.690" / "Xuất 100"). Bấm dòng mở màn chi tiết có đủ mọi trường.
+- **Chọn một hai số cho dòng**, không nhồi cả bảng: số người dùng nhìn để quyết (tồn hiện tại, số tiền, trạng thái).
+  Các cột còn lại (nhập, xuất, ghi chú, đơn vị) ở chi tiết. Cột STT bỏ: danh sách đã có thứ tự.
+- **Nhóm có tổng** (theo loại, theo ngày): tiêu đề nhóm 13px `text-muted` kèm tổng nhóm cùng hàng bên phải, các dòng
+  bên dưới. Không dòng "Tổng …" lặp tên nhóm lẫn giữa các dòng thường.
+- Bảng cuộn ngang (`R9`) chỉ khi người dùng thật sự so cột với cột (bảng giá, bảng chấm công cả tháng); khi đó cột
+  tên ghim trái và đầu bảng dính trên.
+
+**Chọn từ danh sách để thêm** (thêm vật tư vào phiếu, món vào bữa, sản phẩm vào đơn)
+- Màn con: tab nhóm trên đầu (Tất cả / Hay dùng / Đã lưu), ô tìm, rồi các dòng hai tầng có nút `+` 44px cuối dòng
+  **thêm thẳng** với số lượng mặc định, báo bằng thông báo ngắn (`J7`). Bấm vào dòng thì mở chi tiết để chỉnh số lượng,
+  đơn vị trước khi thêm. Giống dòng món của `J11`.
+- **Thêm nhiều mục một lần** (chọn vật tư cho phiếu): ô tick mỗi dòng thay nút `+`, mục cha có biến thể thì ô tick ba
+  trạng thái, biến thể thụt vào dưới; mỗi dòng ghi số còn ("99 còn", hết thì "⚠ 0 còn" chữ cảnh báo). Đáy ghi "Đã chọn
+  3" kèm nút "Thêm", hay "Xong" góc phải hàng đầu.
+- Chưa gõ tìm thì hiện "Gợi ý" hay "Dùng gần đây", không để trắng. Đáy màn có lối phụ khi không tìm thấy: nút viền
+  "Thêm thủ công" (và "Quét mã" nếu app có), hai nút chia đôi hàng.
+
+**Số lượng, đơn vị, ngày**
+- **Đơn vị** chọn bằng điều khiển phân đoạn ngay trên hàng số lượng (Tấn / m³ / Bao), chọn sẵn đơn vị hay dùng nhất của
+  mục đó. Đổi đơn vị thì số quy đổi ngay, không xoá số đã nhập.
+- **Số lượng là một hàng**: nhãn trái, giá trị phải dạng nút viền "1 ✎" 44px. Bấm thì bàn phím số bật lên (`J13`,
+  `decimal` khi có lẻ), phía trên bàn phím có "Hoàn tác" và "Xong". Các số tính từ số lượng (thành tiền, tồn sau xuất)
+  đổi ngay theo từng phím gõ.
+- **Bộ đếm "− 3 +"** (nút 44px hai bên, số giữa `tabular-nums`) thay ô gõ khi số nhỏ và đổi từng đơn vị: số cái, số
+  thùng, điều chỉnh tồn vài đơn vị. Số lớn hay có lẻ (tấn, m³, tiền) thì gõ: bấm cộng 200 lần không ai làm. Sửa tồn
+  nhiều biến thể là danh sách mỗi biến thể một hàng có bộ đếm, sửa hết rồi "Lưu" một lần, cạnh số mới ghi "Cũ: 100
+  (+1)".
+- **Ngày là một hàng** "Ngày · Hôm nay ›", mặc định hôm nay, bấm mở sheet lịch tháng (`J6`), ngày đang chọn tô đặc,
+  nút "Lưu" dính đáy sheet. Phần lớn lần nhập là hôm nay, nên không bắt chọn ngày mỗi lần.
+
+**Chi tiết và sửa bản ghi** (phiếu nhập, phiếu xuất, vật tư, món)
+- Tên lớn đầu màn kèm nút bút 44px để đổi tên (mở màn một ô, `J12`), bản ghi mới chưa đặt tên thì "Chạm để đặt tên".
+- Số chính trong thẻ số chính (`J5`); dưới là **2–4 số phụ trong các ô bằng nhau** `grid grid-cols-3 gap-2`, mỗi ô nhãn
+  13px trên, số 17px dưới. Nhiều hơn 4 số phụ thì phần ít dùng gấp vào một dòng "Thông tin khác ›".
+- Danh sách mục con (vật tư trong phiếu): dòng hai tầng có nút thùng rác 44px cuối dòng, xoá có Hoàn tác (`J7`); dòng
+  cuối danh sách là "+ Thêm mục" viền đứt. Màn tạo có một việc cuối thì nút chính dính đáy ("Tạo phiếu", "Thu tiền"),
+  **mờ và khoá khi chưa đủ** (phiếu chưa có mục nào), không báo lỗi sau khi bấm.
+- **Chi tiết chia khối**, mỗi khối tiêu đề 17px trái, việc của khối là link chữ phải ("Sửa", "Xem tất cả") hay nút ⋯.
+  Việc chính của một khối (đánh dấu đã giao, duyệt phiếu) là nút nằm trong khối đó, không dính đáy cả màn.
+- **Dòng giá trị**: nhãn trái, giá trị hiện tại `text-muted` phải. Cuối dòng là › khi bấm sang màn khác, ⇕ khi bấm
+  mở sheet chọn một tại chỗ (`J6`): người dùng biết trước mình sẽ rời màn hay không. Trạng thái (Đang dùng / Nháp /
+  Ngưng) là dòng giá trị với badge, bấm mở sheet chọn một, mỗi trạng thái một câu nói rõ nghĩa.
+- **Màn sửa các trường của một bản ghi** (sửa vật tư, sửa nhà cung cấp, nhiều khối): "Huỷ" trái, "Lưu" phải ở thanh
+  trên, "Lưu" mờ khi chưa đổi gì; **không nút dính đáy và ẩn thanh tab** (`J2`). Form dài cuộn tới đâu cũng lưu được
+  ngay, đáy không có dải nút che khối cuối. Thoát khi có thay đổi chưa lưu thì hộp hỏi (`J7`).
+
+**Nút thêm có nhiều loại** (nhập kho, xuất kho, kiểm kê)
+- Một loại thì nút tròn (`J5`) mở thẳng form. Hai đến bốn loại thì nút tròn mở sheet ngắn có lưới `grid-cols-2` các ô
+  96px bo 20: icon 24px trên, nhãn 16px dưới, mỗi ô một loại. Không menu dọc chữ nhỏ bật ra từ nút, không nút tròn
+  bung thành chùm nút nhỏ.

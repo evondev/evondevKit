@@ -433,7 +433,7 @@ thì một trong hai chỗ là sai.
 | **L** | `references/refactor.md` | Refactor codebase đã có |
 | **U** | `references/design-process.md` | Thiết kế từ đầu: brief, việc chính của từng màn, wireframe phương án, dựng |
 | **W** | `references/tailwind-v4-traps.md` | Bẫy Tailwind v4 khi có CSS cũ |
-| **J** | `references/mobile.md` | App điện thoại: khung máy và mép chừa, thanh tab, đầu màn, kích cỡ cho ngón tay, hành động chính, sheet, phản hồi khi nhấn, app đặt món, mở app lần đầu, đăng nhập, xin quyền, rỗng, ô nhập và bàn phím ⚑ |
+| **J** | `references/mobile.md` | App điện thoại: khung máy và mép chừa, thanh tab, đầu màn, kích cỡ cho ngón tay, hành động chính, sheet, phản hồi khi nhấn, app đặt món, mở app lần đầu, đăng nhập, xin quyền, rỗng, ô nhập và bàn phím, app quản lý nhập liệu (bảng thành danh sách, số lượng và đơn vị, chi tiết phiếu) ⚑ |
 | **P** | `references/styles.md` | Phong cách thị giác: flat, nổi, glass, gradient, tối. Luật nào được đè, bẫy riêng, **tương phản** |
 
 **Luôn mở, mọi task:**
