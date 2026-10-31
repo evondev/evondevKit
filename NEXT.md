@@ -350,6 +350,64 @@ của trang.
    demo, danh sách chờ). Soi: section bật đúng theo mục tiêu, CTA chính thống nhất, hero có
    chữ thật, pricing đúng một trong ba dạng. Ghi vào `TESTS.md`.
 
+### [ ] 10. App điện thoại: ba đề khác ngành (nhánh `mobile`)
+
+Đo xem luật `J` hỏng ở đâu trước khi tra thêm hay viết thêm luật. Mỗi đề là **một luồng ba
+màn** (mở app lần đầu → trang chủ → việc chính), không phải ba màn rời: probe chỉ đo từng màn,
+còn lỗi đi lại giữa các màn thì phải tự bấm mới thấy.
+
+Ba đề, cố ý tránh app ghi chi tiêu và app đặt món vì đã có bản mẫu (`mobile-app.html`,
+`mobile-order.html`). Đề trùng bản mẫu thì skill chép khuôn, không đo được gì:
+
+| Thư mục | Đề | Việc chính |
+| --- | --- | --- |
+| `app-hoc-tieng-anh` | App học từ vựng tiếng Anh mỗi ngày | Làm một bài ôn 10 từ, xem kết quả |
+| `app-viec-nhom` | App quản lý việc cho nhóm nhỏ 3–8 người | Tạo việc, giao cho người, đặt hạn |
+| `app-chia-tien` | App chia tiền đi chơi chung | Thêm một khoản chi, chia cho mấy người, xem ai nợ ai |
+
+1. Tạo thư mục trống cho từng đề (giống `app-dat-lich-toc`, chỉ cần HTML):
+
+   ```bash
+   mkdir -p ~/dev/audit-skills/app-hoc-tieng-anh ~/dev/audit-skills/app-viec-nhom ~/dev/audit-skills/app-chia-tien
+   ```
+
+2. **Viết đáp án TRƯỚC khi gõ đề**, lưu ở `~/dev/phase2-dapan/<thư mục>/dap-an.md`. Ngoài
+   từng màn, ghi thêm phần luồng. Mẫu (app chia tiền):
+
+   ```markdown
+   ## Mở app lần đầu
+   - Tối đa mấy bước trước khi vào app; có bỏ qua được không.
+   - Xin quyền gì, lúc nào (danh bạ: chỉ khi bấm thêm người, không xin ngay từ đầu).
+
+   ## Trang chủ
+   - Phải thấy ngay: tổng mình đang nợ / được nợ, các nhóm đi chơi gần đây.
+   - Nút chính: Thêm khoản chi, nằm trong tầm ngón cái.
+
+   ## Thêm khoản chi
+   - Nhập: số tiền, ai trả, chia cho ai, chia đều hay chia theo số.
+   - Bàn phím số bật sẵn; nút lưu không bị bàn phím che.
+   - Xong thì về đâu, thấy gì đổi.
+
+   ## Luồng
+   - Từ trang chủ tới lưu xong mất mấy lần bấm.
+   - Quay lại ở mỗi màn về đúng chỗ; đang nhập dở mà thoát thì có hỏi không.
+   - Rỗng (chưa có nhóm), lỗi (mất mạng lúc lưu), thành công: có đủ không.
+   ```
+
+3. Mở phiên Claude Code mới trong thư mục đề, gõ (ví dụ):
+
+   ```
+   Đọc ~/dev/evondevKit/skills/ui-ux/SKILL.md rồi dựng app điện thoại chia tiền đi chơi chung: màn mở app lần đầu, trang chủ, màn thêm khoản chi.
+   ```
+
+4. Qua cổng 1 và cổng 2 như bước 2 ở trên, so với đáp án. Bản dựng thì mở trên trình duyệt
+   ở khung điện thoại, **bấm hết một luồng** từ mở app tới làm xong việc chính.
+5. Ghi kết quả vào đáp án, chia hai loại:
+   - **Đẹp mà dùng sai** (nút ngoài tầm tay, quay lại lạc chỗ, thiếu trạng thái, xin quyền sai
+     lúc): thêm luật luồng vào `mobile.md`.
+   - **Dùng đúng mà nhạt**: mới tra thêm app thật cùng loại để bổ sung gu `J8`.
+6. Gửi link cho Claude ở evondevKit rà (quy ước ở đầu file).
+
 ---
 
 ## Việc lặt vặt, lúc nào rảnh
