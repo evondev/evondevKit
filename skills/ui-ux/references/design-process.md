@@ -144,6 +144,9 @@ dòng đó."* Dừng chờ.
 - **Đánh dấu một phương án khuyên dùng**, kèm một câu vì sao (bám `U2`).
   Không có phương án không nhược điểm: khuyên dùng là phương án có nhược điểm rơi vào việc
   người dùng ít làm nhất, không phải phương án ít nhược điểm nhất trên giấy.
+  **Nhược điểm là đánh đổi của bố cục, không phải lỗi một luật đã có.** "Đang gõ thì bàn phím che nút Lưu", "chữ
+  nhỏ khó đọc", "nút sát mép" là lỗi phải sửa trong phương án trước khi gửi (`J6`, `J4`), không ghi vào cột Nhược
+  để người dùng tự chọn có chịu lỗi hay không.
 - **Ghép khi hai cái hay không đụng nhau.** Hai phương án hay ở hai chỗ khác nhau (A có bố cục
   tốt, B có thanh lọc tốt) và ghép lại không thêm khối, không chật thêm thì ghi thêm một dòng
   lúc gửi wireframe: *"Ghép A + B: bố cục của A, thanh lọc của B. Mất: …"*. Không vẽ thành

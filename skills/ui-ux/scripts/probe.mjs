@@ -719,6 +719,33 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     }
   }
 
+  // 6c. Số và đơn vị tách dòng ("1.290.000" cuối dòng, "đ" trơ dòng dưới): khoảng trắng thường giữa số và
+  //     đơn vị cho trình duyệt ngắt ở đó. Đã dính 31/10/2026: màn chào có ví dụ của app chia tiền, câu
+  //     "mỗi người 1.290.000 đ" trong thẻ tối ở 390px.
+  const splitAmounts = [];
+  const amountPattern = /\d[\d.,]*([ \t\n]+)(đ|₫|%|VND|k|tr|triệu|tỷ)(?=$|[\s.,;:!?)·/])/g;
+  const amountWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  while (amountWalker.nextNode() && splitAmounts.length < 10) {
+    const textNode = amountWalker.currentNode;
+    const parent = textNode.parentElement;
+    if (!parent || !isVisible(parent) || parent.closest("script, style, code, pre")) continue;
+    if (getComputedStyle(parent).whiteSpace === "nowrap") continue;
+    for (const match of textNode.data.matchAll(amountPattern)) {
+      const spaceIndex = match.index + match[0].length - match[2].length - match[1].length;
+      const digitRange = document.createRange();
+      digitRange.setStart(textNode, spaceIndex - 1);
+      digitRange.setEnd(textNode, spaceIndex);
+      const unitRange = document.createRange();
+      unitRange.setStart(textNode, spaceIndex + match[1].length);
+      unitRange.setEnd(textNode, spaceIndex + match[1].length + 1);
+      const digitRect = digitRange.getBoundingClientRect();
+      const unitRect = unitRange.getBoundingClientRect();
+      if (digitRect.width && unitRect.width && unitRect.top >= digitRect.bottom - 2) {
+        splitAmounts.push(`"${match[0].replace(/\s+/g, " ")}": ${describe(parent)}`);
+      }
+    }
+  }
+
   // 7. Ô nhập lệch mép với nút rộng hết khung trong cùng form / hộp thoại: màn hẹp nút xếp dọc
   //    rộng hết, còn ô nằm trong cột chữ thụt sau icon (hộp xác nhận có ô gõ lại tên: ô 239px ở
   //    x=96, nút 295px ở x=40, đo 26/09/2026). Nút tự co theo chữ (màn rộng) thì không so.
@@ -2012,6 +2039,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
 
   return {
     orphanWords,
+    splitAmounts,
     invisibleFrames,
     faintLines,
     faintSelectedTabs,
@@ -3838,6 +3866,9 @@ function findHeavyNavLinks() {
   // bề rộng 150–360px, xếp dọc.
   const columns = new Map();
   for (const link of document.querySelectorAll("a[href], button")) {
+    // Trong khung điện thoại không có sidebar: các nút chính 358px của từng màn (Tạo, Thêm, Lưu) cùng mép
+    // trái, cùng bề rộng, bị nhận nhầm là cột điều hướng (báo nhầm 31/10/2026, wireframe app chia tiền).
+    if (link.closest(".device, [data-screen]")) continue;
     const rect = link.getBoundingClientRect();
     if (rect.width < 150 || rect.width > 360 || rect.height === 0 || rect.height > 64 || (link.textContent || "").trim().length < 2) continue;
     const key = `${Math.round(rect.left / 2)}-${Math.round(rect.width / 2)}`;
@@ -4382,6 +4413,10 @@ function formatReport(results) {
     if (result.orphanWords?.length > 0) {
       problems.push(`CHỮ ĐƠN CÔI Ở DÒNG CUỐI (${result.orphanWords.length} chỗ, thêm text-pretty, tiêu đề ngắn text-balance, T10):`);
       for (const item of result.orphanWords.slice(0, 5)) problems.push(`  ${item}`);
+    }
+    if (result.splitAmounts?.length > 0) {
+      problems.push(`SỐ VÀ ĐƠN VỊ TÁCH DÒNG (${result.splitAmounts.length} chỗ, nối bằng &nbsp; hay bọc whitespace-nowrap, T16):`);
+      for (const item of result.splitAmounts.slice(0, 5)) problems.push(`  ${item}`);
     }
     if (result.misalignedFields.length > 0) {
       problems.push(`Ô NHẬP LỆCH MÉP VỚI NÚT RỘNG HẾT KHUNG (${result.misalignedFields.length} khung, ô và nút phải cùng mép trái phải):`);

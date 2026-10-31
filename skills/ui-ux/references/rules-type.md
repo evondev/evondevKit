@@ -185,6 +185,8 @@ nhau là font không áp (Be Vietnam Pro bản Google Fonts: "1" 4,6px, "4" 8,5p
 Cột căn phải lệch mép trái vài px thì chấp nhận; bảng tiền, bảng số thì báo người dùng
 một dòng lúc giao, đổi font là việc của họ (`N10`).
 **Số tiền kèm đơn vị là một khối không ngắt**: `whitespace-nowrap` trên cả "128.900.000 đ".
+Số nằm giữa câu văn ("mỗi người 1.290.000 đ") cũng vậy: nối số và đơn vị bằng `&nbsp;`, không thì
+cuối dòng còn "1.290.000", chữ "đ" trơ một mình dòng dưới. Probe báo "Số và đơn vị tách dòng".
 Hàng nhãn–giá trị hai đầu (`flex justify-between`, như khối Thanh toán) thì giá trị tiền
 `shrink-0`, nhãn `min-w-0` co lại và xuống dòng; nhãn có phần phụ thì dán `&nbsp;` để ngắt sau
 dấu `·` ("Tạm tính&nbsp;· 1&nbsp;sản&nbsp;phẩm" ra "Tạm tính ·" / "1 sản phẩm"). Đảo lại (nhãn

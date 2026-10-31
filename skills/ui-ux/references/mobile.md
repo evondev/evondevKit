@@ -37,6 +37,10 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
 - Mỗi màn là một `section[data-screen]`, chuyển màn bằng hash (`#home`, `#detail`); màn rộng có danh sách
   màn bên trái (`nav.wf-screens`, probe không đo phần này) để người duyệt nhảy thẳng tới. Wireframe phương án (`U4`) cũng trong khung này, ba phương án
   khác nhau ở điều hướng và màn gốc.
+- **Nút chính của luồng dẫn tới kết quả thấy được.** Bấm "Lưu", "Tạo", "Đặt" trong wireframe hay bản mẫu thì về
+  màn trước **đã đổi**: dòng mới ở đầu danh sách (nhãn "Mới"), số đếm và số dư cộng thêm, thông báo ngắn `J7`
+  ("Đã thêm Ăn tối", có Hoàn tác). Quay về màn cũ y nguyên thì người duyệt không thấy lưu xong ra sao, nên không
+  góp ý được bước cuối của luồng, là bước họ làm nhiều nhất.
 - **Không hover**: màn chạm không có rê chuột. Phản hồi là lúc nhấn (`J7`).
 - **Kiểm bằng probe chế độ mobile** trước khi giao: `node scripts/probe.mjs <file hay link> --mobile --widths 390,1280`.
   Nó mở từng màn (mỗi `data-screen` và hash dẫn tới sheet) ở 390×844 và 360×640 (Android giá rẻ, máy cũ) giả lập chạm và ở khung 1280, chụp từng
@@ -114,7 +118,7 @@ thanh tab và thanh trên giữ `h-*` cố định: nền tảng cũng giữ c�
     là nút icon `plus` 44px bên phải tiêu đề lớn của màn gốc đó (`J3`). Nút nổi đè lên danh sách (góc phải trên thanh tab) che mất số tiền
     của dòng cuối.
   - Ở **form, sheet, màn xác nhận**: nút 52px **dính đáy**, cách hai mép 16px, đáy chừa thanh home, có vạch
-    ngăn trên. Không tràn sát hai mép màn.
+    ngăn trên. Không tràn sát hai mép màn. Bàn phím mở thì nút nằm ngay trên bàn phím (`J13`).
 - **Việc nguy hiểm** (xoá, đăng xuất) đứng riêng ở cuối màn, đỏ nhạt `bg-danger-bg text-danger` hay chữ đỏ
   trong thẻ riêng (`I4`), không cạnh nút chính.
 - **Thẻ số chính** cho màn có một con số quan trọng (đã chi, số dư, số bước): một thẻ ở đầu màn, con số lớn
@@ -127,8 +131,13 @@ thanh tab và thanh trên giữ `h-*` cố định: nền tảng cũng giữ c�
 ## J6. Sheet
 
 - Trượt từ đáy 320ms, lớp phủ `bg-black/40`; bấm lớp phủ hay "Huỷ" thì đóng. **Một sheet một lúc.**
-- Thanh kéo 36×5 giữa mép trên; hàng đầu 44px: "Huỷ" trái, tiêu đề giữa 17px; nút chính dính đáy sheet
-  (`J5`), không đặt "Xong" trên đầu cùng lúc.
+- Thanh kéo 36×5 giữa mép trên; hàng đầu 44px: "Huỷ" trái, tiêu đề giữa 17px. Nút chính đặt theo bàn phím,
+  **một chỗ duy nhất**, không vừa trên đầu vừa dưới đáy:
+  - **Sheet không gõ** (chọn, lọc, xác nhận): nút dính đáy sheet (`J5`).
+  - **Sheet một ô** (số điện thoại, mã): nút ngay dưới ô (`J12`).
+  - **Sheet nhiều ô mà ô đầu bật bàn phím sẵn** (thêm khoản chi, thêm việc): nút dính đáy như sheet không gõ, và
+    **bàn phím mở thì nút nằm ngay trên bàn phím** (`J13`), không bị che. Wireframe vẽ đúng lúc đó: bàn phím ở đáy,
+    nút ngay trên, phần còn thấy của form ở giữa.
 - Cao tối đa 92% màn, phần giữa cuộn riêng; sheet ngắn thì cao theo nội dung.
 - Sheet cho việc ngắn trên màn đang xem (thêm, lọc, chọn); việc dài nhiều bước thì là màn con.
 
@@ -337,7 +346,7 @@ Code mẫu: các màn đăng nhập, nhập mã, bật thông báo, đơn hàng 
   (6 ô, ô đầu `autocomplete="one-time-code"` để iOS gợi ý mã từ SMS trên bàn phím, "Đổi số", đếm ngược), khác web
   hai chỗ: ô cao 56px, và hết đếm thì ngoài "Gửi lại mã" có thêm **"Gọi điện đọc mã"** (SMS hay trễ, phần lớn app
   Việt có lối này). Nút chính nói việc sẽ xảy ra: "Xác nhận và đặt hàng", không chỉ "Xác nhận".
-- Sheet có ô nhập: nút chính nằm ngay dưới ô, không dính đáy sheet, vì bàn phím che đáy. Sang code thì sheet đẩy
+- Sheet một ô nhập: nút chính nằm ngay dưới ô, không dính đáy sheet, vì bàn phím che đáy (nhiều ô thì `J6`). Sang code thì sheet đẩy
   lên theo bàn phím (`KeyboardAvoidingView`, `viewInsets`).
 
 **Xin quyền** (vị trí, thông báo, máy ảnh, danh bạ)
@@ -390,8 +399,13 @@ người dùng gặp ngay lần gõ đầu.
 - **Phím Enter nói việc tiếp theo**: form nhiều ô thì `enterkeyhint="next"` nhảy sang ô sau, ô cuối `done` hay
   `send`; Enter ở ô cuối làm đúng việc của nút chính.
 - **Bàn phím mở thì ô đang gõ và nút chính vẫn thấy.** Nút dính đáy của form (`J5`) đẩy lên nằm ngay trên bàn phím,
-  vùng cuộn co lại để ô đang gõ không chui dưới bàn phím. Sheet có ô nhập theo `J12` (nút ngay dưới ô). Sang code:
+  vùng cuộn co lại để ô đang gõ không chui dưới bàn phím. Sheet có ô nhập theo `J6` (một ô: nút ngay dưới ô; nhiều
+  ô: nút dính đáy, lên theo bàn phím). Sang code:
   `KeyboardAvoidingView` hay `react-native-keyboard-controller`; Flutter giữ `resizeToAvoidBottomInset` mặc định.
 - **Màn hay sheet chỉ có một ô chính** (tìm kiếm, số tiền ở sheet thêm, mã OTP) thì focus sẵn, bàn phím lên luôn.
   Form nhiều ô không tự bật bàn phím: người dùng cần nhìn hết form trước.
 - Cuộn danh sách hay bấm ra ngoài ô thì cụp bàn phím (`keyboardDismissMode="on-drag"`, `onTapOutside`).
+- **Wireframe và bản mẫu vẽ bàn phím** ở màn hay sheet bật bàn phím sẵn: khối `bg-[#d1d3d9]` dính đáy khung, cao
+  khoảng 290px (bàn phím số ở khung 390×844; bàn phím chữ có hàng gợi ý khoảng 335px), che phần dưới như máy thật;
+  bấm ra ngoài ô thì cụp. Nút chính dính đáy nằm ngay trên khối đó. Không vẽ thì người duyệt thấy cả form, chọn
+  phương án mà không biết lúc gõ số tiền chỉ còn thấy nửa trên, hàng chọn người nằm dưới bàn phím.
