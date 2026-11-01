@@ -202,7 +202,7 @@ Dùng thư viện của họ thì cách áp skill là **chỉnh token cho khớp
 
 - **Người dùng tự nêu phong cách** ("kiểu glassmorphism", "gradient kiểu landing SaaS") → làm theo, không hỏi lại. Mở `references/styles.md` lấy khối của phong cách đó.
 - **Audit tầng 3 thấy dự án có phong cách khác flat** → **theo phong cách dự án**, dựng luôn. Lúc giao báo một dòng: đã theo phong cách gì, thấy ở đâu, muốn flat thì nói. Mẫu ở `P1`.
-- **Còn lại** → flat, không hỏi về phong cách.
+- **Còn lại** → flat, không hỏi về phong cách. Wireframe nhánh `U` có nhóm Kiểu (Flat và hai phong cách hợp sản phẩm) để người dùng tự đổi; chọn kiểu nào thì dựng kiểu đó.
 
 Chọn phong cách nào thì mở khối của nó trong `references/styles.md`: khối đó nói
 luật gu flat nào được đè, và bẫy riêng của phong cách đó. **Nguyên tắc thì không

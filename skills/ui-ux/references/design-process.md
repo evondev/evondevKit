@@ -256,6 +256,27 @@ dòng đó."* Dừng chờ.
   chưa thấy sản phẩm mình trông ra sao. Logo người dùng chọn thành logo lúc dựng; không chọn thì
   dựng hướng khuyên dùng, báo một dòng.
 
+  **Dự án chưa có phong cách riêng** (audit tầng 3 ra flat hoặc trống, `P4`) và đề không nêu
+  phong cách thì thêm nhóm **Kiểu** (`?kieu=`): Flat (`P6`) cùng hai khối hợp sản phẩm nhất trong
+  `P7`–`P10` (theo dõi số liệu cả ngày thì Tối; app người dùng cuối, card nhiều thì Nổi; Glass chỉ
+  khi phía sau có ảnh hay gradient, `F19`). Mặc định Flat (`P1`). Không có nhóm này thì người dùng
+  chỉ thấy bố cục xám rồi bản dựng flat, muốn xem bản tối hay bản nổi phải nhắn vẽ lại cả trang.
+  - **Kiểu chỉ đổi bộ mặt, không đổi bố cục** ⚑: cùng khối, cùng dữ liệu, cùng chỗ đặt. Bố cục
+    là việc của Phương án. Kiểu Tối mà thêm hàng KPI, biểu đồ thì người xem không biết mình
+    đang chọn bố cục hay chọn màu, chọn xong `U4` không biết dựng theo cái nào.
+  - Đổi bằng biến CSS và rule dưới `:root[data-kieu]` (nền, bề mặt, viền, bóng, blur), không vẽ
+    lại khối. Mỗi kiểu theo đủ khối `P` của nó, **cả phần bẫy**: Tối có bề mặt sáng dần theo tầng
+    và viền `white/10` (`P10`), Glass có lớp gradient phía sau (`P8`), Nổi đủ bốn bậc bóng (`P7`).
+  - Chọn một kiểu khác Flat là bật luôn nấc Màu (link mang `mau=mau`): kiểu ở nấc Xám không
+    thấy gì khác, người xem tưởng nút hỏng.
+  - **Probe nhanh phương án khuyên dùng ở từng kiểu** (`&mau=mau&kieu=toi`…). Chỗ hay hụt: kiểu
+    Tối đổi nền mà quên đổi màu tiêu đề, tên sản phẩm chìm vào nền (`P3`). Kiểu nào trượt tương
+    phản là lỗi phải sửa trước khi gửi, không phải nhược điểm của kiểu.
+  - Khung lý do thêm một dòng vì sao cho từng kiểu, bám người dùng ở `U1`: *"Tối: người trực
+    theo dõi số cả ca, nền tối đỡ chói"*, không viết "hiện đại, sang".
+  - Kiểu người dùng chọn thành phong cách lúc dựng (`U4` mở khối `P` đó) và giữ cho các màn sau
+    của dự án (`P1`); không chọn thì Flat, không cần báo.
+
 - **Control trong wireframe bấm được và hiện trạng thái như bản thật** ⚑: ô nhập, ô tìm focus
   thì viền và ring màu nhấn (`I13`: `--border-focus`, `--ring-focus`); select, dropdown, nút lọc
   bấm là xổ ra danh sách mục thật theo `layouts/overlay.md` (khung, chuyển động), bấm ngoài hay
@@ -279,7 +300,7 @@ dòng đó."* Dừng chờ.
   56px, nền trắng, viền dưới xám nhạt, chữ 14px, **không dính đỉnh**: thanh dính đè lên sidebar,
   header, panel `sticky top-0` của chính bản thiết kế, người xem thấy sidebar mất logo khi cuộn và
   tưởng bản dựng sẽ vậy. Các nhóm xếp liền từ trái, cách nhau
-  24px, theo thứ tự: Màn (đề nhiều màn) · **Phương án** · **Gọn chữ · Bỏ lặp** · **Màu** (công tắc) · Nhấn (dự án chưa có brand) · Logo (dự án chưa có logo) · Khổ · Nav (mobile, ít mục)
+  24px, theo thứ tự: Màn (đề nhiều màn) · **Phương án** · **Gọn chữ · Bỏ lặp** · **Màu** (công tắc) · Kiểu (dự án chưa có phong cách) · Nhấn (dự án chưa có brand) · Logo (dự án chưa có logo) · Khổ · Nav (mobile, ít mục)
   · **Trạng thái**.
   - **Đề nhiều màn** (lịch và hồ sơ, danh sách và chi tiết) thì một file, nhóm **Màn** đứng đầu
     (`?man=`), nhãn một hai chữ ("Lịch", "Hồ sơ"); mỗi màn có A, B, C riêng. **Ở 1280 thanh phải
@@ -294,7 +315,8 @@ dòng đó."* Dừng chờ.
     dài trên thanh ("A · Báo cáo một trang (khuyên dùng)") đẩy cả thanh phải cuộn ngang ở 1280.
   - **Khổ có icon**: màn hình trước Desktop, điện thoại trước Mobile (icon 16px, nét 2).
   - **Trạng thái là menu thả**, nhãn xám "Trạng thái:" kèm giá trị đang xem đậm và mũi tên nhỏ;
-    bấm thì ra bốn link. Bốn trạng thái ít đổi, không đáng chiếm bốn nút trên thanh.
+    bấm thì ra bốn link. Bốn trạng thái ít đổi, không đáng chiếm bốn nút trên thanh. **Kiểu cũng
+    là menu thả** ("Kiểu: Flat ⌄"), cùng lý do, và để thanh có đủ Nhấn, Logo vẫn vừa 1280.
   - **Nút trong rãnh và mục trong menu Trạng thái cách nhau 4px** (luật chốt 19): hai nút cùng nền
     trắng (Gọn chữ, Bỏ lặp cùng bật) hay mục rê cạnh mục đang xem mà dính sát thì đọc thành một khối.
   - **Màu là công tắc** có nhãn "Màu" đứng trước, không phải segmented: chỉ còn hai nấc.
@@ -305,7 +327,8 @@ dòng đó."* Dừng chờ.
     chọn một trong hai, trong khi bật cùng lúc được).
   - **Chữ trên thanh và khung lý do theo tiếng người dùng đang viết (`T27`)**, không theo
     `T24`: đó là lời skill nói với người dùng, không phải chữ của sản phẩm. Mẫu HTML dưới viết
-    tiếng Việt; đề tiếng Anh thì đổi hết: Phương án → Option, Màu → Color, Nhấn (`aria-label`
+    tiếng Việt; đề tiếng Anh thì đổi hết: Phương án → Option, Màu → Color, Kiểu → Style (Flat,
+    Nổi, Glass, Gradient, Tối → Flat, Elevated, Glass, Gradient, Dark), Nhấn (`aria-label`
     Chàm, Xanh ngọc, Cam) → Indigo, Teal, Orange, Thanh dưới → Bottom bar, Trạng thái → State
     (Có dữ liệu, Đang tải, Rỗng, Lỗi → Data, Loading, Empty, Error), Khuyên dùng → Recommended,
     Gọn chữ, Bỏ lặp → Concise, No repeats, Ưu, nhược → Pros, cons, Ưu / Nhược / Hợp khi → Pros / Cons / Best when, Gợi ý góp ý →
@@ -319,7 +342,7 @@ dòng đó."* Dừng chờ.
   (`?uu=1`). Người dùng mở Ưu, nhược để so A với B; bấm sang B mà khung đóng lại thì lần nào cũng
   phải bấm mở lại. Thứ mở thêm sau này (bảng so sánh, ghi chú) cũng giữ theo cách đó. Màn hẹp thì thanh
   cuộn ngang, không xuống dòng. Mở không tham số thì: phương án khuyên dùng, Gọn chữ và Bỏ lặp tắt,
-  Màu tắt, Desktop, Có dữ liệu. Thiếu thanh thì người dùng phải tự gõ `?v=`.
+  Màu tắt, Kiểu Flat, Desktop, Có dữ liệu. Thiếu thanh thì người dùng phải tự gõ `?v=`.
 
 - **Khung lý do ngay dưới thanh**, không modal (modal che mất bản thiết kế đúng lúc cần nhìn),
   nền xám rất nhạt. **Dòng đóng**: tên phương án đậm đen, nhãn "Khuyên dùng" (chỉ phương án khuyên
@@ -351,6 +374,10 @@ dòng đó."* Dừng chờ.
     </div>
     <span class="wf-set wf-flags"><a data-wf-toggle="gon" data-on="1" data-off="0">Gọn chữ</a><a data-wf-toggle="bolap" data-on="1" data-off="0">Bỏ lặp</a></span>
     <a class="wf-switch" data-wf-toggle="mau" data-on="mau" data-off="xam" role="switch">Màu <i></i></a>
+    <details class="wf-menu">
+      <summary><span>Kiểu:</span><b data-wf-current="kieu"></b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+      <div class="wf-popover" data-wf-param="kieu"><a data-value="flat">Flat</a><a data-value="toi">Tối</a><a data-value="noi">Nổi</a></div>
+    </details>
     <span class="wf-set" data-wf-param="nhan"><a data-value="cham" aria-label="Chàm"><i></i></a><a data-value="ngoc" aria-label="Xanh ngọc"><i></i></a><a data-value="cam" aria-label="Cam"><i></i></a></span>
     <span class="wf-set" data-wf-param="kho">
       <a data-value="desktop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Desktop</a>
@@ -475,6 +502,10 @@ dòng đó."* Dừng chờ.
        body thì viền focus, ring, hover vẫn màu cũ. */
     :root[data-mau="xam"] { --primary: #2c2c2c; } /* nấc Xám: bỏ màu nhấn, cả màu trạng thái */
     :root:not([data-mau="xam"])[data-nhan="cham"] { --primary: #4f46e5; } /* …ngoc, cam tương tự */
+    /* Kiểu: đổi token và rule bề mặt theo khối P, không vẽ lại khối. Đổi nền thì đổi cả chữ (P3, P10). */
+    :root:not([data-mau="xam"])[data-kieu="toi"] { color-scheme: dark; --background: #09090b; --surface: #18181b;
+      --foreground: #f4f4f5; --muted: #a1a1aa; --border: rgb(255 255 255 / .1); }
+    :root:not([data-mau="xam"])[data-kieu="noi"] { --border: transparent; } /* …kèm thang bóng bốn bậc của P7 */
     /* Token suy từ màu nhấn, tính lại theo nấc (brand-tokens.md). Chỉ ở nấc Xám hoặc khi có nhóm Nhấn: dự án đã có
        brand thì ở nấc Màu giữ nguyên token của dự án. */
     :root[data-mau="xam"], :root:has([data-wf-param="nhan"]) {
@@ -489,18 +520,20 @@ dòng đó."* Dừng chờ.
   </style>
   <script>
     const params = new URLSearchParams(location.search);
-    // Mặc định: phương án khuyên dùng, đủ nội dung, Xám, màu nhấn gợi ý đầu, Desktop, ☰, Có dữ liệu.
-    const state = { v: "a", gon: "0", bolap: "0", mau: "xam", nhan: "cham", kho: "desktop", nav: "menu", tt: "du-lieu", uu: "0" };
+    // Mặc định: phương án khuyên dùng, đủ nội dung, Xám, Flat, màu nhấn gợi ý đầu, Desktop, ☰, Có dữ liệu.
+    const state = { v: "a", gon: "0", bolap: "0", mau: "xam", kieu: "flat", nhan: "cham", kho: "desktop", nav: "menu", tt: "du-lieu", uu: "0" };
     for (const key of Object.keys(state)) state[key] = params.get(key) || state[key];
     Object.assign(document.body.dataset, state);
-    Object.assign(document.documentElement.dataset, { mau: state.mau, nhan: state.nhan }); // màu nhấn đổi trên :root
+    Object.assign(document.documentElement.dataset, { mau: state.mau, kieu: state.kieu, nhan: state.nhan }); // token đổi trên :root
     if (params.has("frame")) document.body.dataset.frame = "1";
     const linkTo = (changes) => `?${new URLSearchParams({ ...state, ...changes })}`;
     // Gọi lại mỗi khi state đổi tại chỗ (khung lý do mở, đóng), để link nào cũng mang state mới.
     function updateLinks() {
       for (const set of document.querySelectorAll("[data-wf-param]")) {
         for (const link of set.querySelectorAll("a")) {
-          link.href = linkTo({ [set.dataset.wfParam]: link.dataset.value });
+          // Kiểu khác Flat bật luôn nấc Màu: ở nấc Xám kiểu không hiện gì khác.
+          const isStyleLink = set.dataset.wfParam === "kieu" && link.dataset.value !== "flat";
+          link.href = linkTo({ [set.dataset.wfParam]: link.dataset.value, ...(isStyleLink && { mau: "mau" }) });
           if (state[set.dataset.wfParam] !== link.dataset.value) continue;
           link.setAttribute("aria-current", "page");
           const currentLabel = document.querySelector(`[data-wf-current="${set.dataset.wfParam}"]`);
@@ -526,13 +559,17 @@ dòng đó."* Dừng chờ.
         updateLinks();
       });
     }
-    // Menu Trạng thái: thanh cuộn ngang cắt mất khối absolute, nên menu là fixed, đặt ngay dưới nút.
-    const statusMenu = document.querySelector(".wf-menu");
-    statusMenu?.addEventListener("toggle", () => {
-      const summaryRect = statusMenu.querySelector("summary").getBoundingClientRect();
-      Object.assign(statusMenu.querySelector(".wf-popover").style, { top: `${summaryRect.bottom + 6}px`, left: `${summaryRect.left}px` });
+    // Menu Kiểu, Trạng thái: thanh cuộn ngang cắt mất khối absolute, nên menu là fixed, đặt ngay dưới nút.
+    const barMenus = [...document.querySelectorAll(".wf-menu")];
+    for (const barMenu of barMenus) {
+      barMenu.addEventListener("toggle", () => {
+        const summaryRect = barMenu.querySelector("summary").getBoundingClientRect();
+        Object.assign(barMenu.querySelector(".wf-popover").style, { top: `${summaryRect.bottom + 6}px`, left: `${summaryRect.left}px` });
+      });
+    }
+    document.addEventListener("click", (event) => {
+      for (const barMenu of barMenus) if (!barMenu.contains(event.target)) barMenu.open = false;
     });
-    document.addEventListener("click", (event) => { if (statusMenu && !statusMenu.contains(event.target)) statusMenu.open = false; });
     if (state.kho === "mobile" && !params.has("frame")) {
       const frameSource = `?${new URLSearchParams({ ...state, kho: "desktop", frame: "1" })}`;
       document.getElementById("wf-design").innerHTML =
@@ -545,7 +582,7 @@ dòng đó."* Dừng chờ.
     document.addEventListener("keydown", (event) => {
       if (event.key !== "Escape") return;
       document.body.removeAttribute("data-menu-open");
-      if (statusMenu) statusMenu.open = false;
+      for (const barMenu of barMenus) barMenu.open = false;
     });
     for (const button of document.querySelectorAll("[data-copy]")) {
       button.addEventListener("click", async () => {

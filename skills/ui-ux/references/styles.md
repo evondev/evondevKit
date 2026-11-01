@@ -16,7 +16,7 @@ Ba ca, chọn đúng một:
 | --- | --- |
 | **Người dùng tự nêu phong cách** ("làm trang giá kiểu glassmorphism") | Làm theo phong cách đó, **không hỏi lại** |
 | **Audit thấy dự án có phong cách khác flat** (`P4`) | **Theo phong cách dự án**, dựng luôn, báo một dòng lúc giao (mẫu bên dưới) |
-| **Dự án flat hoặc trống**, người dùng không nêu gì | Flat (`P6`). Không hỏi về phong cách. Có màu (`P12`) chỉ khi người dùng tự xin trong đề; hai chế độ dựng lại: dòng Có màu (`V1d`), không chọn sẵn. Wireframe không còn nấc Có màu |
+| **Dự án flat hoặc trống**, người dùng không nêu gì | Flat (`P6`). Không hỏi về phong cách; wireframe nhánh `U` có nhóm Kiểu để người dùng tự đổi sang hai phong cách khác (`design-process.md`, `U3`). Có màu (`P12`) chỉ khi người dùng tự xin trong đề; hai chế độ dựng lại: dòng Có màu (`V1d`), không chọn sẵn. Wireframe không còn nấc Có màu |
 
 Vì sao theo dự án chứ không theo flat: một màn flat giữa app glass là màn lạc
 loài, người dùng thấy ngay. Nhất quán thắng gu.
