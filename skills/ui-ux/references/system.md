@@ -167,8 +167,8 @@ bảy dòng chữ trong lượt trả lời, mà thành code thật và một tr
 2. **Brief một khối, không dừng**: sản phẩm, người dùng, màu nhấn, font, phong cách (`P1`),
    chỉ sáng hay có tối (`M20`), ngôn ngữ của copy (`T24`). Đề không nói thì lấy mặc định
    của `brand-tokens.md` (gần đen, Inter, flat, chỉ sáng) và ghi vào brief. Dự án chưa có
-   màu brand thì trang design system có nhóm ba màu gợi ý, như nhóm Nhấn trên thanh
-   wireframe (`design-process.md`, `U3`).
+   màu brand thì trang design system có nhóm ba màu gợi ý theo ngành (`brand-tokens.md`), như
+   nhóm Nhấn trên thanh wireframe (`design-process.md`, `U3`).
 3. **Token**: chép `tokens.css` vào file token của dự án theo `brand-tokens.md`, chỉ sửa
    khối font và màu nhấn. Thang cỡ chữ, nhịp, chiều cao control lấy từ `budgets.md`; bo
    góc theo `F1`, `M19`. **Không đẻ thang hay token mới** (`M14`, `M16`): bộ của skill đã
