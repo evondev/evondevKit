@@ -202,7 +202,8 @@ Dùng thư viện của họ thì cách áp skill là **chỉnh token cho khớp
 
 - **Người dùng tự nêu phong cách** ("kiểu glassmorphism", "gradient kiểu landing SaaS") → làm theo, không hỏi lại. Mở `references/styles.md` lấy khối của phong cách đó.
 - **Audit tầng 3 thấy dự án có phong cách khác flat** → **theo phong cách dự án**, dựng luôn. Lúc giao báo một dòng: đã theo phong cách gì, thấy ở đâu, muốn flat thì nói. Mẫu ở `P1`.
-- **Còn lại** → flat, không hỏi về phong cách. Wireframe nhánh `U` có nhóm Kiểu (Flat và hai phong cách hợp sản phẩm) để người dùng tự đổi; chọn kiểu nào thì dựng kiểu đó.
+- **Còn lại, màn trong app web** (dashboard, danh sách, bảng, form, cài đặt) → **bộ mặt khuyên dùng** theo người dùng của sản phẩm (`P13`: Gọn, Sidebar tối, Mềm, Đêm), không mặc nhiên Gọn, không hỏi. Wireframe nhánh `U` có nhóm Kiểu liệt kê bốn bộ, mặc định bộ khuyên dùng; không có wireframe thì dựng bộ đó, báo một dòng lúc giao. Mặc định chung một bộ cho mọi dự án là lý do ba dashboard khác ngành ra cùng một mặt.
+- **Còn lại, màn khác** → flat, không hỏi về phong cách. Wireframe nhánh `U` có nhóm Kiểu (Flat và hai phong cách hợp sản phẩm) để người dùng tự đổi; chọn kiểu nào thì dựng kiểu đó.
 
 Chọn phong cách nào thì mở khối của nó trong `references/styles.md`: khối đó nói
 luật gu flat nào được đè, và bẫy riêng của phong cách đó. **Nguyên tắc thì không
@@ -425,7 +426,7 @@ thì một trong hai chỗ là sai.
 | **L** | `references/refactor.md` | Refactor codebase đã có |
 | **U** | `references/design-process.md` | Thiết kế từ đầu: brief, việc chính của từng màn, wireframe phương án, dựng |
 | **W** | `references/tailwind-v4-traps.md` | Bẫy Tailwind v4 khi có CSS cũ |
-| **P** | `references/styles.md` | Phong cách thị giác: flat, nổi, glass, gradient, tối. Luật nào được đè, bẫy riêng, **tương phản** |
+| **P** | `references/styles.md` | Phong cách thị giác: flat, nổi, glass, gradient, tối; bốn bộ mặt dashboard (`P13`). Luật nào được đè, bẫy riêng, **tương phản** |
 
 **Luôn mở, mọi task:**
 
