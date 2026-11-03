@@ -315,7 +315,8 @@ nhau là **bộ mặt**: phong cách bề mặt, font, sidebar. Bộ mặt gói 
 | **Đêm** | Tối `P10` | IBM Plex Sans | Theo nền tối | Người trực theo dõi số cả ca: vận hành thời gian thực, giao dịch, giám sát |
 
 Màu nhấn đứng riêng, không nằm trong bộ mặt: dự án có brand thì giữ brand, chưa có thì nhóm
-Nhấn của wireframe (`U3`) hay màu đầu của nhóm đó. Bộ mặt nào cũng ghép được với màu nào.
+Nhấn của wireframe (`U3`) hay màu đầu của nhóm đó. Bộ mặt bám **người dùng**, màu nhấn gợi ý bám
+**ngành** (`brand-tokens.md`): hai thứ chọn riêng. Bộ mặt nào cũng ghép được với màu nào.
 
 **Dùng khi:** màn trong app web, dự án flat hoặc trống (`P4`), đề không nêu phong cách. Dự
 án có phong cách riêng, có ảnh tham chiếu, đề nêu kiểu, hay chế độ giữ brand thì không dùng

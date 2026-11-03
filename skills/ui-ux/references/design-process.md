@@ -243,12 +243,14 @@ dòng đó."* Dừng chờ.
 
   **Dự án chưa có màu brand** (màu nhấn là gần đen mặc định, `brand-tokens.md`; dự án đã qua
   `D9` thì màu nhấn đã chốt ở cổng đó, kể cả khi chốt gần đen, không tính là chưa có) thì thêm nhóm
-  **Nhấn: ● ● ●** gồm ba màu gợi ý (chàm `#4f46e5`, xanh ngọc `#0d9488`, cam `#ea580c`), đổi
-  `--primary` tại chỗ. Không có nhóm này thì nấc Màu của dự án mới vẫn đen trắng. Màu người dùng
+  **Nhấn: ● ● ●** gồm ba màu gợi ý **theo ngành ở `U1`**, lấy từ bảng "Màu nhấn gợi ý theo
+  ngành" của `brand-tokens.md` (màu đầu là quy ước của ngành; ngành khác thì chàm, xanh ngọc,
+  cam), đổi `--primary` tại chỗ. Đổi `data-value`, `aria-label` và mã màu trong mẫu dưới theo
+  ba màu đó. Không có nhóm này thì nấc Màu của dự án mới vẫn đen trắng. Màu người dùng
   chọn thành màu nhấn lúc dựng (`brand-tokens.md`); không chọn thì dựng màu đầu, báo một dòng.
   Đổi màu bằng biến CSS trên `:root[data-mau]`, `:root[data-nhan]` (không trên `body`, xem trên), không vẽ lại. Probe nhanh ở
   nấc Màu đo tương phản chữ trắng trên nút chính, trên mục đang chọn, với màu nhấn đầu; hai màu còn lại
-  tự so bằng mắt trên ảnh, chữ trắng trên cam là chỗ hay hụt.
+  tự so bằng mắt trên ảnh. Bảng màu đã đo sẵn chữ trắng từ 5 : 1, nên trượt là do tự lấy màu ngoài bảng.
 
   **Dự án chưa có logo** thì thêm nhóm **Logo: 1 · 2 · 3** (`?logo=`): ba dấu theo ba hướng của
   `components/logo.md`, đã kiểm ở 16px, đổi ở mọi chỗ có logo trên trang. Khung lý do có một dòng
@@ -337,7 +339,7 @@ dòng đó."* Dừng chờ.
     `T24`: đó là lời skill nói với người dùng, không phải chữ của sản phẩm. Mẫu HTML dưới viết
     tiếng Việt; đề tiếng Anh thì đổi hết: Phương án → Option, Màu → Color, Kiểu → Style (Gọn, Sidebar tối, Mềm, Đêm, khuyên dùng → Clean, Dark sidebar, Soft, Night, recommended; Flat,
     Nổi, Glass, Gradient, Tối → Flat, Elevated, Glass, Gradient, Dark), Nhấn (`aria-label`
-    Chàm, Xanh ngọc, Cam) → Indigo, Teal, Orange, Thanh dưới → Bottom bar, Trạng thái → State
+    Chàm, Xanh ngọc, Cam; các màu khác của bảng: Xanh dương, Tím, Hồng tím, Xanh lá) → Indigo, Teal, Orange; Blue, Violet, Fuchsia, Green, Thanh dưới → Bottom bar, Trạng thái → State
     (Có dữ liệu, Đang tải, Rỗng, Lỗi → Data, Loading, Empty, Error), Khuyên dùng → Recommended,
     Gọn chữ, Bỏ lặp → Concise, No repeats, Ưu, nhược → Pros, cons, Ưu / Nhược / Hợp khi → Pros / Cons / Best when, Gợi ý góp ý →
     Feedback ideas, tên phương án, câu lý do, câu gợi ý cũng tiếng Anh. Tham số URL (`v`, `gon`, `bolap`,
@@ -447,8 +449,9 @@ dòng đó."* Dừng chờ.
       width: 5px; height: 5px; border-radius: 50%; background: #4f46e5; }
     [data-wf-param="nhan"] a { padding: 0 8px; }
     [data-wf-param="nhan"] i { width: 14px; height: 14px; border-radius: 50%; background: currentColor; }
-    [data-wf-param="nhan"] a[data-value="cham"] { color: #4f46e5; } [data-wf-param="nhan"] a[data-value="ngoc"] { color: #0d9488; }
-    [data-wf-param="nhan"] a[data-value="cam"] { color: #ea580c; }
+    /* Ba màu theo ngành, bảng ở brand-tokens.md. Mẫu là bộ "ngành khác". */
+    [data-wf-param="nhan"] a[data-value="cham"] { color: #4f46e5; } [data-wf-param="nhan"] a[data-value="ngoc"] { color: #0f766e; }
+    [data-wf-param="nhan"] a[data-value="cam"] { color: #c2410c; }
     .wf-menu { flex-shrink: 0; }
     .wf-menu summary { display: flex; align-items: center; gap: 6px; height: 36px; padding: 0 10px; border-radius: 8px;
       cursor: pointer; list-style: none; }
@@ -510,7 +513,7 @@ dòng đó."* Dừng chờ.
     /* Màu nhấn đổi trên :root, cùng chỗ khai token: var(--primary) khai ở :root đã tính xong tại :root, đổi ở
        body thì viền focus, ring, hover vẫn màu cũ. */
     :root[data-mau="xam"] { --primary: #2c2c2c; } /* nấc Xám: bỏ màu nhấn, cả màu trạng thái */
-    :root:not([data-mau="xam"])[data-nhan="cham"] { --primary: #4f46e5; } /* …ngoc, cam tương tự */
+    :root:not([data-mau="xam"])[data-nhan="cham"] { --primary: #4f46e5; } /* …ngoc #0f766e, cam #c2410c tương tự */
     /* Kiểu: đổi token và rule bề mặt theo khối P, không vẽ lại khối. Đổi nền thì đổi cả chữ (P3, P10). */
     :root:not([data-mau="xam"]):is([data-kieu="toi"], [data-kieu="dem"]) { color-scheme: dark; --background: #09090b; --surface: #18181b;
       --foreground: #f4f4f5; --muted: #a1a1aa; --border: rgb(255 255 255 / .1); }
