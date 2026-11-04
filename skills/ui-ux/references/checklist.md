@@ -212,6 +212,11 @@ thứ mình định viết, không thấy thứ trình duyệt vẽ ra.
      thì vào danh sách `P` (`design-process.md`, `U4`).
    - Trạng thái nằm ở route khác (`/states`, trang rỗng) thì chạy thêm trên route đó. Dự án
      có dark mode thì chạy thêm `--dark`.
+   - **Màn có bảng, danh sách, card, ô số liệu thì chạy thêm `--stress`** (`S8`): probe bơm tên
+     dài ~60 ký tự và số chín, mười chữ số vào đúng chỗ chứa dữ liệu rồi đo ở 375 và 1280.
+     Mọi lỗi bơm ra là lỗi `P` như thường. Sửa bằng cắt chữ có tooltip, `min-w-0`,
+     `tabular-nums`, rút gọn số theo `charts.md` (`T13`, `T14`, `T16`), **không sửa bằng cách
+     làm dữ liệu mẫu ngắn lại**: khách thật không đặt tên cho vừa card.
    - **Sửa rồi chạy lại cho tới khi mục "Việc phải đối chiếu" ở cuối báo cáo trống**
      (danh sách mã `P1`, `P2`… là lỗi hạng Hỏng máy đo ra, `V1` trong `review.md`), tối đa
      **ba vòng**. Vòng hai trở đi thêm `--dynamic-widths` như dòng "Vòng sửa sau" cuối báo cáo in

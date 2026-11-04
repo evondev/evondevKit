@@ -13,20 +13,22 @@ skills/
     ├── SKILL.md          bộ định tuyến: 4 câu hỏi vào việc, luật phạm vi, bảng mở doc
     ├── VERSION           version cho người cài bằng npx skills, phải khớp plugin.json
     ├── scripts/
-    │   ├── probe.mjs     mở trang thật ở 6 bề rộng, đo lỗi đo được, chụp ảnh, quét bề rộng
+    │   ├── probe.mjs     mở trang thật ở 6 bề rộng, đo lỗi đo được, chụp ảnh, quét bề rộng, --stress bơm dữ liệu khó
     │   ├── lint-skill.mjs soát câu chữ của skill, và VERSION khớp plugin.json, trước khi commit
     │   └── check-update.mjs báo bản mới cho người cài bằng npx skills (so VERSION với master)
     └── references/
         ├── principles.md           N — mười hai nguyên tắc đứng sau mọi luật, phép thử cho thứ chưa có mẫu
         ├── review.md               V — soi UI đang có, ba chế độ, bảng trước/sau
-        ├── design-process.md       U — thiết kế từ đầu: brief, việc chính, wireframe, dựng
+        ├── design-process.md       U — thiết kế từ đầu: brief, việc chính, wireframe, dựng; U6 phân tích sản phẩm
+        ├── flows.md                O — luồng qua nhiều màn, onboarding, lối soi luồng
+        ├── industry-patterns.md    quy ước màn theo ngành, đo thật, dùng ở U2 và U6
         ├── locked-rules.md         luật chủ dự án đã chốt, lý lẽ đã bị bác
         ├── rules-color.md          M — màu, viền, bóng, dark mode, token
         ├── rules-type.md           T — chữ, font, xuống dòng, cắt chữ, copy, tiếng Anh
         ├── rules-form.md           F — khối, lưới, bo góc, khoảng thở, icon
         ├── rules-state.md          I — nút, hover, focus, danh sách, modal
         ├── responsive.md           R — màn hẹp, ngưỡng 375px
-        ├── system.md               D — đề nhiều hơn một màn, dựng design system trước (D9)
+        ├── system.md               D — đề nhiều hơn một màn, dựng design system trước (D9), DESIGN.md (D10)
         ├── refactor.md             L — refactor codebase đã có
         ├── tailwind-v4-traps.md    W — bẫy Tailwind v4 khi có CSS cũ
         ├── styles.md               P — phong cách: flat, nổi, glass, gradient, tối; tương phản

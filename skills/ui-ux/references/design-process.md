@@ -2,7 +2,7 @@
 
 **Nhánh mặc định** (chủ dự án chốt): mọi đề dựng hay làm lại một màn trở lên đều
 vào đây, tiếng Việt hay tiếng Anh, sản phẩm mới hay màn đã có. Chỉ không vào khi đề nói rõ lối
-khác (bảng câu 1 của `SKILL.md`): soi, giữ brand, dựng lại theo gu skill, refactor, dựng
+khác (bảng câu 1 của `SKILL.md`): soi, phân tích sản phẩm chưa dựng (`U6`), giữ brand, dựng lại theo gu skill, refactor, dựng
 luôn, hoặc việc nhỏ hơn một màn.
 
 Khác nhánh `V` (`review.md`): `V` giữ khung trang, sửa lỗi và làm gọn. Kết quả là bản hi-fi
@@ -62,10 +62,16 @@ Mỗi màn trong phạm vi một dòng:
 
 - Cột "so sánh bằng gì" quyết định card và bảng: thứ người dùng dùng để chọn giữa các mục
   phải **nổi nhất và đứng đầu**. Thứ không giúp chọn thì lùi xuống hoặc để trang chi tiết.
-- Cột cuối: **tra thật** cách vài sản phẩm cùng loại đang làm (tìm web nếu có công cụ), ghi
-  thành quy ước, không ghi tên sản phẩm vào code hay vào file của dự án. Không tra được thì
+- Cột cuối: đọc `industry-patterns.md` trước. Ngành có trong đó thì lấy quy ước của màn đó,
+  ghi nguồn *"bảng ngành, 4/5"*. Màn hay ngành bảng chưa có thì **tra thật** cách vài sản phẩm
+  cùng loại đang làm (tìm web nếu có công cụ), ghi thành quy ước, không ghi tên sản phẩm vào
+  code hay vào file của dự án. Không tra được thì
   ghi *"theo trí nhớ, cần kiểm"*. Quy ước số đông thắng gu riêng.
 - Điểm khác biệt ở `U1` phải **hiện trên màn chính**, không chỉ nằm trong bộ lọc.
+- **Sản phẩm mới, hoặc các màn trong phạm vi nằm trên cùng một luồng**: thêm một dòng **Luồng**
+  dưới bảng: các bước tới việc chính đầu tiên, số màn, số ô phải điền (`flows.md`, `O2`). `U3`
+  vẽ cả màn lần đầu chưa có dữ liệu (`O1`), `U4` dựng thêm trạng thái vừa xong của hành động
+  chính (`O3`).
 
 Gửi `U1` và `U2` trong **một** tin, kết bằng *"Đúng thì trả lời `ok`, sai dòng nào thì sửa
 dòng đó."* Dừng chờ.
@@ -669,6 +675,8 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
 - **Sản phẩm mới:** audit câu 2 đã chạy ở `U1`; đi tiếp câu 3 của mục 0 trong `SKILL.md`,
   rồi dựng theo phương án đã chọn thay cho bố cục mặc định của câu 4. Chưa có logo thì dựng
   `ProductBrand` với dấu đã chọn ở nhóm Logo, kèm favicon từ cùng dấu (`components/logo.md`).
+- **Ghi `DESIGN.md`** (`system.md`, `D10`) khi dựng xong: brief của `U1`, bộ mặt, màu nhấn,
+  phương án đã chọn của màn này. Có file rồi thì sửa tại chỗ, thêm dòng Màn đã dựng.
 - **Đề nhiều hơn một màn:** chốt hợp đồng nguyên tố `D1` (`system.md`) ở đây, trước khi dựng
   màn đầu tiên. Wireframe đã chọn nói khung, bảng `D1` nói control nào dùng kiểu nào cho cả bộ.
 - Ráp bằng mẫu của skill (`SKILL.md` mục 2). Chạy probe `--sweep --wireframe "<link phương án
@@ -770,3 +778,59 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
 - Không đổi vai màu của dự án đã có, trừ khi người dùng nói bỏ style cũ (`review.md`, chế độ
   dựng lại theo gu skill).
 - Không quay về nhánh `V` giữa chừng để "vá cho nhanh": người dùng đã xin nghĩ lại khung.
+
+## U6. Phân tích sản phẩm, chưa dựng ⚑
+
+Đề hỏi sản phẩm nên thiết kế ra sao mà chưa muốn dựng: "phân tích sản phẩm", "nên thiết kế ra
+sao", "hướng thiết kế", "gợi ý màu, trải nghiệm cho ngành…", "analyze my product", "what design
+direction". Ra **một tin báo cáo** trong chat. Không vẽ wireframe, không đụng file dự án, không
+viết code. Lối này **không có cổng**: không hỏi; dòng nào không suy ra được thì ghi *đoán*,
+người dùng sửa dòng đó.
+
+Báo cáo đi đúng thứ tự dưới đây, mỗi phần ngắn, viết theo ngôn ngữ của đề:
+
+1. **Audit** một dòng (câu 2 của `SKILL.md`), chỉ khi đã có code. Chưa có code thì ghi *"Chưa
+   có code, brief theo lời bạn."*
+2. **Brief** năm dòng như `U1`, mỗi dòng ghi nguồn (*đọc code*, *người dùng nói*, *đoán*).
+3. **Màn chính**: bảng `U2` cho 3–6 màn sản phẩm cần nhất, kèm dòng Luồng tới việc chính đầu
+   tiên (`flows.md`, `O2`). Đã có code thì lấy theo route; chưa có thì lấy những màn loại sản
+   phẩm này hay có.
+4. **Quy ước của loại sản phẩm này**: 5–8 dòng, mỗi dòng nói *làm gì*, *vì sao người dùng cần*,
+   *nguồn*. Ngành có trong `industry-patterns.md` thì lấy từ đó trước, ghi *"bảng ngành, 4/5"*;
+   chỉ tra thêm cho màn bảng chưa có. Còn lại **tra thật** khoảng năm sản phẩm cùng loại (tìm web nếu có công cụ; app có gói free
+   thì xem bản free, không trả tiền). Nguồn ghi bằng số đếm: *"tra 5, 4 làm vậy"*, **không nêu
+   tên sản phẩm**. Không tra được thì ghi *"theo trí nhớ, cần kiểm"*. Quy ước mà sản phẩm chưa
+   có thì ghi thêm *(chưa có)*: đó là chỗ đáng giá nhất của báo cáo, nhưng chỉ ghi là gợi ý,
+   không tự đưa vào brief (`U5`).
+5. **Màu nhấn**: dự án có brand thì giữ brand, nói một dòng. Chưa có thì ba màu của ngành trong
+   bảng "Màu nhấn gợi ý theo ngành" (`brand-tokens.md`), kèm cột *Đo được* của ngành đó; ngành
+   không có trong bảng thì dòng "Ngành khác". Không chọn màu theo sáo ("học thì xanh lá cho
+   tươi", "spa thì hồng").
+6. **Bộ mặt**: một bộ khuyên dùng theo `P13`, đúng mẫu dòng báo của `P13` (nói bằng người dùng).
+   Dự án đã có phong cách riêng (audit tầng 3) thì ghi *"giữ phong cách đang có"*, không khuyên
+   bộ mới (`P1`).
+7. **Điểm khác biệt hiện ở đâu**: một dòng, màn nào, chỗ nào trên màn (`U2`).
+
+Mỗi dòng nói bằng việc của người dùng cuối, không bằng tính từ. Đúng: *"Trang đầu của người
+học là nút Học tiếp bài đang dở, vì họ quay lại để học tiếp chứ không để tìm khoá mới (tra 5,
+5 làm vậy)."* Sai: *"UI thân thiện, hiện đại, tối ưu trải nghiệm học tập."*
+
+Kết tin bằng một dòng: *"Sai dòng nào thì sửa dòng đó. Muốn dựng thì nói `dựng màn …`, hoặc
+`dựng luôn màn …` nếu không cần wireframe."* (tiếng Anh: *"Correct any line that's wrong. To
+build, say `build the … screen`, or `just build the … screen` to skip the wireframes."*)
+
+**`DESIGN.md` đã có** (`system.md`, `D10`): mục 5, 6 lấy theo file, ghi *"theo `DESIGN.md`"*,
+không khuyên màu hay bộ mặt khác. Báo cáo không ghi vào file; lượt dựng sau mới ghi (`U4`).
+
+**Lượt dựng sau báo cáo.** Brief và bảng `U2` người dùng đã đọc, nên đề dựng kế tiếp mà không sửa
+dòng nào thì coi như **đã qua cổng 1**: đi thẳng `U3` (hay `U4` nếu "dựng luôn"). Nhóm Nhấn của
+wireframe lấy đúng ba màu trong báo cáo, Kiểu mặc định là bộ mặt đã khuyên. Màn chưa có trong
+bảng thì thêm dòng `U2` của màn đó vào đầu tin wireframe, không dừng.
+
+**Không:**
+
+- Persona, hành trình người dùng, số liệu không có nguồn ("70% người học dùng điện thoại"),
+  như `U1`. Model không phỏng vấn được ai.
+- Báo cáo dài như tài liệu: vừa đọc trong một lượt cuộn, không bảng lồng bảng, không mục nào
+  ngoài bảy mục trên.
+- Ghi báo cáo ra file trong dự án khi người dùng không xin.

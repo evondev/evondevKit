@@ -1,7 +1,7 @@
 # Nhiều màn hình — luật D
 
 Mở file này khi đề bài **nhiều hơn một bề mặt**, hoặc đề đòi dựng design system trước
-(`D9`). Một câu như *"dựng kanban board
+(`D9`). Riêng `D10` (`DESIGN.md`) áp cho mọi đề. Một câu như *"dựng kanban board
 quản lý công việc và table quản lý project, có đủ CRUD"* không phải hai màn, mà
 là khoảng **tám bề mặt**: board, thẻ, cột rỗng, bảng, dòng bảng, form tạo, form
 sửa, hộp xác nhận xoá, bộ lọc.
@@ -212,8 +212,66 @@ bảy dòng chữ trong lượt trả lời, mà thành code thật và một tr
    màu nhấn, font, bo góc thì nói: đổi ở token, mọi component đổi theo."* Dừng chờ.
 
 Duyệt xong thì ghi màu nhấn đang hiện trên trang (màu người dùng chọn trong nhóm gợi ý, không
-chọn thì màu đầu) vào file token trước khi làm màn. Màn sau đi lối bình thường (mặc định nhánh
+chọn thì màu đầu) vào file token trước khi làm màn, và ghi `DESIGN.md` (`D10`). Màn sau đi lối bình thường (mặc định nhánh
 `U`): wireframe `U3` dán file token của dự án, chép class từ component vừa duyệt, không hiện
 nhóm Nhấn; `U4` ráp từ đúng các component đó; bảng `D1` coi như đã chốt, không khai lại. Đề vừa đòi design system vừa
 đòi màn ("dựng design system rồi dựng màn đơn hàng") thì làm hết lối này, qua cổng, rồi mới
 vào `U1` cho màn.
+
+## D10. `DESIGN.md`: quyết định giao diện nằm một chỗ trong dự án ⚑
+
+Mỗi phiên mới, model không nhớ phiên trước đã chọn gì. Bộ mặt, màu nhấn, phong cách, bố cục
+đã duyệt chỉ nằm rải trong code (một dòng comment trong file token, class trên vài component),
+nên phiên sau audit ra khác, khuyên lại từ đầu, và màn thứ năm lệch màn đầu (chủ dự án,
+03/11/2026: ba màn hai mặt). `DESIGN.md` ở gốc dự án là trí nhớ đó.
+
+**Đọc** ở audit câu 2 của `SKILL.md`, mọi lối, kể cả việc nhỏ hơn một màn. Có file thì những gì
+nó ghi **thắng** mặc định và lời khuyên của skill (bộ mặt `P13`, màu nhấn theo ngành, bố cục mặc
+định): người dùng đã chọn rồi, không khuyên lại, không hỏi lại. Dòng `Audit:` nói một đoạn:
+*"`DESIGN.md`: bộ mặt Mềm, nhấn Tím, flat."* File ghi trái với code đang chạy (file nói Mềm, code
+toàn flat Inter) thì code là thật, file sai: theo code, sửa file, báo một dòng lúc giao.
+
+**Ghi** mỗi khi skill chốt một quyết định cho cả dự án, sau khi người dùng đã duyệt (không ghi
+lúc còn ở wireframe, `U3`):
+
+- `U4` dựng xong màn đầu tiên; lối dựng luôn dựng xong; `D9` qua cổng; hai chế độ dựng lại của
+  `review.md` dựng xong.
+- Người dùng dặn một điều cho cả app ("nút bo tròn hết", "đừng dùng màu tím", "bảng luôn dày"):
+  ghi vào mục Người dùng dặn, kể cả khi điều đó đè luật skill.
+- Màn mới dựng xong: thêm một dòng vào mục Màn đã dựng.
+
+Sửa tại chỗ, không chép thêm lịch sử: file là trạng thái hiện tại, lịch sử đã có git. Lúc giao
+nói một dòng *"Đã ghi vào `DESIGN.md`: …"*.
+
+**Mẫu**, giữ dưới ~40 dòng, chỉ ghi điều đã chốt:
+
+```markdown
+# Thiết kế giao diện
+
+Skill evon:ui-ux đọc file này trước khi dựng. Sửa tay được; file trái với code thì code thắng.
+
+## Sản phẩm
+- Sản phẩm: app học tiếng Anh cho người đi làm
+- Người dùng: nhân viên văn phòng, học 15 phút giờ nghỉ trưa
+- Việc chính: học tiếp bài đang dở, ôn từ, xem tiến độ
+- Nền tảng: điện thoại nhiều hơn máy tính
+- Điểm khác biệt: bài học theo ngành nghề của người học
+
+## Giao diện
+- Bộ mặt: Mềm (P13): card nổi, font Be Vietnam Pro, sidebar trắng
+- Màu nhấn: Tím `#7c3aed`, token `--primary` ở `app/globals.css`
+- Phong cách: nổi (P7), không glass, không gradient
+- Nền tối: có, theo `class="dark"`
+
+## Người dùng dặn
+- Nút bo tròn hết (đè luật bo góc của skill)
+
+## Màn đã dựng
+- `/` Trang đầu người học: phương án B, card Học tiếp đứng đầu
+- `/courses` Danh sách khoá: phương án A, lọc dính đầu trang
+```
+
+**Không ghi:** tên sản phẩm đã tra để tham khảo, số liệu giả, lý do dài, luật skill đã có
+sẵn (file không phải bản sao của skill). Dự án đã có `DESIGN.md` không do skill viết (không có
+dòng "Skill evon:ui-ux đọc file này") thì đọc như tài liệu của người dùng, không viết đè: thêm
+các mục trên vào cuối, dưới tiêu đề `## evon:ui-ux`.

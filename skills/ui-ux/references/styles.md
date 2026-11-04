@@ -333,9 +333,10 @@ thì Gọn. Không hỏi (`P1`):
   Be Vietnam Pro) vì chủ spa mở app giữa ca, xem card lịch hẹn nhiều hơn bảng. Muốn kiểu khác
   thì nói: Gọn, Sidebar tối, Đêm."* Không viết "hiện đại", "sang".
 
-**Ghi lại bộ đã chọn** để màn sau giữ đúng (`P1`, `P4`): một dòng comment ngay trên khối font
-của file token, `/* Bộ mặt: Mềm (P13) */`. Thiếu dòng này thì màn sau audit ra "flat có bóng",
-khuyên lại từ đầu, hai màn hai mặt.
+**Ghi lại bộ đã chọn** để màn sau giữ đúng (`P1`, `P4`): dòng Bộ mặt trong `DESIGN.md`
+(`system.md`, `D10`), cộng một dòng comment ngay trên khối font của file token,
+`/* Bộ mặt: Mềm (P13) */`. Thiếu cả hai thì màn sau audit ra "flat có bóng", khuyên lại từ đầu,
+hai màn hai mặt. `DESIGN.md` đã ghi bộ mặt thì theo đó, không khuyên lại.
 
 **Được đè:** luật gu flat của khối `P` tương ứng, cộng dòng "sidebar nền trắng" ở
 `layouts/app.md` cho bộ Sidebar tối. **Không đè:** toàn bộ cột Nguyên tắc của `P2`, gồm

@@ -1,6 +1,6 @@
 ---
 name: ui-ux
-description: Gu UI/UX cho app — dashboard, danh sách, bảng, form, cài đặt, modal, trang lướt để chọn. Mặc định như một designer - brief, 2–3 wireframe, người dùng chọn rồi mới dựng. Lối khác khi đề nói rõ - soi UI đang có ("xem giúp", "review"), so bản mới với bản gốc ("có gì hơn"), dựng lại giữ brand ("giữ brand", "keep the brand") hay theo gu skill ("bỏ style cũ"), refactor giữ nguyên hình, dựng luôn ("dựng luôn", "just build it"), design system trước ("UI kit", "component library"), logo đơn giản ("làm logo"), sửa một component. Mặc định flat; làm được glass, gradient, nổi, nền tối. Landing page, cửa hàng online, blog chưa được dạy - vẫn làm, báo trước. Dùng khi dựng, làm lại, sửa giao diện app, xem ảnh hay link app, hoặc nhắc "làm UI cho đẹp", "dựng màn", "thiết kế", "làm lại UX", "nhìn rối", "build a page", "design this screen", "redesign", "make it look good", "ecommerce", "ui-ux", "evon".
+description: Gu UI/UX cho app — dashboard, danh sách, bảng, form, cài đặt, modal, trang lướt để chọn. Mặc định như một designer - brief, 2–3 wireframe, người dùng chọn rồi mới dựng. Lối khác khi đề nói rõ - soi UI đang có ("xem giúp", "review"), phân tích sản phẩm chưa dựng ("phân tích sản phẩm", "nên thiết kế ra sao"), soi luồng ("soi luồng onboarding"), so bản mới với bản gốc ("có gì hơn"), dựng lại giữ brand ("giữ brand", "keep the brand") hay theo gu skill ("bỏ style cũ"), refactor giữ nguyên hình, dựng luôn ("dựng luôn", "just build it"), design system trước ("UI kit", "component library"), logo đơn giản ("làm logo"), sửa một component. Mặc định flat; làm được glass, gradient, nổi, nền tối. Landing page, cửa hàng online, blog chưa được dạy - vẫn làm, báo trước. Dùng khi dựng, làm lại, sửa giao diện app, xem ảnh hay link app, hoặc nhắc "làm UI cho đẹp", "dựng màn", "thiết kế", "làm lại UX", "nhìn rối", "build a page", "design this screen", "redesign", "make it look good", "ecommerce", "ui-ux", "evon".
 ---
 
 # UI/UX cho hệ thống dashboard
@@ -13,7 +13,7 @@ description: Gu UI/UX cho app — dashboard, danh sách, bảng, form, cài đ�
 > chọn logo, `components/logo.md`). Ngoài các cổng đó thì **không hỏi**: chỗ nào đề chưa rõ thì lấy mặc
 > định, **báo lúc giao** mình đã chọn gì.
 > Các nhánh khác chỉ khi đề nói rõ (câu 1): **soi UI đang có** (`references/review.md`) thì
-> soi luôn, **sửa thì hỏi**; dựng lại giữ brand; dựng lại theo gu skill; refactor; dựng luôn
+> soi luôn, **sửa thì hỏi**; soi một luồng qua nhiều màn; phân tích sản phẩm chưa dựng; dựng lại giữ brand; dựng lại theo gu skill; refactor; dựng luôn
 > không wireframe; dựng design system trước; sửa một component nhỏ.
 
 Skill này không dạy "thế nào là đẹp" bằng tính từ. Nó làm ba việc: **đi đúng thứ
@@ -70,12 +70,14 @@ Lần đầu gọi skill trong một phiên, chạy `node <thư mục skill này
 các bước, và về người phải duyệt.
 
 Đọc đề theo thứ tự bảng, gặp dòng đầu tiên khớp thì dừng. Chủ dự án chốt: **dòng
-cuối là mặc định**, chín dòng trên chỉ khi đề nói rõ (tiếng Việt hay tiếng Anh).
+cuối là mặc định**, mười một dòng trên chỉ khi đề nói rõ (tiếng Việt hay tiếng Anh).
 
 | Đề nói | Đi đâu |
 | --- | --- |
 | **So bản mới với bản gốc** ("so với bản gốc", "so với trang gốc", "có gì hơn", "hơn hay thua", "đã ổn chưa so với…", "compare with the original", "is it better than before") | `references/review.md`, `V6`: chụp hai bản như nhau, bảng tiêu chí gốc / mới / bên hơn, phải tìm dòng thua, đề xuất sửa từng dòng thua. Không sửa tới khi người dùng chọn dòng. **Dừng mục 0 tại đây** ⚑ |
+| **Soi một luồng qua nhiều màn** ("soi luồng", "luồng onboarding", "luồng đăng ký", "người mới vào có bị lạc không", "check the onboarding flow", "walk through the signup flow") | `references/flows.md`, lối soi luồng: đi từng bước, đếm bước tới việc chính, bảng mỗi dòng một chỗ lạc giữa các màn. Soi thì không hỏi, sửa thì hỏi như nhánh `V`. **Dừng mục 0 tại đây** ⚑ |
 | **Muốn biết UI đang có chỗ nào chưa ổn** ("xem giúp", "review", "chỗ nào chưa ổn", "nhìn rối", "check this UI", "what's wrong with", gửi ảnh hay link app của họ nhờ xem) | Mở `references/review.md`, nhánh `V` **chế độ soi**: lập bảng trước/sau, người dùng chọn dòng rồi mới sửa. **Dừng mục 0 tại đây**, lúc giao theo `V5` chứ không theo `S15` ⚑ |
+| **Hỏi sản phẩm nên thiết kế ra sao, chưa muốn dựng** ("phân tích sản phẩm", "nên thiết kế ra sao", "hướng thiết kế", "gợi ý màu, trải nghiệm cho ngành…", "analyze my product", "what design direction") | `references/design-process.md`, `U6`: **một tin báo cáo** gồm brief, màn chính, quy ước của loại sản phẩm (tra thật), màu nhấn theo ngành, bộ mặt khuyên dùng. Không wireframe, không đụng file dự án, không hỏi. **Dừng mục 0 tại đây**, trừ audit câu 2 khi đã có code ⚑ |
 | **Làm lại mà giữ brand / giữ giao diện** ("giữ brand", "giữ màu", "giữ giao diện hiện tại", "chỉ làm gọn", "keep the brand", "keep the current look") | `references/review.md`, **chế độ dựng lại giữ brand**: giữ khung trang, thay control gốc bằng component của skill, giữ vai màu. Đề nói bỏ style cũ thì không phải dòng này, xem dòng dựng lại theo gu skill. **Dừng mục 0 tại đây** ⚑ |
 | **Refactor / dọn code mà giữ nguyên hình** ("refactor", "chuyển sang Tailwind", "dọn CSS") | Mở `references/refactor.md`, nhánh `L`. **Dừng mục 0 tại đây** — nhánh đó có bộ mặc định riêng, bắt đầu bằng "đo trước khi kết luận" |
 | **Làm logo** ("làm logo", "dựng logo", "thay logo", "design a logo") | Mở `references/components/logo.md`: audit câu 2, rồi **trang chọn logo** ba hướng đặt trong sidebar, màn đăng nhập, tab trình duyệt. **Một cổng**: người dùng chọn hướng; đề có "luôn" thì dựng thẳng hướng khuyên dùng. **Dừng mục 0 tại đây** ⚑ |
@@ -119,6 +121,11 @@ grep -rliE "function TÊN|const TÊN|export.*TÊN" --include="*.tsx" --include="
 **Tầng 2 là tầng hay bị bỏ.** Dự án có sẵn `Avatar` mà dựng thêm một cái nữa thì
 app có hai kiểu avatar, và cái mới dựng lệch với mọi chỗ khác. Đã có thì **dùng
 cái của họ**, chỉ chỉnh token nếu nó trái luật.
+
+**Tầng 0 — `DESIGN.md`.** Chạy trước ba tầng: `cat DESIGN.md 2>/dev/null | head -60`. Có file
+thì những gì nó ghi (bộ mặt, màu nhấn, phong cách, điều người dùng dặn) thắng mặc định và lời
+khuyên của skill, không khuyên lại; skill chốt quyết định mới cho cả dự án thì ghi vào đó
+(`references/system.md`, `D10`).
 
 **Báo kết quả audit một dòng trước khi đi tiếp**, kể cả khi không tìm thấy gì:
 
@@ -333,7 +340,10 @@ thứ có hậu quả pháp lý hoặc tài chính: giá bán, mức hoàn tiề
 
 **S8. Dữ liệu giả phải phủ ca biên, không phải dữ liệu đẹp.** Tên tràn hai dòng,
 số chín chữ số, số `0`, thiếu ảnh, thiếu mô tả, danh sách rỗng. Dữ liệu đẹp làm
-giao diện trông ổn cho tới lúc gặp khách thật.
+giao diện trông ổn cho tới lúc gặp khách thật. Mỗi danh sách, bảng có ít nhất một dòng
+xấu ngay trong dữ liệu mẫu: tên người Việt bốn chữ trở lên ("Nguyễn Thị Phương Thảo"), tên
+sản phẩm, khoá học dài hai dòng, số tiền hàng tỷ (`1.284.500.000 ₫`), số `0`. Rồi cổng 3
+chạy probe `--stress` để thử luôn trường hợp dài hơn nữa (`references/checklist.md`).
 
 **S9. Dùng thư viện component sẵn có của dự án.** Xem câu 2 ở mục 0. Người dùng
 nói rõ dùng thư viện nào thì **theo họ, đừng cãi**.
