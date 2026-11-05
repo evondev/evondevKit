@@ -228,7 +228,7 @@ nên phiên sau audit ra khác, khuyên lại từ đầu, và màn thứ năm l
 **Đọc** ở audit câu 2 của `SKILL.md`, mọi lối, kể cả việc nhỏ hơn một màn. Có file thì những gì
 nó ghi **thắng** mặc định và lời khuyên của skill (bộ mặt `P13`, màu nhấn theo ngành, bố cục mặc
 định): người dùng đã chọn rồi, không khuyên lại, không hỏi lại. Dòng `Audit:` nói một đoạn:
-*"`DESIGN.md`: bộ mặt Mềm, nhấn Tím, flat."* File ghi trái với code đang chạy (file nói Mềm, code
+*"`DESIGN.md`: bộ mặt Soft, nhấn Tím."* File ghi trái với code đang chạy (file nói Soft, code
 toàn flat Inter) thì code là thật, file sai: theo code, sửa file, báo một dòng lúc giao.
 
 **Ghi** mỗi khi skill chốt một quyết định cho cả dự án, sau khi người dùng đã duyệt (không ghi
@@ -258,7 +258,7 @@ Skill evon:ui-ux đọc file này trước khi dựng. Sửa tay được; file 
 - Điểm khác biệt: bài học theo ngành nghề của người học
 
 ## Giao diện
-- Bộ mặt: Mềm (P13): card nổi, font Be Vietnam Pro, sidebar trắng
+- Bộ mặt: Soft (P13): điều hướng sidebar, vùng chứa classic, header content, bề mặt nổi (P7), font Be Vietnam Pro
 - Màu nhấn: Tím `#7c3aed`, token `--primary` ở `app/globals.css`
 - Phong cách: nổi (P7), không glass, không gradient
 - Nền tối: có, theo `class="dark"`

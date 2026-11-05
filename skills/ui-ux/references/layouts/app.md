@@ -8,6 +8,29 @@ Không có wireframe thì dựng bố cục mặc định (hoặc cái mà đi�
 chọn), báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`. Nhịp ở đây là nhịp app:
 `p-5`, `gap-3`, `text-sm`, viền mảnh, bóng gần như không.
 
+## Bố cục nội dung: chọn theo việc chính ⚑
+
+Bố cục nội dung là thứ lấp vùng chứa (`styles.md`, `P13`), chọn theo cột "Đến để làm gì" của
+`U2`, **không mặc định "hàng ô số + biểu đồ + bảng"**. Dashboard tổng quan chỉ đúng khi việc chính
+là nhìn nhanh nhiều thứ rồi đi tiếp chỗ khác; màn để xử lý lead, ticket, đơn thì bố cục khác.
+Các phương án wireframe (`U3`) lấy từ bảng này: hai phương án cùng một dòng là một phương án.
+
+| Bố cục | Việc chính của màn | Ví dụ | Mục |
+| --- | --- | --- | --- |
+| **Tổng quan khối** | Nhìn nhanh nhiều thứ, mỗi khối dẫn đi chỗ khác | Trang chủ, tổng quan workspace | Dashboard |
+| **Bảng trước** | Dò, so, sửa nhiều bản ghi theo cột | Danh sách khách, kho hàng, CRM dạng bảng | Bảng dữ liệu |
+| **Danh sách + chi tiết** | Xử lý lần lượt từng mục trong hàng đợi | Hộp thư, ticket hỗ trợ, duyệt đơn, lead mới | Danh sách + chi tiết |
+| **Kanban** | Việc đi qua các trạng thái, kéo sang bước sau | Việc, pipeline bán hàng, tuyển dụng | Bảng kanban |
+| **Lịch, lưới giờ** | Việc gắn với ngày giờ, người, phòng | Lịch hẹn, ca làm, đặt phòng | Trang lịch |
+| **Biểu đồ trước** | Hiểu xu hướng, so kỳ, tìm chỗ bất thường | Báo cáo doanh thu, giám sát | Trang báo cáo |
+| **Kể bằng số** | Đọc báo cáo từ trên xuống: số chính → xu hướng → chia nhóm → chi tiết | Báo cáo tuần cho lãnh đạo | Trang báo cáo, bề mặt Editorial (`P16`) |
+| **Hai panel làm việc** | Làm ở một bên, xem kết quả ngay bên kia | Nhập ↔ kết quả, soạn ↔ xem trước, các bước ↔ chạy thử | Hai panel làm việc |
+| **Dòng hoạt động** | Ai vừa làm gì, kiểm lại một thay đổi | Nhật ký workspace, lịch sử thay đổi | Trang hoạt động |
+| **Form trước** | Cấu hình, điền thông tin | Cài đặt, hồ sơ, tạo mới | Trang cài đặt, `form.md` |
+
+**Không có trong bảng, không tự làm:** dashboard kéo thả tuỳ biến khối (logic lưu bố cục là của
+người dùng, `N10`) và màn canvas dựng luồng, trình vẽ (công cụ riêng, ngoài phạm vi màn app).
+
 ---
 
 ## Dashboard
@@ -284,6 +307,320 @@ Nhóm thu gọn được: nút nhãn cùng khuôn mục con, trượt bằng `gr
   le giữa các khối. Ô tìm dài ở 1920 vẫn đỡ hơn khoảng trống đó; muốn ô ngắn lại thì đặt nó
   cùng hàng với control khác (nút Tìm, sắp xếp), đừng co cả khối. Đừng bó `max-w-3xl` cho ô tìm và khối lọc chỉ vì "ô tìm dài 1550px":
   nửa phải trống, lưới bên dưới vẫn chạy hết mép.
+
+### Khung bọc (Inset) ⚑
+
+Khung app của bộ mặt **Inset** (`styles.md`, `P13`). Mọi luật sidebar ở trên vẫn đúng (rộng,
+cao link, nhãn nhóm, số đếm, thu gọn), chỉ đổi chỗ đặt nền:
+
+```
+ nền xám --background, cả màn
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░ ◐ Tổ chức     ░ ┌──────────────────────────────────────┐ ░   <- khối bọc cách mép 8px
+░ [tìm     ⌘K]  ░ │ ▤ Hoá đơn ⋯                [chuông] │ ░   <- header của trang nằm TRONG khối
+░               ░ ├──────────────────────────────────────┤ ░
+░ ⌂ Tổng quan   ░ │ Board  Tổng quan  Danh sách          │ ░
+░ ▤ Hoá đơn     ░ │                                      │ ░   <- mục đang chọn: nền xám đậm hơn nền trang
+░ ☑ Việc        ░ │                                      │ ░
+░               ░ │         nội dung cuộn trong khối      │ ░
+░ ⚙ Cài đặt     ░ │                                      │ ░
+░ ◐ Tên người ⇕ ░ └──────────────────────────────────────┘ ░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+  ↑ sidebar KHÔNG có nền riêng, không viền, không đường kẻ dưới đầu sidebar
+```
+
+- **Sidebar trong suốt, nằm thẳng trên `--background`**. Đây là ngoại lệ có tên của dòng "đừng
+  để sidebar trong suốt" ở trên: ở đây ranh giới là mép khối bọc trắng, không phải mép sidebar.
+  Bỏ luôn đường kẻ dưới đầu sidebar: đường kẻ trên nền xám không nối với gì.
+- **Nền rê và nền đang chọn đổi theo nền xám**: rê `hover:bg-foreground/4`, đang chọn
+  `bg-secondary-hover` + `font-medium`. `--item-hover` trùng đúng màu nền trang, giữ nguyên là rê
+  vào không thấy gì. Rê bằng `--background-hover` thì chỉ chênh nền đang chọn ~12 bậc, rê qua mục
+  nào cũng trông như đang chọn (`I10`; đo trên trang mẫu 05/11/2026); `foreground/4` chênh ~17
+  bậc và tự đảo ở nền tối. Ô tìm, hàng profile giữ nền `--surface` như cũ.
+- **Khối bọc** (từ `lg`): `my-2 mr-2`, `rounded-xl`, `bg-surface`, `border border-border`, **không
+  bóng** (`M15`: bóng chỉ cho lớp nổi). Ở nền sáng viền gần như không thấy, trắng cạnh xám đã là
+  ranh giới; ở nền tối viền token tối giữ mép khối. Khối cao hết màn trừ hai mép
+  (`h-[calc(100dvh-1rem)]`), **nội dung cuộn trong khối**, trang không cuộn. Thanh cuộn trong
+  khối tự ẩn (`I18`).
+- **Header của trang nằm trong khối**, dính đầu khối khi cuộn, `border-b border-border` chạy hết
+  bề ngang khối. Đầu sidebar (tên tổ chức) cao bằng header và cùng hàng, để chữ tên tổ chức thẳng
+  hàng chữ tên trang.
+- **Dưới `lg`**: sidebar thành panel trượt trái như khung thường (nền `--surface`, bóng
+  `shadow-modal`); khối bọc trải hết màn, `m-0 rounded-none border-0`. Màn hẹp mà vẫn cách mép
+  8px là mất 16px bề ngang cho một đường viền không ai cần.
+- **Thu gọn sidebar** như mục dưới: khối bọc giãn ra theo, mép trái khối sát cột icon (cột icon
+  đã có lề riêng).
+- **Khối con trong khối bọc đọc bề mặt trắng**: đầu cột board, ô nền nhạt dùng `--tab-selected`
+  hay `--secondary`, không dùng `--background`. Ở nền tối `--background` tối hơn khối bọc, đầu cột
+  trông như bị khoét lõm (`P10`: bề mặt sáng dần theo tầng).
+
+```tsx
+<div className="flex h-dvh overflow-hidden bg-background">
+  <aside className="hidden w-60 shrink-0 flex-col lg:flex">
+    {/* Đầu sidebar cao bằng header của khối: mt-2 + h-14 */}
+    <div className="mt-2 flex h-14 items-center gap-2 px-4">…tên tổ chức…</div>
+    <nav className="flex flex-col gap-1 px-3">
+      <Link
+        href={item.href}
+        aria-current={isActive ? "page" : undefined}
+        className={cn(
+          "flex h-10 items-center gap-3 rounded-xl px-3 text-sm text-foreground/70 hover:bg-foreground/4 hover:text-foreground",
+          isActive && "bg-secondary-hover font-medium text-foreground hover:bg-secondary-hover",
+        )}
+      >
+        …
+      </Link>
+    </nav>
+  </aside>
+  <div className="flex min-w-0 flex-1 flex-col bg-surface lg:my-2 lg:mr-2 lg:h-[calc(100dvh-1rem)] lg:overflow-hidden lg:rounded-xl lg:border lg:border-border">
+    <header className="flex h-14 shrink-0 items-center gap-2 border-b border-border px-4 sm:px-6">…</header>
+    <main className="scrollbar-clean min-h-0 flex-1 overflow-y-auto">…</main>
+  </div>
+</div>
+```
+
+### Một mặt phẳng (Unified) ⚑
+
+Khung app của bộ mặt **Paper** (`styles.md`, `P13`). Sidebar, header, nội dung chung một nền
+`--surface`; ranh giới là đường kẻ. Luật sidebar ở trên vẫn đúng (rộng, cao link, nền rê, nền
+đang chọn như sidebar trắng), chỉ đổi nền trang và đường kẻ:
+
+```
+ cả màn nền trắng --surface
+┌──────────────┬───────────────────────────────────────┐
+│ ◐ Tổ chức    │ ▤ Việc                       [chuông] │
+├──────────────┼───────────────────────────────────────┤  <- một đường kẻ ngang chạy liền qua hai cột
+│ [tìm     ⌘K] │ Tên việc        Người làm   Hạn   Trạng thái │
+│ ⌂ Tổng quan  │ ─────────────────────────────────────── │  <- bảng chạy hết bề ngang, không bọc card
+│ ☑ Việc       │ Sửa trang thanh toán  An    12/11   Đang làm │
+│              │ ─────────────────────────────────────── │
+│              │                                       │
+└──────────────┴───────────────────────────────────────┘
+               ↑ đường kẻ dọc border-r: không còn chênh nền nào làm ranh giới
+```
+
+- **Nền trang `--surface`**, không phải `--background`. Đổi ở khung ngoài cùng (`body` hay khung
+  app), **không đè biến `--background`**: ô nền nhạt bên trong (đầu cột board, chip, ô ngày) vẫn
+  cần màu xám đó để tách khỏi nền trắng.
+- **Đường kẻ khung là `--border-strong`**: `border-r` của sidebar, `border-b` của header và của
+  đầu sidebar, chạy liền thành một đường. `--border` (`#f7f7f8`) trên nền trắng gần như không
+  thấy, khung app mất ranh giới. Đây là ngoại lệ có tên của dòng "chỉ một màu đường kẻ
+  `--border`" ở trên: khung Paper không có chênh nền nào khác để dựa vào.
+- **Khối nội dung không bọc card trắng.** Trắng trên trắng chỉ còn cái viền, mười card là mười
+  khung kẻ. Tách nhóm bằng tiêu đề khối (`T8`), khoảng trắng và một đường kẻ `border-border-strong`
+  giữa các phần; bảng chạy hết bề ngang vùng nội dung, dòng ngăn bằng `divide-y`. Chỗ buộc phải
+  là card (thẻ kanban, ô số liệu) thì viền `border-border-strong`, không bóng (`M15`).
+- **Dòng bảng rê `hover:bg-surface-hover`** như bảng trong khung trắng (`I10`), không
+  `--item-hover`: dòng chạm hai mép vùng nội dung mà tô đúng màu nền xám là trông như thủng.
+- **Dưới `lg`**: như khung thường, sidebar thành panel trượt có `shadow-modal`; header giữ
+  `border-b border-border-strong`.
+
+```tsx
+<div className="flex min-h-dvh bg-surface">
+  <aside className="hidden w-60 shrink-0 flex-col border-r border-border-strong lg:flex">
+    <div className="flex h-14 items-center gap-2 border-b border-border-strong px-4">…tên tổ chức…</div>
+    <nav className="flex flex-col gap-1 p-3">…link như sidebar trắng…</nav>
+  </aside>
+  <div className="flex min-w-0 flex-1 flex-col">
+    <header className="flex h-14 shrink-0 items-center gap-2 border-b border-border-strong px-4 sm:px-6">…</header>
+    <main className="min-w-0 flex-1">…</main>
+  </div>
+</div>
+```
+
+### Sidebar nổi (Floating) ⚑
+
+Khung app của bộ mặt **Float** (`styles.md`, `P13`). Ngược với Khung bọc: ở đây **sidebar** là
+khối trắng tách khỏi mép, nội dung nằm thẳng trên nền xám như khung thường.
+
+```
+ nền xám --background, cả màn
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░ ┌────────────┐ ░  Hoá đơn                 [chuông] [+] ░   <- header không thanh, nằm trên nền xám
+░ │ ◐ Tổ chức  │ ░                                       ░
+░ ├────────────┤ ░  ┌────────┐ ┌────────┐ ┌────────┐     ░
+░ │ ⌂ Tổng quan│ ░  │ card   │ │ card   │ │ card   │     ░   <- card trắng như khung thường
+░ │ ▤ Hoá đơn  │ ░  └────────┘ └────────┘ └────────┘     ░
+░ │            │ ░                                       ░
+░ │ ⚙ Cài đặt  │ ░                                       ░
+░ └────────────┘ ░                                       ░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+  ↑ sidebar là khối trắng bo góc, cách mép 8px, không bóng
+```
+
+- **Sidebar**: `m-2 mr-0`, `rounded-xl`, `bg-surface`, `border border-border`, **không bóng**
+  (`M15`), cao hết màn trừ hai mép (`h-[calc(100dvh-1rem)]`, `sticky top-2`). Bên trong y như
+  sidebar trắng: nền rê `--item-hover`, đang chọn `--secondary`, đường kẻ dưới đầu sidebar chạy
+  hết bề ngang khối.
+- **Header của trang không có thanh nền**: tên trang, nút nằm thẳng trên nền xám, cao `h-14`
+  cộng `mt-2` để chữ thẳng hàng tên tổ chức trong sidebar. Thanh header trắng chạy ngang thì
+  thành hai khối trắng chạm góc nhau, mất cảm giác sidebar nổi.
+- **Nội dung như khung thường**: card trắng trên nền xám, không bọc thêm khối nào.
+- **Dưới `lg`**: như khung thường, sidebar thành panel trượt sát mép (không cách mép, không bo
+  ở mép trái), header có thanh `--surface` và ☰.
+
+### Dải icon (Rail) ⚑
+
+Khung app của bộ mặt **Rail** (`styles.md`, `P13`): sidebar **luôn** ở dạng dải icon `w-16`,
+không có nút mở rộng. Mọi luật của mục **Thu gọn sidebar** ngay dưới áp nguyên (icon đứng yên
+tâm 32px, tooltip tên mục, chấm chỉ cho số cần xử lý, gạch ngắn thay nhãn nhóm, mép mờ khi còn
+mục khuất), trừ phần chuyển động mở ra.
+
+- **Chỉ dùng khi có từ 8 mục chính trở xuống, không nhóm lồng.** Người dùng phải nhận ra mục
+  bằng icon; quá 8 icon thì phải rê từng cái mới biết, lúc đó cần nhãn chữ: khuyên Clean hay Dark
+  Sidebar thay vì Rail.
+- **Icon nằm đúng tâm ô 40×40.** Bảng tâm 32px ở mục Thu gọn tính cho icon `size-4` (16px): đệm
+  `12 + 12 + 8`. Dự án dùng icon 18px hay 20px mà giữ `px-3` thì tâm lệch phải 1–2px, nhìn dải
+  icon thấy rõ mỗi icon xô về một phía trong nền đang chọn (chủ dự án thấy trên trang mẫu,
+  05/11/2026). Icon khác 16px thì đệm trái của link là `(40 − cỡ icon) / 2`; ô tìm có viền 1px thì
+  trừ thêm 1px. Đo: tâm icon trừ tâm ô phải bằng 0.
+- **Icon phải phân biệt được không cần chữ**: hai mục cùng một icon (Báo cáo và Thống kê cùng
+  biểu đồ cột) là đổi một cái. Tooltip là phụ, không phải cách duy nhất biết mục là gì.
+- **Đầu dải chỉ có logo** `size-8`, không tên tổ chức; chân dải chỉ avatar. Tên tổ chức, tên
+  người vào tooltip và menu tài khoản.
+- **Vùng nội dung lấy lại 176px bề ngang** so với sidebar `w-60`: đó là lý do chọn Rail (bản đồ,
+  lịch, trình soạn, bảng nhiều cột). Đừng lấp phần dư bằng khoảng trắng hai bên.
+- **Dưới `lg`**: không giữ dải icon. Từ 5 mục trở xuống thì thanh điều hướng dưới (mục trên),
+  nhiều hơn thì ☰ mở panel trượt **có nhãn chữ** như sidebar thường: trên điện thoại không có
+  rê chuột để đọc tooltip.
+
+**Biến thể có nhãn** (`rail-labeled`): icon trên, chữ nhỏ dưới, không cần rê mới biết mục là gì.
+
+```
+┌────────┐
+│   ◐    │  <- logo
+│        │
+│  [▤]   │  <- nền đang chọn chỉ tô ô icon, không tô cả mục
+│ Việc   │
+│   ⚙    │
+│Cài đặt │
+│   ◐    │  <- avatar ghim đáy
+└────────┘
+```
+
+- **Dùng khi người dùng chưa thuộc icon** (app mới với họ, người không rành máy, mở app vài lần
+  một tuần), hoặc icon của app khó đoán. Người dùng thành thạo mở app cả ngày thì bản chỉ icon:
+  nhãn thành chữ thừa sau tuần đầu. Bộ mặt Rail khuyên một trong hai theo người dùng ở `U1`.
+- **Dải `w-20` (80px)**, mục `flex flex-col items-center gap-1 py-1.5`, cả mục là vùng bấm
+  (`I29`). Ô icon `size-10 rounded-xl`, icon `size-5` (20px) giữa ô: có chữ đi kèm thì icon
+  16px trông lọt thỏm trong ô 40px (đo trên trang mẫu, 05/11/2026); **nền rê và nền đang chọn chỉ tô ô
+  icon** (`group-hover:bg-item-hover`, đang chọn `bg-secondary`), không tô cả mục: tô cả khối
+  80×60 là một mảng xám to nhất cột. Nhãn `text-xs text-foreground/70`, đang chọn `font-medium
+  text-foreground`.
+- **Nhãn một dòng, tối đa ~10 ký tự** ("Việc", "Khách hàng", "Cài đặt"). Nhãn dài hơn bị cắt hay
+  xuống hai dòng thì chọn chữ ngắn hơn; không rút được thì dùng sidebar có chữ, không ép vào
+  dải. Trần 7 mục, không phải 8: mỗi mục cao gần gấp rưỡi mục chỉ icon.
+- **Không tooltip** (chữ đã hiện), vẫn giữ `aria-current`. Số cần xử lý là chấm ở góc trên phải
+  ô icon như bản chỉ icon.
+- **Dưới `lg`** thành thanh điều hướng dưới: cùng dáng icon trên chữ dưới, người dùng không phải
+  học lại.
+
+### Menu ngang (Top navigation) ⚑
+
+Khung app của bộ mặt **Topbar** (`styles.md`, `P13`): không sidebar, các mục chính nằm thành
+một hàng trong header.
+
+```
+┌────────────────────────────────────────────────────────────────────┐
+│ ◐ Evondev   Tổng quan  [Đơn hàng]  Khách hàng  Báo cáo    🔍 🔔 ◐ │  <- header trắng, border-b
+└────────────────────────────────────────────────────────────────────┘
+ nền xám            ┌──────────────────────────────┐
+                    │  nội dung giữa màn, max-w-6xl │
+                    └──────────────────────────────┘
+```
+
+- **Chỉ dùng khi có từ 6 mục chính trở xuống, không nhóm lồng.** Trang con của một mục (Báo
+  cáo › Doanh thu, Báo cáo › Kho) là tab trong đầu trang của mục đó, không phải menu xổ từ
+  header. Nhiều mục hơn hay có nhóm: khung có sidebar.
+- **Header `h-14` nền `--surface`, `border-b border-border`**, chạy hết bề ngang. Trái: logo +
+  tên sản phẩm; liền sau là hàng link, cách tên `ml-6`. Phải: tìm (nút icon mở command palette,
+  `overlay.md`), thông báo, avatar (`Nhóm nút bên phải thanh header`).
+- **Link**: `h-9 rounded-lg px-3 text-sm text-foreground/70`, rê `hover:bg-item-hover
+  hover:text-foreground`, đang chọn `bg-secondary font-medium text-foreground` và
+  `aria-current="page"`. Không gạch chân màu nhấn dưới mục đang chọn: một tín hiệu nền như sidebar
+  là đủ, cùng ngôn ngữ với mục đang chọn ở mọi chỗ khác của app (`N5`).
+- **Hàng link không bao giờ xuống dòng.** Khổ giữa (`md`–`lg`) không đủ chỗ thì mục cuối gom vào
+  một nút **"Thêm"** có `ChevronDown` mở menu (`overlay.md`). Probe báo "hàng header rớt dòng"
+  là lỗi phải sửa.
+- **Nội dung giữa màn**: `mx-auto w-full max-w-6xl px-4 sm:px-6`. Không có sidebar để bám, nên
+  ngoại lệ có tên của dòng "nội dung bám sidebar" bên dưới. Trang bảng rộng thì `max-w-7xl`.
+- **Dưới `md`**: hàng link ẩn, thay bằng ☰ mở panel trượt trái có đủ mục (như sidebar dưới `lg`),
+  hay thanh điều hướng dưới nếu từ 5 mục trở xuống.
+
+### Mặt nền mở (Canvas) ⚑
+
+Vùng chứa của biến thể mở của bộ **Soft** (`styles.md`, `P13`): cả màn một nền xám, không thanh,
+không khối bọc; **card trắng là bề mặt duy nhất**.
+
+```
+ nền xám --background, cả màn, không đường kẻ nào
+  ◐                Dashboard            [tìm      ] [Tạo] 🔔 ◐   <- header không thanh
+ ╭──────────╮     ╭──────────────────╮ ╭──────────╮
+ │ Tổng quan│     │ card             │ │ card     │              <- mục đang chọn: viên trắng
+ ╰──────────╯     │                  │ │          │
+   Sản phẩm       ╰──────────────────╯ ╰──────────╯
+   Khách hàng
+```
+
+- **Sidebar trong suốt, không viền, header không thanh**: logo, tên trang, nút nằm thẳng trên nền
+  xám (như header của Sidebar nổi).
+- **Mục đang chọn là viên trắng** `bg-surface` cộng bóng nhẹ nhất của `P7`; rê `hover:bg-foreground/4`.
+  Trên nền xám, viên trắng là tín hiệu rõ nhất mà không cần màu nhấn (`I15`). Ở bề mặt Flat (người
+  dùng tự xin canvas không bóng) thì viên trắng thêm `ring-1 ring-border`, không bóng (`M15`).
+- **Chỉ cho màn toàn card.** Bảng, danh sách chạy hết bề ngang phải nằm trong một card trắng; bảng
+  đặt thẳng trên nền xám thì dòng rê, dòng kẻ không có mép nào để dựa. Màn chính là bảng thì
+  khuyên Inset hay Paper, không canvas.
+- **Bo góc card theo `P7`** (biến thể của Soft); khoảng giữa các card đều nhau, không card nào dính
+  mép màn: nội dung `p-4 lg:p-6`.
+- **Dưới `lg`** như khung thường: sidebar thành panel trượt, header thêm ☰, vẫn không thanh nền.
+
+### Header toàn màn (`full`) ⚑
+
+Tuỳ chọn của trục **Header** (`P13`), ghép được với mọi điều hướng có cột trái (`sidebar`,
+`rail`) và mọi vùng chứa. Header chạy hết bề ngang màn; điều hướng bắt đầu **dưới** header.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│ ☰ ◐ Evondev          [ tìm trong cả app...     ]   🔔 ◐ Tên ⌄ │  <- header toàn màn
+├────────────┬─────────────────────────────────────────────────┤
+│ ⌂ Tổng quan│ Cài đặt tài khoản                                │  <- tên trang nằm trong vùng nội dung
+│ ▤ Hợp đồng │ ┌─────────────────────────────────────────────┐ │
+│            │ │ card                                        │ │
+└────────────┴─────────────────────────────────────────────────┘
+```
+
+- **Dùng khi** ô tìm toàn cục là một việc chính (tìm hợp đồng, tìm hồ sơ, tìm sản phẩm) hay app có
+  nút đổi workspace, tổ chức: header toàn màn cho ô tìm chỗ rộng ở giữa và cho logo một chỗ cố định.
+  Không có hai thứ đó thì giữ header `content`.
+- **Header `h-14`**: trái là logo + tên sản phẩm (cùng cột với điều hướng bên dưới, dưới `lg` thêm
+  ☰ trước logo); giữa là ô tìm `max-w-md`; phải là nhóm nút (`Nhóm nút bên phải thanh header`).
+  **Đầu sidebar bỏ logo**, không lặp logo hai chỗ; ô đổi workspace nếu có thì nằm đầu sidebar,
+  ngay dưới header.
+- **Tên trang chuyển vào vùng nội dung**, thành đầu trang (`Đầu trang trong vùng nội dung`), không
+  nằm trong header nữa.
+- **Header đổi theo vùng chứa**:
+
+  | Vùng chứa | Header | Vùng nội dung |
+  | --- | --- | --- |
+  | `classic` | `--surface`, không đường kẻ dưới: header trắng liền với sidebar trắng thành một khung chữ L | nền xám, **bo góc trên trái `rounded-tl-2xl`** chỗ khung chữ L ôm vào |
+  | `inset`, `canvas`, `floating` | Không thanh, nằm trên nền trang | Khối bọc, card, sidebar nổi bắt đầu ngay dưới header |
+  | `unified` | `--surface`, `border-b border-border-strong` chạy hết bề ngang | Như Một mặt phẳng |
+
+### Ghép điều hướng với vùng chứa
+
+Mười bộ mặt là mười tổ hợp đã kiểm (`P13`). Người dùng tự xin hay gửi ảnh thì ghép theo bảng:
+
+| | `classic` | `inset` | `unified` | `floating` | `canvas` |
+| --- | --- | --- | --- | --- | --- |
+| `sidebar` | Clean | Inset | Paper | Float | Soft mở |
+| `sidebar-dark` | Dark Sidebar | được: cột tối trên nền xám, khối bọc trắng | không: một mặt phẳng trắng mà cột tối là hai mặt | được | không, cùng lý do |
+| `rail`, `rail-labeled` | Rail | được: dải icon trên nền trang, khối bọc bên phải | được: dải có `border-r border-border-strong` | được: dải là khối trắng tách mép | được |
+| `topnav` | Topbar | được: khối bọc dưới header, cách mép 8px | được | **không**: không có sidebar để nổi, dùng `canvas` | được: hàng link trên nền xám, mục đang chọn là viên trắng |
+
+- Mỗi ô "được" lấy đúng luật của **hai** mục: mục điều hướng (sidebar, Dải icon, Menu ngang) và mục
+  vùng chứa (Khung bọc, Một mặt phẳng, Sidebar nổi, Mặt nền mở). Nền rê, nền đang chọn theo vùng
+  chứa: điều hướng nằm trên nền xám thì rê `foreground/4`, nằm trên trắng thì `--item-hover`.
+- Ô "không" mà người dùng vẫn xin thì làm theo, báo một dòng vì sao lệch (`P1`).
 
 ### Thu gọn sidebar (từ `lg` trở lên)
 
@@ -760,12 +1097,46 @@ một cột, ô hẹn cao theo thời lượng.
 Xem `../components/list-row.md` cho công thức từng dòng. Danh sách là **một khối
 chia đường kẻ**, không phải mỗi dòng một card.
 
-**Danh sách + chi tiết (hai cột, bấm mục trái mở chi tiết phải).** Mục bên trái chỉ mang
-thứ để **chọn**: một ảnh nhỏ, dòng giá hay trạng thái, tên, **một** dòng phụ. Tối đa ba dòng
-chữ. Mọi thứ khác (địa chỉ đầy đủ, xác thực, ngày đăng, thông số) đã có ở cột chi tiết, lặp
-lại ở trái chỉ làm cột chật (năm dòng mỗi mục đọc như một bức tường chữ). Dòng thụt vào, mục đang mở và mục đang rê khác nền (`I10`, đoạn "Mục đang mở"). Ảnh ở cột chi tiết
-có trần cao (`max-h-[420px]`, `object-cover`): dữ liệu chỉ có một ảnh thì không để nó phủ
-hết khung rộng 1400px.
+### Danh sách + chi tiết ⚑
+
+```
+┌ danh sách w-80–w-96 ─┬ chi tiết flex-1 ─────────────────────┐
+│ [tìm        ] [lọc]  │ HD-0030 · Chưa thu        [Ghi thu] │  <- đầu chi tiết: tên + hành động chính
+│ 36 hoá đơn           │                                      │
+│▌Công ty Bảo Ngọc     │  nội dung bản ghi                    │
+│  124.450.000 ₫ · 3/3 │                                      │
+│  Phòng khám Nha Việt │                                      │
+│  12.500.000 ₫ · 25/1 │                                      │
+└──────────────────────┴──────────────────────────────────────┘
+   ↑ mỗi cột cuộn riêng      ↑ đứng yên khi lướt danh sách
+```
+
+- **Một bề mặt, hai cột**: cả khối là một card trắng (hay nằm trong khối bọc, mặt phẳng trắng),
+  hai cột ngăn bằng `border-r border-border`. Không làm hai card rời có khe ở giữa: danh sách và
+  chi tiết là một việc, khe chia làm chúng trông như hai khối không liên quan.
+- **Cột danh sách cố định** `w-80` (320px) tới `w-96`, ở khổ 1024–1279 thì `w-72`. Chi tiết
+  `min-w-0 flex-1`.
+- **Mục trái chỉ mang thứ để chọn**: một ảnh nhỏ, dòng giá hay trạng thái, tên, **một** dòng phụ.
+  Tối đa ba dòng chữ. Mọi thứ khác (địa chỉ đầy đủ, xác thực, ngày đăng, thông số) đã có ở cột chi
+  tiết, lặp lại ở trái chỉ làm cột chật (năm dòng mỗi mục đọc như một bức tường chữ). Mục đang mở
+  và mục đang rê khác nền (`I10`, đoạn "Mục đang mở").
+- **Mỗi cột cuộn riêng**, khối cao hết màn trừ header (`h-[calc(100dvh-…)]`, mỗi cột `overflow-y-auto`,
+  thanh cuộn tự ẩn `I18`). Đây là ngoại lệ có tên của luật "cột lọc không cuộn riêng" bên dưới:
+  lướt danh sách dài mà cột chi tiết trôi theo thì mất bản ghi đang đọc. Đầu cột danh sách (ô tìm,
+  lọc, số đếm) dính đầu cột.
+- **Chưa chọn mục nào**: cột chi tiết là trạng thái rỗng nhẹ giữa cột, một icon nhỏ và một câu
+  "Chọn một hoá đơn để xem" (`components/empty-state.md`), không hình minh hoạ lớn. Màn kiểu hàng
+  đợi (hộp thư, duyệt đơn) thì nên mở sẵn mục đầu; mở mục nào là logic, skill dựng cả hai trạng thái.
+- **Ảnh ở cột chi tiết có trần cao** (`max-h-[420px]`, `object-cover`): dữ liệu chỉ có một ảnh thì
+  không để nó phủ hết khung rộng 1400px.
+- **Dưới `lg`: một cột mỗi lúc.** Danh sách rộng hết màn; bấm mục thì chi tiết thay chỗ, đầu chi
+  tiết có nút `‹` quay lại danh sách. Không ép hai cột vào màn hẹp. Mở bằng route riêng hay bằng
+  state là logic (`N10`).
+- **Đầu chi tiết ở màn hẹp hai hàng**: hàng một là `‹` + tên bản ghi (cắt chữ, `T14`) + nhãn trạng
+  thái; hàng hai là các nút hành động, nút phụ gom vào `⋯`. Một hàng 375px không chứa nổi nút quay
+  lại, tên, nhãn và hai nút: tên bị bóp về 0 chữ, nút tràn mép (đo trên trang mẫu, 05/11/2026).
+- **Không dùng với vùng chứa `canvas`**: danh sách đặt thẳng trên nền xám không có mép để dòng rê
+  dựa vào (`P13`, Mặt nền mở).
 
 **Đếm cột trước khi thêm cột lọc.** Sidebar app + cột lọc + danh sách + chi tiết là bốn cột:
 ở 1440px vùng nội dung chỉ còn khoảng 1190px, danh sách bị ép còn khoảng 320px, tiêu đề
@@ -779,6 +1150,75 @@ Nhóm dài (khu vực, tỉnh) thì hiện năm sáu mục kèm "Xem thêm N" d�
 link, đừng cho cả cột thành khung cuộn.
 
 ---
+
+## Hai panel làm việc ⚑
+
+Một bên là chỗ làm (nhập, soạn, cấu hình các bước), bên kia là kết quả (bản chép, xem trước,
+chạy thử) hiện ngay khi làm. Khác Danh sách + chi tiết: không có danh sách để chọn, cả hai bên là
+chỗ làm việc.
+
+```
+┌ Nhập ─────────────── [Gợi ý AI] ⋯ ┐ ┌ Kết quả ────────── ✎ [Xuất ⌄] ┐
+│ Cách nhập   [ Ghi âm | Tải lên ]  │ │ Kết quả sẽ hiện ở đây.         │  <- panel kết quả rỗng: một câu
+│                                    │ │                                │
+│          00:00:15                  │ │                                │
+│                                    │ │                                │
+│ [Tạm dừng]          [Dừng]         │ │                                │  <- hành động của panel ghim đáy panel
+└────────────────────────────────────┘ └────────────────────────────────┘
+```
+
+- **Mỗi panel một card, cao hết vùng nội dung**, đầu panel có tên và hành động của riêng panel ở
+  bên phải, nội dung cuộn trong panel, hành động cuối việc (Dừng, Gửi) ghim đáy panel.
+- **Trong khối bọc (`inset`) hay mặt phẳng trắng (`unified`)**: hai panel là hai cột của **một** bề
+  mặt, ngăn bằng `border-r border-border`, không card. Card trên nền xám bên trong khối trắng là ba
+  tầng chồng nhau cho một việc chia đôi. Card rời chỉ khi vùng chứa là `classic`, `floating`,
+  `canvas` (nội dung nằm trên nền xám).
+- **Tỉ lệ**: 1 : 1 khi hai bên ngang việc (nhập ↔ kết quả), `lg:grid-cols-2`; 3 : 2 khi một bên là
+  chỗ làm chính (soạn ↔ xem trước), `lg:grid-cols-[3fr_2fr]`. Khoảng giữa hai panel `gap-4`.
+- **Cả màn một nút đặc tại một thời điểm** (`I2`): nút chính của bước đang làm. Nút chính của panel
+  kết quả ("Gửi", "Xuất") ẩn hay để dạng viền cho tới khi có kết quả, rồi mới thành nút đặc. Hai nút
+  đặc ở hai panel cùng lúc là hai việc tranh nhau. Nút Dừng (ghi âm, chạy thử) **kết thúc một thứ
+  đang chạy**, câu 2 của `I4`: là nút nguy hiểm theo `I4`, nền mờ `rose-500/10`, chữ `rose-700`,
+  không đỏ đặc (`locked-rules.md`, dòng 1, 2).
+- **Panel kết quả rỗng là một câu**, có thể kèm icon nhỏ (`components/empty-state.md`), không
+  thanh nút xám bị khoá chạy ngang panel: nút chưa bấm được thì ẩn, đừng bày một nút khoá to nhất
+  panel.
+- **Dưới `lg`: tab "Nhập · Kết quả"** ở đầu vùng nội dung, mỗi lúc một panel. Xếp chồng hai panel
+  cao hết màn thì kết quả nằm tận dưới, người dùng không biết đã có. Có kết quả mới mà đang ở tab
+  Nhập thì tab Kết quả có chấm.
+- Kéo đổi tỉ lệ hai panel là logic, không tự thêm (`N10`).
+
+## Trang hoạt động (nhật ký) ⚑
+
+Luồng thay đổi của cả workspace, xem đầy đủ: khối "Hoạt động gần đây" của Dashboard mở rộng ra
+cả trang. Khác dòng thời gian của **một** bản ghi (`components/timeline.md`): ở đây câu hỏi là
+**ai** vừa đụng **gì**.
+
+```
+Hoạt động                      [Người ⌄] [Loại ⌄] [7 ngày qua ⌄] [tìm   ]
+HÔM NAY
+◐ Lan Anh đã đổi HD-0030 sang Đã thu                               10:42
+         Chưa thu → Đã thu
+◐ Minh đã tạo hoá đơn HD-0112 cho Phòng khám Nha Việt              09:15
+HÔM QUA
+⚙ Hệ thống đã gửi nhắc thu HD-0078                                 17:00
+                              [Tải thêm]
+```
+
+- **Mỗi mục một câu**: avatar `size-7`, câu "**Tên người** đã làm gì **tên đối tượng**" (tên người
+  và tên đối tượng đậm, động từ thường), giờ bên phải `text-xs text-muted tabular-nums`. Dòng phụ chỉ
+  khi có giá trị cũ → mới. Không vòng icon theo loại việc, không đường nối dọc: đó là khuôn
+  timeline của một bản ghi.
+- **Nhóm theo ngày**: nhãn "Hôm nay", "Hôm qua", "Thứ Hai, 03/11" theo khuôn nhãn nhóm (IN HOA,
+  `text-xs text-muted`), dính đầu khi cuộn.
+- **Việc do hệ thống làm**: avatar là ô icon (`Bot`, `Settings`), tên "Hệ thống"; không mượn avatar
+  người.
+- **Tên đối tượng là link** tới bản ghi đó.
+- **Cuối danh sách "Tải thêm"**, nút viền giữa, không phân trang số: nhật ký đọc theo thời gian, nhảy
+  tới "trang 7" không có nghĩa.
+- **Lọc theo người, loại việc, khoảng ngày**; rỗng do lọc theo `components/empty-state.md`.
+- **Nhật ký kiểm tra cho quản trị** (cần địa chỉ IP, thiết bị, xuất file, lọc theo cột) thì là **Bảng
+  dữ liệu**, không phải luồng này.
 
 ## Bảng dữ liệu
 
