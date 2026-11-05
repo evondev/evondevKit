@@ -258,7 +258,7 @@ Skill evon:ui-ux đọc file này trước khi dựng. Sửa tay được; file 
 - Điểm khác biệt: bài học theo ngành nghề của người học
 
 ## Giao diện
-- Bộ mặt: Soft (P13): khung classic, bề mặt nổi (P7), font Be Vietnam Pro
+- Bộ mặt: Soft (P13): điều hướng sidebar, vùng chứa classic, header content, bề mặt nổi (P7), font Be Vietnam Pro
 - Màu nhấn: Tím `#7c3aed`, token `--primary` ở `app/globals.css`
 - Phong cách: nổi (P7), không glass, không gradient
 - Nền tối: có, theo `class="dark"`
