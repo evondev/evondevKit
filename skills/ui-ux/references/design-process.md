@@ -265,25 +265,32 @@ dòng đó."* Dừng chờ.
   dựng hướng khuyên dùng, báo một dòng.
 
   **Dự án chưa có phong cách riêng** (audit tầng 3 ra flat hoặc trống, `P4`) và đề không nêu
-  phong cách thì thêm nhóm **Kiểu** (`?kieu=`). **Màn trong app web**: bốn bộ mặt của `P13`
-  (`gon`, `sidebar`, `mem`, `dem`: Gọn, Sidebar tối, Mềm, Đêm), **mặc định là bộ khuyên dùng**
+  phong cách thì thêm nhóm **Kiểu** (`?kieu=`). **Màn trong app web**: sáu bộ mặt của `P13`
+  (`clean`, `dark-sidebar`, `soft`, `midnight`, `inset`, `paper`: Clean, Dark Sidebar, Soft,
+  Midnight, Inset, Paper; tên tiếng Anh cả khi đề viết tiếng Việt), **mặc định là bộ khuyên dùng**
   theo người dùng ở `U1`, có nhãn nhỏ "khuyên dùng" sau tên trong menu, không trên nút. Màn khác (trang
   lướt để chọn, trang giá): Flat (`P6`) cùng hai khối hợp sản phẩm nhất trong `P7`–`P10` (`flat`,
   `toi`, `noi`; Glass chỉ khi phía sau có ảnh hay gradient, `F19`), mặc định Flat (`P1`). Không có
   nhóm này thì người dùng chỉ thấy bố cục xám rồi bản dựng flat, muốn xem bản tối hay bản nổi
-  phải nhắn vẽ lại cả trang; có nhóm mà mặc định luôn Gọn thì dự án nào cũng ra cùng một mặt.
+  phải nhắn vẽ lại cả trang; có nhóm mà mặc định luôn Clean thì dự án nào cũng ra cùng một mặt.
   - **Kiểu chỉ đổi bộ mặt, không đổi bố cục** ⚑: cùng khối, cùng dữ liệu, cùng chỗ đặt. Bố cục
     là việc của Phương án. Kiểu Tối mà thêm hàng KPI, biểu đồ thì người xem không biết mình
     đang chọn bố cục hay chọn màu, chọn xong `U4` không biết dựng theo cái nào.
   - Đổi bằng biến CSS và rule dưới `:root[data-kieu]` (nền, bề mặt, viền, bóng, blur, `--app-font`), không vẽ
-    lại khối. Bộ mặt đổi font thì nạp đủ font của bốn bộ ngay từ đầu (một link Google Fonts),
-    không thì đổi sang Mềm vẫn ra Inter. Sidebar tối: khung sidebar của bản thiết kế mang class
-    `wf-sidebar`, rule `[data-kieu="sidebar"] .wf-sidebar` chép nguyên khối token `.force-dark` của
-    `tokens.css` (`P13`), không tô riêng nền. Mỗi kiểu theo đủ khối `P` của nó, **cả phần bẫy**: Tối có bề mặt sáng dần theo tầng
+    lại khối. Bộ mặt đổi font thì nạp đủ font của sáu bộ ngay từ đầu (một link Google Fonts),
+    không thì đổi sang Soft vẫn ra Inter. Khung sidebar của bản thiết kế mang class `wf-sidebar`,
+    vùng bên phải (header của trang cộng nội dung) mang class `wf-main`. Dark Sidebar: rule
+    `[data-kieu="dark-sidebar"] .wf-sidebar` chép nguyên khối token `.force-dark` của `tokens.css`
+    (`P13`), không tô riêng nền. Inset: `.wf-sidebar` trong suốt trên nền trang, `.wf-main` thành
+    khối trắng bo góc cách mép, nền rê và nền đang chọn của sidebar đổi theo mục Khung bọc của
+    `layouts/app.md`; ở khổ Mobile khối bọc trải hết màn, không bo, không cách mép. Paper: nền
+    trang, `.wf-sidebar`, `.wf-main` cùng `--surface`, sidebar có `border-right`, header có
+    `border-bottom`, cả hai `--border-strong` (mục Một mặt phẳng của `layouts/app.md`). Mỗi kiểu theo đủ khối `P` của nó, **cả phần bẫy**: Tối có bề mặt sáng dần theo tầng
     và viền `white/10` (`P10`), Glass có lớp gradient phía sau (`P8`), Nổi đủ bốn bậc bóng (`P7`).
-  - Chọn một kiểu khác Flat, Gọn là bật luôn nấc Màu (link mang `mau=mau`): kiểu ở nấc Xám không
-    thấy gì khác, người xem tưởng nút hỏng. Mở đầu vẫn ở nấc Xám để duyệt bố cục; bật Màu là thấy
-    ngay bộ khuyên dùng, không phải Gọn.
+  - Chọn một kiểu khác Flat, Clean, Inset, Paper là bật luôn nấc Màu (link mang `mau=mau`): kiểu ở
+    nấc Xám không thấy gì khác, người xem tưởng nút hỏng. Inset, Paper đổi khung nên nấc Xám vẫn
+    thấy khác, không cần bật. Mở đầu vẫn ở nấc Xám để duyệt bố cục; bật Màu là thấy ngay bộ khuyên dùng,
+    không phải Clean.
   - **Probe nhanh phương án khuyên dùng ở từng kiểu** (`&mau=mau&kieu=toi`…). Chỗ hay hụt: kiểu
     Tối đổi nền mà quên đổi màu tiêu đề, tên sản phẩm chìm vào nền (`P3`). Kiểu nào trượt tương
     phản là lỗi phải sửa trước khi gửi, không phải nhược điểm của kiểu.
@@ -343,7 +350,7 @@ dòng đó."* Dừng chờ.
     chọn một trong hai, trong khi bật cùng lúc được).
   - **Chữ trên thanh và khung lý do theo tiếng người dùng đang viết (`T27`)**, không theo
     `T24`: đó là lời skill nói với người dùng, không phải chữ của sản phẩm. Mẫu HTML dưới viết
-    tiếng Việt; đề tiếng Anh thì đổi hết: Phương án → Option, Màu → Color, Kiểu → Style (Gọn, Sidebar tối, Mềm, Đêm, khuyên dùng → Clean, Dark sidebar, Soft, Night, recommended; Flat,
+    tiếng Việt; đề tiếng Anh thì đổi hết: Phương án → Option, Màu → Color, Kiểu → Style (Clean, Dark Sidebar, Soft, Midnight, Inset, Paper giữ nguyên, khuyên dùng → recommended; Flat,
     Nổi, Glass, Gradient, Tối → Flat, Elevated, Glass, Gradient, Dark), Nhấn (`aria-label`
     Chàm, Xanh ngọc, Cam; các màu khác của bảng: Xanh dương, Tím, Hồng tím, Xanh lá) → Indigo, Teal, Orange; Blue, Violet, Fuchsia, Green, Thanh dưới → Bottom bar, Trạng thái → State
     (Có dữ liệu, Đang tải, Rỗng, Lỗi → Data, Loading, Empty, Error), Khuyên dùng → Recommended,
@@ -392,8 +399,8 @@ dòng đó."* Dừng chờ.
     <a class="wf-switch" data-wf-toggle="mau" data-on="mau" data-off="xam" role="switch">Màu <i></i></a>
     <details class="wf-menu">
       <summary><span>Kiểu:</span><b data-wf-current="kieu"></b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
-      <!-- Màn trong app web: bốn bộ mặt P13, bộ khuyên dùng có nhãn nhỏ "khuyên dùng" trong menu. Màn khác: flat, toi, noi. -->
-      <div class="wf-popover" data-wf-param="kieu"><a data-value="gon">Gọn</a><a data-value="sidebar">Sidebar tối</a><a data-value="mem">Mềm <small>khuyên dùng</small></a><a data-value="dem">Đêm</a></div>
+      <!-- Màn trong app web: sáu bộ mặt P13, bộ khuyên dùng có nhãn nhỏ "khuyên dùng" trong menu. Màn khác: flat, toi, noi. -->
+      <div class="wf-popover" data-wf-param="kieu"><a data-value="clean">Clean</a><a data-value="dark-sidebar">Dark Sidebar</a><a data-value="soft">Soft <small>khuyên dùng</small></a><a data-value="midnight">Midnight</a><a data-value="inset">Inset</a><a data-value="paper">Paper</a></div>
     </details>
     <span class="wf-set" data-wf-param="nhan"><a data-value="cham" aria-label="Chàm"><i></i></a><a data-value="ngoc" aria-label="Xanh ngọc"><i></i></a><a data-value="cam" aria-label="Cam"><i></i></a></span>
     <span class="wf-set" data-wf-param="kho">
@@ -521,13 +528,25 @@ dòng đó."* Dừng chờ.
     :root[data-mau="xam"] { --primary: #2c2c2c; } /* nấc Xám: bỏ màu nhấn, cả màu trạng thái */
     :root:not([data-mau="xam"])[data-nhan="cham"] { --primary: #4f46e5; } /* …ngoc #0f766e, cam #c2410c tương tự */
     /* Kiểu: đổi token và rule bề mặt theo khối P, không vẽ lại khối. Đổi nền thì đổi cả chữ (P3, P10). */
-    :root:not([data-mau="xam"]):is([data-kieu="toi"], [data-kieu="dem"]) { color-scheme: dark; --background: #09090b; --surface: #18181b;
+    :root:not([data-mau="xam"]):is([data-kieu="toi"], [data-kieu="midnight"]) { color-scheme: dark; --background: #09090b; --surface: #18181b;
       --foreground: #f4f4f5; --muted: #a1a1aa; --border: rgb(255 255 255 / .1); }
-    :root:not([data-mau="xam"]):is([data-kieu="noi"], [data-kieu="mem"]) { --border: transparent; } /* …kèm thang bóng bốn bậc của P7 */
-    /* Bộ mặt P13: font đổi theo bộ, nạp sẵn cả ba font. Sidebar tối chép khối .force-dark của tokens.css vào .wf-sidebar. */
-    :root:not([data-mau="xam"])[data-kieu="mem"] { --app-font: "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif; }
-    :root:not([data-mau="xam"])[data-kieu="dem"] { --app-font: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif; }
-    :root:not([data-mau="xam"])[data-kieu="sidebar"] .wf-sidebar { color-scheme: dark; /* …nguyên khối token .force-dark */ }
+    :root:not([data-mau="xam"]):is([data-kieu="noi"], [data-kieu="soft"]) { --border: transparent; } /* …kèm thang bóng bốn bậc của P7 */
+    /* Bộ mặt P13: font đổi theo bộ, nạp sẵn cả ba font. Dark Sidebar chép khối .force-dark của tokens.css vào .wf-sidebar. */
+    :root:not([data-mau="xam"])[data-kieu="soft"] { --app-font: "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif; }
+    :root:not([data-mau="xam"])[data-kieu="midnight"] { --app-font: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif; }
+    :root:not([data-mau="xam"])[data-kieu="dark-sidebar"] .wf-sidebar { color-scheme: dark; /* …nguyên khối token .force-dark */ }
+    /* Inset đổi khung, chạy cả ở nấc Xám. Số đo theo mục Khung bọc của layouts/app.md. */
+    :root[data-kieu="inset"] .wf-sidebar { background: transparent; border: 0; }
+    :root[data-kieu="inset"] .wf-sidebar a:hover { background: color-mix(in srgb, var(--foreground) 4%, transparent); }
+    :root[data-kieu="inset"] .wf-sidebar a[aria-current="page"] { background: var(--secondary-hover); }
+    @media (min-width: 1024px) {
+      :root[data-kieu="inset"] .wf-main { margin: 8px 8px 8px 0; border: 1px solid var(--border); border-radius: 12px;
+        background: var(--surface); overflow: hidden; }
+    }
+    /* Paper đổi khung, chạy cả ở nấc Xám: một nền trắng, ranh giới bằng đường kẻ đậm hơn --border. */
+    :root[data-kieu="paper"] body, :root[data-kieu="paper"] .wf-main { background: var(--surface); } /* không đè --background: ô nền nhạt bên trong sẽ tan vào trắng */
+    :root[data-kieu="paper"] .wf-sidebar { border-right: 1px solid var(--border-strong); }
+    :root[data-kieu="paper"] .wf-main > header { border-bottom-color: var(--border-strong); }
     /* Token suy từ màu nhấn, tính lại theo nấc (brand-tokens.md). Chỉ ở nấc Xám hoặc khi có nhóm Nhấn: dự án đã có
        brand thì ở nấc Màu giữ nguyên token của dự án. */
     :root[data-mau="xam"], :root:has([data-wf-param="nhan"]) {
@@ -544,7 +563,7 @@ dòng đó."* Dừng chờ.
     const params = new URLSearchParams(location.search);
     // Mặc định: phương án khuyên dùng, đủ nội dung, Xám, kiểu khuyên dùng (màn app: bộ mặt P13; màn khác: flat),
     // màu nhấn gợi ý đầu, Desktop, ☰, Có dữ liệu.
-    const state = { v: "a", gon: "0", bolap: "0", mau: "xam", kieu: "mem", nhan: "cham", kho: "desktop", nav: "menu", tt: "du-lieu", uu: "0" };
+    const state = { v: "a", gon: "0", bolap: "0", mau: "xam", kieu: "soft", nhan: "cham", kho: "desktop", nav: "menu", tt: "du-lieu", uu: "0" };
     for (const key of Object.keys(state)) state[key] = params.get(key) || state[key];
     Object.assign(document.body.dataset, state);
     Object.assign(document.documentElement.dataset, { mau: state.mau, kieu: state.kieu, nhan: state.nhan }); // token đổi trên :root
@@ -554,8 +573,8 @@ dòng đó."* Dừng chờ.
     function updateLinks() {
       for (const set of document.querySelectorAll("[data-wf-param]")) {
         for (const link of set.querySelectorAll("a")) {
-          // Kiểu khác Flat, Gọn bật luôn nấc Màu: ở nấc Xám kiểu không hiện gì khác.
-          const isStyleLink = set.dataset.wfParam === "kieu" && !["flat", "gon"].includes(link.dataset.value);
+          // Kiểu khác Flat, Clean, Inset, Paper bật luôn nấc Màu: ở nấc Xám kiểu không hiện gì khác (Inset, Paper đổi khung, vẫn thấy).
+          const isStyleLink = set.dataset.wfParam === "kieu" && !["flat", "clean", "inset", "paper"].includes(link.dataset.value);
           link.href = linkTo({ [set.dataset.wfParam]: link.dataset.value, ...(isStyleLink && { mau: "mau" }) });
           if (state[set.dataset.wfParam] !== link.dataset.value) continue;
           link.setAttribute("aria-current", "page");

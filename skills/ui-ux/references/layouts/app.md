@@ -285,6 +285,126 @@ Nhóm thu gọn được: nút nhãn cùng khuôn mục con, trượt bằng `gr
   cùng hàng với control khác (nút Tìm, sắp xếp), đừng co cả khối. Đừng bó `max-w-3xl` cho ô tìm và khối lọc chỉ vì "ô tìm dài 1550px":
   nửa phải trống, lưới bên dưới vẫn chạy hết mép.
 
+### Khung bọc (Inset) ⚑
+
+Khung app của bộ mặt **Inset** (`styles.md`, `P13`). Mọi luật sidebar ở trên vẫn đúng (rộng,
+cao link, nhãn nhóm, số đếm, thu gọn), chỉ đổi chỗ đặt nền:
+
+```
+ nền xám --background, cả màn
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░ ◐ Tổ chức     ░ ┌──────────────────────────────────────┐ ░   <- khối bọc cách mép 8px
+░ [tìm     ⌘K]  ░ │ ▤ Hoá đơn ⋯                [chuông] │ ░   <- header của trang nằm TRONG khối
+░               ░ ├──────────────────────────────────────┤ ░
+░ ⌂ Tổng quan   ░ │ Board  Tổng quan  Danh sách          │ ░
+░ ▤ Hoá đơn     ░ │                                      │ ░   <- mục đang chọn: nền xám đậm hơn nền trang
+░ ☑ Việc        ░ │                                      │ ░
+░               ░ │         nội dung cuộn trong khối      │ ░
+░ ⚙ Cài đặt     ░ │                                      │ ░
+░ ◐ Tên người ⇕ ░ └──────────────────────────────────────┘ ░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+  ↑ sidebar KHÔNG có nền riêng, không viền, không đường kẻ dưới đầu sidebar
+```
+
+- **Sidebar trong suốt, nằm thẳng trên `--background`**. Đây là ngoại lệ có tên của dòng "đừng
+  để sidebar trong suốt" ở trên: ở đây ranh giới là mép khối bọc trắng, không phải mép sidebar.
+  Bỏ luôn đường kẻ dưới đầu sidebar: đường kẻ trên nền xám không nối với gì.
+- **Nền rê và nền đang chọn đổi theo nền xám**: rê `hover:bg-foreground/4`, đang chọn
+  `bg-secondary-hover` + `font-medium`. `--item-hover` trùng đúng màu nền trang, giữ nguyên là rê
+  vào không thấy gì. Rê bằng `--background-hover` thì chỉ chênh nền đang chọn ~12 bậc, rê qua mục
+  nào cũng trông như đang chọn (`I10`; đo trên trang mẫu 05/11/2026); `foreground/4` chênh ~17
+  bậc và tự đảo ở nền tối. Ô tìm, hàng profile giữ nền `--surface` như cũ.
+- **Khối bọc** (từ `lg`): `my-2 mr-2`, `rounded-xl`, `bg-surface`, `border border-border`, **không
+  bóng** (`M15`: bóng chỉ cho lớp nổi). Ở nền sáng viền gần như không thấy, trắng cạnh xám đã là
+  ranh giới; ở nền tối viền token tối giữ mép khối. Khối cao hết màn trừ hai mép
+  (`h-[calc(100dvh-1rem)]`), **nội dung cuộn trong khối**, trang không cuộn. Thanh cuộn trong
+  khối tự ẩn (`I18`).
+- **Header của trang nằm trong khối**, dính đầu khối khi cuộn, `border-b border-border` chạy hết
+  bề ngang khối. Đầu sidebar (tên tổ chức) cao bằng header và cùng hàng, để chữ tên tổ chức thẳng
+  hàng chữ tên trang.
+- **Dưới `lg`**: sidebar thành panel trượt trái như khung thường (nền `--surface`, bóng
+  `shadow-modal`); khối bọc trải hết màn, `m-0 rounded-none border-0`. Màn hẹp mà vẫn cách mép
+  8px là mất 16px bề ngang cho một đường viền không ai cần.
+- **Thu gọn sidebar** như mục dưới: khối bọc giãn ra theo, mép trái khối sát cột icon (cột icon
+  đã có lề riêng).
+- **Khối con trong khối bọc đọc bề mặt trắng**: đầu cột board, ô nền nhạt dùng `--tab-selected`
+  hay `--secondary`, không dùng `--background`. Ở nền tối `--background` tối hơn khối bọc, đầu cột
+  trông như bị khoét lõm (`P10`: bề mặt sáng dần theo tầng).
+
+```tsx
+<div className="flex h-dvh overflow-hidden bg-background">
+  <aside className="hidden w-60 shrink-0 flex-col lg:flex">
+    {/* Đầu sidebar cao bằng header của khối: mt-2 + h-14 */}
+    <div className="mt-2 flex h-14 items-center gap-2 px-4">…tên tổ chức…</div>
+    <nav className="flex flex-col gap-1 px-3">
+      <Link
+        href={item.href}
+        aria-current={isActive ? "page" : undefined}
+        className={cn(
+          "flex h-10 items-center gap-3 rounded-xl px-3 text-sm text-foreground/70 hover:bg-foreground/4 hover:text-foreground",
+          isActive && "bg-secondary-hover font-medium text-foreground hover:bg-secondary-hover",
+        )}
+      >
+        …
+      </Link>
+    </nav>
+  </aside>
+  <div className="flex min-w-0 flex-1 flex-col bg-surface lg:my-2 lg:mr-2 lg:h-[calc(100dvh-1rem)] lg:overflow-hidden lg:rounded-xl lg:border lg:border-border">
+    <header className="flex h-14 shrink-0 items-center gap-2 border-b border-border px-4 sm:px-6">…</header>
+    <main className="scrollbar-clean min-h-0 flex-1 overflow-y-auto">…</main>
+  </div>
+</div>
+```
+
+### Một mặt phẳng (Unified) ⚑
+
+Khung app của bộ mặt **Paper** (`styles.md`, `P13`). Sidebar, header, nội dung chung một nền
+`--surface`; ranh giới là đường kẻ. Luật sidebar ở trên vẫn đúng (rộng, cao link, nền rê, nền
+đang chọn như sidebar trắng), chỉ đổi nền trang và đường kẻ:
+
+```
+ cả màn nền trắng --surface
+┌──────────────┬───────────────────────────────────────┐
+│ ◐ Tổ chức    │ ▤ Việc                       [chuông] │
+├──────────────┼───────────────────────────────────────┤  <- một đường kẻ ngang chạy liền qua hai cột
+│ [tìm     ⌘K] │ Tên việc        Người làm   Hạn   Trạng thái │
+│ ⌂ Tổng quan  │ ─────────────────────────────────────── │  <- bảng chạy hết bề ngang, không bọc card
+│ ☑ Việc       │ Sửa trang thanh toán  An    12/11   Đang làm │
+│              │ ─────────────────────────────────────── │
+│              │                                       │
+└──────────────┴───────────────────────────────────────┘
+               ↑ đường kẻ dọc border-r: không còn chênh nền nào làm ranh giới
+```
+
+- **Nền trang `--surface`**, không phải `--background`. Đổi ở khung ngoài cùng (`body` hay khung
+  app), **không đè biến `--background`**: ô nền nhạt bên trong (đầu cột board, chip, ô ngày) vẫn
+  cần màu xám đó để tách khỏi nền trắng.
+- **Đường kẻ khung là `--border-strong`**: `border-r` của sidebar, `border-b` của header và của
+  đầu sidebar, chạy liền thành một đường. `--border` (`#f7f7f8`) trên nền trắng gần như không
+  thấy, khung app mất ranh giới. Đây là ngoại lệ có tên của dòng "chỉ một màu đường kẻ
+  `--border`" ở trên: khung Paper không có chênh nền nào khác để dựa vào.
+- **Khối nội dung không bọc card trắng.** Trắng trên trắng chỉ còn cái viền, mười card là mười
+  khung kẻ. Tách nhóm bằng tiêu đề khối (`T8`), khoảng trắng và một đường kẻ `border-border-strong`
+  giữa các phần; bảng chạy hết bề ngang vùng nội dung, dòng ngăn bằng `divide-y`. Chỗ buộc phải
+  là card (thẻ kanban, ô số liệu) thì viền `border-border-strong`, không bóng (`M15`).
+- **Dòng bảng rê `hover:bg-surface-hover`** như bảng trong khung trắng (`I10`), không
+  `--item-hover`: dòng chạm hai mép vùng nội dung mà tô đúng màu nền xám là trông như thủng.
+- **Dưới `lg`**: như khung thường, sidebar thành panel trượt có `shadow-modal`; header giữ
+  `border-b border-border-strong`.
+
+```tsx
+<div className="flex min-h-dvh bg-surface">
+  <aside className="hidden w-60 shrink-0 flex-col border-r border-border-strong lg:flex">
+    <div className="flex h-14 items-center gap-2 border-b border-border-strong px-4">…tên tổ chức…</div>
+    <nav className="flex flex-col gap-1 p-3">…link như sidebar trắng…</nav>
+  </aside>
+  <div className="flex min-w-0 flex-1 flex-col">
+    <header className="flex h-14 shrink-0 items-center gap-2 border-b border-border-strong px-4 sm:px-6">…</header>
+    <main className="min-w-0 flex-1">…</main>
+  </div>
+</div>
+```
+
 ### Thu gọn sidebar (từ `lg` trở lên)
 
 ```
