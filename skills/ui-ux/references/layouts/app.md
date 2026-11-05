@@ -8,6 +8,29 @@ Không có wireframe thì dựng bố cục mặc định (hoặc cái mà đi�
 chọn), báo một dòng lúc giao. Xem câu 4 trong `../../SKILL.md`. Nhịp ở đây là nhịp app:
 `p-5`, `gap-3`, `text-sm`, viền mảnh, bóng gần như không.
 
+## Bố cục nội dung: chọn theo việc chính ⚑
+
+Bố cục nội dung là thứ lấp vùng chứa (`styles.md`, `P13`), chọn theo cột "Đến để làm gì" của
+`U2`, **không mặc định "hàng ô số + biểu đồ + bảng"**. Dashboard tổng quan chỉ đúng khi việc chính
+là nhìn nhanh nhiều thứ rồi đi tiếp chỗ khác; màn để xử lý lead, ticket, đơn thì bố cục khác.
+Các phương án wireframe (`U3`) lấy từ bảng này: hai phương án cùng một dòng là một phương án.
+
+| Bố cục | Việc chính của màn | Ví dụ | Mục |
+| --- | --- | --- | --- |
+| **Tổng quan khối** | Nhìn nhanh nhiều thứ, mỗi khối dẫn đi chỗ khác | Trang chủ, tổng quan workspace | Dashboard |
+| **Bảng trước** | Dò, so, sửa nhiều bản ghi theo cột | Danh sách khách, kho hàng, CRM dạng bảng | Bảng dữ liệu |
+| **Danh sách + chi tiết** | Xử lý lần lượt từng mục trong hàng đợi | Hộp thư, ticket hỗ trợ, duyệt đơn, lead mới | Danh sách + chi tiết |
+| **Kanban** | Việc đi qua các trạng thái, kéo sang bước sau | Việc, pipeline bán hàng, tuyển dụng | Bảng kanban |
+| **Lịch, lưới giờ** | Việc gắn với ngày giờ, người, phòng | Lịch hẹn, ca làm, đặt phòng | Trang lịch |
+| **Biểu đồ trước** | Hiểu xu hướng, so kỳ, tìm chỗ bất thường | Báo cáo doanh thu, giám sát | Trang báo cáo |
+| **Kể bằng số** | Đọc báo cáo từ trên xuống: số chính → xu hướng → chia nhóm → chi tiết | Báo cáo tuần cho lãnh đạo | Trang báo cáo, bề mặt Editorial (`P16`) |
+| **Hai panel làm việc** | Làm ở một bên, xem kết quả ngay bên kia | Nhập ↔ kết quả, soạn ↔ xem trước, các bước ↔ chạy thử | Hai panel làm việc |
+| **Dòng hoạt động** | Ai vừa làm gì, kiểm lại một thay đổi | Nhật ký workspace, lịch sử thay đổi | Trang hoạt động |
+| **Form trước** | Cấu hình, điền thông tin | Cài đặt, hồ sơ, tạo mới | Trang cài đặt, `form.md` |
+
+**Không có trong bảng, không tự làm:** dashboard kéo thả tuỳ biến khối (logic lưu bố cục là của
+người dùng, `N10`) và màn canvas dựng luồng, trình vẽ (công cụ riêng, ngoài phạm vi màn app).
+
 ---
 
 ## Dashboard
@@ -1074,12 +1097,46 @@ một cột, ô hẹn cao theo thời lượng.
 Xem `../components/list-row.md` cho công thức từng dòng. Danh sách là **một khối
 chia đường kẻ**, không phải mỗi dòng một card.
 
-**Danh sách + chi tiết (hai cột, bấm mục trái mở chi tiết phải).** Mục bên trái chỉ mang
-thứ để **chọn**: một ảnh nhỏ, dòng giá hay trạng thái, tên, **một** dòng phụ. Tối đa ba dòng
-chữ. Mọi thứ khác (địa chỉ đầy đủ, xác thực, ngày đăng, thông số) đã có ở cột chi tiết, lặp
-lại ở trái chỉ làm cột chật (năm dòng mỗi mục đọc như một bức tường chữ). Dòng thụt vào, mục đang mở và mục đang rê khác nền (`I10`, đoạn "Mục đang mở"). Ảnh ở cột chi tiết
-có trần cao (`max-h-[420px]`, `object-cover`): dữ liệu chỉ có một ảnh thì không để nó phủ
-hết khung rộng 1400px.
+### Danh sách + chi tiết ⚑
+
+```
+┌ danh sách w-80–w-96 ─┬ chi tiết flex-1 ─────────────────────┐
+│ [tìm        ] [lọc]  │ HD-0030 · Chưa thu        [Ghi thu] │  <- đầu chi tiết: tên + hành động chính
+│ 36 hoá đơn           │                                      │
+│▌Công ty Bảo Ngọc     │  nội dung bản ghi                    │
+│  124.450.000 ₫ · 3/3 │                                      │
+│  Phòng khám Nha Việt │                                      │
+│  12.500.000 ₫ · 25/1 │                                      │
+└──────────────────────┴──────────────────────────────────────┘
+   ↑ mỗi cột cuộn riêng      ↑ đứng yên khi lướt danh sách
+```
+
+- **Một bề mặt, hai cột**: cả khối là một card trắng (hay nằm trong khối bọc, mặt phẳng trắng),
+  hai cột ngăn bằng `border-r border-border`. Không làm hai card rời có khe ở giữa: danh sách và
+  chi tiết là một việc, khe chia làm chúng trông như hai khối không liên quan.
+- **Cột danh sách cố định** `w-80` (320px) tới `w-96`, ở khổ 1024–1279 thì `w-72`. Chi tiết
+  `min-w-0 flex-1`.
+- **Mục trái chỉ mang thứ để chọn**: một ảnh nhỏ, dòng giá hay trạng thái, tên, **một** dòng phụ.
+  Tối đa ba dòng chữ. Mọi thứ khác (địa chỉ đầy đủ, xác thực, ngày đăng, thông số) đã có ở cột chi
+  tiết, lặp lại ở trái chỉ làm cột chật (năm dòng mỗi mục đọc như một bức tường chữ). Mục đang mở
+  và mục đang rê khác nền (`I10`, đoạn "Mục đang mở").
+- **Mỗi cột cuộn riêng**, khối cao hết màn trừ header (`h-[calc(100dvh-…)]`, mỗi cột `overflow-y-auto`,
+  thanh cuộn tự ẩn `I18`). Đây là ngoại lệ có tên của luật "cột lọc không cuộn riêng" bên dưới:
+  lướt danh sách dài mà cột chi tiết trôi theo thì mất bản ghi đang đọc. Đầu cột danh sách (ô tìm,
+  lọc, số đếm) dính đầu cột.
+- **Chưa chọn mục nào**: cột chi tiết là trạng thái rỗng nhẹ giữa cột, một icon nhỏ và một câu
+  "Chọn một hoá đơn để xem" (`components/empty-state.md`), không hình minh hoạ lớn. Màn kiểu hàng
+  đợi (hộp thư, duyệt đơn) thì nên mở sẵn mục đầu; mở mục nào là logic, skill dựng cả hai trạng thái.
+- **Ảnh ở cột chi tiết có trần cao** (`max-h-[420px]`, `object-cover`): dữ liệu chỉ có một ảnh thì
+  không để nó phủ hết khung rộng 1400px.
+- **Dưới `lg`: một cột mỗi lúc.** Danh sách rộng hết màn; bấm mục thì chi tiết thay chỗ, đầu chi
+  tiết có nút `‹` quay lại danh sách. Không ép hai cột vào màn hẹp. Mở bằng route riêng hay bằng
+  state là logic (`N10`).
+- **Đầu chi tiết ở màn hẹp hai hàng**: hàng một là `‹` + tên bản ghi (cắt chữ, `T14`) + nhãn trạng
+  thái; hàng hai là các nút hành động, nút phụ gom vào `⋯`. Một hàng 375px không chứa nổi nút quay
+  lại, tên, nhãn và hai nút: tên bị bóp về 0 chữ, nút tràn mép (đo trên trang mẫu, 05/11/2026).
+- **Không dùng với vùng chứa `canvas`**: danh sách đặt thẳng trên nền xám không có mép để dòng rê
+  dựa vào (`P13`, Mặt nền mở).
 
 **Đếm cột trước khi thêm cột lọc.** Sidebar app + cột lọc + danh sách + chi tiết là bốn cột:
 ở 1440px vùng nội dung chỉ còn khoảng 1190px, danh sách bị ép còn khoảng 320px, tiêu đề
@@ -1093,6 +1150,75 @@ Nhóm dài (khu vực, tỉnh) thì hiện năm sáu mục kèm "Xem thêm N" d�
 link, đừng cho cả cột thành khung cuộn.
 
 ---
+
+## Hai panel làm việc ⚑
+
+Một bên là chỗ làm (nhập, soạn, cấu hình các bước), bên kia là kết quả (bản chép, xem trước,
+chạy thử) hiện ngay khi làm. Khác Danh sách + chi tiết: không có danh sách để chọn, cả hai bên là
+chỗ làm việc.
+
+```
+┌ Nhập ─────────────── [Gợi ý AI] ⋯ ┐ ┌ Kết quả ────────── ✎ [Xuất ⌄] ┐
+│ Cách nhập   [ Ghi âm | Tải lên ]  │ │ Kết quả sẽ hiện ở đây.         │  <- panel kết quả rỗng: một câu
+│                                    │ │                                │
+│          00:00:15                  │ │                                │
+│                                    │ │                                │
+│ [Tạm dừng]          [Dừng]         │ │                                │  <- hành động của panel ghim đáy panel
+└────────────────────────────────────┘ └────────────────────────────────┘
+```
+
+- **Mỗi panel một card, cao hết vùng nội dung**, đầu panel có tên và hành động của riêng panel ở
+  bên phải, nội dung cuộn trong panel, hành động cuối việc (Dừng, Gửi) ghim đáy panel.
+- **Trong khối bọc (`inset`) hay mặt phẳng trắng (`unified`)**: hai panel là hai cột của **một** bề
+  mặt, ngăn bằng `border-r border-border`, không card. Card trên nền xám bên trong khối trắng là ba
+  tầng chồng nhau cho một việc chia đôi. Card rời chỉ khi vùng chứa là `classic`, `floating`,
+  `canvas` (nội dung nằm trên nền xám).
+- **Tỉ lệ**: 1 : 1 khi hai bên ngang việc (nhập ↔ kết quả), `lg:grid-cols-2`; 3 : 2 khi một bên là
+  chỗ làm chính (soạn ↔ xem trước), `lg:grid-cols-[3fr_2fr]`. Khoảng giữa hai panel `gap-4`.
+- **Cả màn một nút đặc tại một thời điểm** (`I2`): nút chính của bước đang làm. Nút chính của panel
+  kết quả ("Gửi", "Xuất") ẩn hay để dạng viền cho tới khi có kết quả, rồi mới thành nút đặc. Hai nút
+  đặc ở hai panel cùng lúc là hai việc tranh nhau. Nút Dừng (ghi âm, chạy thử) **kết thúc một thứ
+  đang chạy**, câu 2 của `I4`: là nút nguy hiểm theo `I4`, nền mờ `rose-500/10`, chữ `rose-700`,
+  không đỏ đặc (`locked-rules.md`, dòng 1, 2).
+- **Panel kết quả rỗng là một câu**, có thể kèm icon nhỏ (`components/empty-state.md`), không
+  thanh nút xám bị khoá chạy ngang panel: nút chưa bấm được thì ẩn, đừng bày một nút khoá to nhất
+  panel.
+- **Dưới `lg`: tab "Nhập · Kết quả"** ở đầu vùng nội dung, mỗi lúc một panel. Xếp chồng hai panel
+  cao hết màn thì kết quả nằm tận dưới, người dùng không biết đã có. Có kết quả mới mà đang ở tab
+  Nhập thì tab Kết quả có chấm.
+- Kéo đổi tỉ lệ hai panel là logic, không tự thêm (`N10`).
+
+## Trang hoạt động (nhật ký) ⚑
+
+Luồng thay đổi của cả workspace, xem đầy đủ: khối "Hoạt động gần đây" của Dashboard mở rộng ra
+cả trang. Khác dòng thời gian của **một** bản ghi (`components/timeline.md`): ở đây câu hỏi là
+**ai** vừa đụng **gì**.
+
+```
+Hoạt động                      [Người ⌄] [Loại ⌄] [7 ngày qua ⌄] [tìm   ]
+HÔM NAY
+◐ Lan Anh đã đổi HD-0030 sang Đã thu                               10:42
+         Chưa thu → Đã thu
+◐ Minh đã tạo hoá đơn HD-0112 cho Phòng khám Nha Việt              09:15
+HÔM QUA
+⚙ Hệ thống đã gửi nhắc thu HD-0078                                 17:00
+                              [Tải thêm]
+```
+
+- **Mỗi mục một câu**: avatar `size-7`, câu "**Tên người** đã làm gì **tên đối tượng**" (tên người
+  và tên đối tượng đậm, động từ thường), giờ bên phải `text-xs text-muted tabular-nums`. Dòng phụ chỉ
+  khi có giá trị cũ → mới. Không vòng icon theo loại việc, không đường nối dọc: đó là khuôn
+  timeline của một bản ghi.
+- **Nhóm theo ngày**: nhãn "Hôm nay", "Hôm qua", "Thứ Hai, 03/11" theo khuôn nhãn nhóm (IN HOA,
+  `text-xs text-muted`), dính đầu khi cuộn.
+- **Việc do hệ thống làm**: avatar là ô icon (`Bot`, `Settings`), tên "Hệ thống"; không mượn avatar
+  người.
+- **Tên đối tượng là link** tới bản ghi đó.
+- **Cuối danh sách "Tải thêm"**, nút viền giữa, không phân trang số: nhật ký đọc theo thời gian, nhảy
+  tới "trang 7" không có nghĩa.
+- **Lọc theo người, loại việc, khoảng ngày**; rỗng do lọc theo `components/empty-state.md`.
+- **Nhật ký kiểm tra cho quản trị** (cần địa chỉ IP, thiết bị, xuất file, lọc theo cột) thì là **Bảng
+  dữ liệu**, không phải luồng này.
 
 ## Bảng dữ liệu
 

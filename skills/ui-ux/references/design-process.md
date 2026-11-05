@@ -81,6 +81,8 @@ dòng đó."* Dừng chờ.
 - **Khác ở chiến lược bố cục, không khác ở trang trí.** Ví dụ cho một trang danh sách:
   A giữ lưới card với thanh lọc gọn dính đầu trang; B chia đôi danh sách và panel chi tiết;
   C đặt ô tìm lên trước, lọc sau. Ba phương án chỉ khác bo góc hay màu là **một** phương án.
+  Lấy chiến lược từ bảng **Bố cục nội dung** đầu `layouts/app.md`, theo việc chính ở `U2`; không
+  phương án nào mặc nhiên là "hàng ô số + biểu đồ + bảng" nếu việc chính không phải nhìn tổng quan.
 - **Mặc định xám.** Ảnh là khối xám có tỉ lệ thật. Mở ra người dùng nhìn bố cục trước, không
   sa vào màu; màu nhấn chỉ bật bằng nút Màu trên thanh công cụ (dưới). Xám chỉ là tắt màu nhấn,
   còn lại vẫn là token và component thật (dòng "Wireframe dựng bằng chính token…" dưới).
