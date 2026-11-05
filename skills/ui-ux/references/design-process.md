@@ -271,7 +271,9 @@ dòng đó."* Dừng chờ.
   (`clean`, `dark-sidebar`, `soft`, `midnight`, `inset`, `paper`, `float`, `rail`, `topbar`,
   `editorial`: Clean, Dark Sidebar, Soft, Midnight, Inset, Paper, Float, Rail, Topbar, Editorial; tên tiếng Anh cả khi đề
   viết tiếng Việt; Rail, Topbar chỉ liệt kê khi số mục chính nằm dưới trần của chúng, `P13`), **mặc định là bộ khuyên dùng**
-  theo người dùng ở `U1`, có nhãn nhỏ "khuyên dùng" sau tên trong menu, không trên nút. Màn khác (trang
+  theo người dùng ở `U1`, có nhãn nhỏ "khuyên dùng" sau tên trong menu, không trên nút. Bộ khuyên
+  dùng luôn là một trong bốn bộ không cờ (Clean, Dark Sidebar, Soft, Midnight); bộ còn cờ ⚑ đứng
+  sau, không bao giờ mang nhãn "khuyên dùng", không là mặc định, người dùng tự chọn thì dựng theo. Màn khác (trang
   lướt để chọn, trang giá): Flat (`P6`) cùng hai khối hợp sản phẩm nhất trong `P7`–`P10` (`flat`,
   `toi`, `noi`; Glass chỉ khi phía sau có ảnh hay gradient, `F19`), mặc định Flat (`P1`). Không có
   nhóm này thì người dùng chỉ thấy bố cục xám rồi bản dựng flat, muốn xem bản tối hay bản nổi

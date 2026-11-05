@@ -345,9 +345,9 @@ của wireframe (`U3`), chọn theo việc chính của màn (`U2`).
 
 **Ngoài mười bộ**: skill chỉ khuyên mười bộ trên. Tổ hợp khác (dải icon trong khối bọc, header
 toàn màn với sidebar trắng) chỉ khi người dùng tự xin hoặc gửi ảnh tham chiếu: đọc ảnh ra từng
-trục rồi ghép theo `layouts/app.md`, ghi đủ các trục vào `DESIGN.md`. **Header `full`** thì
-khuyên thêm, ở bất kỳ bộ nào có sidebar, khi app có ô tìm toàn cục là việc chính hay có nút đổi
-workspace, tổ chức: báo một dòng lúc giao.
+trục rồi ghép theo `layouts/app.md`, ghi đủ các trục vào `DESIGN.md`. **Header `full`** hợp khi
+app có ô tìm toàn cục là việc chính hay có nút đổi workspace; khi còn cờ ⚑ thì chỉ nhắc một dòng
+lúc giao ("muốn header chạy hết bề ngang cho ô tìm thì nói"), không tự dựng.
 
 Màu nhấn đứng riêng, không nằm trong bộ mặt: dự án có brand thì giữ brand, chưa có thì nhóm
 Nhấn của wireframe (`U3`) hay màu đầu của nhóm đó. Bộ mặt bám **người dùng**, màu nhấn gợi ý bám
@@ -357,7 +357,14 @@ Nhấn của wireframe (`U3`) hay màu đầu của nhóm đó. Bộ mặt bám 
 án có phong cách riêng, có ảnh tham chiếu, đề nêu kiểu, hay chế độ giữ brand thì không dùng
 bảng này (`P1`). App điện thoại theo `mobile.md`, không theo bảng này.
 
-**Chọn bộ nào** ⚑: khuyên **một** bộ, bám người dùng ở `U1`, không bám ngành. Spa mà người mở
+**Bộ và biến thể còn cờ ⚑ không được tự khuyên** (chủ dự án, 05/11/2026): Inset, Paper, Float,
+Rail, Topbar, Editorial; biến thể Soft mở, Paper không viền, Inset xếp lớp; header `full`. Chúng
+chưa qua test ở dự án thật. Skill chỉ tự khuyên trong bốn bộ đã kiểm: **Clean, Dark Sidebar,
+Soft (biến thể `classic`), Midnight**, nên người đang dùng bản cũ không thấy hành vi mặc định đổi.
+Bộ có cờ vẫn dùng được khi người dùng tự chọn trong nhóm Kiểu của wireframe, tự xin trong đề, hay
+gửi ảnh tham chiếu. Bộ nào qua test thì gỡ cờ ⚑ ở bảng trên, từ đó mới vào danh sách tự khuyên.
+
+**Chọn bộ nào** ⚑: khuyên **một** bộ trong các bộ không cờ, bám người dùng ở `U1`, không bám ngành. Spa mà người mở
 app là kế toán đối soát cả ngày thì Clean, không phải Soft. Nếu không đọc được người dùng là ai
 thì Clean. Không hỏi (`P1`):
 
@@ -422,7 +429,7 @@ mắt chữ "ữ", "ợ", "ằ" ở cỡ nhỏ nhất của màn (`T5`). Project
   nhiều cột phải dò theo dòng. Inset xếp lớp khi màn có nhiều vùng con lồng nhau (cột board, nhóm
   thẻ, panel bên) mà viền quanh từng vùng thành lưới khung (`P15`). Ghi `Bề mặt: borderless` hay
   `Bề mặt: layered` vào `DESIGN.md`.
-- **Rail là một bộ, hai biến thể.** Chọn biến thể theo người dùng ở `U1`, ghi vào `DESIGN.md`
+- **Rail là một bộ, hai biến thể.** Người dùng chọn Rail thì chọn biến thể theo người dùng ở `U1`, ghi vào `DESIGN.md`
   (`Khung: rail-labeled`), lúc giao báo một dòng: *"Bộ mặt: **Rail** có nhãn vì chủ shop mở app
   vài lần một tuần, chưa thuộc icon. Muốn chỉ icon thì nói."*
 - **Float không bóng.** Sidebar nổi bằng khoảng cách và nền trắng trên xám, không bằng
