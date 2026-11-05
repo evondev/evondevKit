@@ -265,9 +265,9 @@ dòng đó."* Dừng chờ.
   dựng hướng khuyên dùng, báo một dòng.
 
   **Dự án chưa có phong cách riêng** (audit tầng 3 ra flat hoặc trống, `P4`) và đề không nêu
-  phong cách thì thêm nhóm **Kiểu** (`?kieu=`). **Màn trong app web**: chín bộ mặt của `P13`
-  (`clean`, `dark-sidebar`, `soft`, `midnight`, `inset`, `paper`, `float`, `rail`, `topbar`:
-  Clean, Dark Sidebar, Soft, Midnight, Inset, Paper, Float, Rail, Topbar; tên tiếng Anh cả khi đề
+  phong cách thì thêm nhóm **Kiểu** (`?kieu=`). **Màn trong app web**: mười bộ mặt của `P13`
+  (`clean`, `dark-sidebar`, `soft`, `midnight`, `inset`, `paper`, `float`, `rail`, `topbar`,
+  `editorial`: Clean, Dark Sidebar, Soft, Midnight, Inset, Paper, Float, Rail, Topbar, Editorial; tên tiếng Anh cả khi đề
   viết tiếng Việt; Rail, Topbar chỉ liệt kê khi số mục chính nằm dưới trần của chúng, `P13`), **mặc định là bộ khuyên dùng**
   theo người dùng ở `U1`, có nhãn nhỏ "khuyên dùng" sau tên trong menu, không trên nút. Màn khác (trang
   lướt để chọn, trang giá): Flat (`P6`) cùng hai khối hợp sản phẩm nhất trong `P7`–`P10` (`flat`,
@@ -278,7 +278,7 @@ dòng đó."* Dừng chờ.
     là việc của Phương án. Kiểu Tối mà thêm hàng KPI, biểu đồ thì người xem không biết mình
     đang chọn bố cục hay chọn màu, chọn xong `U4` không biết dựng theo cái nào.
   - Đổi bằng biến CSS và rule dưới `:root[data-kieu]` (nền, bề mặt, viền, bóng, blur, `--app-font`), không vẽ
-    lại khối. Bộ mặt đổi font thì nạp đủ font của chín bộ ngay từ đầu (một link Google Fonts),
+    lại khối. Bộ mặt đổi font thì nạp đủ font của mười bộ ngay từ đầu (một link Google Fonts),
     không thì đổi sang Soft vẫn ra Inter. Khung sidebar của bản thiết kế mang class `wf-sidebar`,
     vùng bên phải (header của trang cộng nội dung) mang class `wf-main`. Dark Sidebar: rule
     `[data-kieu="dark-sidebar"] .wf-sidebar` chép nguyên khối token `.force-dark` của `tokens.css`
@@ -291,7 +291,9 @@ dòng đó."* Dừng chờ.
     trong sidebar bọc `<span class="wf-label">`; kiểu Rail vẽ đúng biến thể sẽ khuyên (`P13`):
     chỉ icon thì ẩn nhãn, bóp sidebar về 64px, giữ icon đứng yên; có nhãn thì sidebar 80px, mục
     xếp icon trên chữ dưới, nền đang chọn chỉ tô ô icon (mục Dải icon). Khung lý do ghi biến thể
-    và vì sao. Soft cũng vẽ đúng biến thể sẽ khuyên: `classic`, hay mở (`canvas`: `.wf-sidebar` và
+    và vì sao. Paper, Inset cũng vẽ đúng biến thể sẽ khuyên (Paper kẻ hay không viền `P14`, Inset viền hay
+    xếp lớp `P15`). Editorial: chữ tiêu đề và số lớn, nhãn IN HOA, đường kẻ đậm đầu mỗi phần, bỏ
+    nền và viền card (`P16`). Soft cũng vẽ đúng biến thể sẽ khuyên: `classic`, hay mở (`canvas`: `.wf-sidebar` và
     header trong suốt, mục đang chọn là viên trắng, mục Mặt nền mở). Bộ khuyên dùng có header
     `full` (`P13`) thì wireframe vẽ header toàn màn ở mọi kiểu, ghi vào khung lý do. Topbar: wireframe có sẵn một hàng link `.wf-topnav` trong header
     (ẩn ở kiểu khác), kiểu Topbar ẩn `.wf-sidebar` và hiện hàng đó; nội dung giữa màn `max-width`
@@ -360,7 +362,7 @@ dòng đó."* Dừng chờ.
     chọn một trong hai, trong khi bật cùng lúc được).
   - **Chữ trên thanh và khung lý do theo tiếng người dùng đang viết (`T27`)**, không theo
     `T24`: đó là lời skill nói với người dùng, không phải chữ của sản phẩm. Mẫu HTML dưới viết
-    tiếng Việt; đề tiếng Anh thì đổi hết: Phương án → Option, Màu → Color, Kiểu → Style (tên chín bộ mặt giữ nguyên, khuyên dùng → recommended; Flat,
+    tiếng Việt; đề tiếng Anh thì đổi hết: Phương án → Option, Màu → Color, Kiểu → Style (tên mười bộ mặt giữ nguyên, khuyên dùng → recommended; Flat,
     Nổi, Glass, Gradient, Tối → Flat, Elevated, Glass, Gradient, Dark), Nhấn (`aria-label`
     Chàm, Xanh ngọc, Cam; các màu khác của bảng: Xanh dương, Tím, Hồng tím, Xanh lá) → Indigo, Teal, Orange; Blue, Violet, Fuchsia, Green, Thanh dưới → Bottom bar, Trạng thái → State
     (Có dữ liệu, Đang tải, Rỗng, Lỗi → Data, Loading, Empty, Error), Khuyên dùng → Recommended,
@@ -409,8 +411,8 @@ dòng đó."* Dừng chờ.
     <a class="wf-switch" data-wf-toggle="mau" data-on="mau" data-off="xam" role="switch">Màu <i></i></a>
     <details class="wf-menu">
       <summary><span>Kiểu:</span><b data-wf-current="kieu"></b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
-      <!-- Màn trong app web: chín bộ mặt P13, bộ khuyên dùng có nhãn nhỏ "khuyên dùng" trong menu. Màn khác: flat, toi, noi. -->
-      <div class="wf-popover" data-wf-param="kieu"><a data-value="clean">Clean</a><a data-value="dark-sidebar">Dark Sidebar</a><a data-value="soft">Soft <small>khuyên dùng</small></a><a data-value="midnight">Midnight</a><a data-value="inset">Inset</a><a data-value="paper">Paper</a><a data-value="float">Float</a><a data-value="rail">Rail</a><a data-value="topbar">Topbar</a></div>
+      <!-- Màn trong app web: mười bộ mặt P13, bộ khuyên dùng có nhãn nhỏ "khuyên dùng" trong menu. Màn khác: flat, toi, noi. -->
+      <div class="wf-popover" data-wf-param="kieu"><a data-value="clean">Clean</a><a data-value="dark-sidebar">Dark Sidebar</a><a data-value="soft">Soft <small>khuyên dùng</small></a><a data-value="midnight">Midnight</a><a data-value="inset">Inset</a><a data-value="paper">Paper</a><a data-value="float">Float</a><a data-value="rail">Rail</a><a data-value="topbar">Topbar</a><a data-value="editorial">Editorial</a></div>
     </details>
     <span class="wf-set" data-wf-param="nhan"><a data-value="cham" aria-label="Chàm"><i></i></a><a data-value="ngoc" aria-label="Xanh ngọc"><i></i></a><a data-value="cam" aria-label="Cam"><i></i></a></span>
     <span class="wf-set" data-wf-param="kho">
@@ -596,7 +598,7 @@ dòng đó."* Dừng chờ.
       for (const set of document.querySelectorAll("[data-wf-param]")) {
         for (const link of set.querySelectorAll("a")) {
           // Kiểu khác Flat, Clean và các kiểu đổi khung bật luôn nấc Màu: ở nấc Xám kiểu không hiện gì khác.
-          const isStyleLink = set.dataset.wfParam === "kieu" && !["flat", "clean", "inset", "paper", "float", "rail", "topbar"].includes(link.dataset.value);
+          const isStyleLink = set.dataset.wfParam === "kieu" && !["flat", "clean", "inset", "paper", "float", "rail", "topbar", "editorial"].includes(link.dataset.value);
           link.href = linkTo({ [set.dataset.wfParam]: link.dataset.value, ...(isStyleLink && { mau: "mau" }) });
           if (state[set.dataset.wfParam] !== link.dataset.value) continue;
           link.setAttribute("aria-current", "page");

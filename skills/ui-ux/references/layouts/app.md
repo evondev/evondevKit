@@ -585,7 +585,7 @@ Tuỳ chọn của trục **Header** (`P13`), ghép được với mọi điều
 
 ### Ghép điều hướng với vùng chứa
 
-Chín bộ mặt là chín tổ hợp đã kiểm (`P13`). Người dùng tự xin hay gửi ảnh thì ghép theo bảng:
+Mười bộ mặt là mười tổ hợp đã kiểm (`P13`). Người dùng tự xin hay gửi ảnh thì ghép theo bảng:
 
 | | `classic` | `inset` | `unified` | `floating` | `canvas` |
 | --- | --- | --- | --- | --- | --- |

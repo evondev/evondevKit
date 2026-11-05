@@ -16,7 +16,7 @@ Ba ca, chọn đúng một:
 | --- | --- |
 | **Người dùng tự nêu phong cách** ("làm trang giá kiểu glassmorphism") | Làm theo phong cách đó, **không hỏi lại** |
 | **Audit thấy dự án có phong cách khác flat** (`P4`) | **Theo phong cách dự án**, dựng luôn, báo một dòng lúc giao (mẫu bên dưới) |
-| **Dự án flat hoặc trống**, người dùng không nêu gì | **Màn trong app web** (dashboard, danh sách, bảng, form, cài đặt): **bộ mặt khuyên dùng** theo người dùng của sản phẩm (`P13`), không mặc nhiên Clean; wireframe nhánh `U` có nhóm Kiểu liệt kê đủ chín bộ để người dùng tự đổi (`design-process.md`, `U3`). Màn khác: Flat (`P6`). Không hỏi về phong cách. Có màu (`P12`) chỉ khi người dùng tự xin trong đề; hai chế độ dựng lại: dòng Có màu (`V1d`), không chọn sẵn. Wireframe không còn nấc Có màu |
+| **Dự án flat hoặc trống**, người dùng không nêu gì | **Màn trong app web** (dashboard, danh sách, bảng, form, cài đặt): **bộ mặt khuyên dùng** theo người dùng của sản phẩm (`P13`), không mặc nhiên Clean; wireframe nhánh `U` có nhóm Kiểu liệt kê đủ mười bộ để người dùng tự đổi (`design-process.md`, `U3`). Màn khác: Flat (`P6`). Không hỏi về phong cách. Có màu (`P12`) chỉ khi người dùng tự xin trong đề; hai chế độ dựng lại: dòng Có màu (`V1d`), không chọn sẵn. Wireframe không còn nấc Có màu |
 
 Vì sao theo dự án chứ không theo flat: một màn flat giữa app glass là màn lạc
 loài, người dùng thấy ngay. Nhất quán thắng gu.
@@ -299,7 +299,7 @@ theo `P1`. Wireframe không có nấc Có màu (`design-process.md`, `U3`).
 - Tương phản chữ trắng trên dải đo ở đầu nhạt nhất (`P3`); màu nhấn nhạt (vàng, cam sáng) thì dải
   dùng `primary-hover` hay một bậc đậm hơn, chữ vẫn trắng.
 
-### P13. Bộ mặt dashboard — ba trục, chín bộ có tên, khuyên theo người dùng
+### P13. Bộ mặt dashboard — các trục, mười bộ có tên, khuyên theo người dùng
 
 Flat, Inter và màu nhấn gần đen là mặc định trung tính. Mặc định ấy đúng cho từng dự án,
 nhưng ba dashboard khác ngành dựng liền nhau thì ra cùng một mặt (chủ dự án, 03/11/2026:
@@ -317,7 +317,7 @@ làm đúng như vậy.
 | **Điều hướng** (nav) | Mục chính của app nằm ở đâu, dạng gì | `sidebar`: cột có chữ (`layouts/app.md`, Khung app có sidebar), biến thể `sidebar-dark` mang `force-dark` (`M33`) · `rail`: dải icon, biến thể `rail-labeled` icon trên chữ dưới (Dải icon) · `topnav`: hàng link trong header, không sidebar (Menu ngang) |
 | **Vùng chứa** (container) | Nền nào, khối nào chứa nội dung | `classic`: điều hướng trắng, nội dung trên nền xám · `inset`: điều hướng trên nền trang, nội dung trong một khối trắng bo góc (Khung bọc) · `unified`: một mặt phẳng trắng, ngăn bằng đường kẻ (Một mặt phẳng) · `floating`: sidebar là khối trắng tách mép, chỉ với `sidebar`, `rail` (Sidebar nổi) · `canvas`: một mặt phẳng xám, card trắng là bề mặt duy nhất (Mặt nền mở) |
 | **Header** | Header của trang chạy tới đâu | `content` (mặc định): header nằm trên vùng nội dung, đầu điều hướng có logo · `full`: header chạy hết bề ngang màn, logo và ô tìm ở đó, điều hướng bắt đầu dưới header (Header toàn màn). `topnav` luôn là `full` |
-| **Bề mặt** (surface) | Nền, viền, bóng | Flat `P6` · Nổi `P7` · Tối `P10` |
+| **Bề mặt** (surface) | Nền, viền, bóng, chữ lớn | Flat `P6` · Nổi `P7` · Tối `P10` · Không viền `P14` · Xếp lớp `P15` · Editorial `P16` |
 | **Font** (`--app-font`) | Chữ cả app | Inter · Be Vietnam Pro · IBM Plex Sans |
 
 Ghép điều hướng với vùng chứa theo mục **Ghép điều hướng với vùng chứa** trong
@@ -327,7 +327,7 @@ Ghép điều hướng với vùng chứa theo mục **Ghép điều hướng v�
 Bố cục nội dung (bảng trước, kanban, lịch, card) **không** nằm trong bộ mặt: đó là phương án
 của wireframe (`U3`), chọn theo việc chính của màn (`U2`).
 
-**Chín bộ có tên.** Tên tiếng Anh, giữ nguyên cả khi đề viết tiếng Việt (chủ dự án: "Gọn, Mềm,
+**Mười bộ có tên.** Tên tiếng Anh, giữ nguyên cả khi đề viết tiếng Việt (chủ dự án: "Gọn, Mềm,
 Đêm người dùng đọc không hiểu"). Bộ là tổ hợp đã kiểm của các trục; header mặc định `content`:
 
 | Bộ mặt | Điều hướng | Vùng chứa | Bề mặt | Font | Hợp khi người dùng ở `U1` là |
@@ -336,13 +336,14 @@ của wireframe (`U3`), chọn theo việc chính của màn (`U2`).
 | **Dark Sidebar** | `sidebar-dark` | `classic` | Flat `P6` ở vùng nội dung | Inter | Người mở phần mềm cả ngày, chuyển module liên tục: CRM, kho, nhân sự, phòng khám, đặt lịch |
 | **Soft** | `sidebar`, không viền | `classic`, biến thể mở `canvas` ⚑ | Nổi `P7` | Be Vietnam Pro | Chủ shop, spa, người không rành máy, mở app giữa giờ làm: ít bảng, nhiều card, nhiều ảnh. Màn toàn card (không bảng chạy hết bề ngang) thì biến thể mở |
 | **Midnight** | `sidebar` | `classic`, theo nền tối | Tối `P10` | IBM Plex Sans | Người trực theo dõi số cả ca: vận hành thời gian thực, giao dịch, giám sát |
-| **Inset** ⚑ | `sidebar` | `inset` | Flat `P6` | Inter | Người làm việc nhiều view trên cùng dữ liệu (board, danh sách, tổng quan) cả ngày: quản lý việc, hoá đơn, dự án, công cụ SaaS dùng hằng ngày |
-| **Paper** ⚑ | `sidebar` | `unified` | Flat `P6`, khối tách bằng đường kẻ thay cho nền | Inter | Người đọc bảng, danh sách dài chạy hết bề ngang, gần như không card: danh sách việc, ticket, CRM dạng bảng, kho tài liệu |
+| **Inset** ⚑ | `sidebar` | `inset` | Flat `P6`, biến thể Xếp lớp `P15` ⚑ | Inter | Người làm việc nhiều view trên cùng dữ liệu (board, danh sách, tổng quan) cả ngày: quản lý việc, hoá đơn, dự án, công cụ SaaS dùng hằng ngày |
+| **Paper** ⚑ | `sidebar` | `unified` | Flat `P6`, khối tách bằng đường kẻ; biến thể Không viền `P14` ⚑ | Inter | Người đọc bảng, danh sách dài chạy hết bề ngang, gần như không card: danh sách việc, ticket, CRM dạng bảng, kho tài liệu |
 | **Float** ⚑ | `sidebar` | `floating` | Flat `P6` | Inter | Đội nội dung, marketing, sáng tạo xem nhiều card và ảnh: lịch đăng bài, thư viện ảnh, quản lý chiến dịch |
 | **Rail** ⚑ | `rail` hoặc `rail-labeled` | `classic` | Flat `P6` | Inter | Cần bề ngang cho nội dung, app ít mục chính: bản đồ điều phối, lịch, trình soạn, giám sát, công cụ cho lập trình viên. Người dùng thành thạo mở app cả ngày thì chỉ icon (tới 8 mục); chưa thuộc icon, vài lần một tuần thì có nhãn (tới 7 mục) |
 | **Topbar** ⚑ | `topnav` | `classic` | Flat `P6` | Inter | Người ghé vài lần một tuần để xem số hay làm một việc, app từ 6 mục chính trở xuống, không nhóm menu: cổng khách hàng, báo cáo đơn giản, app của chủ shop nhỏ |
+| **Editorial** ⚑ | `topnav` (quá 6 mục thì `sidebar`) | `unified` | Editorial `P16` | Inter | Người **đọc** số nhiều hơn thao tác: chủ doanh nghiệp, quản lý xem báo cáo tuần, tổng quan tài chính, trang tổng kết cho nhà đầu tư. Màn chủ yếu là số và biểu đồ, ít form |
 
-**Ngoài chín bộ**: skill chỉ khuyên chín bộ trên. Tổ hợp khác (dải icon trong khối bọc, header
+**Ngoài mười bộ**: skill chỉ khuyên mười bộ trên. Tổ hợp khác (dải icon trong khối bọc, header
 toàn màn với sidebar trắng) chỉ khi người dùng tự xin hoặc gửi ảnh tham chiếu: đọc ảnh ra từng
 trục rồi ghép theo `layouts/app.md`, ghi đủ các trục vào `DESIGN.md`. **Header `full`** thì
 khuyên thêm, ở bất kỳ bộ nào có sidebar, khi app có ô tìm toàn cục là việc chính hay có nút đổi
@@ -360,12 +361,12 @@ bảng này (`P1`). App điện thoại theo `mobile.md`, không theo bảng nà
 app là kế toán đối soát cả ngày thì Clean, không phải Soft. Nếu không đọc được người dùng là ai
 thì Clean. Không hỏi (`P1`):
 
-- Nhánh `U` có wireframe: nhóm Kiểu liệt kê chín bộ, **mặc định là bộ khuyên dùng**, khung lý
+- Nhánh `U` có wireframe: nhóm Kiểu liệt kê mười bộ, **mặc định là bộ khuyên dùng**, khung lý
   do một dòng vì sao cho từng bộ (`design-process.md`, `U3`).
 - "Dựng luôn" và chế độ dựng lại theo gu skill: dựng bộ khuyên dùng, báo một dòng lúc giao.
 - Mẫu dòng báo, nói bằng người dùng chứ không bằng tính từ: *"Bộ mặt: **Soft** (card nổi, font
   Be Vietnam Pro) vì chủ spa mở app giữa ca, xem card lịch hẹn nhiều hơn bảng. Muốn kiểu khác
-  thì nói: Clean, Dark Sidebar, Midnight, Inset, Paper, Float, Rail, Topbar."* Không viết "hiện đại", "sang".
+  thì nói: Clean, Dark Sidebar, Midnight, Inset, Paper, Float, Rail, Topbar, Editorial."* Không viết "hiện đại", "sang".
 
 **Ghi lại bộ đã chọn** để màn sau giữ đúng (`P1`, `P4`): dòng Bộ mặt trong `DESIGN.md`
 (`system.md`, `D10`) ghi cả tên bộ lẫn ba trục, cộng một dòng comment ngay trên khối font của
@@ -385,7 +386,7 @@ mắt chữ "ữ", "ợ", "ằ" ở cỡ nhỏ nhất của màn (`T5`). Project
 
 **Bẫy**
 
-- **Đừng tự chế bộ thứ mười** bằng cách lấy font của Soft ghép khung của Midnight. Chín bộ là chín
+- **Đừng tự chế bộ thứ mười một** bằng cách lấy font của Soft ghép khung của Midnight. Mười bộ là mười
   điểm xuất phát đã kiểm. Người dùng tự xin trộn ("Inset mà nền tối", "dải icon trong khối bọc")
   hay gửi ảnh tham chiếu thì làm theo họ, ghi đủ các trục vào `DESIGN.md`.
 - **Dark Sidebar: cả khung mang `force-dark`, không tô từng phần tử.** Logo, badge số, ô tìm,
@@ -416,11 +417,78 @@ mắt chữ "ữ", "ợ", "ằ" ở cỡ nhỏ nhất của màn (`T5`). Project
   là viên trắng có bóng nhẹ của `P7`, card trắng đặt thẳng trên nền xám (mục Mặt nền mở). Chỉ
   khi màn toàn card: bảng chạy hết bề ngang trên nền xám không có khối nào chứa thì trông như
   thủng. Ghi `Vùng chứa: canvas` vào `DESIGN.md`.
+- **Paper không viền, Inset xếp lớp là biến thể, không phải bộ mới.** Paper không viền khi màn là
+  danh sách, tài liệu đọc dọc, người dùng thành thạo đọc nhanh (`P14`); giữ bản kẻ khi màn có bảng
+  nhiều cột phải dò theo dòng. Inset xếp lớp khi màn có nhiều vùng con lồng nhau (cột board, nhóm
+  thẻ, panel bên) mà viền quanh từng vùng thành lưới khung (`P15`). Ghi `Bề mặt: borderless` hay
+  `Bề mặt: layered` vào `DESIGN.md`.
 - **Rail là một bộ, hai biến thể.** Chọn biến thể theo người dùng ở `U1`, ghi vào `DESIGN.md`
   (`Khung: rail-labeled`), lúc giao báo một dòng: *"Bộ mặt: **Rail** có nhãn vì chủ shop mở app
   vài lần một tuần, chưa thuộc icon. Muốn chỉ icon thì nói."*
 - **Float không bóng.** Sidebar nổi bằng khoảng cách và nền trắng trên xám, không bằng
   `shadow`: bóng là của lớp nổi (`M15`). Muốn có bóng thì đó là Soft.
+
+### P14. Không viền — tách nhóm bằng khoảng trắng và chữ ⚑
+
+Biến thể của Paper (`P13`). Một mặt phẳng trắng, **hầu như không card, không đường kẻ**: nhóm
+tách bằng khoảng trắng và tiêu đề. Đè luật card của `P6` cho khối nội dung, không đè control.
+
+- **Khoảng giữa hai nhóm từ `mt-10` (40px)**, gấp ít nhất 2,5 lần khoảng trong nhóm. Không có
+  đường kẻ thì khoảng trắng là tín hiệu duy nhất; hai khoảng gần bằng nhau thì người đọc không
+  biết đâu là hết nhóm (`N3`).
+- **Mỗi nhóm có tiêu đề** theo `T8`, cộng một câu phụ nếu cần. Không tiêu đề, không viền thì một
+  nhóm chỉ là một mảng chữ trôi.
+- **Ô số liệu không khung**: nhãn `text-sm text-muted` trên, số `text-2xl font-semibold
+  tabular-nums` dưới, các ô cách nhau `gap-x-12`. Thêm khung là quay về Flat.
+- **Bảng giữ một đường kẻ dưới hàng tiêu đề cột**, dòng không kẻ; dòng cao `h-12` và rê
+  `hover:bg-surface-hover` toàn dòng. Bảng từ 6 cột trở lên, phải dò theo dòng thì không dùng
+  biến thể này, giữ Paper kẻ.
+- **Control giữ nguyên viền**: ô nhập, select, nút viền vẫn có viền. Không viền là cho khối chứa,
+  không phải cho thứ bấm được: ô nhập không viền trên nền trắng là ô vô hình.
+- **Đường kẻ khung app còn lại**: `border-r` sidebar, `border-b` header theo Một mặt phẳng; chỉ
+  vùng nội dung bỏ kẻ.
+
+### P15. Xếp lớp — tách vùng bằng tông nền, không viền ⚑
+
+Biến thể của Inset (`P13`). Ba tầng nền chồng nhau, **không viền nào ở khối chứa**: chiều sâu
+đến từ tông nền, không từ đường kẻ hay bóng.
+
+| Tầng | Là gì | Sáng | Tối |
+| --- | --- | --- | --- |
+| 0 | Nền trang, điều hướng nằm trên | `--background` | `--background` |
+| 1 | Khối bọc nội dung | `--surface` | `--surface` |
+| 2 | Vùng con trong khối: cột board, nhóm, panel bên | `bg-foreground/4` | `bg-foreground/4` |
+| 3 | Thẻ, dòng trong vùng con | `--surface` | `--secondary` (lớp trắng 8% chồng lên tầng 2) |
+
+- **Tầng sau sáng hơn tầng trước ở nền tối** (`P10`). Tầng 2 dùng `foreground/4` vì nó tự đảo theo
+  nền. Thẻ tầng 3 ở nền tối **không** dùng `--surface` (tối hơn vùng chứa, trông như bị khoét) và
+  **không** dùng `--surface-overlay`: nó chỉ chênh tầng 2 khoảng 1 bậc, thẻ tan vào cột (đo trên
+  trang mẫu, 05/11/2026). Dùng `--secondary`, lớp trắng 8% chồng lên tầng 2, chênh ~18 bậc.
+- **Hai tầng kề nhau chênh ít nhất ~8 bậc độ sáng** (đo: sáng 11, 8, 8; tối 10, 9, 18); chênh ít hơn thì ranh giới biến mất, người
+  ta lại thêm viền. Không thêm tầng thứ năm: bốn tông xám lồng nhau là bẩn.
+- **Bỏ viền khối bọc, viền thẻ, viền vùng con.** Control giữ viền như `P14`.
+- **Vùng con bo lớn hơn thẻ bên trong một bậc** (`F1`, bo lồng nhau): vùng `rounded-2xl p-2`, thẻ
+  `rounded-xl`.
+
+### P16. Editorial — chữ lớn, lưới chặt, tương phản cao ⚑
+
+Bề mặt của bộ **Editorial** (`P13`). Trang đọc như một bản báo cáo in: **số và chữ là thứ nặng
+nhất**, không card, không nền màu.
+
+- **Thang chữ lớn hơn `budgets.md` một nấc cho tiêu đề và số**: tên trang `text-3xl
+  font-semibold tracking-tight`, số chính `text-5xl font-semibold tabular-nums tracking-tight`,
+  số phụ `text-2xl`. Chữ thân vẫn `text-sm` (`T6`): chỉ tiêu đề và số lớn lên.
+- **Nhãn nhỏ IN HOA**: `text-xs font-medium uppercase tracking-wider text-muted` trên mỗi số, mỗi
+  nhóm. IN HOA bằng CSS, chữ trong dữ liệu vẫn viết thường (như nhãn nhóm sidebar).
+- **Mỗi phần mở bằng một đường kẻ đậm** `border-t border-foreground` chạy hết bề ngang lưới, tên
+  phần ngay dưới. Đây là chỗ duy nhất được kẻ màu `--foreground`; dòng trong bảng vẫn
+  `--border-strong`. Kẻ đậm khắp nơi thì không còn gì nổi.
+- **Lưới 12 cột chặt**: mọi khối bắt đầu và kết thúc ở mép cột, khoảng giữa cột đều `gap-x-8`.
+  Không card nên mép cột là thứ duy nhất giữ trật tự.
+- **Biểu đồ đơn sắc cộng một màu nhấn**: chuỗi chính `--foreground`, chuỗi so sánh xám, màu nhấn
+  chỉ cho một điểm cần chú ý (`components/charts.md`). Không lưới nền dày.
+- **Không trang trí in ấn**: không vạch cắt góc, không ký hiệu, không số trang giả. Editorial là
+  thứ bậc chữ, không phải đạo cụ.
 
 ## Không có trong bảng
 
