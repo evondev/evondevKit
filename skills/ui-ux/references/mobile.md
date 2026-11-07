@@ -119,6 +119,9 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
 | Công tắc | 51×31 | bật là màu thành công hay `--primary` |
 | Sheet | bo 28 hai góc trên, thanh kéo 36×5 | `J6` |
 
+**Mẫu trong `components/` viết cho web** (chữ thân `text-sm`, dòng 40–48px). Chép khuôn sang app điện thoại thì cỡ chữ,
+chiều cao theo bảng trên: dòng thời gian, mô tả, danh sách lên chữ 16, chỗ bấm 44.
+
 **Cao trong bảng là cao tối thiểu**: thứ có chữ (dòng, nút, ô chọn, thẻ) dùng `min-h-*`, không `h-*`; chữ xuống dòng,
 không cắt. Người dùng bật chữ to trong máy (iOS khuyên app chịu được chữ to gấp đôi) thì dòng cao lên theo, không
 tràn chữ ra ngoài. Hàng có tên trái, số phải mà chật thì số xuống dòng dưới tên (`flex-wrap`), không đè nhau. Riêng
@@ -389,7 +392,8 @@ Code mẫu: các màn đăng nhập, nhập mã, bật thông báo, đơn hàng 
 
 **Rỗng**
 - **Màn gốc của tab chưa có gì** (chưa có đơn, chưa lưu món, chưa có thông báo) là ngoại lệ "màn chính chưa có gì"
-  của `components/empty-state.md`: khối giữa vùng trống, icon 36px trong vòng tròn 80px nền `--background`, tiêu đề
+  của `components/empty-state.md`: khối giữa vùng trống, hình theo `J16` (nhân vật rộng 35–50% màn; app không dùng
+  nhân vật thì icon 36px trong vòng tròn 80px nền `--background`), tiêu đề
   20px "Chưa có đơn nào", một câu `text-muted` nói thứ gì sẽ hiện ở đây, **một** nút chính dẫn tới việc làm nó đầy
   ("Xem menu"), nút rộng theo chữ, không giãn hết. Tiêu đề lớn của màn và thanh tab giữ nguyên chỗ.
 - **Hình**: phần lớn app dùng hình minh hoạ của thương hiệu, rộng 35–50% màn, ở chỗ này (11/24 màn rỗng đếm được,
@@ -437,7 +441,8 @@ người dùng gặp ngay lần gõ đầu.
 - **Wireframe và bản mẫu vẽ bàn phím** ở màn hay sheet bật bàn phím sẵn: khối `bg-[#d1d3d9]` dính đáy khung, cao
   khoảng 290px (bàn phím số ở khung 390×844; bàn phím chữ có hàng gợi ý khoảng 335px), che phần dưới như máy thật;
   bấm ra ngoài ô thì cụp. Màn có nút dính đáy thì nút nằm ngay trên khối đó. Không vẽ thì người duyệt thấy cả form,
-  chọn phương án mà không biết lúc gõ số tiền chỉ còn thấy nửa trên, hàng chọn người nằm dưới bàn phím.
+  chọn phương án mà không biết lúc gõ số tiền chỉ còn thấy nửa trên, hàng chọn người nằm dưới bàn phím. Code bàn phím
+  chữ và bàn phím số chép từ `layouts/mobile-playful.html` (màn Tên gọi, màn Nhập mã), không vẽ lại.
 
 ## J14. App quản lý, nhập liệu ⚑
 
@@ -622,6 +627,10 @@ Hai kiểu vẽ trong một app (người vẽ tay cạnh ảnh chụp) thì tr�
 
 Không ở màn làm việc lặp lại (danh sách, form, cài đặt, giỏ hàng) và không ở màn câu hỏi của onboarding: câu hỏi là
 tiêu đề lớn (`O8`).
+
+**App lấy ảnh chụp làm chủ thì không dùng nhân vật vẽ tay**: bộ mặt Photo (`J15`), app đặt món, bán hàng (`J11`), đặt
+phòng. Màn xong, rỗng của các app này dùng icon trong vòng tròn 80px (`J12`) hay ảnh thật của món, của phòng. Người vẽ
+tay đứng giữa toàn ảnh đồ uống chụp thật là hai kiểu vẽ trong một app, trông như ghép từ hai nơi.
 
 **Lúc giao** nói một dòng: nhân vật là bộ free giữ chỗ (CC0); có bộ hình thương hiệu thì thay ở một chỗ, đoạn script
 gán `img[data-art]` theo tên nhân vật và nét mặt. Bảng luồng (`J1`) giữ móc `data-art` khi chép màn.

@@ -26,6 +26,7 @@
         --surface: #ffffff;
         --foreground: #2c2c2c;
         --muted: #707070;
+        /* Đậm hơn tokens.css (#f7f7f8): app điện thoại nền trắng, vạch ngăn dòng phải thấy được (J1). */
         --border: #f0f0f2;
         --border-strong: #eaeaea;
         --secondary: #e7e8ec;
@@ -251,7 +252,7 @@
         <header class="pad-top shrink-0 bg-(--screen-bg)">
           <div class="flex h-11 items-center justify-between px-2">
             <a href="#home" class="press inline-flex h-11 items-center gap-0.5 rounded-full pr-3 pl-1 text-base" aria-label="Quay lại Tổng quan"><i data-lucide="chevron-left" class="size-6"></i>Tổng quan</a>
-            <p class="absolute left-1/2 -translate-x-1/2 text-[17px] font-semibold">Giao dịch</p>
+            <p class="absolute inset-x-0 mx-auto w-fit text-[17px] font-semibold">Giao dịch</p>
             <button class="press grid size-11 place-items-center rounded-full" aria-label="Sửa"><i data-lucide="pencil" class="size-5"></i></button>
           </div>
         </header>
@@ -381,7 +382,7 @@
         <p class="translate-y-2 rounded-full bg-foreground px-4 py-3 text-sm font-medium text-white opacity-0 shadow-lg transition-all duration-200" data-toast>Đã lưu giao dịch 45.000 đ</p>
       </div>
 
-      <div class="home-indicator pointer-events-none absolute bottom-2 left-1/2 z-[70] h-[5px] w-[134px] -translate-x-1/2 rounded-full bg-foreground" aria-hidden="true"></div>
+      <div class="home-indicator pointer-events-none absolute bottom-2 inset-x-0 mx-auto z-[70] h-[5px] w-[134px] rounded-full bg-foreground" aria-hidden="true"></div>
     </div>
 
     <!-- Bảng luồng (J1): script dựng từ danh sách màn, mỗi <ol data-flow> một hàng. -->
@@ -473,6 +474,8 @@
             deviceCopy.querySelectorAll(".screen:not(.is-active), .sheet:not(.is-open), .scrim:not(.is-open), [data-toast], [hidden]").forEach((element) => element.remove());
             // Bản chép không mang móc của script (data-screen, data-tab…): probe và script chỉ thấy máy thật. Giữ data-lucide và
             // data-art (nhân vật J16) vì hai script đó gán hình sau khi bảng dựng xong.
+            // Bỏ name, id, for: radio cùng name ở bản chép giành mất dấu chọn của máy thật (sheet món mất "Vừa", giá sai).
+            deviceCopy.querySelectorAll("[name], [id], [for]").forEach((element) => ["name", "id", "for"].forEach((attribute) => element.removeAttribute(attribute)));
             [deviceCopy, ...deviceCopy.querySelectorAll("*")].forEach((element) => {
               [...element.attributes].filter((attribute) => attribute.name.startsWith("data-") && attribute.name !== "data-lucide" && !attribute.name.startsWith("data-art")).forEach((attribute) => element.removeAttribute(attribute.name));
             });

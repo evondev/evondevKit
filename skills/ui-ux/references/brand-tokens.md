@@ -73,7 +73,7 @@ hay theo sáo ("spa thì hồng"); muốn sửa thì đo lại.
 | --- | --- | --- |
 | Tài chính, kế toán, ngân hàng | xanh dương, chàm 5/8; cam, xanh lá lẻ | Xanh dương · Xanh lá · Cam |
 | Y tế, phòng khám, nha khoa | xanh dương 2, xanh ngọc 1, vàng 1 trên 4 | Xanh ngọc · Xanh dương · Tím |
-| Đồ ăn, nhà hàng, giao đồ ăn | đỏ, đỏ cam 3/3 | Cam · Xanh lá · Chàm |
+| Đồ ăn, nhà hàng, giao đồ ăn; đồ uống, cà phê, trà sữa (gộp vào đây, chưa đo riêng) | đỏ, đỏ cam 3/3 | Cam · Xanh lá · Chàm |
 | Spa, làm đẹp, đặt lịch | tím 1, cam 2, vàng 1 trên 4: **không có quy ước rõ** | Tím · Cam · Xanh ngọc |
 | Bán lẻ, cửa hàng, bán hàng tại quầy | xanh dương 4, xanh lá 2 trên 6 | Xanh dương · Xanh lá · Cam |
 | Giáo dục, khoá học | xanh dương 3, tím vàng 1 trên 4 | Xanh dương · Tím · Cam |

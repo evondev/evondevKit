@@ -29,6 +29,7 @@
         --surface: #ffffff;
         --foreground: #2c2c2c;
         --muted: #707070;
+        /* Đậm hơn tokens.css (#f7f7f8): app điện thoại nền trắng, vạch ngăn dòng phải thấy được (J1). */
         --border: #f0f0f2;
         --border-strong: #e3e3e7;
         --secondary: #e7e8ec;
@@ -673,7 +674,7 @@
         </div>
       </section>
 
-      <div class="home-indicator pointer-events-none absolute bottom-2 left-1/2 z-[70] h-[5px] w-[134px] -translate-x-1/2 rounded-full bg-foreground" aria-hidden="true"></div>
+      <div class="home-indicator pointer-events-none absolute bottom-2 inset-x-0 mx-auto z-[70] h-[5px] w-[134px] rounded-full bg-foreground" aria-hidden="true"></div>
     </div>
 
     <!-- Bảng luồng (chỉ màn rộng, cho người duyệt): dựng bằng script từ danh sách màn, mỗi data-flow một hàng. -->
@@ -750,6 +751,8 @@
             deviceCopy.querySelectorAll(".screen:not(.is-active), .sheet:not(.is-open), .scrim:not(.is-open), [data-toast], [hidden]").forEach((element) => element.remove());
             // Bản chép không mang móc của script (data-screen, data-tab…): probe và script chỉ thấy máy thật. Giữ data-lucide và
             // data-art (nhân vật J16) vì hai script đó gán hình sau khi bảng dựng xong.
+            // Bỏ name, id, for: radio cùng name ở bản chép giành mất dấu chọn của máy thật (sheet món mất "Vừa", giá sai).
+            deviceCopy.querySelectorAll("[name], [id], [for]").forEach((element) => ["name", "id", "for"].forEach((attribute) => element.removeAttribute(attribute)));
             [deviceCopy, ...deviceCopy.querySelectorAll("*")].forEach((element) => {
               [...element.attributes].filter((attribute) => attribute.name.startsWith("data-") && attribute.name !== "data-lucide" && !attribute.name.startsWith("data-art")).forEach((attribute) => element.removeAttribute(attribute.name));
             });

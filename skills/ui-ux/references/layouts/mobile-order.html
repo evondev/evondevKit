@@ -26,6 +26,7 @@
         --surface: #ffffff;
         --foreground: #2c2c2c;
         --muted: #707070;
+        /* Đậm hơn tokens.css (#f7f7f8): app điện thoại nền trắng, vạch ngăn dòng phải thấy được (J1). */
         --border: #f0f0f2;
         --border-strong: #eaeaea;
         --secondary: #e7e8ec;
@@ -36,7 +37,7 @@
         /* Cuống phiếu ưu đãi (J11): nền nhạt + chữ đậm cùng sắc, chữ đạt 4.5:1 trên nền của nó. */
         --cat-amber-bg: #fff1d6; --cat-amber: #a35c00;
         --cat-blue-bg: #e3efff;  --cat-blue: #1d5fbf;
-        --cat-green-bg: #dff5ea;
+        --cat-green-bg: #dff5ea; --cat-green: #00754e; /* chữ trên nền xanh nhạt: --success chỉ 3.99:1, cái này 5.03:1 */
         --avatar-bg: #ffd8c2;    --avatar-text: #8a3b12;
 
         /* Thẻ thành viên (J5, J11): nền tối trung tính, không theo màu nhấn. */
@@ -192,19 +193,19 @@
           <ul class="mt-1 divide-y divide-border px-4">
             <li class="flex gap-3 py-3">
               <a href="#item" class="press flex min-w-0 flex-1 gap-3"><img src="https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=240&q=80&auto=format&fit=crop" alt="" class="size-[88px] shrink-0 rounded-2xl object-cover" />
-                <span class="min-w-0"><span class="block text-base font-medium">Cà phê sữa đá</span><span class="mt-0.5 block text-[13px] text-muted">Robusta Đắk Lắk pha phin, sữa đặc</span><span class="mt-1.5 block text-base font-semibold tabular-nums">35.000đ</span></span>
+                <span class="min-w-0"><span class="block text-base font-medium">Cà phê sữa đá</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Robusta Đắk Lắk pha phin, sữa đặc</span><span class="mt-1.5 block text-base font-semibold tabular-nums">35.000đ</span></span>
               </a>
               <a href="#item" class="press grid size-11 shrink-0 place-items-center self-end rounded-full bg-primary text-primary-foreground" aria-label="Chọn Cà phê sữa đá"><i data-lucide="plus" class="size-5"></i></a>
             </li>
             <li class="flex gap-3 py-3">
               <a href="#item" class="press flex min-w-0 flex-1 gap-3"><img src="https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=240&q=80&auto=format&fit=crop" alt="" class="size-[88px] shrink-0 rounded-2xl object-cover" />
-                <span class="min-w-0"><span class="block text-base font-medium">Bạc xỉu</span><span class="mt-0.5 block text-[13px] text-muted">Nhiều sữa, ít cà phê, hợp người mới uống</span><span class="mt-1.5 block text-base font-semibold tabular-nums">39.000đ</span></span>
+                <span class="min-w-0"><span class="block text-base font-medium">Bạc xỉu</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Nhiều sữa, ít cà phê, hợp người mới uống</span><span class="mt-1.5 block text-base font-semibold tabular-nums">39.000đ</span></span>
               </a>
               <a href="#item" class="press grid size-11 shrink-0 place-items-center self-end rounded-full bg-primary text-primary-foreground" aria-label="Chọn Bạc xỉu"><i data-lucide="plus" class="size-5"></i></a>
             </li>
             <li class="flex gap-3 py-3">
               <a href="#item" class="press flex min-w-0 flex-1 gap-3"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=240&q=80&auto=format&fit=crop" alt="" class="size-[88px] shrink-0 rounded-2xl object-cover" />
-                <span class="min-w-0"><span class="block text-base font-medium">Latte đá muối kem phô mai Đà Lạt</span><span class="mt-0.5 block text-[13px] text-muted">Espresso, sữa tươi, lớp kem muối phô mai béo mặn</span><span class="mt-1.5 flex items-baseline gap-2"><span class="text-base font-semibold tabular-nums">49.000đ</span><span class="text-[13px] text-muted line-through tabular-nums">59.000đ</span></span></span>
+                <span class="min-w-0"><span class="block text-base font-medium">Latte đá muối kem phô mai Đà Lạt</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Espresso, sữa tươi, lớp kem muối phô mai béo mặn</span><span class="mt-1.5 flex items-baseline gap-2"><span class="text-base font-semibold tabular-nums">49.000đ</span><span class="text-[13px] text-muted line-through tabular-nums">59.000đ</span></span></span>
               </a>
               <a href="#item" class="press grid size-11 shrink-0 place-items-center self-end rounded-full bg-primary text-primary-foreground" aria-label="Chọn Latte đá muối kem phô mai Đà Lạt"><i data-lucide="plus" class="size-5"></i></a>
             </li>
@@ -214,7 +215,7 @@
           <ul class="mt-1 divide-y divide-border px-4">
             <li class="flex gap-3 py-3">
               <a href="#item" class="press flex min-w-0 flex-1 gap-3"><img src="https://images.unsplash.com/photo-1751563721808-3b81940b88f7?w=240&q=80&auto=format&fit=crop" alt="" class="size-[88px] shrink-0 rounded-2xl object-cover" />
-                <span class="min-w-0"><span class="flex items-center gap-2"><span class="text-base font-medium">Matcha latte Tây Bắc</span></span><span class="mt-0.5 block text-[13px] text-muted">Bán chạy · Matcha Yên Bái, sữa tươi</span><span class="mt-1.5 block text-base font-semibold tabular-nums">55.000đ</span></span>
+                <span class="min-w-0"><span class="flex items-center gap-2"><span class="text-base font-medium">Matcha latte Tây Bắc</span></span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Bán chạy · Matcha Yên Bái, sữa tươi</span><span class="mt-1.5 block text-base font-semibold tabular-nums">55.000đ</span></span>
               </a>
               <a href="#item" class="press grid size-11 shrink-0 place-items-center self-end rounded-full bg-primary text-primary-foreground" aria-label="Chọn Matcha latte Tây Bắc"><i data-lucide="plus" class="size-5"></i></a>
             </li>
@@ -224,7 +225,7 @@
           <ul class="mt-1 divide-y divide-border px-4">
             <li class="flex gap-3 py-3">
               <a href="#item" class="press flex min-w-0 flex-1 gap-3"><img src="https://images.unsplash.com/photo-1676693420436-7fa448f054eb?w=240&q=80&auto=format&fit=crop" alt="" class="size-[88px] shrink-0 rounded-2xl object-cover" />
-                <span class="min-w-0"><span class="block text-base font-medium">Trà đào cam sả</span><span class="mt-0.5 block text-[13px] text-muted">Đào ngâm, cam vàng, sả tươi</span><span class="mt-1.5 block text-base font-semibold tabular-nums">49.000đ</span></span>
+                <span class="min-w-0"><span class="block text-base font-medium">Trà đào cam sả</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Đào ngâm, cam vàng, sả tươi</span><span class="mt-1.5 block text-base font-semibold tabular-nums">49.000đ</span></span>
               </a>
               <a href="#item" class="press grid size-11 shrink-0 place-items-center self-end rounded-full bg-primary text-primary-foreground" aria-label="Chọn Trà đào cam sả"><i data-lucide="plus" class="size-5"></i></a>
             </li>
@@ -234,7 +235,7 @@
           <ul class="mt-1 divide-y divide-border px-4">
             <li class="flex gap-3 py-3">
               <a href="#item" class="press flex min-w-0 flex-1 gap-3"><img src="https://images.unsplash.com/photo-1691480162735-9b91238080f6?w=240&q=80&auto=format&fit=crop" alt="" class="size-[88px] shrink-0 rounded-2xl object-cover" />
-                <span class="min-w-0"><span class="block text-base font-medium">Croissant bơ</span><span class="mt-0.5 block text-[13px] text-muted">Nướng mỗi sáng</span><span class="mt-1.5 block text-base font-semibold tabular-nums">29.000đ</span></span>
+                <span class="min-w-0"><span class="block text-base font-medium">Croissant bơ</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Nướng mỗi sáng</span><span class="mt-1.5 block text-base font-semibold tabular-nums">29.000đ</span></span>
               </a>
               <!-- Món không có lựa chọn bắt buộc: "+" thêm thẳng vào giỏ, báo bằng thông báo ngắn (J7). -->
               <button class="press grid size-11 shrink-0 place-items-center self-end rounded-full bg-primary text-primary-foreground" aria-label="Thêm Croissant bơ vào giỏ" data-quick-add="Croissant bơ" data-price="29000"><i data-lucide="plus" class="size-5"></i></button>
@@ -242,7 +243,7 @@
             <!-- Hết hàng (S8): ảnh mờ, dòng "Hết hôm nay", không có nút "+". Vẫn ở chỗ cũ trong danh mục, không giấu. -->
             <li class="flex gap-3 py-3">
               <span class="flex min-w-0 flex-1 gap-3"><img src="https://images.unsplash.com/photo-1681218079567-35aef7c8e7e4?w=240&q=80&auto=format&fit=crop" alt="" class="size-[88px] shrink-0 rounded-2xl object-cover opacity-50 grayscale" />
-                <span class="min-w-0"><span class="block text-base font-medium text-muted">Croissant hạnh nhân</span><span class="mt-0.5 block text-[13px] text-muted">Hết hôm nay · có lại 7:00 sáng mai</span><span class="mt-1.5 block text-base font-semibold text-muted tabular-nums">35.000đ</span></span>
+                <span class="min-w-0"><span class="block text-base font-medium text-muted">Croissant hạnh nhân</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Hết hôm nay · có lại 7:00 sáng mai</span><span class="mt-1.5 block text-base font-semibold text-muted tabular-nums">35.000đ</span></span>
               </span>
             </li>
           </ul>
@@ -252,7 +253,7 @@
             <!-- Món không ảnh (S16 ca biên): ô nền xám cùng cỡ, icon giữa, dòng không lệch. -->
             <li class="flex gap-3 py-3">
               <span class="flex min-w-0 flex-1 gap-3"><span class="grid size-[88px] shrink-0 place-items-center rounded-2xl bg-background text-muted"><i data-lucide="cup-soda" class="size-7"></i></span>
-                <span class="min-w-0"><span class="block text-base font-medium">Nước suối</span><span class="mt-0.5 block text-[13px] text-muted">Chai 500ml</span><span class="mt-1.5 block text-base font-semibold tabular-nums">15.000đ</span></span>
+                <span class="min-w-0"><span class="block text-base font-medium">Nước suối</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Chai 500ml</span><span class="mt-1.5 block text-base font-semibold tabular-nums">15.000đ</span></span>
               </span>
               <button class="press grid size-11 shrink-0 place-items-center self-end rounded-full bg-primary text-primary-foreground" aria-label="Thêm Nước suối vào giỏ" data-quick-add="Nước suối" data-price="15000"><i data-lucide="plus" class="size-5"></i></button>
             </li>
@@ -265,7 +266,7 @@
         <header class="pad-top shrink-0 bg-(--screen-bg)">
           <div class="relative flex h-11 items-center px-2">
             <a href="#menu" class="press inline-flex h-11 items-center gap-0.5 rounded-full pr-3 pl-1 text-base" aria-label="Quay lại Đặt món"><i data-lucide="chevron-left" class="size-6"></i>Đặt món</a>
-            <p class="absolute left-1/2 -translate-x-1/2 text-[17px] font-semibold">Giỏ hàng</p>
+            <p class="absolute inset-x-0 mx-auto w-fit text-[17px] font-semibold">Giỏ hàng</p>
           </div>
         </header>
         <div class="scroll pb-4">
@@ -377,7 +378,7 @@
         </div>
         <!-- Nút chính dính đáy (J5): 52px, cách hai mép 16px, ghi tổng tiền. Không thanh màu tràn sát mép. -->
         <div class="shrink-0 border-t border-border bg-surface px-4 pt-3" style="padding-bottom: calc(var(--inset-bottom) + 12px)">
-          <a href="#login" class="press flex h-[52px] items-center justify-center gap-2 rounded-2xl bg-primary text-base font-semibold text-primary-foreground">Đặt hàng<span class="font-normal opacity-70">·</span><span class="tabular-nums">135.300đ</span></a>
+          <a href="#login" class="press flex h-[52px] items-center justify-center gap-2 rounded-2xl bg-primary text-base font-semibold text-primary-foreground">Đặt hàng<span class="font-normal">·</span><span class="tabular-nums">135.300đ</span></a>
         </div>
       </section>
 
@@ -413,15 +414,15 @@
           <ul class="mt-2 space-y-3 px-4">
             <li><a href="#cart" class="press flex min-h-[104px] overflow-hidden rounded-2xl bg-surface ring-1 ring-border-strong ring-inset">
               <span class="flex w-24 shrink-0 flex-col items-center justify-center bg-(--cat-amber-bg) text-(--cat-amber)"><span class="text-[28px]/[32px] font-bold tabular-nums">15%</span><span class="text-xs font-medium">Đơn thứ 2</span></span>
-              <span class="min-w-0 flex-1 border-l border-dashed border-border-strong px-4 py-3"><span class="block text-base font-medium">Giảm 15% đơn thứ 2 trong ngày</span><span class="mt-0.5 block text-[13px] text-muted">Mọi kênh · tối đa 30.000đ</span><span class="mt-1 block text-[13px] font-medium text-danger">Hết hạn sau 13 giờ</span></span>
+              <span class="min-w-0 flex-1 border-l border-dashed border-border-strong px-4 py-3"><span class="block text-base font-medium">Giảm 15% đơn thứ 2 trong ngày</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Mọi kênh · tối đa 30.000đ</span><span class="mt-1 block text-[13px] font-medium text-danger">Hết hạn sau 13 giờ</span></span>
             </a></li>
             <li><a href="#cart" class="press flex min-h-[104px] overflow-hidden rounded-2xl bg-surface ring-1 ring-border-strong ring-inset">
               <span class="flex w-24 shrink-0 flex-col items-center justify-center bg-(--cat-blue-bg) text-(--cat-blue)"><span class="text-[28px]/[32px] font-bold tabular-nums">35%</span><span class="text-xs font-medium">Giao hàng</span></span>
-              <span class="min-w-0 flex-1 border-l border-dashed border-border-strong px-4 py-3"><span class="block text-base font-medium">Giảm 35% và miễn phí giao cho đơn từ 5 ly</span><span class="mt-0.5 block text-[13px] text-muted">Tối đa 500.000đ</span><span class="mt-1 block text-[13px] text-muted">Hạn đến 14/10</span></span>
+              <span class="min-w-0 flex-1 border-l border-dashed border-border-strong px-4 py-3"><span class="block text-base font-medium">Giảm 35% và miễn phí giao cho đơn từ 5 ly</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Tối đa 500.000đ</span><span class="mt-1 block text-[13px] text-muted">Hạn đến 14/10</span></span>
             </a></li>
             <li><a href="#cart" class="press flex min-h-[104px] overflow-hidden rounded-2xl bg-surface ring-1 ring-border-strong ring-inset">
-              <span class="flex w-24 shrink-0 flex-col items-center justify-center bg-(--cat-green-bg) text-success"><span class="text-[28px]/[32px] font-bold">Free</span><span class="text-xs font-medium">Bánh</span></span>
-              <span class="min-w-0 flex-1 border-l border-dashed border-border-strong px-4 py-3"><span class="block text-base font-medium">Tặng một bánh bất kỳ khi mua ly lớn</span><span class="mt-0.5 block text-[13px] text-muted">Tại quầy</span><span class="mt-1 block text-[13px] text-muted">Hạn đến 31/10</span></span>
+              <span class="flex w-24 shrink-0 flex-col items-center justify-center bg-(--cat-green-bg) text-(--cat-green)"><span class="text-[28px]/[32px] font-bold">Free</span><span class="text-xs font-medium">Bánh</span></span>
+              <span class="min-w-0 flex-1 border-l border-dashed border-border-strong px-4 py-3"><span class="block text-base font-medium">Tặng một bánh bất kỳ khi mua ly lớn</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Tại quầy</span><span class="mt-1 block text-[13px] text-muted">Hạn đến 31/10</span></span>
             </a></li>
           </ul>
         </div>
@@ -539,7 +540,7 @@
           <!-- Ảnh món to trên đầu sheet (J11), thanh kéo và nút đóng nổi trên ảnh. -->
           <div class="relative h-64 bg-background">
             <img src="https://images.unsplash.com/photo-1751563721808-3b81940b88f7?w=800&q=80&auto=format&fit=crop" alt="Ly matcha latte đá" class="size-full object-cover" />
-            <span class="absolute top-2 left-1/2 h-[5px] w-9 -translate-x-1/2 rounded-full bg-white/80" aria-hidden="true"></span>
+            <span class="absolute top-2 inset-x-0 mx-auto h-[5px] w-9 rounded-full bg-white/80" aria-hidden="true"></span>
           </div>
 
           <div class="px-4 pt-4">
@@ -633,7 +634,7 @@
         <div class="flex justify-center pt-2"><span class="h-[5px] w-9 rounded-full bg-border-strong" aria-hidden="true"></span></div>
         <div class="relative flex h-11 items-center px-2">
           <a href="#cart" class="press inline-flex h-11 items-center rounded-full px-3 text-base text-muted" data-close>Huỷ</a>
-          <p class="absolute left-1/2 -translate-x-1/2 text-[17px] font-semibold">Đăng nhập</p>
+          <p class="absolute inset-x-0 mx-auto w-fit text-[17px] font-semibold">Đăng nhập</p>
         </div>
         <div class="overflow-y-auto px-4 pt-3" style="padding-bottom: calc(var(--inset-bottom) + 16px)">
           <h2 class="text-[20px]/[25px] font-semibold">Đăng nhập để đặt hàng</h2>
@@ -661,7 +662,7 @@
         <div class="flex justify-center pt-2"><span class="h-[5px] w-9 rounded-full bg-border-strong" aria-hidden="true"></span></div>
         <div class="relative flex h-11 items-center px-2">
           <a href="#login" class="press grid size-11 place-items-center rounded-full" aria-label="Quay lại nhập số"><i data-lucide="chevron-left" class="size-6"></i></a>
-          <p class="absolute left-1/2 -translate-x-1/2 text-[17px] font-semibold">Nhập mã</p>
+          <p class="absolute inset-x-0 mx-auto w-fit text-[17px] font-semibold">Nhập mã</p>
         </div>
         <div class="overflow-y-auto px-4 pt-3" style="padding-bottom: calc(var(--inset-bottom) + 16px)">
           <p class="text-base text-muted">Mã 6 số vừa gửi tới</p>
@@ -704,7 +705,7 @@
         <p class="translate-y-2 rounded-full bg-foreground px-4 py-3 text-sm font-medium text-white opacity-0 shadow-lg transition-all duration-200" data-toast></p>
       </div>
 
-      <div class="home-indicator pointer-events-none absolute bottom-2 left-1/2 z-[70] h-[5px] w-[134px] -translate-x-1/2 rounded-full bg-foreground" aria-hidden="true"></div>
+      <div class="home-indicator pointer-events-none absolute bottom-2 inset-x-0 mx-auto z-[70] h-[5px] w-[134px] rounded-full bg-foreground" aria-hidden="true"></div>
     </div>
 
     <script>

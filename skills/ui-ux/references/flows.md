@@ -33,7 +33,9 @@ Onboarding là luồng hay hỏng nhất, nên các luật dưới bắt đầu 
 Hai loại **nối nhau**: loại 2 xong thì người dùng rơi vào app, và loại 1 tiếp quản. Đề "dựng
 onboarding" không nói loại nào thì `U1` tự chọn theo nền tảng và ghi một dòng trong brief để
 người dùng sửa ở cổng 1, không thêm cổng hỏi: app mobile hoặc sản phẩm có cá nhân hoá thì dựng
-loại 2 rồi loại 1; app web làm việc (SaaS, quản lý) thì đăng ký gọn rồi dựng loại 1. Đề nói "xin
+loại 2 rồi loại 1, **trừ app mua bán, đặt món, đặt lịch**: vào thẳng app, chỉ hỏi đăng nhập lúc cần biết ai đặt
+(`J12`), nên không có chuỗi màn vào lần đầu, kể cả khi đề gọi là "onboarding" (khi đó là chọn cách nhận, nơi nhận,
+xin vị trí đúng lúc); app web làm việc (SaaS, quản lý) thì đăng ký gọn rồi dựng loại 1. Đề nói "xin
 quyền", "hỏi sở thích", "màn chào", "welcome screens" là loại 2. Đề nói "checklist", "hướng dẫn
 trong app", "người mới vào dashboard" là loại 1.
 
