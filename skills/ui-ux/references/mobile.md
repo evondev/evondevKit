@@ -836,3 +836,40 @@ khác ở các chỗ dưới đây, và chỗ nào khác thì luật này thắn
 - **Vẽ bằng gì.** Bản mẫu HTML thuần không có `package.json` thì vẽ SVG bằng tay theo công thức của `charts.md`. Dự án
   có thư viện thì theo "Vẽ bằng thư viện"; hàng đọc số và vạch chọn vẫn theo luật trên (Recharts: ẩn tooltip mặc định,
   đọc mốc đang chọn rồi ghi vào hàng đọc số).
+
+## J18. Lối trình diễn ⚑
+
+Bản thực dụng (`J1`–`J17`) đúng luật nhưng phẳng và dày: người xem bản mẫu thấy "đúng" mà không thấy "muốn dùng". Lối
+trình diễn giữ nguyên luồng, màn, nội dung, chỉ đổi cách trình bày theo công thức chung của các bản mẫu app được khen
+nhiều. Code mẫu: `layouts/mobile-showcase.html` (ba màn app đếm kcal).
+
+**Khi nào:** đề nói "đẹp", "gây ấn tượng", "trình bày khách", "như Dribbble", "nhìn sang", hay người dùng bật công tắc
+**Trình diễn** trên wireframe (`?show=1`, đứng sau nhóm Tab). Không tự bật: app quản lý, nhập liệu dày (`J14`) và
+app cho cửa hàng, công ty giữ bản thực dụng vì cần nhiều thông tin trên một màn. Ghép được với mọi bộ mặt `J15`; hợp nhất
+Tinted, Glow, Playful, Photo.
+
+**Công thức** (làm đủ, thiếu một hai thứ là về lại bản phẳng):
+- **Quầng màu đầu màn:** 2–3 `radial-gradient` từ màu nhấn và một sắc phụ cách 60–120° (`--accent`, chỉ dùng trong quầng),
+  mờ dần xuống nền trung tính ấm ở 55–60% chiều cao (`mask-image`). Chữ trên quầng là chữ tối. Màn danh sách thuần không cần
+  quầng.
+- **Tấm trắng trượt lên:** vùng "nhìn" (số chính, hình) nằm trên quầng; vùng "làm" (danh sách, form, nút) là tấm trắng bo
+  36 hai góc trên, bóng ngược mềm. Thay cho thẻ số chính nền đen của `J5`.
+- **Một điểm nhìn mỗi màn, cỡ lớn:** số chính 56–64px `font-extrabold tracking-[-0.04em]`, hay hình chính 180–200px (đồ vật
+  3D `J16`, ảnh cắt nền) có quầng trắng mờ phía sau và bóng bầu dục dưới đáy để vật đứng trên mặt.
+- **Font hình học có tiếng Việt:** Plus Jakarta Sans (mặc định), Lexend, Manrope, Be Vietnam Pro (đã kiểm có bộ
+  `vietnamese`). Tiêu đề màn 28–32 `font-extrabold`, chữ phụ 13.
+- **Bo to, không viền, bóng mềm ngả màu nhấn:** thẻ, dòng bo 20–24; khối nhấn bo 32. Tách khối bằng nền (`--soft`: 7% màu
+  nhấn pha xám nhạt) hay bóng `--shadow-card` lan rộng, không viền 1px, không vạch ngăn giữa các dòng.
+- **Nút tròn trắng nổi 44px** cho quay lại, thông báo, lưu, bớt thêm; nhãn nhỏ trên quầng là viên kính trắng 70%. Nút cam
+  kết là viên đen hay màu nhấn cao 56 hết bề ngang, số tiền hay số kcal trong nút.
+- **Ô icon pastel chuyển nhẹ** (`bg-linear-to-br from-amber-100 to-orange-50`) 52px bo 18 chứa đồ vật 3D 34px; mỗi danh mục
+  một cặp sắc cố định (`M8`). Ô số phụ (đạm, tinh bột, béo) nền pastel một sắc, nhãn bậc 700–800 cho đủ 4.5:1.
+- **Biểu đồ trong khối màu:** cột bo tròn hết `rounded-full`, cột chưa chọn trắng 45%, cột đang chọn trắng đặc có số và chấm
+  màu nhấn. Trong khối màu được đổi màu cột đang chọn (khác `J17` trên nền trắng) vì các cột kia là nền, không phải chuỗi.
+- **Thanh tab** `dark`, `pill` hay `glass` (`J2`); màn có hành động chính trên dòng (nút + ở bữa chưa ghi) thì không cần nút
+  nổi thêm.
+- **Bớt chữ:** mỗi dòng một tên đậm và một dòng phụ, bỏ nhãn lặp, bỏ câu giải thích; khoảng trắng tách khối thay tiêu đề nhỏ.
+
+**Vẫn giữ:** tương phản 4.5:1 (đo chữ ở chỗ quầng sáng nhất), chỗ bấm 44px, `J2` ẩn thanh tab ở màn phải làm cho xong, một
+hành động chính mỗi màn.
+

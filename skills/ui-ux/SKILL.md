@@ -457,7 +457,7 @@ thì một trong hai chỗ là sai.
 | **L** | `references/refactor.md` | Refactor codebase đã có |
 | **U** | `references/design-process.md` | Thiết kế từ đầu: brief, việc chính của từng màn, wireframe phương án, dựng |
 | **W** | `references/tailwind-v4-traps.md` | Bẫy Tailwind v4 khi có CSS cũ |
-| **J** | `references/mobile.md` | App điện thoại: khung máy và mép chừa, thanh tab sáu kiểu (Float, Center, Pill, Dark, Bubbles, Glass), đầu màn, kích cỡ cho ngón tay, hành động chính, sheet, phản hồi khi nhấn, app đặt món, mở app lần đầu, đăng nhập, xin quyền, rỗng, ô nhập và bàn phím, app quản lý nhập liệu (bảng thành danh sách, số lượng và đơn vị, chi tiết phiếu); tám bộ mặt Clean, Mono, Photo, Playful, Immersive, Editorial, Glow, Tinted (`J15`); nhân vật và minh hoạ: bộ của dự án, chưa có thì nhân vật CC0 sinh tại chỗ (`J16`); biểu đồ trên điện thoại: chạm thay rê, hàng đọc số, trục giá, màu danh mục, vòng và cung cho app sức khoẻ, thói quen (`J17`) ⚑ |
+| **J** | `references/mobile.md` | App điện thoại: khung máy và mép chừa, thanh tab sáu kiểu (Float, Center, Pill, Dark, Bubbles, Glass), đầu màn, kích cỡ cho ngón tay, hành động chính, sheet, phản hồi khi nhấn, app đặt món, mở app lần đầu, đăng nhập, xin quyền, rỗng, ô nhập và bàn phím, app quản lý nhập liệu (bảng thành danh sách, số lượng và đơn vị, chi tiết phiếu); tám bộ mặt Clean, Mono, Photo, Playful, Immersive, Editorial, Glow, Tinted (`J15`); nhân vật và minh hoạ: bộ của dự án, chưa có thì nhân vật CC0 sinh tại chỗ (`J16`); biểu đồ trên điện thoại: chạm thay rê, hàng đọc số, trục giá, màu danh mục, vòng và cung cho app sức khoẻ, thói quen (`J17`); lối trình diễn: quầng màu, tấm trắng trượt lên, một điểm nhìn lớn, font hình học (`J18`) ⚑ |
 | **P** | `references/styles.md` | Phong cách thị giác: flat, nổi, glass, gradient, tối; mười bộ mặt dashboard theo các trục điều hướng, vùng chứa, header, bề mặt, font (`P13`); bề mặt Không viền, Xếp lớp, Editorial (`P14`–`P16`); Sắc Neutral, Tinted, Vivid (`P17`). Luật nào được đè, bẫy riêng, **tương phản** |
 
 **Luôn mở, mọi task:**
@@ -514,7 +514,7 @@ năm câu bằng mắt, lúc giao nói một dòng *"X chưa có mẫu đã duy�
 `references/layouts/mobile-order.html` (app đặt món điện thoại, `J11`), `references/layouts/mobile-playful.html` (bộ mặt
 Playful, onboarding và bài tập, `J15`, `J16`), `references/layouts/mobile-photo.html` (bộ mặt Photo, đặt phòng),
 `references/layouts/mobile-immersive.html` (bộ mặt Immersive, thiền và sách nói), `references/layouts/mobile-tabbars.html`
-(sáu kiểu thanh tab, `J2`), `references/layouts/mobile-charts.html` (vòng và cung, `J17`)
+(sáu kiểu thanh tab, `J2`), `references/layouts/mobile-charts.html` (vòng và cung, `J17`), `references/layouts/mobile-showcase.html` (lối trình diễn, `J18`)
 
 ---
 

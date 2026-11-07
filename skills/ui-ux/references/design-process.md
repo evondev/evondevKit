@@ -369,7 +369,7 @@ dòng đó."* Dừng chờ.
   56px, nền trắng, viền dưới xám nhạt, chữ 14px, **không dính đỉnh**: thanh dính đè lên sidebar,
   header, panel `sticky top-0` của chính bản thiết kế, người xem thấy sidebar mất logo khi cuộn và
   tưởng bản dựng sẽ vậy. Các nhóm xếp liền từ trái, cách nhau
-  24px, theo thứ tự: Màn (đề nhiều màn) · **Phương án** · **Gọn chữ · Bỏ lặp** · **Màu** (công tắc) · Kiểu (dự án chưa có phong cách) · Tab (app điện thoại) · Nhấn (dự án chưa có brand) · Logo (dự án chưa có logo) · Khổ · Nav (mobile, ít mục)
+  24px, theo thứ tự: Màn (đề nhiều màn) · **Phương án** · **Gọn chữ · Bỏ lặp** · **Màu** (công tắc) · Kiểu (dự án chưa có phong cách) · Tab (app điện thoại) · Trình diễn (app điện thoại, công tắc `?show=1`, `J18`) · Nhấn (dự án chưa có brand) · Logo (dự án chưa có logo) · Khổ · Nav (mobile, ít mục)
   · **Trạng thái**.
   - **Đề nhiều màn** (lịch và hồ sơ, danh sách và chi tiết) thì một file, nhóm **Màn** đứng đầu
     (`?man=`), nhãn một hai chữ ("Lịch", "Hồ sơ"); mỗi màn có A, B, C riêng. **Ở 1280 thanh phải
