@@ -66,7 +66,7 @@ thì brand thắng, không gợi ý.
 `--primary-hover`, `--primary-light` và bản nền tối suy từ `--primary` như các mục bên dưới.
 
 **Ngành → ba màu gợi ý.** Cột giữa là số đo thật: màu chính trên trang chủ (trang chặn đọc thì icon app) của
-khoảng 95 sản phẩm, 14 ngành, đo 03/11/2026, chỉ đếm những trang đọc ra màu. Đừng sửa bảng theo trí nhớ
+khoảng 95 sản phẩm, 14 ngành, đo 03/11/2026 (hai ngành cuối 07/11/2026), chỉ đếm những trang đọc ra màu. Đừng sửa bảng theo trí nhớ
 hay theo sáo ("spa thì hồng"); muốn sửa thì đo lại.
 
 | Ngành ở `U1` | Đo được | Ba màu, màu đầu mặc định |
