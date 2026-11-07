@@ -796,6 +796,20 @@ khác ở các chỗ dưới đây, và chỗ nào khác thì luật này thắn
   kèm nên không bị đọc thành nút. Ô icon nền sắc đó `/10`, icon bậc 600–700 cho đủ 4.5:1. Danh mục thứ bảy trở đi gộp "Khác" `slate-300` trên
   biểu đồ, icon trong danh sách là ô `bg-secondary text-muted`. Sáu sắc avatar của `M34` (có emerald, amber) chỉ cho
   thực thể không lên biểu đồ.
+- **Vòng và cung** ⚑, code chép từ `layouts/mobile-charts.html` (một hàm `drawArc()`, SVG thuần). Ngoại lệ có tên của
+  "thanh, không vòng" (`charts.md`), chỉ cho **một con số so với một mục tiêu** ở app sức khoẻ, thể dục, ăn uống, giấc
+  ngủ, thói quen, tiết kiệm, và cho cơ cấu tối đa 4 phần. Các app này hầu như đều dùng vòng; thanh ở đây nhìn như form.
+  - **Vòng mục tiêu**: một vòng nét 14–16px trên khối 160–184px, rãnh cùng sắc nhạt (`--chart-fill` 14% pha trắng; nền
+    tối `white/10`), bắt đầu ở 12 giờ, đầu bo tròn. Số ở giữa là thứ to nhất thẻ, mục tiêu nhỏ bên dưới ("/ 8.000 bước"),
+    câu còn bao nhiêu ở dòng phụ. Vượt mục tiêu thì vòng đầy, số ghi thật.
+  - **Cung chia khúc** (kcal, nước): cung 240° hở phía dưới cho số, 8–10 khúc bo tròn, mỗi khúc dài gấp đôi bề dày (ngắn hơn
+    thì thành chấm tròn), khe 6px. Làm tròn xuống: chưa đủ một khúc thì chưa tô.
+  - **Vòng từng ngày**: bảy vòng 36px nét 4px dưới tên thứ, hôm nay chữ đậm cộng chấm dưới, ngày chưa tới chỉ có rãnh.
+    Chạm một ngày thì thẻ dưới đổi sang ngày đó.
+  - **Donut có khe**: tối đa 4 phần cộng "Khác", khe 8px thay viền trắng, đầu bo tròn, xếp lớn tới nhỏ từ 12 giờ, số tổng
+    ở giữa, bảng dưới có chấm màu, số và % (`N4`). Hợp thẻ nền tối (`J5`), thang phân loại bản tối của `charts.md`.
+  - Mỗi vòng `role="img"` với `aria-label` ghi số ("6.240 trên 8.000 bước, 78%"). Không hiệu ứng vẽ dần lúc vào màn,
+    như `charts.md`.
 - **Vẽ bằng gì.** Bản mẫu HTML thuần không có `package.json` thì vẽ SVG bằng tay theo công thức của `charts.md`. Dự án
   có thư viện thì theo "Vẽ bằng thư viện"; hàng đọc số và vạch chọn vẫn theo luật trên (Recharts: ẩn tooltip mặc định,
   đọc mốc đang chọn rồi ghi vào hàng đọc số).

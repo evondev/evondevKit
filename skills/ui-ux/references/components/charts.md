@@ -423,7 +423,9 @@ thay cho sparkline.
   375px chỉ 138px). Chữ và đuôi nằm trong **một** span, icon là con kia: để đuôi thành con thứ ba
   của `inline-flex gap-1` thì giữa "10%" và "so" thừa một khoảng.
 - **Thanh, không vòng.** Nguồn chia đôi giữa thanh và vòng, nhưng skill đã dùng thanh cho mọi tiến độ
-  (`N5`): một app một hình cho "đã được bao nhiêu". Vòng chỉ khi dự án đã dùng vòng.
+  (`N5`): một app một hình cho "đã được bao nhiêu". Vòng chỉ khi dự án đã dùng vòng, hoặc app điện thoại sức khoẻ, thể
+  dục, ăn uống, thói quen, tiết kiệm (vòng và cung của `J17` trong `../mobile.md`); app đó dùng vòng thì dùng vòng ở mọi
+  chỗ "đã được bao nhiêu".
 - **Màu thanh** theo thanh đứng riêng ở trên: đang chạy `bg-primary`, **đạt mục tiêu** `bg-emerald-600`.
   **Vượt mục tiêu**: thanh đầy, emerald, phần trăm vẫn ghi số thật "112% mục tiêu".
 - **Chậm nhịp** (chỉ khi dự án có nhịp kỳ vọng, cách tính là logic người dùng `N10`): thanh giữ
