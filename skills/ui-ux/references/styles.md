@@ -497,7 +497,12 @@ nhất**, không card, không nền màu.
 - **Lưới 12 cột chặt**: mọi khối bắt đầu và kết thúc ở mép cột, khoảng giữa cột đều `gap-x-8`.
   Không card nên mép cột là thứ duy nhất giữ trật tự.
 - **Biểu đồ đơn sắc cộng một màu nhấn**: chuỗi chính `--foreground`, chuỗi so sánh xám, màu nhấn
-  chỉ cho một điểm cần chú ý (`components/charts.md`). Không lưới nền dày.
+  chỉ cho một điểm cần chú ý (`components/charts.md`). Không lưới nền dày. **Nền tối chuỗi chính hạ
+  còn 70%** (`color-mix(in srgb, var(--foreground) 70%, transparent)`, khai một token cho cả biểu đồ,
+  chú giải, thanh trong bảng), như `--chart-fill` (`M32`): `--foreground` nguyên là gần trắng, bảy cột
+  thành khối chói nhất màn, điểm nhấn cam bên cạnh không còn nổi (bản dựng thử báo cáo tuần).
+- **Sắc**: Editorial chỉ đi với Neutral (`P17`). Trong một app đã chọn Tinted, trang Editorial vẫn
+  bỏ `--cat-*`: bảng chia theo kênh dùng thanh `--foreground`, không chấm màu kênh.
 - **Không trang trí in ấn**: không vạch cắt góc, không ký hiệu, không số trang giả. Editorial là
   thứ bậc chữ, không phải đạo cụ.
 

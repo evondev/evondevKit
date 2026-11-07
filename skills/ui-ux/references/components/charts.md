@@ -126,7 +126,9 @@ Ví dụ với Recharts / shadcn chart (vì hay gặp nhất, không phải vì 
 | Không hiệu ứng vào trang (`F23`) | `isAnimationActive={false}` trên mọi `<Line>`, `<Bar>`, `<Pie>` |
 | Số ghi trên đầu cột | `<LabelList position="top" />`, cùng màu `--muted`, `text-xs` |
 | Đường: chỉ chấm và số ở điểm cuối (hoặc điểm đang rê) | `dot={false}`, `activeDot` tắt, tự vẽ chấm + nhãn bằng `<ReferenceDot>` hoặc `label` theo chỉ số điểm đang chọn |
-| Không tooltip nổi cho đường | bỏ `<Tooltip>`, đọc điểm đang rê qua `onMouseMove` để dời chấm và số |
+| Không tooltip nổi cho đường | bỏ `<Tooltip>`, đọc điểm đang rê qua `onMouseMove` để dời chấm và số (bản dựng thử giữ `<Tooltip content={() => null} cursor={false} />` để Recharts tính `activeTooltipIndex` mà không vẽ hộp, không vạch dọc) |
+| Nhãn trục X đầu, cuối không lòi mép | `tick` tự vẽ: nhãn đầu `textAnchor="start"`, nhãn cuối `"end"`, còn lại `"middle"`. Mặc định `middle` cắt nửa chữ "09:20", "Bây giờ" ở hai mép (bản dựng thử) |
+| Đường ngưỡng (màn giám sát) | `<ReferenceLine y={150} stroke="rgb(239 68 68 / 0.6)" strokeDasharray="5 4" label={{ value: "Ngưỡng 150 ms", position: "insideTopLeft", dy: -18, fill: "var(--muted)", fontSize: 12 }} />`. Số của điểm đang xem nằm **dưới** chấm khi điểm dưới ngưỡng: đặt trên thì ở 375px nó đè lên nhãn ngưỡng (bản dựng thử) |
 | Cột bo góc | `radius={[8, 8, 0, 0]}` (cột nhóm hẹp: `[6, 6, 0, 0]`) |
 | Màu từ token, đúng thang đậm nhạt | `fill="var(--chart-fill)"` + `fillOpacity` theo bảng ở mục Màu, không để bảng màu mặc định của thư viện |
 | Donut | `<Pie innerRadius="72%" startAngle={90} endAngle={-270} paddingAngle={1} stroke="var(--surface)">`, dữ liệu đã xếp lớn dần |
@@ -372,6 +374,106 @@ desktop vẫn trống).
   - **Cả hàng đều chưa có** sparkline: bỏ hẳn chỗ giữ ở mọi cỡ màn, ô chỉ cao đến dòng so sánh.
 - `aria-hidden="true"` trên `<svg>`: xu hướng đã nói bằng chữ ở dòng so sánh.
 
+### Ô số tiến tới mục tiêu ⚑
+
+Chỉ số có mục tiêu trong kỳ (doanh thu tháng, số khách mới quý): dưới số chính là thanh tiến độ
+thay cho sparkline.
+
+```html
+<div class="@container flex min-w-0 flex-col p-5">
+  <p class="text-xs font-medium text-muted">Doanh thu tháng 11</p>
+  <p class="mt-1 text-xl font-semibold tracking-tight tabular-nums text-foreground sm:text-2xl">672<span class="ml-1 text-muted">tr đ</span></p>
+  <div class="relative mt-auto pt-4">
+    <div role="progressbar" aria-label="Doanh thu tháng 11 so với mục tiêu" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100" class="h-2 rounded-full bg-foreground/5">
+      <div class="h-2 rounded-full bg-primary" style="width: 67%"></div>
+    </div>
+    <!-- Vạch nhịp: chỗ lẽ ra phải tới hôm nay, chỉ khi có nhịp kỳ vọng. Cao hơn thanh, nhô lên trên;
+         ring màu nền tách vạch khỏi phần đã tô (thanh primary gần đen thì vạch tối vẫn thấy) -->
+    <div aria-hidden="true" class="absolute bottom-0 h-3.5 w-0.5 rounded-full bg-foreground/60 ring-2 ring-surface" style="left: 23%"></div>
+  </div>
+  <p class="mt-2 flex flex-col gap-0.5 text-xs text-muted tabular-nums @[17rem]:flex-row @[17rem]:items-baseline @[17rem]:justify-between">
+    <span class="whitespace-nowrap"><span class="font-medium text-foreground">67%</span> mục tiêu</span>
+    <span class="whitespace-nowrap">672 / 1.000 tr đ</span>
+  </p>
+</div>
+```
+
+- **Phần trăm và "đạt / mục tiêu" cùng hiện** (5/6 nguồn): trái "67% mục tiêu", phải "672 / 1.000 tr đ".
+  Chỉ phần trăm thì không biết mục tiêu bao nhiêu; chỉ phân số thì phải tự chia.
+- **Hai cụm đứng cạnh nhau hay xếp hai dòng theo bề rộng Ô, không theo bề rộng màn**: ô là
+  `@container`, dòng dưới `flex flex-col gap-0.5 @[17rem]:flex-row @[17rem]:items-baseline
+  @[17rem]:justify-between`, mỗi cụm `whitespace-nowrap`. Bốn ô cùng hàng cùng bề rộng nên cả hàng
+  cùng một kiểu. Theo `sm:` thì ở 1440px có sidebar ô chỉ còn ~248px chữ: "Chậm 10% so với nhịp" cạnh
+  "4.020 / 30.000" hết chỗ, phân số gãy "4.020 /" / "30.000" (chủ dự án chê "lệch"). Để `flex-wrap` thì ô
+  "4 / 4" một dòng, ô bên cạnh hai dòng.
+- **Đuôi câu rút theo ô**: `Chậm 10%<span class="@max-[12rem]:hidden"> so với nhịp</span>` (ô 2×2 ở
+  375px chỉ 138px). Chữ và đuôi nằm trong **một** span, icon là con kia: để đuôi thành con thứ ba
+  của `inline-flex gap-1` thì giữa "10%" và "so" thừa một khoảng.
+- **Thanh, không vòng.** Nguồn chia đôi giữa thanh và vòng, nhưng skill đã dùng thanh cho mọi tiến độ
+  (`N5`): một app một hình cho "đã được bao nhiêu". Vòng chỉ khi dự án đã dùng vòng.
+- **Màu thanh** theo thanh đứng riêng ở trên: đang chạy `bg-primary`, **đạt mục tiêu** `bg-emerald-600`.
+  **Vượt mục tiêu**: thanh đầy, emerald, phần trăm vẫn ghi số thật "112% mục tiêu".
+- **Chậm nhịp** (chỉ khi dự án có nhịp kỳ vọng, cách tính là logic người dùng `N10`): thanh giữ
+  `bg-primary`, thêm **vạch nhịp** (2/2 nguồn có vạch đánh dấu trên thanh) ở chỗ lẽ ra phải tới hôm nay,
+  và dòng phụ đổi trái thành "Chậm 12% so với nhịp" `text-amber-700` kèm icon. Không tô cả thanh
+  amber: như "Thanh trong danh sách", thanh chỉ nói đã được bao nhiêu.
+- **Chỉ số càng thấp càng tốt** (chi phí, hạn mức dùng) không phải mục tiêu mà là trần: theo thanh
+  dung lượng (amber, đỏ khi gần đầy).
+- **Một hàng một kiểu phần dưới**: cả hàng là sparkline, hoặc cả hàng là thanh mục tiêu. Hàng trộn
+  thì ô nào thiếu thì giữ chỗ cùng chiều cao như luật sparkline, nhưng nên tách ô mục tiêu ra một
+  hàng hay một card riêng.
+- **Chưa đặt mục tiêu**: ô về khuôn ô số thường, không thanh rỗng, không "0%".
+
 Biểu đồ cột nhiều mốc ở màn hẹp thì cho cả cụm cuộn ngang **trong khung riêng**
 bằng `overflow-x-auto` cộng một bề rộng tối thiểu cho cụm, đừng để nó đẩy cả
 trang. Xem luật `R1` trong `../responsive.md`.
+
+---
+
+## Heatmap theo ngày ⚑
+
+Số đếm theo từng ngày trong 12 tháng gần nhất: lượt hoạt động, buổi tập, ca trực, đơn mỗi ngày
+(3/3 nguồn dùng đúng ca này). Cái cần đọc là **nhịp** (ngày nào dày, tuần nào trống), không phải từng
+con số. Cần đọc số từng ngày, hay tiền theo ngày, thì là cột hoặc đường ("Cột hay đường").
+
+```
+1.284 lượt hoạt động trong 12 tháng qua
+     Th12  Th1   Th2   Th3   ...                         Th11
+T2   ▫ ▪ ▫ ■ ▪ ▫ ▫ ▪ ■ ▫ ...
+     ▪ ▫ ■ ▪ ▫ ▪ ▫ ▫ ▪ ▪ ...
+T4   ▫ ▪ ▫ ▫ ■ ▪ ▫ ▪ ▫ ■ ...
+     ...                     (7 hàng: T2 → CN, mỗi cột một tuần, tuần cũ bên trái)
+T6
+                                              Ít ▫ ▪ ▪ ■ ■ Nhiều
+```
+
+- **Năm bậc: rỗng + bốn mức** (4/4 nguồn). Rỗng `bg-foreground/5`, bốn mức là `--primary` ở
+  `/25`, `/50`, `/75` và đặc: màu nhấn có sắc (Cam, Xanh dương…) thì heatmap ra đúng sắc brand,
+  không cần thang riêng; màu nhấn gần đen thì ra thang xám. Một sắc, đậm dần (`M3`); không cầu vồng, ngày nhiều cũng không đổi sang màu báo động (`M4`). Chia mốc
+  bốn mức là logic người dùng (`N10`), thường theo phân vị của chính dữ liệu.
+- **Lưới giãn hết bề ngang card**, khe `gap-1`, bo `rounded-xs`: `grid grid-flow-col auto-cols-fr
+  grid-rows-[repeat(7,auto)] gap-1`, ô `aspect-square`. Khối lưới `min-w-[45rem]` (ô ~10px) để dưới mức
+  đó thì cuộn ngang. Ô cố định `size-3` (53 cột ≈ 850px) thì card 1100px chừa một mảng trống bên phải,
+  chú giải "Ít … Nhiều" lạc ra mép card cách lưới 400px (chủ dự án chê "lệch", 07/11/2026). Nhãn tháng
+  đặt theo phần trăm (`left: tuần / 53 × 100%`); cột nhãn T2/T4/T6 là một lưới `grid-rows-7 gap-1` cao
+  bằng lưới ô (cột `flex flex-col pt-6`, lưới `flex-1`) để nhãn luôn thẳng hàng ô dù ô to nhỏ.
+- **Hàng từ Thứ 2 tới Chủ nhật**, tuần theo lịch Việt Nam (`T28`). Nhãn ngày chỉ ghi **T2, T4, T6**
+  `text-xs text-muted` bên trái (2/2 nguồn chỉ ghi cách một), các hàng khác vẫn có tên cho trình đọc
+  màn hình. Nhãn tháng `Th1`…`Th12` trên đầu, ở cột chứa ngày đầu tháng.
+- **Tiêu đề nói tổng**: "1.284 lượt hoạt động trong 12 tháng qua". **Chú giải "Ít ▫▪■ Nhiều"** góc dưới
+  phải (2/2 nguồn), năm ô cùng cỡ ô lưới.
+- **Rê hay Tab vào ô**: "3 lượt hoạt động ngày 09/11/2026", ngày rỗng "Không có hoạt động ngày
+  03/11/2026": luôn kèm ngày, như "Nhãn trục bị thưa" ở biểu đồ đường. Bấm ô lọc danh sách bên dưới
+  theo ngày đó (nếu màn có danh sách) là logic người dùng.
+- **Ngày chưa tới** (phần còn lại của tuần này) không vẽ ô, không vẽ ô rỗng: ô rỗng nói "ngày đó không
+  có gì".
+- **Màn hẹp: cuộn ngang trong khung riêng** (2/2 nguồn), không thu nhỏ ô (`R1`). Khung cuộn sẵn tới
+  mép phải lúc mở, để tuần gần nhất thấy ngay; nhãn T2/T4/T6 đứng ngoài vùng cuộn. **Gán `scrollLeft`
+  sau khi khung có bề rộng thật** (`ResizeObserver` trên khối lưới, gán khi `scrollWidth > clientWidth`
+  rồi ngắt): gán ngay sau khi render thì lúc đó lưới chưa có bề rộng, khung đứng yên ở tháng cũ nhất
+  (bản dựng thử dính ở 375px).
+- **Tiếp cận**: khung `role="img"` + `aria-label` tóm tắt ("1.284 lượt hoạt động trong 12 tháng, nhiều
+  nhất tháng 10"); ô nhận focus thì mỗi ô `aria-label` đủ câu như khi rê. Màu bậc không phải tín hiệu duy
+  nhất: số nằm trong câu.
+- **Chưa có hoạt động nào**: không dựng 365 ô xám. Giữ chiều cao khung, một câu theo
+  `empty-state.md` ("Chưa có hoạt động. Lịch sẽ dày dần từ buổi đầu tiên").
