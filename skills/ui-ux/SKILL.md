@@ -26,7 +26,9 @@ modal. Không lo trang bán hàng, trừ bảng giá (`references/layouts/pricin
 **App điện thoại** ("app mobile", "app điện thoại", "iOS", "Android", ảnh màn điện thoại): vẫn đi đúng
 lối của câu 1 (mặc định nhánh `U`), cộng mở `references/mobile.md` (luật `J`). Đầu ra là bản mẫu HTML
 trong khung điện thoại, mỗi màn một đường dẫn, theo `references/layouts/mobile-app.html`; app đặt món, bán
-hàng (menu, giỏ, ưu đãi), đăng nhập, xin quyền, rỗng theo `references/layouts/mobile-order.html` (`J11`, `J12`). ⚑
+hàng (menu, giỏ, ưu đãi), đăng nhập, xin quyền, rỗng theo `references/layouts/mobile-order.html` (`J11`, `J12`);
+bộ mặt Playful (onboarding hỏi từng câu, bài tập có phản hồi, nhân vật) theo `references/layouts/mobile-playful.html`
+(`J15`, `J16`). ⚑
 
 **Đề là loại UI skill chưa được dạy thì báo trước một dòng, rồi vẫn làm.** Gồm: landing
 page, trang giới thiệu, trang chủ website; cửa hàng online phía người mua (trang chủ shop,
@@ -499,7 +501,8 @@ năm câu bằng mắt, lúc giao nói một dòng *"X chưa có mẫu đã duy�
 
 **Code mẫu đã duyệt** (chỉ mở sau khi chốt loại màn hình, luật `S11`):
 `references/layouts/app-kanban.html`, `references/layouts/mobile-app.html` (app điện thoại, `J`),
-`references/layouts/mobile-order.html` (app đặt món điện thoại, `J11`)
+`references/layouts/mobile-order.html` (app đặt món điện thoại, `J11`), `references/layouts/mobile-playful.html` (bộ mặt
+Playful, onboarding và bài tập, `J15`, `J16`)
 
 ---
 

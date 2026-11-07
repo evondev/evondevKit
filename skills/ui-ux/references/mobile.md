@@ -11,7 +11,8 @@ nhiều dữ liệu (`J14`), bộ mặt riêng của app điện thoại (`J15`)
 **Code mẫu đã duyệt: `layouts/mobile-app.html`** (app ghi chi tiêu, 5 màn: tổng quan, chi tiết, sheet
 thêm, thống kê, cài đặt). Chép khung và công thức từ đó, thay nội dung theo đề. App đặt món, đồ uống, bán hàng
 thì chép từ `layouts/mobile-order.html` (`J11`, `J12`: thêm đăng nhập, nhập mã, xin quyền,
-rỗng, tài khoản).
+rỗng, tài khoản). Bộ mặt Playful chép từ `layouts/mobile-playful.html` (app luyện nói, 16 màn: màn chào có nhân vật,
+năm câu hỏi onboarding, bàn phím vẽ, tạo tài khoản, xin thông báo, bài tập chọn câu và luyện nói có phản hồi đúng sai).
 
 ⚑ Số đo lấy từ tài liệu thiết kế chính thức của iOS và Android (đọc tận nguồn), cộng 96 ảnh mẫu app được
 khen ở 8 loại (tài chính, ngân hàng, việc cần làm, thói quen, thể dục, giao đồ ăn, mạng xã hội, cài đặt).
@@ -536,7 +537,7 @@ các kiểu lặp lại ở nhiều app, không chép mặt riêng của app nà
 | **Clean** | Trắng; màn danh sách nhóm nền xám, thẻ trắng (`J1`) | Nút chính, mục đang chọn, icon danh mục trong vòng nhạt (`J8`) | Inter | Bo 12–16, thẻ số chính nền tối (`J5`) | Người ghi chép, quản lý, theo dõi số mỗi ngày: chi tiêu, việc cần làm, kho, đặt lịch (`J14`). Code mẫu `mobile-app.html` |
 | **Mono** ⚑ | Trắng tinh, ngăn bằng đường kẻ, gần như không thẻ | Không có màu nhấn: nút chính đen bo tròn hết, màu duy nhất trên màn là ảnh và avatar người dùng đăng | Inter, tên người đậm 15, nội dung 15–16 | Nút viên thuốc đen hay viền, icon nét mảnh, dòng nội dung chạy hết bề ngang | Người đọc và đăng nội dung của người khác: mạng xã hội, cộng đồng, bình luận, nhắn tin nhóm |
 | **Photo** ⚑ | Trắng, ảnh thật là chủ thể | **Chỉ nút chính** của luồng (Đặt, Mua, Lưu); việc phụ là nút đen hay viền | Inter, tên mục 15–16 đậm dưới ảnh | Ảnh bo 12–16 tỉ lệ 4:3 hay 1:1, chữ nằm dưới ảnh không bọc thẻ; lưới 2 cột so le khi lướt ý tưởng | Người lướt để chọn bằng mắt: đặt phòng, du lịch, bất động sản, món ăn, thời trang, nội thất, đường đi |
-| **Playful** ⚑ | Trắng, phản hồi tô cả dải đáy | Một màu thương hiệu bão hoà cho nút chính và thanh tiến độ; thêm tối đa hai màu **có nghĩa** (đúng, sai, chuỗi ngày) | Nunito 700–800, nút chữ đậm | Thẻ chọn viền 2px có viền đáy 4px (trông bấm được), bo 16; thanh tiến độ cao 12–16 bo tròn; nhân vật đổi nét mặt theo đúng sai (`J16`) | Người cần động lực quay lại mỗi ngày: học, thói quen, thể dục cho người dùng phổ thông, trẻ |
+| **Playful** ⚑ | Trắng, phản hồi tô cả dải đáy | Một màu thương hiệu bão hoà cho nút chính và thanh tiến độ; thêm tối đa hai màu **có nghĩa** (đúng, sai, chuỗi ngày) | Nunito 700–800, nút chữ đậm | Thẻ chọn viền 2px có viền đáy 4px (trông bấm được), bo 16; thanh tiến độ cao 12–16 bo tròn; nhân vật đổi nét mặt theo đúng sai (`J16`) | Người cần động lực quay lại mỗi ngày: học, thói quen, thể dục cho người dùng phổ thông, trẻ. Code mẫu `mobile-playful.html` |
 | **Immersive** ⚑ | Nền tối có sắc (xanh đêm, tím than) cả app, chuyển dọc nhẹ hai tông gần nhau | Nút chính trắng chữ tối, không màu nhấn rực | Inter, tiêu đề lớn trắng, chữ phụ trắng 72% | Ảnh lớn bo 12–16 làm điểm nhìn, thẻ là lớp trắng 8–10% trên nền | Người dùng để thư giãn, nghe, xem, thường buổi tối: thiền, ngủ, nhạc, podcast, sách nói, video |
 | **Editorial** ⚑ | Trắng hay kem ấm `#fbf8f3`, gần như không thẻ | Một sắc nhỏ cho link, nút theo dõi; nút chính đen hay màu đó | Tiêu đề bài và thân bài **Lora** (serif), thân 18/1.6; khung app (tab, nút, nhãn) vẫn Inter | Dòng bài: chữ trái, ảnh vuông 64 phải; trang đọc lề 20, không khung | Người **đọc** dài: bản tin, báo, sách, khoá học dạng đọc, công thức nấu ăn |
 
