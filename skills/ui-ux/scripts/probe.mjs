@@ -3345,10 +3345,19 @@ function measureMobileScreen({ isFrame, minTap }) {
   const tabTargets = tabbar ? [...tabbar.querySelectorAll("a[href^='#']")].map((link) => link.getAttribute("href").slice(1)) : [];
   if (tabbar) {
     const items = [...tabbar.querySelectorAll("a, button")].filter(isShown);
-    if (items.length < 3 || items.length > 5) problems.push(`thanh tab có ${items.length} mục, cần 3–5 (J2)`);
+    const tabCount = items.filter((item) => !item.hasAttribute("data-action")).length;
+    if (tabCount < 3 || tabCount > 5) problems.push(`thanh tab có ${tabCount} mục, cần 3–5 (J2)`);
+    if (["dark", "bubbles"].includes(tabbar.dataset.tabStyle) && tabCount > 4) problems.push(`thanh tab kiểu ${tabbar.dataset.tabStyle} có ${tabCount} mục: kiểu chỉ icon tối đa 4 (J2)`);
+    // Kiểu thanh tab có tên (J2, layouts/mobile-tabbars.html) khai trên nav bằng data-tab-style: pill, dark, bubbles được chỉ
+    // icon khi có aria-label; center được một nút hành động data-action ở giữa (11/2026, app kcal kiểu Dark bị báo nhầm).
+    const tabStyle = tabbar.dataset.tabStyle || "float";
+    const isIconOnlyStyle = ["pill", "dark", "bubbles"].includes(tabStyle);
     for (const item of items) {
+      const isCenterAction = tabStyle === "center" && item.hasAttribute("data-action");
+      if (isCenterAction) continue;
       const label = [...item.querySelectorAll("span, p")].map((element) => element.textContent.trim()).find((text) => text.length >= 2) || (item.textContent.trim().length >= 2 ? item.textContent.trim() : "");
-      if (!label) problems.push(`mục thanh tab ${describe(item)} không có chữ: mục nào cũng có chữ dưới icon (J2)`);
+      if (!label && isIconOnlyStyle && (item.getAttribute("aria-label") || "").trim().length < 2) problems.push(`mục thanh tab ${describe(item)} chỉ icon mà thiếu aria-label: kiểu ${tabStyle} cần aria-label mỗi mục (J2)`);
+      if (!label && !isIconOnlyStyle) problems.push(`mục thanh tab ${describe(item)} không có chữ: mục nào cũng có chữ dưới icon, trừ kiểu chỉ icon có tên khai data-tab-style (J2)`);
       if (item.tagName === "BUTTON" || /^#(add|new|create|them)/i.test(item.getAttribute("href") || "") || /^\+$|thêm|add|new/i.test(item.getAttribute("aria-label") || "")) problems.push(`thanh tab chứa hành động ${describe(item)}: thanh tab chỉ để đi lại, nút thêm đứng riêng cạnh thanh (J2, J5)`);
     }
     // J2: nhãn kề nhau cách từ 8px, nhãn hai đầu cách mép bo của thanh từ 8px. Đo bằng Range trên chữ, không bằng
@@ -3391,10 +3400,16 @@ function measureMobileScreen({ isFrame, minTap }) {
 
   // J1: nền màn sáng mà xám (thẻ trắng trên nền xám kiểu dashboard) chỉ cho màn danh sách nhóm `.is-grouped`.
   if (screen && !screen.classList.contains("is-grouped")) {
-    const channels = (getComputedStyle(screen).backgroundColor.match(/[\d.]+/g) || []).map(Number);
-    const [red, green, blue, alpha = 1] = channels;
+    // Đọc màu qua canvas: color-mix trả về oklab(), regex số đọc sai (11/2026, nền Tinted lọt qua vì vậy).
+    const context = document.createElement("canvas").getContext("2d");
+    context.fillStyle = getComputedStyle(screen).backgroundColor;
+    context.fillRect(0, 0, 1, 1);
+    const [red, green, blue, alphaByte] = context.getImageData(0, 0, 1, 1).data;
+    const alpha = alphaByte / 255;
     const lightness = (Math.max(red, green, blue) + Math.min(red, green, blue)) / 2;
-    if (alpha > 0.5 && lightness >= 200 && lightness < 250) problems.push(`màn nền xám rgb(${red}, ${green}, ${blue}) mà không phải danh sách nhóm: nền màn trắng, xám chỉ cho màn .is-grouped (cài đặt, tài khoản) (J1)`);
+    // Nền có sắc (Tinted, Editorial kem: lệch kênh từ 6) là bộ mặt (J15), không phải xám dashboard.
+    const isTinted = Math.max(red, green, blue) - Math.min(red, green, blue) >= 6;
+    if (alpha > 0.5 && !isTinted && lightness >= 200 && lightness < 250) problems.push(`màn nền xám rgb(${red}, ${green}, ${blue}) mà không phải danh sách nhóm: nền màn trắng, xám chỉ cho màn .is-grouped (cài đặt, tài khoản) (J1)`);
   }
 
   // J8: chọn giờ chỉ hiện giờ trống. Nút giờ gạch ngang ("8:00" có line-through) là giờ kín để lẫn vào.
@@ -3438,6 +3453,8 @@ function measureMobileScreen({ isFrame, minTap }) {
   // J2: cuộn hết vùng cuộn, dòng cuối phải ra khỏi thanh tab.
   const scroller = screen?.querySelector(".scroll") || screen;
   if (tabbar && scroller && scroller.scrollHeight > scroller.clientHeight) {
+    // Trả về đúng chỗ cuộn ban đầu, không về 0: màn "vừa lưu" cuộn sẵn tới dòng mới (J1), về 0 thì ảnh chụp sai.
+    const scrollBefore = scroller.scrollTop;
     scroller.scrollTop = scroller.scrollHeight;
     const lastLeaf = [...textLeaves].sort((first, second) => second.getBoundingClientRect().bottom - first.getBoundingClientRect().bottom)[0];
     const barRect = tabbar.getBoundingClientRect();
@@ -3445,13 +3462,16 @@ function measureMobileScreen({ isFrame, minTap }) {
     const dockTops = [...device.querySelectorAll("a, button")].filter((element) => isShown(element) && !tabbar.contains(element) && ["absolute", "fixed"].includes(getComputedStyle(element).position)).map((element) => element.getBoundingClientRect()).filter((rect) => isDockedAboveTabbar(rect, barRect)).map((rect) => rect.top);
     const tabTop = Math.min(barRect.top, ...dockTops);
     if (lastLeaf && lastLeaf.getBoundingClientRect().bottom > tabTop + 1) problems.push(`cuộn hết mà "${lastLeaf.textContent.trim().slice(0, 24)}" vẫn nằm dưới thanh tab${dockTops.length > 0 ? " và thanh giỏ" : ""}: vùng cuộn chừa đáy inset + 96px (.pad-tabbar, J2), có thanh giỏ thì + 160px (.pad-cartbar, J11)`);
-    scroller.scrollTop = 0;
+    scroller.scrollTop = scrollBefore;
   }
 
   // J1: khung máy tính, chữ hay chỗ bấm chui vào vùng tai thỏ (47px) hay thanh home (34px).
   if (isFrame && screen) {
     const insetTop = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--inset-top")) || 0;
     const insetBottom = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--inset-bottom")) || 0;
+    // Đo lúc chưa cuộn: màn "vừa lưu" cuộn sẵn tới dòng mới (J1), nội dung cuộn qua tai thỏ khi đó là bình thường.
+    const scrollBeforeFrame = scroller ? scroller.scrollTop : 0;
+    if (scroller) scroller.scrollTop = 0;
     const intruders = [...screen.querySelectorAll("a, button, span, p, h1, h2, input")].filter((element) => {
       if (!isShown(element) || isInert(element) || isDecor(element) || element.children.length > 0 && !element.matches("a, button, input")) return false;
       const rect = element.getBoundingClientRect();
@@ -3459,10 +3479,12 @@ function measureMobileScreen({ isFrame, minTap }) {
       return rect.top < deviceRect.top + insetTop - 1 || rect.bottom > deviceRect.bottom - insetBottom + 1 && rect.top < deviceRect.bottom;
     }).filter((element) => !element.closest(".scroll") || element.getBoundingClientRect().top < deviceRect.top + insetTop - 1);
     for (const element of intruders.slice(0, 3)) problems.push(`${describe(element)} nằm trong vùng ${element.getBoundingClientRect().top < deviceRect.top + insetTop ? "tai thỏ" : "thanh home"} của khung: chừa bằng --inset-top / --inset-bottom (J1)`);
+    if (scroller) scroller.scrollTop = scrollBeforeFrame;
 
     // J1: cuộn xuống, chữ chạy dưới thanh trạng thái mà không có dải nền che thì đè giờ và pin.
     const bandBottom = deviceRect.top + insetTop;
     if (insetTop > 0 && scroller && scroller.scrollHeight > scroller.clientHeight + 40) {
+      const scrollBeforeCover = scroller.scrollTop;
       const isCover = (element) => {
         if (element.closest(".status-bar") || scroller.contains(element) || !isShown(element)) return false;
         const style = getComputedStyle(element);
@@ -3483,7 +3505,7 @@ function measureMobileScreen({ isFrame, minTap }) {
         return scroller.contains(leaf) && visibleTop < bandBottom - 2 && rect.bottom > deviceRect.top + 4 && rect.bottom > scrollerRect.top;
       });
       if (exposed && !hasCover) problems.push(`cuộn xuống thì "${exposed.textContent.trim().slice(0, 24)}" chạy dưới thanh trạng thái mà không có dải nền che, đè giờ và pin: thêm dải \`.status-cover\` cao --inset-top (J1)`);
-      scroller.scrollTop = 0;
+      scroller.scrollTop = scrollBeforeCover;
     }
   }
 

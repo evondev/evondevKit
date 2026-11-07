@@ -516,6 +516,25 @@
         sheet.classList.toggle("is-open", isSheet);
         scrim.classList.toggle("is-open", isSheet);
         sheet.inert = !isSheet;
+        requestAnimationFrame(() => revealNewRows(liveDevice));
+      }
+
+      // Dòng vừa lưu (gắn data-reveal, nhãn "Mới") phải nằm trên thông báo và thanh tab (J1). Chỉ cuộn vừa đủ: dòng đã thấy thì
+      // không cuộn, khối số ở đầu màn còn nguyên. Đặt scrollTop của vùng cuộn, không scrollIntoView: nó cuộn cả khung .device,
+      // lộ sheet đang giấu ở đáy. Bản chép trên bảng luồng không giữ scrollTop nên buildBoard gọi lại hàm này sau khi chèn.
+      function revealNewRows(root) {
+        root.querySelectorAll("[data-reveal]").forEach((row) => {
+          const scroller = row.closest(".scroll");
+          if (!scroller || !scroller.clientHeight) return;
+          const scrollerRect = scroller.getBoundingClientRect();
+          const rowRect = row.getBoundingClientRect();
+          // Bản chép trên bảng thu nhỏ (zoom 0.7): đổi khoảng đo được về px của vùng cuộn.
+          const scale = scrollerRect.height / scroller.clientHeight;
+          // Chừa đáy cho thông báo, thanh tab, thanh home.
+          const reservedBottom = 152;
+          const overflow = (rowRect.bottom - scrollerRect.bottom) / scale + reservedBottom;
+          if (overflow > 0) scroller.scrollTop += overflow;
+        });
       }
 
       // Màn rộng, link không có #màn: bảng luồng (J1). Có #màn: chạy thử trong khung máy.
@@ -580,6 +599,7 @@
             button.addEventListener("click", () => row.scrollBy({ left: Number(button.dataset.scroll) * row.clientWidth * 0.8, behavior: isReduced ? "auto" : "smooth" }));
           });
           rowsContainer.append(section);
+          section.querySelectorAll(".board-device").forEach((deviceCopy) => revealNewRows(deviceCopy));
         });
         lucide.createIcons();
       }

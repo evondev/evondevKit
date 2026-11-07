@@ -63,9 +63,11 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
 - **Nút chính của luồng dẫn tới kết quả thấy được.** Bấm "Lưu", "Tạo", "Đặt" trong wireframe hay bản mẫu thì về
   màn trước **đã đổi**: dòng mới ở đầu danh sách (nhãn "Mới"), số đếm và số dư cộng thêm, thông báo ngắn `J7`
   ("Đã thêm Ăn tối", có Hoàn tác). Quay về màn cũ y nguyên thì người duyệt không thấy lưu xong ra sao, nên không
-  góp ý được bước cuối của luồng, là bước họ làm nhiều nhất. **Dòng mới không nằm dưới thông báo hay thanh tab**: dòng
-  mới ở thấp (dưới thẻ số chính và một khối khác) thì màn cuộn tới nó (`scrollIntoView({ block: "center" })`) trước khi
-  bảng chép. Trên bảng, thông báo đứng yên mãi, đè đúng thứ người duyệt cần xem.
+  góp ý được bước cuối của luồng, là bước họ làm nhiều nhất. **Dòng mới không nằm dưới thông báo hay thanh tab**: gắn
+  `data-reveal` lên dòng mới, hàm `revealNewRows()` của `mobile-app.html` cuộn vùng cuộn **vừa đủ** cho dòng nằm trên
+  thông báo (dòng đã thấy thì không cuộn, khối số ở đầu màn còn nguyên), và `buildBoard` gọi lại nó trên bản chép vì
+  `cloneNode` không giữ vị trí cuộn. Không `scrollIntoView`: nó cuộn cả khung máy, lộ sheet đang giấu ở đáy. Trên bảng,
+  thông báo đứng yên mãi, đè đúng thứ người duyệt cần xem.
 - **Không hover**: màn chạm không có rê chuột. Phản hồi là lúc nhấn (`J7`).
 - **Kiểm bằng probe chế độ mobile** trước khi giao: `node scripts/probe.mjs <file hay link> --mobile --widths 390,1280`
   (thay cho `--sweep`, `--wireframe` của màn web; thêm một lượt `--stress` khi có danh sách).
@@ -94,6 +96,10 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   | `dark` | Thanh gần đen `#18181b` trên màn sáng, mục chọn là viên tròn trắng | Màn sáng hay nền màu cả app (kem, be), muốn thanh là điểm nhấn | Chỉ icon: tối đa 4 mục |
   | `bubbles` | Mỗi mục một nút tròn rời 52px, mục chọn đặc màu nhấn, hành động tách ra mép phải | App học, app nội dung ít mục | Chỉ icon: tối đa 4 mục |
   | `glass` | Thanh kính `bg-white/12 backdrop-blur-2xl`, chữ trắng | Phía sau là ảnh, nền tối, quầng màu (Immersive) | Không dùng trên nền sáng trơn (`F19`); đo tương phản chữ ở chỗ nền sau sáng nhất |
+
+  Thanh khai kiểu trên `nav`: `data-tab-style="dark"` (probe đọc thuộc tính này, thiếu thì báo "không có chữ"). Màn gốc
+  có việc thêm (`J5`) mà chọn `pill`, `dark`, `glass`: thanh thu lại `right-[92px]`, cao 64px bằng nút, nút thêm màu nhấn
+  đứng riêng bên phải (mục 4b của file mẫu); `center` thì nút nằm trong thanh, không thêm nút riêng.
 
   **Kiểu chỉ icon** (`pill` với mục chưa chọn, `dark`, `bubbles`) là ngoại lệ có tên của luật "mục nào cũng có chữ": icon
   phải quen ai cũng đoán được (nhà, tìm, tim, người, lịch, biểu đồ, cài đặt), mỗi mục `aria-label`, mục đang chọn đổi
@@ -597,7 +603,7 @@ lúc trình bày (app AI, sáng tạo; sức khoẻ, ăn uống, phong cách s�
 | **Immersive** | Nền tối có sắc (xanh đêm, tím than) cả app, chuyển dọc nhẹ hai tông gần nhau | Nút chính trắng chữ tối, không màu nhấn rực | Inter, tiêu đề lớn trắng, chữ phụ trắng 72% | Ảnh lớn bo 12–16 làm điểm nhìn, thẻ là lớp trắng 8–10% trên nền | Người dùng để thư giãn, nghe, xem, thường buổi tối: thiền, ngủ, nhạc, podcast, sách nói, video. Code mẫu `mobile-immersive.html` |
 | **Editorial** ⚑ | Trắng hay kem ấm `#fbf8f3`, gần như không thẻ | Một sắc nhỏ cho link, nút theo dõi; nút chính đen hay màu đó | Tiêu đề bài và thân bài **Lora** (serif), thân 18/1.6; khung app (tab, nút, nhãn) vẫn Inter | Dòng bài: chữ trái, ảnh vuông 64 phải; trang đọc lề 20, không khung | Người **đọc** dài: bản tin, báo, sách, khoá học dạng đọc, công thức nấu ăn |
 | **Glow** ⚑ | Gần đen `#0b0b0f` cả app, hai ba **quầng màu mờ** lớn (màu nhấn và một sắc kề) ở đầu màn và sau khối chính | Nút chính màu nhấn rực **chữ tối**, mic, nút gửi; quầng màu là chỗ màu nhiều nhất | Inter, tiêu đề màn rất lớn 36–40 `tracking-tight`, chữ phụ trắng 65% | Thẻ kính trắng 8% viền trắng 10%, bo 20–24; thanh tab `glass` (`J2`) | Người dùng app AI, sáng tạo, âm nhạc, đầu tư trẻ, học kỹ năng sáng tạo: cần cảm giác mới, năng lượng |
-| **Tinted** ⚑ | **Cả app một màu nền nhạt** theo ngành (kem, be, bạc hà, hồng phấn) thay trắng và xám; thẻ trắng nổi trên nền màu | Nút chính đen hay màu nhấn đậm; khối nhấn đầu màn là cùng sắc đậm hơn | Inter hay font tròn hơn, số lớn đậm | Bo 20–28, thẻ trắng không viền, bóng rất nhẹ; thanh tab `dark` hay `pill` (`J2`); hợp vòng và cung (`J17`) | Người tự chăm mình mỗi ngày mà không cần gamification: ăn uống, kcal, sức khoẻ, chi tiêu cá nhân nhẹ nhàng, du lịch, phong cách sống |
+| **Tinted** ⚑ | **Cả app một màu nền nhạt** pha từ màu nhấn (tím nhạt, kem đào, bạc hà) thay trắng và xám; thẻ trắng nổi trên nền màu | Nút chính đen hay màu nhấn đậm; khối nhấn đầu màn là cùng sắc đậm hơn | Inter hay font tròn hơn, số lớn đậm | Bo 20–28, thẻ trắng không viền, bóng rất nhẹ; thanh tab `dark` hay `pill` (`J2`); hợp vòng và cung (`J17`), đồ vật 3D cho món, danh mục (`J16`) | Người tự chăm mình mỗi ngày mà không cần gamification: ăn uống, kcal, sức khoẻ, chi tiêu cá nhân nhẹ nhàng, du lịch, phong cách sống |
 
 **Token đổi theo bộ** (khối đổi thương hiệu của `mobile-app.html`, tương phản đã đo):
 
@@ -609,7 +615,7 @@ lúc trình bày (app AI, sáng tạo; sức khoẻ, ăn uống, phong cách s�
 | Immersive | Cả khung mang `force-dark` (`M33`), chép khối `.force-dark` của `tokens.css` rồi đè các token sau. **Nền là màu nhấn của ngành hay brand pha tối**: `--background` = 30% `--primary` trên `#0b0d18` (`color-mix(in oklab, var(--primary) 30%, #0b0d18)`: Chàm ra `#1f1e56`, Cam ra `#421d14`, Xanh ngọc ra `#0c2c32`), chuyển dọc xuống tông tối hơn 15%; không dùng một màu navy cho mọi app. `--surface` trắng 10% trên nền (chữ trắng từ 10.9:1), sheet và hộp hỏi trắng 14%; `--muted` trắng 72% (từ 8.3:1 trên nền, 6.5:1 trên thẻ); `--danger: #ff9aab` (từ 5.4:1 trên thẻ; `#ff637e` của `.force-dark` chỉ 3.9:1), `--success: #5fd99a`; nút chính `bg-white` chữ màu nền |
 | Editorial | Nạp thêm Lora 400, 700 (có bộ `vietnamese`, đã kiểm); `--background: #fbf8f3`, `--muted: #6b6459` (5.5:1 trên kem), sắc nhấn cam `#c2410c` (4.9:1 trên kem) |
 | Glow | Cả khung `force-dark` như Immersive. `--background: #0b0b0f`; quầng: `radial-gradient` 2–3 lớp từ `--primary` và một sắc cách nó 30–60°, độ phủ 45–60%, nằm ở đỉnh màn và sau khối chính, không sau chữ nhỏ; `--surface` trắng 8%, viền trắng 10%, `backdrop-blur-xl`; `--muted` trắng 65% (từ 6.6:1 trên thẻ). `--primary` rực (cam `#f97316`, tím `#a78bfa`) thì **chữ trên nút là `#111`** (6.7:1, 6.9:1); chữ trắng trên cam rực chỉ 2.8:1. Bong bóng tin nhắn của người dùng được tô màu nhấn |
-| Tinted | `--background` = 10% `--primary` pha kem `#f6f3ee` (`color-mix(in oklab, var(--primary) 10%, #f6f3ee)`), cả màn danh sách nhóm; `--surface: #fff`; `--muted` đậm lên `#5c5646` (từ 4.7:1 trên nền be). Khối nhấn (thẻ số chính, đầu màn có biểu đồ) = 30–40% `--primary` pha kem, **chữ tối** `--foreground` (7.5:1 trên khối be); chữ trắng trên khối nhạt chỉ 1.6:1, muốn chữ trắng thì khối pha đen. Đè thẻ số chính `#1c1c1e` của `J5` |
+| Tinted | Nền theo màu nhấn: `--background` = `color-mix(in oklab, var(--primary) 10%, #f6f3ee)` (tím ra tím nhạt `#eae1ee`, cam ra kem đào, xanh lá ra bạc hà, xanh dương ra xám xanh); muốn kem trung tính thì pha từ một `--tint` riêng thay `--primary`. `--surface: #fff`. Chữ phụ cùng sắc: `--muted` = `color-mix(in oklab, var(--primary) 15%, #4a4640)` (~7:1 trên nền, ~8.9:1 trên trắng); `--secondary` (rãnh điều khiển phân đoạn, nút phụ, ô nhập) = `color-mix(in oklab, var(--foreground) 7%, var(--background))`, xám `#e7e8ec` của `J4` lệch tông trên nền màu. Khối nhấn (thẻ số chính, đầu màn có biểu đồ) = 30–35% `--primary` pha kem, **chữ tối** `--foreground`; chữ phụ trên khối `--hero-muted` = `color-mix(in oklab, var(--primary) 18%, #2c2c2c)` (~6.6:1); rãnh vòng và cung trên khối trắng 55% (`--hero-track`). Chữ trắng trên khối nhạt chỉ 1.6:1. Nút chính màu nhấn khi chữ trắng trên nó từ 4.5:1, không thì đen. Đè thẻ số chính `#1c1c1e` của `J5` |
 
 **Chọn bộ nào.** Bộ mặt bám **người dùng và việc chính** ở `U1`, `U2`, không bám ngành: app spa mà người mở là kế toán
 đối soát thì Clean, không phải Photo. Người dùng nêu tên một bộ (kể cả bộ còn cờ) thì dựng bộ đó, không hỏi lại (`P1`).
@@ -701,7 +707,7 @@ màn xong.
    - **Không mang hình trả phí vào skill**: giấy phép mua về thường cấm phát lại trong bộ mẫu, mà skill là repo công khai.
    - Không tự vẽ SVG nhân vật hay minh hoạ (`J8`).
 
-**Hình đồ vật** (bộ Playful): bộ đếm (chuỗi ngày, kim cương, tim), nút bài trên lộ trình, huy hiệu cấp, ô số ở màn xong
+**Hình đồ vật** (bộ Playful; Tinted, Glow cũng dùng cho món, danh mục, phần thưởng, `J15`): bộ đếm (chuỗi ngày, kim cương, tim), nút bài trên lộ trình, huy hiệu cấp, ô số ở màn xong
 dùng **đồ vật 3D**, không icon nét. Icon nét một màu ở các chỗ đó làm app trông thô như bản nháp, kể cả khi bố cục đúng.
 Nguồn, theo thứ tự:
 1. **Dự án có bộ hình** (grep như trên, thêm `icons/3d`, `emoji`): dùng của họ.
@@ -740,6 +746,7 @@ Hai kiểu vẽ trong một app (người vẽ tay cạnh ảnh chụp, cạnh �
 | Màn chào (`J12`), kèm bong bóng một câu chào | 160–176px |
 | Bài tập: người nói câu mẫu, bong bóng ở trên đầu nhân vật | 140–160px, giữa màn |
 | Màn xong, màn kết quả onboarding (`O8`), trạng thái rỗng (`J12`) | 35–50% bề ngang màn |
+| Rỗng một phần trên màn gốc vẫn có khối số (hôm nay chưa ghi, thẻ số chính ở trên) | 112–128px, nút của trạng thái rỗng phải thấy ở 360×640 không cuộn |
 | Bạn hội thoại cạnh bong bóng tin nhắn | 56px |
 | Sheet báo một khoảnh khắc (lỡ chuỗi, lên hạng) | 144px, trên tiêu đề sheet |
 | Khối chúc mừng đầu một màn danh sách (xong hết việc hôm nay) | 144px trong khối, danh sách vẫn ở dưới |
@@ -749,6 +756,10 @@ thật cạnh người vẽ tay là hai kiểu vẽ.
 
 Không ở màn làm việc lặp lại (danh sách, form, cài đặt, giỏ hàng) và không ở màn câu hỏi của onboarding: câu hỏi là
 tiêu đề lớn (`O8`).
+
+**App ghi chép món ăn** (đếm kcal, nhật ký bữa ăn) không lấy ảnh làm chủ dù món có ảnh: món là dữ liệu chung người dùng
+chọn từ danh sách, không phải hàng của một quán (`S16` áp cho app bán món của quán). Đồ ăn là đồ vật 3D, món tự nhập không
+có hình thì icon nét trong cùng ô.
 
 **App lấy ảnh chụp làm chủ thì không dùng nhân vật vẽ tay**: bộ mặt Photo, Immersive (`J15`), app đặt món, bán hàng
 (`J11`), đặt phòng. Màn xong, rỗng của các app này dùng icon trong vòng tròn 80px (`J12`) hay ảnh thật của món, của phòng. Người vẽ
@@ -818,6 +829,8 @@ khác ở các chỗ dưới đây, và chỗ nào khác thì luật này thắn
     Chạm một ngày thì thẻ dưới đổi sang ngày đó.
   - **Donut có khe**: tối đa 4 phần cộng "Khác", khe 8px thay viền trắng, đầu bo tròn, xếp lớn tới nhỏ từ 12 giờ, số tổng
     ở giữa, bảng dưới có chấm màu, số và % (`N4`). Hợp thẻ nền tối (`J5`), thang phân loại bản tối của `charts.md`.
+  - **Một thẻ một vòng.** Số phụ đi kèm (đạm, tinh bột, béo; phút, km) là thanh mảnh `h-1.5` dưới vòng, không thêm vòng
+    thứ hai, thứ ba. Vòng đặt trên khối nhấn Tinted (`J15`) thì rãnh là trắng 55% (`--hero-track`).
   - Mỗi vòng `role="img"` với `aria-label` ghi số ("6.240 trên 8.000 bước, 78%"). Không hiệu ứng vẽ dần lúc vào màn,
     như `charts.md`.
 - **Vẽ bằng gì.** Bản mẫu HTML thuần không có `package.json` thì vẽ SVG bằng tay theo công thức của `charts.md`. Dự án
