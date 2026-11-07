@@ -34,7 +34,9 @@ là không có điểm neo**:
 
 **M3. Đúng một màu nhấn cho cả app.** Nút chính, link, control đang bật (checkbox,
 switch, chip lọc đã chọn) dùng chung nó. Mục **điều hướng** đang chọn (sidebar, tab,
-trang hiện tại) thì dùng nền xám hoặc vạch `--foreground`, không màu nhấn (bảng
+trang hiện tại) thì dùng nền xám hoặc vạch `--foreground`, không màu nhấn. Ngoại lệ có tên: màu
+nhấn có sắc thì mục sidebar đang chọn là `bg-primary-light text-primary` (`layouts/app.md`,
+"Khung app có sidebar"); tab vẫn vạch `--foreground` (bảng
 công thức phần tử bên dưới, `small-controls.md`). Màu thứ hai phải xin phép.
 
 ---
@@ -247,7 +249,7 @@ Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu
 | Thẻ / khung | trắng, viền 1px xám rất nhạt, bo 16px `rounded-2xl` (`F1`), **không bóng** |
 | Danh sách nhiều mục | MỘT khung, các dòng chia bằng `divide-y`. Dòng tiêu đề và dòng hành động cuối nằm TRONG khung |
 | Khối tóm tắt phụ | nền xám nhạt + viền, bo như thẻ |
-| Mục sidebar, cây thư mục đang chọn | nền `--secondary` + `font-medium`, **không viền**, không màu nhấn; rê vào `--background`, mục chưa chọn không nền. Đang chọn đậm hơn nền rê một bậc (`I10`, `I15`) |
+| Mục sidebar, cây thư mục đang chọn | màu nhấn có sắc: sidebar nền `--primary-light`, chữ `--primary` + `font-medium` (cây thư mục vẫn như dòng dưới). Màu nhấn gần đen: nền `--secondary` + `font-medium`, **không viền**, không màu nhấn; rê vào `--background`, mục chưa chọn không nền. Đang chọn đậm hơn nền rê một bậc (`I10`, `I15`) |
 | Tab ngang trên bảng / danh sách | tab đang chọn **nền `bg-tab-selected` (chữ phủ 8%, đúng trên cả card lẫn nền trang), viền trong suốt** (không nền trắng, không `--surface-hover`: trên card trắng liếc không thấy), mọi tab có `border`, mục chưa chọn `border-transparent`. Xem "Thanh tab" trong `components/small-controls.md` |
 | Ô nhập | viền — đây là chỗ viền đúng vai nhất, người ta phải nhìn ra ranh giới vùng gõ được |
 

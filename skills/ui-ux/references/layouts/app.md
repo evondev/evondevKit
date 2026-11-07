@@ -19,6 +19,8 @@ Các phương án wireframe (`U3`) lấy từ bảng này: hai phương án cùn
 | --- | --- | --- | --- |
 | **Tổng quan khối** | Nhìn nhanh nhiều thứ, mỗi khối dẫn đi chỗ khác | Trang chủ, tổng quan workspace | Dashboard |
 | **Bảng trước** | Dò, so, sửa nhiều bản ghi theo cột | Danh sách khách, kho hàng, CRM dạng bảng | Bảng dữ liệu |
+| **Lưới thực thể** | Nhận ra từng mục bằng hình, liếc vài chỉ số rồi mở một mục | Nhân vật game, nhân sự, xe, sản phẩm, phòng | Lưới thực thể |
+| **Giám sát trực tiếp** | Biết ngay cái gì đang hỏng, số nào đang vượt ngưỡng | Vận hành ca trực, hệ thống, điều phối giao hàng | Màn giám sát trực tiếp |
 | **Danh sách + chi tiết** | Xử lý lần lượt từng mục trong hàng đợi | Hộp thư, ticket hỗ trợ, duyệt đơn, lead mới | Danh sách + chi tiết |
 | **Kanban** | Việc đi qua các trạng thái, kéo sang bước sau | Việc, pipeline bán hàng, tuyển dụng | Bảng kanban |
 | **Lịch, lưới giờ** | Việc gắn với ngày giờ, người, phòng | Lịch hẹn, ca làm, đặt phòng | Trang lịch |
@@ -195,7 +197,8 @@ dòng "1 / 5 bước".
 
 - **Sidebar nền trắng `--surface`, KHÔNG `border-r`** khi vùng nội dung là nền trang xám `--background`: trắng cạnh xám đã là ranh giới, thêm đường kẻ là hai tín hiệu cho một ý (`N3`; chủ dự án bỏ). Chỉ kẻ `border-r border-border-strong` khi vùng nội dung cũng trắng. **Đừng để sidebar trong suốt** ăn theo `--background` của trang: sidebar xám trùng nền trang thì cả màn thành một mảng xám, không còn ranh giới nào.
 - **Rộng `w-60` tới `w-64`**, cố định, `shrink-0`.
-- **Rê là `hover:bg-item-hover`, đang chọn đậm hơn một bậc `bg-secondary` + `font-medium`.** Hai nền phải khác nhau: rê ra đúng nền đang chọn thì rê qua mục nào cũng trông như vừa chọn nó, không còn biết mình đang ở trang nào (`I10`; chủ dự án chốt). "Rê và đã chọn cùng một nền mờ" chỉ còn cho dòng bảng tick checkbox, vì ở đó checkbox đã là dấu chọn. **Không tô màu nhấn**, không viền.
+- **Màu nhấn có sắc (Cam, Xanh dương… của `brand-tokens.md`) thì mục đang chọn tô màu brand**: nền `bg-primary-light`, icon, chữ và số đếm `text-primary`, `font-medium` (chủ dự án chốt 07/11/2026, trên bản dựng thử brand Cam). Rê vẫn `hover:bg-item-hover`. Đây cũng là màu mục đang chọn của thanh dưới trên mobile, nên hai cỡ màn một kiểu. **Màu nhấn gần đen (mặc định) giữ luật dưới**: `--primary-light` của màu gần đen ra xám bẩn (`brand-tokens.md`), mục đang chọn mất hẳn.
+- **Rê là `hover:bg-item-hover`, đang chọn đậm hơn một bậc `bg-secondary` + `font-medium`** (màu nhấn gần đen). Hai nền phải khác nhau: rê ra đúng nền đang chọn thì rê qua mục nào cũng trông như vừa chọn nó, không còn biết mình đang ở trang nào (`I10`; chủ dự án chốt). "Rê và đã chọn cùng một nền mờ" chỉ còn cho dòng bảng tick checkbox, vì ở đó checkbox đã là dấu chọn. **Không tô màu nhấn**, không viền.
 - **Mỗi link cao 40px** (`h-10`, `px-3`), bo `rounded-xl` 12px theo luật bo-theo-chiều-cao `F1`. Link 36px trông chật, nền hover lọt thỏm; 40px thì hàng thoáng và bấm trúng dễ hơn.
 - **Icon và chữ đi cùng nhau.** Lúc thường cả hai `text-foreground/70`: dịu hơn chữ chính nhưng **không mờ tới `--muted`**, xám `--muted` trên nền trắng là đọc không ra tên mục. Hover hay đang chọn thì **cả icon lẫn chữ** lên `text-foreground`. Đặt màu trên phần tử `<a>`, icon dùng `currentColor`, đừng gán màu riêng cho icon, nếu không hover chỉ sáng mỗi chữ.
 - **Nhãn nhóm IN HOA, chữ XÁM**: `text-xs font-medium uppercase tracking-wide text-muted`, hover mới lên `text-foreground`. IN HOA đã đủ tách nhãn khỏi link, nên nhãn phải **nhạt hơn** mục con, không đậm hơn: nhãn đen `--foreground` cộng IN HOA thì nặng nhất cột, lấn cả mục đang chọn. Viết thường thì nhãn nhóm trông y như một mục nav nhạt màu, mắt không tách được đâu là tiêu đề, đâu là link. Chữ trong dữ liệu vẫn viết thường ("Công việc"), IN HOA bằng CSS, để screen reader không đánh vần từng chữ.
@@ -877,8 +880,126 @@ So với 30 ngày liền trước, 30/07/2026 – 28/08/2026           <- kỳ s
   Chọn kỳ nào là logic của người dùng (`N10`); skill lo câu chữ và mặc định khi đề để hở.
 - **Mỗi mốc của biểu đồ theo độ dài khoảng**, như trang doanh thu của các cổng thanh toán lớn: **1 ngày → theo giờ** (24 mốc), tới ~31 ngày → ngày, tới ~92 ngày → tuần, dài hơn → tháng. Tên card đổi theo: "Doanh thu theo giờ / ngày / tuần / tháng". Khoảng một ngày mà thay biểu đồ bằng khối chữ "87,6 tr đ · Chọn từ hai ngày trở lên để thấy xu hướng" là lặp đúng số ở ô "Doanh thu" ngay trên (`N3`) và bắt người dùng đổi khoảng mới thấy gì. Khối chữ "một điểm" chỉ dùng khi dữ liệu thật sự mới có một mốc.
 - **Biểu đồ chính có lưới ngang và nhãn mức** (ngoại lệ trong "Bỏ bớt đi" của `../components/charts.md`), số ở điểm đang xem **kèm mốc** ("13/09 · 70,9 tr đ", "Hôm nay · 44,4 tr đ"), đặt về phía không có đường, và Tab vào thì số của mốc đó hiện ra. Kỳ chưa trọn (hôm nay, tuần này) nét đứt.
+- **Nhãn mức là số tròn do mình tính, không để thư viện tự chọn**: bước = trần(giá trị lớn nhất / 4) làm
+  tròn lên 10 tr (hay 100 tr khi theo tuần), truyền `ticks` 0…4 bước và `domain` khớp. Để Recharts
+  `tickCount={4}` thì ra "0, 30 tr, 80 tr", khoảng không đều, đường lưới giữa mất (bản dựng thử).
+- **Cột theo tuần mà tuần đầu hay tuần cuối chưa trọn thì nhãn nói rõ**: "09–11/10" (ba ngày),
+  "Tuần này" (đang chạy). Ghi ngày đầu tuần như mọi cột khác thì cột ba ngày thấp hẳn, đọc ra "tuần đó
+  tụt doanh thu" (bản dựng thử, khoảng 30 ngày bắt đầu thứ Sáu).
 - **Hai khối phân tích dưới biểu đồ**, hai cột từ `lg`, một cột ở màn hẹp: phần chia theo nhóm (kênh, khu vực) là danh sách thanh xếp lớn dần, mỗi dòng số + phần trăm (`../components/charts.md`, "Thanh tiến độ trong danh sách"); top mục (sản phẩm, khách hàng) là danh sách dòng tên + dòng phụ bên trái, số bên phải `tabular-nums`, 5 dòng.
 - **Trạng thái**: đang tải giữ khung từng khối với skeleton đúng chiều cao (ô khoảng ngày vẫn dùng được); tải hỏng một khung `ListError` thay phần dưới ô khoảng ngày; khoảng không có đơn nào thì một khung câu "Không có đơn nào từ … tới …" + link về khoảng mặc định. Khoảng ở tương lai không có ca rỗng riêng: ngày sau hôm nay đã khoá trong lịch.
+
+---
+
+## Lưới thực thể ⚑
+
+Nhiều bản ghi cùng loại, mỗi bản ghi **nhận ra bằng hình** (chân dung nhân vật, ảnh xe, ảnh
+phòng, avatar nhân viên), chỉ cần liếc 2–4 chỉ số trước khi mở. Cần so nhiều chỉ số giữa nhiều
+mục thì dùng **Bảng dữ liệu**: các bộ thiết kế lớn đều đưa dữ liệu đồng dạng, nặng chữ số vào bảng.
+
+```
+thanh header:  ☰  Nhân vật                                         🔔  (T)
+[🔍 Tìm nhân vật ] [Hệ ▾] [Cấp ▾]   48 nhân vật  Sắp xếp: Cấp ▾  [▦|☰] [+ Thêm]
+┌───────────────────┐ ┌───────────────────┐ ┌───────────────────┐
+│ ┌───────────────┐⋯│ │       ảnh         │ │       ảnh         │
+│ │   ảnh 4:3     │ │ │                   │ │                   │
+│ └───────────────┘ │ │ Lôi Vũ     Cấp 42 │ │ ...               │
+│ Hoả Phượng Cấp 58 │ │ ● Đang hoạt động  │ │                   │
+│ ● Đang hoạt động  │ │ HP   ▓▓▓▓▓░  8.200│ │                   │
+│ HP   ▓▓▓▓▓▓░ 9.400│ │ Công ▓▓▓░░░  1.120│ │                   │
+│ Công ▓▓▓▓▓░░ 1.380│ │ Thủ  ▓▓▓▓░░    960│ │                   │
+│ Thủ  ▓▓▓░░░░   740│ └───────────────────┘ └───────────────────┘
+└───────────────────┘
+  grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4, gap-4
+```
+
+- **Hình đặt theo loại thực thể** (4/4 nguồn): nhân vật, xe, sản phẩm, phòng nhận ra bằng hình
+  thì **ảnh trên cùng**, tỉ lệ cố định (`aspect-4/3`, `object-cover`); người trong tổ chức thì
+  **avatar `size-12` bên trái** tên + dòng phụ (chức danh, email), như danh bạ (`../components/avatar.md`).
+- **Thân card** (`p-4`): tên `text-sm font-semibold truncate` + một nhãn ngắn cùng hàng bên phải
+  (cấp, hạng, mã) `text-xs text-muted tabular-nums`; dòng trạng thái là badge chấm + chữ (`M7`);
+  rồi **2–4 chỉ số**. Cần quá bốn là người dùng đang muốn so: đó là bảng.
+- **Chỉ số có thang chung thì là thanh, không thì là cặp nhãn – số.** Thanh `h-1.5` bo `full`, rãnh
+  `bg-foreground/5`, mọi thanh **cùng `bg-primary`** như "Thanh tiến độ trong danh sách"
+  (`../components/charts.md`): HP đỏ, công cam, thủ xanh là ba màu cho cùng một ý "dài bao nhiêu".
+  Nhãn trái `text-xs text-muted` một bề rộng cố định (`w-10`), số phải `tabular-nums`.
+  **Cả lưới chung một thang** (mức tối đa của chỉ số, hay giá trị lớn nhất trong dữ liệu), không mỗi
+  card một thang: hai card cùng thanh đầy mà số khác nhau là thanh nói dối. Chỉ số không có thang
+  (ngày tham gia, lần hoạt động cuối) là hai cột nhãn – số trong một dải `border-t` cuối card.
+- **Hạng, độ hiếm, phe** là badge nhỏ cạnh tên hoặc góc ảnh, một màu nhấn cho cả bộ (`M4`). Dữ liệu
+  đã có màu hạng người dùng quen (trò chơi tự định màu độ hiếm) thì dùng đúng màu đó, **chỉ trên
+  badge**, không tô viền hay nền cả card.
+- **Bấm cả card mở trang chi tiết**: link phủ cả card (`after:absolute after:inset-0` trên link ở
+  tên), menu `⋯` **góc trên phải** đứng trên lớp phủ (`relative z-10`); 4/4 nguồn đặt menu ở đó.
+  Mục có hành động chính riêng (Kích hoạt, Kết nối) thì nút ở đáy card. Việc chính là xử lý lần
+  lượt từng mục thì không phải lưới mà là **Danh sách + chi tiết**.
+- **Thanh công cụ trên lưới**: tìm, các nút lọc, số kết quả, sắp xếp, **`segmented` hai ô icon Lưới |
+  Bảng** (`layout-grid` / `list`, mỗi ô `aria-label`, `../components/small-controls.md`), nút tạo `primary` ngoài cùng phải.
+  Màn này mặc định Lưới; đổi sang Bảng giữ nguyên bộ lọc. Nhớ lựa chọn theo người dùng là logic
+  (`N10`). Nhiều trang thì phân trang cuối lưới như "Bảng dữ liệu".
+- **Card cùng hàng cao bằng nhau** (mặc định của grid). Thiếu một chỉ số thì ghi `—` (`T18`), không để
+  card đó ngắn hơn hay thanh biến mất.
+- **Trang chi tiết thực thể** theo `Trang chi tiết bản ghi`: ảnh lớn thay avatar ở đầu trang, đủ bộ
+  chỉ số là danh sách thanh cùng khuôn trên, tab đầu là bản ghi con chính (trang bị, kỹ năng; ca làm;
+  chuyến xe).
+- **Trạng thái**: đang tải là 6 card skeleton đúng hình (khối ảnh, hai dòng, ba thanh,
+  `../components/loading.md`); chưa có mục nào theo `../components/empty-state.md`, có nút tạo; lọc
+  không ra gì thì một câu + "Xoá bộ lọc". Ảnh hỏng hay chưa có thì khối `bg-foreground/5` với chữ cái
+  đầu tên, không icon ảnh vỡ.
+
+## Màn giám sát trực tiếp ⚑
+
+Người trực mở cả ca để biết **cái gì đang hỏng, số nào đang vượt ngưỡng**. Khác trang báo cáo
+(đọc lại một khoảng đã qua). Hợp bộ mặt Midnight (`../styles.md`).
+
+```
+thanh header:  ☰  Giám sát                                          🔔  (T)
+[1 giờ qua ▾]  [Tự làm mới: 30 giây ▾]                       Cập nhật 14:32:05
+┌───────────────────────────────────────────────────────────────────────┐
+│ ⚠ 2 sự cố đang mở · Thanh toán chậm, Kho Bình Dương mất kết nối       │  <- dải tổng
+├ Đơn/phút ─┬ Thời gian phản hồi ──┬ Tỷ lệ lỗi ──────┬ Tài xế đang chạy ┤
+│ 184       │ 1.240 ms             │ 0,4%            │ 312              │
+│ ↗ 6%      │ ▲ Vượt ngưỡng 800 ms │ — Trong ngưỡng  │ ↘ 12             │
+└───────────┴──────────────────────┴─────────────────┴──────────────────┘
+┌ Thời gian phản hồi, 1 giờ qua ─────────────┐ ┌ Sự cố ────────────────┐
+│ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ngưỡng 800 ms    │ │ HÔM NAY               │
+│        ╱╲___╱‾‾‾‾                          │ │ Thanh toán chậm 14:20 │
+└────────────────────────────────────────────┘ │ ● Đang điều tra       │
+┌ Hoạt động 90 ngày ─────────────────────────┐ │ HÔM QUA               │
+│ Thanh toán  ▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮   99,92% │ │ Không có sự cố        │
+│ Kho         ▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮   98,40% │ └───────────────────────┘
+└────────────────────────────────────────────┘
+```
+
+- **Từ chung tới riêng** (2/2 nguồn): dải tổng → hàng chỉ số hiện tại → biểu đồ theo khung giờ →
+  thanh hoạt động và sự cố. Dải tổng một câu: "Mọi hệ thống bình thường" (icon `circle-check`
+  emerald) hay "2 sự cố đang mở · tên sự cố". Màu và icon của dải lấy theo **thành phần nặng nhất**.
+- **Trạng thái luôn có màu + icon + chữ**, không bao giờ chỉ màu (2/2 nguồn). Màu theo `M4`: đỏ
+  hỏng, amber cần chú ý, emerald bình thường, xám chưa có dữ liệu.
+- **Số vượt ngưỡng giữ màu chữ chính** như mọi ô số (`../components/charts.md`); dòng phụ của ô
+  đó đổi thành "▲ Vượt ngưỡng 800 ms" `text-red-700` hay `text-amber-700` kèm icon. Không tô nền ô,
+  không tô cả hàng. Trong ngưỡng thì dòng phụ là dòng so sánh thường. Ngưỡng và mức là của người
+  dùng (`N10`), skill để prop `tone`.
+- **Biểu đồ có đường ngưỡng**: một đường ngang nét đứt `stroke-red-500/60`, nhãn "ngưỡng 800 ms"
+  `text-xs text-muted` ở mép phải. Đây là ngoại lệ của "Bỏ bớt đi" (`../components/charts.md`):
+  một đường, không thêm lưới.
+- **Khung thời gian** là dropdown mở đầu vùng nội dung: 15 phút, 1 giờ, 6 giờ, 24 giờ, 7 ngày, 30
+  ngày qua (2/2 nguồn cùng bậc thang). Cạnh đó là **Tự làm mới**: Tắt, 10 giây, 30 giây, 1 phút,
+  5 phút; chu kỳ mặc định là của người dùng (các app phổ biến để tắt, hoặc giãn chu kỳ khi khung
+  dài). **"Cập nhật 14:32:05"** `text-xs text-muted tabular-nums` căn phải cùng hàng để người trực biết
+  số còn tươi; mất kết nối thì đổi thành "Mất kết nối · số từ 14:32" kèm icon amber.
+- **Số mới thay tại chỗ**: không đếm, không nháy, không trượt (`F23`). `tabular-nums` để chữ số không
+  xô nhau mỗi lần đổi.
+- **Thanh hoạt động 90 ngày**, mỗi thành phần một dòng (2/2 nguồn): 90 ô đứng `h-8` chia đều, khe
+  `gap-px`, bo `rounded-xs`; dưới `lg` còn 60 ô gần nhất, dưới `sm` còn 30. Ô emerald khi chạy đủ,
+  amber rồi đỏ theo thời gian gián đoạn trong ngày (mốc là của người dùng), **xám** khi chưa có dữ
+  liệu. Phần trăm hoạt động bên phải, `tabular-nums`. Rê hay Tab vào một ô: "12/10 · gián đoạn 42
+  phút", có sự cố thì link sang sự cố đó.
+- **Danh sách sự cố**: mới nhất trên, nhóm theo ngày. Mỗi sự cố: tên (link sang trang sự cố), giờ,
+  badge trạng thái Đang điều tra / Đã xác định / Đang theo dõi / Đã xong (`M7`). Ngày không có sự cố
+  vẫn hiện, một dòng "Không có sự cố".
+- **Trạng thái**: lần tải đầu skeleton từng khối; một khối mất dữ liệu thì chỉ khối đó báo lỗi kèm
+  "Thử lại", các khối khác vẫn chạy.
 
 ---
 
