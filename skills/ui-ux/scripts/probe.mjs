@@ -823,7 +823,9 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     if (loosenedUnits.length >= 5 || !isVisible(input)) continue;
     const unit = input.nextElementSibling;
     const style = getComputedStyle(input);
-    if (!unit || !isVisible(unit) || unit.textContent.trim().length > 3 || style.textAlign === "left" || style.textAlign === "start") continue;
+    // Đơn vị là chữ ("đ", "kg"), không phải ô nhập kế bên: dãy ô OTP cũng numeric, căn giữa, đứng liền nhau.
+    const unitText = unit?.textContent.trim() ?? "";
+    if (!unit || unit.matches("input, select, textarea, button") || !isVisible(unit) || unitText.length === 0 || unitText.length > 3 || style.textAlign === "left" || style.textAlign === "start") continue;
     measureCanvas.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
     const textWidth = measureCanvas.measureText(input.value || input.placeholder).width;
     const inputRect = input.getBoundingClientRect();
@@ -3486,7 +3488,9 @@ function measureMobileScreen({ isFrame, minTap }) {
   for (const input of device.querySelectorAll('input[inputmode="numeric"], input[inputmode="decimal"]')) {
     const unit = input.nextElementSibling;
     const style = getComputedStyle(input);
-    if (!isShown(input) || !unit || !isShown(unit) || unit.textContent.trim().length > 3 || style.textAlign !== "center") continue;
+    // Đơn vị là chữ ("đ", "kg"), không phải ô nhập kế bên: dãy ô OTP cũng numeric, căn giữa, đứng liền nhau.
+    const unitText = unit?.textContent.trim() ?? "";
+    if (!isShown(input) || !unit || unit.matches("input, select, textarea, button") || !isShown(unit) || unitText.length === 0 || unitText.length > 3 || style.textAlign !== "center") continue;
     measureCanvas.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
     const inputRect = input.getBoundingClientRect();
     const textRight = inputRect.left + inputRect.width / 2 + measureCanvas.measureText(input.value || input.placeholder).width / 2;
@@ -3576,6 +3580,17 @@ async function probeWidth(browser, options, width) {
   // Ghi `transition` sau khi trang đã hydrate: gắn thuộc tính trước đó thì React báo lệch HTML (báo nhầm
   // lỗi console 28/09/2026, Next).
   await page.waitForTimeout(options.waitMs);
+  // Bản mẫu app điện thoại mở trên màn rộng ra bảng luồng (J1): bản chép thu nhỏ cho người duyệt, không phải app.
+  // Đo màn đầu trong khung máy thay cho bảng; từng màn đã có chế độ --mobile đo.
+  const isFlowBoard = await page.evaluate(() => {
+    const board = document.querySelector(".flow-board");
+    const firstScreen = document.querySelector("[data-screen]");
+    if (!board || !firstScreen || getComputedStyle(board).display === "none") return false;
+    location.hash = firstScreen.dataset.screen;
+
+    return true;
+  });
+  if (isFlowBoard) await page.waitForTimeout(300);
   await page.evaluate(stampTransitions);
   await page.addStyleTag({ content: freezeMotionCss });
   if (options.isDark) await page.evaluate(() => document.documentElement.classList.add("dark"));

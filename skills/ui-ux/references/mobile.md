@@ -6,7 +6,7 @@ Màn của **app điện thoại**: đề nói "app mobile", "app điện thoạ
 
 Mọi luật khác của skill vẫn áp (màu, token, chữ tiếng Việt, trạng thái, dữ liệu giả, `I4`), file này
 chỉ nói chỗ **khác web**: khung máy, điều hướng, kích cỡ cho ngón tay, sheet, hành động chính, app quản lý
-nhiều dữ liệu (`J14`).
+nhiều dữ liệu (`J14`), bộ mặt riêng của app điện thoại (`J15`).
 
 **Code mẫu đã duyệt: `layouts/mobile-app.html`** (app ghi chi tiêu, 5 màn: tổng quan, chi tiết, sheet
 thêm, thống kê, cài đặt). Chép khung và công thức từ đó, thay nội dung theo đề. App đặt món, đồ uống, bán hàng
@@ -38,6 +38,15 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
 - Mỗi màn là một `section[data-screen]`, chuyển màn bằng hash (`#home`, `#detail`); màn rộng có danh sách
   màn bên trái (`nav.wf-screens`, probe không đo phần này) để người duyệt nhảy thẳng tới. Wireframe phương án (`U4`) cũng trong khung này, ba phương án
   khác nhau ở điều hướng và màn gốc.
+- **Bảng luồng là cửa vào của người duyệt** ⚑: mở link trên màn rộng (từ 900px) mà không có `#màn` thì ra bảng, nền
+  tối, **mỗi luồng một hàng** (onboarding, bài đầu tiên, thanh toán…), các màn xếp cạnh nhau theo thứ tự đi, cuộn
+  ngang, nhãn số và tên dưới mỗi màn; bấm một màn là chạy thử từ màn đó trong khung máy. Có `#màn` thì vào thẳng khung
+  máy như cũ. Chép nguyên khối Bảng luồng của `mobile-app.html` (CSS, `<main class="flow-board">`, hàm `buildBoard`),
+  kể cả bản mẫu dựng theo `mobile-order.html`: mỗi `<ol data-flow>` trong danh sách màn là một hàng, mỗi trạng thái
+  đáng xem (chưa chọn, đúng, sai, rỗng) là một mục của hàng. Script tách `renderScreen(name)` khỏi `route()`; bảng gọi
+  `renderScreen` cho từng màn rồi chép cả khung máy (thanh tab, nút thêm, sheet đúng trạng thái), không vẽ lại màn nào.
+  Thiếu bảng thì người duyệt phải bấm qua từng màn mới thấy cả luồng, không so được hai màn cạnh nhau. Probe gặp
+  bảng thì tự đo màn đầu trong khung máy.
 - **Nút chính của luồng dẫn tới kết quả thấy được.** Bấm "Lưu", "Tạo", "Đặt" trong wireframe hay bản mẫu thì về
   màn trước **đã đổi**: dòng mới ở đầu danh sách (nhãn "Mới"), số đếm và số dư cộng thêm, thông báo ngắn `J7`
   ("Đã thêm Ăn tối", có Hoàn tác). Quay về màn cũ y nguyên thì người duyệt không thấy lưu xong ra sao, nên không
@@ -188,7 +197,7 @@ Dùng (gặp ở phần lớn ảnh mẫu, hợp quy ước):
 
 Không dùng (đẹp trong ảnh, hỏng trên máy thật):
 - Chữ 9–10px, chữ pastel trên nền pastel (dưới 4.5:1).
-- Minh hoạ 3D, nhân vật trang trí chiếm nửa màn ở màn làm việc. Chỉ ở màn chào lần đầu, trạng thái rỗng.
+- Minh hoạ 3D, nhân vật trang trí chiếm nửa màn ở màn làm việc. Nhân vật và minh hoạ chỉ ở các chỗ của `J16`.
 - Nhiều màu nhấn trên một màn; thanh tab không có chữ; nút "+" nằm giữa thanh tab.
 - Dải đầu màn tô màu nhấn, nút gradient, bóng đậm: kiểu cũ, ảnh mẫu được khen không còn dùng.
 
@@ -383,8 +392,7 @@ Code mẫu: các màn đăng nhập, nhập mã, bật thông báo, đơn hàng 
   20px "Chưa có đơn nào", một câu `text-muted` nói thứ gì sẽ hiện ở đây, **một** nút chính dẫn tới việc làm nó đầy
   ("Xem menu"), nút rộng theo chữ, không giãn hết. Tiêu đề lớn của màn và thanh tab giữ nguyên chỗ.
 - **Hình**: phần lớn app dùng hình minh hoạ của thương hiệu, rộng 35–50% màn, ở chỗ này (11/24 màn rỗng đếm được,
-  icon trần chỉ 1). Bản mẫu chưa có bộ hình thì icon trong vòng tròn 80px giữ chỗ, báo lúc giao là chỗ để hình của
-  thương hiệu; không tự vẽ minh hoạ (`J8`).
+  icon trần chỉ 1). Hình lấy theo `J16`: bộ hình của dự án, chưa có thì nhân vật free sinh tại chỗ.
 - Rỗng trong một khối, một mục, kết quả tìm, lọc: vẫn một dòng chữ mờ theo `components/empty-state.md`. Tìm không
   ra món thì dưới dòng đó gợi ý vài món bán chạy, không để trắng.
 - Giỏ trống: thanh giỏ hàng ẩn (`J11`); vào giỏ bằng link thì giỏ là màn rỗng như trên, nút "Xem menu".
@@ -511,3 +519,108 @@ ghi chỗ từ hai app trở lên làm giống nhau hay khớp quy ước iOS / 
 - Một loại thì nút tròn (`J5`) mở thẳng form. Hai đến bốn loại thì nút tròn mở sheet ngắn có lưới `grid-cols-2` các ô
   96px bo 20: icon 24px trên, nhãn 16px dưới, mỗi ô một loại. Không menu dọc chữ nhỏ bật ra từ nút, không nút tròn
   bung thành chùm nút nhỏ.
+
+## J15. Bộ mặt app điện thoại — sáu bộ có tên ⚑
+
+Lý do giống `P13`: khung app điện thoại chỗ nào cũng như nhau (thanh tab, đầu màn, danh sách, sheet), nên ba app khác
+ngành dựng cùng một gu thì ra cùng một mặt. Thứ làm hai app khác nhau là **bộ mặt**: nền, màu nhấn dùng tới đâu,
+ảnh to hay chữ là chính, font, hình khối. Bộ mặt không đổi luồng, không đổi màn, không đổi chỗ đặt nút (`J1`–`J14`
+vẫn áp nguyên).
+
+⚑ Rút từ khoảng 300 màn của 10 app phổ biến ở 10 loại (đặt phòng, lưu ảnh ý tưởng, mạng xã hội chữ, bản tin, học
+ngôn ngữ, thiền và ngủ, sách tóm tắt, hẹn hò, đi bộ đường dài, việc cần làm). Sáu bộ dưới đây là
+các kiểu lặp lại ở nhiều app, không chép mặt riêng của app nào.
+
+| Bộ mặt | Nền, bề mặt | Màu nhấn tới đâu | Chữ, font | Hình khối | Hợp khi người dùng là |
+| --- | --- | --- | --- | --- | --- |
+| **Clean** | Trắng; màn danh sách nhóm nền xám, thẻ trắng (`J1`) | Nút chính, mục đang chọn, icon danh mục trong vòng nhạt (`J8`) | Inter | Bo 12–16, thẻ số chính nền tối (`J5`) | Người ghi chép, quản lý, theo dõi số mỗi ngày: chi tiêu, việc cần làm, kho, đặt lịch (`J14`). Code mẫu `mobile-app.html` |
+| **Mono** ⚑ | Trắng tinh, ngăn bằng đường kẻ, gần như không thẻ | Không có màu nhấn: nút chính đen bo tròn hết, màu duy nhất trên màn là ảnh và avatar người dùng đăng | Inter, tên người đậm 15, nội dung 15–16 | Nút viên thuốc đen hay viền, icon nét mảnh, dòng nội dung chạy hết bề ngang | Người đọc và đăng nội dung của người khác: mạng xã hội, cộng đồng, bình luận, nhắn tin nhóm |
+| **Photo** ⚑ | Trắng, ảnh thật là chủ thể | **Chỉ nút chính** của luồng (Đặt, Mua, Lưu); việc phụ là nút đen hay viền | Inter, tên mục 15–16 đậm dưới ảnh | Ảnh bo 12–16 tỉ lệ 4:3 hay 1:1, chữ nằm dưới ảnh không bọc thẻ; lưới 2 cột so le khi lướt ý tưởng | Người lướt để chọn bằng mắt: đặt phòng, du lịch, bất động sản, món ăn, thời trang, nội thất, đường đi |
+| **Playful** ⚑ | Trắng, phản hồi tô cả dải đáy | Một màu thương hiệu bão hoà cho nút chính và thanh tiến độ; thêm tối đa hai màu **có nghĩa** (đúng, sai, chuỗi ngày) | Nunito 700–800, nút chữ đậm | Thẻ chọn viền 2px có viền đáy 4px (trông bấm được), bo 16; thanh tiến độ cao 12–16 bo tròn; nhân vật đổi nét mặt theo đúng sai (`J16`) | Người cần động lực quay lại mỗi ngày: học, thói quen, thể dục cho người dùng phổ thông, trẻ |
+| **Immersive** ⚑ | Nền tối có sắc (xanh đêm, tím than) cả app, chuyển dọc nhẹ hai tông gần nhau | Nút chính trắng chữ tối, không màu nhấn rực | Inter, tiêu đề lớn trắng, chữ phụ trắng 72% | Ảnh lớn bo 12–16 làm điểm nhìn, thẻ là lớp trắng 8–10% trên nền | Người dùng để thư giãn, nghe, xem, thường buổi tối: thiền, ngủ, nhạc, podcast, sách nói, video |
+| **Editorial** ⚑ | Trắng hay kem ấm `#fbf8f3`, gần như không thẻ | Một sắc nhỏ cho link, nút theo dõi; nút chính đen hay màu đó | Tiêu đề bài và thân bài **Lora** (serif), thân 18/1.6; khung app (tab, nút, nhãn) vẫn Inter | Dòng bài: chữ trái, ảnh vuông 64 phải; trang đọc lề 20, không khung | Người **đọc** dài: bản tin, báo, sách, khoá học dạng đọc, công thức nấu ăn |
+
+**Token đổi theo bộ** (khối đổi thương hiệu của `mobile-app.html`, tương phản đã đo):
+
+| Bộ | Đổi gì |
+| --- | --- |
+| Mono | `--primary: #111111`; nền màn trắng cả màn danh sách nhóm (nhóm tách bằng tiêu đề và đường kẻ `--border-strong`); bỏ thẻ số chính nền tối, số chính chỉ là chữ lớn |
+| Photo | `--primary` là màu thương hiệu đạt 4.5:1 với chữ trắng (hồng `#d70466` 5.12:1; `#e11d48` 4.7:1); nút phụ `bg-foreground text-surface` hay viền `--border-strong` |
+| Playful | `--app-font: "Nunito"`; `--primary` đậm đủ cho chữ trắng: xanh lá `#2f7d00` 5.18:1. **Xanh lá rực `#58cc02` chữ trắng chỉ 2.09:1**: muốn màu rực thì nút rực chữ tối, hay chữ trắng trên nền đậm. Dải đúng `#d7ffb8` chữ `#2f7d00` (4.66:1), dải sai `--danger-bg` chữ `--danger` |
+| Immersive | Cả khung mang `force-dark` (`M33`) với `--background: #1b2350`, `--surface` là trắng 10% trên nền (`#323962`, chữ trắng 11:1), `--muted` trắng 72% (8.4:1 trên `#1b2350`); nút chính `bg-white text-[#1b2350]` |
+| Editorial | Nạp thêm Lora 400, 700 (có bộ `vietnamese`, đã kiểm); `--background: #fbf8f3`, `--muted: #6b6459` (5.5:1 trên kem), sắc nhấn cam `#c2410c` (4.9:1 trên kem) |
+
+**Chọn bộ nào.** Bộ mặt bám **người dùng và việc chính** ở `U1`, `U2`, không bám ngành: app spa mà người mở là kế toán
+đối soát thì Clean, không phải Photo. Bộ còn cờ ⚑ chưa qua test ở dự án thật, nên **chưa tự khuyên**: skill dựng
+Clean, và khi đề hợp rõ một bộ có cờ thì báo một dòng lúc giao, nói bằng người dùng: *"Bộ mặt: **Clean**. App học từ
+vựng cần người học quay lại mỗi ngày: muốn kiểu vui hơn (nút đậm, thẻ bấm được, phản hồi tô cả dải đáy) thì nói
+Playful. Có thêm Mono, Photo, Immersive, Editorial."* Wireframe app điện thoại có nhóm Kiểu liệt kê sáu bộ
+(`design-process.md`, `U3`), mặc định Clean. Bộ nào qua test thì gỡ cờ ⚑ ở bảng trên.
+
+**Ghi lại bộ đã chọn** như `P13`: dòng Bộ mặt trong `DESIGN.md` và comment `/* Bộ mặt: Playful (J15) */` trên khối
+font, để màn sau theo đúng bộ đó, không khuyên lại.
+
+**Được đè, chỉ trong bộ đó:**
+- Playful đè dòng "nhiều màu nhấn trên một màn" của `J8`: thêm tối đa hai màu, mỗi màu một nghĩa cố định. Nhân vật
+  (`J16`) có mặt ở mọi khoảnh khắc phản hồi và ở bài tập (người nói câu mẫu), không chỉ màn chào và rỗng.
+- Immersive đè nền trắng của `J1` và dòng "gradient" của `J8` cho **nền**: chuyển dọc hai tông gần nhau. Nút vẫn
+  không gradient.
+- Mono đè thẻ số chính nền tối của `J5`.
+
+**Không đè:** `J2` thanh tab có chữ, `J4` chỗ bấm 44px, chữ tối thiểu 11px, tương phản 4.5:1, một hành động chính
+mỗi màn.
+
+**Bẫy**
+- **Mono, Photo hay thấy thanh tab chỉ icon** trong app mẫu (app quen thuộc, người dùng đã thuộc icon). App mới vẫn
+  giữ chữ (`J2`).
+- **Photo không có ảnh thật thì đừng chọn.** Ô xám thay ảnh trông như app hỏng; dữ liệu giả dùng ảnh thật có quyền
+  dùng, không vẽ minh hoạ thay ảnh.
+- **Playful: gờ đáy 4px là `box-shadow` đặc, không phải `border-bottom`.** Chưa bấm `box-shadow: 0 4px 0 <màu gờ>`; nhấn
+  thì `translate: 0 2px` và gờ còn `0 2px 0`: mép dưới đứng yên, bố cục không đổi. Đừng đổi `border-bottom-width` rồi bù
+  `margin`: thẻ có `min-height` không thấp đi, phần bù dư ra, mọi thẻ bên dưới giật xuống mỗi lần nhấn. Gờ nằm ngoài
+  khối nên vùng cuộn chừa đáy 8px, thẻ cuối không mất gờ. Thẻ đang chọn đổi nền nhạt, viền và gờ theo `--primary`.
+  Không vòng focus (`I13`).
+- **Playful: không IN HOA chữ tiếng Việt trên nút.** IN HOA kèm dấu chồng lên nhau ("TIẾP TỤC" cao hơn hàng), đọc chậm.
+  Dùng chữ thường đậm 800.
+- **Immersive: đi hết bẫy `P10`**: tiêu đề, icon, chữ trong ô nhập đổi theo nền; sheet và hộp hỏi trên nền tối cũng
+  tối, không bật ra một tấm trắng. Ảnh tối trên nền tối thì thêm viền trắng 10%.
+- **Editorial: serif chỉ cho nội dung đọc.** Lora cho nhãn tab, nút, ô nhập thì khung app thành giả cổ, chữ nhỏ 11–13
+  khó đọc. Nạp Lora mà quên bộ `vietnamese` thì "ữ", "ợ" rơi về font máy (`T5`).
+
+## J16. Nhân vật và minh hoạ ⚑
+
+App vui, app học, app sức khoẻ trông "có hồn" nhờ nhân vật: màn chào có người chào, bài tập có người nói câu mẫu,
+đúng sai có nét mặt. Thay bằng icon trong vòng tròn thì luồng đúng luật mà trống, nhất là màn chào, màn luyện nói,
+màn xong.
+
+**Nguồn, theo thứ tự:**
+1. **Dự án có bộ hình** (grep `illustration`, `mascot`, `character`, thư mục `public/illustrations`, `assets/images`,
+   file Lottie `.json`, `.riv`): dùng của họ, không trộn bộ khác.
+2. **Chưa có**: nhân vật **CC0** (công cộng, dùng thương mại, không cần ghi nguồn) sinh tại chỗ bằng DiceBear, kiểu
+   **Open Peeps** (người vẽ tay, có nét mặt). Bản mẫu HTML nạp `@dicebear/core` và `@dicebear/open-peeps` bản 9 qua
+   jsDelivr `+esm` rồi `createAvatar(...).toDataUri()` gán vào `img[data-art]`; dự án thật cài hai gói đó bằng npm.
+   App cần dáng khác thì Notionists hay Lorelei, cùng CC0.
+   - **Không gọi `api.dicebear.com`**: API công khai chỉ cho phi thương mại.
+   - **Không lấy unDraw**: giấy phép cấm nhúng, tích hợp, thu thập tự động khi chưa xin phép, đúng việc skill làm.
+   - **Không lấy kiểu CC BY** (Adventurer, Micah, Fun Emoji…): phải ghi công, người dùng dễ quên khi ra bản thật.
+   - Không tự vẽ SVG nhân vật hay minh hoạ (`J8`).
+
+**Một nhân vật cho cả app**: giữ cố định `seed`, tóc (`head`), màu áo (`clothingColor`) là màu nhấn; tắt kính, khẩu
+trang (`*Probability: 0`). Chỉ **nét mặt** (`face`) đổi theo khoảnh khắc: nói, hướng dẫn `explaining` · đúng, xong,
+chào `smileBig` · sai `concerned` · đang nghe, chờ `calm`. Bạn hội thoại trong bài tập là nhân vật thứ hai cùng kiểu.
+Hai kiểu vẽ trong một app (người vẽ tay cạnh ảnh chụp) thì trông ghép.
+
+**Chỗ dùng và cỡ:**
+
+| Chỗ | Cỡ |
+| --- | --- |
+| Màn chào (`J12`), kèm bong bóng một câu chào | 160–176px |
+| Bài tập: người nói câu mẫu, bong bóng ở trên đầu nhân vật | 140–160px, giữa màn |
+| Màn xong, màn kết quả onboarding (`O8`), trạng thái rỗng (`J12`) | 35–50% bề ngang màn |
+| Bạn hội thoại cạnh bong bóng tin nhắn | 56px |
+
+Không ở màn làm việc lặp lại (danh sách, form, cài đặt, giỏ hàng) và không ở màn câu hỏi của onboarding: câu hỏi là
+tiêu đề lớn (`O8`).
+
+**Lúc giao** nói một dòng: nhân vật là bộ free giữ chỗ (CC0); có bộ hình thương hiệu thì thay ở một chỗ, đoạn script
+gán `img[data-art]` theo tên nhân vật và nét mặt. Bảng luồng (`J1`) giữ móc `data-art` khi chép màn.

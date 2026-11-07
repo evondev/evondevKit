@@ -183,8 +183,9 @@ rộng hết màn):
   riêng chỉ khi phải xin đồng ý riêng (nhận email quảng cáo, xác nhận đủ tuổi), và ô đó bỏ trống
   sẵn.
 - **Xin quyền** (thông báo, vị trí, camera): một **màn mồi** trước hộp hệ thống, minh hoạ đúng cái
-  người dùng sẽ nhận (một thông báo mẫu "Tới giờ học 15 phút rồi"), nút `primary` "Bật thông báo"
-  và nút ghost "Để sau". Chỉ nút Bật mới gọi hộp hệ thống (logic, ghi gợi ý). Đặt ở **cuối chuỗi**
+  người dùng sẽ nhận (một thông báo mẫu "Tới giờ học 15 phút rồi"), nút `primary` và nút ghost "Để
+  sau"; chữ trên nút chính theo `J12` ở app điện thoại ("Tiếp tục": hộp hệ thống mới là chỗ cho
+  phép). Chỉ nút chính mới gọi hộp hệ thống (logic, ghi gợi ý). Đặt ở **cuối chuỗi**
   hay lúc cần tới quyền đó, không đặt ở màn đầu. Quyền chưa cần ngay thì không xin trong chuỗi.
 - **Màn cuối** nói kết quả của các câu trả lời ("Lộ trình 15 phút mỗi ngày, bắt đầu từ bài 1") và
   một nút đi thẳng vào **việc chính đầu tiên**. Không đưa người dùng vào một dashboard rỗng.

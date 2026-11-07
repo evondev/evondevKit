@@ -106,6 +106,32 @@
       .press { transition: scale 120ms cubic-bezier(0.23, 1, 0.32, 1), background-color 150ms ease; -webkit-tap-highlight-color: transparent; }
       .press:active { scale: 0.97; }
       @media (prefers-reduced-motion: reduce) { .press:active { scale: 1; } }
+
+      /* ===== BẢNG LUỒNG (J1): chỉ cho người duyệt trên màn rộng, không thuộc app. Mở link không có #màn thì ra bảng:
+         mỗi luồng một hàng, các màn cạnh nhau theo thứ tự đi, cuộn ngang; bấm một màn là chạy thử từ màn đó. ===== */
+      body.is-board { display: block !important; min-height: 100vh; padding: 0 !important; background: #141414 !important; color: #f4f4f5; }
+      body.is-board > .device, body.is-board > .wf-screens { display: none !important; }
+      .flow-board { display: none; }
+      body.is-board .flow-board { display: block; }
+      .flow-row { display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 48px; padding: 8px 48px 24px; scrollbar-width: none; }
+      .flow-row::-webkit-scrollbar { display: none; }
+      .board-card { flex: none; scroll-snap-align: start; color: inherit; text-decoration: none; }
+      .board-phone { width: calc(390px * 0.7); height: calc(844px * 0.7); overflow: hidden; border-radius: 32px; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08); transition: box-shadow 150ms ease; }
+      .board-card:hover .board-phone { box-shadow: 0 0 0 2px var(--primary-foreground); }
+      .board-card:focus-visible { outline: none; }
+      /* Khai lại màu chữ của app: body của bảng chữ trắng, bản chép sẽ thừa hưởng nếu không khai. */
+      .board-device { color: var(--foreground); --inset-top: 47px; --inset-bottom: 34px; zoom: 0.7; width: 390px !important; height: 844px !important; border-radius: 0 !important; box-shadow: none !important; }
+      .board-device .status-bar { display: flex; }
+      .board-device .home-indicator { display: block; }
+      .board-device .screen { visibility: visible; animation: none !important; }
+      .board-device .sheet, .board-device .scrim { transition: none; }
+      @media (prefers-reduced-motion: no-preference) {
+        .board-card { animation: card-in 400ms cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(var(--order) * 40ms); }
+      }
+      @keyframes card-in { from { opacity: 0; translate: 0 16px; } }
+      .player-toggle .icon-play { display: none; }
+      .player-toggle[aria-pressed="false"] .icon-play { display: block; }
+      .player-toggle[aria-pressed="false"] .icon-pause { display: none; }
     </style>
 
     <style type="text/tailwindcss">
@@ -131,11 +157,13 @@
   <body class="bg-background font-sans text-foreground antialiased min-[500px]:flex min-[500px]:min-h-screen min-[500px]:items-center min-[500px]:justify-center min-[500px]:gap-12 min-[500px]:bg-(--frame-page) min-[500px]:py-10">
     <!-- Danh sách màn: chỉ ở màn rộng, để người duyệt nhảy thẳng tới từng màn. Không thuộc app. -->
     <nav class="wf-screens hidden w-48 text-sm min-[900px]:block" aria-label="Màn trong bản mẫu">
+      <a href="#" class="mb-4 inline-flex items-center gap-1 rounded-md py-1.5 pr-2 font-medium text-(--frame-muted) hover:text-foreground"><i data-lucide="layout-grid" class="size-4"></i>Bảng luồng</a>
       <p class="mb-3 font-medium">Chi Tiêu · 5 màn</p>
-      <ol class="space-y-1 text-(--frame-muted)">
+      <!-- Mỗi luồng một <ol data-flow>: bảng luồng dựng mỗi danh sách thành một hàng, theo đúng thứ tự này. -->
+      <ol class="space-y-1 text-(--frame-muted)" data-flow="Ghi chi tiêu" data-flow-note="Xem tổng quan, thêm một khoản, xem thống kê">
         <li><a href="#home" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">1. Tổng quan</a></li>
-        <li><a href="#detail" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">2. Chi tiết giao dịch</a></li>
-        <li><a href="#add" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">3. Thêm giao dịch (sheet)</a></li>
+        <li><a href="#add" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">2. Thêm giao dịch (sheet)</a></li>
+        <li><a href="#detail" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">3. Chi tiết giao dịch</a></li>
         <li><a href="#stats" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">4. Thống kê</a></li>
         <li><a href="#settings" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">5. Cài đặt</a></li>
       </ol>
@@ -356,6 +384,18 @@
       <div class="home-indicator pointer-events-none absolute bottom-2 left-1/2 z-[70] h-[5px] w-[134px] -translate-x-1/2 rounded-full bg-foreground" aria-hidden="true"></div>
     </div>
 
+    <!-- Bảng luồng (J1): script dựng từ danh sách màn, mỗi <ol data-flow> một hàng. -->
+    <main class="flow-board" aria-label="Bảng luồng">
+      <header class="flex items-end justify-between gap-6 px-12 pt-10 pb-6">
+        <div>
+          <p class="text-sm text-white/60">Bản mẫu app điện thoại</p>
+          <h1 class="mt-1 text-[28px] font-bold tracking-tight">Chi Tiêu</h1>
+        </div>
+        <p class="text-sm text-white/60">Bấm một màn để chạy thử từ màn đó</p>
+      </header>
+      <div data-board-rows></div>
+    </main>
+
     <script>
       lucide.createIcons();
 
@@ -384,8 +424,8 @@
         tabbar.classList.toggle("right-4", name !== "home");
       }
 
-      function route() {
-        const name = location.hash.slice(1) || "home";
+      // Dựng một màn theo tên (cả sheet trên màn nền của nó). route() và bảng luồng cùng gọi hàm này.
+      function renderScreen(name) {
         const isSheet = name === "add";
         if (!isSheet) baseScreen = name;
         showScreen(isSheet ? baseScreen : name);
@@ -394,7 +434,138 @@
         sheet.inert = !isSheet;
       }
 
+      // Màn rộng, link không có #màn: bảng luồng (J1). Có #màn: chạy thử trong khung máy.
+      const wideScreen = matchMedia("(min-width: 900px)");
+      function route() {
+        const name = location.hash.slice(1);
+        document.body.classList.toggle("is-board", !name && wideScreen.matches);
+        renderScreen(name || "home");
+      }
+
+      // ===== BẢNG LUỒNG (J1): chép nguyên hàm này. Mỗi <ol data-flow> thành một hàng; mỗi màn được dựng trên máy thật bằng
+      // renderScreen (thanh tab, nút thêm, sheet đúng trạng thái) rồi chép cả khung máy, nên không phải vẽ lại màn nào. =====
+      function buildBoard(renderScreen) {
+        const rowsContainer = document.querySelector("[data-board-rows]");
+        const liveDevice = document.querySelector(".device");
+        const isReduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        let order = 0;
+        document.querySelectorAll("[data-flow]").forEach((flowList) => {
+          const links = [...flowList.querySelectorAll("a[href^='#']")];
+          const section = document.createElement("section");
+          section.className = "pb-8";
+          section.innerHTML = `
+            <div class="flex items-end justify-between gap-4 px-12 pb-3">
+              <div><h2 class="text-xl font-semibold">${flowList.dataset.flow}</h2><p class="mt-0.5 text-sm text-white/60">${links.length} màn · ${flowList.dataset.flowNote || ""}</p></div>
+              <div class="flex gap-2">
+                <button type="button" class="grid size-11 place-items-center rounded-full bg-white/10 hover:bg-white/20" aria-label="Cuộn sang trái" data-scroll="-1"><i data-lucide="arrow-left" class="size-5"></i></button>
+                <button type="button" class="grid size-11 place-items-center rounded-full bg-white/10 hover:bg-white/20" aria-label="Cuộn sang phải" data-scroll="1"><i data-lucide="arrow-right" class="size-5"></i></button>
+              </div>
+            </div>
+            <div class="flow-row"></div>`;
+          const row = section.querySelector(".flow-row");
+          const frames = [];
+          links.forEach((link, index) => {
+            const screenName = link.getAttribute("href").slice(1);
+            renderScreen(screenName);
+            const deviceCopy = liveDevice.cloneNode(true);
+            deviceCopy.classList.add("board-device");
+            deviceCopy.inert = true;
+            deviceCopy.querySelectorAll(".screen:not(.is-active), .sheet:not(.is-open), .scrim:not(.is-open), [data-toast], [hidden]").forEach((element) => element.remove());
+            // Bản chép không mang móc của script (data-screen, data-tab…): probe và script chỉ thấy máy thật. Giữ data-lucide và
+            // data-art (nhân vật J16) vì hai script đó gán hình sau khi bảng dựng xong.
+            [deviceCopy, ...deviceCopy.querySelectorAll("*")].forEach((element) => {
+              [...element.attributes].filter((attribute) => attribute.name.startsWith("data-") && attribute.name !== "data-lucide" && !attribute.name.startsWith("data-art")).forEach((attribute) => element.removeAttribute(attribute.name));
+            });
+            frames.push({ name: screenName, device: deviceCopy });
+            const card = document.createElement("a");
+            card.href = `#${screenName}`;
+            card.className = "board-card";
+            card.style.setProperty("--order", ++order);
+            const phone = document.createElement("div");
+            phone.className = "board-phone";
+            phone.append(deviceCopy);
+            const label = document.createElement("p");
+            label.className = "mt-3 text-sm text-white/70";
+            label.textContent = `${index + 1}. ${link.textContent.replace(/^\d+\.\s*/, "")}`;
+            card.append(phone, label);
+            row.append(card);
+          });
+          // Thẻ đầu hàng: tự phát cả luồng như một đoạn video, dùng chính các màn vừa chép.
+          if (frames.length > 1) row.prepend(createFlowPlayer(frames, isReduced));
+          section.querySelectorAll("[data-scroll]").forEach((button) => {
+            button.addEventListener("click", () => row.scrollBy({ left: Number(button.dataset.scroll) * row.clientWidth * 0.8, behavior: isReduced ? "auto" : "smooth" }));
+          });
+          rowsContainer.append(section);
+        });
+        lucide.createIcons();
+      }
+
+      // ===== CHẠY LUỒNG (J1): 1,6 giây mỗi màn, màn sau trượt vào như bấm thật, thanh tiến độ chạy tiếp. Chỉ phát khi thẻ nằm
+      // trong màn hình, rê chuột thì dừng, có nút dừng / phát (nội dung tự chạy quá 5 giây phải dừng được). Giảm chuyển
+      // động thì không tự phát, bấm ▶ mới chạy, đổi màn bằng mờ dần. Bấm khung máy là chạy thử đúng màn đang phát. =====
+      function createFlowPlayer(frames, isReduced) {
+        const card = document.createElement("div");
+        card.className = "board-card";
+        card.style.setProperty("--order", 0);
+        card.innerHTML = `
+          <a class="block" aria-label="Chạy thử từ màn đang phát" data-player-link><div class="board-phone" data-player-phone></div></a>
+          <div class="mt-3 flex w-[273px] items-center justify-between gap-2">
+            <p class="text-sm text-white/70">Chạy luồng · <span class="tabular-nums" data-player-step></span></p>
+            <button type="button" class="player-toggle grid size-11 place-items-center rounded-full bg-white/10 hover:bg-white/20" data-player-toggle><i data-lucide="pause" class="icon-pause size-5"></i><i data-lucide="play" class="icon-play size-5"></i></button>
+          </div>
+          <div class="mt-2 flex w-[273px] gap-1" aria-hidden="true" data-player-segments>${frames.map(() => '<span class="h-1 flex-1 rounded-full bg-white/20"></span>').join("")}</div>`;
+        const phone = card.querySelector("[data-player-phone]");
+        const link = card.querySelector("[data-player-link]");
+        const step = card.querySelector("[data-player-step]");
+        const segments = [...card.querySelector("[data-player-segments]").children];
+        const toggle = card.querySelector("[data-player-toggle]");
+        let index = 0;
+        let timer = null;
+        let isPlaying = !isReduced;
+        let isHovered = false;
+        let isVisible = false;
+        let lastWidth = null;
+
+        function show(nextIndex, shouldAnimate) {
+          index = nextIndex;
+          phone.replaceChildren(frames[index].device.cloneNode(true));
+          link.href = `#${frames[index].name}`;
+          step.textContent = `${index + 1}/${frames.length}`;
+          segments.forEach((segment, segmentIndex) => segment.classList.toggle("bg-white", segmentIndex <= index));
+          const screen = phone.querySelector(".screen");
+          const fill = phone.querySelector('[role="progressbar"] > div');
+          if (shouldAnimate && screen) {
+            screen.animate(isReduced ? [{ opacity: 0 }, { opacity: 1 }] : [{ translate: "30% 0", opacity: 0.6 }, { translate: "0 0", opacity: 1 }], { duration: isReduced ? 200 : 300, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" });
+            if (fill && lastWidth && lastWidth !== fill.style.width && !isReduced) {
+              fill.animate([{ width: lastWidth }, { width: fill.style.width }], { duration: 400, delay: 150, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)", fill: "backwards" });
+            }
+          }
+          lastWidth = fill ? fill.style.width : null;
+        }
+
+        function sync() {
+          const shouldRun = isPlaying && isVisible && !isHovered;
+          if (shouldRun && !timer) timer = setInterval(() => show((index + 1) % frames.length, true), 1600);
+          if (!shouldRun && timer) { clearInterval(timer); timer = null; }
+          toggle.setAttribute("aria-pressed", String(isPlaying));
+          toggle.setAttribute("aria-label", isPlaying ? "Dừng chạy luồng" : "Chạy luồng");
+        }
+
+        toggle.addEventListener("click", () => { isPlaying = !isPlaying; sync(); });
+        card.addEventListener("mouseenter", () => { isHovered = true; sync(); });
+        card.addEventListener("mouseleave", () => { isHovered = false; sync(); });
+        // Hình gán sau (nhân vật J16 nạp từ CDN): chép lại màn đang hiện khi hình đã có.
+        document.addEventListener("art-ready", () => show(index, false));
+        new IntersectionObserver(([entry]) => { isVisible = entry.isIntersecting; sync(); }, { threshold: 0.5 }).observe(card);
+        show(0, false);
+        sync();
+
+        return card;
+      }
+
+      buildBoard(renderScreen);
       window.addEventListener("hashchange", route);
+      wideScreen.addEventListener("change", route);
       scrim.addEventListener("click", () => { location.hash = baseScreen; });
       document.querySelector("[data-save]").addEventListener("click", () => {
         const toast = document.querySelector("[data-toast]");
