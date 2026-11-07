@@ -52,6 +52,21 @@
       }
       /* ===== HẾT KHỐI ĐỔI THƯƠNG HIỆU ===== */
 
+      /* ===== THANH CUỘN (SKILL.md câu 2), chép từ tokens.css: cho phần ngoài khung máy (trang bảng luồng dài). Vùng cuộn
+         trong khung (.scroll) ẩn hẳn, ngoại lệ của luật chốt 13. ===== */
+      * { --scrollbar-thumb: transparent; }
+      *:hover { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 16%, transparent); }
+      .is-scrolling { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 28%, transparent); }
+      ::-webkit-scrollbar { width: 4px; height: 4px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 9999px; }
+      ::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--foreground) 40%, transparent); }
+      @supports not selector(::-webkit-scrollbar) {
+        * { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+        *:hover { scrollbar-color: color-mix(in srgb, var(--foreground) 18%, transparent) transparent; }
+        .is-scrolling { scrollbar-color: color-mix(in srgb, var(--foreground) 28%, transparent) transparent; }
+      }
+
       /* ===== KHUNG MÁY (J1). Hai chế độ:
          - Màn hẹp (điện thoại thật, probe 390): màn tràn hết, chừa tai thỏ và thanh home bằng env().
          - Màn rộng (máy tính): màn 390×844 nằm trong khung điện thoại, vẽ thanh trạng thái 47px và thanh home 34px. ===== */
@@ -478,6 +493,8 @@
             // Gỡ data-screen để probe và script chỉ thấy màn của máy thật. Giữ các data-* khác: CSS hay ẩn hiện theo chúng
             // (nút phát/dừng theo [data-play-toggle][aria-pressed]), gỡ đi thì bản chép hiện cả hai icon.
             deviceCopy.querySelectorAll("[data-screen]").forEach((element) => element.removeAttribute("data-screen"));
+            // Bỏ name, id, for: radio cùng name ở bản chép giành mất dấu chọn của máy thật (sheet món mất "Vừa", giá sai).
+            deviceCopy.querySelectorAll("[name], [id], [for]").forEach((element) => ["name", "id", "for"].forEach((attribute) => element.removeAttribute(attribute)));
             frames.push({ name: screenName, device: deviceCopy });
             const card = document.createElement("a");
             card.href = `#${screenName}`;

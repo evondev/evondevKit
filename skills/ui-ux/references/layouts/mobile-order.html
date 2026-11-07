@@ -50,6 +50,21 @@
       }
       /* ===== HẾT KHỐI ĐỔI THƯƠNG HIỆU ===== */
 
+      /* ===== THANH CUỘN (SKILL.md câu 2), chép từ tokens.css: cho phần ngoài khung máy (trang bảng luồng dài). Vùng cuộn
+         trong khung (.scroll) ẩn hẳn, ngoại lệ của luật chốt 13. ===== */
+      * { --scrollbar-thumb: transparent; }
+      *:hover { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 16%, transparent); }
+      .is-scrolling { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 28%, transparent); }
+      ::-webkit-scrollbar { width: 4px; height: 4px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 9999px; }
+      ::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--foreground) 40%, transparent); }
+      @supports not selector(::-webkit-scrollbar) {
+        * { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+        *:hover { scrollbar-color: color-mix(in srgb, var(--foreground) 18%, transparent) transparent; }
+        .is-scrolling { scrollbar-color: color-mix(in srgb, var(--foreground) 28%, transparent) transparent; }
+      }
+
       /* ===== KHUNG MÁY (J1), giống mobile-app.html. ===== */
       :root { --inset-top: env(safe-area-inset-top, 0px); --inset-bottom: env(safe-area-inset-bottom, 0px); }
       .device { --screen-bg: var(--surface); position: relative; width: 100%; height: 100dvh; overflow: hidden; background: var(--screen-bg); }
@@ -623,7 +638,7 @@
         </div>
         <!-- Đáy sheet (J11, J5): một nút giãn hết bề ngang, ghi tổng tiền theo lựa chọn và số lượng, đổi ngay khi chọn. -->
         <div class="shrink-0 border-t border-border px-4 pt-3" style="padding-bottom: calc(var(--inset-bottom) + 12px)">
-          <a href="#menu" class="press flex h-[52px] items-center justify-center gap-1.5 rounded-2xl bg-primary text-base font-semibold text-primary-foreground" data-add>Thêm vào giỏ<span class="font-normal opacity-70">·</span><span class="tabular-nums" data-item-total>55.000đ</span></a>
+          <a href="#menu" class="press flex h-[52px] items-center justify-center gap-1.5 rounded-2xl bg-primary text-base font-semibold text-primary-foreground" data-add>Thêm vào giỏ<span class="font-normal">·</span><span class="tabular-nums" data-item-total>55.000đ</span></a>
         </div>
       </section>
 

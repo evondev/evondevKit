@@ -3524,9 +3524,13 @@ async function probeMobileApp(browser, options) {
 
     return [...new Set([...names, ...links])].filter((name) => !/^main$|^top$/.test(name));
   });
+  // Bảng luồng (J1): bản chép còn name, id thì radio cùng name giành mất dấu chọn của máy thật (sheet món không còn
+  // lựa chọn nào được chọn, giá sai). Mắt thường mới thấy, nên đo thẳng ở đây.
+  const boardLeaks = await discoverPage.evaluate(() => document.querySelectorAll(".board-device [name], .board-device [id]").length);
   await discover.close();
 
   const screens = [];
+  if (boardLeaks > 0) screens.push({ view: "bảng luồng", hash: "board", shotPath: join(options.out, "mobile-board.png"), problems: [`bảng luồng: ${boardLeaks} phần tử trong bản chép còn name hay id, radio của bản chép giành dấu chọn của máy thật; chép buildBoard mới nhất của mobile-app.html (J1)`] });
   // 360×640: Android giá rẻ, máy cũ (khổ hẹp nhất còn phổ biến). Hàng 7 ô vừa ở 390 có thể lố ở đây.
   const runs = [
     ["390", { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: options.dpr }, false],
@@ -3602,6 +3606,8 @@ async function probeWidth(browser, options, width) {
     return true;
   });
   if (isFlowBoard) await page.waitForTimeout(300);
+  // Danh sách màn bên trái khung máy (nav.wf-screens) là của người duyệt, không thuộc app (J1): ẩn trước khi đo.
+  await page.evaluate(() => { if (document.querySelector(".device")) document.querySelectorAll(".wf-screens").forEach((nav) => { nav.style.display = "none"; }); });
   await page.evaluate(stampTransitions);
   await page.addStyleTag({ content: freezeMotionCss });
   if (options.isDark) await page.evaluate(() => document.documentElement.classList.add("dark"));

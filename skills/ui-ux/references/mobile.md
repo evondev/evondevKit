@@ -61,7 +61,8 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   ("Đã thêm Ăn tối", có Hoàn tác). Quay về màn cũ y nguyên thì người duyệt không thấy lưu xong ra sao, nên không
   góp ý được bước cuối của luồng, là bước họ làm nhiều nhất.
 - **Không hover**: màn chạm không có rê chuột. Phản hồi là lúc nhấn (`J7`).
-- **Kiểm bằng probe chế độ mobile** trước khi giao: `node scripts/probe.mjs <file hay link> --mobile --widths 390,1280`.
+- **Kiểm bằng probe chế độ mobile** trước khi giao: `node scripts/probe.mjs <file hay link> --mobile --widths 390,1280`
+  (thay cho `--sweep`, `--wireframe` của màn web; thêm một lượt `--stress` khi có danh sách).
   Nó mở từng màn (mỗi `data-screen` và hash dẫn tới sheet) ở 390×844 và 360×640 (Android giá rẻ, máy cũ) giả lập chạm và ở khung 1280, chụp từng
   màn, đo các luật `J` đo được: chữ dưới 11px, chữ ô nhập dưới 16px, chỗ bấm dưới 44px, thanh tab, nút nổi đè
   chữ, dòng cuối kẹt dưới thanh tab, chữ chui vào vùng tai thỏ / thanh home.
@@ -83,7 +84,8 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   quay lại bằng nút trái ở thanh trên (`J3`). Ẩn thanh tab làm người dùng quên mình đang ở mục nào, và iOS mặc định
   giữ thanh khi đẩy màn con vào (tài liệu thanh tab của iOS: chỉ ẩn khi có lớp phủ tạm). Bấm mục đang sáng thì về
   màn gốc của tab đó.
-- **Ẩn thanh tab khi màn là một việc phải làm cho xong**: form thêm, sửa; giỏ hàng, thanh toán; luồng nhiều bước.
+- **Ẩn thanh tab khi màn là một việc phải làm cho xong**: form thêm, sửa; giỏ hàng, thanh toán; luồng nhiều bước; màn
+  chọn một thứ rồi quay về (chọn quán, chọn địa chỉ giao, chọn phiếu ưu đãi).
   Các màn này có nút chính dính đáy (`J5`), thanh tab nằm cạnh nút đó thì hai dải đáy chồng nhau, và bấm nhầm tab là
   bỏ dở việc. Sheet và hộp hỏi phủ lên thanh tab.
 - **Màn xem có thanh hành động dính đáy cũng ẩn thanh tab** (trang chỗ ở, sản phẩm có "giá · Đặt", "Thêm vào giỏ"): thanh
@@ -563,7 +565,7 @@ các kiểu lặp lại ở nhiều app, không chép mặt riêng của app nà
 | Bộ | Đổi gì |
 | --- | --- |
 | Mono | `--primary: #111111`; nền màn trắng cả màn danh sách nhóm (nhóm tách bằng tiêu đề và đường kẻ `--border-strong`); bỏ thẻ số chính nền tối, số chính chỉ là chữ lớn |
-| Photo | `--primary` lấy trong bảng màu theo ngành của `brand-tokens.md` (không đỏ, không hồng); màu nhấn chỉ ở nút **cam kết** của luồng (Tìm, Đặt, Thanh toán, Mua). Nút chính khác (Tiếp ở bước chọn, Áp dụng lọc, Xem chuyến đi) là nút đen `bg-foreground text-surface`; trạng thái đang chọn (ngày, chip lọc, card chọn, công tắc, tim đã lưu) tô `--foreground` |
+| Photo | `--primary` lấy trong bảng màu theo ngành của `brand-tokens.md` (không đỏ, không hồng: lẫn với nút xoá đỏ, `I4`); màu nhấn chỉ ở nút **cam kết** của luồng (Tìm, Đặt, Thanh toán, Mua; ở app đặt món: Thêm vào giỏ trong sheet món, thanh giỏ hàng `J11`, Đặt hàng, Thử lại thanh toán, Đổi điểm). Nút chính khác (Tiếp ở bước chọn, Áp dụng lọc, Xem chuyến đi) là nút đen `bg-foreground text-surface`; trạng thái đang chọn (ngày, chip lọc, card chọn, công tắc, tim đã lưu) và nút "+" thêm nhanh ở dòng món tô `--foreground`; thanh tiến độ trong thẻ thành viên (`J5`) trắng |
 | Playful | `--app-font: "Nunito"`; `--primary` đậm đủ cho chữ trắng: xanh lá `#2f7d00` 5.18:1. **Xanh lá rực `#58cc02` chữ trắng chỉ 2.09:1**: muốn màu rực thì nút rực chữ tối, hay chữ trắng trên nền đậm. Dải đúng `#d7ffb8` chữ `#2f7d00` (4.66:1), dải sai `--danger-bg` chữ `--danger` |
 | Immersive | Cả khung mang `force-dark` (`M33`), chép khối `.force-dark` của `tokens.css` rồi đè các token sau. **Nền là màu nhấn của ngành hay brand pha tối**: `--background` = 30% `--primary` trên `#0b0d18` (`color-mix(in oklab, var(--primary) 30%, #0b0d18)`: Chàm ra `#1f1e56`, Cam ra `#421d14`, Xanh ngọc ra `#0c2c32`), chuyển dọc xuống tông tối hơn 15%; không dùng một màu navy cho mọi app. `--surface` trắng 10% trên nền (chữ trắng từ 10.9:1), sheet và hộp hỏi trắng 14%; `--muted` trắng 72% (từ 8.3:1 trên nền, 6.5:1 trên thẻ); `--danger: #ff9aab` (từ 5.4:1 trên thẻ; `#ff637e` của `.force-dark` chỉ 3.9:1), `--success: #5fd99a`; nút chính `bg-white` chữ màu nền |
 | Editorial | Nạp thêm Lora 400, 700 (có bộ `vietnamese`, đã kiểm); `--background: #fbf8f3`, `--muted: #6b6459` (5.5:1 trên kem), sắc nhấn cam `#c2410c` (4.9:1 trên kem) |
