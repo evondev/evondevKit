@@ -29,7 +29,7 @@ Nhận chế độ từ đề, không hỏi, rồi nói một dòng ở phần m
 | Dòng Gu | chỉ nêu, mặc định không chọn | **chọn sẵn**, người dùng bỏ dòng nào thì bỏ | chọn sẵn |
 | Dòng Cấu trúc (`V1b`) | không có | có: sắp lại thì chọn sẵn, bỏ bớt thông tin thì không | như cột giữa |
 | Dòng Gọn (`V1c`) | không có | **có, chọn sẵn**: mỗi khối chính một dòng, làm gọn theo gu skill, giữ màu | như cột giữa |
-| Dòng Có màu (`V1d`) | không có | có ở trang lướt để chọn hoặc dashboard (công thức B của `P12`), **không chọn sẵn**: một dòng cho cả route, màu từ màu nhấn của dự án | như cột giữa |
+| Dòng Có màu (`V1d`) | không có | có ở trang lướt để chọn (`P12`) hoặc dashboard (Sắc Tinted của `P17`), **không chọn sẵn**: một dòng cho cả route, màu từ màu nhấn của dự án | như cột giữa |
 | Dáng: bóng, viền, nhịp, cỡ chữ, nhãn, lớp phủ trên ảnh | giữ | **theo gu skill** | theo gu skill |
 | Màu theo vai, logo, font | giữ | **giữ** | chỉ giữ logo và màu nhấn chính |
 | Component | không viết lại, sửa đúng chỗ lỗi | được thay control gốc và khối tự chế bằng mẫu của skill (bảng dưới) | như cột giữa |
@@ -336,15 +336,15 @@ Hay gặp:
 
 Dựng lại cho gọn xong mà trang vẫn "buồn màu" là chuyện hay gặp ở trang người dùng cuối.
 Nên hai chế độ dựng lại đưa thêm **một dòng Có màu** cho cả
-route, theo `P12` trong `styles.md`.
+route, theo `P12` (trang lướt để chọn) hay Sắc Tinted của `P17` (dashboard) trong `styles.md`.
 
 - **Chỉ khi cả ba đúng**: trang người dùng cuối lướt để chọn (tìm việc, tìm phòng, sản phẩm,
-  khoá học, bài viết) theo công thức A của `P12`, **hoặc dashboard** theo công thức B (ô icon
-  màu nhạt ở card số liệu, biểu đồ nhiều sắc); dự án đang phẳng (`P4` ra flat); route chưa có
+  khoá học, bài viết) theo công thức A của `P12`, **hoặc dashboard** theo Sắc Tinted của `P17`
+  (ô icon theo loại, badge có chấm, biểu đồ theo `--cat-*`; Vivid chỉ khi người dùng xin); dự án đang phẳng (`P4` ra flat); route chưa có
   dòng nào ở trên đã đổi màu. Form, cài đặt, bảng quản lý thuần thì không có dòng này.
 - **Không chọn sẵn.** Đổi độ đậm màu cả trang là việc của người dùng quyết, khác dòng Gọn.
-- Cột Sửa liệt kê đúng các chỗ của công thức `P12` áp vào trang này (A: dải đầu trang, chân
-  trang, mục nổi bật, chữ, điểm nhỏ; B: ô icon, ô đầu dòng, biểu đồ, trạng thái, sidebar). Chỗ nào không áp được thì ghi vì sao, ví dụ *"mục nổi bật: dữ liệu chưa
+- Cột Sửa liệt kê đúng các chỗ áp vào trang này (`P12` công thức A: dải đầu trang, chân
+  trang, mục nổi bật, chữ, điểm nhỏ; Tinted của `P17`: các dòng trong bảng Tinted). Chỗ nào không áp được thì ghi vì sao, ví dụ *"mục nổi bật: dữ liệu chưa
   có trường gấp / hot, bỏ"*. Không thêm field, không bịa nhãn (bảng ba chế độ, "Logic, handler,
   dữ liệu, câu chữ").
 - **Bắt buộc ảnh trước / sau** như dòng Gọn (`V5`), chụp cả màn ở 1440 để thấy dải.

@@ -3256,6 +3256,7 @@ async function probeWidth(browser, options, width) {
   for (const line of popupLayers.sunkenSelections) darkModeProblemSet.add(line);
   const darkModeProblems = [...darkModeProblemSet];
   const heavyDecorativeBorders = options.isDark ? [] : await page.evaluate(findHeavyDecorativeBorders);
+  const heavyCardDividers = options.isDark ? [] : await page.evaluate(findHeavyCardDividers);
   const scrollbarStyles = await page.evaluate(findScrollbarStyles);
   const heavyNavLinks = await page.evaluate(findHeavyNavLinks);
   const staticHoverBlocks = isMobile ? [] : await page.evaluate(findStaticHoverBlocks);
@@ -3301,6 +3302,7 @@ async function probeWidth(browser, options, width) {
     scrollyLayers: popupLayers.scrollyLayers,
     lostTriggerIcons: popupLayers.lostTriggerIcons,
     heavyDecorativeBorders,
+    heavyCardDividers,
     scrollbarStyles,
     heavyNavLinks,
     staticHoverBlocks,
@@ -3356,6 +3358,79 @@ function findHeavyDecorativeBorders() {
     if (contrast === null || contrast < 1.21 || findings.has(style.borderTopColor)) continue;
     const label = `${element.tagName.toLowerCase()}.${String(element.className).trim().split(/\s+/).slice(0, 4).join(".")}`;
     findings.set(style.borderTopColor, `${style.borderTopColor} (~${contrast.toFixed(2)}:1 trên trắng): ${label} "${(element.textContent || "").trim().replace(/\s+/g, " ").slice(0, 30)}"`);
+  }
+
+  return [...findings.values()];
+}
+
+// Đường chia LẶP LẠI trong card đậm hơn `--border` (M14): `divide-y divide-border-strong`, vạch giữa các ô số
+// xếp cột. Chỉ tính card trắng đặt trên nền khác (khung `unified` của Paper cả màn trắng thì kẻ `--border-strong`
+// là đúng) và chỉ khi ≥ 2 anh em cùng kẻ một màu, nên vạch đứng riêng chia hai phần card (pricing, "hoặc" ở form,
+// ngoại lệ có tên) không bị báo. Đã dính 07/11/2026, trang tổng kết Soft + Vivid: chủ dự án chê "viền xám hơi đậm".
+function findHeavyCardDividers() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1;
+  canvas.height = 1;
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  const readColor = (cssColor) => {
+    context.clearRect(0, 0, 1, 1);
+    context.fillStyle = "rgba(0,0,0,0)";
+    context.fillStyle = cssColor;
+    context.fillRect(0, 0, 1, 1);
+    const [red, green, blue, alpha] = context.getImageData(0, 0, 1, 1).data;
+
+    return { red, green, blue, alpha };
+  };
+  // Tương phản trên trắng; viền có sắc là viền mang nghĩa, bỏ qua.
+  const toContrastOnWhite = (cssColor) => {
+    const { red, green, blue, alpha } = readColor(cssColor);
+    if (alpha === 0 || Math.max(red, green, blue) - Math.min(red, green, blue) > 24) return null;
+    const opacity = alpha / 255;
+    const toLinear = (channel) => {
+      const value = (channel * opacity + 255 * (1 - opacity)) / 255;
+
+      return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+    };
+
+    return 1.05 / (0.2126 * toLinear(red) + 0.7152 * toLinear(green) + 0.0722 * toLinear(blue) + 0.05);
+  };
+  const isOpaque = (cssColor) => readColor(cssColor).alpha >= 240;
+  const findBackdrop = (element) => {
+    for (let node = element; node && node !== document.documentElement; node = node.parentElement) {
+      const background = getComputedStyle(node).backgroundColor;
+      if (isOpaque(background)) return { node, background };
+    }
+
+    return { node: document.documentElement, background: getComputedStyle(document.documentElement).backgroundColor };
+  };
+  const sides = ["Top", "Right", "Bottom", "Left"];
+  const findings = new Map();
+  for (const parent of document.querySelectorAll("body *")) {
+    if (findings.size >= 4) break;
+    if (parent.closest("[data-demo-state], [role='menu'], [role='listbox'], [popover], dialog")) continue;
+    const children = [...parent.children].filter((child) => child.getClientRects().length > 0 && !child.matches("input, textarea, select, button, a, [role='button']"));
+    if (children.length < 2) continue;
+    const lineColors = new Map();
+    for (const child of children) {
+      const style = getComputedStyle(child);
+      const drawnSides = sides.filter((side) => style[`border${side}Style`] === "solid" && parseFloat(style[`border${side}Width`]) > 0);
+      // Khung đủ bốn cạnh là card con, đã có phép đo viền trang trí riêng.
+      if (drawnSides.length === 0 || drawnSides.length === 4) continue;
+      const color = style[`border${drawnSides[0]}Color`];
+      lineColors.set(color, (lineColors.get(color) || 0) + 1);
+    }
+    for (const [color, count] of lineColors) {
+      if (count < 2) continue;
+      const contrast = toContrastOnWhite(color);
+      if (contrast === null || contrast < 1.15) continue;
+      const card = findBackdrop(parent);
+      if (toContrastOnWhite(card.background) === null || toContrastOnWhite(card.background) > 1.02) continue;
+      const outside = findBackdrop(card.node.parentElement || document.documentElement);
+      if (readColor(outside.background).red === readColor(card.background).red && readColor(outside.background).blue === readColor(card.background).blue) continue;
+      const key = `${color}|${parent.tagName}`;
+      if (findings.has(key)) continue;
+      findings.set(key, `${color} (~${contrast.toFixed(2)}:1 trên trắng), ${count} vạch: ${parent.tagName.toLowerCase()}.${String(parent.className).trim().split(/\s+/).slice(0, 4).join(".")} "${(parent.textContent || "").trim().replace(/\s+/g, " ").slice(0, 30)}"`);
+    }
   }
 
   return [...findings.values()];
@@ -4256,6 +4331,10 @@ function formatReport(results) {
     if (result.heavyDecorativeBorders?.length > 0) {
       problems.push(`VIỀN TRANG TRÍ ĐẬM (${result.heavyDecorativeBorders.length} màu, card và khung nhạt hơn #e4e4e7, bậc xám nhạt nhất của dự án, M14):`);
       for (const item of result.heavyDecorativeBorders) problems.push(`  ${item}`);
+    }
+    if (result.heavyCardDividers?.length > 0) {
+      problems.push(`ĐƯỜNG CHIA TRONG CARD ĐẬM (${result.heavyCardDividers.length} chỗ, đường chia lặp lại trong card là --border, không --border-strong, M14):`);
+      for (const item of result.heavyCardDividers) problems.push(`  ${item}`);
     }
     if (result.scrollbarStyles?.length > 0) {
       problems.push(`THANH CUỘN KHÁC MẪU (${result.scrollbarStyles.length} luật, dùng khối scrollbar của tokens.css: 4px, ẩn tới khi rê hay cuộn):`);

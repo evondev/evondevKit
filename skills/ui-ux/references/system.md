@@ -259,6 +259,7 @@ Skill evon:ui-ux đọc file này trước khi dựng. Sửa tay được; file 
 
 ## Giao diện
 - Bộ mặt: Soft (P13): điều hướng sidebar, vùng chứa classic, header content, bề mặt nổi (P7), font Be Vietnam Pro
+- Sắc: Tinted (P17): Bài học cat-1, Ôn từ cat-2, Kiểm tra cat-3 (một loại một sắc trên mọi màn)
 - Màu nhấn: Tím `#7c3aed`, token `--primary` ở `app/globals.css`
 - Phong cách: nổi (P7), không glass, không gradient
 - Nền tối: có, theo `class="dark"`

@@ -247,7 +247,8 @@ dòng đó."* Dừng chờ.
   ⚠️ **Nấc thứ ba "Có màu" đã bỏ khỏi wireframe (chủ dự án: thêm vào cũng không
   khác gì mấy).** Màu brand người dùng cần thấy nằm ở chỗ tương tác (control bấm được, dưới),
   không ở dải màu trang trí. Người dùng tự xin "có màu" trong đề thì theo `P12` ở `styles.md`
-  lúc dựng, không vẽ thành nấc.
+  (trang lướt để chọn) hay Sắc Tinted, Vivid của `P17` (màn trong app) lúc dựng, không vẽ thành nấc.
+  Màn trong app web thì chọn Sắc ngay trong menu Kiểu (dưới).
 
   **Dự án chưa có màu brand** (màu nhấn là gần đen mặc định, `brand-tokens.md`; dự án đã qua
   `D9` thì màu nhấn đã chốt ở cổng đó, kể cả khi chốt gần đen, không tính là chưa có) thì thêm nhóm
@@ -312,6 +313,23 @@ dòng đó."* Dừng chờ.
     phản là lỗi phải sửa trước khi gửi, không phải nhược điểm của kiểu.
   - Khung lý do thêm một dòng vì sao cho từng kiểu, bám người dùng ở `U1`: *"Tối: người trực
     theo dõi số cả ca, nền tối đỡ chói"*, không viết "hiện đại, sang".
+  - **Nhóm Sắc nằm trong menu Kiểu** ⚑ (`?sac=`), chỉ ở màn trong app web: một phần thứ hai của
+    menu, tiêu đề nhỏ "Sắc", ba mục Neutral · Tinted · Vivid (`P17`). **Mặc định Neutral**, không mục
+    nào mang nhãn "khuyên dùng" (Tinted, Vivid còn cờ); đề đã xin màu thì mặc định là nấc đề xin.
+    Không thêm nhóm riêng trên thanh: thanh đã sát 1280. Nút menu chỉ ghi thêm "· Tinted" khi khác
+    Neutral. Chọn Tinted, Vivid là bật luôn nấc Màu như Kiểu.
+    - Bản thiết kế **luôn gắn sẵn hook**, CSS tô theo nấc, không vẽ lại khối: `data-cat="1"`…`"4"` trên
+      ô icon card số liệu, ô icon đầu dòng theo loại, ô agent; `data-level="high"`, `"mid"` trên ô
+      icon đầu dòng theo mức độ (dòng đã xong không gắn); `data-alert` trên đúng một số liệu đang
+      báo động; `<i class="wf-dot">` đầu chữ trong badge; `data-now` trên mục đang diễn ra;
+      `data-wf-cta` trên nút chính; `data-hero` trên một khối tổng kết; `data-wash` trên tối đa hai
+      khối cột phụ; `data-peak` trên một cột biểu đồ. Ở Neutral mọi hook về xám hoặc ẩn, nên cùng
+      một bản thiết kế cho ra ba nấc. Dữ liệu không có loại, không có mức thì không gắn: wireframe
+      không bịa loại để có màu.
+    - Khung lý do thêm một dòng cho Sắc, nói bằng dữ liệu: *"Tinted: bốn loại việc mỗi loại một
+      màu, sự cố còn mở có màu riêng, liếc là thấy còn bao nhiêu"*.
+    - Probe nhanh phương án khuyên dùng ở `&mau=mau&sac=vivid`: viền hero, nút gradient phải thấy;
+      chữ trên nút gradient đạt 4.5 : 1 ở đầu nhạt nhất (`P3`).
   - Kiểu người dùng chọn thành phong cách lúc dựng (`U4` mở khối `P` đó) và giữ cho các màn sau
     của dự án (`P1`); bộ mặt thì ghi dòng comment ở khối font (`P13`). Không chọn thì màn trong
     app web dựng bộ khuyên dùng, báo một dòng theo mẫu `P13`; màn khác Flat, không cần báo.
@@ -366,7 +384,7 @@ dòng đó."* Dừng chờ.
     chọn một trong hai, trong khi bật cùng lúc được).
   - **Chữ trên thanh và khung lý do theo tiếng người dùng đang viết (`T27`)**, không theo
     `T24`: đó là lời skill nói với người dùng, không phải chữ của sản phẩm. Mẫu HTML dưới viết
-    tiếng Việt; đề tiếng Anh thì đổi hết: Phương án → Option, Màu → Color, Kiểu → Style (tên mười bộ mặt giữ nguyên, khuyên dùng → recommended; Flat,
+    tiếng Việt; đề tiếng Anh thì đổi hết: Phương án → Option, Màu → Color, Kiểu → Style, Sắc → Tone (tên mười bộ mặt và Neutral, Tinted, Vivid giữ nguyên, khuyên dùng → recommended; Flat,
     Nổi, Glass, Gradient, Tối → Flat, Elevated, Glass, Gradient, Dark), Nhấn (`aria-label`
     Chàm, Xanh ngọc, Cam; các màu khác của bảng: Xanh dương, Tím, Hồng tím, Xanh lá) → Indigo, Teal, Orange; Blue, Violet, Fuchsia, Green, Thanh dưới → Bottom bar, Trạng thái → State
     (Có dữ liệu, Đang tải, Rỗng, Lỗi → Data, Loading, Empty, Error), Khuyên dùng → Recommended,
@@ -381,7 +399,7 @@ dòng đó."* Dừng chờ.
   (`?uu=1`). Người dùng mở Ưu, nhược để so A với B; bấm sang B mà khung đóng lại thì lần nào cũng
   phải bấm mở lại. Thứ mở thêm sau này (bảng so sánh, ghi chú) cũng giữ theo cách đó. Màn hẹp thì thanh
   cuộn ngang, không xuống dòng. Mở không tham số thì: phương án khuyên dùng, Gọn chữ và Bỏ lặp tắt,
-  Màu tắt, Kiểu khuyên dùng, Desktop, Có dữ liệu. Thiếu thanh thì người dùng phải tự gõ `?v=`.
+  Màu tắt, Kiểu khuyên dùng, Sắc Neutral (hay nấc đề xin), Desktop, Có dữ liệu. Thiếu thanh thì người dùng phải tự gõ `?v=`.
 
 - **Khung lý do ngay dưới thanh**, không modal (modal che mất bản thiết kế đúng lúc cần nhìn),
   nền xám rất nhạt. **Dòng đóng**: tên phương án đậm đen, nhãn "Khuyên dùng" (chỉ phương án khuyên
@@ -414,9 +432,13 @@ dòng đó."* Dừng chờ.
     <span class="wf-set wf-flags"><a data-wf-toggle="gon" data-on="1" data-off="0">Gọn chữ</a><a data-wf-toggle="bolap" data-on="1" data-off="0">Bỏ lặp</a></span>
     <a class="wf-switch" data-wf-toggle="mau" data-on="mau" data-off="xam" role="switch">Màu <i></i></a>
     <details class="wf-menu">
-      <summary><span>Kiểu:</span><b data-wf-current="kieu"></b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+      <summary><span>Kiểu:</span><b data-wf-current="kieu"></b><b data-wf-current="sac"></b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
       <!-- Màn trong app web: mười bộ mặt P13, bộ khuyên dùng có nhãn nhỏ "khuyên dùng" trong menu. Màn khác: flat, toi, noi. -->
-      <div class="wf-popover" data-wf-param="kieu"><a data-value="clean">Clean</a><a data-value="dark-sidebar">Dark Sidebar</a><a data-value="soft">Soft <small>khuyên dùng</small></a><a data-value="midnight">Midnight</a><a data-value="inset">Inset</a><a data-value="paper">Paper</a><a data-value="float">Float</a><a data-value="rail">Rail</a><a data-value="topbar">Topbar</a><a data-value="editorial">Editorial</a></div>
+      <!-- Phần Sắc (P17) chỉ ở màn trong app web; màn khác bỏ cả div data-wf-param="sac". -->
+      <div class="wf-popover">
+        <div class="wf-popover-set" data-wf-param="kieu"><a data-value="clean">Clean</a><a data-value="dark-sidebar">Dark Sidebar</a><a data-value="soft">Soft <small>khuyên dùng</small></a><a data-value="midnight">Midnight</a><a data-value="inset">Inset</a><a data-value="paper">Paper</a><a data-value="float">Float</a><a data-value="rail">Rail</a><a data-value="topbar">Topbar</a><a data-value="editorial">Editorial</a></div>
+        <div class="wf-popover-set" data-wf-param="sac"><h4>Sắc</h4><a data-value="neutral">Neutral</a><a data-value="tinted">Tinted</a><a data-value="vivid">Vivid</a></div>
+      </div>
     </details>
     <span class="wf-set" data-wf-param="nhan"><a data-value="cham" aria-label="Chàm"><i></i></a><a data-value="ngoc" aria-label="Xanh ngọc"><i></i></a><a data-value="cam" aria-label="Cam"><i></i></a></span>
     <span class="wf-set" data-wf-param="kho">
@@ -492,6 +514,11 @@ dòng đó."* Dừng chờ.
     .wf-popover a { display: flex; align-items: center; height: 34px; padding: 0 10px; border-radius: 6px; color: #404040; text-decoration: none; }
     .wf-popover a:hover, .wf-popover a[aria-current="page"] { background: #f4f4f5; color: #171717; }
     .wf-popover a[aria-current="page"] { font-weight: 500; }
+    .wf-popover-set { display: grid; gap: 4px; }
+    .wf-popover-set + .wf-popover-set { margin-top: 4px; padding-top: 4px; border-top: 1px solid #f0f0f0; }
+    .wf-popover h4 { margin: 0; padding: 8px 10px 4px; color: #737373; font: 500 12px/1 system-ui, -apple-system, sans-serif; }
+    [data-wf-current="sac"]::before { content: "· "; }
+    :root[data-sac="neutral"] [data-wf-current="sac"] { display: none; }
     .wf-reason { border-bottom: 1px solid #e5e5e5; background: #fafafa; color: #404040; font: 13px/1.5 system-ui, -apple-system, sans-serif; }
     .wf-reason summary { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; min-height: 44px; padding: 8px 16px;
       cursor: pointer; list-style: none; }
@@ -575,6 +602,26 @@ dòng đó."* Dừng chờ.
     .wf-topnav { display: none; }
     :root[data-kieu="topbar"] .wf-sidebar { display: none; }
     @media (min-width: 768px) { :root[data-kieu="topbar"] .wf-topnav { display: flex; } }
+    /* Sắc (P17): bản thiết kế gắn hook, CSS tô theo nấc, chỉ ở nấc Màu. :root của wireframe khai sẵn khối Sắc
+       của tokens.css (--cat-1…6, --accent-to); --accent-to đổi theo nhóm Nhấn, đúng bảng Gradient nhấn. */
+    :root[data-nhan="cham"] { --accent-to: #9333ea; } /* …mỗi màu của nhóm Nhấn một dòng, theo brand-tokens.md */
+    [data-cat], [data-level] { background: var(--background); color: var(--muted); } /* Neutral: ô xám */
+    .wf-dot { display: none; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    :root:not([data-mau="xam"]):is([data-sac="tinted"], [data-sac="vivid"]) {
+      & [data-cat="1"] { background: color-mix(in srgb, var(--cat-1) 10%, var(--surface)); color: var(--cat-1); } /* …2, 3, 4 tương tự */
+      & [data-level="high"] { background: var(--error-bg); color: var(--error-strong); }
+      & [data-level="mid"] { background: var(--warning-bg); color: var(--warning); }
+      & [data-alert] { color: var(--error-strong); }
+      & .wf-dot { display: inline-block; }
+      & [data-now] { box-shadow: inset 2px 0 0 var(--primary); }
+    }
+    :root:not([data-mau="xam"])[data-sac="vivid"] {
+      & [data-wf-cta] { background-image: linear-gradient(to right, var(--primary), var(--accent-to)); }
+      & [data-hero] { border: 1px solid transparent;
+        background: linear-gradient(var(--surface), var(--surface)) padding-box, linear-gradient(to right, var(--primary), var(--accent-to)) border-box; }
+      & [data-wash] { background-image: linear-gradient(to bottom, color-mix(in srgb, var(--primary) 8%, transparent), transparent 96px); }
+      & [data-peak] { background-image: linear-gradient(to top, var(--primary), var(--accent-to)); }
+    }
     /* Token suy từ màu nhấn, tính lại theo nấc (brand-tokens.md). Chỉ ở nấc Xám hoặc khi có nhóm Nhấn: dự án đã có
        brand thì ở nấc Màu giữ nguyên token của dự án. */
     :root[data-mau="xam"], :root:has([data-wf-param="nhan"]) {
@@ -591,10 +638,10 @@ dòng đó."* Dừng chờ.
     const params = new URLSearchParams(location.search);
     // Mặc định: phương án khuyên dùng, đủ nội dung, Xám, kiểu khuyên dùng (màn app: bộ mặt P13; màn khác: flat),
     // màu nhấn gợi ý đầu, Desktop, ☰, Có dữ liệu.
-    const state = { v: "a", gon: "0", bolap: "0", mau: "xam", kieu: "soft", nhan: "cham", kho: "desktop", nav: "menu", tt: "du-lieu", uu: "0" };
+    const state = { v: "a", gon: "0", bolap: "0", mau: "xam", kieu: "soft", sac: "neutral", nhan: "cham", kho: "desktop", nav: "menu", tt: "du-lieu", uu: "0" };
     for (const key of Object.keys(state)) state[key] = params.get(key) || state[key];
     Object.assign(document.body.dataset, state);
-    Object.assign(document.documentElement.dataset, { mau: state.mau, kieu: state.kieu, nhan: state.nhan }); // token đổi trên :root
+    Object.assign(document.documentElement.dataset, { mau: state.mau, kieu: state.kieu, sac: state.sac, nhan: state.nhan }); // token đổi trên :root
     if (params.has("frame")) document.body.dataset.frame = "1";
     const linkTo = (changes) => `?${new URLSearchParams({ ...state, ...changes })}`;
     // Gọi lại mỗi khi state đổi tại chỗ (khung lý do mở, đóng), để link nào cũng mang state mới.
@@ -602,7 +649,8 @@ dòng đó."* Dừng chờ.
       for (const set of document.querySelectorAll("[data-wf-param]")) {
         for (const link of set.querySelectorAll("a")) {
           // Kiểu khác Flat, Clean và các kiểu đổi khung bật luôn nấc Màu: ở nấc Xám kiểu không hiện gì khác.
-          const isStyleLink = set.dataset.wfParam === "kieu" && !["flat", "clean", "inset", "paper", "float", "rail", "topbar", "editorial"].includes(link.dataset.value);
+          const isStyleLink = (set.dataset.wfParam === "kieu" && !["flat", "clean", "inset", "paper", "float", "rail", "topbar", "editorial"].includes(link.dataset.value))
+            || (set.dataset.wfParam === "sac" && link.dataset.value !== "neutral"); // Sắc cũng chỉ hiện ở nấc Màu
           link.href = linkTo({ [set.dataset.wfParam]: link.dataset.value, ...(isStyleLink && { mau: "mau" }) });
           if (state[set.dataset.wfParam] !== link.dataset.value) continue;
           link.setAttribute("aria-current", "page");

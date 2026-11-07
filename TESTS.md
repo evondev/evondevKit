@@ -148,6 +148,31 @@ mười phép thử `N1`–`N10` (`skills/ui-ux/references/principles.md`).
 - ✅ **404 / 403 / 500 / bảo trì** — "Dựng cho tôi bộ trang lỗi: không tìm thấy, không có quyền, lỗi máy chủ, và đang bảo trì."
 - ✅ **Khu nguy hiểm** — "Dựng cho tôi phần xoá workspace trong trang cài đặt."
 
+### Sắc — Tinted, Vivid (`P17`) ⚑
+
+Đề **không kèm ảnh**, prompt ngắn. Qua đủ ba mục ở dự án thật thì gỡ cờ ⚑ của Tinted, Vivid
+trong `styles.md` (`P17`, bảng trục của `P13`) và `design-process.md` (nhóm Sắc).
+
+Mỗi mục kiểm:
+
+- Màu nào cũng trả lời được "sắc này nói loại gì, mức gì": không card số liệu bốn nền màu, không
+  cột cùng chỉ số mỗi cột một sắc.
+- Một loại một sắc trên mọi màn; bảng gán loại → sắc nằm trong `DESIGN.md`; token `--cat-*`,
+  `--accent-to` lấy từ khối Sắc, không hex rải trong component.
+- Ô icon tối đa bốn sắc, không sắc nào cách màu nhấn dưới ~30°; chữ không tô `--cat-*`.
+- Vivid: gradient chỉ ở nút chính, một khối hero, một điểm biểu đồ; tối đa hai vệt loang; chữ
+  trắng trên gradient đạt 4.5 : 1 ở đầu nhạt.
+- Bật dark mode: ô icon `/15`, gradient theo cột tối, probe `--dark` sạch.
+
+- ⬜ **Tinted, danh sách sự cố** — "Dựng cho tôi trang sự cố cho app vận hành cửa hàng, nhiều màu cho dễ quét."
+      Kiểm thêm: ô icon đầu dòng theo mức độ, dòng đã xong về xám; badge có chấm; đúng một số liệu "đang mở" tô đỏ.
+- ⬜ **Tinted, việc trong ngày** — "Dựng cho tôi màn việc hôm nay cho giáo viên, có lịch tiết dạy và danh sách việc cần xử lý, colorful."
+      Kiểm thêm: ô icon theo loại việc (chấm bài, tin nhắn, cờ học sinh) mỗi loại một sắc; tiết đang dạy có vạch màu nhấn.
+- ⬜ **Vivid, trang tổng kết** — "Dựng cho tôi trang tổng kết thời gian tiết kiệm trong tuần cho giáo viên, trẻ trung, có gradient."
+      Kiểm thêm: khối hero viền gradient, nút chính gradient, cột cao nhất gradient, thanh tiến độ theo nguồn mỗi nguồn một sắc.
+- ⬜ **Wireframe đổi Sắc** — đề tổng quan bất kỳ, mở wireframe, đổi Neutral → Tinted → Vivid trong menu Kiểu.
+      Kiểm thêm: cùng bố cục, chỉ màu đổi; Neutral không còn vết màu phân loại; nút menu ghi "· Tinted".
+
 ## Dark mode
 
 Làm sau phase 2 (xem "Thứ tự lớn" ở đầu file). Skill mặc định chỉ light (`M20`),

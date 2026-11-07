@@ -16,7 +16,7 @@ Ba ca, chọn đúng một:
 | --- | --- |
 | **Người dùng tự nêu phong cách** ("làm trang giá kiểu glassmorphism") | Làm theo phong cách đó, **không hỏi lại** |
 | **Audit thấy dự án có phong cách khác flat** (`P4`) | **Theo phong cách dự án**, dựng luôn, báo một dòng lúc giao (mẫu bên dưới) |
-| **Dự án flat hoặc trống**, người dùng không nêu gì | **Màn trong app web** (dashboard, danh sách, bảng, form, cài đặt): **bộ mặt khuyên dùng** theo người dùng của sản phẩm (`P13`), không mặc nhiên Clean; wireframe nhánh `U` có nhóm Kiểu liệt kê đủ mười bộ để người dùng tự đổi (`design-process.md`, `U3`). Màn khác: Flat (`P6`). Không hỏi về phong cách. Có màu (`P12`) chỉ khi người dùng tự xin trong đề; hai chế độ dựng lại: dòng Có màu (`V1d`), không chọn sẵn. Wireframe không còn nấc Có màu |
+| **Dự án flat hoặc trống**, người dùng không nêu gì | **Màn trong app web** (dashboard, danh sách, bảng, form, cài đặt): **bộ mặt khuyên dùng** theo người dùng của sản phẩm (`P13`), không mặc nhiên Clean; wireframe nhánh `U` có nhóm Kiểu liệt kê đủ mười bộ để người dùng tự đổi (`design-process.md`, `U3`). Màn khác: Flat (`P6`). Không hỏi về phong cách. Có màu chỉ khi người dùng tự xin trong đề: trang lướt để chọn theo `P12`, màn trong app theo Sắc Tinted hay Vivid (`P17`), mặc định Neutral; hai chế độ dựng lại: dòng Có màu (`V1d`), không chọn sẵn. Wireframe không có nấc Có màu, có nhóm Sắc trong menu Kiểu |
 
 Vì sao theo dự án chứ không theo flat: một màn flat giữa app glass là màn lạc
 loài, người dùng thấy ngay. Nhất quán thắng gu.
@@ -43,7 +43,7 @@ Khác là phong cách, cứ theo. Tệ hơn là nguyên tắc, không được b
 | Loại | Luật | Phong cách đã chọn theo `P1` được đè không |
 | --- | --- | --- |
 | **Gu flat** | `M1` nền xám nhạt · `M2` tỉ lệ 95/5 · `M12` không gradient · `M13` tách bằng viền · `M15` bóng chỉ cho lớp nổi · `M20` mặc định sáng · `M23` tối là navy · `M29` card một mình không viền · `F19` không glass · `F20` không phát sáng · `F22` không animate hình khối | **Được**, theo đúng khối của phong cách đó bên dưới |
-| **Nguyên tắc** | Toàn bộ `N` `S` `T` `I` `R` · `M3` một màu nhấn · `M4` màu báo trạng thái (ngoại lệ hẹp: `P12` công thức B đè chỉ ở ô icon card số liệu, ô icon đầu dòng theo loại và chuỗi biểu đồ) · `M11` ba sắc độ chữ · `M19` bo lồng · `M24`–`M28` token · `M30` hai sắc đỏ · bố cục `F1`–`F18`, `F21`, `F23`–`F25` · **`P3` tương phản** | **Không bao giờ** |
+| **Nguyên tắc** | Toàn bộ `N` `S` `T` `I` `R` · `M3` một màu nhấn · `M4` màu báo trạng thái (ngoại lệ hẹp: Sắc Tinted, Vivid của `P17` đè chỉ ở các chỗ bảng của nó nêu tên: ô icon, chuỗi biểu đồ, một số liệu cần chú ý) · `M11` ba sắc độ chữ · `M19` bo lồng · `M24`–`M28` token · `M30` hai sắc đỏ · bố cục `F1`–`F18`, `F21`, `F23`–`F25` · **`P3` tương phản** | **Không bao giờ** |
 
 Mỗi luật gu flat có dòng *"Gu flat"* ngay tại chỗ. Thấy dòng đó mà phong cách
 đã chọn không phải flat thì quay về đây.
@@ -151,14 +151,14 @@ Mỗi khối có bốn phần: nhận ra, luật được đè, công thức, b�
 - **Được đè:** `M13`, `M15`, `M29`. `F22` được đè một phần: card bấm được thì hover **tăng bóng** một bậc, vẫn không `scale`.
 
 ```html
-<div class="rounded-2xl bg-surface shadow-sm ring-1 ring-black/5 hover:shadow-md">
+<div class="rounded-2xl bg-surface shadow-card ring-1 ring-black/3 hover:shadow-md">
 ```
 
 **Thang bóng, mỗi tầng một bậc, không hai tầng trùng nhau:**
 
 | Tầng | Bóng |
 | --- | --- |
-| Card | `shadow-sm` |
+| Card | `shadow-card` (token của `tokens.css`, nhẹ hơn `shadow-sm`) |
 | Card bấm được, khi hover | `shadow-md` |
 | Dropdown, popover | `shadow-popover` (= `shadow-lg`, `M15`) |
 | Modal, panel trượt, **gồm sidebar trượt ở màn hẹp** | `shadow-modal` (= `shadow-xl`) |
@@ -167,7 +167,7 @@ Mỗi khối có bốn phần: nhận ra, luật được đè, công thức, b�
 
 - **Card với modal cùng bóng thì modal không còn nổi.** Thang trên tồn tại để lớp cao hơn luôn nổi hơn. Tăng bóng card lên `shadow-lg` là modal phải lên theo, và dropdown cũng vậy.
 - **Bộ token bóng đủ bốn bậc, kể cả khi trang chưa có modal.** Sidebar trượt dưới `lg` là tầng modal, và nó chỉ hiện ở màn hẹp nên hay bị quên. Chỉ định ba token (card, card khi rê, popover) thì sidebar trượt nằm phẳng trên lớp phủ, không bóng, thấp hơn cả card phía sau. Probe báo "Panel, modal mở ra không nổi hơn trang".
-- **`ring-1 ring-black/5` đi cùng bóng là hợp lệ ở đây.** Nó vạch mép card cho sắc nét trên nền trắng. Đây là chỗ đè `M29`: ở flat thì viền với bóng không đi cùng nhau, ở phong cách nổi thì được.
+- **`ring-1 ring-black/3` đi cùng bóng là hợp lệ ở đây.** Nó vạch mép card cho sắc nét trên nền trắng. **Không lên `ring-black/5` + `shadow-sm`**: trên nền trang xám, hai thứ cộng lại thành một nét xám quanh card, đọc như viền đậm (chủ dự án chê, 07/11/2026). Bỏ hẳn ring thì mép card nhòe vào nền. Đây là chỗ đè `M29`: ở flat thì viền với bóng không đi cùng nhau, ở phong cách nổi thì được.
 - **Ở nền tối, bóng một mình khó thấy.** Dự án nổi mà có dark mode thì ở chế độ tối giữ thang bóng, đậm hơn, thêm viền 1px (`ring-1 ring-white/10`), và bề mặt sáng dần theo tầng (`M21`, `M23`). Ba thứ đi cùng nhau; đừng chỉ tăng bóng lên cho bằng được.
 - `scale-105` khi hover làm chữ bị mờ trong lúc chuyển động. Chỉ tăng bóng, không phóng to.
 
@@ -263,8 +263,8 @@ theo `P1`. Wireframe không có nấc Có màu (`design-process.md`, `U3`).
 - **Nhận ra từ ảnh:** đầu trang là một dải màu đậm (đặc hoặc chuyển màu) ôm header và ô tìm,
   chân trang cùng màu; vài mục trong danh sách có nền nhạt màu nhấn kèm nhãn "Gấp", "Hot";
   tiêu đề mục đậm.
-- **Được đè:** `M2` (tỉ lệ 95/5), `M12` (chỉ ở dải), `M4` (chỉ ô icon và chuỗi biểu đồ của
-  công thức B). Nguyên tắc `P2` giữ nguyên, nhất là `M3` một màu nhấn cho hành động và `P3`
+- **Được đè:** `M2` (tỉ lệ 95/5), `M12` (chỉ ở dải). Chỗ đè `M4` của dashboard nằm ở `P17`.
+  Nguyên tắc `P2` giữ nguyên, nhất là `M3` một màu nhấn cho hành động và `P3`
   tương phản.
 
 **Công thức A, trang lướt để chọn**, đúng năm chỗ, không thêm chỗ thứ sáu:
@@ -277,16 +277,18 @@ theo `P1`. Wireframe không có nấc Có màu (`design-process.md`, `U3`).
 | Chữ | Tiêu đề mục `font-semibold`; tên trang giữ `text-xl` (luật đã chốt 11) mà lên `font-semibold`, từ khoá hay con số trong tên trang tô `text-primary`; tiêu đề khối trong panel chi tiết `text-lg font-semibold`. Giá, lương giữ `font-semibold` như cũ |
 | Điểm nhỏ | Chấm đầu dòng danh sách trong chi tiết `marker:text-primary`; ô chữ viết tắt thay logo nền `bg-primary/10 text-primary` thay cho xám |
 
-**Công thức B, dashboard và trang làm việc trong app**: không dải màu, không mục "hot" (lạc loài
-ở trang báo cáo). Đè thêm `M4` (màu để phân loại) **chỉ ở ô icon và chuỗi biểu đồ**:
+**Công thức B, dashboard và trang làm việc trong app**: đã thành nấc **Tinted** của `P17`. Không
+dải màu, không mục "hot" (lạc loài ở trang báo cáo). Đề xin "có màu" cho dashboard thì dựng Tinted,
+xin rực hơn thì Vivid.
 
-| Chỗ | Làm gì |
-| --- | --- |
-| Ô icon card số liệu | Ô `size-8 rounded-lg`, icon lucide `size-4`; mỗi card một sắc nhạt (`bg-indigo-50 text-indigo-600`, `bg-teal-50 text-teal-600`, `bg-violet-50 text-violet-600`, `bg-sky-50 text-sky-600`), tối đa bốn sắc một màn. Con số vẫn `text-foreground`, không tô |
-| Ô icon đầu dòng theo loại | Bộ phận, nhà cung cấp, loại giao dịch: cùng bộ sắc nhạt, **một loại một sắc cố định** trên mọi màn (Kỹ thuật luôn teal). Không có loại thì không ô |
-| Biểu đồ | Chuỗi chính màu nhấn; nhiều chuỗi thì lấy bộ sắc trên theo cùng thứ tự; kỳ chưa trọn nét đứt hay gạch (`charts.md`) |
-| Trạng thái | Như nấc Màu: `M4` trên thanh tiến độ, số vượt, quá hạn. Sắc phân loại không trùng sắc trạng thái trên cùng một thứ (thanh ngân sách không tô teal vì bộ phận là teal) |
-| Badge trạng thái (người dùng xin "badge có màu") | Đỏ, hổ phách, xanh lá giữ nghĩa `M7`. Các trạng thái xám (đang chạy đúng luồng) mới được lấy sắc phân loại, và **các sắc trong một bảng trạng thái cách nhau từ ~45° trên vòng màu**, không lấy hai sắc kề nhau: `sky`–`blue` (~23°), `blue`–`indigo`, `indigo`–`violet`, `emerald`–`teal`. Không trùng sắc màu nhấn (nút chính teal thì không badge teal). Không đủ sắc cách xa thì trạng thái nhiều dòng nhất (thường là bước bình thường nhất, vd "Đã xác nhận") giữ xám: một danh sách toàn một màu badge là mảng màu, không còn phân biệt. Sai: "Đã xác nhận" `sky-700` cạnh "Đang khám" `blue-700`, liếc ra một màu xanh |
+Badge trạng thái khi người dùng xin "badge có màu" (cả hai công thức): đỏ, hổ phách, xanh lá giữ
+nghĩa `M7`. Các trạng thái xám (đang chạy đúng luồng) mới được lấy sắc phân loại (`--cat-*` hay bảng
+sắc của dự án), và **các sắc trong một bảng trạng thái cách nhau từ ~45° trên vòng màu**, không lấy
+hai sắc kề nhau: `sky`–`blue` (~23°), `blue`–`indigo`, `indigo`–`violet`, `emerald`–`teal`. Không trùng
+sắc màu nhấn (nút chính teal thì không badge teal). Không đủ sắc cách xa thì trạng thái nhiều dòng
+nhất (thường là bước bình thường nhất, vd "Đã xác nhận") giữ xám: một danh sách toàn một màu badge là
+mảng màu, không còn phân biệt. Sai: "Đã xác nhận" `sky-700` cạnh "Đang khám" `blue-700`, liếc ra một
+màu xanh.
 
 **Bẫy**
 
@@ -319,6 +321,7 @@ làm đúng như vậy.
 | **Header** | Header của trang chạy tới đâu | `content` (mặc định): header nằm trên vùng nội dung, đầu điều hướng có logo · `full`: header chạy hết bề ngang màn, logo và ô tìm ở đó, điều hướng bắt đầu dưới header (Header toàn màn). `topnav` luôn là `full` |
 | **Bề mặt** (surface) | Nền, viền, bóng, chữ lớn | Flat `P6` · Nổi `P7` · Tối `P10` · Không viền `P14` · Xếp lớp `P15` · Editorial `P16` |
 | **Font** (`--app-font`) | Chữ cả app | Inter · Be Vietnam Pro · IBM Plex Sans |
+| **Sắc** ⚑ | Màu gắn với dữ liệu tới đâu | `neutral` (mặc định) · `tinted` · `vivid` (`P17`). Không nằm trong mười bộ, ghép với bộ nào cũng được |
 
 Ghép điều hướng với vùng chứa theo mục **Ghép điều hướng với vùng chứa** trong
 `layouts/app.md`: tổ hợp nào chạy được, tổ hợp nào không (`topnav` + `floating` không có sidebar
@@ -351,7 +354,8 @@ lúc giao ("muốn header chạy hết bề ngang cho ô tìm thì nói"), khôn
 
 Màu nhấn đứng riêng, không nằm trong bộ mặt: dự án có brand thì giữ brand, chưa có thì nhóm
 Nhấn của wireframe (`U3`) hay màu đầu của nhóm đó. Bộ mặt bám **người dùng**, màu nhấn gợi ý bám
-**ngành** (`brand-tokens.md`): hai thứ chọn riêng. Bộ mặt nào cũng ghép được với màu nào.
+**ngành** (`brand-tokens.md`): hai thứ chọn riêng. Bộ mặt nào cũng ghép được với màu nào. Sắc
+(`P17`) cũng đứng riêng như vậy: mặc định Neutral, không theo bộ mặt.
 
 **Dùng khi:** màn trong app web, dự án flat hoặc trống (`P4`), đề không nêu phong cách. Dự
 án có phong cách riêng, có ảnh tham chiếu, đề nêu kiểu, hay chế độ giữ brand thì không dùng
@@ -496,6 +500,103 @@ nhất**, không card, không nền màu.
   chỉ cho một điểm cần chú ý (`components/charts.md`). Không lưới nền dày.
 - **Không trang trí in ấn**: không vạch cắt góc, không ký hiệu, không số trang giả. Editorial là
   thứ bậc chữ, không phải đạo cụ.
+
+### P17. Sắc — trục thứ năm của bộ mặt: Neutral, Tinted, Vivid ⚑
+
+Bộ mặt nào cũng ra trung tính: màu chỉ có ở nút chính, mục đang chọn và badge trạng thái.
+Muốn một dashboard nhiều màu, người dùng phải gửi ảnh và viết đề dài (chủ dự án, 07/11/2026).
+Các dashboard nhiều màu mà vẫn dễ đọc không tô bừa: **màu nào cũng gắn với một thứ trong dữ liệu**,
+ở ba tầng: **nghĩa** (mức độ, trạng thái), **phân loại** (loại việc, người phụ trách, nguồn), và
+**nhấn thương hiệu** (gradient ở một hai chỗ). Sắc là số tầng được bật. Trục này đứng riêng
+giống màu nhấn, ghép được với mọi bộ mặt (`P13`).
+
+| Nấc | Bật tầng | Hợp khi |
+| --- | --- | --- |
+| **Neutral** (mặc định) | Như hiện tại: `M4`, `charts.md` | Mọi dự án, khi đề không xin màu |
+| **Tinted** ⚑ | Nghĩa + phân loại | Dữ liệu có loại rõ (loại việc, agent, bộ phận, nguồn) hay có mức độ (sự cố, ưu tiên); người dùng xin "nhiều màu", "sinh động", "colorful" |
+| **Vivid** ⚑ | Nghĩa + phân loại + gradient nhấn | Sản phẩm cho người dùng cá nhân, giáo dục, sáng tạo; trang tổng kết muốn khoe kết quả; người dùng xin "rực", "gradient", "vivid", "trẻ trung" |
+
+**Token, không chọn màu tại chỗ.** Sắc phân loại là `--cat-1`…`--cat-6`, gradient nhấn là
+`--primary` → `--accent-to`, khai trong khối Sắc của `tokens.css` (cả bản tối). Điểm cuối gradient
+lấy theo bảng "Gradient nhấn" của `brand-tokens.md`, không tự chọn. Viết hex hay `bg-blue-50` tại
+chỗ thì mỗi màn ra một bảng màu, dark mode không lật theo.
+
+**Tinted**: đè `M4` và câu "con số để nguyên màu chữ chính" của `charts.md`, **chỉ** ở các chỗ dưới:
+
+| Chỗ | Làm gì |
+| --- | --- |
+| Ô icon card số liệu | Ô `size-8 rounded-lg bg-cat-N/10 text-cat-N`, icon lucide `size-4`, mỗi card một sắc theo thứ tự `cat-1`…`cat-4`. Con số vẫn `text-foreground` |
+| Ô icon đầu dòng **theo loại** | Loại việc, agent, bộ phận, nguồn: cùng kiểu ô, **một loại một sắc cố định trên mọi màn** (Chấm bài luôn `cat-1`). Ghi bảng gán loại → sắc vào `DESIGN.md` để màn sau giữ. Dữ liệu không có loại thì không ô |
+| Ô icon đầu dòng **theo mức độ** | Danh sách mà mức độ là thứ người dùng quét trước (sự cố, ticket, cảnh báo): ô tô theo bảng trạng thái `M7`: mức cao `bg-error-bg text-error-strong` (đỏ lỗi, không phải `--danger` của nút xoá, `M30`), mức vừa `bg-warning-bg text-warning`. **Dòng đã xong, đã đóng thì ô về xám**: chỉ thứ còn mở mới có màu, nên liếc là thấy còn bao nhiêu việc |
+| Người, agent phụ trách | Ô vuông nhỏ `size-5 rounded-md` theo sắc của loại agent, đặt cạnh avatar. Avatar ảnh giữ nguyên |
+| Badge mức độ, trạng thái | Badge `M7` thêm chấm `size-1.5 rounded-full` cùng màu đứng trước chữ. Mức thấp, "xong" bình thường thì xám (`M4`) |
+| Một số liệu cần chú ý | **Tối đa một số mỗi hàng card số liệu** được tô màu trạng thái, chỉ khi đang ở mức báo động (còn sự cố mở, vượt ngân sách). Về mức bình thường thì lại `text-foreground`. Bốn số bốn màu vẫn là lỗi |
+| Biểu đồ | Cột chồng theo mức độ dùng màu trạng thái (cao `--error`, vừa `--warning`, thấp `slate-300`, bản tối `slate-600`). Theo loại thì `--cat-*` theo thứ tự loại. Một chuỗi vẫn `--chart-fill` (`charts.md`) |
+| Mục đang diễn ra | Lịch, ca, tiết học, kỳ hiện tại: vạch trái `w-0.5 bg-primary` + nhãn giờ `text-primary`. Mục khác vạch `--border-strong` |
+
+**Vivid** = Tinted, thêm gradient nhấn và vệt loang. Đè `M12` (`P9`), **chỉ** ở các chỗ dưới:
+
+| Chỗ | Làm gì |
+| --- | --- |
+| Nút chính | `bg-linear-to-r from-primary to-accent-to`, hover theo bẫy của `P9` (`hover:brightness-110`, `transition-[filter]`). Vẫn chỉ một nút chính mỗi vùng (`I3`) |
+| Khối hero | **Một khối mỗi màn**: số tổng kết, kết quả nổi bật nhất. Viền gradient 1px: `border border-transparent [background:linear-gradient(var(--surface),var(--surface))_padding-box,linear-gradient(to_right,var(--primary),var(--accent-to))_border-box]`. Nền vẫn `--surface`, chữ vẫn `--foreground` |
+| Nhãn thành tích | Trong khối hero, khi dữ liệu có (kỷ lục, vượt mục tiêu): pill gradient chữ trắng. Không dữ liệu thì không bịa |
+| Một điểm trên biểu đồ | Kỳ đang chọn hay kỳ cao nhất: cột gradient dọc, hoặc chấm điểm `bg-primary` có nhãn số. Các cột khác `--chart-fill/15` |
+| Vệt loang | Tối đa **hai** khối mỗi màn, chỉ khối giải thích, gợi ý ở cột phụ hay hàng profile cuối sidebar: `bg-linear-to-b from-primary/8 to-transparent` ở ~96px đầu khối. Không ở card có bảng |
+| Thanh tiến độ theo loại | Mỗi loại một `--cat-*`, cùng thứ tự với chú giải |
+
+**Gán sắc phân loại**
+
+- `cat-1`…`cat-4` cho ô icon (tối đa bốn sắc một màn), `cat-5`, `cat-6` chỉ cho biểu đồ 5–6 nhóm.
+  Loại thứ năm trở đi trong ô icon thì xám, hoặc gộp loại.
+- **Sắc nào cách `--primary` dưới ~30° trên vòng màu thì bỏ qua**, lấy sắc tiếp theo (nút chính tím
+  thì không ô icon tím). Đo bằng cột "Hướng màu" của `brand-tokens.md`.
+- **Sắc phân loại chỉ cho icon, chấm, mảng biểu đồ, thanh tiến độ, không cho chữ.** Bản 600 trên nền
+  nhạt chỉ đạt 3.3–5.4 : 1, đủ cho icon (3 : 1), thiếu cho chữ nhỏ (`P3`). Chữ trong badge vẫn theo
+  bảng trạng thái `M7`.
+- Bảng sắc tránh đỏ, hổ phách, xanh lá (để dành cho trạng thái). Ô "Chờ duyệt" không tô hổ phách
+  chỉ vì "chờ": đó là loại, không phải mức.
+- **Một thứ chỉ mang một loại màu**: thanh tiến độ, số vượt, quá hạn vẫn tô theo `M4`; thanh ngân
+  sách của bộ phận Kỹ thuật không tô `cat-2` chỉ vì Kỹ thuật là `cat-2`.
+
+**Chọn nấc nào** ⚑: Tinted, Vivid chưa qua test ở dự án thật nên **không tự khuyên**: mặc định
+Neutral ở mọi lối. Chỉ bật khi:
+
+- Đề có chữ xin màu: "nhiều màu", "có màu hơn", "sinh động", "colorful" → Tinted; "rực",
+  "gradient", "vivid", "trẻ trung", "nổi bật hẳn" → Vivid. Không hỏi lại (`P1`).
+- Người dùng chọn trong nhóm Sắc của wireframe (`design-process.md`, `U3`).
+- Ảnh tham chiếu có màu kiểu này: đọc ảnh ra nấc gần nhất, dựng theo bảng trên, không chép từng mã
+  màu của ảnh.
+- Hai chế độ dựng lại: dòng Có màu (`V1d`) của dashboard là Tinted.
+
+Lúc giao màn Neutral dashboard có dữ liệu phân loại, báo một dòng nói bằng vấn đề, theo mẫu:
+*"Màn đang trung tính. Muốn mỗi loại việc một màu, sự cố còn mở có màu riêng cho dễ quét thì
+nói 'Tinted'; muốn thêm gradient ở nút chính và khối tổng kết thì nói 'Vivid'."*
+
+**Ghép với bộ mặt**: mười bộ ghép được với cả ba nấc, trừ **Editorial chỉ đi với Neutral**: nó là
+bộ đơn sắc có chủ đích (`P16`). Người dùng tự chọn Editorial kèm Tinted thì làm theo, báo một dòng.
+Midnight và Vivid: gradient, vệt loang dùng bản tối của token, vệt loang `from-primary/12`.
+
+**Ghi lại** (`P1`, `P4`): dòng `Sắc` trong `DESIGN.md` (`system.md`, `D10`) kèm bảng gán loại →
+sắc, cộng comment `/* Sắc: Tinted (P17) */` ở đầu khối Sắc của file token. Dự án Neutral thì xoá
+khối Sắc khỏi file token. Thấy khối Sắc có giá trị khi audit thì dự án đã chọn nấc đó, theo luôn.
+
+**Không đè:** toàn bộ cột Nguyên tắc của `P2` ngoài các chỗ hai bảng trên nêu tên: `M3` một màu nhấn
+cho hành động, `M7` bảng trạng thái, `P3` tương phản, `I3` một nút chính.
+
+**Bẫy**
+
+- **Màu không gắn với dữ liệu là trang trí.** Bốn card số liệu bốn nền màu, cột biểu đồ mỗi cột một
+  sắc dù cùng chỉ số: đó không phải Tinted, đó là lỗi `M2`. Phép thử: hỏi "sắc này nói loại gì,
+  mức gì?"; không trả lời được thì xám.
+- **Hai sắc phân loại cạnh nhau phải tách được**: `cat-1` xanh dương với `cat-5` sky lệch 21°, nên
+  sky không bao giờ vào ô icon.
+- **Gradient đếm theo màn, không theo khối**: nút chính + một hero + một điểm biểu đồ là hết. Thêm
+  gradient ở tab đang chọn, ở header thì không còn chỗ nào nổi (`M2`).
+- **Dark mode**: ô icon `bg-cat-N/15` (nền tối nuốt 10%), điểm cuối gradient lấy cột tối của bảng
+  `brand-tokens.md`. Hex viết cứng không lật theo theme.
+- **Vivid không đổi font, không đổi bo góc.** Font là trục Font của `P13`. Muốn chữ tròn hơn thì
+  chọn bộ mặt có font đó, không lén đổi `--app-font` theo Sắc.
 
 ## Không có trong bảng
 

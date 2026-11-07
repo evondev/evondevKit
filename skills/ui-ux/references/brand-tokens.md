@@ -106,6 +106,35 @@ một quy ước.
 
 ---
 
+## Gradient nhấn cho Sắc Vivid ⚑
+
+Chỉ khi dự án chọn Sắc **Vivid** (`styles.md`, `P17`). Điểm đầu là `--primary`, điểm cuối là
+`--accent-to` trong khối Sắc của `tokens.css`. **Chỉ lấy từ bảng này**: hai đầu đều đạt từ 5 : 1
+với chữ trắng (`P3`, đo ở đầu nhạt nhất), cách nhau 26–41° trên vòng màu để gradient thấy được mà
+không thành hai màu nhấn.
+
+| `--primary` | `--accent-to` | Lệch | Chữ trắng trên `--accent-to` | Bản tối: `--primary` → `--accent-to` |
+| --- | --- | --- | --- | --- |
+| Xanh dương `#2563eb` | Tím `#7c3aed` | 41° | 5.70 | `#60a5fa` → `#a78bfa` |
+| Chàm `#4f46e5` | `#9333ea` | 28° | 5.38 | `#818cf8` → `#c084fc` |
+| Tím `#7c3aed` | Hồng tím `#a21caf` | 33° | 6.32 | `#a78bfa` → `#e879f9` |
+| Hồng tím `#a21caf` | Tím `#7c3aed` | 33° | 5.70 | `#e879f9` → `#a78bfa` |
+| Xanh ngọc `#0f766e` | `#0369a1` | 26° | 5.93 | `#2dd4bf` → `#38bdf8` |
+| Xanh lá `#15803d` | Xanh ngọc `#0f766e` | 33° | 5.47 | `#4ade80` → `#2dd4bf` |
+| Cam `#c2410c` | `#9a3412` | cùng sắc, đậm dần | 7.31 | `#fb923c` → `#fdba74` |
+
+Bản tối chữ trên nút là `--primary-foreground` tối (`#05060f`), đạt từ 6.7 : 1 trên mọi ô cột tối.
+
+**Bẫy**
+
+- **Cam không đổi sắc**: một bên là hổ phách (`--warning`), bên kia là đỏ (`--danger`). Gradient
+  cam sang hồng đi qua vùng đỏ, nút chính trông như nút xoá (`I4`). Nên Cam đậm dần trong cùng sắc.
+- **Không đi về phía đỏ, xanh lá của trạng thái** dù hợp mắt: Hồng tím quay về Tím, không sang hồng.
+- Màu nhấn của dự án ngoài bảng (brand riêng): lấy điểm cuối lệch 25–40° về phía **xa** đỏ, hổ phách,
+  xanh lá, đo lại chữ trắng từ 4.5 : 1. Không đo được thì Vivid bỏ gradient, chỉ còn phần Tinted.
+
+---
+
 ## `--primary-light` chỉ dùng được khi màu nhấn có sắc
 
 Nền 5% của một màu cam hay xanh thì vẫn nhìn ra được. Nền 5% của một màu gần đen

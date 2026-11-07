@@ -62,6 +62,9 @@
      `shadow-modal`. Không đặt tên --shadow-*: trùng namespace Tailwind (W3). */
   --elevation-popover: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --elevation-modal: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  /* Bóng card của phong cách Nổi (P7, bộ Soft), class `shadow-card`, đi cùng `ring-1 ring-black/3`. Nhẹ hơn
+     shadow-sm: shadow-sm + ring-black/5 ra mép card xám đậm trên nền trang (chủ dự án chê, 07/11/2026). Flat không dùng. */
+  --elevation-card: 0 1px 2px 0 rgb(0 0 0 / 0.04), 0 2px 8px -2px rgb(0 0 0 / 0.06);
 
   /* Vùng tô (nút phụ, mục đang chọn, nền rê) là LỚP PHỦ trên nền phía sau: nền sáng tối đi,
      nền tối sáng lên. Thứ giữ qua hai theme là độ chênh với nền, không phải chiều (M21). */
@@ -75,6 +78,24 @@
      còn 70%, xem khối .dark. Thang nhiều chuỗi viết `bg-chart-fill/45`… (components/charts.md).
      Thanh mảnh (thanh tiến độ) vẫn `bg-primary`. */
   --chart-fill: var(--primary);
+
+  /* ===== SẮC, CHỈ KHI DỰ ÁN CHỌN TINTED HAY VIVID (P17 trong styles.md). NEUTRAL THÌ XOÁ CẢ KHỐI =====
+     Sắc: Tinted (P17)  <- ghi nấc đã chọn, Tinted hay Vivid; audit đọc dòng này.
+     Sắc phân loại: một loại dữ liệu một sắc cố định trên mọi màn (loại việc, agent, bộ phận, nguồn).
+     CHỈ cho icon, chấm, mảng biểu đồ, thanh tiến độ theo loại; KHÔNG cho chữ: bản 600 trên nền nhạt
+     chỉ đạt 3.3–5.4:1. Ô icon `bg-cat-1/10 text-cat-1`. Ô icon dùng cat-1…4 (tối đa bốn sắc một màn),
+     cat-5, cat-6 chỉ cho biểu đồ 5–6 nhóm. Không đỏ, hổ phách, xanh lá: để dành cho trạng thái (M4).
+     Sắc nào cách --primary dưới ~30° thì bỏ qua, lấy sắc kế tiếp. */
+  --cat-1: #2563eb;  /* blue-600 221°, icon trên ô /10: 4.5:1 */
+  --cat-2: #0d9488;  /* teal-600 175°, 3.3:1 */
+  --cat-3: #7c3aed;  /* violet-600 262°, 4.9:1 */
+  --cat-4: #c026d3;  /* fuchsia-600 293°, 4.1:1 */
+  --cat-5: #0284c7;  /* sky-600 200°: lệch blue 21°, KHÔNG vào ô icon */
+  --cat-6: #4f46e5;  /* indigo-600 243°: lệch blue 22°, KHÔNG vào ô icon */
+  /* Điểm cuối gradient nhấn, CHỈ Vivid: `bg-linear-to-r from-primary to-accent-to`. Lấy đúng bảng
+     "Gradient nhấn" của brand-tokens.md theo --primary; hai đầu đều đạt từ 5:1 với chữ trắng. */
+  --accent-to: #a21caf;  /* cặp của Tím #7c3aed */
+  /* =================================================================================================== */
 
   /* Bề mặt của nút phụ, mục sidebar / tab đang chọn. Đậm hơn --item-hover một bậc. */
   --secondary: #e7e8ec;
@@ -185,11 +206,22 @@
      số (chủ dự án chọn 70%). M32. */
   --chart-fill: color-mix(in srgb, var(--primary) 70%, transparent);
 
+  /* ===== SẮC, BẢN TỐI: sáng lên hai bậc (400). Ô icon `bg-cat-1/15`: nền tối nuốt mất /10. Xoá cùng khối sáng ===== */
+  --cat-1: #60a5fa;
+  --cat-2: #2dd4bf;
+  --cat-3: #a78bfa;
+  --cat-4: #e879f9;
+  --cat-5: #38bdf8;
+  --cat-6: #818cf8;
+  --accent-to: #e879f9;  /* cột tối của bảng "Gradient nhấn" */
+  /* ============================================================================================== */
+
   /* Tầng nổi sáng dần: nền trang < card < lớp nổi, mỗi bậc ~1.07–1.09:1 (M21). */
   --surface-overlay: #171a26;
   /* Bóng đậm gấp ~5 bản sáng: bóng 10% trên nền gần đen là không thấy. Thứ thật sự tách lớp
      nổi khỏi trang là viền 1px (`border border-border` của lớp nổi) + nền sáng hơn (M23). */
   --elevation-popover: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.5);
+  --elevation-card: 0 1px 2px 0 rgb(0 0 0 / 0.4);  /* nền tối: mép card là ring-white/10, bóng chỉ phụ (P7) */
   --elevation-modal: 0 20px 25px -5px rgb(0 0 0 / 0.6), 0 8px 10px -6px rgb(0 0 0 / 0.6);
 
   /* Vùng tô là trắng phủ mờ, SÁNG hơn card (M21). Phủ mờ nên đặt trên nền trang, card hay
@@ -285,6 +317,14 @@
   --color-border-strong: var(--border-strong);
   --color-tab-rail: var(--tab-rail);
   --color-chart-fill: var(--chart-fill);
+  /* Sắc (P17): xoá cùng khối Sắc khi dự án Neutral. */
+  --color-cat-1: var(--cat-1);
+  --color-cat-2: var(--cat-2);
+  --color-cat-3: var(--cat-3);
+  --color-cat-4: var(--cat-4);
+  --color-cat-5: var(--cat-5);
+  --color-cat-6: var(--cat-6);
+  --color-accent-to: var(--accent-to);
   --color-secondary: var(--secondary);
   --color-secondary-hover: var(--secondary-hover);
   --color-button-hover: var(--button-hover);
@@ -296,6 +336,7 @@
   --border-color-focus: var(--border-focus);
   --ring-color-focus: var(--ring-focus);
 
+  --shadow-card: var(--elevation-card);
   --shadow-popover: var(--elevation-popover);
   --shadow-modal: var(--elevation-modal);
 }

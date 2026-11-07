@@ -43,7 +43,7 @@ công thức phần tử bên dưới, `small-controls.md`). Màu thứ hai ph�
 
 **M4. Màu để báo trạng thái, không để phân loại.**
 
-*Có màu công thức B — ô icon card số liệu, ô icon đầu dòng theo loại và chuỗi biểu đồ dashboard được tô màu phân loại, xem `P12` trong `references/styles.md`.*
+*Sắc Tinted, Vivid — ô icon card số liệu, ô icon đầu dòng theo loại, chuỗi biểu đồ được tô màu phân loại (`--cat-*`), một số liệu báo động được tô màu trạng thái, xem `P17` trong `references/styles.md`. Mặc định Neutral: luật này giữ nguyên.*
 
 > `M4` và `M5` là **gu mặc định cho dự án chưa có ngôn ngữ màu**. Dự án đã tô màu
 > theo cách riêng (đếm ở `P4`) thì theo dự án; chỉ giữ các luật về nghĩa và đọc được
@@ -260,6 +260,13 @@ Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu
 
 Trong mỗi nhóm thì mọi chỗ dùng chung đúng một token, để đường tóc không chỗ
 đậm chỗ nhạt. Muốn viền card nhạt đi thì hạ `--border`, ô nhập không nhạt theo.
+
+**Đường chia lặp lại trong card luôn là `--border`**: `divide-y` giữa các dòng, vạch giữa các ô số
+xếp cột, hàng chú giải dưới biểu đồ. Áp ở mọi bộ mặt, kể cả card nổi không viền (Soft, `P7`) và
+khi trông "gần tàng hình": đó là mức đã chọn, `#eaeaea` ở chỗ này bị chê đậm (chủ dự án,
+07/11/2026; cùng lý do bị bác ở luật chốt 18). Ngoại lệ có tên duy nhất là **một vạch đứng riêng**
+chia hai phần của card (vạch giữa giá và tính năng ở `layouts/pricing.md`, đường "hoặc" ở
+`layouts/form.md`): vạch đó mới là `--border-strong`. Probe báo "ĐƯỜNG CHIA TRONG CARD ĐẬM".
 
 **`--border` chỉ đúng trên nền trắng.** Nó là `#f7f7f8`, **nhạt hơn** nền trang `--background`
 `#f4f4f6`: kẻ thẳng lên nền xám thì ra một vệt sáng mờ căm, liếc không thấy, nhìn kỹ lại

@@ -32,8 +32,9 @@ khách: năm bậc đậm nhạt của một màu thì bậc 4 và bậc 5 mắt
 màu trong bảng không còn chỉ về đúng thanh nào. Các app phân tích phổ biến đều tô mỗi
 nhóm một sắc ở đây (thanh chia phần, donut, cột chồng). Cách làm:
 
-- **Dự án có thang màu biểu đồ** (`--chart-1`…`--chart-5` của shadcn, hay thang riêng) thì
-  dùng đúng thang đó theo thứ tự. Dự án có ngôn ngữ màu riêng (`P4`) thì thang theo dự
+- **Dự án có thang màu biểu đồ** (`--chart-1`…`--chart-5` của shadcn, thang riêng, hay khối Sắc
+  `--cat-1`…`--cat-6` của `P17`) thì dùng đúng thang đó theo thứ tự. Dự án đã chọn Sắc Tinted, Vivid
+  thì thang `--cat-*` dùng cả khi dưới 5 nhóm. Dự án có ngôn ngữ màu riêng (`P4`) thì thang theo dự
   án kể cả khi dưới 5 nhóm.
 - **Chưa có** thì dùng thang mặc định, xếp theo thứ tự nhóm lớn tới nhỏ: `blue-500` ·
   `sky-400` · `violet-500` · `fuchsia-400` · `teal-500` · `indigo-300`. Tránh sắc trùng
@@ -50,7 +51,7 @@ nhóm một sắc ở đây (thanh chia phần, donut, cột chồng). Cách là
 trạng thái của app: đỏ là hỏng hoặc thất bại, amber là quá hạn hoặc cần chú ý,
 emerald là xong. Cột "quá hạn" tô amber thì được (`M7`, `list-row.md`). Cột "tháng 3" tô đỏ thì không.
 
-**Ô số liệu thì con số để nguyên màu chữ chính.** Đừng tô "Đang làm" xanh,
+**Ô số liệu thì con số để nguyên màu chữ chính** (Sắc Tinted, Vivid cho phép tô một số đang ở mức báo động, `P17`). Đừng tô "Đang làm" xanh,
 "Quá hạn" đỏ, "Hoàn thành" xanh lá. Bốn màu trong một hàng là dấu hiệu chưa
 chọn được cái nào đáng nhìn nhất. Cần nhấn một ô thì nhấn bằng vị trí hoặc bằng
 dòng phụ, không bằng màu.
