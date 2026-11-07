@@ -691,6 +691,9 @@
 
     <script>
       lucide.createIcons();
+      // Máy thật là .device đầu tiên. Script của app tìm phần tử trong đó, không tìm khắp trang: bảng luồng (J1) chép cả
+      // khung máy, giữ nguyên data-* để CSS theo trạng thái còn đúng, nên tìm khắp trang là đổi nhầm cả bản chép.
+      const liveDevice = document.querySelector(".device");
 
       const isReducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
       const wideScreen = matchMedia("(min-width: 900px)");
@@ -749,13 +752,9 @@
             deviceCopy.classList.add("board-device");
             deviceCopy.inert = true;
             deviceCopy.querySelectorAll(".screen:not(.is-active), .sheet:not(.is-open), .scrim:not(.is-open), [data-toast], [hidden]").forEach((element) => element.remove());
-            // Bản chép không mang móc của script (data-screen, data-tab…): probe và script chỉ thấy máy thật. Giữ data-lucide và
-            // data-art (nhân vật J16) vì hai script đó gán hình sau khi bảng dựng xong.
-            // Bỏ name, id, for: radio cùng name ở bản chép giành mất dấu chọn của máy thật (sheet món mất "Vừa", giá sai).
-            deviceCopy.querySelectorAll("[name], [id], [for]").forEach((element) => ["name", "id", "for"].forEach((attribute) => element.removeAttribute(attribute)));
-            [deviceCopy, ...deviceCopy.querySelectorAll("*")].forEach((element) => {
-              [...element.attributes].filter((attribute) => attribute.name.startsWith("data-") && attribute.name !== "data-lucide" && !attribute.name.startsWith("data-art")).forEach((attribute) => element.removeAttribute(attribute.name));
-            });
+            // Gỡ data-screen để probe và script chỉ thấy màn của máy thật. Giữ các data-* khác: CSS hay ẩn hiện theo chúng
+            // (nút phát/dừng theo [data-play-toggle][aria-pressed]), gỡ đi thì bản chép hiện cả hai icon.
+            deviceCopy.querySelectorAll("[data-screen]").forEach((element) => element.removeAttribute("data-screen"));
             frames.push({ name: screenName, device: deviceCopy });
             const card = document.createElement("a");
             card.href = `#${screenName}`;
@@ -811,7 +810,9 @@
           phone.replaceChildren(frames[index].device.cloneNode(true));
           link.href = `#${frames[index].name}`;
           step.textContent = `${index + 1}/${frames.length}`;
-          segments.forEach((segment, segmentIndex) => segment.classList.toggle("bg-white", segmentIndex <= index));
+          // Đổi hẳn class, không chồng bg-white lên bg-white/20: hai class cùng thuộc tính thì thứ tự trong CSS quyết định, đoạn đã
+          // phát không sáng lên.
+          segments.forEach((segment, segmentIndex) => { segment.className = `h-1 flex-1 rounded-full ${segmentIndex <= index ? "bg-white" : "bg-white/20"}`; });
           const screen = phone.querySelector(".screen");
           const fill = phone.querySelector('[role="progressbar"] > div');
           if (shouldAnimate && screen) {
@@ -844,7 +845,7 @@
       }
 
       // Chọn trong một nhóm: chọn một thì bỏ chọn cái khác; chọn nhiều thì bật tắt. Có lựa chọn thì nút Tiếp sáng lên (O8).
-      document.querySelectorAll("[data-group]").forEach((group) => {
+      liveDevice.querySelectorAll("[data-group]").forEach((group) => {
         const isMulti = group.hasAttribute("data-multi");
         const nextButton = document.querySelector(`[data-next="${group.dataset.group}"]`);
         group.querySelectorAll('[role="radio"], [role="checkbox"]').forEach((option) => {

@@ -710,6 +710,9 @@
 
     <script>
       lucide.createIcons();
+      // Máy thật là .device đầu tiên. Script của app tìm phần tử trong đó, không tìm khắp trang: bảng luồng (J1) chép cả
+      // khung máy, giữ nguyên data-* để CSS theo trạng thái còn đúng, nên tìm khắp trang là đổi nhầm cả bản chép.
+      const liveDevice = document.querySelector(".device");
 
       // Hash: #menu, #rewards, #orders, #account là tab (#orders-empty là bản rỗng của tab Đơn hàng); #cart là màn con;
       // #item, #login, #otp, #notify mở sheet trên màn nền của nó.
@@ -736,12 +739,12 @@
 
       function showScreen(name) {
         let tabName = name;
-        document.querySelectorAll("[data-screen]").forEach((screen) => {
+        liveDevice.querySelectorAll("[data-screen]").forEach((screen) => {
           const isActive = screen.dataset.screen === name;
           screen.classList.toggle("is-active", isActive);
           if (isActive && screen.dataset.tabRoot) tabName = screen.dataset.tabRoot;
         });
-        document.querySelectorAll("[data-tab]").forEach((tab) => {
+        liveDevice.querySelectorAll("[data-tab]").forEach((tab) => {
           if (tab.dataset.tab === tabName) tab.setAttribute("aria-current", "page");
           else tab.removeAttribute("aria-current");
         });
@@ -757,7 +760,7 @@
         else if (!bases.includes(baseScreen)) baseScreen = bases[0];
         showScreen(baseScreen);
         // Một sheet một lúc (J6).
-        document.querySelectorAll("[data-sheet]").forEach((panel) => {
+        liveDevice.querySelectorAll("[data-sheet]").forEach((panel) => {
           const isOpen = panel.dataset.sheet === name;
           panel.classList.toggle("is-open", isOpen);
           panel.inert = !isOpen;
@@ -826,15 +829,15 @@
         const amount = Number(sheet.querySelector("[data-item-total]").textContent.replace(/\D/g, ""));
         addToCart("Matcha latte Tây Bắc", amount, quantity);
       });
-      document.querySelectorAll("[data-quick-add]").forEach((button) => {
+      liveDevice.querySelectorAll("[data-quick-add]").forEach((button) => {
         button.addEventListener("click", () => addToCart(button.dataset.quickAdd, Number(button.dataset.price), 1));
       });
-      document.querySelectorAll("[data-jump]").forEach((button) => {
+      liveDevice.querySelectorAll("[data-jump]").forEach((button) => {
         button.addEventListener("click", () => document.getElementById(button.dataset.jump).scrollIntoView({ behavior: "smooth" }));
       });
 
       // Ô OTP: gõ một số thì sang ô sau, Backspace ở ô trống lùi về ô trước, iOS điền cả mã vào ô đầu thì chia ra.
-      const otpBoxes = [...document.querySelectorAll("[data-otp]")];
+      const otpBoxes = [...liveDevice.querySelectorAll("[data-otp]")];
       otpBoxes.forEach((box, index) => {
         box.addEventListener("input", () => {
           const digits = box.value.replace(/\D/g, "");
@@ -853,7 +856,7 @@
       document.querySelector("[data-verify]").addEventListener("click", () => showToast("Đã đặt đơn MC-2482"));
 
       // Đóng sheet về màn đang xem dưới nó (Đặt món hay Giỏ hàng khi bấm "Sửa").
-      document.querySelectorAll("[data-sheet] [data-close], [data-add]").forEach((link) => link.addEventListener("click", (event) => {
+      liveDevice.querySelectorAll("[data-sheet] [data-close], [data-add]").forEach((link) => link.addEventListener("click", (event) => {
         event.preventDefault();
         location.hash = baseScreen;
       }));

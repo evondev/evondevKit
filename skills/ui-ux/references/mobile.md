@@ -45,7 +45,10 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   máy như cũ. Chép nguyên khối Bảng luồng của `mobile-app.html` (CSS, `<main class="flow-board">`, hàm `buildBoard`),
   kể cả bản mẫu dựng theo `mobile-order.html`: mỗi `<ol data-flow>` trong danh sách màn là một hàng, mỗi trạng thái
   đáng xem (chưa chọn, đúng, sai, rỗng) là một mục của hàng. Script tách `renderScreen(name)` khỏi `route()`; bảng gọi
-  `renderScreen` cho từng màn rồi chép cả khung máy (thanh tab, nút thêm, sheet đúng trạng thái), không vẽ lại màn nào.
+  `renderScreen` cho từng màn rồi chép cả khung máy (thanh tab, nút thêm, sheet đúng trạng thái), không vẽ lại màn nào. Bản
+  chép giữ mọi `data-*` (CSS ẩn hiện theo chúng, như nút phát / dừng) và chỉ gỡ `data-screen`, `name`, `id`, `for`; vì vậy
+  **script của app tìm phần tử trong máy thật** (`liveDevice.querySelectorAll(...)`, `liveDevice` là `.device` đầu tiên),
+  không `document.querySelectorAll`, kẻo đổi tab, mở sheet đổi nhầm cả bản chép trên bảng.
   Thiếu bảng thì người duyệt phải bấm qua từng màn mới thấy cả luồng, không so được hai màn cạnh nhau. Probe gặp
   bảng thì tự đo màn đầu trong khung máy.
 - **Nút chính của luồng dẫn tới kết quả thấy được.** Bấm "Lưu", "Tạo", "Đặt" trong wireframe hay bản mẫu thì về
