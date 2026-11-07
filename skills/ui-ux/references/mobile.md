@@ -557,11 +557,12 @@ các kiểu lặp lại ở nhiều app, không chép mặt riêng của app nà
 | Mono | `--primary: #111111`; nền màn trắng cả màn danh sách nhóm (nhóm tách bằng tiêu đề và đường kẻ `--border-strong`); bỏ thẻ số chính nền tối, số chính chỉ là chữ lớn |
 | Photo | `--primary` lấy trong bảng màu theo ngành của `brand-tokens.md` (không đỏ, không hồng); màu nhấn chỉ ở nút **cam kết** của luồng (Tìm, Đặt, Thanh toán, Mua). Nút chính khác (Tiếp ở bước chọn, Áp dụng lọc, Xem chuyến đi) là nút đen `bg-foreground text-surface`; trạng thái đang chọn (ngày, chip lọc, card chọn, công tắc, tim đã lưu) tô `--foreground` |
 | Playful | `--app-font: "Nunito"`; `--primary` đậm đủ cho chữ trắng: xanh lá `#2f7d00` 5.18:1. **Xanh lá rực `#58cc02` chữ trắng chỉ 2.09:1**: muốn màu rực thì nút rực chữ tối, hay chữ trắng trên nền đậm. Dải đúng `#d7ffb8` chữ `#2f7d00` (4.66:1), dải sai `--danger-bg` chữ `--danger` |
-| Immersive | Cả khung mang `force-dark` (`M33`) với `--background: #1b2350`, `--surface` là trắng 10% trên nền (`#323962`, chữ trắng 11:1), `--muted` trắng 72% (8.4:1 trên `#1b2350`); nút chính `bg-white text-[#1b2350]` |
+| Immersive | Cả khung mang `force-dark` (`M33`), chép khối `.force-dark` của `tokens.css` rồi đè các token sau. **Nền là màu nhấn của ngành hay brand pha tối**: `--background` = 30% `--primary` trên `#0b0d18` (`color-mix(in oklab, var(--primary) 30%, #0b0d18)`: Chàm ra `#1f1e56`, Cam ra `#421d14`, Xanh ngọc ra `#0c2c32`), chuyển dọc xuống tông tối hơn 15%; không dùng một màu navy cho mọi app. `--surface` trắng 10% trên nền (chữ trắng từ 10.9:1), sheet và hộp hỏi trắng 14%; `--muted` trắng 72% (từ 8.3:1 trên nền, 6.5:1 trên thẻ); `--danger: #ff9aab` (từ 5.4:1 trên thẻ; `#ff637e` của `.force-dark` chỉ 3.9:1), `--success: #5fd99a`; nút chính `bg-white` chữ màu nền |
 | Editorial | Nạp thêm Lora 400, 700 (có bộ `vietnamese`, đã kiểm); `--background: #fbf8f3`, `--muted: #6b6459` (5.5:1 trên kem), sắc nhấn cam `#c2410c` (4.9:1 trên kem) |
 
 **Chọn bộ nào.** Bộ mặt bám **người dùng và việc chính** ở `U1`, `U2`, không bám ngành: app spa mà người mở là kế toán
-đối soát thì Clean, không phải Photo. Bộ còn cờ ⚑ chưa qua test ở dự án thật, nên **chưa tự khuyên**: skill dựng
+đối soát thì Clean, không phải Photo. Người dùng nêu tên một bộ (kể cả bộ còn cờ) thì dựng bộ đó, không hỏi lại (`P1`).
+Bộ còn cờ ⚑ chưa qua test ở dự án thật, nên **chưa tự khuyên**: skill dựng
 Clean, và khi đề hợp rõ một bộ có cờ thì báo một dòng lúc giao, nói bằng người dùng: *"Bộ mặt: **Clean**. App học từ
 vựng cần người học quay lại mỗi ngày: muốn kiểu vui hơn (nút đậm, thẻ bấm được, phản hồi tô cả dải đáy) thì nói
 Playful. Có thêm Mono, Photo, Immersive, Editorial."* Wireframe app điện thoại có nhóm Kiểu liệt kê sáu bộ
@@ -574,7 +575,10 @@ font, để màn sau theo đúng bộ đó, không khuyên lại.
 - Playful đè dòng "nhiều màu nhấn trên một màn" của `J8`: thêm tối đa hai màu, mỗi màu một nghĩa cố định. Nhân vật
   (`J16`) có mặt ở mọi khoảnh khắc phản hồi và ở bài tập (người nói câu mẫu), không chỉ màn chào và rỗng.
 - Immersive đè nền trắng của `J1` và dòng "gradient" của `J8` cho **nền**: chuyển dọc hai tông gần nhau. Nút vẫn
-  không gradient.
+  không gradient. Đè thẻ số chính nền `#1c1c1e` của `J5`: thẻ là lớp trắng 10% như mọi thẻ. Đè ô hôm nay tô đặc
+  `--primary` của dải ngày (`J8`): ô hôm nay nền trắng 14% viền trắng 2px, vì trắng đặc thành khối sáng nhất màn, nặng
+  hơn cả nút chính. Thanh tab: mục đang chọn có viên nền trắng 12% sau icon, vì trắng 100% với trắng 72% trên nền tối
+  gần như không phân biệt được (`J2`).
 - Mono đè thẻ số chính nền tối của `J5`.
 - Photo đè "ngày đang chọn tô `primary`" của `components/choice-controls.md` và "công tắc bật là `--primary`" của `J4`:
   đang chọn tô `--foreground`, để màu nhấn chỉ còn ở nút cam kết.
@@ -596,7 +600,8 @@ mỗi màn.
 - **Playful: không IN HOA chữ tiếng Việt trên nút.** IN HOA kèm dấu chồng lên nhau ("TIẾP TỤC" cao hơn hàng), đọc chậm.
   Dùng chữ thường đậm 800.
 - **Immersive: đi hết bẫy `P10`**: tiêu đề, icon, chữ trong ô nhập đổi theo nền; sheet và hộp hỏi trên nền tối cũng
-  tối, không bật ra một tấm trắng. Ảnh tối trên nền tối thì thêm viền trắng 10%.
+  tối, không bật ra một tấm trắng. Ảnh tối trên nền tối thì thêm viền trắng 10%. Bàn phím vẽ (`J13`) cũng bản tối:
+  khối `#1f1f22`, phím `#4a4a4d` chữ trắng, phím chức năng `#323235`.
 - **Editorial: serif chỉ cho nội dung đọc.** Lora cho nhãn tab, nút, ô nhập thì khung app thành giả cổ, chữ nhỏ 11–13
   khó đọc. Nạp Lora mà quên bộ `vietnamese` thì "ữ", "ợ" rơi về font máy (`T5`).
 
@@ -635,8 +640,8 @@ Hai kiểu vẽ trong một app (người vẽ tay cạnh ảnh chụp) thì tr�
 Không ở màn làm việc lặp lại (danh sách, form, cài đặt, giỏ hàng) và không ở màn câu hỏi của onboarding: câu hỏi là
 tiêu đề lớn (`O8`).
 
-**App lấy ảnh chụp làm chủ thì không dùng nhân vật vẽ tay**: bộ mặt Photo (`J15`), app đặt món, bán hàng (`J11`), đặt
-phòng. Màn xong, rỗng của các app này dùng icon trong vòng tròn 80px (`J12`) hay ảnh thật của món, của phòng. Người vẽ
+**App lấy ảnh chụp làm chủ thì không dùng nhân vật vẽ tay**: bộ mặt Photo, Immersive (`J15`), app đặt món, bán hàng
+(`J11`), đặt phòng. Nhân vật Open Peeps nét đen cũng chìm trên nền tối. Màn xong, rỗng của các app này dùng icon trong vòng tròn 80px (`J12`) hay ảnh thật của món, của phòng. Người vẽ
 tay đứng giữa toàn ảnh đồ uống chụp thật là hai kiểu vẽ trong một app, trông như ghép từ hai nơi.
 
 **Lúc giao** nói một dòng: nhân vật là bộ free giữ chỗ (CC0); có bộ hình thương hiệu thì thay ở một chỗ, đoạn script

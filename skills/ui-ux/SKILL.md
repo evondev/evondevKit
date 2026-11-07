@@ -315,7 +315,8 @@ nghĩa là dựng xong phần được giao.
 mà quên tiêu đề thì cứ đặt, vì nó là cấu trúc chứ không phải nội dung. Cùng loại:
 nhãn ô nhập, chữ trên nút, câu lỗi. Còn lại thì không — không thêm logo, không
 thêm câu quảng cáo, không thêm ô "ghi nhớ đăng nhập", không thêm nhà cung cấp
-đăng nhập thứ hai.
+đăng nhập thứ hai. Cũng không tính là thêm: **bước bắt buộc của một luồng đề đã có** (nhập mã sau ô số điện
+thoại, màn mồi trước hộp xin quyền của hệ thống, `J12`, `O8`); thiếu nó thì luồng đứt.
 
 ⚠️ **Màn xác thực có bộ mặc định riêng, xem `references/layouts/form.md`.**
 Logo sản phẩm, "Quên mật khẩu", một nút Google và placeholder thì dựng luôn; ghi
