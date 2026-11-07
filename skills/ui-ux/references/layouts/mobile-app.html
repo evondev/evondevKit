@@ -530,8 +530,8 @@
           const rowRect = row.getBoundingClientRect();
           // Bản chép trên bảng thu nhỏ (zoom 0.7): đổi khoảng đo được về px của vùng cuộn.
           const scale = scrollerRect.height / scroller.clientHeight;
-          // Chừa đáy cho thông báo, thanh tab, thanh home.
-          const reservedBottom = 152;
+          // Chừa đáy cho thông báo có Hoàn tác (~56), thanh tab 64 + 8, thanh home 34 trong khung, khoảng thở.
+          const reservedBottom = 180;
           const overflow = (rowRect.bottom - scrollerRect.bottom) / scale + reservedBottom;
           if (overflow > 0) scroller.scrollTop += overflow;
         });

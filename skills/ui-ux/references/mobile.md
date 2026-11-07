@@ -775,8 +775,8 @@ khác ở các chỗ dưới đây, và chỗ nào khác thì luật này thắn
 
 - **Chạm thay rê.** Cả vùng vẽ là một chỗ chạm, chạm hay kéo ngang thì chọn mốc gần ngón tay nhất. 30 mốc trên 312px
   chỉ còn khoảng 10px mỗi mốc, dưới mức 44px của `J4`, nên không làm chỗ chạm riêng cho từng chấm, từng cột. Vùng vẽ
-  để `touch-action: pan-y`: kéo ngang là dò số, kéo dọc vẫn cuộn màn. Kéo xong thả tay thì về mặc định (mốc mới
-  nhất), như app chứng khoán; chạm một lần thì giữ chọn tới khi chạm chỗ khác. Mũi tên trái phải dời mốc khi vùng vẽ
+  để `touch-action: pan-y`: kéo ngang là dò số, kéo dọc vẫn cuộn màn. Kéo xong thả tay thì về mặc định của khối
+  (số tổng của khối; khối không có số tổng thì mốc mới nhất), như app chứng khoán; chạm một lần thì giữ chọn tới khi chạm chỗ khác. Mũi tên trái phải dời mốc khi vùng vẽ
   đang focus.
 - **Số đọc ở chỗ cố định, không nhãn bay theo ngón tay.** Ngón tay che đúng chỗ đang chạm, còn nhãn rộng chừng 120px
   trên khung 358px thì gần như luôn trùm qua đường, bị đẩy lên đỉnh vùng vẽ, xa chấm. Hai cách, theo số đông app tài
@@ -845,16 +845,18 @@ nhiều. Code mẫu: `layouts/mobile-showcase.html` (ba màn app đếm kcal).
 
 **Khi nào:** đề nói "đẹp", "gây ấn tượng", "trình bày khách", "như Dribbble", "nhìn sang", hay người dùng bật công tắc
 **Trình diễn** trên wireframe (`?show=1`, đứng sau nhóm Tab). Không tự bật: app quản lý, nhập liệu dày (`J14`) và
-app cho cửa hàng, công ty giữ bản thực dụng vì cần nhiều thông tin trên một màn. Ghép được với mọi bộ mặt `J15`; hợp nhất
-Tinted, Glow, Playful, Photo.
+app cho cửa hàng, công ty giữ bản thực dụng vì cần nhiều thông tin trên một màn. Ghép được với mọi bộ mặt `J15`. Đề
+trình diễn mà chưa nêu bộ mặt thì lấy, không hỏi: **Tinted** cho app một người tự chăm mình (ăn uống, sức khoẻ, chi tiêu,
+thói quen), **Glow** cho AI, sáng tạo, âm nhạc, **Photo** cho lướt chọn bằng ảnh, còn lại **Clean**; báo một dòng lúc giao.
 
 **Công thức** (làm đủ, thiếu một hai thứ là về lại bản phẳng):
-- **Quầng màu đầu màn:** 2–3 `radial-gradient` từ màu nhấn và một sắc phụ cách 60–120° (`--accent`, chỉ dùng trong quầng),
-  mờ dần xuống nền trung tính ấm ở 55–60% chiều cao (`mask-image`). Chữ trên quầng là chữ tối. Màn danh sách thuần không cần
-  quầng.
+- **Quầng màu đầu màn:** 2–3 `radial-gradient` từ màu nhấn và một sắc phụ cách 60–150° (`--accent`, chỉ dùng trong quầng;
+  tím với đào, xanh dương với hồng, xanh lá với vàng), mờ dần xuống nền ở 55–60% chiều cao (`mask-image`). Nền dưới quầng là
+  nền Tinted khi bộ mặt là Tinted, không thì kem ấm `#f5f1ec`. Chữ trên quầng là chữ tối. Màn danh sách thuần không cần quầng.
 - **Tấm trắng trượt lên:** vùng "nhìn" (số chính, hình) nằm trên quầng; vùng "làm" (danh sách, form, nút) là tấm trắng bo
   36 hai góc trên, bóng ngược mềm. Thay cho thẻ số chính nền đen của `J5`.
-- **Một điểm nhìn mỗi màn, cỡ lớn:** số chính 56–64px `font-extrabold tracking-[-0.04em]`, hay hình chính 180–200px (đồ vật
+- **Một điểm nhìn mỗi màn, cỡ lớn:** số chính của màn 56–64px `font-extrabold tracking-[-0.04em]` (số nằm trong khối màu
+  40–48px), hay hình chính 180–200px (đồ vật
   3D `J16`, ảnh cắt nền) có quầng trắng mờ phía sau và bóng bầu dục dưới đáy để vật đứng trên mặt.
 - **Font hình học có tiếng Việt:** Plus Jakarta Sans (mặc định), Lexend, Manrope, Be Vietnam Pro (đã kiểm có bộ
   `vietnamese`). Tiêu đề màn 28–32 `font-extrabold`, chữ phụ 13.
@@ -864,12 +866,25 @@ Tinted, Glow, Playful, Photo.
   kết là viên đen hay màu nhấn cao 56 hết bề ngang, số tiền hay số kcal trong nút.
 - **Ô icon pastel chuyển nhẹ** (`bg-linear-to-br from-amber-100 to-orange-50`) 52px bo 18 chứa đồ vật 3D 34px; mỗi danh mục
   một cặp sắc cố định (`M8`). Ô số phụ (đạm, tinh bột, béo) nền pastel một sắc, nhãn bậc 700–800 cho đủ 4.5:1.
-- **Biểu đồ trong khối màu:** cột bo tròn hết `rounded-full`, cột chưa chọn trắng 45%, cột đang chọn trắng đặc có số và chấm
-  màu nhấn. Trong khối màu được đổi màu cột đang chọn (khác `J17` trên nền trắng) vì các cột kia là nền, không phải chuỗi.
-- **Thanh tab** `dark`, `pill` hay `glass` (`J2`); màn có hành động chính trên dòng (nút + ở bữa chưa ghi) thì không cần nút
-  nổi thêm.
+- **Biểu đồ trong khối màu:** cột bo tròn hết `rounded-full`, cột chưa chọn trắng 60% (45% chìm vào khối), cột đang chọn
+  trắng đặc có số trên đầu và chấm màu nhấn, kỳ đang chạy viền đứt. **Mặc định chọn kỳ trọn gần nhất** (hôm qua): không có
+  cột trắng thì khối nhạt nhoà, mất điểm nhìn. Số to giữ số của cả khối (trung bình tuần) vì đó là câu trả lời của màn; số
+  của cột đang chọn nằm trên đầu cột, chạm cột khác thì cột trắng và số dời theo. Đây là ngoại lệ có tên của "số to đổi theo
+  mốc" và "cột đang chọn không đổi màu" (`J17`): trong khối màu các cột kia là nền, không phải chuỗi.
+- **Thanh tab** `dark`, `pill` hay `glass` (`J2`). Ngoại lệ có tên của nút thêm nổi (`J5`): màn gốc mà hành động thêm đã
+  nằm trên dòng (nút + tròn màu nhấn ở bữa chưa ghi, mục chưa có) thì không thêm nút nổi. Thanh `dark` 3 mục thì co theo nội
+  dung, nằm giữa (`inset-x-0 mx-auto w-fit gap-6 px-2`), không giãn hết bề ngang cho thưa.
 - **Bớt chữ:** mỗi dòng một tên đậm và một dòng phụ, bỏ nhãn lặp, bỏ câu giải thích; khoảng trắng tách khối thay tiêu đề nhỏ.
+- **Màn rỗng trình diễn:** nhân vật hay đồ vật 3D cạnh câu chào và nút, **cộng một hàng gợi ý nhanh** 3 mục có nút + (gợi ý
+  bữa sáng, mẫu ngân sách): nửa dưới trống trơn trông như lỗi tải.
+- **Ráp vào khung `J1`:** quầng là khối đầu của vùng cuộn (cuộn cùng nội dung), tấm trắng là khối kế tiếp trong luồng cuộn
+  (`rounded-t-[36px]`, `min-h` tới đáy), không `absolute` (dòng cuối lọt dưới thanh tab). Dải che tai thỏ (`.status-cover`)
+  trong suốt lúc chưa cuộn để không che quầng, có nền khi đã cuộn. Nút cam kết dính đáy trên tấm trắng không có vạch ngăn
+  (`J5`), chừa khoảng trắng 16px phía trên. Màn nhóm (Tài khoản, cài đặt) giữ thẻ nhóm có vạch nhạt `divide-y` như `J4`:
+  đó là màn thực dụng, không cần quầng.
 
-**Vẫn giữ:** tương phản 4.5:1 (đo chữ ở chỗ quầng sáng nhất), chỗ bấm 44px, `J2` ẩn thanh tab ở màn phải làm cho xong, một
-hành động chính mỗi màn.
+**Vẫn giữ:** tương phản 4.5:1 (đo chữ ở chỗ quầng sáng nhất), chỗ bấm 44px (điều khiển phân đoạn rãnh 52 `p-1` cho nút 44),
+chữ nội dung chính 16px và không cắt chữ (`J4`), tiêu đề lớn ở màn gốc (`J3`, lời chào nhỏ đứng trên), kính `backdrop-blur`
+chỉ cho lớp cố định (thanh tab, đầu màn), `J2` ẩn thanh tab ở màn phải làm cho xong, một hành động chính mỗi màn. Logo app:
+đầu bảng luồng, favicon, màn chào và đăng nhập (`J12`), không trên mọi màn.
 

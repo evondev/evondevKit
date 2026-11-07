@@ -3587,6 +3587,10 @@ async function probeMobileApp(browser, options) {
 
     return found;
   });
+  // Chụp cả bảng luồng (J1): người duyệt mở link trên máy tính là thấy bảng này trước, nên mắt phải xem nó như các màn.
+  if (await boardPage.evaluate(() => document.body.classList.contains("is-board"))) {
+    await boardPage.screenshot({ path: join(options.out, "mobile-board-1440.png"), fullPage: true });
+  }
   await boardContext.close();
 
   const screens = [];
