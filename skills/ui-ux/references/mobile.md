@@ -610,6 +610,10 @@ mỗi màn.
 
 ## J16. Nhân vật và minh hoạ ⚑
 
+**App nào dùng nhân vật**: app cho một người tự làm việc của mình mỗi ngày, không lấy ảnh chụp làm chủ: học, thói quen,
+sức khoẻ cá nhân, ghi chép, tiết kiệm cá nhân; theo người dùng và việc, không theo bộ mặt (Clean cũng dùng). Không dùng
+ở app làm việc cho cửa hàng, công ty, quản lý (`J14`), và app lấy ảnh làm chủ (dưới).
+
 App vui, app học, app sức khoẻ trông "có hồn" nhờ nhân vật: màn chào có người chào, bài tập có người nói câu mẫu,
 đúng sai có nét mặt. Thay bằng icon trong vòng tròn thì luồng đúng luật mà trống, nhất là màn chào, màn luyện nói,
 màn xong.
@@ -627,8 +631,9 @@ màn xong.
    - Không tự vẽ SVG nhân vật hay minh hoạ (`J8`).
 
 **Một nhân vật cho cả app**: giữ cố định `seed`, tóc (`head`), màu áo (`clothingColor`) là màu nhấn; tắt kính, khẩu
-trang (`*Probability: 0`). Chỉ **nét mặt** (`face`) đổi theo khoảnh khắc: nói, hướng dẫn `explaining` · đúng, xong,
-chào `smileBig` · sai `concerned` · đang nghe, chờ `calm`. Bạn hội thoại trong bài tập là nhân vật thứ hai cùng kiểu.
+trang (`*Probability: 0`). Chỉ **nét mặt** (`face`) đổi theo khoảnh khắc: chào, rỗng `smile` · đúng, xong `lovingGrin1` · nói, hướng dẫn
+`explaining` · đang nghe, chờ `calm` · sai, lỡ chuỗi `concerned`. Đừng dùng `smileBig`, `smileTeethGap` (nhe răng, nhìn
+như nhăn), `smileLOL` (có nước mắt), `awe`: tên là cười mà hình thì không. Bạn hội thoại trong bài tập là nhân vật thứ hai cùng kiểu.
 Hai kiểu vẽ trong một app (người vẽ tay cạnh ảnh chụp) thì trông ghép.
 
 **Chỗ dùng và cỡ:**
@@ -639,6 +644,11 @@ Hai kiểu vẽ trong một app (người vẽ tay cạnh ảnh chụp) thì tr�
 | Bài tập: người nói câu mẫu, bong bóng ở trên đầu nhân vật | 140–160px, giữa màn |
 | Màn xong, màn kết quả onboarding (`O8`), trạng thái rỗng (`J12`) | 35–50% bề ngang màn |
 | Bạn hội thoại cạnh bong bóng tin nhắn | 56px |
+| Sheet báo một khoảnh khắc (lỡ chuỗi, lên hạng) | 144px, trên tiêu đề sheet |
+| Khối chúc mừng đầu một màn danh sách (xong hết việc hôm nay) | 144px trong khối, danh sách vẫn ở dưới |
+
+Avatar của người dùng trong app có nhân vật là ô chữ cái (`components/avatar.md`), không ảnh chụp (`S16`): ảnh chân dung
+thật cạnh người vẽ tay là hai kiểu vẽ.
 
 Không ở màn làm việc lặp lại (danh sách, form, cài đặt, giỏ hàng) và không ở màn câu hỏi của onboarding: câu hỏi là
 tiêu đề lớn (`O8`).

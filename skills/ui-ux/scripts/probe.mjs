@@ -1851,6 +1851,8 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   const denseItems = [];
   for (const parent of allElements) {
     if (denseItems.length >= 3) break;
+    // Trong khung app điện thoại thì tên xuống dòng hết, không cắt (J4): mục dài lên 5 dòng là đúng, không báo.
+    if (parent.closest(".device")) continue;
     const items = [...parent.children].filter((child) => isVisible(child) && child.getBoundingClientRect().height >= 48);
     if (items.length < 3) continue;
     // Cùng loại = cùng thẻ và cùng class đầu: mục đang chọn thêm class trạng thái (`sel`, `lg:bg-…`) vẫn cùng loại.
