@@ -26,7 +26,8 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
 - **Khung theo `mobile-app.html`**: từ 500px trở lên vẽ thân máy bo 48px, **thanh trạng thái giả 47px**
   (giờ 9:41, sóng, pin) và **thanh home 34px**; dưới 500px (mở trên điện thoại thật) màn tràn hết, không vẽ
   thanh trạng thái, chừa tai thỏ bằng `env(safe-area-inset-*)` với `viewport-fit=cover`. Hai mép chừa này
-  là biến `--inset-top`, `--inset-bottom`, mọi vùng dính mép dùng chúng, không viết cứng 47.
+  là biến `--inset-top`, `--inset-bottom`, mọi vùng dính mép dùng chúng, không viết cứng 47. Vùng cuộn trong khung
+  (`.scroll`) ẩn hẳn thanh cuộn như điện thoại thật (ngoại lệ có tên của luật chốt 13 trong `locked-rules.md`).
 - **Dải nền dưới thanh trạng thái** (`.status-cover`, cao `--inset-top`, `bg-background/85 backdrop-blur-xl`,
   nằm trên vùng cuộn, dưới lớp phủ của sheet), có ở cả khung lẫn máy thật. Màn gốc cuộn từ đỉnh nên nội dung
   chạy dưới tai thỏ. Đừng bỏ dải này: chữ cuộn lên đè thẳng lên giờ và pin.
@@ -533,7 +534,7 @@ ghi chỗ từ hai app trở lên làm giống nhau hay khớp quy ước iOS / 
   96px bo 20: icon 24px trên, nhãn 16px dưới, mỗi ô một loại. Không menu dọc chữ nhỏ bật ra từ nút, không nút tròn
   bung thành chùm nút nhỏ.
 
-## J15. Bộ mặt app điện thoại — sáu bộ có tên ⚑
+## J15. Bộ mặt app điện thoại — sáu bộ có tên
 
 Lý do giống `P13`: khung app điện thoại chỗ nào cũng như nhau (thanh tab, đầu màn, danh sách, sheet), nên ba app khác
 ngành dựng cùng một gu thì ra cùng một mặt. Thứ làm hai app khác nhau là **bộ mặt**: nền, màu nhấn dùng tới đâu,
@@ -548,9 +549,9 @@ các kiểu lặp lại ở nhiều app, không chép mặt riêng của app nà
 | --- | --- | --- | --- | --- | --- |
 | **Clean** | Trắng; màn danh sách nhóm nền xám, thẻ trắng (`J1`) | Nút chính, mục đang chọn, icon danh mục trong vòng nhạt (`J8`) | Inter | Bo 12–16, thẻ số chính nền tối (`J5`) | Người ghi chép, quản lý, theo dõi số mỗi ngày: chi tiêu, việc cần làm, kho, đặt lịch (`J14`). Code mẫu `mobile-app.html` |
 | **Mono** ⚑ | Trắng tinh, ngăn bằng đường kẻ, gần như không thẻ | Không có màu nhấn: nút chính đen bo tròn hết, màu duy nhất trên màn là ảnh và avatar người dùng đăng | Inter, tên người đậm 15, nội dung 15–16 | Nút viên thuốc đen hay viền, icon nét mảnh, dòng nội dung chạy hết bề ngang | Người đọc và đăng nội dung của người khác: mạng xã hội, cộng đồng, bình luận, nhắn tin nhóm |
-| **Photo** ⚑ | Trắng, ảnh thật là chủ thể | **Chỉ nút chính** của luồng (Đặt, Mua, Lưu); việc phụ là nút đen hay viền | Inter, tên mục 15–16 đậm dưới ảnh | Ảnh bo 12–16 tỉ lệ 4:3 hay 1:1, chữ nằm dưới ảnh không bọc thẻ; lưới 2 cột so le khi lướt ý tưởng | Người lướt để chọn bằng mắt: đặt phòng, du lịch, bất động sản, món ăn, thời trang, nội thất, đường đi |
-| **Playful** ⚑ | Trắng, phản hồi tô cả dải đáy | Một màu thương hiệu bão hoà cho nút chính và thanh tiến độ; thêm tối đa hai màu **có nghĩa** (đúng, sai, chuỗi ngày) | Nunito 700–800, nút chữ đậm | Thẻ chọn viền 2px có viền đáy 4px (trông bấm được), bo 16; thanh tiến độ cao 12–16 bo tròn; nhân vật đổi nét mặt theo đúng sai (`J16`) | Người cần động lực quay lại mỗi ngày: học, thói quen, thể dục cho người dùng phổ thông, trẻ. Code mẫu `mobile-playful.html` |
-| **Immersive** ⚑ | Nền tối có sắc (xanh đêm, tím than) cả app, chuyển dọc nhẹ hai tông gần nhau | Nút chính trắng chữ tối, không màu nhấn rực | Inter, tiêu đề lớn trắng, chữ phụ trắng 72% | Ảnh lớn bo 12–16 làm điểm nhìn, thẻ là lớp trắng 8–10% trên nền | Người dùng để thư giãn, nghe, xem, thường buổi tối: thiền, ngủ, nhạc, podcast, sách nói, video |
+| **Photo** | Trắng, ảnh thật là chủ thể | **Chỉ nút chính** của luồng (Đặt, Mua, Lưu); việc phụ là nút đen hay viền | Inter, tên mục 15–16 đậm dưới ảnh | Ảnh bo 12–16 tỉ lệ 4:3 hay 1:1, chữ nằm dưới ảnh không bọc thẻ; lưới 2 cột so le khi lướt ý tưởng | Người lướt để chọn bằng mắt: đặt phòng, du lịch, bất động sản, món ăn, thời trang, nội thất, đường đi |
+| **Playful** | Trắng, phản hồi tô cả dải đáy | Một màu thương hiệu bão hoà cho nút chính và thanh tiến độ; thêm tối đa hai màu **có nghĩa** (đúng, sai, chuỗi ngày) | Nunito 700–800, nút chữ đậm | Thẻ chọn viền 2px có viền đáy 4px (trông bấm được), bo 16; thanh tiến độ cao 12–16 bo tròn; nhân vật đổi nét mặt theo đúng sai (`J16`) | Người cần động lực quay lại mỗi ngày: học, thói quen, thể dục cho người dùng phổ thông, trẻ. Code mẫu `mobile-playful.html` |
+| **Immersive** | Nền tối có sắc (xanh đêm, tím than) cả app, chuyển dọc nhẹ hai tông gần nhau | Nút chính trắng chữ tối, không màu nhấn rực | Inter, tiêu đề lớn trắng, chữ phụ trắng 72% | Ảnh lớn bo 12–16 làm điểm nhìn, thẻ là lớp trắng 8–10% trên nền | Người dùng để thư giãn, nghe, xem, thường buổi tối: thiền, ngủ, nhạc, podcast, sách nói, video |
 | **Editorial** ⚑ | Trắng hay kem ấm `#fbf8f3`, gần như không thẻ | Một sắc nhỏ cho link, nút theo dõi; nút chính đen hay màu đó | Tiêu đề bài và thân bài **Lora** (serif), thân 18/1.6; khung app (tab, nút, nhãn) vẫn Inter | Dòng bài: chữ trái, ảnh vuông 64 phải; trang đọc lề 20, không khung | Người **đọc** dài: bản tin, báo, sách, khoá học dạng đọc, công thức nấu ăn |
 
 **Token đổi theo bộ** (khối đổi thương hiệu của `mobile-app.html`, tương phản đã đo):
@@ -565,11 +566,18 @@ các kiểu lặp lại ở nhiều app, không chép mặt riêng của app nà
 
 **Chọn bộ nào.** Bộ mặt bám **người dùng và việc chính** ở `U1`, `U2`, không bám ngành: app spa mà người mở là kế toán
 đối soát thì Clean, không phải Photo. Người dùng nêu tên một bộ (kể cả bộ còn cờ) thì dựng bộ đó, không hỏi lại (`P1`).
-Bộ còn cờ ⚑ chưa qua test ở dự án thật, nên **chưa tự khuyên**: skill dựng
-Clean, và khi đề hợp rõ một bộ có cờ thì báo một dòng lúc giao, nói bằng người dùng: *"Bộ mặt: **Clean**. App học từ
-vựng cần người học quay lại mỗi ngày: muốn kiểu vui hơn (nút đậm, thẻ bấm được, phản hồi tô cả dải đáy) thì nói
-Playful. Có thêm Mono, Photo, Immersive, Editorial."* Wireframe app điện thoại có nhóm Kiểu liệt kê sáu bộ
-(`design-process.md`, `U3`), mặc định Clean. Bộ nào qua test thì gỡ cờ ⚑ ở bảng trên.
+Skill **tự khuyên một bộ** trong bốn bộ đã qua test (Clean, Photo, Playful, Immersive), không hỏi, theo câu đầu tiên
+khớp:
+
+1. Người dùng lướt và chọn bằng ảnh (đặt phòng, đặt món, mua sắm, nội thất) → **Photo**.
+2. Người dùng nghe, xem, thư giãn, thường buổi tối (thiền, ngủ, sách nói, nhạc, video) → **Immersive**.
+3. Một người tự làm việc của mình mỗi ngày và cần động lực quay lại (học, thói quen, thể dục) → **Playful**.
+4. Còn lại, nhất là ghi chép, quản lý, tài chính, app cho cửa hàng hay công ty → **Clean**.
+
+Mono, Editorial còn cờ ⚑ (chưa qua test): không tự khuyên; đề hợp rõ thì báo một dòng lúc giao. Mẫu dòng báo, nói bằng
+người dùng: *"Bộ mặt: **Playful** (nút đậm, thẻ bấm được, phản hồi tô cả dải đáy) vì người học cần quay lại mỗi ngày.
+Muốn kiểu khác thì nói: Clean, Photo, Immersive, Mono, Editorial."* Wireframe app điện thoại có nhóm Kiểu liệt kê sáu bộ
+(`design-process.md`, `U3`), mặc định là bộ khuyên dùng. Bộ nào qua test thì gỡ cờ ⚑ ở bảng trên.
 
 **Ghi lại bộ đã chọn** như `P13`: dòng Bộ mặt trong `DESIGN.md` và comment `/* Bộ mặt: Playful (J15) */` trên khối
 font, để màn sau theo đúng bộ đó, không khuyên lại.

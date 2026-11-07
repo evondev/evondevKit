@@ -25,7 +25,7 @@ chuyển động. Sửa skill xong chạy `node skills/ui-ux/scripts/lint-skill.
 | 10 | Bo góc theo chiều cao: từ 40px trở lên tối thiểu 12px, dưới 40px thì 8px | 21/09/2026 | Chọn theo tên loại ("mục menu thì 8px") | `rules-form.md` |
 | 11 | Tên trang `xl`, `2xl` chỉ cho hero | 16/09/2026 | Tên trang `2xl` ở desktop | `budgets.md` |
 | 12 | Panel trượt 500ms vào, 350ms ra | 23/09/2026 | Rút ngắn 300/200ms cho "nhanh hơn". `linear` | `layouts/overlay.md` |
-| 13 | Thanh cuộn ẩn bằng màu trong suốt, giữ bề rộng 4px | 08/09/2026 | `scrollbar-width: none` (nội dung bị đẩy ngang khi thanh hiện) | `tokens.css` |
+| 13 | Thanh cuộn ẩn bằng màu trong suốt, giữ bề rộng 4px. **Ngoại lệ có tên**: vùng cuộn trong khung app điện thoại (`J1`, class `.scroll`) ẩn hẳn bằng `scrollbar-width: none`, vì điện thoại dùng thanh nổi tự ẩn, không chiếm bề rộng; phần ngoài khung máy vẫn theo luật | 08/09/2026; ngoại lệ 07/11/2026 | `scrollbar-width: none` (nội dung bị đẩy ngang khi thanh hiện) | `tokens.css` |
 | 14 | Hàng tab cuộn ngang ở màn hẹp: chỉ gợi ý cho người dùng chọn cách báo "còn nữa", không áp sẵn | 25/09/2026 | Tự áp dropdown hoặc thanh cuộn luôn hiện | `responsive.md` |
 | 15 | Dấu `*` trường bắt buộc tô đỏ | 25/09/2026 | Dấu `*` xám cho "đỡ ồn" | `rules-color.md`, `principles.md` |
 | 16 | Không vẽ vòng focus ở nút, link, tab, chip, checkbox, card, dòng; chỉ trả lại khi đề yêu cầu accessibility (`I14`). Ngoại lệ lúc soi: dự án tự vẽ vòng focus mà một chỗ Tab tới không thấy gì thì báo Lệch hệ, sửa theo vòng của họ | 28/09, 30/09/2026 | "Thiếu vòng focus là trượt WCAG 2.4.7", thêm lại khi soi thấy Tab tới không có dấu | `rules-state.md` `I13` |

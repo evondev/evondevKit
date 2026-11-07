@@ -205,7 +205,8 @@ cho màu và font. Khối thanh cuộn trong `tokens.css` (từ `* { --scrollbar
 `.scrollbar-clean`) và component `ScrollbarAutohide` (`I18`) là dáng, không phải brand:
 grep `::-webkit-scrollbar` trong CSS gốc, chưa có hay đang là bản khác thì chép vào.
 Thiếu khối này là trình duyệt vẽ thanh mặc định, to và thô, ở mọi vùng cuộn: trang,
-sidebar, bảng cuộn ngang, dropdown. Trang HTML thuần, wireframe cũng chép.
+sidebar, bảng cuộn ngang, dropdown. Trang HTML thuần, wireframe cũng chép. Trừ vùng cuộn trong khung
+app điện thoại: ẩn hẳn (`.scroll`, ngoại lệ của luật chốt 13).
 
 Dùng thư viện của họ thì cách áp skill là **chỉnh token cho khớp**, cộng vài mặc
 định trái luật. Với shadcn thường là ba chỗ:
