@@ -34,7 +34,9 @@ là không có điểm neo**:
 
 **M3. Đúng một màu nhấn cho cả app.** Nút chính, link, control đang bật (checkbox,
 switch, chip lọc đã chọn) dùng chung nó. Mục **điều hướng** đang chọn (sidebar, tab,
-trang hiện tại) thì dùng nền xám hoặc vạch `--foreground`, không màu nhấn (bảng
+trang hiện tại) thì dùng nền xám hoặc vạch `--foreground`, không màu nhấn. Ngoại lệ có tên: màu
+nhấn có sắc thì mục sidebar đang chọn là `bg-primary-light text-primary` (`layouts/app.md`,
+"Khung app có sidebar"); tab vẫn vạch `--foreground` (bảng
 công thức phần tử bên dưới, `small-controls.md`). Màu thứ hai phải xin phép.
 
 ---
@@ -43,7 +45,7 @@ công thức phần tử bên dưới, `small-controls.md`). Màu thứ hai ph�
 
 **M4. Màu để báo trạng thái, không để phân loại.**
 
-*Có màu công thức B — ô icon card số liệu, ô icon đầu dòng theo loại và chuỗi biểu đồ dashboard được tô màu phân loại, xem `P12` trong `references/styles.md`.*
+*Sắc Tinted, Vivid — ô icon card số liệu, ô icon đầu dòng theo loại, chuỗi biểu đồ được tô màu phân loại (`--cat-*`), một số liệu báo động được tô màu trạng thái, xem `P17` trong `references/styles.md`. Mặc định Neutral: luật này giữ nguyên.*
 
 > `M4` và `M5` là **gu mặc định cho dự án chưa có ngôn ngữ màu**. Dự án đã tô màu
 > theo cách riêng (đếm ở `P4`) thì theo dự án; chỉ giữ các luật về nghĩa và đọc được
@@ -247,7 +249,7 @@ Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu
 | Thẻ / khung | trắng, viền 1px xám rất nhạt, bo 16px `rounded-2xl` (`F1`), **không bóng** |
 | Danh sách nhiều mục | MỘT khung, các dòng chia bằng `divide-y`. Dòng tiêu đề và dòng hành động cuối nằm TRONG khung |
 | Khối tóm tắt phụ | nền xám nhạt + viền, bo như thẻ |
-| Mục sidebar, cây thư mục đang chọn | nền `--secondary` + `font-medium`, **không viền**, không màu nhấn; rê vào `--background`, mục chưa chọn không nền. Đang chọn đậm hơn nền rê một bậc (`I10`, `I15`) |
+| Mục sidebar, cây thư mục đang chọn | màu nhấn có sắc: sidebar nền `--primary-light`, chữ `--primary` + `font-medium` (cây thư mục vẫn như dòng dưới). Màu nhấn gần đen: nền `--secondary` + `font-medium`, **không viền**, không màu nhấn; rê vào `--background`, mục chưa chọn không nền. Đang chọn đậm hơn nền rê một bậc (`I10`, `I15`) |
 | Tab ngang trên bảng / danh sách | tab đang chọn **nền `bg-tab-selected` (chữ phủ 8%, đúng trên cả card lẫn nền trang), viền trong suốt** (không nền trắng, không `--surface-hover`: trên card trắng liếc không thấy), mọi tab có `border`, mục chưa chọn `border-transparent`. Xem "Thanh tab" trong `components/small-controls.md` |
 | Ô nhập | viền — đây là chỗ viền đúng vai nhất, người ta phải nhìn ra ranh giới vùng gõ được |
 
@@ -260,6 +262,13 @@ Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu
 
 Trong mỗi nhóm thì mọi chỗ dùng chung đúng một token, để đường tóc không chỗ
 đậm chỗ nhạt. Muốn viền card nhạt đi thì hạ `--border`, ô nhập không nhạt theo.
+
+**Đường chia lặp lại trong card luôn là `--border`**: `divide-y` giữa các dòng, vạch giữa các ô số
+xếp cột, hàng chú giải dưới biểu đồ. Áp ở mọi bộ mặt, kể cả card nổi không viền (Soft, `P7`) và
+khi trông "gần tàng hình": đó là mức đã chọn, `#eaeaea` ở chỗ này bị chê đậm (chủ dự án,
+07/11/2026; cùng lý do bị bác ở luật chốt 18). Ngoại lệ có tên duy nhất là **một vạch đứng riêng**
+chia hai phần của card (vạch giữa giá và tính năng ở `layouts/pricing.md`, đường "hoặc" ở
+`layouts/form.md`): vạch đó mới là `--border-strong`. Probe báo "ĐƯỜNG CHIA TRONG CARD ĐẬM".
 
 **`--border` chỉ đúng trên nền trắng.** Nó là `#f7f7f8`, **nhạt hơn** nền trang `--background`
 `#f4f4f6`: kẻ thẳng lên nền xám thì ra một vệt sáng mờ căm, liếc không thấy, nhìn kỹ lại

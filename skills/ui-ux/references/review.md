@@ -29,11 +29,11 @@ Nhận chế độ từ đề, không hỏi, rồi nói một dòng ở phần m
 | Dòng Gu | chỉ nêu, mặc định không chọn | **chọn sẵn**, người dùng bỏ dòng nào thì bỏ | chọn sẵn |
 | Dòng Cấu trúc (`V1b`) | không có | có: sắp lại thì chọn sẵn, bỏ bớt thông tin thì không | như cột giữa |
 | Dòng Gọn (`V1c`) | không có | **có, chọn sẵn**: mỗi khối chính một dòng, làm gọn theo gu skill, giữ màu | như cột giữa |
-| Dòng Có màu (`V1d`) | không có | có ở trang lướt để chọn hoặc dashboard (công thức B của `P12`), **không chọn sẵn**: một dòng cho cả route, màu từ màu nhấn của dự án | như cột giữa |
+| Dòng Có màu (`V1d`) | không có | có ở trang lướt để chọn (`P12`) hoặc dashboard (Sắc Tinted của `P17`), **không chọn sẵn**: một dòng cho cả route, màu từ màu nhấn của dự án | như cột giữa |
 | Dáng: bóng, viền, nhịp, cỡ chữ, nhãn, lớp phủ trên ảnh | giữ | **theo gu skill** | theo gu skill |
 | Màu theo vai, logo, font | giữ | **giữ** | chỉ giữ logo và màu nhấn chính |
 | Component | không viết lại, sửa đúng chỗ lỗi | được thay control gốc và khối tự chế bằng mẫu của skill (bảng dưới) | như cột giữa |
-| Brand | giữ | **giữ theo bảng vai màu** (dưới): dựng theo cách làm của skill, tô bằng token và vai màu của dự án | **bỏ bảng vai màu**, dùng token và gu của skill (`tokens.css`, `principles.md`): nền trang xám nhạt, card trắng viền mảnh, mục chọn nền nhạt, badge nhạt. Chỉ giữ **logo** và **màu nhấn chính** của dự án làm màu nhấn duy nhất (`brand-tokens.md`). Lúc giao nói một dòng *"giữ đỏ làm màu nhấn, muốn đổi thì nói"* |
+| Brand | giữ | **giữ theo bảng vai màu** (dưới): dựng theo cách làm của skill, tô bằng token và vai màu của dự án | **bỏ bảng vai màu**, dùng token và gu của skill (`tokens.css`, `principles.md`): nền trang xám nhạt, card trắng viền mảnh, mục chọn nền nhạt, badge nhạt. Chỉ giữ **logo** và **màu nhấn chính** của dự án làm màu nhấn duy nhất (`brand-tokens.md`). Màn trong app web thì dựng **bộ mặt khuyên dùng** (`styles.md`, `P13`), không mặc nhiên Gọn. Lúc giao nói một dòng *"giữ đỏ làm màu nhấn, bộ mặt Sidebar tối vì […], muốn đổi thì nói"* |
 | Logic, handler, dữ liệu, câu chữ | không đụng (`N10`) | không đụng: component mới nhận đúng props và state của cái cũ. **Không thêm field vào type hay dữ liệu mẫu, không viết câu chữ mới** (khẩu hiệu, số %, số tiền, nhãn nút mới). Bố cục mới cần chữ chưa có thì dựng bằng chữ đang có, hoặc đưa lên bảng thành một dòng để người dùng tự viết | như cột giữa |
 | Hỏi trước khi sửa | có | có: bảng trước, người dùng trả lời rồi mới sửa | có |
 | Sửa xong | chụp lại, chạy lại probe route đó | chạy lại probe **tới khi danh sách `P` trống**, tối đa ba vòng, như cổng 3 (`checklist.md`) | như cột giữa |
@@ -336,15 +336,15 @@ Hay gặp:
 
 Dựng lại cho gọn xong mà trang vẫn "buồn màu" là chuyện hay gặp ở trang người dùng cuối.
 Nên hai chế độ dựng lại đưa thêm **một dòng Có màu** cho cả
-route, theo `P12` trong `styles.md`.
+route, theo `P12` (trang lướt để chọn) hay Sắc Tinted của `P17` (dashboard) trong `styles.md`.
 
 - **Chỉ khi cả ba đúng**: trang người dùng cuối lướt để chọn (tìm việc, tìm phòng, sản phẩm,
-  khoá học, bài viết) theo công thức A của `P12`, **hoặc dashboard** theo công thức B (ô icon
-  màu nhạt ở card số liệu, biểu đồ nhiều sắc); dự án đang phẳng (`P4` ra flat); route chưa có
+  khoá học, bài viết) theo công thức A của `P12`, **hoặc dashboard** theo Sắc Tinted của `P17`
+  (ô icon theo loại, badge có chấm, biểu đồ theo `--cat-*`; Vivid chỉ khi người dùng xin); dự án đang phẳng (`P4` ra flat); route chưa có
   dòng nào ở trên đã đổi màu. Form, cài đặt, bảng quản lý thuần thì không có dòng này.
 - **Không chọn sẵn.** Đổi độ đậm màu cả trang là việc của người dùng quyết, khác dòng Gọn.
-- Cột Sửa liệt kê đúng các chỗ của công thức `P12` áp vào trang này (A: dải đầu trang, chân
-  trang, mục nổi bật, chữ, điểm nhỏ; B: ô icon, ô đầu dòng, biểu đồ, trạng thái, sidebar). Chỗ nào không áp được thì ghi vì sao, ví dụ *"mục nổi bật: dữ liệu chưa
+- Cột Sửa liệt kê đúng các chỗ áp vào trang này (`P12` công thức A: dải đầu trang, chân
+  trang, mục nổi bật, chữ, điểm nhỏ; Tinted của `P17`: các dòng trong bảng Tinted). Chỗ nào không áp được thì ghi vì sao, ví dụ *"mục nổi bật: dữ liệu chưa
   có trường gấp / hot, bỏ"*. Không thêm field, không bịa nhãn (bảng ba chế độ, "Logic, handler,
   dữ liệu, câu chữ").
 - **Bắt buộc ảnh trước / sau** như dòng Gọn (`V5`), chụp cả màn ở 1440 để thấy dải.

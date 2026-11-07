@@ -4,7 +4,7 @@
 //
 //   node probe.mjs <url> [--widths 375,768,1024,1280,1440,1920] [--out <thư mục>] [--dark] [--wait 800] [--dpr 1]
 //                        [--sweep [1440,375,20]] [--wireframe <link phương án đã chọn>] [--quick]
-//                        [--dynamic-widths 1280,375|none] [--mobile]
+//                        [--dynamic-widths 1280,375|none] [--mobile] [--stress]
 //
 // --mobile: bản mẫu app điện thoại theo layouts/mobile-app.html (luật J, references/mobile.md). Ngoài các khổ của
 // --widths, mở TỪNG MÀN (mỗi [data-screen] và mỗi hash dẫn tới sheet như #add) ở 390×844 giả lập chạm và ở khung
@@ -26,6 +26,11 @@
 // --wireframe: so bản dựng với wireframe đã chọn (design-process.md, U4) ở 1440 và 375: khoảng nào cao thấp khác,
 // chữ nào đổi hay thiếu, cỡ chữ, độ đậm nào khác; link có mau=mau thì so cả màu chữ, màu icon, nền. Ghi vào danh sách P.
 //
+// --stress: bơm dữ liệu khó vào trang trước khi đo (SKILL.md, S8): tên, tiêu đề trong ô bảng, dòng danh sách,
+// tiêu đề card dài ra ~60 ký tự; số tiền, số đếm thành số chín, mười chữ số cùng kiểu phân cách. Chỉ đo trang
+// đứng yên (như --quick), mặc định hai khổ 375 và 1280, ảnh đuôi "-stress". Lỗi báo ra là chỗ vỡ khi gặp dữ
+// liệu thật: chữ tràn, cột nở, nút xuống dòng, số bị cắt.
+//
 // --sweep: đo xong các khổ cố định thì kéo bề rộng từ 1440 xuống 375, mỗi bước 20px, chụp từng bước và
 // báo khoảng bề rộng có lỗi (cuộn ngang, khung giấu chữ, chữ trong nút xuống dòng, hàng rớt dòng, chữ cắt
 // nuốt mất số hay còn quá ngắn). Bắt
@@ -43,6 +48,7 @@ import { fileURLToPath } from "node:url";
 
 const defaultWidths = [375, 768, 1024, 1280, 1440, 1920];
 const defaultSweep = [1440, 375, 20];
+const stressWidths = [375, 1280];
 const mobileWidthLimit = 640;
 // Sàn cỡ bấm của skill: nút h-8 trong bảng dày là nhỏ nhất được phép (list-row.md).
 const minTapSize = 32;
@@ -52,7 +58,7 @@ const maxTabStops = 160;
 const maxFocusChecksPerKind = 2;
 
 function parseArgs(argv) {
-  const options = { url: "", widths: defaultWidths, out: "", isDark: false, waitMs: 800, dpr: 1, playwrightDir: "", sweep: null, wireframeUrl: "", isQuick: false, dynamicWidths: null, isMobileApp: false };
+  const options = { url: "", widths: defaultWidths, out: "", isDark: false, waitMs: 800, dpr: 1, playwrightDir: "", sweep: null, wireframeUrl: "", isQuick: false, isStress: false, dynamicWidths: null, isMobileApp: false };
   const rest = [...argv];
 
   while (rest.length > 0) {
@@ -71,6 +77,7 @@ function parseArgs(argv) {
     else if (arg === "--wireframe") options.wireframeUrl = rest.shift();
     else if (arg === "--quick") options.isQuick = true;
     else if (arg === "--mobile") options.isMobileApp = true;
+    else if (arg === "--stress") options.isStress = true;
     else if (arg === "--dynamic-widths") {
       const value = rest.shift() ?? "";
       options.dynamicWidths = new Set(value === "none" ? [] : value.split(",").map(Number));
@@ -87,7 +94,8 @@ function parseArgs(argv) {
   }
 
   if (!options.out) options.out = join(tmpdir(), `evon-probe-${Date.now()}`);
-  if (options.isQuick) options.dynamicWidths = new Set();
+  if (options.isStress && !argv.includes("--widths")) options.widths = stressWidths;
+  if (options.isQuick || options.isStress) options.dynamicWidths = new Set();
   if (!options.dynamicWidths) options.dynamicWidths = pickDefaultDynamicWidths(options.widths);
 
   return options;
@@ -139,6 +147,66 @@ function stampTransitions() {
     const style = getComputedStyle(element);
     if (parseFloat(style.transitionDuration) > 0) element.dataset.evonTransition = style.transitionProperty;
   }
+}
+
+// Bơm dữ liệu khó (--stress). Chỉ đụng phần tử lá chứa dữ liệu (ô bảng, dòng danh sách, tiêu đề, đoạn ngắn),
+// bỏ qua nút, nav, nhãn, tiêu đề cột, ô nhập, badge dạng viên thuốc: nhãn trạng thái là chữ cố định, không dài ra
+// theo dữ liệu. Ngày, giờ, phần trăm giữ nguyên. Trả về số chỗ đã bơm.
+function applyStressData() {
+  const maxStressedCount = 300;
+  const longNameTail = " Nguyễn Hoàng Bảo Ngọc Phương";
+  const skipSelector = "button, [role=button], nav, label, th, thead, input, select, textarea, option, [role=tab], [role=menuitem], [role=option], [role=switch], [aria-hidden=true], svg, code, pre, script, style, [inert], [data-demo-state]";
+  const numberPattern = /^([^\d%]{0,4}?)\s?(\d{1,3}(?:([.,])\d{3})+|\d+)(\s?[^\d\s%/:.,-]{0,6})$/;
+  const isVietnamese = (document.documentElement.lang || "vi").toLowerCase().startsWith("vi");
+  const isPill = (element) => {
+    for (let node = element, depth = 0; node && depth < 3; node = node.parentElement, depth++) {
+      const style = getComputedStyle(node);
+      const hasFill = style.backgroundColor !== "rgba(0, 0, 0, 0)" && style.backgroundColor !== "transparent";
+      if (hasFill && parseFloat(style.borderRadius) >= node.getBoundingClientRect().height / 2 - 1) return true;
+    }
+    return false;
+  };
+  // Tiền (có phân cách nghìn hay ký hiệu tiền) thành hàng tỷ; số đếm trơn ("3 đơn") thành năm chữ số.
+  const moneyPattern = /[₫$€£¥]|(^|\s)(đ|vnd|usd|tr|k)(\s|$)/i;
+  const formatBigNumber = (separator, isMoney) => {
+    const groupSeparator = separator || (isVietnamese ? "." : ",");
+    return (isMoney ? "1284500000" : "12480").replace(/\B(?=(\d{3})+(?!\d))/g, groupSeparator);
+  };
+  let stressedCount = 0;
+
+  for (const element of document.body.querySelectorAll("td, li, dd, h1, h2, h3, h4, h5, h6, p, span, div, a, strong")) {
+    if (stressedCount >= maxStressedCount) break;
+    if (element.children.length > 0 || element.closest(skipSelector)) continue;
+
+    const text = (element.textContent || "").trim();
+    const rect = element.getBoundingClientRect();
+    if (!text || text.length > 60 || rect.width === 0 || rect.height === 0 || isPill(element)) continue;
+
+    const numberMatch = text.match(numberPattern);
+    if (numberMatch) {
+      const [, prefix, , separator, suffix] = numberMatch;
+      const isMoney = Boolean(separator) || moneyPattern.test(`${prefix}${suffix}`);
+      element.textContent = `${prefix}${prefix ? " " : ""}${formatBigNumber(separator, isMoney)}${suffix}`.replace(/^ /, "");
+      element.dataset.evonStress = "number";
+      stressedCount++;
+      continue;
+    }
+
+    const wordCount = text.split(/\s+/).length;
+    const hasLetters = /\p{L}{2,}/u.test(text);
+    // Chữ trong card chỉ bơm tiêu đề (thẻ h, class title/name): "Doanh thu" trên ô số liệu là nhãn cố định.
+    const isDataCell = Boolean(element.closest("td, li, dd"));
+    const isInCard = Boolean(element.closest("article, [class*=card], [class*=row], [class*=item]"));
+    const isCardTitle = isInCard && (/^H[2-6]$/.test(element.tagName) || /title|name/i.test(String(element.className)));
+    if (!hasLetters || wordCount > 8 || text.length < 3) continue;
+    if (!isDataCell && !isCardTitle && !/truncate|line-clamp/.test(String(element.className))) continue;
+
+    element.textContent = `${text}${longNameTail}`;
+    element.dataset.evonStress = "text";
+    stressedCount++;
+  }
+
+  return stressedCount;
 }
 
 function measureInPage({ minTapSize, isMobile, isSweep = false }) {
@@ -3511,13 +3579,14 @@ async function probeWidth(browser, options, width) {
   await page.evaluate(stampTransitions);
   await page.addStyleTag({ content: freezeMotionCss });
   if (options.isDark) await page.evaluate(() => document.documentElement.classList.add("dark"));
+  const stressedCount = options.isStress ? await page.evaluate(applyStressData) : 0;
   await page.waitForTimeout(150);
 
   // Đo trước khi chụp: chụp fullPage ở khổ mobile làm trang mất `(pointer: coarse)`, nút
   // `pointer-coarse:size-10` co về 28px và bị báo nhầm là chỗ bấm nhỏ (đã dính 26/09/2026).
   const measurements = await page.evaluate(measureInPage, { minTapSize, isMobile });
 
-  const screenshotPath = join(options.out, `${width}${options.isDark ? "-dark" : ""}.png`);
+  const screenshotPath = join(options.out, `${width}${options.isDark ? "-dark" : ""}${options.isStress ? "-stress" : ""}.png`);
   await takeFullScreenshot(page, screenshotPath);
   // Đo dark mode ngay sau khi chụp, lúc trang còn đúng như ảnh: các bước rê, bấm, mở lớp nổi bên dưới
   // có thể đổi trang (đã dính 01/10/2026: tới lượt đo thì biểu đồ tổng quan còn 2/10 khối màu nhấn).
@@ -3543,6 +3612,7 @@ async function probeWidth(browser, options, width) {
   for (const line of popupLayers.sunkenSelections) darkModeProblemSet.add(line);
   const darkModeProblems = [...darkModeProblemSet];
   const heavyDecorativeBorders = options.isDark ? [] : await page.evaluate(findHeavyDecorativeBorders);
+  const heavyCardDividers = options.isDark ? [] : await page.evaluate(findHeavyCardDividers);
   const scrollbarStyles = await page.evaluate(findScrollbarStyles);
   const heavyNavLinks = await page.evaluate(findHeavyNavLinks);
   const staticHoverBlocks = isMobile ? [] : await page.evaluate(findStaticHoverBlocks);
@@ -3561,6 +3631,7 @@ async function probeWidth(browser, options, width) {
   return {
     width,
     isDynamic,
+    stressedCount,
     screenshotPath,
     consoleErrors: [...new Set(consoleErrors)],
     ...allMeasurements,
@@ -3587,6 +3658,7 @@ async function probeWidth(browser, options, width) {
     scrollyLayers: popupLayers.scrollyLayers,
     lostTriggerIcons: popupLayers.lostTriggerIcons,
     heavyDecorativeBorders,
+    heavyCardDividers,
     scrollbarStyles,
     heavyNavLinks,
     staticHoverBlocks,
@@ -3642,6 +3714,79 @@ function findHeavyDecorativeBorders() {
     if (contrast === null || contrast < 1.21 || findings.has(style.borderTopColor)) continue;
     const label = `${element.tagName.toLowerCase()}.${String(element.className).trim().split(/\s+/).slice(0, 4).join(".")}`;
     findings.set(style.borderTopColor, `${style.borderTopColor} (~${contrast.toFixed(2)}:1 trên trắng): ${label} "${(element.textContent || "").trim().replace(/\s+/g, " ").slice(0, 30)}"`);
+  }
+
+  return [...findings.values()];
+}
+
+// Đường chia LẶP LẠI trong card đậm hơn `--border` (M14): `divide-y divide-border-strong`, vạch giữa các ô số
+// xếp cột. Chỉ tính card trắng đặt trên nền khác (khung `unified` của Paper cả màn trắng thì kẻ `--border-strong`
+// là đúng) và chỉ khi ≥ 2 anh em cùng kẻ một màu, nên vạch đứng riêng chia hai phần card (pricing, "hoặc" ở form,
+// ngoại lệ có tên) không bị báo. Đã dính 07/11/2026, trang tổng kết Soft + Vivid: chủ dự án chê "viền xám hơi đậm".
+function findHeavyCardDividers() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1;
+  canvas.height = 1;
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  const readColor = (cssColor) => {
+    context.clearRect(0, 0, 1, 1);
+    context.fillStyle = "rgba(0,0,0,0)";
+    context.fillStyle = cssColor;
+    context.fillRect(0, 0, 1, 1);
+    const [red, green, blue, alpha] = context.getImageData(0, 0, 1, 1).data;
+
+    return { red, green, blue, alpha };
+  };
+  // Tương phản trên trắng; viền có sắc là viền mang nghĩa, bỏ qua.
+  const toContrastOnWhite = (cssColor) => {
+    const { red, green, blue, alpha } = readColor(cssColor);
+    if (alpha === 0 || Math.max(red, green, blue) - Math.min(red, green, blue) > 24) return null;
+    const opacity = alpha / 255;
+    const toLinear = (channel) => {
+      const value = (channel * opacity + 255 * (1 - opacity)) / 255;
+
+      return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+    };
+
+    return 1.05 / (0.2126 * toLinear(red) + 0.7152 * toLinear(green) + 0.0722 * toLinear(blue) + 0.05);
+  };
+  const isOpaque = (cssColor) => readColor(cssColor).alpha >= 240;
+  const findBackdrop = (element) => {
+    for (let node = element; node && node !== document.documentElement; node = node.parentElement) {
+      const background = getComputedStyle(node).backgroundColor;
+      if (isOpaque(background)) return { node, background };
+    }
+
+    return { node: document.documentElement, background: getComputedStyle(document.documentElement).backgroundColor };
+  };
+  const sides = ["Top", "Right", "Bottom", "Left"];
+  const findings = new Map();
+  for (const parent of document.querySelectorAll("body *")) {
+    if (findings.size >= 4) break;
+    if (parent.closest("[data-demo-state], [role='menu'], [role='listbox'], [popover], dialog")) continue;
+    const children = [...parent.children].filter((child) => child.getClientRects().length > 0 && !child.matches("input, textarea, select, button, a, [role='button']"));
+    if (children.length < 2) continue;
+    const lineColors = new Map();
+    for (const child of children) {
+      const style = getComputedStyle(child);
+      const drawnSides = sides.filter((side) => style[`border${side}Style`] === "solid" && parseFloat(style[`border${side}Width`]) > 0);
+      // Khung đủ bốn cạnh là card con, đã có phép đo viền trang trí riêng.
+      if (drawnSides.length === 0 || drawnSides.length === 4) continue;
+      const color = style[`border${drawnSides[0]}Color`];
+      lineColors.set(color, (lineColors.get(color) || 0) + 1);
+    }
+    for (const [color, count] of lineColors) {
+      if (count < 2) continue;
+      const contrast = toContrastOnWhite(color);
+      if (contrast === null || contrast < 1.15) continue;
+      const card = findBackdrop(parent);
+      if (toContrastOnWhite(card.background) === null || toContrastOnWhite(card.background) > 1.02) continue;
+      const outside = findBackdrop(card.node.parentElement || document.documentElement);
+      if (readColor(outside.background).red === readColor(card.background).red && readColor(outside.background).blue === readColor(card.background).blue) continue;
+      const key = `${color}|${parent.tagName}`;
+      if (findings.has(key)) continue;
+      findings.set(key, `${color} (~${contrast.toFixed(2)}:1 trên trắng), ${count} vạch: ${parent.tagName.toLowerCase()}.${String(parent.className).trim().split(/\s+/).slice(0, 4).join(".")} "${(parent.textContent || "").trim().replace(/\s+/g, " ").slice(0, 30)}"`);
+    }
   }
 
   return [...findings.values()];
@@ -4555,6 +4700,10 @@ function formatReport(results) {
       problems.push(`VIỀN TRANG TRÍ ĐẬM (${result.heavyDecorativeBorders.length} màu, card và khung nhạt hơn #e4e4e7, bậc xám nhạt nhất của dự án, M14):`);
       for (const item of result.heavyDecorativeBorders) problems.push(`  ${item}`);
     }
+    if (result.heavyCardDividers?.length > 0) {
+      problems.push(`ĐƯỜNG CHIA TRONG CARD ĐẬM (${result.heavyCardDividers.length} chỗ, đường chia lặp lại trong card là --border, không --border-strong, M14):`);
+      for (const item of result.heavyCardDividers) problems.push(`  ${item}`);
+    }
     if (result.scrollbarStyles?.length > 0) {
       problems.push(`THANH CUỘN KHÁC MẪU (${result.scrollbarStyles.length} luật, dùng khối scrollbar của tokens.css: 4px, ẩn tới khi rê hay cuộn):`);
       for (const item of result.scrollbarStyles) problems.push(`  ${item}`);
@@ -5116,6 +5265,11 @@ async function main() {
   }
 
   writeFileSync(join(options.out, "report.json"), JSON.stringify({ widths: results, sweep: sweepSteps, wireframe: wireframeComparisons, mobile: mobileScreens }, null, 2));
+  if (options.isStress) {
+    const counts = results.map((result) => `${result.width}px: ${result.stressedCount}`).join(", ");
+    console.log(`Dữ liệu khó: đã bơm tên dài, số lớn vào ${counts} chỗ. Lỗi bên dưới là chỗ vỡ khi gặp dữ liệu thật; sửa bằng cắt chữ có tooltip, xuống dòng, min-w-0, tabular-nums (T13, T14, T16), không bằng bớt dữ liệu mẫu.`);
+    if (results.every((result) => result.stressedCount === 0)) console.log("Không tìm thấy chỗ nào để bơm (trang không có ô bảng, dòng danh sách, card): --stress không có gì để đo ở trang này.");
+  }
   console.log(formatDynamicCoverage(results, options));
   console.log(formatReport(results));
   if (sweepSteps.length > 0) console.log(formatSweepReport(sweepSteps, options.sweep.step));
