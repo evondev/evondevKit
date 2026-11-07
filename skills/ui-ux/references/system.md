@@ -239,6 +239,9 @@ lúc còn ở wireframe, `U3`):
 - Người dùng dặn một điều cho cả app ("nút bo tròn hết", "đừng dùng màu tím", "bảng luôn dày"):
   ghi vào mục Người dùng dặn, kể cả khi điều đó đè luật skill.
 - Màn mới dựng xong: thêm một dòng vào mục Màn đã dựng.
+- Luồng nhiều màn dựng xong: ghi sơ đồ luồng màn (`flows.md`, `O7`) vào mục Luồng, gồm dòng
+  đường chính và bảng. Mục này không tính vào giới hạn ~40 dòng: người phát triển đọc nó khi
+  nối logic.
 
 Sửa tại chỗ, không chép thêm lịch sử: file là trạng thái hiện tại, lịch sử đã có git. Lúc giao
 nói một dòng *"Đã ghi vào `DESIGN.md`: …"*.
@@ -270,6 +273,13 @@ Skill evon:ui-ux đọc file này trước khi dựng. Sửa tay được; file 
 ## Màn đã dựng
 - `/` Trang đầu người học: phương án B, card Học tiếp đứng đầu
 - `/courses` Danh sách khoá: phương án A, lọc dính đầu trang
+
+## Luồng
+Onboarding: Đăng ký → Chọn ngành → Bài đầu tiên → Kết quả bài. 3 màn, 2 ô.
+| # | Từ màn | Người dùng làm gì | Tới | Loại |
+| --- | --- | --- | --- | --- |
+| 1 | Đăng ký `/signup` | Bấm "Tạo tài khoản" | Chọn ngành `/onboarding` | Chính |
+| 2 | Chọn ngành `/onboarding` | Bấm "Bỏ qua" | Bài đầu tiên, ngành chung | Bỏ qua |
 ```
 
 **Không ghi:** tên sản phẩm đã tra để tham khảo, số liệu giả, lý do dài, luật skill đã có

@@ -69,9 +69,10 @@ Mỗi màn trong phạm vi một dòng:
   ghi *"theo trí nhớ, cần kiểm"*. Quy ước số đông thắng gu riêng.
 - Điểm khác biệt ở `U1` phải **hiện trên màn chính**, không chỉ nằm trong bộ lọc.
 - **Sản phẩm mới, hoặc các màn trong phạm vi nằm trên cùng một luồng**: thêm một dòng **Luồng**
-  dưới bảng: các bước tới việc chính đầu tiên, số màn, số ô phải điền (`flows.md`, `O2`). `U3`
-  vẽ cả màn lần đầu chưa có dữ liệu (`O1`), `U4` dựng thêm trạng thái vừa xong của hành động
-  chính (`O3`).
+  dưới bảng: các bước tới việc chính đầu tiên, số màn, số ô phải điền (`flows.md`, `O2`), rồi
+  bản nháp **sơ đồ luồng màn** (`O7`): mỗi dòng một lần chuyển màn, gồm cả nhánh Bỏ qua, Lỗi,
+  Lần sau. `U3` vẽ cả màn lần đầu chưa có dữ liệu (`O1`), `U4` dựng thêm trạng thái vừa xong
+  của hành động chính (`O3`).
 
 Gửi `U1` và `U2` trong **một** tin, kết bằng *"Đúng thì trả lời `ok`, sai dòng nào thì sửa
 dòng đó."* Dừng chờ.
@@ -772,6 +773,9 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
   `ProductBrand` với dấu đã chọn ở nhóm Logo, kèm favicon từ cùng dấu (`components/logo.md`).
 - **Ghi `DESIGN.md`** (`system.md`, `D10`) khi dựng xong: brief của `U1`, bộ mặt, màu nhấn,
   phương án đã chọn của màn này. Có file rồi thì sửa tại chỗ, thêm dòng Màn đã dựng.
+- **Các màn nằm trên một luồng:** sửa sơ đồ luồng màn `O7` (`flows.md`) theo bản đã dựng (nhãn
+  nút, route thật), chạy phép thử của `O7`, rồi giao sơ đồ kèm mục **Cần bạn nối** ghi số
+  dòng. Ghi sơ đồ vào `DESIGN.md` mục Luồng.
 - **Đề nhiều hơn một màn:** chốt hợp đồng nguyên tố `D1` (`system.md`) ở đây, trước khi dựng
   màn đầu tiên. Wireframe đã chọn nói khung, bảng `D1` nói control nào dùng kiểu nào cho cả bộ.
 - Ráp bằng mẫu của skill (`SKILL.md` mục 2). Chạy probe `--sweep --wireframe "<link phương án

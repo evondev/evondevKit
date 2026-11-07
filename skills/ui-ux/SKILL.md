@@ -70,11 +70,12 @@ Lần đầu gọi skill trong một phiên, chạy `node <thư mục skill này
 các bước, và về người phải duyệt.
 
 Đọc đề theo thứ tự bảng, gặp dòng đầu tiên khớp thì dừng. Chủ dự án chốt: **dòng
-cuối là mặc định**, mười một dòng trên chỉ khi đề nói rõ (tiếng Việt hay tiếng Anh).
+cuối là mặc định**, mười hai dòng trên chỉ khi đề nói rõ (tiếng Việt hay tiếng Anh).
 
 | Đề nói | Đi đâu |
 | --- | --- |
 | **So bản mới với bản gốc** ("so với bản gốc", "so với trang gốc", "có gì hơn", "hơn hay thua", "đã ổn chưa so với…", "compare with the original", "is it better than before") | `references/review.md`, `V6`: chụp hai bản như nhau, bảng tiêu chí gốc / mới / bên hơn, phải tìm dòng thua, đề xuất sửa từng dòng thua. Không sửa tới khi người dùng chọn dòng. **Dừng mục 0 tại đây** ⚑ |
+| **Dựng một luồng qua nhiều màn** ("dựng luồng onboarding", "dựng luồng đăng ký", "làm onboarding", "build the onboarding flow", "design the signup flow") | Nhánh `U` (`design-process.md`), phạm vi là các màn của luồng. Onboarding có hai loại (`flows.md`, đầu file): hướng dẫn trong app, hay chuỗi màn vào lần đầu (xin quyền, hỏi tên, sở thích, `O8`). Đề không nói loại nào thì `U1` chọn theo nền tảng, ghi trong brief. `U2` kèm bản nháp **sơ đồ luồng màn** (`flows.md`, `O7`): màn nào, nút nào, dẫn tới đâu. Lúc giao có sơ đồ và mục Cần bạn nối. Đề có "luôn" thì không vẽ wireframe như dòng Dựng luôn. **Dừng mục 0 tại đây**, trừ audit câu 2 ⚑ |
 | **Soi một luồng qua nhiều màn** ("soi luồng", "luồng onboarding", "luồng đăng ký", "người mới vào có bị lạc không", "check the onboarding flow", "walk through the signup flow") | `references/flows.md`, lối soi luồng: đi từng bước, đếm bước tới việc chính, bảng mỗi dòng một chỗ lạc giữa các màn. Soi thì không hỏi, sửa thì hỏi như nhánh `V`. **Dừng mục 0 tại đây** ⚑ |
 | **Muốn biết UI đang có chỗ nào chưa ổn** ("xem giúp", "review", "chỗ nào chưa ổn", "nhìn rối", "check this UI", "what's wrong with", gửi ảnh hay link app của họ nhờ xem) | Mở `references/review.md`, nhánh `V` **chế độ soi**: lập bảng trước/sau, người dùng chọn dòng rồi mới sửa. **Dừng mục 0 tại đây**, lúc giao theo `V5` chứ không theo `S15` ⚑ |
 | **Hỏi sản phẩm nên thiết kế ra sao, chưa muốn dựng** ("phân tích sản phẩm", "nên thiết kế ra sao", "hướng thiết kế", "gợi ý màu, trải nghiệm cho ngành…", "analyze my product", "what design direction") | `references/design-process.md`, `U6`: **một tin báo cáo** gồm brief, màn chính, quy ước của loại sản phẩm (tra thật), màu nhấn theo ngành, bộ mặt khuyên dùng. Không wireframe, không đụng file dự án, không hỏi. **Dừng mục 0 tại đây**, trừ audit câu 2 khi đã có code ⚑ |

@@ -143,6 +143,10 @@ dòng "1 / 5 bước".
 - **Mỗi bước là một mục accordion, chỉ bước tiếp theo mở sẵn.** Nút tiêu đề rộng hết hàng
   theo `../components/accordion.md`: vòng, tên `text-sm font-medium`, `ChevronDown` bên phải,
   dòng `px-4 py-3 sm:px-5` (cao 44px, vừa vùng bấm ở màn cảm ứng), vòng thẳng tâm dòng tên.
+  **Không nền hover** ⚑: nút `ghost` thì thêm `hover:bg-transparent`, rê vào chỉ chevron đậm lên
+  (`accordion.md`, Hover và focus). Nền xám chỉ phủ hàng tiêu đề, dừng ngay trên câu mô tả, nên câu
+  trông như dính vào mép dưới của mảng xám (chủ dự án, 07/11/2026). Câu không có `mt` vì nó phải
+  bám vào tên bước, nên đừng sửa bằng cách thêm khoảng cách: bỏ nền hover.
   Bước tiếp theo = bước chưa xong đầu tiên làm được ngay. Mở ra: phần thân `pb-4`, thụt trái bằng
   `px` của dòng + vòng 20px + `gap-3`; một câu vì sao `text-sm text-muted` **không `mt`**, rồi nút
   `mt-4` **dưới câu, thẳng mép trái với tên**, ở mọi bề rộng (không đẩy sang phải rồi xếp lại ở màn
@@ -161,12 +165,20 @@ dòng "1 / 5 bước".
   dùng tự tick; bước ở đây app tự đánh dấu), đóng sẵn, vẫn mở ra được.
 - **Ẩn**: bấm `X` là ẩn luôn, không hộp xác nhận; toast "Đã ẩn các bước bắt đầu" có "Hoàn tác"
   (`../system.md`, xoá khôi phục được).
+- **Đã làm được việc chính, chỉ còn bước tuỳ chọn** ⚑: khung **thu về một hàng** (tên, "3 / 4
+  bước", chevron mở lại, `X`) và **xuống dưới khối việc chính** của tổng quan (khối Học tiếp, việc
+  hôm nay). Còn bước bắt buộc trước việc chính thì khung mới đứng trên. Đừng giữ khung mở to ở đầu
+  trang: ba dòng đã xong với ba vòng đặc, một bước tuỳ chọn mở sẵn, đẩy nút việc chính xuống nửa
+  dưới màn. Đó là thứ nặng nhất màn mà không phải việc người dùng đến để làm (chủ dự án, 07/11/2026:
+  bản dựng thử app học, khung 3/4 đè hàng Học tiếp). Khung hướng dẫn đã qua mốc dùng được thì
+  vẫn tìm thấy, nhưng không chiếm mỗi lần vào app.
 - **Xong hết**: thanh xanh lá, danh sách bước **thu hết**, khung còn hàng đầu và một câu "Xong hết
   các bước. Workspace đã sẵn sàng cho cả nhóm." cùng nút `X`. Đừng in lại năm dòng đã xong: năm vòng
   đen xếp cột thành thứ nặng nhất màn mà không còn việc gì để làm. Cách này là
   lựa chọn của skill, các bộ thiết kế lớn chưa chốt ca xong hết.
 - **Trạng thái cần có ở trang `/states`**: vừa vào (xong một bước), làm không theo thứ tự, bước khoá
-  đã mở khoá, xong hết, và đã ẩn (tổng quan không còn khung).
+  đã mở khoá, chỉ còn bước tuỳ chọn (khung một hàng dưới việc chính), xong hết, và đã ẩn (tổng quan
+  không còn khung).
 
 ---
 
