@@ -524,6 +524,10 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
 
     for (const siblings of [...groups.values()].flatMap(splitByStructure)) {
       if (siblings.length < 3) continue;
+      // Cao ngoài đã bằng nhau thì không lệch: dòng `min-h-*` trong `divide-y` cao đúng min-h kể cả viền, trừ viền ra
+      // thì dòng có viền thấp hơn dòng cuối 1px, báo nhầm (ba lượt dựng app điện thoại 07/11/2026).
+      const outerHeights = siblings.map((sibling) => sibling.getBoundingClientRect().height);
+      if (Math.max(...outerHeights) - Math.min(...outerHeights) < 0.5) continue;
 
       const innerHeights = siblings.map((sibling) => {
         const style = getComputedStyle(sibling);
@@ -3372,7 +3376,8 @@ function measureMobileScreen({ isFrame, minTap }) {
       if (!isShown(control) || control.closest(".scroll")) return false;
       const rect = control.getBoundingClientRect();
 
-      return rect.width >= deviceRect.width * 0.8 && rect.height >= 48 && deviceRect.bottom - rect.bottom < 140;
+      // Thẻ xem trước nổi trên bản đồ (có ảnh, cao hơn 72) là để lướt, không phải nút làm cho xong việc: không tính.
+      return rect.width >= deviceRect.width * 0.8 && rect.height >= 48 && rect.height <= 72 && !control.querySelector("img") && deviceRect.bottom - rect.bottom < 140;
     }) : null;
     if (stickyAction) problems.push(`màn con "${screenName}" có nút dính đáy ${describe(stickyAction)} mà vẫn hiện thanh tab: form, giỏ hàng, thanh toán ẩn thanh tab (J2, J5)`);
   }
