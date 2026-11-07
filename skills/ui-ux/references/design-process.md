@@ -286,6 +286,11 @@ dòng đó."* Dừng chờ.
   `toi`, `noi`; Glass chỉ khi phía sau có ảnh hay gradient, `F19`), mặc định Flat (`P1`). Không có
   nhóm này thì người dùng chỉ thấy bố cục xám rồi bản dựng flat, muốn xem bản tối hay bản nổi
   phải nhắn vẽ lại cả trang; có nhóm mà mặc định luôn Clean thì dự án nào cũng ra cùng một mặt.
+  - **App điện thoại có thêm nhóm Tab** (`?tab=`) ⚑, đứng sau Kiểu: sáu kiểu thanh tab của `J2` (`float`, `center`, `pill`,
+    `dark`, `bubbles`, `glass`), vẽ theo `layouts/mobile-tabbars.html`, mặc định `float`. Chỉ liệt kê kiểu hợp ràng buộc
+    của `J2`: `center` khi luồng có một hành động hằng ngày và thanh có 4 mục; `dark`, `bubbles` khi tối đa 4 mục; `glass`
+    khi Kiểu là Immersive hay màn có ảnh, nền tối phía sau. Cùng mục, cùng icon ở mọi kiểu; người dùng chọn kiểu nào thì `U4`
+    dựng đúng kiểu đó. Thiếu nhóm này thì app nào cũng ra một thanh viên nổi, người dùng không biết còn cách khác.
   - **Kiểu chỉ đổi bộ mặt, không đổi bố cục** ⚑: cùng khối, cùng dữ liệu, cùng chỗ đặt. Bố cục
     là việc của Phương án. Kiểu Tối mà thêm hàng KPI, biểu đồ thì người xem không biết mình
     đang chọn bố cục hay chọn màu, chọn xong `U4` không biết dựng theo cái nào.
@@ -364,7 +369,7 @@ dòng đó."* Dừng chờ.
   56px, nền trắng, viền dưới xám nhạt, chữ 14px, **không dính đỉnh**: thanh dính đè lên sidebar,
   header, panel `sticky top-0` của chính bản thiết kế, người xem thấy sidebar mất logo khi cuộn và
   tưởng bản dựng sẽ vậy. Các nhóm xếp liền từ trái, cách nhau
-  24px, theo thứ tự: Màn (đề nhiều màn) · **Phương án** · **Gọn chữ · Bỏ lặp** · **Màu** (công tắc) · Kiểu (dự án chưa có phong cách) · Nhấn (dự án chưa có brand) · Logo (dự án chưa có logo) · Khổ · Nav (mobile, ít mục)
+  24px, theo thứ tự: Màn (đề nhiều màn) · **Phương án** · **Gọn chữ · Bỏ lặp** · **Màu** (công tắc) · Kiểu (dự án chưa có phong cách) · Tab (app điện thoại) · Nhấn (dự án chưa có brand) · Logo (dự án chưa có logo) · Khổ · Nav (mobile, ít mục)
   · **Trạng thái**.
   - **Đề nhiều màn** (lịch và hồ sơ, danh sách và chi tiết) thì một file, nhóm **Màn** đứng đầu
     (`?man=`), nhãn một hai chữ ("Lịch", "Hồ sơ"); mỗi màn có A, B, C riêng. **Ở 1280 thanh phải

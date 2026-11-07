@@ -82,7 +82,22 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
 - **Thanh tab nổi**: cao 64px, cách hai mép và thanh home 16px / 8px, `rounded-full`, nền `bg-surface/90`
   `backdrop-blur-xl`, viền 4% và bóng mềm. Kiểu thanh nổi là kiểu của iOS hiện hành và phần lớn ảnh mẫu.
 - **Thanh tab chỉ để đi lại.** Hành động (thêm, quét, đăng) không nằm trong thanh tab, kể cả nút "+" giữa
-  thanh hay gặp ở ảnh mẫu: dùng nút tròn đứng riêng cạnh thanh (`J5`).
+  thanh hay gặp ở ảnh mẫu: dùng nút tròn đứng riêng cạnh thanh (`J5`). Ngoại lệ duy nhất là kiểu Center dưới đây.
+- **Sáu kiểu thanh tab** ⚑, code chép từ `layouts/mobile-tabbars.html`. Mặc định Float; năm kiểu kia chọn trên wireframe
+  (nhóm Tab, `?tab=`) hay khi đề nêu ("thanh tab tối", "nút giữa"). Kiểu chỉ đổi hình thanh, không đổi mục, không đổi icon.
+
+  | Kiểu | Hình | Dùng khi | Ràng buộc |
+  | --- | --- | --- | --- |
+  | `float` | Viên nổi sáng, chữ dưới icon, nút + tròn đứng riêng | Mặc định, mọi app | Như các dòng trên |
+  | `center` | Nút hành động 56px nằm giữa thanh, nhô lên | App có **một** hành động làm hằng ngày: ghi khoản chi, quét món, chuyển tiền, đăng bài | Đúng 4 mục, hai trái hai phải; nút không mang `aria-current` |
+  | `pill` | Chỉ icon, mục đang chọn là viên màu nhấn có chữ | App nội dung, mua bán, du lịch muốn thanh gọn | 3–5 mục |
+  | `dark` | Thanh gần đen `#18181b` trên màn sáng, mục chọn là viên tròn trắng | Màn sáng hay nền màu cả app (kem, be), muốn thanh là điểm nhấn | Chỉ icon: tối đa 4 mục |
+  | `bubbles` | Mỗi mục một nút tròn rời 52px, mục chọn đặc màu nhấn, hành động tách ra mép phải | App học, app nội dung ít mục | Chỉ icon: tối đa 4 mục |
+  | `glass` | Thanh kính `bg-white/12 backdrop-blur-2xl`, chữ trắng | Phía sau là ảnh, nền tối, quầng màu (Immersive) | Không dùng trên nền sáng trơn (`F19`); đo tương phản chữ ở chỗ nền sau sáng nhất |
+
+  **Kiểu chỉ icon** (`pill` với mục chưa chọn, `dark`, `bubbles`) là ngoại lệ có tên của luật "mục nào cũng có chữ": icon
+  phải quen ai cũng đoán được (nhà, tìm, tim, người, lịch, biểu đồ, cài đặt), mỗi mục `aria-label`, mục đang chọn đổi
+  hình rõ (viên tròn, nền đặc), không chỉ đổi màu nét. Mục mà icon phải đoán (ví, phiếu, kho) thì dùng `float` hay `pill`.
 - **Nhãn mỗi mục có chỗ thở**: hai nhãn kề nhau cách từ 8px, nhãn đầu và cuối cách mép bo của thanh từ 8px.
   Thanh rộng 358px chứa vừa 5 nhãn hai chữ ("Tổng quan", "Nhân viên"); thanh thu lại cho nút tròn chỉ còn
   282px, 5 nhãn dính nhau thành một dải và nhãn đầu lấn vào chỗ bo.
@@ -258,6 +273,18 @@ Audit câu 2 thấy dự án là app điện thoại (`react-native` / `expo` tr
 
 - Khối chưa có tương ứng (dải ngày, thẻ số chính) thì dựng component riêng trong thư mục component của dự án,
   theo đúng số của bản HTML.
+- **Hiệu ứng nặng: chỉ vẽ cái code được, mượt trên máy tầm trung.** Kính mờ (`backdrop-filter`), làm mờ nền khi
+  chuyển động, bóng nhiều lớp, shader / WebGL chạy mượt trên trình duyệt máy dev nhưng sang native thì tốn: React
+  Native cần `expo-blur` (Android còn là tuỳ chọn thử nghiệm), Flutter `BackdropFilter` tốn GPU, shader phải qua
+  `react-native-skia` / `FragmentProgram`. Nên:
+  - Kính mờ chỉ ở **một lớp cố định** (thanh tab, thanh trên, sheet), không đặt trong dòng của danh sách cuộn, không
+    chồng hai lớp kính lên nhau.
+  - Luôn có **bản nền đặc** thay thế (như `bg-white/90` ở `styles.md`); Android, máy yếu, giảm chuyển động dùng bản
+    này.
+  - Shader, WebGL, 3D chạy thật không dùng trong bản mẫu app điện thoại. Đề muốn hiệu ứng kiểu đó thì làm ảnh tĩnh
+    hay Lottie / Rive ở chỗ của `J10`.
+  - Bộ màn có kính mờ thì lúc giao báo một câu: "Kính mờ ở thanh tab tốn pin, có thể giật trên Android đời cũ; đã để
+    sẵn bản nền đặc, giữ kính hay đổi nền đặc tuỳ bác."
 
 
 ## J10. Chuyển động ⚑
@@ -565,7 +592,7 @@ các kiểu lặp lại ở nhiều app, không chép mặt riêng của app nà
 | **Clean** | Trắng; màn danh sách nhóm nền xám, thẻ trắng (`J1`) | Nút chính, mục đang chọn, icon danh mục trong vòng nhạt (`J8`) | Inter | Bo 12–16, thẻ số chính nền tối (`J5`) | Người ghi chép, quản lý, theo dõi số mỗi ngày: chi tiêu, việc cần làm, kho, đặt lịch (`J14`). Code mẫu `mobile-app.html` |
 | **Mono** ⚑ | Trắng tinh, ngăn bằng đường kẻ, gần như không thẻ | Không có màu nhấn: nút chính đen bo tròn hết, màu duy nhất trên màn là ảnh và avatar người dùng đăng | Inter, tên người đậm 15, nội dung 15–16 | Nút viên thuốc đen hay viền, icon nét mảnh, dòng nội dung chạy hết bề ngang | Người đọc và đăng nội dung của người khác: mạng xã hội, cộng đồng, bình luận, nhắn tin nhóm |
 | **Photo** | Trắng, ảnh thật là chủ thể | **Chỉ nút chính** của luồng (Đặt, Mua, Lưu); việc phụ là nút đen hay viền | Inter, tên mục 15–16 đậm dưới ảnh | Ảnh bo 12–16 tỉ lệ 4:3 hay 1:1, chữ nằm dưới ảnh không bọc thẻ; lưới 2 cột so le khi lướt ý tưởng | Người lướt để chọn bằng mắt: đặt phòng, du lịch, bất động sản, món ăn, thời trang, nội thất, đường đi. Code mẫu `mobile-photo.html` |
-| **Playful** | Trắng, phản hồi tô cả dải đáy | Một màu thương hiệu bão hoà cho nút chính và thanh tiến độ; thêm tối đa hai màu **có nghĩa** (đúng, sai, chuỗi ngày) | Nunito 700–800, nút chữ đậm | Thẻ chọn viền 2px có viền đáy 4px (trông bấm được), bo 16; thanh tiến độ cao 12–16 bo tròn; nhân vật đổi nét mặt theo đúng sai (`J16`) | Người cần động lực quay lại mỗi ngày: học, thói quen, thể dục cho người dùng phổ thông, trẻ. Code mẫu `mobile-playful.html` |
+| **Playful** | Trắng, phản hồi tô cả dải đáy | Một màu thương hiệu bão hoà cho nút chính và thanh tiến độ; thêm tối đa hai màu **có nghĩa** (đúng, sai, chuỗi ngày) | Nunito 700–800, nút chữ đậm | Thẻ chọn viền 2px có viền đáy 4px (trông bấm được), bo 16; nút tròn, ô vuông, lục giác không gờ; đồ vật 3D ở bộ đếm, lộ trình, huy hiệu (`J16`); thanh tiến độ cao 12–16 bo tròn; nhân vật đổi cử chỉ theo đúng sai (`J16`) | Người cần động lực quay lại mỗi ngày: học, thói quen, thể dục cho người dùng phổ thông, trẻ. Code mẫu `mobile-playful.html` |
 | **Immersive** | Nền tối có sắc (xanh đêm, tím than) cả app, chuyển dọc nhẹ hai tông gần nhau | Nút chính trắng chữ tối, không màu nhấn rực | Inter, tiêu đề lớn trắng, chữ phụ trắng 72% | Ảnh lớn bo 12–16 làm điểm nhìn, thẻ là lớp trắng 8–10% trên nền | Người dùng để thư giãn, nghe, xem, thường buổi tối: thiền, ngủ, nhạc, podcast, sách nói, video. Code mẫu `mobile-immersive.html` |
 | **Editorial** ⚑ | Trắng hay kem ấm `#fbf8f3`, gần như không thẻ | Một sắc nhỏ cho link, nút theo dõi; nút chính đen hay màu đó | Tiêu đề bài và thân bài **Lora** (serif), thân 18/1.6; khung app (tab, nút, nhãn) vẫn Inter | Dòng bài: chữ trái, ảnh vuông 64 phải; trang đọc lề 20, không khung | Người **đọc** dài: bản tin, báo, sách, khoá học dạng đọc, công thức nấu ăn |
 
@@ -623,6 +650,13 @@ mỗi màn.
   `margin`: thẻ có `min-height` không thấp đi, phần bù dư ra, mọi thẻ bên dưới giật xuống mỗi lần nhấn. Gờ nằm ngoài
   khối nên vùng cuộn chừa đáy 8px, thẻ cuối không mất gờ. Thẻ đang chọn đổi nền nhạt, viền và gờ theo `--primary`.
   Không vòng focus (`I13`).
+- **Playful: gờ đáy chỉ cho khối nằm ngang** (nút rộng, thẻ chọn, dải tên cấp). Gờ cộng 4–6px vào chiều cao: nút tròn
+  thành quả trứng, ô vuông thành chữ nhật đứng, lục giác thành hình đứng, trông méo và thô. Nút tròn (mic, nút bài trên
+  lộ trình), ô vuông (ô hình trong sheet), huy hiệu lục giác giữ đúng hình: không gờ, nhấn thì `scale: 0.95`; cần nổi thì
+  viền 4px hay quầng nhạt `0 0 0 8px`, đều quanh hình. Lục giác đều: rộng = cao × 0.866 (`aspect-ratio: 0.866`, clip-path
+  chạm 0 và 100%, chỉ đặt chiều cao), viền là lục giác đậm bọc lục giác nhạt vì clip-path cắt mất `border`. Nút mic là
+  hình tròn 88px có quầng nhạt; đang nghe thì giãn thành viên dài có sóng âm, nút tròn cuối viên thành nút dừng. Không
+  làm mic thành khối chữ nhật bo góc. Code mẫu: màn luyện nói của `mobile-playful.html`.
 - **Playful: không IN HOA chữ tiếng Việt trên nút.** IN HOA kèm dấu chồng lên nhau ("TIẾP TỤC" cao hơn hàng), đọc chậm.
   Dùng chữ thường đậm 800.
 - **Immersive: đi hết bẫy `P10`**: tiêu đề, icon, chữ trong ô nhập đổi theo nền; sheet và hộp hỏi trên nền tối cũng
@@ -638,26 +672,56 @@ sức khoẻ cá nhân, ghi chép, tiết kiệm cá nhân; theo người dùng 
 ở app làm việc cho cửa hàng, công ty, quản lý (`J14`), và app lấy ảnh làm chủ (dưới).
 
 App vui, app học, app sức khoẻ trông "có hồn" nhờ nhân vật: màn chào có người chào, bài tập có người nói câu mẫu,
-đúng sai có nét mặt. Thay bằng icon trong vòng tròn thì luồng đúng luật mà trống, nhất là màn chào, màn luyện nói,
+đúng sai có cử chỉ. Thay bằng icon trong vòng tròn thì luồng đúng luật mà trống, nhất là màn chào, màn luyện nói,
 màn xong.
 
 **Nguồn, theo thứ tự:**
 1. **Dự án có bộ hình** (grep `illustration`, `mascot`, `character`, thư mục `public/illustrations`, `assets/images`,
    file Lottie `.json`, `.riv`): dùng của họ, không trộn bộ khác.
-2. **Chưa có**: nhân vật **CC0** (công cộng, dùng thương mại, không cần ghi nguồn) sinh tại chỗ bằng DiceBear, kiểu
-   **Open Peeps** (người vẽ tay, có nét mặt). Bản mẫu HTML nạp `@dicebear/core` và `@dicebear/open-peeps` bản 9 qua
-   jsDelivr `+esm` rồi `createAvatar(...).toDataUri()` gán vào `img[data-art]`; dự án thật cài hai gói đó bằng npm.
-   App cần dáng khác thì Notionists hay Lorelei, cùng CC0.
-   - **Không gọi `api.dicebear.com`**: API công khai chỉ cho phi thương mại.
+2. **Chưa có** (người dùng lần đầu, chưa chuẩn bị gì): **người 3D của Fluent Emoji** (Microsoft, giấy phép **MIT**: dùng
+   thương mại, không cần ghi công trên màn, chỉ giữ dòng bản quyền trong file license của dự án). Cùng bộ với đồ vật 3D ở
+   dưới nên cả app một kiểu vẽ. Mỗi người có nhiều cử chỉ (đưa tay giới thiệu, giơ tay, OK, buồn, nhún vai), đủ cho các
+   khoảnh khắc của `J16`. Bản mẫu nạp PNG qua jsDelivr ghim một commit, gán vào `img[data-art]` theo tên người và cử chỉ
+   (`mobile-playful.html`); dự án thật tải file về `public/`.
+   - **Không lấy người vẽ tay nét đen** (DiceBear Open Peeps, Notionists): chủ dự án đã duyệt (07/11/2026) là trông thô,
+     và đứng cạnh đồ vật 3D thì thành hai kiểu vẽ.
    - **Không lấy unDraw**: giấy phép cấm nhúng, tích hợp, thu thập tự động khi chưa xin phép, đúng việc skill làm.
-   - **Không lấy kiểu CC BY** (Adventurer, Micah, Fun Emoji…): phải ghi công, người dùng dễ quên khi ra bản thật.
+   - **Không lấy Flaticon, Freepik, Icons8, bộ CC BY**: bản free bắt ghi công trên sản phẩm, cấm nhúng link thẳng, phải
+     đăng nhập tải tay. Skill không tải tự động được, người dùng dễ quên ghi công khi ra bản thật.
+   - **Không mang hình trả phí vào skill**: giấy phép mua về thường cấm phát lại trong bộ mẫu, mà skill là repo công khai.
    - Không tự vẽ SVG nhân vật hay minh hoạ (`J8`).
 
-**Một nhân vật cho cả app**: giữ cố định `seed`, tóc (`head`), màu áo (`clothingColor`) là màu nhấn; tắt kính, khẩu
-trang (`*Probability: 0`). Chỉ **nét mặt** (`face`) đổi theo khoảnh khắc: chào, rỗng `smile` · đúng, xong `lovingGrin1` · nói, hướng dẫn
-`explaining` · đang nghe, chờ `calm` · sai, lỡ chuỗi `concerned`. Đừng dùng `smileBig`, `smileTeethGap` (nhe răng, nhìn
-như nhăn), `smileLOL` (có nước mắt), `awe`: tên là cười mà hình thì không. Bạn hội thoại trong bài tập là nhân vật thứ hai cùng kiểu.
-Hai kiểu vẽ trong một app (người vẽ tay cạnh ảnh chụp) thì trông ghép.
+**Hình đồ vật** (bộ Playful): bộ đếm (chuỗi ngày, kim cương, tim), nút bài trên lộ trình, huy hiệu cấp, ô số ở màn xong
+dùng **đồ vật 3D**, không icon nét. Icon nét một màu ở các chỗ đó làm app trông thô như bản nháp, kể cả khi bố cục đúng.
+Nguồn, theo thứ tự:
+1. **Dự án có bộ hình** (grep như trên, thêm `icons/3d`, `emoji`): dùng của họ.
+2. **Chưa có** (người dùng lần đầu, chưa chuẩn bị gì): **Fluent Emoji 3D** của Microsoft, giấy phép **MIT** (dùng thương
+   mại, không cần ghi công trên màn, chỉ giữ dòng bản quyền trong file license của dự án). Bản mẫu nạp PNG qua jsDelivr
+   **ghim một commit** (`cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@<sha>/assets/<Tên>/3D/<tên>_3d.png`, tên có dấu
+   cách thì `encodeURI`), gán vào `img[data-emoji]` từ một bảng tên đặt một chỗ; dự án thật tải file về `public/`. Mỗi
+   bài một đồ vật nói nội dung bài (đi biển là bãi biển, gọi món là cốc cà phê), không một icon chung cho mọi bài. Bài
+   khoá: đồ vật xám mờ (`grayscale`, `opacity: 0.45`) và ổ khoá nhỏ ở góc; bài xong: tick nhỏ ở góc; chuỗi ngày chưa giữ
+   hôm nay: lửa xám mờ.
+   - Icon giao diện (✕, loa, mic, mũi tên, thanh tab) vẫn Lucide. Đồ vật 3D chỉ ở các chỗ trên; một app một bộ đồ vật.
+   - Huy hiệu lục giác bo góc (mask là một lục giác bo góc, `aspect-ratio: 0.866`), không lục giác góc nhọn của
+     `clip-path: polygon`: góc nhọn cạnh đồ vật 3D mềm trông cứng.
+
+**Cảnh nền** (bộ Playful: lộ trình bài học, màn xong). Nền vẽ tay riêng (bản đồ đảo, dải sa mạc) không có nguồn free nào
+ra đúng: mỗi app một bộ do hoạ sĩ vẽ. Dự án có thì dùng của họ; chưa có thì **ghép từ cảnh 3D cùng bộ Fluent Emoji**
+(cây, núi, đảo, lều, núi lửa, mây), không tự vẽ bản đồ (`J8`), không lấy bộ nền vẽ phẳng (thành hai kiểu vẽ):
+- Lộ trình nền một màu đất nhạt (token `--map`, dải tên cấp dính đầu màn cùng nền). Cảnh đứng **thành cụm 1–2 vật trên
+  một mảng đất bầu dục** (token `--ground`), như hòn đảo nhỏ; vật rời không có đất trông như dán sticker.
+- Cụm đặt ở **phía trống của đường zíc zắc**, không đè nút, nhãn, bong bóng; mỗi cấp 4–5 cụm, có thể theo chủ đề cấp
+  (cấp đi chơi: dừa, lều, đảo). Cảnh của cấp còn khoá xám mờ như bài khoá. Cảnh là `aria-hidden`, `pointer-events: none`.
+- Màn xong, lên cấp: một dải cảnh ở đáy, trên mảng đất rộng, ngay trên nút chính. Nền màn vẫn trắng (`J1`).
+- Chữ phụ trên nền `--map` vẫn đạt 4.5:1: nền tô màu làm `--muted` cũ tụt dưới ngưỡng, đo lại.
+- Lúc giao nói một dòng: cảnh là bộ free giữ chỗ; muốn đúng tranh vẽ tay thì cần hoạ sĩ hoặc người dùng đưa hình.
+
+**Một nhân vật cho cả app**: giữ một người (một giới, một màu da) ở mọi màn; chỉ **cử chỉ** đổi theo khoảnh khắc: chào,
+rỗng, chờ, đang nghe `raising hand` · nói, hướng dẫn `tipping hand` · đúng, xong `gesturing ok` · sai `frowning` · hết
+lượt, lỡ chuỗi `shrugging`. Không dùng bản chỉ có đầu (`Woman`, `Man`) cạnh bản có thân: trông như đổi nhân vật. Bạn hội
+thoại trong bài tập là người thứ hai cùng bộ, khác giới.
+Hai kiểu vẽ trong một app (người vẽ tay cạnh ảnh chụp, cạnh đồ vật 3D) thì trông ghép.
 
 **Chỗ dùng và cỡ:**
 
@@ -677,11 +741,11 @@ Không ở màn làm việc lặp lại (danh sách, form, cài đặt, giỏ h�
 tiêu đề lớn (`O8`).
 
 **App lấy ảnh chụp làm chủ thì không dùng nhân vật vẽ tay**: bộ mặt Photo, Immersive (`J15`), app đặt món, bán hàng
-(`J11`), đặt phòng. Nhân vật Open Peeps nét đen cũng chìm trên nền tối. Màn xong, rỗng của các app này dùng icon trong vòng tròn 80px (`J12`) hay ảnh thật của món, của phòng. Người vẽ
+(`J11`), đặt phòng. Màn xong, rỗng của các app này dùng icon trong vòng tròn 80px (`J12`) hay ảnh thật của món, của phòng. Người vẽ
 tay đứng giữa toàn ảnh đồ uống chụp thật là hai kiểu vẽ trong một app, trông như ghép từ hai nơi.
 
-**Lúc giao** nói một dòng: nhân vật là bộ free giữ chỗ (CC0); có bộ hình thương hiệu thì thay ở một chỗ, đoạn script
-gán `img[data-art]` theo tên nhân vật và nét mặt. Bảng luồng (`J1`) giữ móc `data-art` khi chép màn.
+**Lúc giao** nói một dòng: nhân vật và đồ vật 3D là bộ free giữ chỗ (Fluent Emoji, MIT); có bộ hình thương hiệu thì thay ở một chỗ, đoạn script
+gán `img[data-art]` theo tên nhân vật và cử chỉ, bảng tên cho `img[data-emoji]`. Bảng luồng (`J1`) giữ móc `data-art` khi chép màn.
 
 ## J17. Biểu đồ trên điện thoại ⚑
 
