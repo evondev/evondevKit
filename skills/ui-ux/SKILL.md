@@ -339,6 +339,11 @@ thẳng một cột giữa màn). Đừng hỏi lại có cần nút Google khô
 
 - **Đề có liệt kê** ("trang đăng nhập gồm ô email, ô mật khẩu, nút…"): phạm vi đã chốt, dựng luôn.
 - **Đề để hở** ("dựng màn hình tổng quan"): lấy **bộ khối mặc định** của loại màn đó trong file layout (màn tổng quan: bảng khối trong `references/layouts/app.md`), dựng **đủ** bộ đó. Đừng để `S1` hoá thành "làm ít nhất có thể" rồi ra một màn mỏng dính 3 khối.
+- **Đề là cả một app mà không liệt kê màn** ("dựng app đặt món cho quán mình", "làm app chi tiêu") ⚑: dựng **một luồng
+  chính 3–5 màn**, là việc chính đầu tiên của người dùng từ màn gốc tới lúc xong (đặt món: menu, sheet món, giỏ, đặt xong),
+  cộng trạng thái của các màn đó. Không tự dựng cả app hai ba chục màn: tốn thời gian của người dùng mà phần lớn chưa ai
+  hỏi. Lúc giao liệt kê các luồng còn lại (đổi thưởng, tài khoản, onboarding…) để người dùng chọn dựng tiếp. Đề liệt kê
+  luồng hay nói "cả app", "đầy đủ" thì dựng đúng phạm vi đó.
 - **Lúc giao, câu đầu tiên** liệt kê các khối đã dựng, và khối nào trong bảng đã bỏ ra. Muốn thêm bớt thì người dùng nói.
 
 **S6. Dựng mockup thì điền dữ liệu giả hợp lý, đừng để chỗ trống.** Một trang đầy
