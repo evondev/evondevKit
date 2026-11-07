@@ -105,7 +105,10 @@
         </div>
       </section>
 
-      <!-- ===== 4. DARK: thanh tối gần đen trên màn sáng, mục đang chọn là viên tròn trắng chứa icon tối. Chỉ icon nên tối đa
+      <!-- ===== 4. DARK: thanh tối gần đen trên màn sáng, mục đang chọn là viên tròn trắng chứa icon tối. Viên đồng tâm với đầu
+           bo của thanh: thanh 64, viên 48, cách mép trên dưới 8 thì cách mép trái phải cũng 8 (justify-between px-2). Chia đều
+           (justify-around) thì viên đầu trôi vào giữa, đầu bo trống một mảng. Bóng nhẹ: bóng đậm dưới thanh đen thành vệt
+           như thanh thứ hai. Chỉ icon nên tối đa
            4 mục, icon quen, aria-label. Icon chưa chọn white/60 trên #18181b (~6:1). Hợp app nền kem, nền màu (Tinted). ===== -->
       <section>
         <h2 class="text-base font-semibold">4. Dark</h2>
@@ -113,7 +116,7 @@
         <!-- Nền kem đặt bằng style: .stage là CSS ngoài layer, đè mất class bg-[…] của Tailwind. -->
         <div class="stage mt-3" style="background: #efe9df">
           <div class="absolute inset-x-4 top-4 h-24 rounded-[20px] bg-surface"></div>
-          <nav class="absolute inset-x-6 bottom-4 flex h-[68px] items-center justify-between rounded-full bg-bar-dark px-2.5 shadow-[0_12px_28px_-10px_rgb(0_0_0/0.55)]" aria-label="Điều hướng chính" data-tabs data-tab-style="dark">
+          <nav class="absolute inset-x-6 bottom-4 flex h-16 items-center justify-between rounded-full bg-bar-dark px-2 shadow-[0_8px_20px_-12px_rgb(0_0_0/0.4)]" aria-label="Điều hướng chính" data-tabs data-tab-style="dark">
             <a href="#tabbars" aria-current="page" aria-label="Trang chủ" class="press grid size-12 place-items-center rounded-full text-white/60 aria-[current=page]:bg-white aria-[current=page]:text-bar-dark"><i data-lucide="house" class="size-6"></i></a>
             <a href="#tabbars" aria-label="Lịch trình" class="press grid size-12 place-items-center rounded-full text-white/60 aria-[current=page]:bg-white aria-[current=page]:text-bar-dark"><i data-lucide="calendar-days" class="size-6"></i></a>
             <a href="#tabbars" aria-label="Yêu thích" class="press grid size-12 place-items-center rounded-full text-white/60 aria-[current=page]:bg-white aria-[current=page]:text-bar-dark"><i data-lucide="heart" class="size-6"></i></a>
@@ -130,7 +133,7 @@
         <div class="stage mt-3" style="background: #e8e3f0">
           <div class="absolute inset-x-4 top-4 h-24 rounded-[20px] bg-surface"></div>
           <a href="#tabbars" class="press absolute right-4 bottom-4 z-10 grid size-16 place-items-center rounded-full text-white shadow-[0_8px_24px_-8px_rgb(0_0_0/0.45)]" style="background: #7c3aed" aria-label="Thêm bữa ăn"><i data-lucide="plus" class="size-7"></i></a>
-          <nav class="absolute bottom-4 left-4 right-[92px] flex h-16 items-center justify-around rounded-full bg-bar-dark px-2 shadow-[0_12px_28px_-10px_rgb(0_0_0/0.55)]" aria-label="Điều hướng chính" data-tabs data-tab-style="dark">
+          <nav class="absolute bottom-4 left-4 right-[92px] flex h-16 items-center justify-between rounded-full bg-bar-dark px-2 shadow-[0_8px_20px_-12px_rgb(0_0_0/0.4)]" aria-label="Điều hướng chính" data-tabs data-tab-style="dark">
             <a href="#tabbars" aria-current="page" aria-label="Hôm nay" class="press grid size-12 place-items-center rounded-full text-white/60 aria-[current=page]:bg-white aria-[current=page]:text-bar-dark"><i data-lucide="house" class="size-6"></i></a>
             <a href="#tabbars" aria-label="Nhật ký" class="press grid size-12 place-items-center rounded-full text-white/60 aria-[current=page]:bg-white aria-[current=page]:text-bar-dark"><i data-lucide="calendar-days" class="size-6"></i></a>
             <a href="#tabbars" aria-label="Tài khoản" class="press grid size-12 place-items-center rounded-full text-white/60 aria-[current=page]:bg-white aria-[current=page]:text-bar-dark"><i data-lucide="user-round" class="size-6"></i></a>
