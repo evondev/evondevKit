@@ -483,6 +483,8 @@ dòng đó."* Dừng chờ.
     .wf-bar { position: relative; z-index: 50; display: flex; align-items: center; gap: 24px; height: 56px;
       padding: 0 16px; overflow-x: auto; white-space: nowrap; background: #fff; border-bottom: 1px solid #e5e5e5;
       color: #737373; font: 14px/1 system-ui, -apple-system, sans-serif; }
+    /* Màn hẹp thanh cuộn ngang: mép phải mờ để người duyệt biết còn nhóm (responsive.md, hàng cuộn ngang). */
+    @media (max-width: 1279px) { .wf-bar { mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent); } }
     .wf-bar *, .wf-reason * { box-sizing: border-box; }
     .wf-group { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
     .wf-set { display: flex; align-items: center; gap: 4px; flex-shrink: 0; padding: 3px; border-radius: 10px; background: #f4f4f5; }
@@ -723,7 +725,10 @@ dòng đó."* Dừng chờ.
       const isOverlap = (first, second) => first.left < second.right && first.right > second.left && first.top < second.bottom && first.bottom > second.top;
       for (const block of document.querySelectorAll("[data-wf-block]")) {
         const blockRect = block.getBoundingClientRect();
-        const numberRect = { left: blockRect.left + 4, top: blockRect.top + 4, right: blockRect.left + 22, bottom: blockRect.top + 22 };
+        if (!blockRect.width) continue;
+        // Bản chép trên bảng luồng thu nhỏ (zoom 0.7, J1): số và chữ cùng nhỏ theo, nên đo theo tỉ lệ thật của khối.
+        const scale = blockRect.width / block.offsetWidth;
+        const numberRect = { left: blockRect.left + 4 * scale, top: blockRect.top + 4 * scale, right: blockRect.left + 22 * scale, bottom: blockRect.top + 22 * scale };
         const contentRects = [...block.querySelectorAll("svg, img")].map((node) => node.getBoundingClientRect());
         const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT);
         for (let node = walker.nextNode(); node; node = walker.nextNode()) {
@@ -737,6 +742,7 @@ dòng đó."* Dừng chờ.
     }
     requestAnimationFrame(() => requestAnimationFrame(placeBlockNumbers));
     addEventListener("resize", placeBlockNumbers);
+    // Wireframe app điện thoại: gọi lại sau buildBoard, đo cả các bản chép trên bảng luồng (J1).
   </script>
   ```
 

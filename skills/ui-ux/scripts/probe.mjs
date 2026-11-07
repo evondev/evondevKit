@@ -3536,7 +3536,39 @@ async function probeMobileApp(browser, options) {
   const boardLeaks = await discoverPage.evaluate(() => document.querySelectorAll(".board-device [name], .board-device [id]").length);
   await discover.close();
 
+  // Số khối của wireframe (U3) đè chữ đầu khối trên bảng luồng: placeBlockNumbers chạy lúc máy thật đang ẩn sau bảng,
+  // đo ra "không đè", bản chép giữ số đè chữ (11/2026, wireframe app chi tiêu: "1" đè "Chào buổi sáng"). Đo ở 1440.
+  const boardContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const boardPage = await boardContext.newPage();
+  await boardPage.goto(base, { waitUntil: "load" });
+  await boardPage.waitForTimeout(options.waitMs);
+  const boardNumberOverlaps = await boardPage.evaluate(() => {
+    if (!document.body.classList.contains("is-board")) return [];
+    const isOverlap = (first, second) => first.left < second.right && first.right > second.left && first.top < second.bottom && first.bottom > second.top;
+    const found = [];
+    for (const block of document.querySelectorAll(".board-device [data-wf-block]:not([data-wf-block-out])")) {
+      const blockRect = block.getBoundingClientRect();
+      if (!blockRect.width) continue;
+      const scale = blockRect.width / block.offsetWidth;
+      const numberRect = { left: blockRect.left + 4 * scale, top: blockRect.top + 4 * scale, right: blockRect.left + 22 * scale, bottom: blockRect.top + 22 * scale };
+      const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT);
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        if (!node.textContent.trim()) continue;
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        if ([...range.getClientRects()].some((rect) => rect.width > 0 && isOverlap(rect, numberRect))) {
+          found.push(`khối ${block.dataset.wfBlock} đè "${node.textContent.trim().slice(0, 24)}"`);
+          break;
+        }
+      }
+    }
+
+    return found;
+  });
+  await boardContext.close();
+
   const screens = [];
+  if (boardNumberOverlaps.length > 0) screens.push({ view: "bảng luồng", hash: "board-numbers", shotPath: join(options.out, "mobile-board.png"), problems: [`bảng luồng: ${boardNumberOverlaps.length} số khối đè chữ (${boardNumberOverlaps.slice(0, 3).join("; ")}); gọi lại placeBlockNumbers() sau buildBoard, trên cả trang (J1)`] });
   if (boardLeaks > 0) screens.push({ view: "bảng luồng", hash: "board", shotPath: join(options.out, "mobile-board.png"), problems: [`bảng luồng: ${boardLeaks} phần tử trong bản chép còn name hay id, radio của bản chép giành dấu chọn của máy thật; chép buildBoard mới nhất của mobile-app.html (J1)`] });
   // 360×640: Android giá rẻ, máy cũ (khổ hẹp nhất còn phổ biến). Hàng 7 ô vừa ở 390 có thể lố ở đây.
   const runs = [

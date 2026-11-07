@@ -57,11 +57,15 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   Thiếu bảng thì người duyệt phải bấm qua từng màn mới thấy cả luồng, không so được hai màn cạnh nhau. Probe gặp
   bảng thì tự đo màn đầu trong khung máy. **App có phần tử vẽ bằng JS mà đo bề rộng** (biểu đồ `J17`) thì gọi
   `buildBoard` sau `load` và `document.fonts.ready`, không ở cuối body: lúc đó Tailwind bản trình duyệt chưa sinh
-  class, font chưa nạp, biểu đồ đo sai bề rộng rồi bị chép nguyên vào bảng.
+  class, font chưa nạp, biểu đồ đo sai bề rộng rồi bị chép nguyên vào bảng. **Wireframe (`U3`) gọi lại
+  `placeBlockNumbers()` sau `buildBoard`**, trên cả trang chứ không chỉ máy thật (ngoại lệ duy nhất của luật tìm trong
+  máy thật): lúc chép, máy thật đang ẩn sau bảng nên hàm đo ra "không đè", số khối trên bảng nằm đè lên chữ đầu khối.
 - **Nút chính của luồng dẫn tới kết quả thấy được.** Bấm "Lưu", "Tạo", "Đặt" trong wireframe hay bản mẫu thì về
   màn trước **đã đổi**: dòng mới ở đầu danh sách (nhãn "Mới"), số đếm và số dư cộng thêm, thông báo ngắn `J7`
   ("Đã thêm Ăn tối", có Hoàn tác). Quay về màn cũ y nguyên thì người duyệt không thấy lưu xong ra sao, nên không
-  góp ý được bước cuối của luồng, là bước họ làm nhiều nhất.
+  góp ý được bước cuối của luồng, là bước họ làm nhiều nhất. **Dòng mới không nằm dưới thông báo hay thanh tab**: dòng
+  mới ở thấp (dưới thẻ số chính và một khối khác) thì màn cuộn tới nó (`scrollIntoView({ block: "center" })`) trước khi
+  bảng chép. Trên bảng, thông báo đứng yên mãi, đè đúng thứ người duyệt cần xem.
 - **Không hover**: màn chạm không có rê chuột. Phản hồi là lúc nhấn (`J7`).
 - **Kiểm bằng probe chế độ mobile** trước khi giao: `node scripts/probe.mjs <file hay link> --mobile --widths 390,1280`
   (thay cho `--sweep`, `--wireframe` của màn web; thêm một lượt `--stress` khi có danh sách).
