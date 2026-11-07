@@ -576,7 +576,7 @@ ghi chỗ từ hai app trở lên làm giống nhau hay khớp quy ước iOS / 
   96px bo 20: icon 24px trên, nhãn 16px dưới, mỗi ô một loại. Không menu dọc chữ nhỏ bật ra từ nút, không nút tròn
   bung thành chùm nút nhỏ.
 
-## J15. Bộ mặt app điện thoại — sáu bộ có tên
+## J15. Bộ mặt app điện thoại — tám bộ có tên
 
 Lý do giống `P13`: khung app điện thoại chỗ nào cũng như nhau (thanh tab, đầu màn, danh sách, sheet), nên ba app khác
 ngành dựng cùng một gu thì ra cùng một mặt. Thứ làm hai app khác nhau là **bộ mặt**: nền, màu nhấn dùng tới đâu,
@@ -584,8 +584,9 @@ ngành dựng cùng một gu thì ra cùng một mặt. Thứ làm hai app khác
 vẫn áp nguyên).
 
 ⚑ Rút từ khoảng 300 màn của 10 app phổ biến ở 10 loại (đặt phòng, lưu ảnh ý tưởng, mạng xã hội chữ, bản tin, học
-ngôn ngữ, thiền và ngủ, sách tóm tắt, hẹn hò, đi bộ đường dài, việc cần làm). Sáu bộ dưới đây là
-các kiểu lặp lại ở nhiều app, không chép mặt riêng của app nào.
+ngôn ngữ, thiền và ngủ, sách tóm tắt, hẹn hò, đi bộ đường dài, việc cần làm). Sáu bộ đầu là
+các kiểu lặp lại ở nhiều app, không chép mặt riêng của app nào. Glow và Tinted thêm sau, cho bản mẫu cần gây ấn tượng
+lúc trình bày (app AI, sáng tạo; sức khoẻ, ăn uống, phong cách sống).
 
 | Bộ mặt | Nền, bề mặt | Màu nhấn tới đâu | Chữ, font | Hình khối | Hợp khi người dùng là |
 | --- | --- | --- | --- | --- | --- |
@@ -595,6 +596,8 @@ các kiểu lặp lại ở nhiều app, không chép mặt riêng của app nà
 | **Playful** | Trắng, phản hồi tô cả dải đáy | Một màu thương hiệu bão hoà cho nút chính và thanh tiến độ; thêm tối đa hai màu **có nghĩa** (đúng, sai, chuỗi ngày) | Nunito 700–800, nút chữ đậm | Thẻ chọn viền 2px có viền đáy 4px (trông bấm được), bo 16; nút tròn, ô vuông, lục giác không gờ; đồ vật 3D ở bộ đếm, lộ trình, huy hiệu (`J16`); thanh tiến độ cao 12–16 bo tròn; nhân vật đổi cử chỉ theo đúng sai (`J16`) | Người cần động lực quay lại mỗi ngày: học, thói quen, thể dục cho người dùng phổ thông, trẻ. Code mẫu `mobile-playful.html` |
 | **Immersive** | Nền tối có sắc (xanh đêm, tím than) cả app, chuyển dọc nhẹ hai tông gần nhau | Nút chính trắng chữ tối, không màu nhấn rực | Inter, tiêu đề lớn trắng, chữ phụ trắng 72% | Ảnh lớn bo 12–16 làm điểm nhìn, thẻ là lớp trắng 8–10% trên nền | Người dùng để thư giãn, nghe, xem, thường buổi tối: thiền, ngủ, nhạc, podcast, sách nói, video. Code mẫu `mobile-immersive.html` |
 | **Editorial** ⚑ | Trắng hay kem ấm `#fbf8f3`, gần như không thẻ | Một sắc nhỏ cho link, nút theo dõi; nút chính đen hay màu đó | Tiêu đề bài và thân bài **Lora** (serif), thân 18/1.6; khung app (tab, nút, nhãn) vẫn Inter | Dòng bài: chữ trái, ảnh vuông 64 phải; trang đọc lề 20, không khung | Người **đọc** dài: bản tin, báo, sách, khoá học dạng đọc, công thức nấu ăn |
+| **Glow** ⚑ | Gần đen `#0b0b0f` cả app, hai ba **quầng màu mờ** lớn (màu nhấn và một sắc kề) ở đầu màn và sau khối chính | Nút chính màu nhấn rực **chữ tối**, mic, nút gửi; quầng màu là chỗ màu nhiều nhất | Inter, tiêu đề màn rất lớn 36–40 `tracking-tight`, chữ phụ trắng 65% | Thẻ kính trắng 8% viền trắng 10%, bo 20–24; thanh tab `glass` (`J2`) | Người dùng app AI, sáng tạo, âm nhạc, đầu tư trẻ, học kỹ năng sáng tạo: cần cảm giác mới, năng lượng |
+| **Tinted** ⚑ | **Cả app một màu nền nhạt** theo ngành (kem, be, bạc hà, hồng phấn) thay trắng và xám; thẻ trắng nổi trên nền màu | Nút chính đen hay màu nhấn đậm; khối nhấn đầu màn là cùng sắc đậm hơn | Inter hay font tròn hơn, số lớn đậm | Bo 20–28, thẻ trắng không viền, bóng rất nhẹ; thanh tab `dark` hay `pill` (`J2`); hợp vòng và cung (`J17`) | Người tự chăm mình mỗi ngày mà không cần gamification: ăn uống, kcal, sức khoẻ, chi tiêu cá nhân nhẹ nhàng, du lịch, phong cách sống |
 
 **Token đổi theo bộ** (khối đổi thương hiệu của `mobile-app.html`, tương phản đã đo):
 
@@ -605,6 +608,8 @@ các kiểu lặp lại ở nhiều app, không chép mặt riêng của app nà
 | Playful | `--app-font: "Nunito"`; `--primary` đậm đủ cho chữ trắng: xanh lá `#2f7d00` 5.18:1. **Xanh lá rực `#58cc02` chữ trắng chỉ 2.09:1**: muốn màu rực thì nút rực chữ tối, hay chữ trắng trên nền đậm. Dải đúng `#d7ffb8` chữ `#2f7d00` (4.66:1), dải sai `--danger-bg` chữ `--danger` |
 | Immersive | Cả khung mang `force-dark` (`M33`), chép khối `.force-dark` của `tokens.css` rồi đè các token sau. **Nền là màu nhấn của ngành hay brand pha tối**: `--background` = 30% `--primary` trên `#0b0d18` (`color-mix(in oklab, var(--primary) 30%, #0b0d18)`: Chàm ra `#1f1e56`, Cam ra `#421d14`, Xanh ngọc ra `#0c2c32`), chuyển dọc xuống tông tối hơn 15%; không dùng một màu navy cho mọi app. `--surface` trắng 10% trên nền (chữ trắng từ 10.9:1), sheet và hộp hỏi trắng 14%; `--muted` trắng 72% (từ 8.3:1 trên nền, 6.5:1 trên thẻ); `--danger: #ff9aab` (từ 5.4:1 trên thẻ; `#ff637e` của `.force-dark` chỉ 3.9:1), `--success: #5fd99a`; nút chính `bg-white` chữ màu nền |
 | Editorial | Nạp thêm Lora 400, 700 (có bộ `vietnamese`, đã kiểm); `--background: #fbf8f3`, `--muted: #6b6459` (5.5:1 trên kem), sắc nhấn cam `#c2410c` (4.9:1 trên kem) |
+| Glow | Cả khung `force-dark` như Immersive. `--background: #0b0b0f`; quầng: `radial-gradient` 2–3 lớp từ `--primary` và một sắc cách nó 30–60°, độ phủ 45–60%, nằm ở đỉnh màn và sau khối chính, không sau chữ nhỏ; `--surface` trắng 8%, viền trắng 10%, `backdrop-blur-xl`; `--muted` trắng 65% (từ 6.6:1 trên thẻ). `--primary` rực (cam `#f97316`, tím `#a78bfa`) thì **chữ trên nút là `#111`** (6.7:1, 6.9:1); chữ trắng trên cam rực chỉ 2.8:1. Bong bóng tin nhắn của người dùng được tô màu nhấn |
+| Tinted | `--background` = 10% `--primary` pha kem `#f6f3ee` (`color-mix(in oklab, var(--primary) 10%, #f6f3ee)`), cả màn danh sách nhóm; `--surface: #fff`; `--muted` đậm lên `#5c5646` (từ 4.7:1 trên nền be). Khối nhấn (thẻ số chính, đầu màn có biểu đồ) = 30–40% `--primary` pha kem, **chữ tối** `--foreground` (7.5:1 trên khối be); chữ trắng trên khối nhạt chỉ 1.6:1, muốn chữ trắng thì khối pha đen. Đè thẻ số chính `#1c1c1e` của `J5` |
 
 **Chọn bộ nào.** Bộ mặt bám **người dùng và việc chính** ở `U1`, `U2`, không bám ngành: app spa mà người mở là kế toán
 đối soát thì Clean, không phải Photo. Người dùng nêu tên một bộ (kể cả bộ còn cờ) thì dựng bộ đó, không hỏi lại (`P1`).
@@ -616,9 +621,9 @@ khớp:
 3. Một người tự làm việc của mình mỗi ngày và cần động lực quay lại (học, thói quen, thể dục) → **Playful**.
 4. Còn lại, nhất là ghi chép, quản lý, tài chính, app cho cửa hàng hay công ty → **Clean**.
 
-Mono, Editorial còn cờ ⚑ (chưa qua test): không tự khuyên; đề hợp rõ thì báo một dòng lúc giao. Mẫu dòng báo, nói bằng
+Mono, Editorial, Glow, Tinted còn cờ ⚑ (chưa qua test): không tự khuyên; đề hợp rõ thì báo một dòng lúc giao. Mẫu dòng báo, nói bằng
 người dùng: *"Bộ mặt: **Playful** (nút đậm, thẻ bấm được, phản hồi tô cả dải đáy) vì người học cần quay lại mỗi ngày.
-Muốn kiểu khác thì nói: Clean, Photo, Immersive, Mono, Editorial."* Wireframe app điện thoại có nhóm Kiểu liệt kê sáu bộ
+Muốn kiểu khác thì nói: Clean, Photo, Immersive, Mono, Editorial, Glow, Tinted."* Wireframe app điện thoại có nhóm Kiểu liệt kê tám bộ
 (`design-process.md`, `U3`), mặc định là bộ khuyên dùng. Bộ nào qua test thì gỡ cờ ⚑ ở bảng trên.
 
 **Ghi lại bộ đã chọn** như `P13`: dòng Bộ mặt trong `DESIGN.md` và comment `/* Bộ mặt: Playful (J15) */` trên khối
@@ -636,12 +641,12 @@ font, để màn sau theo đúng bộ đó, không khuyên lại.
 - Photo đè "ngày đang chọn tô `primary`" của `components/choice-controls.md` và "công tắc bật là `--primary`" của `J4`:
   đang chọn tô `--foreground`, để màu nhấn chỉ còn ở nút cam kết.
 
-**Không đè:** `J2` thanh tab có chữ, `J4` chỗ bấm 44px, chữ tối thiểu 11px, tương phản 4.5:1, một hành động chính
+**Không đè:** `J2` thanh tab có chữ (trừ các kiểu chỉ icon có tên của `J2`), `J4` chỗ bấm 44px, chữ tối thiểu 11px, tương phản 4.5:1, một hành động chính
 mỗi màn.
 
 **Bẫy**
-- **Mono, Photo hay thấy thanh tab chỉ icon** trong app mẫu (app quen thuộc, người dùng đã thuộc icon). App mới vẫn
-  giữ chữ (`J2`).
+- **Mono, Photo hay thấy thanh tab chỉ icon** trong app mẫu (app quen thuộc, người dùng đã thuộc icon). App mới giữ chữ,
+  trừ khi chọn kiểu chỉ icon của `J2` và icon đủ quen.
 - **Photo không có ảnh thật thì đừng chọn.** Cả app toàn ô xám thay ảnh trông như app hỏng; dữ liệu giả dùng ảnh thật
   có quyền dùng, không vẽ minh hoạ thay ảnh. Một mục thiếu ảnh để thử ca biên (`S16`) thì vẫn có: khung nền
   `--background`, icon và chữ "Chưa có ảnh", không phải ô xám trơn.
@@ -662,6 +667,11 @@ mỗi màn.
 - **Immersive: đi hết bẫy `P10`**: tiêu đề, icon, chữ trong ô nhập đổi theo nền; sheet và hộp hỏi trên nền tối cũng
   tối, không bật ra một tấm trắng. Ảnh tối trên nền tối thì thêm viền trắng 10%. Bàn phím vẽ (`J13`) cũng bản tối:
   khối `#1f1f22`, phím `#4a4a4d` chữ trắng, phím chức năng `#323235`.
+- **Glow: quầng màu là nền, không phải nội dung.** Quầng sau chữ nhỏ làm chữ chỗ sáng chỗ tối, đo tương phản ở chỗ quầng
+  sáng nhất. Không thêm quầng vào từng thẻ: mỗi màn hai ba quầng, cố định khi cuộn (`background-attachment` theo khung,
+  không theo nội dung). Thẻ kính trên nền đen trơn (không quầng phía sau) chỉ là thẻ xám, kính chỉ thấy khi có quầng.
+- **Tinted: một sắc nền cho cả app, không đổi theo màn.** Sheet, hộp hỏi, bàn phím vẽ vẫn trắng. Màu trạng thái (đỏ
+  vượt, xanh đạt) đo lại trên nền màu; ảnh món, ảnh phòng trên nền be thì thêm viền trắng 2px cho khỏi lẫn.
 - **Editorial: serif chỉ cho nội dung đọc.** Lora cho nhãn tab, nút, ô nhập thì khung app thành giả cổ, chữ nhỏ 11–13
   khó đọc. Nạp Lora mà quên bộ `vietnamese` thì "ữ", "ợ" rơi về font máy (`T5`).
 
