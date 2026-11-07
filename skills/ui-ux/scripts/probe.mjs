@@ -1151,6 +1151,13 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   for (const group of document.querySelectorAll("fieldset, [role='radiogroup'], [role='group']")) {
     const choices = [...group.querySelectorAll("input[type='radio'], input[type='checkbox'], [role='radio']")].filter(isVisible);
     if (choices.length < 3) continue;
+    // Lưới ô icon (chọn danh mục, chọn loại: mỗi ô một icon trên nhãn) là tập không thứ tự, xếp lưới là số đông
+    // (mobile-app.html, sheet thêm giao dịch). Luật chữ Z chỉ cho thang có thứ tự (11/2026, app tài chính).
+    const isIconTileGrid = choices.every((choice) => {
+      const tile = choice.matches("input") ? choice.closest("label") || choice.parentElement : choice;
+      return tile?.querySelector("svg, img, i[data-lucide]");
+    });
+    if (isIconTileGrid) continue;
 
     const lefts = new Set(choices.map((choice) => Math.round(choice.getBoundingClientRect().left / 4)));
     const tops = new Set(choices.map((choice) => Math.round(choice.getBoundingClientRect().top / 4)));

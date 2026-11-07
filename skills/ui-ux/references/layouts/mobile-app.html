@@ -34,10 +34,12 @@
         --danger-bg: rgb(255 32 86 / 0.1);
         --success: #00875a;
 
-        /* Màu nhận diện danh mục (M34): nền nhạt + icon đậm cùng sắc, icon đạt 4.5:1 trên nền của nó. */
-        --cat-amber-bg: #fff1d6; --cat-amber: #a35c00;
-        --cat-blue-bg: #e3efff;  --cat-blue: #1d5fbf;
-        --cat-rose-bg: #ffe4ec;  --cat-rose: #b4234d;
+        /* Màu danh mục (J17): một thang cho icon và biểu đồ, theo thứ tự thang mặc định của charts.md, nhóm lớn tới
+           nhỏ. Không đỏ, hổ phách, xanh lá: app tiền dùng chúng cho trạng thái (vượt ngân sách, tiền vào). Icon đạt
+           4.5:1 trên nền của nó. --cat-green-bg chỉ cho dòng thu nhập, đi cùng --success. */
+        --cat-blue-bg: #e3efff;   --cat-blue: #1d5fbf;
+        --cat-sky-bg: #e0f2fe;    --cat-sky: #0369a1;
+        --cat-violet-bg: #ede9fe; --cat-violet: #6d28d9;
         --cat-green-bg: #dff5ea;
         --avatar-bg: #ffd8c2;    --avatar-text: #8a3b12;
 
@@ -237,17 +239,17 @@
           </div>
           <ul class="mx-4 mt-2 divide-y divide-border overflow-hidden rounded-[20px] bg-surface ring-1 ring-border-strong ring-inset">
             <li><a href="#detail" class="press flex min-h-16 items-center gap-3 px-4 py-3 active:bg-background">
-              <span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-amber-bg) text-(--cat-amber)"><i data-lucide="coffee" class="size-5"></i></span>
+              <span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-sky-bg) text-(--cat-sky)"><i data-lucide="coffee" class="size-5"></i></span>
               <span class="min-w-0 flex-1"><span class="block text-base font-medium text-pretty">Cà phê sáng</span><span class="block text-[13px] text-muted">Ăn uống · 8:15</span></span>
               <span class="shrink-0 text-base font-medium tabular-nums">−45.000 đ</span>
             </a></li>
             <li><a href="#detail" class="press flex min-h-16 items-center gap-3 px-4 py-3 active:bg-background">
-              <span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-blue-bg) text-(--cat-blue)"><i data-lucide="car" class="size-5"></i></span>
+              <span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-violet-bg) text-(--cat-violet)"><i data-lucide="car" class="size-5"></i></span>
               <span class="min-w-0 flex-1"><span class="block text-base font-medium text-pretty">Grab đi làm</span><span class="block text-[13px] text-muted">Đi lại · 8:40</span></span>
               <span class="shrink-0 text-base font-medium tabular-nums">−62.000 đ</span>
             </a></li>
             <li><a href="#detail" class="press flex min-h-16 items-center gap-3 px-4 py-3 active:bg-background">
-              <span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-rose-bg) text-(--cat-rose)"><i data-lucide="shopping-bag" class="size-5"></i></span>
+              <span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-blue-bg) text-(--cat-blue)"><i data-lucide="shopping-bag" class="size-5"></i></span>
               <span class="min-w-0 flex-1"><span class="block text-base font-medium text-pretty">Đi chợ cuối tuần cho cả nhà, mua thêm rau và trái cây</span><span class="block text-[13px] text-muted">Đi chợ · 11:02</span></span>
               <span class="shrink-0 text-base font-medium tabular-nums">−386.000 đ</span>
             </a></li>
@@ -273,7 +275,7 @@
         </header>
         <div class="scroll pad-tabbar">
           <div class="flex flex-col items-center px-4 pt-6 pb-8 text-center">
-            <span class="grid size-16 place-items-center rounded-full bg-(--cat-rose-bg) text-(--cat-rose)"><i data-lucide="shopping-bag" class="size-7"></i></span>
+            <span class="grid size-16 place-items-center rounded-full bg-(--cat-blue-bg) text-(--cat-blue)"><i data-lucide="shopping-bag" class="size-7"></i></span>
             <p class="mt-4 text-[36px]/[42px] font-semibold tracking-tight tabular-nums">−386.000 đ</p>
             <p class="mt-1 text-base text-pretty text-muted">Đi chợ cuối tuần cho cả nhà, mua thêm rau và trái cây</p>
           </div>
@@ -303,22 +305,30 @@
             <button role="tab" aria-selected="true" class="press group p-1"><span class="flex h-full items-center justify-center rounded-lg group-aria-selected:bg-surface group-aria-selected:shadow-[0_1px_3px_rgb(0_0_0/0.08)]">Tháng</span></button>
             <button role="tab" aria-selected="false" class="press group p-1"><span class="flex h-full items-center justify-center rounded-lg group-aria-selected:bg-surface group-aria-selected:shadow-[0_1px_3px_rgb(0_0_0/0.08)]">Năm</span></button>
           </div>
-          <div class="mx-4 mt-4 rounded-[20px] bg-surface p-5 ring-1 ring-border-strong ring-inset">
-            <p class="text-sm text-muted">Chi tiêu theo tuần</p>
-            <p class="mt-1 text-2xl font-semibold tabular-nums">8.450.000 đ</p>
-            <div class="mt-5 flex h-36 items-end gap-3" aria-hidden="true">
-              <div class="flex h-full flex-1 flex-col items-center justify-end gap-2"><div class="w-full rounded-lg bg-secondary" style="height: 58%"></div><span class="text-xs text-muted">T1</span></div>
-              <div class="flex h-full flex-1 flex-col items-center justify-end gap-2"><div class="w-full rounded-lg bg-secondary" style="height: 82%"></div><span class="text-xs text-muted">T2</span></div>
-              <div class="flex h-full flex-1 flex-col items-center justify-end gap-2"><div class="w-full rounded-lg bg-secondary" style="height: 46%"></div><span class="text-xs text-muted">T3</span></div>
-              <div class="flex h-full flex-1 flex-col items-center justify-end gap-2"><div class="w-full rounded-lg bg-primary" style="height: 70%"></div><span class="text-xs font-medium">T4</span></div>
-              <div class="flex h-full flex-1 flex-col items-center justify-end gap-2"><div class="w-full rounded-lg border border-dashed border-border-strong" style="height: 18%"></div><span class="text-xs text-muted">T5</span></div>
+          <!-- Biểu đồ trên điện thoại (J17): cả chuỗi một màu --chart-fill (bản sáng là --primary), số trên mọi cột, tháng đang
+               chạy nhạt /35. Chạm hay kéo ngang thì số to đổi thành số của cột gần ngón tay nhất, không nhãn bay theo ngón
+               tay (ngón che mất). Cột đang chọn không đổi màu, chỉ đậm số và nhãn trục. -->
+          <div class="mx-4 mt-4 rounded-[20px] bg-surface p-5 ring-1 ring-border-strong ring-inset" data-chart>
+            <p class="text-sm text-muted" data-chart-label>6 tháng gần đây, số trên cột là triệu đồng</p>
+            <p class="mt-1 text-2xl font-semibold tabular-nums" data-chart-value>57.750.000 đ</p>
+            <!-- Cả vùng là một chỗ chạm: sáu cột chỉ ~43px mỗi cột ở 390, dưới 44px (J4). pan-y: kéo ngang là dò số, kéo
+                 dọc vẫn cuộn màn. Nhãn "T5" vừa khe nên ghi đủ; "Tháng này" rộng hơn khe thì tràn sang trái, canh theo
+                 mép phải cột cuối (min-w-0 để cột không phình theo nhãn). Ở 360 nó chạm "T9" nên bỏ nhãn T9 (giữ chỗ
+                 bằng invisible); chạm cột T9 thì số to vẫn ghi "Tháng 9". -->
+            <div class="mt-5 flex h-40 touch-pan-y items-end gap-2.5" role="group" aria-label="Chi tiêu từng tháng, mũi tên trái phải để đọc từng tháng" tabindex="0" data-chart-plot>
+              <div class="group flex h-full min-w-0 flex-1 flex-col items-center gap-2" data-bar data-label="Tháng 5" data-value="9.200.000 đ"><div class="flex w-full flex-1 flex-col justify-end gap-1"><span class="text-center text-xs text-muted tabular-nums group-data-[selected]:font-semibold group-data-[selected]:text-foreground">9,2</span><div class="rounded-lg bg-primary" style="height: 69%"></div></div><span class="text-xs text-muted group-data-[selected]:font-semibold group-data-[selected]:text-foreground">T5</span></div>
+              <div class="group flex h-full min-w-0 flex-1 flex-col items-center gap-2" data-bar data-label="Tháng 6" data-value="10.400.000 đ"><div class="flex w-full flex-1 flex-col justify-end gap-1"><span class="text-center text-xs text-muted tabular-nums group-data-[selected]:font-semibold group-data-[selected]:text-foreground">10,4</span><div class="rounded-lg bg-primary" style="height: 78%"></div></div><span class="text-xs text-muted group-data-[selected]:font-semibold group-data-[selected]:text-foreground">T6</span></div>
+              <div class="group flex h-full min-w-0 flex-1 flex-col items-center gap-2" data-bar data-label="Tháng 7" data-value="8.800.000 đ"><div class="flex w-full flex-1 flex-col justify-end gap-1"><span class="text-center text-xs text-muted tabular-nums group-data-[selected]:font-semibold group-data-[selected]:text-foreground">8,8</span><div class="rounded-lg bg-primary" style="height: 66%"></div></div><span class="text-xs text-muted group-data-[selected]:font-semibold group-data-[selected]:text-foreground">T7</span></div>
+              <div class="group flex h-full min-w-0 flex-1 flex-col items-center gap-2" data-bar data-label="Tháng 8" data-value="11.300.000 đ"><div class="flex w-full flex-1 flex-col justify-end gap-1"><span class="text-center text-xs text-muted tabular-nums group-data-[selected]:font-semibold group-data-[selected]:text-foreground">11,3</span><div class="rounded-lg bg-primary" style="height: 85%"></div></div><span class="text-xs text-muted group-data-[selected]:font-semibold group-data-[selected]:text-foreground">T8</span></div>
+              <div class="group flex h-full min-w-0 flex-1 flex-col items-center gap-2" data-bar data-label="Tháng 9" data-value="9.600.000 đ"><div class="flex w-full flex-1 flex-col justify-end gap-1"><span class="text-center text-xs text-muted tabular-nums group-data-[selected]:font-semibold group-data-[selected]:text-foreground">9,6</span><div class="rounded-lg bg-primary" style="height: 72%"></div></div><span class="invisible text-xs" aria-hidden="true">T9</span></div>
+              <div class="group flex h-full min-w-0 flex-1 flex-col items-center gap-2" data-bar data-label="Tháng này, tới 09/10 · đang chạy" data-value="8.450.000 đ"><div class="flex w-full flex-1 flex-col justify-end gap-1"><span class="text-center text-xs text-muted tabular-nums group-data-[selected]:font-semibold group-data-[selected]:text-foreground">8,5</span><div class="rounded-lg bg-primary/35" style="height: 64%"></div></div><span class="self-end text-xs whitespace-nowrap text-muted group-data-[selected]:font-semibold group-data-[selected]:text-foreground">Tháng này</span></div>
             </div>
           </div>
           <h2 class="mt-6 px-4 text-[20px]/[25px] font-semibold">Theo danh mục</h2>
           <ul class="mx-4 mt-2 divide-y divide-border overflow-hidden rounded-[20px] bg-surface ring-1 ring-border-strong ring-inset">
-            <li class="flex min-h-16 items-center gap-3 px-4 py-3"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-rose-bg) text-(--cat-rose)"><i data-lucide="shopping-bag" class="size-5"></i></span><span class="min-w-0 flex-1"><span class="flex justify-between text-base font-medium"><span>Đi chợ</span><span class="tabular-nums">3.120.000 đ</span></span><span class="mt-2 block h-1.5 overflow-hidden rounded-full bg-secondary"><span class="block h-full w-[37%] rounded-full bg-primary"></span></span></span></li>
-            <li class="flex min-h-16 items-center gap-3 px-4 py-3"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-amber-bg) text-(--cat-amber)"><i data-lucide="coffee" class="size-5"></i></span><span class="min-w-0 flex-1"><span class="flex justify-between text-base font-medium"><span>Ăn uống</span><span class="tabular-nums">2.480.000 đ</span></span><span class="mt-2 block h-1.5 overflow-hidden rounded-full bg-secondary"><span class="block h-full w-[29%] rounded-full bg-primary"></span></span></span></li>
-            <li class="flex min-h-16 items-center gap-3 px-4 py-3"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-blue-bg) text-(--cat-blue)"><i data-lucide="car" class="size-5"></i></span><span class="min-w-0 flex-1"><span class="flex justify-between text-base font-medium"><span>Đi lại</span><span class="tabular-nums">1.350.000 đ</span></span><span class="mt-2 block h-1.5 overflow-hidden rounded-full bg-secondary"><span class="block h-full w-[16%] rounded-full bg-primary"></span></span></span></li>
+            <li class="flex min-h-16 items-center gap-3 px-4 py-3"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-blue-bg) text-(--cat-blue)"><i data-lucide="shopping-bag" class="size-5"></i></span><span class="min-w-0 flex-1"><span class="flex justify-between text-base font-medium"><span>Đi chợ</span><span class="tabular-nums">3.120.000 đ</span></span><span class="mt-2 block h-1.5 overflow-hidden rounded-full bg-secondary"><span class="block h-full w-[37%] rounded-full bg-primary"></span></span></span></li>
+            <li class="flex min-h-16 items-center gap-3 px-4 py-3"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-sky-bg) text-(--cat-sky)"><i data-lucide="coffee" class="size-5"></i></span><span class="min-w-0 flex-1"><span class="flex justify-between text-base font-medium"><span>Ăn uống</span><span class="tabular-nums">2.480.000 đ</span></span><span class="mt-2 block h-1.5 overflow-hidden rounded-full bg-secondary"><span class="block h-full w-[29%] rounded-full bg-primary"></span></span></span></li>
+            <li class="flex min-h-16 items-center gap-3 px-4 py-3"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-violet-bg) text-(--cat-violet)"><i data-lucide="car" class="size-5"></i></span><span class="min-w-0 flex-1"><span class="flex justify-between text-base font-medium"><span>Đi lại</span><span class="tabular-nums">1.350.000 đ</span></span><span class="mt-2 block h-1.5 overflow-hidden rounded-full bg-secondary"><span class="block h-full w-[16%] rounded-full bg-primary"></span></span></span></li>
           </ul>
         </div>
       </section>
@@ -417,6 +427,61 @@
       // Máy thật là .device đầu tiên. Script của app tìm phần tử trong đó, không tìm khắp trang: bảng luồng (J1) chép cả
       // khung máy, giữ nguyên data-* để CSS theo trạng thái còn đúng, nên tìm khắp trang là đổi nhầm cả bản chép.
       const liveDevice = document.querySelector(".device");
+
+      // Biểu đồ (J17): chạm một lần giữ chọn, chạm lại hay chạm chỗ khác thì về tổng; kéo ngang thì dò, thả tay về tổng.
+      liveDevice.querySelectorAll("[data-chart]").forEach((chart) => {
+        const plot = chart.querySelector("[data-chart-plot]");
+        const bars = [...plot.querySelectorAll("[data-bar]")];
+        const labelText = chart.querySelector("[data-chart-label]");
+        const valueText = chart.querySelector("[data-chart-value]");
+        const totalLabel = labelText.textContent;
+        const totalValue = valueText.textContent;
+        let selectedIndex = -1;
+        let pressedIndex = -1;
+        let isDragging = false;
+
+        function selectBar(index) {
+          selectedIndex = index;
+          bars.forEach((bar, barIndex) => bar.toggleAttribute("data-selected", barIndex === index));
+          labelText.textContent = index < 0 ? totalLabel : bars[index].dataset.label;
+          valueText.textContent = index < 0 ? totalValue : bars[index].dataset.value;
+        }
+
+        function findNearestBar(clientX) {
+          const distances = bars.map((bar) => {
+            const rect = bar.getBoundingClientRect();
+            return Math.abs(rect.left + rect.width / 2 - clientX);
+          });
+
+          return distances.indexOf(Math.min(...distances));
+        }
+
+        plot.addEventListener("pointerdown", (event) => {
+          pressedIndex = findNearestBar(event.clientX);
+          isDragging = false;
+          plot.setPointerCapture(event.pointerId);
+        });
+        plot.addEventListener("pointermove", (event) => {
+          if (!plot.hasPointerCapture(event.pointerId)) return;
+          const index = findNearestBar(event.clientX);
+          if (index !== pressedIndex) isDragging = true;
+          if (isDragging) selectBar(index);
+        });
+        plot.addEventListener("pointerup", () => {
+          if (isDragging) selectBar(-1);
+          else selectBar(pressedIndex === selectedIndex ? -1 : pressedIndex);
+        });
+        liveDevice.addEventListener("pointerdown", (event) => {
+          if (!plot.contains(event.target) && selectedIndex >= 0) selectBar(-1);
+        });
+        plot.addEventListener("keydown", (event) => {
+          if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+          event.preventDefault();
+          const step = event.key === "ArrowRight" ? 1 : -1;
+          const startIndex = selectedIndex < 0 ? bars.length : selectedIndex;
+          selectBar(Math.min(bars.length - 1, Math.max(0, startIndex + step)));
+        });
+      });
 
       // Điều hướng bằng hash: #home, #stats, #settings là tab; #detail là màn con; #add mở sheet trên màn đang xem.
       const tabScreens = ["home", "stats", "settings"];

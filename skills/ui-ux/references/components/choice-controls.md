@@ -103,7 +103,7 @@ Cả hai không cần phần tử phụ, không cần icon. Cỡ nhỏ `size-4`:
 - **Nhóm radio luôn có sẵn một lựa chọn** (thường là cái phổ biến nhất). Radio không bỏ chọn được, nên nhóm trắng từ đầu là người dùng không quay lại được trạng thái "chưa chọn". Ngoại lệ: chọn sai gây hậu quả tiền bạc (gói trả phí) thì để trống và bắt chọn.
 - Bọc nhóm trong `<fieldset>` + `<legend>` là câu hỏi. Không có legend thì trình đọc màn hình đọc "Giao tiêu chuẩn, nút radio" mà không biết đang hỏi gì.
 - Từ 5 lựa chọn trở lên thì dùng select.
-- **Xếp nhóm: một hàng ngang hoặc một cột dọc, không lưới hai cột.** Từ `sm` nhãn ngắn vừa một hàng thì `flex gap-6`; dưới `sm` thì dọc. Lưới 2×2 đọc thành chữ Z, thang có thứ tự như mức ưu tiên ra "Thấp, Trung bình / Cao, Khẩn cấp", mắt phải nhảy về đầu hàng mới biết "Cao" đứng sau "Trung bình" (`R6`).
+- **Xếp nhóm: một hàng ngang hoặc một cột dọc, không lưới hai cột.** Từ `sm` nhãn ngắn vừa một hàng thì `flex gap-6`; dưới `sm` thì dọc. Lưới 2×2 đọc thành chữ Z, thang có thứ tự như mức ưu tiên ra "Thấp, Trung bình / Cao, Khẩn cấp", mắt phải nhảy về đầu hàng mới biết "Cao" đứng sau "Trung bình" (`R6`). Lưới ô icon chọn danh mục, chọn loại (mỗi ô một icon trên nhãn ngắn) thì xếp lưới được: tập đó không có thứ tự, và đó là cách số đông app làm.
 - **Dưới `sm` mỗi lựa chọn là một dòng cao 44px bấm được cả dòng**: `<label>` bọc cả ô lẫn chữ, `flex w-fit min-h-11 items-center gap-3` (vẫn đúng `I26`: rộng bằng ô + chữ, không kéo hết hàng). Ô 20px với nhãn cao 20px thì vùng bấm chỉ 20px, hai hàng cách 12px thì ngón tay chạm khe giữa là trượt (probe báo 20×20 ở cùng form).
 
 ## Card chọn

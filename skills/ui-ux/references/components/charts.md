@@ -4,6 +4,10 @@ Biểu đồ là chỗ luật một màu nhấn hay bị phá nhất. Bốn ô s
 xanh cột đỏ, biểu đồ tròn bảy múi bảy sắc. Nhìn thì tưởng nhiều thông tin, thật
 ra là không quyết định được cái nào quan trọng.
 
+File này viết cho màn có chuột. **Biểu đồ trong app điện thoại** (chạm thay rê, hàng đọc số, trục co theo dữ liệu
+giá, cột đang chọn, nhãn ở khổ hẹp, màu danh mục) đọc thêm `J17` trong `../mobile.md`; chỗ nào hai bên khác nhau
+thì `J17` thắng.
+
 ---
 
 ## Màu
@@ -237,7 +241,10 @@ cách tô với hạn trong `list-row.md`. Tô cả thanh hổ phách thì dự 
 "tiến độ có vấn đề", vài thanh cam thành thứ nặng nhất màn.
 Màu theo trạng thái (dưới đây) chỉ cho **thanh đứng riêng**, nơi màu nói về chính
 đại lượng thanh đo (dung lượng gần đầy). Mục xong 100% thì thanh emerald như
-thanh đứng riêng.
+thanh đứng riêng. **Ngoại lệ: thanh trần trong danh sách** (ngân sách từng danh mục, hạn mức thẻ): màu nói
+về chính đại lượng thanh đo, nên tô như thanh dung lượng, `bg-primary` khi ổn, amber khi sắp chạm, đỏ khi
+vượt, kèm dòng phụ bằng chữ ("Sắp vượt · còn 350.000 đ", "Đã vượt 65.000 đ"). Các app ngân sách phổ biến
+đều tô vậy.
 
 **Thanh tiến độ đứng riêng** (dung lượng, checklist): hàng trên là
 nhãn trái + số phải, thanh ở giữa, một dòng phụ `text-xs text-muted` bên dưới.
@@ -424,7 +431,8 @@ thay cho sparkline.
   và dòng phụ đổi trái thành "Chậm 12% so với nhịp" `text-amber-700` kèm icon. Không tô cả thanh
   amber: như "Thanh trong danh sách", thanh chỉ nói đã được bao nhiêu.
 - **Chỉ số càng thấp càng tốt** (chi phí, hạn mức dùng) không phải mục tiêu mà là trần: theo thanh
-  dung lượng (amber, đỏ khi gần đầy).
+  dung lượng (amber, đỏ khi gần đầy). Có nhịp kỳ vọng (ngân sách tháng) thì vạch nhịp như trên, đặt ở mức
+  chi đều tới hôm nay; thanh vượt vạch là đang chi nhanh hơn nhịp.
 - **Một hàng một kiểu phần dưới**: cả hàng là sparkline, hoặc cả hàng là thanh mục tiêu. Hàng trộn
   thì ô nào thiếu thì giữ chỗ cùng chiều cao như luật sparkline, nhưng nên tách ô mục tiêu ra một
   hàng hay một card riêng.

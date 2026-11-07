@@ -55,7 +55,9 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   **script của app tìm phần tử trong máy thật** (`liveDevice.querySelectorAll(...)`, `liveDevice` là `.device` đầu tiên),
   không `document.querySelectorAll`, kẻo đổi tab, mở sheet đổi nhầm cả bản chép trên bảng.
   Thiếu bảng thì người duyệt phải bấm qua từng màn mới thấy cả luồng, không so được hai màn cạnh nhau. Probe gặp
-  bảng thì tự đo màn đầu trong khung máy.
+  bảng thì tự đo màn đầu trong khung máy. **App có phần tử vẽ bằng JS mà đo bề rộng** (biểu đồ `J17`) thì gọi
+  `buildBoard` sau `load` và `document.fonts.ready`, không ở cuối body: lúc đó Tailwind bản trình duyệt chưa sinh
+  class, font chưa nạp, biểu đồ đo sai bề rộng rồi bị chép nguyên vào bảng.
 - **Nút chính của luồng dẫn tới kết quả thấy được.** Bấm "Lưu", "Tạo", "Đặt" trong wireframe hay bản mẫu thì về
   màn trước **đã đổi**: dòng mới ở đầu danh sách (nhãn "Mới"), số đếm và số dư cộng thêm, thông báo ngắn `J7`
   ("Đã thêm Ăn tối", có Hoàn tác). Quay về màn cũ y nguyên thì người duyệt không thấy lưu xong ra sao, nên không
@@ -158,6 +160,9 @@ thanh tab và thanh trên giữ `h-*` cố định: nền tảng cũng giữ c�
     rực (tím, hồng, cam) làm nền thì thẻ thành mảng màu lớn nhất màn, nhìn thô; màu nhấn chỉ ở thanh tiến độ
     trong thẻ (`--hero-accent`: trắng khi màu nhấn trung tính, `color-mix(in oklab, var(--primary) 70%, white)`
     khi màu nhấn rực, để thanh đủ sáng trên nền tối).
+  - **Lãi lỗ, tăng giảm trong thẻ** dùng bản sáng của hai màu: tăng tốt `#5fd99a`, giảm xấu `#ff9aab` (đạt 4.5:1 trên
+    `#1c1c1e`); `--success`, `--danger` của nền sáng chìm trên nền tối. Kèm mũi tên hay dấu `+` để màu không là thứ duy
+    nhất mang nghĩa (`N4`).
 
 ## J6. Sheet
 
@@ -673,3 +678,56 @@ tay đứng giữa toàn ảnh đồ uống chụp thật là hai kiểu vẽ tr
 
 **Lúc giao** nói một dòng: nhân vật là bộ free giữ chỗ (CC0); có bộ hình thương hiệu thì thay ở một chỗ, đoạn script
 gán `img[data-art]` theo tên nhân vật và nét mặt. Bảng luồng (`J1`) giữ móc `data-art` khi chép màn.
+
+## J17. Biểu đồ trên điện thoại ⚑
+
+Màu, cột hay đường, chuyện bỏ bớt vẫn theo `components/charts.md`. File đó viết cho màn có chuột; trên điện thoại
+khác ở các chỗ dưới đây, và chỗ nào khác thì luật này thắng. Code mẫu: màn Thống kê của `mobile-app.html`.
+
+- **Chạm thay rê.** Cả vùng vẽ là một chỗ chạm, chạm hay kéo ngang thì chọn mốc gần ngón tay nhất. 30 mốc trên 312px
+  chỉ còn khoảng 10px mỗi mốc, dưới mức 44px của `J4`, nên không làm chỗ chạm riêng cho từng chấm, từng cột. Vùng vẽ
+  để `touch-action: pan-y`: kéo ngang là dò số, kéo dọc vẫn cuộn màn. Kéo xong thả tay thì về mặc định (mốc mới
+  nhất), như app chứng khoán; chạm một lần thì giữ chọn tới khi chạm chỗ khác. Mũi tên trái phải dời mốc khi vùng vẽ
+  đang focus.
+- **Số đọc ở chỗ cố định, không nhãn bay theo ngón tay.** Ngón tay che đúng chỗ đang chạm, còn nhãn rộng chừng 120px
+  trên khung 358px thì gần như luôn trùm qua đường, bị đẩy lên đỉnh vùng vẽ, xa chấm. Hai cách, theo số đông app tài
+  chính:
+  - Khối có **con số to ở đầu** (tổng chi, giá trị danh mục): con số đó đổi thành số của mốc đang chọn, dòng dưới đổi
+    thành mốc ("29/10 · Thứ năm"). Bỏ chọn thì về số tổng.
+  - Không có số to thì **một hàng đọc số** cao cố định ngay trên vùng vẽ ("Tuần này, 02–07/11 · 5.462.000 đ"). Hàng
+    giữ chỗ cả khi chưa chọn (hiện mốc mới nhất), để biểu đồ không nhảy.
+
+  Mốc đang chọn trên đường là một **vạch dọc** mảnh `stroke-border-strong` hết chiều cao vùng vẽ, cộng chấm 8px viền
+  trắng. Luật "nhãn đặt về phía không có đường" của `charts.md` chỉ dùng từ 600px.
+- **Hai đường trên một biểu đồ** (thu với chi, tháng này với tháng trước): hàng đọc số ghi cả hai, mỗi số có mẫu nét
+  đứng trước ("— Tháng này 6,8 tr · - - Tháng trước 7,1 tr"). Đường so sánh nét đứt hay bậc `/45` theo bảng đậm nhạt
+  của `charts.md`, đường chính vẽ đè lên. Điện thoại tối đa hai đường; nhiều hơn thì tách biểu đồ hay cho nút chọn
+  chuỗi.
+- **Đáy trục.** Lượng đếm hay cộng dồn (chi theo ngày, chi cộng dồn tháng): đáy là 0. **Giá trị và giá** (danh mục đầu
+  tư, giá vàng, tỷ giá): trục co theo dữ liệu, chừa khoảng 10% trên dưới, ba nhãn mức số tròn. Đáy 0 thì dao động
+  350–415 tr thành một đường gần thẳng. Có vốn thì thêm đường vốn nét đứt, ghi chú "- - Vốn" ở đầu.
+- **Lưới.** Biểu đồ là thứ chính của màn (tab Phân tích, màn chi tiết một tài sản) thì theo "biểu đồ chính của trang
+  báo cáo" trong `charts.md`: ba vạch ngang, nhưng **nhãn mức nằm trong vùng vẽ**, ngay trên vạch ở mép trái, không
+  chiếm cột 44px riêng. Bước mức theo dãy 1, 2, 5 (1 tr, 2 tr, 5 tr) cho vừa số chi tiêu cá nhân; "làm tròn lên 10 tr"
+  của `app.md` viết cho doanh thu. Biểu đồ nằm trong thẻ ở màn tổng quan thì không lưới, như `charts.md`.
+- **Cột đang chọn không đổi màu** (cả chuỗi một màu, `charts.md`): số trên đầu cột đó và nhãn trục của nó đậm lên, số
+  đầy đủ hiện ở hàng đọc số. Kỳ đang chạy vẫn nhạt hơn như `charts.md`.
+- **Nhãn trục ở khổ hẹp.** Nhãn rộng hơn khe cột (ngày "21/09" ở 8 cột khổ 360, khe khoảng 34px) thì cách một, luôn giữ
+  nhãn cột cuối; nhãn ngắn vừa khe ("T5") thì ghi đủ. Nhãn kỳ đang chạy ("Tuần này", "Tháng này") được tràn sang trái,
+  canh theo mép phải cột cuối, cột để `min-w-0` cho khỏi phình theo nhãn; đè lên nhãn bên cạnh thì bỏ nhãn bên cạnh.
+  Biểu đồ đường ghi 4–5 nhãn mốc.
+- **Chọn khoảng.** Điều khiển phân đoạn Ngày · Tuần · Tháng chọn độ hạt, mỗi độ có cửa sổ mặc định (30 ngày, 8 tuần,
+  6 tháng). Một chip "30 ngày qua ⌄" mở sheet đổi khoảng (7 ngày, 30 ngày, tháng này, tháng trước, tự chọn). Tự chọn
+  mở lịch khoảng ngày như màn chọn ngày của `mobile-photo.html`. Biểu đồ giá trị dùng hàng nút 1T · 3T · 6T · 1N · Tất
+  cả sát biểu đồ. Khoảng không có dữ liệu thì vùng vẽ giữ chiều cao, một câu ở giữa, không vẽ trục rỗng.
+- **Màu danh mục: một thang cho cả icon lẫn biểu đồ** (`M8`). Danh mục chi tiêu hiện ở biểu đồ cơ cấu thì icon của nó
+  trong danh sách giao dịch, ngân sách lấy đúng sắc của mảng đó. App tiền đã dùng đỏ, hổ phách, xanh lá cho trạng thái
+  (vượt ngân sách, lãi lỗ, tiền vào), nên thang danh mục là thang mặc định của `charts.md` (hay khối Sắc `--cat-*` của
+  `tokens.css` nếu dự án có), đủ sáu sắc theo thứ tự nhóm lớn tới nhỏ. Sắc đầu trùng màu nhấn (ngành tài chính là
+  Xanh dương) thì vẫn giữ: bỏ ba sắc gần xanh dương thì chỉ còn ba sắc cho sáu nhóm, và danh mục luôn có tên, có số đi
+  kèm nên không bị đọc thành nút. Ô icon nền sắc đó `/10`, icon bậc 600–700 cho đủ 4.5:1. Danh mục thứ bảy trở đi gộp "Khác" `slate-300` trên
+  biểu đồ, icon trong danh sách là ô `bg-secondary text-muted`. Sáu sắc avatar của `M34` (có emerald, amber) chỉ cho
+  thực thể không lên biểu đồ.
+- **Vẽ bằng gì.** Bản mẫu HTML thuần không có `package.json` thì vẽ SVG bằng tay theo công thức của `charts.md`. Dự án
+  có thư viện thì theo "Vẽ bằng thư viện"; hàng đọc số và vạch chọn vẫn theo luật trên (Recharts: ẩn tooltip mặc định,
+  đọc mốc đang chọn rồi ghi vào hàng đọc số).
