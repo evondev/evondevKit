@@ -1348,7 +1348,11 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
 
     const style = getComputedStyle(element);
     const textColor = readColor(cssColor);
-    textColor.alpha *= readOpacityChain(element);
+    const opacityChain = readOpacityChain(element);
+    // Đang ẩn bằng độ mờ (thông báo ngắn chờ hiện, lớp đang mờ dần): người dùng không thấy, không chấm. Chấm vào thì
+    // chữ trong suốt ra 1:1, báo nhầm.
+    if (opacityChain < 0.05) return;
+    textColor.alpha *= opacityChain;
     const fontSize = parseFloat(style.fontSize);
     const isLargeText = fontSize >= 24 || (fontSize >= 18.66 && Number(style.fontWeight) >= 700);
     const requiredRatio = isLargeText ? 3 : 4.5;

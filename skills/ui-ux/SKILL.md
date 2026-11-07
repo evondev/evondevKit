@@ -409,7 +409,8 @@ mockup và wireframe dùng ảnh thật, trang mới trông như sản phẩm đ
 - **Ảnh cảnh, vật**: Unsplash, dạng
   `https://images.unsplash.com/photo-<id>?w=800&q=80&auto=format&fit=crop`, đúng chủ đề của
   mục (phòng trọ là nội thất phòng, tin tuyển dụng là văn phòng). Không tự bịa `<id>`: tìm
-  trên Unsplash, rồi `curl -sI` từng link, không ra 200 thì thay. Mỗi mục một ảnh khác nhau.
+  bằng tìm kiếm web giới hạn `unsplash.com/photos` (trang tìm và API của Unsplash chặn khi gọi từ dòng lệnh), rồi
+  `curl -sI` từng link, không ra 200 thì thay. Mỗi mục một ảnh khác nhau.
 - **Avatar người**: ảnh chân dung (`https://randomuser.me/api/portraits/women/<0-99>.jpg`,
   `.../men/<0-99>.jpg`), khớp giới của tên giả. Ảnh vẫn theo khuôn của `components/avatar.md`.
 - **Logo công ty giả**: ô chữ cái theo `components/avatar.md` (hình vuông bo góc), không lấy

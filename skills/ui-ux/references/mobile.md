@@ -78,6 +78,8 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
 - **Ẩn thanh tab khi màn là một việc phải làm cho xong**: form thêm, sửa; giỏ hàng, thanh toán; luồng nhiều bước.
   Các màn này có nút chính dính đáy (`J5`), thanh tab nằm cạnh nút đó thì hai dải đáy chồng nhau, và bấm nhầm tab là
   bỏ dở việc. Sheet và hộp hỏi phủ lên thanh tab.
+- **Màn xem có thanh hành động dính đáy cũng ẩn thanh tab** (trang chỗ ở, sản phẩm có "giá · Đặt", "Thêm vào giỏ"): thanh
+  hành động là việc chính của màn, hai dải đáy chồng nhau thì nút chính bị đẩy lên giữa màn.
 - **Chấm đỏ có số trên mục** chỉ cho việc người dùng phải xử lý (tin nhắn chưa đọc, đơn cần xác nhận), không cho
   khuyến mãi hay mục mới: chấm đỏ ở mọi tab thì không ai nhìn nữa. Viên `bg-danger` chữ trắng 11px, cao 16, góc phải
   trên icon; trên 99 ghi "99+".
@@ -90,7 +92,8 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   ký tự: "Thống kê", "Cài đặt", "Tháng 10"). Trên nó được một dòng nhỏ `text-sm text-muted` (lời chào, ngày).
   Phải là avatar 44px dẫn tới tài khoản hay một nút icon, không hơn hai thứ.
 - **Màn con: thanh trên 44px**: trái là nút quay lại, giữa là tiêu đề 17px `font-semibold`, phải tối đa **một**
-  nút icon 44px. Nút quay lại một trong hai kiểu, cả app một kiểu: chevron 24px + tên màn cha (cao 44px; tên dài quá
+  nút icon 44px; màn có ảnh tràn đầu (chỗ ở, sản phẩm) được **hai** nút tròn, chia sẻ và lưu, như số đông app đặt phòng,
+  mua sắm. Nút quay lại một trong hai kiểu, cả app một kiểu: chevron 24px + tên màn cha (cao 44px; tên dài quá
   12 ký tự thì chỉ chevron), hoặc **chỉ chevron trong nút tròn 44px** `rounded-full bg-secondary` như iOS hiện hành và
   phần lớn ảnh mẫu mới. Nút tròn hợp màn có ảnh tràn đầu (nền ảnh nào cũng thấy nút).
 - **Luồng nhiều bước** (đặt lịch, thanh toán): thanh bước mảnh ngay dưới thanh trên, tiêu đề là tên bước. Không
@@ -191,7 +194,8 @@ Dùng (gặp ở phần lớn ảnh mẫu, hợp quy ước):
   cắt; `gap-1.5` thì ô còn 42px, dưới 44.
 - **Chọn giờ** (đặt lịch, đặt bàn, đặt sân): dải ngày trong tuần ở trên, dưới là **chỉ giờ còn trống**, ô viền bo
   tròn 3–4 cột, giờ đang chọn tô đặc `--primary`. Giờ đã kín thì giấu, không gạch ngang hay làm mờ (phần lớn app
-  đặt lịch thật và ảnh mẫu): gạch ngang lẫn giữa giờ trống làm màn nhiễu, mắt phải lọc. Nhiều giờ thì chia
+  đặt lịch thật và ảnh mẫu): gạch ngang lẫn giữa giờ trống làm màn nhiễu, mắt phải lọc. Luật giấu này chỉ cho **giờ**;
+  ngày đã kín trong lịch tháng (đêm đã có khách đặt) vẫn giữ ô, mờ và khoá, vì lưới lịch phải đủ ngày. Nhiều giờ thì chia
   sáng / chiều / tối; buổi hết giờ là một hàng "Sáng · Đã kín" (tên buổi và chữ `text-muted` cùng hàng), không để
   tên buổi một dòng rồi "Đã kín" lơ lửng dòng dưới. Ngày kín cả ngày thì ô ngày mờ kèm chữ "Kín".
 - **Ảnh thật dùng to**: app có hình (tiệm, món, phòng, người làm) thì trang chủ có ảnh tiệm hay ưu đãi cao
@@ -551,7 +555,7 @@ các kiểu lặp lại ở nhiều app, không chép mặt riêng của app nà
 | Bộ | Đổi gì |
 | --- | --- |
 | Mono | `--primary: #111111`; nền màn trắng cả màn danh sách nhóm (nhóm tách bằng tiêu đề và đường kẻ `--border-strong`); bỏ thẻ số chính nền tối, số chính chỉ là chữ lớn |
-| Photo | `--primary` là màu thương hiệu đạt 4.5:1 với chữ trắng (hồng `#d70466` 5.12:1; `#e11d48` 4.7:1); nút phụ `bg-foreground text-surface` hay viền `--border-strong` |
+| Photo | `--primary` lấy trong bảng màu theo ngành của `brand-tokens.md` (không đỏ, không hồng); màu nhấn chỉ ở nút **cam kết** của luồng (Tìm, Đặt, Thanh toán, Mua). Nút chính khác (Tiếp ở bước chọn, Áp dụng lọc, Xem chuyến đi) là nút đen `bg-foreground text-surface`; trạng thái đang chọn (ngày, chip lọc, card chọn, công tắc, tim đã lưu) tô `--foreground` |
 | Playful | `--app-font: "Nunito"`; `--primary` đậm đủ cho chữ trắng: xanh lá `#2f7d00` 5.18:1. **Xanh lá rực `#58cc02` chữ trắng chỉ 2.09:1**: muốn màu rực thì nút rực chữ tối, hay chữ trắng trên nền đậm. Dải đúng `#d7ffb8` chữ `#2f7d00` (4.66:1), dải sai `--danger-bg` chữ `--danger` |
 | Immersive | Cả khung mang `force-dark` (`M33`) với `--background: #1b2350`, `--surface` là trắng 10% trên nền (`#323962`, chữ trắng 11:1), `--muted` trắng 72% (8.4:1 trên `#1b2350`); nút chính `bg-white text-[#1b2350]` |
 | Editorial | Nạp thêm Lora 400, 700 (có bộ `vietnamese`, đã kiểm); `--background: #fbf8f3`, `--muted: #6b6459` (5.5:1 trên kem), sắc nhấn cam `#c2410c` (4.9:1 trên kem) |
@@ -572,6 +576,8 @@ font, để màn sau theo đúng bộ đó, không khuyên lại.
 - Immersive đè nền trắng của `J1` và dòng "gradient" của `J8` cho **nền**: chuyển dọc hai tông gần nhau. Nút vẫn
   không gradient.
 - Mono đè thẻ số chính nền tối của `J5`.
+- Photo đè "ngày đang chọn tô `primary`" của `components/choice-controls.md` và "công tắc bật là `--primary`" của `J4`:
+  đang chọn tô `--foreground`, để màu nhấn chỉ còn ở nút cam kết.
 
 **Không đè:** `J2` thanh tab có chữ, `J4` chỗ bấm 44px, chữ tối thiểu 11px, tương phản 4.5:1, một hành động chính
 mỗi màn.
@@ -579,8 +585,9 @@ mỗi màn.
 **Bẫy**
 - **Mono, Photo hay thấy thanh tab chỉ icon** trong app mẫu (app quen thuộc, người dùng đã thuộc icon). App mới vẫn
   giữ chữ (`J2`).
-- **Photo không có ảnh thật thì đừng chọn.** Ô xám thay ảnh trông như app hỏng; dữ liệu giả dùng ảnh thật có quyền
-  dùng, không vẽ minh hoạ thay ảnh.
+- **Photo không có ảnh thật thì đừng chọn.** Cả app toàn ô xám thay ảnh trông như app hỏng; dữ liệu giả dùng ảnh thật
+  có quyền dùng, không vẽ minh hoạ thay ảnh. Một mục thiếu ảnh để thử ca biên (`S16`) thì vẫn có: khung nền
+  `--background`, icon và chữ "Chưa có ảnh", không phải ô xám trơn.
 - **Playful: gờ đáy 4px là `box-shadow` đặc, không phải `border-bottom`.** Chưa bấm `box-shadow: 0 4px 0 <màu gờ>`; nhấn
   thì `translate: 0 2px` và gờ còn `0 2px 0`: mép dưới đứng yên, bố cục không đổi. Đừng đổi `border-bottom-width` rồi bù
   `margin`: thẻ có `min-height` không thấp đi, phần bù dư ra, mọi thẻ bên dưới giật xuống mỗi lần nhấn. Gờ nằm ngoài
