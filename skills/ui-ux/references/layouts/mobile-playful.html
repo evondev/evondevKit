@@ -146,7 +146,7 @@
       @keyframes band-up { from { translate: 0 100%; } }
       /* Sóng âm khi đang nghe: cho biết mic đang thu, không phải trang trí. */
       .wave { display: flex; align-items: center; gap: 5px; height: 32px; }
-      .wave span { width: 6px; height: 100%; border-radius: 3px; background: currentColor; animation: wave 900ms ease-in-out infinite; }
+      .wave span { width: 5px; height: 100%; border-radius: 3px; background: currentColor; animation: wave 900ms ease-in-out infinite; }
       .wave span:nth-child(2n) { animation-delay: -300ms; }
       .wave span:nth-child(3n) { animation-delay: -600ms; }
       .wave span:nth-child(4n+1) { animation-delay: -150ms; }
@@ -247,7 +247,7 @@
 
             <!-- Nhân vật dẫn (J16): một nhân vật cho cả app, chỉ đổi nét mặt theo khoảnh khắc. -->
             <p class="mt-8 max-w-[260px] rounded-[20px] border-2 border-border-strong bg-surface px-4 py-3 text-base">Hi! Mình là Mia, cùng luyện nói 10&nbsp;phút mỗi ngày nhé.</p>
-            <img data-art="mia" data-art-face="smile" alt="" class="mt-2 size-44" />
+            <img data-art="mia" data-art-face="wave" alt="" class="mt-2 size-44" />
 
             <h1 class="mt-6 text-[28px]/[34px] font-extrabold tracking-tight text-balance">Nói tiếng Anh 10&nbsp;phút mỗi ngày</h1>
             <p class="mt-2 text-base text-pretty text-muted">Luyện hội thoại với tình huống thật, được sửa phát âm ngay khi nói.</p>
@@ -492,7 +492,7 @@
       <section class="screen is-pushed" data-screen="plan" aria-label="Lộ trình sẵn sàng">
         <div class="scroll pad-top px-4">
           <div class="flex flex-col items-center pt-6 text-center">
-            <img data-art="mia" data-art-face="lovingGrin1" alt="" class="size-36" />
+            <img data-art="mia" data-art-face="ok" alt="" class="size-36" />
             <h1 class="mt-2 text-[28px]/[34px] font-extrabold tracking-tight text-balance">Lộ trình của Lan đã sẵn sàng</h1>
             <p class="mt-2 text-base text-pretty text-muted">10 phút mỗi ngày. Sau 4 tuần bạn tự giới thiệu và trả lời được 10 câu phỏng vấn hay gặp.</p>
           </div>
@@ -525,7 +525,7 @@
         <div class="scroll px-4">
           <h1 class="pt-4 text-2xl font-bold tracking-tight text-balance">Chọn câu đáp lại hợp nhất</h1>
           <div class="mt-5 flex items-end gap-2">
-            <img data-art="daniel" data-art-face="explaining" alt="" class="size-14 shrink-0 rounded-full bg-background" />
+            <img data-art="daniel" data-art-face="teach" alt="" class="size-14 shrink-0 rounded-full bg-background" />
             <div class="flex items-center gap-1 rounded-[20px] rounded-bl-md bg-background py-1 pr-1 pl-4">
               <p class="text-[17px] text-pretty">Hi, I'm Daniel. How's it going?</p>
               <button class="press grid size-11 shrink-0 place-items-center rounded-full text-primary" aria-label="Nghe lại"><i data-lucide="volume-2" class="size-5"></i></button>
@@ -554,7 +554,7 @@
         <div class="scroll px-4">
           <h1 class="pt-4 text-2xl font-bold tracking-tight text-balance">Chọn câu đáp lại hợp nhất</h1>
           <div class="mt-5 flex items-end gap-2">
-            <img data-art="daniel" data-art-face="lovingGrin1" alt="" class="size-14 shrink-0 rounded-full bg-background" />
+            <img data-art="daniel" data-art-face="ok" alt="" class="size-14 shrink-0 rounded-full bg-background" />
             <div class="flex items-center gap-1 rounded-[20px] rounded-bl-md bg-background py-1 pr-1 pl-4">
               <p class="text-[17px] text-pretty">Hi, I'm Daniel. How's it going?</p>
               <button class="press grid size-11 shrink-0 place-items-center rounded-full text-primary" aria-label="Nghe lại"><i data-lucide="volume-2" class="size-5"></i></button>
@@ -585,7 +585,7 @@
         <div class="scroll px-4">
           <h1 class="pt-4 text-2xl font-bold tracking-tight text-balance">Chọn câu đáp lại hợp nhất</h1>
           <div class="mt-5 flex items-end gap-2">
-            <img data-art="daniel" data-art-face="concerned" alt="" class="size-14 shrink-0 rounded-full bg-background" />
+            <img data-art="daniel" data-art-face="sad" alt="" class="size-14 shrink-0 rounded-full bg-background" />
             <div class="flex items-center gap-1 rounded-[20px] rounded-bl-md bg-background py-1 pr-1 pl-4">
               <p class="text-[17px] text-pretty">Hi, I'm Daniel. How's it going?</p>
               <button class="press grid size-11 shrink-0 place-items-center rounded-full text-primary" aria-label="Nghe lại"><i data-lucide="volume-2" class="size-5"></i></button>
@@ -621,10 +621,10 @@
               <p class="text-[17px] text-pretty">Nice to meet you, Daniel.</p>
               <button class="press grid size-11 shrink-0 place-items-center rounded-full text-primary" aria-label="Nghe mẫu"><i data-lucide="volume-2" class="size-5"></i></button>
             </div>
-            <img data-art="mia" data-art-face="explaining" alt="" class="mt-2 size-40" />
+            <img data-art="mia" data-art-face="teach" alt="" class="mt-2 size-40" />
           </div>
           <div class="flex flex-1 flex-col items-center justify-center gap-3 py-4">
-            <a href="#speak-listening" class="btn btn-primary !min-h-[72px] !w-28 rounded-[20px]" aria-label="Bấm để nói"><i data-lucide="mic" class="size-8"></i></a>
+            <a href="#speak-listening" class="press grid size-[88px] place-items-center rounded-full bg-primary text-primary-foreground ring-8 ring-primary-light" aria-label="Bấm để nói"><i data-lucide="mic" class="size-9"></i></a>
             <p class="text-[15px] text-muted">Bấm rồi nói</p>
           </div>
         </div>
@@ -633,7 +633,7 @@
         </div>
       </section>
 
-      <!-- ================= 15. ĐANG NGHE: nút giãn ra thành sóng âm chạy, bấm lần nữa để dừng. ================= -->
+      <!-- ================= 15. ĐANG NGHE: nút mic tròn giãn thành viên dài có sóng âm chạy, nút tròn ở cuối thành nút dừng. ================= -->
       <section class="screen" data-screen="speak-listening" aria-label="Đang nghe">
         <header class="pad-top shrink-0">
           <div class="flex h-14 items-center gap-2 px-2">
@@ -649,11 +649,12 @@
               <p class="text-[17px] text-pretty">Nice to meet you, Daniel.</p>
               <button class="press grid size-11 shrink-0 place-items-center rounded-full text-primary" aria-label="Nghe mẫu"><i data-lucide="volume-2" class="size-5"></i></button>
             </div>
-            <img data-art="mia" data-art-face="calm" alt="" class="mt-2 size-40" />
+            <img data-art="mia" data-art-face="wait" alt="" class="mt-2 size-40" />
           </div>
           <div class="flex flex-1 flex-col items-center justify-center gap-3 py-4">
-            <a href="#speak-correct" class="btn btn-primary !min-h-[72px] !w-56 rounded-[20px]" aria-label="Đang nghe, bấm để dừng">
-              <span class="wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
+            <a href="#speak-correct" class="press flex h-[104px] w-full items-center gap-4 rounded-full bg-primary-light pr-2 pl-7 text-primary" aria-label="Đang nghe, bấm để dừng">
+              <span class="wave flex-1 justify-between" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
+              <span class="grid size-[88px] shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"><i data-lucide="square" class="size-7 fill-current"></i></span>
             </a>
             <p class="text-[15px] font-medium text-primary" role="status">Đang nghe… bấm để dừng</p>
           </div>
@@ -679,7 +680,7 @@
               <p class="text-[17px] font-semibold text-success underline decoration-2 underline-offset-4">Nice to meet you, Daniel.</p>
               <button class="press grid size-11 shrink-0 place-items-center rounded-full text-primary" aria-label="Nghe mẫu"><i data-lucide="volume-2" class="size-5"></i></button>
             </div>
-            <img data-art="mia" data-art-face="lovingGrin1" alt="" class="mt-2 size-40" />
+            <img data-art="mia" data-art-face="ok" alt="" class="mt-2 size-40" />
           </div>
         </div>
         <div class="feedback shrink-0 bg-success-bg px-4 pt-4 pad-bottom" role="status">
@@ -889,23 +890,33 @@
       wideScreen.addEventListener("change", route);
       route();
     </script>
-    <!-- Nhân vật (J16): dự án chưa có bộ hình nên sinh tại chỗ bằng DiceBear, kiểu Open Peeps (CC0, không cần ghi nguồn).
-         Không gọi api.dicebear.com (chỉ cho phi thương mại). Có bộ hình thương hiệu thì thay ở đây: mỗi img[data-art]
-         lấy file theo tên nhân vật và nét mặt. -->
-    <script type="module">
-      import { createAvatar } from "https://cdn.jsdelivr.net/npm/@dicebear/core@9.4.3/+esm";
-      import * as openPeeps from "https://cdn.jsdelivr.net/npm/@dicebear/open-peeps@9.4.3/+esm";
-
-      // Một nhân vật giữ nguyên tóc, áo (màu nhấn) ở mọi màn; chỉ nét mặt đổi theo khoảnh khắc.
+    <!-- Nhân vật (J16): dự án chưa có bộ hình nên dùng người 3D của Fluent Emoji (Microsoft, MIT: dùng thương mại, không cần
+         ghi công trên màn), cùng bộ với đồ vật 3D. Ghim một commit để hình không đổi dưới chân; dự án thật tải file về public/.
+         Có bộ hình thương hiệu thì thay ở đây: mỗi img[data-art] lấy file theo tên nhân vật và cử chỉ. -->
+    <script>
+      const artBaseUrl = "https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets/";
+      // Một người cho cả app; chỉ cử chỉ đổi theo khoảnh khắc. Bạn hội thoại là người thứ hai cùng bộ.
       const characters = {
-        mia: { seed: "mia", head: ["long"], clothingColor: ["c84a26"], accessoriesProbability: 0, facialHairProbability: 0, maskProbability: 0 },
-        daniel: { seed: "daniel", head: ["short2"], facialHair: ["full"], facialHairProbability: 100, clothingColor: ["78e185"], accessoriesProbability: 0, maskProbability: 0 },
+        mia: {
+          wave: "Woman raising hand/Default/3D/woman_raising_hand_3d_default.png",
+          teach: "Woman tipping hand/Default/3D/woman_tipping_hand_3d_default.png",
+          wait: "Woman raising hand/Default/3D/woman_raising_hand_3d_default.png",
+          ok: "Woman gesturing ok/Default/3D/woman_gesturing_ok_3d_default.png",
+          sad: "Woman frowning/Default/3D/woman_frowning_3d_default.png",
+          shrug: "Woman shrugging/Default/3D/woman_shrugging_3d_default.png",
+        },
+        daniel: {
+          teach: "Man tipping hand/Default/3D/man_tipping_hand_3d_default.png",
+          ok: "Man gesturing ok/Default/3D/man_gesturing_ok_3d_default.png",
+          sad: "Man frowning/Default/3D/man_frowning_3d_default.png",
+        },
       };
 
       document.querySelectorAll("img[data-art]").forEach((image) => {
-        const character = characters[image.dataset.art];
-        if (!character) return;
-        image.src = createAvatar(openPeeps, { ...character, face: [image.dataset.artFace || "calm"] }).toDataUri();
+        const poses = characters[image.dataset.art];
+        if (!poses) return;
+        image.src = artBaseUrl + encodeURI(poses[image.dataset.artFace] || poses.teach);
+        image.draggable = false;
       });
       document.dispatchEvent(new Event("art-ready"));
     </script>
