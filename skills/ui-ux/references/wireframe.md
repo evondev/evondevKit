@@ -181,7 +181,11 @@ không mở file này.
   (trang lướt để chọn) hay Sắc Tinted, Vivid của `P17` (màn trong app) lúc dựng, không vẽ thành nấc.
   Màn trong app web thì chọn Sắc ngay trong menu Kiểu (dưới).
 
-  **Dự án chưa có màu brand** (màu nhấn là gần đen mặc định, `brand-tokens.md`; dự án đã qua
+  **Dự án đã có UI thì màu là của dự án** (chủ dự án chốt): đã có token màu trong code, kể cả màu
+  nhấn gần đen, là đã có brand. Giữ vai màu của dự án, **không thêm nhóm Nhấn, không gợi ý màu theo
+  ngành**; lối dựng luôn cũng vậy. Đừng suy "màu nhấn gần đen là mặc định của skill nên dự án chưa có
+  brand": dự án đã chạy với màu đó.
+  **Dự án chưa có màu brand** (sản phẩm mới, chưa có token màu nào trong code; dự án đã qua
   `D9` thì màu nhấn đã chốt ở cổng đó, kể cả khi chốt gần đen, không tính là chưa có) thì thêm nhóm
   **Nhấn: ● ● ●** gồm ba màu gợi ý **theo ngành ở `U1`**, lấy từ bảng "Màu nhấn gợi ý theo
   ngành" của `brand-tokens.md` (màu đầu là quy ước của ngành; ngành khác thì chàm, xanh ngọc,

@@ -49,7 +49,8 @@ Nhóm Nhấn của wireframe (`wireframe.md`, `U3`) và trang design system (`sy
 ba màu. Trước đây ba màu cố định cho mọi dự án, nên ba dự án khác ngành ra cùng một bảng màu.
 Giờ ba màu chọn theo ngành ở `U1`: **màu đầu là quy ước của ngành**, hai màu sau khác hướng để
 người dùng có lựa chọn không sáo. Không chọn thì dựng màu đầu, báo một dòng. Dự án có brand
-thì brand thắng, không gợi ý.
+thì brand thắng, không gợi ý. **Dự án đã có UI là đã có brand**, kể cả màu nhấn gần đen: giữ màu
+của dự án (chủ dự án chốt, `wireframe.md`).
 
 **Bảng màu, chỉ lấy từ đây** (đều đạt từ 5 : 1 với chữ trắng trên nút chính, `P3`):
 

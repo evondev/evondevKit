@@ -17,7 +17,9 @@ Hai cổng chờ của nhánh này là hai chỗ duy nhất skill dừng hỏi. 
 **"Dựng luôn" thì không vẽ wireframe** (vẽ wireframe tốn nhiều token, chủ dự án chốt).
 Đề có "dựng luôn", "just build it", hoặc người dùng trả lời `dựng luôn` ở cổng 1: vẫn làm `U1`,
 `U2` và chọn phương án `U3` sẽ khuyên dùng, **trong đầu, không gửi, không dừng**, rồi dựng thẳng
-theo phương án đó (`U4`), màu theo nấc sẽ khuyên, bộ mặt theo bộ sẽ khuyên (`P13`, màn trong app web chưa có phong cách). Lúc giao ghi một dòng: *"Bố cục: [phương án]
+theo phương án đó (`U4`), màu theo nấc sẽ khuyên (dự án đã có UI thì màu của dự án), bộ mặt theo bộ sẽ khuyên (`P13`, màn trong app web chưa có phong cách).
+**Màn đã có sẵn cũng vậy** (chủ dự án chốt): dựng lại theo phương án khuyên dùng, đổi khung được,
+không chỉ rà màn cũ theo mục kiểm. Rà mà giữ khung là lối giữ brand hay soi (`review.md`), đề phải nói rõ. Lúc giao ghi một dòng: *"Bố cục: [phương án]
 vì [việc chính]. Muốn xem các hướng khác thì nhắn `vẽ wireframe`."* và dòng bộ mặt theo mẫu của `P13`. Lúc gửi brief ở cổng 1, thêm một dòng cuối: *"Muốn bỏ wireframe, dựng luôn thì
 trả lời `dựng luôn`."* (tiếng Anh: *"Reply `just build it` to skip the wireframes."*)
 
