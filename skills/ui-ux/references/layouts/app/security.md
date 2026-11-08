@@ -1,6 +1,6 @@
 # Trang bảo mật
 
-Là trang cài đặt kiểu A ở trên. Bộ mục mặc định:
+Là trang cài đặt kiểu A (`settings.md`). Bộ mục mặc định:
 
 | Mục | Hàng | Lưu |
 | --- | --- | --- |

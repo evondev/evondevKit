@@ -1,6 +1,6 @@
 # Trang hồ sơ cá nhân
 
-Là trang cài đặt kiểu A ở trên, không phải khuôn riêng. Bộ mục mặc định:
+Là trang cài đặt kiểu A (`settings.md`), không phải khuôn riêng. Bộ mục mặc định:
 
 | Mục | Hàng | Lưu |
 | --- | --- | --- |

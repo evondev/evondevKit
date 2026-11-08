@@ -1,6 +1,6 @@
 # Trang thành viên và phân quyền
 
-Là bảng quản lý ở mục "Bảng dữ liệu" trên, khác ở những chỗ dưới đây. Hai việc
+Là bảng quản lý ở mục "Bảng dữ liệu" (`data-table.md`), khác ở những chỗ dưới đây. Hai việc
 chính của trang là **mời** và **đổi vai trò**, nên cả hai phải thấy được ngay khi
 nhìn, không nằm sau lúc rê chuột hay trong menu ⋯.
 
