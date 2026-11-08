@@ -3412,6 +3412,43 @@ function measureMobileScreen({ isFrame, minTap }) {
     if (alpha > 0.5 && !isTinted && lightness >= 200 && lightness < 250) problems.push(`màn nền xám rgb(${red}, ${green}, ${blue}) mà không phải danh sách nhóm: nền màn trắng, xám chỉ cho màn .is-grouped (cài đặt, tài khoản) (J1)`);
   }
 
+  // R6 trên điện thoại: hàng chip lọc xuống dòng, chip cuối rớt xuống đứng lẻ (11/2026, app AI "Email 4" một mình hàng hai).
+  // Hàng có từ 3 viên bo tròn hết (bo >= nửa chiều cao) mà các viên nằm trên hơn một hàng: cho cuộn ngang.
+  if (screen) {
+    for (const row of screen.querySelectorAll("div, nav, ul")) {
+      const style = getComputedStyle(row);
+      if (style.display !== "flex" || style.flexWrap !== "wrap" || !isShown(row)) continue;
+      const pills = [...row.children].filter((child) => {
+        const rect = child.getBoundingClientRect();
+        return isShown(child) && rect.height >= 28 && rect.height <= 56 && parseFloat(getComputedStyle(child).borderTopLeftRadius) >= rect.height / 2 - 1;
+      });
+      if (pills.length < 3 || pills.length < row.children.length) continue;
+      // Chỉ hàng lọc chọn một (R6): đúng một viên đang chọn, hay hàng khai tablist / nhãn "lọc". Đám gợi ý tìm kiếm và chip chọn
+      // nhiều ở onboarding được xuống dòng.
+      const selectedCount = pills.filter((pill) => ["aria-pressed", "aria-selected", "aria-checked"].some((attribute) => pill.getAttribute(attribute) === "true") || pill.hasAttribute("aria-current")).length;
+      const isFilterRow = row.getAttribute("role") === "tablist" || /lọc|filter/i.test(row.getAttribute("aria-label") || "") || selectedCount === 1;
+      if (!isFilterRow) continue;
+      const tops = new Set(pills.map((pill) => Math.round(pill.getBoundingClientRect().top / 4)));
+      if (tops.size > 1) {
+        problems.push(`hàng chip ${describe(row)} xuống ${tops.size} hàng: hàng chip lọc không wrap, cho cuộn ngang trong khung, chip shrink-0, mép mờ (R6)`);
+        break;
+      }
+    }
+  }
+
+  // J18: một điểm nhìn mỗi màn. Màn có số hay chữ từ 48px mà tiêu đề màn từ 32px nằm ngay trên (trong 160px) thì hai khối to
+  // tranh nhau (11/2026, app AI: "Lịch đăng" 36px chồng trên "4 bài" 60px). Tiêu đề màn khi có số chính: <= 30px.
+  if (screen) {
+    const bigTexts = [...screen.querySelectorAll("h1, h2, p, span, div")].filter((element) => {
+      if (!isShown(element) || ![...element.childNodes].some((node) => node.nodeType === 3 && node.textContent.trim())) return false;
+      const rect = element.getBoundingClientRect();
+      return rect.top < deviceRect.top + 560 && parseFloat(getComputedStyle(element).fontSize) >= 32;
+    }).map((element) => ({ element, size: parseFloat(getComputedStyle(element).fontSize), rect: element.getBoundingClientRect() }));
+    const hero = bigTexts.find((item) => item.size >= 48);
+    const titleAbove = hero && bigTexts.find((item) => item !== hero && item.size < hero.size && item.rect.bottom <= hero.rect.top + 4 && hero.rect.top - item.rect.bottom < 160);
+    if (titleAbove) problems.push(`hai điểm nhìn chồng nhau: "${titleAbove.element.textContent.trim().slice(0, 20)}" ${titleAbove.size}px ngay trên "${hero.element.textContent.trim().slice(0, 12)}" ${hero.size}px: màn có số chính thì tiêu đề màn tối đa 30px (J18)`);
+  }
+
   // J8: chọn giờ chỉ hiện giờ trống. Nút giờ gạch ngang ("8:00" có line-through) là giờ kín để lẫn vào.
   const struckSlots = screen ? [...screen.querySelectorAll("button, a, [role='radio'], [role='option']")].filter((control) => {
     if (!isShown(control) || !/^\s*\d{1,2}[:h]\d{2}\s*$/.test(control.textContent)) return false;

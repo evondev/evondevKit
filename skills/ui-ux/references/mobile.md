@@ -880,6 +880,15 @@ thói quen), **Glow** cho AI, sáng tạo, âm nhạc, **Photo** cho lướt ch�
   nằm trên màn (nút + tròn màu nhấn ở bữa chưa ghi, mục chưa có; khối hỏi có ô gõ và nút mic) thì không thêm nút nổi. Thanh `dark` 3 mục thì co theo nội
   dung, nằm giữa (`inset-x-0 mx-auto w-fit gap-6 px-2`), không giãn hết bề ngang cho thưa.
 - **Bớt chữ:** mỗi dòng một tên đậm và một dòng phụ, bỏ nhãn lặp, bỏ câu giải thích; khoảng trắng tách khối thay tiêu đề nhỏ.
+- **Nhịp và độ đậm.** Màn trình diễn mà "chật" thường không do thiếu chỗ, mà do chữ nào cũng đậm và các tầng chữ dính nhau
+  (app AI: tên dòng 700 dài 3 dòng, giờ 800, tiêu đề nhóm 700, tên dính dòng phụ 0px):
+  - Chỉ điểm nhìn và tiêu đề màn đậm 800. Tên dòng 600 (700 khi chắc chắn một dòng), giờ và số phụ 600, dòng phụ 400.
+  - Tên dòng ở dữ liệu mẫu 1–2 dòng (khoảng 40 ký tự trở xuống); ba dòng đậm làm danh sách thành bức tường chữ. Ca tên dài
+    để thử (`S16`) vẫn giữ một mục, xuống dòng đủ, không cắt.
+  - Tên cách dòng phụ 4px (`mt-1`), thẻ đệm 18–20, thẻ cách nhau 12, giữa các khối 32–40, tiêu đề khối cách thẻ đầu 12–14.
+  - **Màn có số chính thì tiêu đề màn 26–30** (probe đo): tiêu đề 36 chồng trên số 60 là hai điểm nhìn. Đầu màn trên quầng
+    tối đa ba tầng chữ: dòng nhỏ, tiêu đề hay số, một dòng phụ.
+  - Hàng chip lọc chọn một không xuống dòng (`R6`, probe đo): cuộn ngang, mép mờ.
 - **Màn rỗng trình diễn:** nhân vật hay đồ vật 3D cạnh câu chào và nút, **cộng một hàng gợi ý nhanh** 3 mục có nút + (gợi ý
   bữa sáng, mẫu ngân sách): nửa dưới trống trơn trông như lỗi tải.
 - **Ráp vào khung `J1`:** quầng là khối đầu của vùng cuộn (cuộn cùng nội dung), tấm trắng là khối kế tiếp trong luồng cuộn
