@@ -121,6 +121,11 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   bỏ dở việc. Sheet và hộp hỏi phủ lên thanh tab.
 - **Màn xem có thanh hành động dính đáy cũng ẩn thanh tab** (trang chỗ ở, sản phẩm có "giá · Đặt", "Thêm vào giỏ"): thanh
   hành động là việc chính của màn, hai dải đáy chồng nhau thì nút chính bị đẩy lên giữa màn.
+- **Màn chi tiết một mục mở đầu bằng ảnh tràn mép cũng ẩn thanh tab** (điểm đến, chỗ ở, món, sản phẩm: ảnh lớn chạy
+  qua tai thỏ, tấm nội dung trượt lên), dù chưa có thanh hành động. Ảnh là chủ thể của màn, giống xem ảnh toàn màn; thanh
+  tab nổi đè lên thẻ ảnh ngay màn đầu làm đáy màn nặng hơn đỉnh. Đường về là nút tròn quay lại trên ảnh và vuốt mép trái.
+  Vùng cuộn chừa đáy `inset-bottom + 24px`, không `.pad-tabbar`. Màn con mở đầu bằng chữ (chi tiết giao dịch, hồ sơ,
+  bài viết) vẫn giữ thanh như trên.
 - **Chấm đỏ có số trên mục** chỉ cho việc người dùng phải xử lý (tin nhắn chưa đọc, đơn cần xác nhận), không cho
   khuyến mãi hay mục mới: chấm đỏ ở mọi tab thì không ai nhìn nữa. Viên `bg-danger` chữ trắng 11px, cao 16, góc phải
   trên icon; trên 99 ghi "99+".
@@ -275,7 +280,7 @@ công thức thì ảnh thắng. Ảnh đè được gì:
 | Loại | Luật | Ảnh đè không |
 | --- | --- | --- |
 | **Gu** | `J1` nền trắng (ảnh nền xám thì theo ảnh, gắn `data-ref-bg` lên `.device` để probe không bắt) · `J3` canh lề, cỡ tiêu đề · `J8` "không dùng" dải đầu màn màu, gradient · `J15` bộ mặt khuyên dùng · `J18` chữ tối trên quầng, cỡ điểm nhìn, font · kiểu thanh tab `J2` (thanh dính đáy của ảnh dựng bằng `float`, kiểu gần nhất có code) | **Được**, theo ảnh |
-| **Nguyên tắc** | `J2` mục có chữ, **không mục "More"/"Thêm"** (đổi thành mục có tên: "Account", "Tài khoản", báo một dòng), giữ thanh tab ở màn con để xem · `J4` kích cỡ, chữ từ 11 · `J5` một hành động chính · tương phản `P3` (đo ở chỗ chữ nằm) | **Không**, ảnh vẽ khác thì sửa theo luật, báo một dòng lúc giao |
+| **Nguyên tắc** | `J2` mục có chữ, **không mục "More"/"Thêm"** (đổi thành mục có tên: "Account", "Tài khoản", báo một dòng), giữ hay ẩn thanh tab ở màn con theo các ca của `J2` (ảnh vẽ khác thì theo `J2`) · `J4` kích cỡ, chữ từ 11 · `J5` một hành động chính · tương phản `P3` (đo ở chỗ chữ nằm) | **Không**, ảnh vẽ khác thì sửa theo luật, báo một dòng lúc giao |
 
 **Màu lấy đúng ảnh.** Đọc hex ở ba chỗ của ảnh (phần đậm nhất của quầng, chỗ chuyển, nền) và dùng chúng cho quầng, nền;
 không thay bằng màu trong bảng ngành của `brand-tokens.md` rồi pha đậm thêm. Bẫy "không đỏ" chỉ áp cho `--primary` của

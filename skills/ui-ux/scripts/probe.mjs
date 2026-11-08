@@ -3466,6 +3466,19 @@ function measureMobileScreen({ isFrame, minTap }) {
       return rect.width >= deviceRect.width * 0.8 && rect.height >= 48 && rect.height <= 72 && !control.querySelector("img") && deviceRect.bottom - rect.bottom < 140;
     }) : null;
     if (stickyAction) problems.push(`màn con "${screenName}" có nút dính đáy ${describe(stickyAction)} mà vẫn hiện thanh tab: form, giỏ hàng, thanh toán ẩn thanh tab (J2, J5)`);
+
+    // Màn chi tiết một mục mở đầu bằng ảnh tràn mép (ảnh chạy qua tai thỏ, rộng hết khung) ẩn thanh tab (J2): thanh tối
+    // nổi đè lên thẻ ảnh ngay màn đầu, nặng hơn ảnh mẫu (08/11/2026, app du lịch). Ô bản đồ nhỏ (256px) không tính, nền
+    // mờ trang trí sau bìa (`aria-hidden`, blur, mờ: trang sách nói, album) không phải ảnh chủ thể.
+    const heroPhoto = isChildScreen ? [...screen.querySelectorAll("img, video")].find((media) => {
+      if (!isShown(media) || media.getAttribute("aria-hidden") === "true") return false;
+      const mediaStyle = getComputedStyle(media);
+      if (mediaStyle.filter.includes("blur") || Number(mediaStyle.opacity) < 0.9) return false;
+      const rect = media.getBoundingClientRect();
+
+      return rect.top <= deviceRect.top + 8 && rect.width >= deviceRect.width * 0.95 && rect.height >= 240;
+    }) : null;
+    if (heroPhoto && !stickyAction) problems.push(`màn con "${screenName}" mở đầu bằng ảnh tràn mép mà vẫn hiện thanh tab: màn chi tiết một mục có ảnh lớn đầu màn ẩn thanh tab, quay về bằng nút tròn trên ảnh (J2)`);
   }
 
   // J1: nền màn sáng mà xám (thẻ trắng trên nền xám kiểu dashboard) chỉ cho màn danh sách nhóm `.is-grouped`.
