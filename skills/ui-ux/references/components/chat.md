@@ -103,7 +103,8 @@ Nút chỉ icon `ghost` `size-8`, có tooltip và `aria-label`: `Copy` "Sao ché
 ## Rỗng: cuộc trò chuyện mới
 
 - **Không có câu "Chưa có tin nhắn nào".** Ở đây người dùng là người mở lời, câu báo rỗng không nói họ làm gì tiếp (`N6`). Thay bằng **2–3 gợi ý mở đầu**, cùng khuôn gợi ý hỏi tiếp, nhãn "Thử hỏi", nằm **ngay trên ô soạn**, đúng chỗ gợi ý hỏi tiếp vẫn nằm trong cuộc trò chuyện (`N5`).
-- Không câu chào to, không logo, không hình (`empty-state.md`). Placeholder của ô soạn đã nói hỏi được gì, câu chào nhắc lại là nói hai lần (`N3`).
+- Không câu chào to, không logo, không hình (`empty-state.md`). Ngoại lệ có tên: màn gốc của app điện thoại trợ lý ở lối
+  trình diễn được khối hỏi lớn trên quầng (`J18` trong `../mobile.md`); màn cuộc trò chuyện mới mở từ đó vẫn theo dòng này. Placeholder của ô soạn đã nói hỏi được gì, câu chào nhắc lại là nói hai lần (`N3`).
 
 ## Ô soạn
 

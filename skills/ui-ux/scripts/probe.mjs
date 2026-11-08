@@ -1676,6 +1676,9 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     const style = getComputedStyle(element);
     if (!["auto", "scroll"].includes(style.overflowX) || style.scrollbarWidth !== "none" || !isVisible(element)) continue;
     if (element.scrollWidth <= element.clientWidth + 4) continue;
+    // Trong khung máy của bản mẫu điện thoại (J1): người dùng thật vuốt bằng ngón tay, không cần nút mũi tên cho chuột
+    // (11/2026, app AI: hàng chip trong sheet bị báo ở khổ 1280).
+    if (element.closest(".device")) continue;
     const scope = element.parentElement?.parentElement || element.parentElement;
     const hasArrowButton = [...(scope?.querySelectorAll("button, [role='button']") || [])]
       .some((button) => !element.contains(button) && isVisible(button) && button.getBoundingClientRect().width < 64);

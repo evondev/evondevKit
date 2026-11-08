@@ -74,7 +74,7 @@
         </div>
 
         <!-- Điểm nhìn: cung chia khúc 280px (J17) trên quầng, rãnh trắng 70%, số còn lại 60px đậm khít. -->
-        <div class="relative mx-auto mt-1 h-[214px] w-[280px]">
+        <div class="relative mx-auto h-[206px] w-[280px]">
           <svg viewBox="0 0 280 280" class="absolute inset-x-0 top-0 size-[280px]" role="img" aria-label="Đã nạp 1.420 trên 2.000 kcal" data-segments data-value="1420" data-max="2000" data-count="10"></svg>
           <div class="absolute inset-x-0 top-[78px] text-center">
             <p class="text-[13px] font-semibold text-muted">Còn lại hôm nay</p>
@@ -91,24 +91,25 @@
         </div>
 
         <!-- Tấm trắng trượt lên, bo 36 hai góc trên: tách vùng "nhìn" (quầng) khỏi vùng "làm" (danh sách). -->
-        <div class="absolute inset-x-0 top-[424px] bottom-0 rounded-t-[36px] bg-surface px-6 pt-5 shadow-[0_-12px_40px_-24px_rgb(40_30_80/0.25)]">
+        <div class="absolute inset-x-0 top-[414px] bottom-0 rounded-t-[36px] bg-surface px-6 pt-3 shadow-[0_-12px_40px_-24px_rgb(40_30_80/0.25)]">
           <div class="flex items-center justify-between"><h2 class="text-[19px] font-bold">Bữa hôm nay</h2><a href="#showcase" class="inline-flex h-11 items-center text-sm font-semibold text-muted">Nhật ký</a></div>
-          <ul class="mt-3 flex flex-col gap-2">
-            <!-- Dòng: ô 52px nền pastel chuyển nhẹ chứa đồ vật 3D 34px (J16), tên đậm, phụ một dòng, số phải. Không viền, không vạch ngăn: khoảng trắng tách dòng. -->
-            <li class="flex items-center gap-3.5 rounded-[22px] bg-soft p-2.5 pr-4">
+          <ul class="mt-2 flex flex-col gap-2.5">
+            <!-- Dòng: ô 52px nền pastel chuyển nhẹ chứa đồ vật 3D 34px (J16), tên 600 (không 700: cả màn toàn chữ đậm thì chật, J18),
+                 dòng phụ cách 4px, số phải 600. Không viền, không vạch ngăn: dòng đệm 12, cách nhau 12. -->
+            <li class="flex items-center gap-3.5 rounded-[22px] bg-soft p-3 pr-4">
               <span class="grid size-[52px] shrink-0 place-items-center rounded-[18px] bg-linear-to-br from-amber-100 to-orange-50"><img data-emoji="Croissant" alt="" class="size-[34px]" /></span>
-              <span class="min-w-0 flex-1"><span class="block text-base font-bold">Bữa sáng</span><span class="block text-[13px] text-muted">Bánh mì trứng, cà phê sữa</span></span>
-              <span class="text-[15px] font-bold tabular-nums">530</span>
+              <span class="min-w-0 flex-1"><span class="block text-base font-semibold">Bữa sáng</span><span class="mt-1 block text-[13px] text-muted">Bánh mì trứng, cà phê sữa</span></span>
+              <span class="text-[15px] font-semibold tabular-nums">530</span>
             </li>
-            <li class="flex items-center gap-3.5 rounded-[22px] bg-soft p-2.5 pr-4">
+            <li class="flex items-center gap-3.5 rounded-[22px] bg-soft p-3 pr-4">
               <span class="grid size-[52px] shrink-0 place-items-center rounded-[18px] bg-linear-to-br from-lime-100 to-emerald-50"><img data-emoji="Bento box" alt="" class="size-[34px]" /></span>
-              <span class="min-w-0 flex-1"><span class="block text-base font-bold">Bữa trưa</span><span class="block text-[13px] text-muted">Cơm gà xối mỡ, canh rau</span></span>
-              <span class="text-[15px] font-bold tabular-nums">680</span>
+              <span class="min-w-0 flex-1"><span class="block text-base font-semibold">Bữa trưa</span><span class="mt-1 block text-[13px] text-muted">Cơm gà xối mỡ, canh rau</span></span>
+              <span class="text-[15px] font-semibold tabular-nums">680</span>
             </li>
             <!-- Bữa chưa ghi: cùng khuôn, số thay bằng nút + tròn màu nhấn. -->
-            <li class="flex items-center gap-3.5 rounded-[22px] bg-soft p-2.5 pr-2.5">
+            <li class="flex items-center gap-3.5 rounded-[22px] bg-soft p-3">
               <span class="grid size-[52px] shrink-0 place-items-center rounded-[18px] bg-linear-to-br from-violet-100 to-indigo-50"><img data-emoji="Steaming bowl" alt="" class="size-[34px]" /></span>
-              <span class="min-w-0 flex-1"><span class="block text-base font-bold">Bữa tối</span><span class="block text-[13px] text-muted">Chưa ghi · gợi ý 580 kcal</span></span>
+              <span class="min-w-0 flex-1"><span class="block text-base font-semibold">Bữa tối</span><span class="mt-1 block text-[13px] text-muted">Chưa ghi · gợi ý 580 kcal</span></span>
               <a href="#showcase" class="press grid size-11 place-items-center rounded-full bg-primary text-white" aria-label="Ghi bữa tối"><i data-lucide="plus" class="size-5"></i></a>
             </li>
           </ul>
@@ -193,9 +194,9 @@
           </div>
         </div>
         <div class="mt-6 flex items-baseline justify-between px-6"><h3 class="text-[19px] font-bold">Ăn nhiều nhất</h3><span class="text-sm font-semibold text-muted">7 ngày</span></div>
-        <ul class="mx-6 mt-3 flex flex-col gap-2.5">
-          <li class="flex items-center gap-3.5 rounded-[22px] bg-surface p-2.5 pr-4 shadow-(--shadow-card)"><span class="grid size-[52px] shrink-0 place-items-center rounded-[18px] bg-linear-to-br from-violet-100 to-indigo-50"><img data-emoji="Steaming bowl" alt="" class="size-[34px]" /></span><span class="min-w-0 flex-1"><span class="block text-base font-bold">Phở bò tái</span><span class="block text-[13px] text-muted">4 lần · 1.800 kcal</span></span><i data-lucide="chevron-right" class="size-5 text-muted"></i></li>
-          <li class="flex items-center gap-3.5 rounded-[22px] bg-surface p-2.5 pr-4 shadow-(--shadow-card)"><span class="grid size-[52px] shrink-0 place-items-center rounded-[18px] bg-linear-to-br from-amber-100 to-orange-50"><img data-emoji="Croissant" alt="" class="size-[34px]" /></span><span class="min-w-0 flex-1"><span class="block text-base font-bold">Bánh mì trứng</span><span class="block text-[13px] text-muted">3 lần · 1.230 kcal</span></span><i data-lucide="chevron-right" class="size-5 text-muted"></i></li>
+        <ul class="mx-6 mt-3 flex flex-col gap-3">
+          <li class="flex items-center gap-3.5 rounded-[22px] bg-surface p-3 pr-4 shadow-(--shadow-card)"><span class="grid size-[52px] shrink-0 place-items-center rounded-[18px] bg-linear-to-br from-violet-100 to-indigo-50"><img data-emoji="Steaming bowl" alt="" class="size-[34px]" /></span><span class="min-w-0 flex-1"><span class="block text-base font-semibold">Phở bò tái</span><span class="mt-1 block text-[13px] text-muted">4 lần · 1.800 kcal</span></span><i data-lucide="chevron-right" class="size-5 text-muted"></i></li>
+          <li class="flex items-center gap-3.5 rounded-[22px] bg-surface p-3 pr-4 shadow-(--shadow-card)"><span class="grid size-[52px] shrink-0 place-items-center rounded-[18px] bg-linear-to-br from-amber-100 to-orange-50"><img data-emoji="Croissant" alt="" class="size-[34px]" /></span><span class="min-w-0 flex-1"><span class="block text-base font-semibold">Bánh mì trứng</span><span class="mt-1 block text-[13px] text-muted">3 lần · 1.230 kcal</span></span><i data-lucide="chevron-right" class="size-5 text-muted"></i></li>
         </ul>
         <nav class="absolute inset-x-6 bottom-6 flex h-16 items-center justify-between rounded-full bg-[#18181b] px-2 shadow-[0_8px_20px_-12px_rgb(0_0_0/0.4)]" aria-label="Điều hướng chính" data-tab-style="dark">
           <a href="#showcase" aria-label="Hôm nay" class="grid size-12 place-items-center rounded-full text-white/60"><i data-lucide="house" class="size-6"></i></a>

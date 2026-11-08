@@ -109,7 +109,8 @@ export default function ProductBrand({ name, className }: ProductBrandProps) {
 
 - Sidebar thu gọn: ô đứng yên, tên bị cắt và mờ đi như chữ các mục (`layouts/app.md`, thu gọn
   sidebar). Màn xác thực và trang lỗi đứng riêng dùng đúng component này, không vẽ bản thứ hai.
-- **Favicon từ cùng dấu**: một file SVG gồm ô vuông bo nền màu nhấn và dấu trắng (tab trình duyệt
+- **Favicon từ cùng dấu**: một file SVG gồm ô vuông bo nền màu nhấn và dấu trắng (màu nhấn rực mà chữ trắng dưới 4.5:1,
+  như cam, tím nhạt của bộ mặt Glow, thì dấu tối `#111`, theo đúng chữ trên nút) (tab trình duyệt
   sáng hay tối đều thấy). Next.js App Router đặt ở `app/icon.svg`; dự án khác `public/favicon.svg`
   kèm `<link rel="icon" type="image/svg+xml" href="/favicon.svg">`. Xoá favicon mặc định của
   framework để không còn hai cái.

@@ -679,7 +679,8 @@ mỗi màn.
 - **Glow: quầng màu là nền, không phải nội dung.** Quầng sau chữ nhỏ làm chữ chỗ sáng chỗ tối, đo tương phản ở chỗ quầng
   sáng nhất. Không thêm quầng vào từng thẻ: mỗi màn hai ba quầng. Màn gốc cuộn được thì quầng là khối đầu của vùng cuộn,
   cuộn cùng nội dung (`J18`); màn có thanh trên cố định (chat, bản nháp) thì quầng nằm ở lớp nền của màn, ngoài vùng cuộn,
-  đứng yên sau cả thanh trên, để mép thanh không cắt ngang quầng. Thẻ kính trên nền đen trơn (không quầng phía sau) chỉ là thẻ xám, kính chỉ thấy khi có quầng.
+  đứng yên sau cả thanh trên, để mép thanh không cắt ngang quầng. Thẻ kính trên nền đen trơn (không quầng phía sau) chỉ là thẻ xám, kính chỉ thấy khi có quầng. Thanh tab `glass` cũng vậy: màn không có quầng đầu (Tài khoản, danh sách) thì thêm một quầng nhỏ mờ ở đáy
+  màn, ngay sau thanh tab (`radial-gradient` màu nhấn 25%, cao 160px), để thanh kính không thành viên xám.
 - **Tinted: một sắc nền cho cả app, không đổi theo màn.** Sheet, hộp hỏi, bàn phím vẽ vẫn trắng. Màu trạng thái (đỏ
   vượt, xanh đạt) đo lại trên nền màu; ảnh món, ảnh phòng trên nền be thì thêm viền trắng 2px cho khỏi lẫn.
 - **Editorial: serif chỉ cho nội dung đọc.** Lora cho nhãn tab, nút, ô nhập thì khung app thành giả cổ, chữ nhỏ 11–13
@@ -860,8 +861,10 @@ thói quen), **Glow** cho AI, sáng tạo, âm nhạc, **Photo** cho lướt ch�
 - **Tấm trắng trượt lên:** vùng "nhìn" (số chính, hình) nằm trên quầng; vùng "làm" (danh sách, form, nút) là tấm trắng bo
   36 hai góc trên, bóng ngược mềm. Thay cho thẻ số chính nền đen của `J5`.
 - **Một điểm nhìn mỗi màn, cỡ lớn:** số chính của màn 56–64px `font-extrabold tracking-[-0.04em]` (số nằm trong khối màu
-  40–48px); app không có số đáng nhìn (trợ lý AI, viết, tìm kiếm) thì điểm nhìn là **khối hỏi lớn** (câu hỏi 26–28px đậm, ô
-  gõ, nút mic tròn màu nhấn 56px) trên quầng; hay hình chính 180–200px (đồ vật
+  40–48px); app không có số đáng nhìn (trợ lý AI, viết, tìm kiếm) thì điểm nhìn là **khối hỏi lớn** trên quầng: câu hỏi
+  26–30px đậm **thay luôn tiêu đề màn** ("Hôm nay viết gì?", đến 20 ký tự, ngoại lệ có tên của 15 ký tự ở `J3`), ô gõ,
+  nút mic tròn màu nhấn 56px. Đây là màn gốc của app; màn cuộc trò chuyện mới bên trong chat vẫn theo `components/chat.md`
+  (không câu chào to); hay hình chính 180–200px (đồ vật
   3D `J16`, ảnh cắt nền) có quầng trắng mờ phía sau và bóng bầu dục dưới đáy để vật đứng trên mặt.
 - **Font hình học có tiếng Việt:** Plus Jakarta Sans (mặc định), Lexend, Manrope, Be Vietnam Pro (đã kiểm có bộ
   `vietnamese`). Tiêu đề màn 30–36 `font-extrabold`, chữ phụ 13.
@@ -876,20 +879,22 @@ thói quen), **Glow** cho AI, sáng tạo, âm nhạc, **Photo** cho lướt ch�
   cột trắng thì khối nhạt nhoà, mất điểm nhìn. Số to giữ số của cả khối (trung bình tuần) vì đó là câu trả lời của màn; số
   của cột đang chọn nằm trên đầu cột, chạm cột khác thì cột trắng và số dời theo. Đây là ngoại lệ có tên của "số to đổi theo
   mốc" và "cột đang chọn không đổi màu" (`J17`): trong khối màu các cột kia là nền, không phải chuỗi.
-- **Thanh tab** `dark`, `pill` hay `glass` (`J2`). Ngoại lệ có tên của nút thêm nổi (`J5`): màn gốc mà hành động chính đã
-  nằm trên màn (nút + tròn màu nhấn ở bữa chưa ghi, mục chưa có; khối hỏi có ô gõ và nút mic) thì không thêm nút nổi. Thanh `dark` 3 mục thì co theo nội
+- **Thanh tab** `dark`, `pill` hay `glass` (`J2`). Ngoại lệ có tên của nút thêm nổi (`J5`): tab danh sách mà việc tạo mới
+  đi từ màn gốc khác (bản nháp tạo từ Trang chủ) thì không có nút thêm; màn gốc mà hành động chính đã nằm trên màn (nút + tròn màu nhấn ở bữa chưa ghi, mục chưa có; khối hỏi có ô gõ và nút mic) thì không thêm nút nổi. Thanh `dark` 3 mục thì co theo nội
   dung, nằm giữa (`inset-x-0 mx-auto w-fit gap-6 px-2`), không giãn hết bề ngang cho thưa.
 - **Bớt chữ:** mỗi dòng một tên đậm và một dòng phụ, bỏ nhãn lặp, bỏ câu giải thích; khoảng trắng tách khối thay tiêu đề nhỏ.
 - **Nhịp và độ đậm.** Màn trình diễn mà "chật" thường không do thiếu chỗ, mà do chữ nào cũng đậm và các tầng chữ dính nhau
   (app AI: tên dòng 700 dài 3 dòng, giờ 800, tiêu đề nhóm 700, tên dính dòng phụ 0px):
-  - Chỉ điểm nhìn và tiêu đề màn đậm 800. Tên dòng 600 (700 khi chắc chắn một dòng), giờ và số phụ 600, dòng phụ 400.
+  - Chỉ điểm nhìn và tiêu đề màn đậm 800. Tiêu đề khối và chữ trên nút cam kết 700. Tên dòng 600 (cả dòng-thẻ lẫn dòng
+    trong danh sách), giờ và số phụ 600, dòng phụ 400. File mẫu `mobile-showcase.html` theo đúng các bậc này.
   - Tên dòng ở dữ liệu mẫu 1–2 dòng (khoảng 40 ký tự trở xuống); ba dòng đậm làm danh sách thành bức tường chữ. Ca tên dài
     để thử (`S16`) vẫn giữ một mục, xuống dòng đủ, không cắt.
-  - Tên cách dòng phụ 4px (`mt-1`), thẻ đệm 18–20, thẻ cách nhau 12, giữa các khối 32–40, tiêu đề khối cách thẻ đầu 12–14.
+  - Tên cách dòng phụ 4px (`mt-1`), thẻ đệm 18–20 (dòng-thẻ có ô icon 52px đệm 12), thẻ và dòng cách nhau 12, giữa các khối
+    32–40, tiêu đề khối cách thẻ đầu 12–14.
   - **Màn có số chính thì tiêu đề màn 26–30** (probe đo): tiêu đề 36 chồng trên số 60 là hai điểm nhìn. Đầu màn trên quầng
     tối đa ba tầng chữ: dòng nhỏ, tiêu đề hay số, một dòng phụ.
   - Hàng chip lọc chọn một không xuống dòng (`R6`, probe đo): cuộn ngang, mép mờ.
-- **Màn rỗng trình diễn:** nhân vật hay đồ vật 3D cạnh câu chào và nút, **cộng một hàng gợi ý nhanh** 3 mục có nút + (gợi ý
+- **Màn rỗng trình diễn:** nhân vật hay đồ vật 3D (đồ vật 96–120px, có quầng trắng mờ sau lưng) cạnh câu chào và nút, **cộng một hàng gợi ý nhanh** 3 mục có nút + (gợi ý
   bữa sáng, mẫu ngân sách): nửa dưới trống trơn trông như lỗi tải.
 - **Ráp vào khung `J1`:** quầng là khối đầu của vùng cuộn (cuộn cùng nội dung), tấm trắng là khối kế tiếp trong luồng cuộn
   (`rounded-t-[36px]`, `min-h` tới đáy), không `absolute` (dòng cuối lọt dưới thanh tab). Dải che tai thỏ (`.status-cover`)
@@ -899,7 +904,11 @@ thói quen), **Glow** cho AI, sáng tạo, âm nhạc, **Photo** cho lướt ch�
 
 **Bản tối** (Glow, Immersive): chữ trên quầng là chữ trắng; tấm trượt lên là mảng tối `#141419` bo 36 thay tấm trắng; nút
 tròn nổi là trắng 10% viền trắng 12%; viên nhãn trên quầng trắng 12%; nút cam kết là màu nhấn chữ tối (viên đen tàng hình
-trên nền tối); ô icon là sắc của danh mục 25% chuyển xuống 10% thay pastel sáng; khối màu chứa biểu đồ là trắng 8%.
+trên nền tối); ô icon là sắc của danh mục 25% chuyển xuống 10% thay pastel sáng; khối màu chứa biểu đồ là trắng 8%. Thẻ nằm
+trên quầng có viền trắng 10% (kính cần mép), dòng trong mảng tối không viền, nền dòng (thay `--soft`) trắng 6%. Sheet
+`#1c1c22` bo 28; viên chọn của điều khiển phân đoạn trắng 16%; chip đang chọn màu nhấn chữ tối; dải che tai thỏ khi đã cuộn
+là màu nền 80% cộng `backdrop-blur-xl`, lúc chưa cuộn trong suốt (script: lắng nghe `scroll` của vùng cuộn, gắn
+`data-scrolled` khi `scrollTop > 8`). Chữ cuộn lên dưới thanh trên trong suốt thì vùng cuộn mờ mép trên 24px (`mask-image`).
 
 **Vẫn giữ:** tương phản 4.5:1 (đo chữ ở chỗ quầng sáng nhất), chỗ bấm 44px (điều khiển phân đoạn rãnh 52 `p-1` cho nút 44),
 chữ nội dung chính 16px và không cắt chữ (`J4`), tiêu đề lớn ở màn gốc (`J3`, lời chào nhỏ đứng trên), kính `backdrop-blur`
