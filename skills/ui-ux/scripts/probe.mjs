@@ -1334,11 +1334,19 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     const textIndex = foundIndex === -1 && isClickThrough ? 0 : foundIndex;
     if (textIndex === -1) return readAncestorBackdrops(element);
 
-    // Lớp không phải cha mà có gradient (lớp phủ trên ảnh bìa) vẫn bỏ đo: ảnh nằm cạnh nó, không phải cha.
+    // Chữ nằm trên ảnh (hay lớp phủ gradient trên ảnh) không đọc được màu nền từ CSS: trả "pixels" để chụp nền thật dưới
+    // chữ rồi chấm (`verifyGradientContrast`). Trước đây bỏ đo, sót giờ trắng trên trời nhạt của ảnh đầu màn và chữ trên
+    // thẻ ảnh (08/11/2026, app du lịch theo ảnh mẫu).
     for (const layer of stack.slice(textIndex)) {
       if (layer === element || element.contains(layer)) continue;
-      if (layer.contains(element)) break;
-      if (["IMG", "VIDEO", "CANVAS", "svg"].includes(layer.tagName) || getComputedStyle(layer).backgroundImage !== "none") return null;
+      // Cha trong suốt (khối bọc chữ `relative` trên ảnh) không che gì: đi tiếp xuống ảnh nằm dưới nó. Dừng ở đây thì
+      // đo theo nền của thẻ (`bg-foreground` lót sau ảnh), chữ trắng trên ảnh trời sáng vẫn qua.
+      if (layer.contains(element)) {
+        const layerStyle = getComputedStyle(layer);
+        if (layerStyle.backgroundImage === "none" && readColor(layerStyle.backgroundColor).alpha === 0) continue;
+        break;
+      }
+      if (["IMG", "VIDEO", "CANVAS", "svg"].includes(layer.tagName) || getComputedStyle(layer).backgroundImage !== "none") return "pixels";
       if (readColor(getComputedStyle(layer).backgroundColor).alpha > 0) return readAncestorBackdrops(layer);
     }
 
@@ -1359,6 +1367,10 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     const backdrops = readBackdrop(element);
     if (!backdrops) {
       unmeasuredContrastCount++;
+      return;
+    }
+    if (backdrops === "pixels") {
+      markPhotoText(element, cssColor, sample);
       return;
     }
 
@@ -1406,6 +1418,38 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
       return;
     }
     element.dataset.evonGradientText = entry.gradientId;
+  }
+
+  // Chữ trên ảnh: chưa biết tỉ lệ, ghi tạm là một mục tương phản thấp và đánh dấu để chụp pixel nền; đạt ngưỡng thì
+  // `verifyGradientContrast` gỡ mục đi. Chữ ngoài khung nhìn không chụp được: tính là chỗ không đo, không báo nhầm.
+  function markPhotoText(element, cssColor, sample) {
+    const rect = element.getBoundingClientRect();
+    const isInViewport = rect.width > 0 && rect.height > 0 && rect.left >= 0 && rect.top >= 0 && rect.right <= innerWidth && rect.bottom <= innerHeight;
+    if (!isInViewport) {
+      unmeasuredContrastCount++;
+      return;
+    }
+
+    const textColor = readColor(cssColor);
+    const opacityChain = readOpacityChain(element);
+    if (opacityChain < 0.05) return;
+    textColor.alpha *= opacityChain;
+    const style = getComputedStyle(element);
+    const fontSize = parseFloat(style.fontSize);
+    const isLargeText = fontSize >= 24 || (fontSize >= 18.66 && Number(style.fontWeight) >= 700);
+    const requiredRatio = isLargeText ? 3 : 4.5;
+    const key = `photo|${toHex(textColor)}|${element.tagName}.${element.getAttribute("class") || ""}`;
+    if (!lowContrastTexts.has(key)) {
+      lowContrastTexts.set(key, {
+        // Xếp sau các cặp đã đo ra tỉ lệ thật: danh sách hiện 12 dòng đầu.
+        ratio: requiredRatio,
+        line: `cần ${requiredRatio}:1, chữ ${toHex(textColor)} trên ảnh "${sample}": ${describe(element)}`,
+        gradientId: String(lowContrastTexts.size),
+        requiredRatio,
+        textColor,
+      });
+    }
+    element.dataset.evonGradientText = lowContrastTexts.get(key).gradientId;
   }
 
   // Nhãn của ô đang khoá mờ theo ô là cố ý (choice-controls.md, bảng Khoá) và WCAG miễn chữ của control khoá.
@@ -3761,7 +3805,7 @@ async function verifyGradientContrast(page, measurements) {
   const updatedLines = new Map();
   const hideStyle = await page.addStyleTag({ content: "[data-evon-hide-text], [data-evon-hide-text] * { color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; caret-color: transparent !important; }" });
 
-  for (const check of checks.slice(0, 12)) {
+  for (const check of checks.slice(0, 24)) {
     const rects = await page.evaluate((gradientId) => [...document.querySelectorAll(`[data-evon-gradient-text="${gradientId}"]`)].slice(0, 6).map((element) => {
       const box = element.getBoundingClientRect();
 

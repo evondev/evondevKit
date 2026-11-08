@@ -693,6 +693,20 @@ mỗi màn.
 - **Photo không có ảnh thật thì đừng chọn.** Cả app toàn ô xám thay ảnh trông như app hỏng; dữ liệu giả dùng ảnh thật
   có quyền dùng, không vẽ minh hoạ thay ảnh. Một mục thiếu ảnh để thử ca biên (`S16`) thì vẫn có: khung nền
   `--background`, icon và chữ "Chưa có ảnh", không phải ô xám trơn.
+- **Chữ đè lên ảnh (thẻ nổi bật, ảnh đầu màn) cần lớp tối riêng dưới chữ**, không trông vào phần tối của ảnh: đổi ảnh khác
+  (trời sáng, cát trắng) là chữ trắng tan. Một `span` `absolute inset-x-0 bottom-0 h-3/5 bg-linear-to-t from-black/85
+  via-black/45 to-transparent` nằm giữa ảnh và chữ; dòng nhỏ (quốc gia, số đánh giá) trắng đặc, không `text-white/85`.
+  Probe chụp nền thật dưới từng chữ trên ảnh rồi chấm 4.5:1 (chữ lớn 3:1).
+- **Ảnh lớn đầu màn chi tiết với tấm nội dung trượt lên:** ảnh là khối đầu của vùng cuộn như quầng của `J18`, tấm trắng
+  bo 28–36 là khối kế tiếp trong luồng. Đừng đẩy tấm xuống bằng `mt-[300px]` trong khối bọc không có padding: lề trên
+  dồn ra khối bọc (margin collapse), ảnh mất và nút quay lại rơi đè tiêu đề. Đặt ảnh `absolute` cao cố định trong khối
+  bọc `relative pt-[300px]` (hay khối bọc `flow-root`), tấm bắt đầu ngay dưới. Tấm không kéo được thì không vẽ thanh kéo
+  (thanh kéo chỉ cho sheet `J6`), dù ảnh mẫu có vẽ.
+- **Thanh trạng thái trên ảnh đầu màn:** dải che tai thỏ trong suốt lúc chưa cuộn (`J18`), giờ và pin chữ trắng, thêm
+  một lớp tối mỏng ở đỉnh ảnh (`h-24 bg-linear-to-b from-black/45 to-transparent`) để giờ trắng không tan vào trời nhạt.
+  Cuộn qua ảnh thì dải có nền, chữ về màu tối như mọi màn.
+- **Hàng cuộn ngang trong khung máy không có nút mũi tên.** Người dùng vuốt bằng ngón tay; nút mũi tên tròn kiểu desktop
+  đè lên chip cuối và chữ của thẻ kế bên. Mép mờ phía còn mục khuất là đủ (`R10`); probe không bắt hàng cuộn trong `.device`.
 - **Playful: gờ đáy 4px là `box-shadow` đặc, không phải `border-bottom`.** Chưa bấm `box-shadow: 0 4px 0 <màu gờ>`; nhấn
   thì `translate: 0 2px` và gờ còn `0 2px 0`: mép dưới đứng yên, bố cục không đổi. Đừng đổi `border-bottom-width` rồi bù
   `margin`: thẻ có `min-height` không thấp đi, phần bù dư ra, mọi thẻ bên dưới giật xuống mỗi lần nhấn. Gờ nằm ngoài
