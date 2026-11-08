@@ -85,7 +85,7 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   `backdrop-blur-xl`, viền 4% và bóng mềm. Kiểu thanh nổi là kiểu của iOS hiện hành và phần lớn ảnh mẫu.
 - **Thanh tab chỉ để đi lại.** Hành động (thêm, quét, đăng) không nằm trong thanh tab, kể cả nút "+" giữa
   thanh hay gặp ở ảnh mẫu: dùng nút tròn đứng riêng cạnh thanh (`J5`). Ngoại lệ duy nhất là kiểu Center dưới đây.
-- **Sáu kiểu thanh tab** ⚑, code chép từ `layouts/mobile-tabbars.html`. Mặc định Float; năm kiểu kia chọn trên wireframe
+- **Sáu kiểu thanh tab** (Float, Dark đã qua test; Center, Pill, Bubbles, Glass còn cờ ⚑), code chép từ `layouts/mobile-tabbars.html`. Mặc định Float; năm kiểu kia chọn trên wireframe
   (nhóm Tab, `?tab=`) hay khi đề nêu ("thanh tab tối", "nút giữa"). Kiểu chỉ đổi hình thanh, không đổi mục, không đổi icon.
 
   | Kiểu | Hình | Dùng khi | Ràng buộc |
@@ -603,7 +603,7 @@ lúc trình bày (app AI, sáng tạo; sức khoẻ, ăn uống, phong cách s�
 | **Immersive** | Nền tối có sắc (xanh đêm, tím than) cả app, chuyển dọc nhẹ hai tông gần nhau | Nút chính trắng chữ tối, không màu nhấn rực | Inter, tiêu đề lớn trắng, chữ phụ trắng 72% | Ảnh lớn bo 12–16 làm điểm nhìn, thẻ là lớp trắng 8–10% trên nền | Người dùng để thư giãn, nghe, xem, thường buổi tối: thiền, ngủ, nhạc, podcast, sách nói, video. Code mẫu `mobile-immersive.html` |
 | **Editorial** ⚑ | Trắng hay kem ấm `#fbf8f3`, gần như không thẻ | Một sắc nhỏ cho link, nút theo dõi; nút chính đen hay màu đó | Tiêu đề bài và thân bài **Lora** (serif), thân 18/1.6; khung app (tab, nút, nhãn) vẫn Inter | Dòng bài: chữ trái, ảnh vuông 64 phải; trang đọc lề 20, không khung | Người **đọc** dài: bản tin, báo, sách, khoá học dạng đọc, công thức nấu ăn |
 | **Glow** ⚑ | Gần đen `#0b0b0f` cả app, hai ba **quầng màu mờ** lớn (màu nhấn và một sắc kề) ở đầu màn và sau khối chính | Nút chính màu nhấn rực **chữ tối**, mic, nút gửi; quầng màu là chỗ màu nhiều nhất | Inter, tiêu đề màn rất lớn 36–40 `tracking-tight`, chữ phụ trắng 65% | Thẻ kính trắng 8% viền trắng 10%, bo 20–24; thanh tab `glass` (`J2`) | Người dùng app AI, sáng tạo, âm nhạc, đầu tư trẻ, học kỹ năng sáng tạo: cần cảm giác mới, năng lượng |
-| **Tinted** ⚑ | **Cả app một màu nền nhạt** pha từ màu nhấn (tím nhạt, kem đào, bạc hà) thay trắng và xám; thẻ trắng nổi trên nền màu | Nút chính đen hay màu nhấn đậm; khối nhấn đầu màn là cùng sắc đậm hơn | Inter hay font tròn hơn, số lớn đậm | Bo 20–28, thẻ trắng không viền, bóng rất nhẹ; thanh tab `dark` hay `pill` (`J2`); hợp vòng và cung (`J17`), đồ vật 3D cho món, danh mục (`J16`) | Người tự chăm mình mỗi ngày mà không cần gamification: ăn uống, kcal, sức khoẻ, chi tiêu cá nhân nhẹ nhàng, du lịch, phong cách sống |
+| **Tinted** | **Cả app một màu nền nhạt** pha từ màu nhấn (tím nhạt, kem đào, bạc hà) thay trắng và xám; thẻ trắng nổi trên nền màu | Nút chính đen hay màu nhấn đậm; khối nhấn đầu màn là cùng sắc đậm hơn | Inter hay font tròn hơn, số lớn đậm | Bo 20–28, thẻ trắng không viền, bóng rất nhẹ; thanh tab `dark` hay `pill` (`J2`); hợp vòng và cung (`J17`), đồ vật 3D cho món, danh mục (`J16`) | Người tự chăm mình mỗi ngày mà không cần gamification: ăn uống, kcal, sức khoẻ, chi tiêu cá nhân nhẹ nhàng, du lịch, phong cách sống |
 
 **Token đổi theo bộ** (khối đổi thương hiệu của `mobile-app.html`, tương phản đã đo):
 
@@ -627,7 +627,8 @@ khớp:
 3. Một người tự làm việc của mình mỗi ngày và cần động lực quay lại (học, thói quen, thể dục) → **Playful**.
 4. Còn lại, nhất là ghi chép, quản lý, tài chính, app cho cửa hàng hay công ty → **Clean**.
 
-Mono, Editorial, Glow, Tinted còn cờ ⚑ (chưa qua test): không tự khuyên; đề hợp rõ thì báo một dòng lúc giao. Mẫu dòng báo, nói bằng
+Tinted đã qua test: tự khuyên ở lối trình diễn (`J18`) cho app một người tự chăm mình; đề thường vẫn theo bốn câu trên, hợp
+rõ thì báo Tinted một dòng. Mono, Editorial, Glow còn cờ ⚑ (chưa qua test): không tự khuyên; đề hợp rõ thì báo một dòng lúc giao. Mẫu dòng báo, nói bằng
 người dùng: *"Bộ mặt: **Playful** (nút đậm, thẻ bấm được, phản hồi tô cả dải đáy) vì người học cần quay lại mỗi ngày.
 Muốn kiểu khác thì nói: Clean, Photo, Immersive, Mono, Editorial, Glow, Tinted."* Wireframe app điện thoại có nhóm Kiểu liệt kê tám bộ
 (`design-process.md`, `U3`), mặc định là bộ khuyên dùng. Bộ nào qua test thì gỡ cờ ⚑ ở bảng trên.
@@ -817,7 +818,7 @@ khác ở các chỗ dưới đây, và chỗ nào khác thì luật này thắn
   kèm nên không bị đọc thành nút. Ô icon nền sắc đó `/10`, icon bậc 600–700 cho đủ 4.5:1. Danh mục thứ bảy trở đi gộp "Khác" `slate-300` trên
   biểu đồ, icon trong danh sách là ô `bg-secondary text-muted`. Sáu sắc avatar của `M34` (có emerald, amber) chỉ cho
   thực thể không lên biểu đồ.
-- **Vòng và cung** ⚑, code chép từ `layouts/mobile-charts.html` (một hàm `drawArc()`, SVG thuần). Ngoại lệ có tên của
+- **Vòng và cung** (cung chia khúc, vòng từng ngày đã qua test; vòng mục tiêu, donut có khe còn cờ ⚑), code chép từ `layouts/mobile-charts.html` (một hàm `drawArc()`, SVG thuần). Ngoại lệ có tên của
   "thanh, không vòng" (`charts.md`), chỉ cho **một con số so với một mục tiêu** ở app sức khoẻ, thể dục, ăn uống, giấc
   ngủ, thói quen, tiết kiệm, và cho cơ cấu tối đa 4 phần. Các app này hầu như đều dùng vòng; thanh ở đây nhìn như form.
   - **Vòng mục tiêu**: một vòng nét 14–16px trên khối 160–184px, rãnh cùng sắc nhạt (`--chart-fill` 14% pha trắng; nền
@@ -837,7 +838,7 @@ khác ở các chỗ dưới đây, và chỗ nào khác thì luật này thắn
   có thư viện thì theo "Vẽ bằng thư viện"; hàng đọc số và vạch chọn vẫn theo luật trên (Recharts: ẩn tooltip mặc định,
   đọc mốc đang chọn rồi ghi vào hàng đọc số).
 
-## J18. Lối trình diễn ⚑
+## J18. Lối trình diễn
 
 Bản thực dụng (`J1`–`J17`) đúng luật nhưng phẳng và dày: người xem bản mẫu thấy "đúng" mà không thấy "muốn dùng". Lối
 trình diễn giữ nguyên luồng, màn, nội dung, chỉ đổi cách trình bày theo công thức chung của các bản mẫu app được khen
