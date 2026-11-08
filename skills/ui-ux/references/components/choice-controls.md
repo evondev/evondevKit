@@ -137,7 +137,7 @@ chọn; chỉ tô nền thì cả card đổi màu, quá nặng.
 
 ## Công tắc
 
-Công tắc = **có hiệu lực ngay**, không chờ nút Lưu (`layouts/app.md`, trang cài
+Công tắc = **có hiệu lực ngay**, không chờ nút Lưu (`layouts/app/settings.md`, trang cài
 đặt). Cần bấm Lưu mới có hiệu lực thì dùng checkbox.
 
 ```html
@@ -172,7 +172,7 @@ Công tắc = **có hiệu lực ngay**, không chờ nút Lưu (`layouts/app.md
   Bật lên mà phải quét mã, nhập mật khẩu, thanh toán hay xác nhận thì là **nút mở
   luồng**, cạnh một dòng trạng thái ("Chưa bật" / "Bật từ 12/06/2026"). Công tắc mở
   modal thì bấm Huỷ giữa chừng làm công tắc bật lên rồi bật về, và dấu "Đã lưu" hiện
-  lúc chưa có gì được lưu. Xem "Trang bảo mật" ở `../layouts/app.md`.
+  lúc chưa có gì được lưu. Xem "Trang bảo mật" ở `../layouts/app/security.md`.
 
 ---
 
@@ -286,7 +286,7 @@ Bấm năm    ──►   lưới 12 năm (2020–2031), ‹ › nhảy 12 năm
     - **Không đỏ, kể cả lúc rê.** Đỏ khi rê (`I4`) dành cho xoá **bản ghi**: mất một thứ. Gỡ hạn là đổi một giá trị về trống, đặt lại là có: ba câu của `I4` đều "không". Tô đỏ thì người ta ngần ngại bấm một việc vô hại, và làm nhạt nghĩa của đỏ ở mục "Xoá công việc" ngay trong menu ba chấm cùng dòng. Không hỏi xác nhận.
     - Ô chưa có hạn thì không có hàng này (không có gì để gỡ).
   - Ô mở popover giữ nền hover suốt lúc popover mở (`aria-expanded:bg-foreground/8`, không `bg-surface-hover` vì trùng nền dòng đang rê, không `/5` vì gần trùng, `I10`), để biết lịch này đang sửa ô nào.
-  - **Dấu bấm được lúc đứng yên**: ô sửa tại chỗ là việc phụ (hạn chót giữa ba bốn ô sửa được của một dòng việc) thì chỉ hiện lúc rê; ô là **việc chính của trang** (vai trò ở trang thành viên) thì `ChevronDown` luôn hiện. Xem "Trang thành viên và phân quyền" trong `../layouts/app.md`.
+  - **Dấu bấm được lúc đứng yên**: ô sửa tại chỗ là việc phụ (hạn chót giữa ba bốn ô sửa được của một dòng việc) thì chỉ hiện lúc rê; ô là **việc chính của trang** (vai trò ở trang thành viên) thì `ChevronDown` luôn hiện. Xem "Trang thành viên và phân quyền" trong `../layouts/app/members.md`.
   - Gợi ý (người dùng quyết): hàng mốc nhanh "Hôm nay · Ngày mai · Thứ Hai tới" trên lưới. Hạn chót đa phần rơi vào vài ngày tới.
 - Kiểu khác, chỉ dựng khi đề yêu cầu: **hai select tháng và năm** thay cho tiêu đề (hợp ô ngày sinh, năm lùi vài chục năm). Mặc định vẫn là tiêu đề bấm được ở trên.
 
@@ -367,4 +367,4 @@ lên ô. Radix: `side="bottom"` + `avoidCollisions`, không bật `sticky="alway
 Khoá thì mờ cả nhãn đi cùng ô (`peer-disabled:` hoặc `has-disabled:` trên
 `<label>`). Ô mờ mà nhãn vẫn đen thì người dùng bấm vào nhãn, không có gì xảy ra.
 
-**Khoá thì nói vì sao, ngay dưới ô**, bằng dòng gợi ý `text-xs text-muted`: "Liên hệ quản trị viên để đổi giờ chốt sổ". Trong **hàng cài đặt** có mô tả `text-sm` thì câu lý do (và câu lỗi) thay chỗ mô tả và giữ `text-sm`, không xuống `text-xs` (`../layouts/app.md`, "Trang cài đặt"). Ô mờ mà không một lời thì người dùng tưởng app lỗi, và không biết đi đâu để đổi.
+**Khoá thì nói vì sao, ngay dưới ô**, bằng dòng gợi ý `text-xs text-muted`: "Liên hệ quản trị viên để đổi giờ chốt sổ". Trong **hàng cài đặt** có mô tả `text-sm` thì câu lý do (và câu lỗi) thay chỗ mô tả và giữ `text-sm`, không xuống `text-xs` (`../layouts/app/settings.md`, "Trang cài đặt"). Ô mờ mà không một lời thì người dùng tưởng app lỗi, và không biết đi đâu để đổi.

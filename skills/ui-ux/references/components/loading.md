@@ -46,7 +46,7 @@ Theo `I19`: khung chờ **đúng hình** dòng thật, để lúc dữ liệu v�
 - **Mượn nguyên khuôn dòng thật**: cùng cỡ avatar, cùng padding, cùng đường chia `divide-y`. Dòng thật có đường chia mà khung chờ không có thì lúc dữ liệu về vẫn thấy cả khối đổi hình.
 - **Thanh chữ cao `h-3`, chiều dài lệch nhau** giữa các dòng (`w-2/5`, `w-1/2`, `w-1/3`…). Dài bằng nhau thì trông như sọc kẻ, không giống chữ.
 - Số dòng bằng số dòng mỗi trang, hoặc đủ lấp khung, không bịa 3 dòng cho một khung 10 dòng.
-- **Bảng nhóm thì khung chờ bắt đầu bằng một hàng nhóm**, không thẳng vào dòng dữ liệu, kẻo lúc dữ liệu về cả bảng tụt một hàng (`../layouts/app.md`, mục Bảng nhóm theo trạng thái).
+- **Bảng nhóm thì khung chờ bắt đầu bằng một hàng nhóm**, không thẳng vào dòng dữ liệu, kẻo lúc dữ liệu về cả bảng tụt một hàng (`../layouts/app/data-table.md`, mục Bảng nhóm theo trạng thái).
 - `animate-pulse` luôn đi kèm `motion-reduce:animate-none`. Trình đọc màn hình không thấy khung, nên phải có `aria-busy` và một câu `sr-only`.
 - **Không bao giờ hiện câu rỗng trong lúc chờ.** "Chưa có khách hàng nào" chớp lên rồi danh sách hiện ra là người dùng vừa được báo sai một lần. Chưa biết rỗng hay không thì là đang tải.
 
@@ -153,7 +153,7 @@ luôn trên màn lúc bấm**, không spinner, không khoá điều khiển tron
 
 ## Tự lưu: "Đang lưu… / Đã lưu"
 
-Trang cài đặt không nút Lưu tổng (`../layouts/app.md`) và trình soạn thảo tự lưu cần
+Trang cài đặt không nút Lưu tổng (`../layouts/app/settings.md`) và trình soạn thảo tự lưu cần
 một dấu nhỏ nói đã lưu chưa, đặt **cạnh chỗ vừa đổi**: cạnh nhãn của hàng cài đặt,
 cạnh tiêu đề tài liệu ở header trình soạn thảo.
 

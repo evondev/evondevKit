@@ -33,7 +33,7 @@ Triệu chứng dễ nhận nhất: cuộn sang ngang thì thấy **một mảng
 
 Và luôn giữ: **ngày tháng, nhãn phụ phải nhỏ hơn tiêu đề ít nhất một bậc.** Tiêu đề `text-sm` thì ngày `text-xs`. Bằng nhau là mắt không biết đọc cái nào trước.
 
-**R6. Ngoại lệ của R1 và R2: thứ tự tuyến tính thì không được wrap.** Board trạng thái, các bước quy trình, dòng thời gian, hàng chip lọc, hàng tab đều thuộc loại này. Xếp thành hai hàng thì mắt đọc theo hình chữ Z và mất dòng chảy; bốn chip ở 375px thì ba cái một hàng và một cái rớt xuống đứng lẻ, nhìn như lỗi. Cho cuộn ngang trong khung, mỗi phần tử `shrink-0`, cột kanban `w-[248px] grow max-w-[320px]` (vì sao thì xem `layouts/app.md`).
+**R6. Ngoại lệ của R1 và R2: thứ tự tuyến tính thì không được wrap.** Board trạng thái, các bước quy trình, dòng thời gian, hàng chip lọc, hàng tab đều thuộc loại này. Xếp thành hai hàng thì mắt đọc theo hình chữ Z và mất dòng chảy; bốn chip ở 375px thì ba cái một hàng và một cái rớt xuống đứng lẻ, nhìn như lỗi. Cho cuộn ngang trong khung, mỗi phần tử `shrink-0`, cột kanban `w-[248px] grow max-w-[320px]` (vì sao thì xem `layouts/app/kanban.md`).
 
 **Chip đang lọc (bấm để gỡ) không phải thứ tự tuyến tính**, nên không thuộc R6: từ `sm` trở lên cho `flex-wrap`, đặt thành một hàng riêng dưới thanh lọc, "Xoá lọc" nằm cuối và luôn thấy. Dưới `sm` mới cuộn ngang, và "Xoá lọc" đứng **ngoài** khung cuộn (`shrink-0`), không nằm cuối hàng cuộn. Nằm trong khung cuộn thì nhiều chip là "Xoá lọc" khuất theo, đúng nút cần nhất lại không thấy.
 
@@ -92,9 +92,9 @@ vẫn `h-11 md:h-10`, xem `budgets.md`.
 ```
 
 - **`min-w`** cho khối bọc bảng, đủ để mọi cột thở. Không có nó thì bảng vẫn co.
-- **`whitespace-nowrap`** cho ô ngày tháng, số, trạng thái, **tên người**. Tên người xuống dòng thì cột co còn một chữ ("Nguyễn / Anh / Tuấn"), cắt đuôi thì mất tên gọi (`layouts/app.md`, bảng nhóm theo trạng thái). Chỉ mô tả, tiêu đề dài mới cho xuống dòng.
+- **`whitespace-nowrap`** cho ô ngày tháng, số, trạng thái, **tên người**. Tên người xuống dòng thì cột co còn một chữ ("Nguyễn / Anh / Tuấn"), cắt đuôi thì mất tên gọi (`layouts/app/data-table.md`, bảng nhóm theo trạng thái). Chỉ mô tả, tiêu đề dài mới cho xuống dòng.
 - Lề đặt trên **khối bên trong**, không đặt trên khung cuộn. Xem R6.
-- Cuộn ngang thì **bắt buộc** ghim cột nhận diện (thường là cột đầu) bằng `sticky left-0` kèm nền `--surface`, cột ghim không quá ~40% khung. Cột đầu rộng hơn thế (tên + email) thì đừng cuộn: **dưới `sm`, bảng quản lý thành danh sách dòng** (`layouts/app.md`, mục Bảng dữ liệu). Cuộn mà không ghim thì cuộn một nhịp là mất tên, các ô còn lại không biết của ai.
+- Cuộn ngang thì **bắt buộc** ghim cột nhận diện (thường là cột đầu) bằng `sticky left-0` kèm nền `--surface`, cột ghim không quá ~40% khung. Cột đầu rộng hơn thế (tên + email) thì đừng cuộn: **dưới `sm`, bảng quản lý thành danh sách dòng** (`layouts/app/data-table.md`, mục Bảng dữ liệu). Cuộn mà không ghim thì cuộn một nhịp là mất tên, các ô còn lại không biết của ai.
 
 Đây là ngoại lệ hợp lệ của R1, cùng loại với R6: cuộn trong khung chứ không phải cả trang.
 
@@ -111,7 +111,7 @@ sidebar mở, quá 6 cột là bắt đầu chật.
 
 Đừng để `flex-wrap`, đó là cách duy nhất sai trong ba cách trên.
 
-**Hàng cuộn ngang thì mép mờ dần ở phía còn mục bị khuất**, cùng cách với vùng nav sidebar (`layouts/app.md`): `mask-image` 32px, mép trái mờ khi đã cuộn khỏi đầu, mép phải mờ khi còn mục phía sau, tính cờ từ `scrollLeft`/`scrollWidth`/`clientWidth`. Thanh cuộn đã ẩn (`scrollbar-clean`) nên mép cắt thẳng qua chữ không báo được gì: ở 375px hàng chip cắt ngang "Bán|", còn tab "Ngừng giao dịch 6" nằm hẳn ngoài khung, trông như chỉ có ba trạng thái. Áp cho hàng tab, hàng chip, và khung bảng cuộn ngang (`R9`).
+**Hàng cuộn ngang thì mép mờ dần ở phía còn mục bị khuất**, cùng cách với vùng nav sidebar (`layouts/app/shell.md`): `mask-image` 32px, mép trái mờ khi đã cuộn khỏi đầu, mép phải mờ khi còn mục phía sau, tính cờ từ `scrollLeft`/`scrollWidth`/`clientWidth`. Thanh cuộn đã ẩn (`scrollbar-clean`) nên mép cắt thẳng qua chữ không báo được gì: ở 375px hàng chip cắt ngang "Bán|", còn tab "Ngừng giao dịch 6" nằm hẳn ngoài khung, trông như chỉ có ba trạng thái. Áp cho hàng tab, hàng chip, và khung bảng cuộn ngang (`R9`).
 
 **Ở máy có chuột, hàng cuộn ngang phải có nút mũi tên ở phía còn mục bị khuất.** Dựng sẵn, không hỏi. Chuột thường chỉ có bánh cuộn dọc; thanh cuộn đã ẩn (`scrollbar-clean`) thì người dùng chuột không có cách nào tới mục phía sau, mép mờ chỉ báo "còn", không cho kéo. Máy có trackpad hay chuột cuộn ngang thì kéo được nên người làm không thấy lỗi. Hàng tab, chip, dải card ở desktop đều giống nhau:
 

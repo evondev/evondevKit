@@ -1,7 +1,7 @@
 # Tiêu đề cột sắp xếp
 
 Ô tiêu đề cột bảng bấm được để sắp xếp dòng. Bảng quanh nó (tab, lọc, chọn nhiều dòng,
-phân trang) xem "Bảng dữ liệu" trong `../layouts/app.md`. Dự án có `@tanstack/react-table`
+phân trang) xem "Bảng dữ liệu" trong `../layouts/app/data-table.md`. Dự án có `@tanstack/react-table`
 thì để nó giữ trạng thái sắp, skill chỉ lo hình ô (`N10`).
 
 ## Ba trạng thái

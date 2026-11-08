@@ -115,7 +115,7 @@ Tab và chip trông na ná nhưng là hai thứ khác nhau:
 | Variant | Hình | Đặt ở đâu |
 | --- | --- | --- |
 | `boxed` (mặc định) | Chữ trơn, tab đang chọn là **ô nền nhạt viền mảnh** | Trên bảng / danh sách, chuyển trạng thái: Tất cả / Chờ xử lý / Đã giao |
-| `underline` | Đường kẻ chạy hết hàng, **vạch 2px** dưới tab đang chọn | Chia nội dung trang chi tiết hoặc khối lớn: Tổng quan / Hoạt động / Tệp. **Điều hướng giữa các trang cài đặt**: Hồ sơ / Thông báo / Bảo mật (`../layouts/app.md`, "Khu cài đặt có nhiều trang") |
+| `underline` | Đường kẻ chạy hết hàng, **vạch 2px** dưới tab đang chọn | Chia nội dung trang chi tiết hoặc khối lớn: Tổng quan / Hoạt động / Tệp. **Điều hướng giữa các trang cài đặt**: Hồ sơ / Thông báo / Bảo mật (`../layouts/app/settings.md`, "Khu cài đặt có nhiều trang") |
 | `solid` | Tab đang chọn là **pill tô màu nhấn**, chữ đảo màu | Chỉ khi người dùng chọn. Không cho khu cài đặt: trang đầy công tắc bật đã tô `--primary`, viên đen ở đầu trang tranh với chúng |
 | `segmented` | **Rãnh chìm** nhạt, tab đang chọn là **ô trắng nổi** như phím bấm | 2–4 lựa chọn ngắn đổi cách xem: Ngày / Tuần / Tháng, Danh sách / Lưới |
 
@@ -273,7 +273,7 @@ Số việc chưa đọc, số mục trong nhóm, số thành viên. Xuất hi�
 
 Mặc định là **số trơn, chữ xám**, không khung, không nền. Pill trắng viền mảnh chỉ
 khi người dùng chọn. Năm pill viền cạnh nhau trên một cột là năm khung nhỏ kéo mắt
-(sidebar cũng vậy, `../layouts/app.md`).
+(sidebar cũng vậy, `../layouts/app/shell.md`).
 
 ```html
 <!-- Mặc định: số trơn. Dòng đang chọn thì số lên text-foreground cùng chữ. -->

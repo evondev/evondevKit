@@ -30,11 +30,23 @@ const typicalTasks = [
   { name: "Bộ luôn mở (mọi task)", files: [] },
   {
     name: "Dựng dashboard (nhánh U)",
-    files: ["references/design-process.md", "references/styles.md", "references/layouts/app.md"],
+    files: [
+      "references/design-process.md",
+      "references/styles.md",
+      "references/layouts/app.md",
+      "references/layouts/app/shell.md",
+      "references/layouts/app/dashboard.md",
+    ],
   },
   {
     name: "Dựng trang cài đặt (nhánh U)",
-    files: ["references/design-process.md", "references/styles.md", "references/layouts/app.md"],
+    files: [
+      "references/design-process.md",
+      "references/styles.md",
+      "references/layouts/app.md",
+      "references/layouts/app/shell.md",
+      "references/layouts/app/settings.md",
+    ],
   },
   {
     name: "Dựng app điện thoại (nhánh U)",

@@ -1,7 +1,7 @@
 # Cây thư mục (tree)
 
 Danh sách lồng nhau mở đóng được: thư mục tài liệu, cây trang, cây danh mục.
-Mượn khuôn **menu con của sidebar** (`layouts/app.md`): cùng chiều cao hàng, cùng
+Mượn khuôn **menu con của sidebar** (`layouts/app/shell.md`): cùng chiều cao hàng, cùng
 nền hover, cùng đường dọc, cùng cách báo mục đang chọn (`N5`).
 
 ```html

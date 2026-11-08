@@ -41,6 +41,8 @@ skills/
         ├── checklist.md            3 cổng kiểm
         ├── components/             24 khối code thật
         └── layouts/                thư viện bố cục + code mẫu đã duyệt
+            ├── app.md              mục lục màn trong app, tra mục theo tên
+            └── app/                mỗi loại màn một file; shell.md là khung, shell-*.md các kiểu khung
 archive/                  nhánh landing đã gỡ khỏi skill, giữ lại để tham khảo
 ```
 

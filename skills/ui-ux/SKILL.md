@@ -244,7 +244,7 @@ probe, bấm mở được; mỗi file layout vẫn chỉ nuôi một bố cục
 
 | Loại màn hình | Mở |
 | --- | --- |
-| Dashboard, các bước bắt đầu (onboarding checklist), danh sách, bảng, danh sách rỗng, cài đặt, hồ sơ cá nhân, bảo mật (xác thực hai lớp, phiên đăng nhập), khoá API, thành viên và phân quyền, trang lịch (lịch tháng), trang lỗi (404, 403, 500, bảo trì), trang báo cáo (doanh thu, phân tích theo khoảng ngày), đầu trang (đường dẫn + tên + nút), trang chi tiết bản ghi | `references/layouts/app.md` |
+| Dashboard, các bước bắt đầu (onboarding checklist), danh sách, bảng, danh sách rỗng, cài đặt, hồ sơ cá nhân, bảo mật (xác thực hai lớp, phiên đăng nhập), khoá API, thành viên và phân quyền, trang lịch (lịch tháng), trang lỗi (404, 403, 500, bảo trì), trang báo cáo (doanh thu, phân tích theo khoảng ngày), đầu trang (đường dẫn + tên + nút), trang chi tiết bản ghi | `references/layouts/app.md` là **mục lục**: mở `app/shell.md` (khung) cộng đúng file của loại màn, không đọc cả thư mục |
 | Đăng nhập, đăng ký, quên mật khẩu, form nhiều trường, form nhiều bước (thanh các bước), trạng thái lỗi | `references/layouts/form.md` |
 | Modal, panel trượt, dropdown, command palette, panel thông báo, toast, **chuyển động mở đóng của mọi khối nổi** (cả select, date picker), **đề yêu cầu animation mà không nói thư viện** (mục "Đề yêu cầu animation mà không nói thư viện") | `references/layouts/overlay.md` |
 | Bảng giá, trang chọn gói | `references/layouts/pricing.md` |
@@ -291,7 +291,7 @@ thẳng một cột giữa màn). Đừng hỏi lại có cần nút Google khô
 **S5. Đề để hở phạm vi thì dựng phạm vi mặc định, không hỏi.**
 
 - **Đề có liệt kê** ("trang đăng nhập gồm ô email, ô mật khẩu, nút…"): phạm vi đã chốt, dựng luôn.
-- **Đề để hở** ("dựng màn hình tổng quan"): lấy **bộ khối mặc định** của loại màn đó trong file layout (màn tổng quan: bảng khối trong `references/layouts/app.md`), dựng **đủ** bộ đó. Đừng để `S1` hoá thành "làm ít nhất có thể" rồi ra một màn mỏng dính 3 khối.
+- **Đề để hở** ("dựng màn hình tổng quan"): lấy **bộ khối mặc định** của loại màn đó trong file layout (màn tổng quan: bảng khối trong `references/layouts/app/dashboard.md`), dựng **đủ** bộ đó. Đừng để `S1` hoá thành "làm ít nhất có thể" rồi ra một màn mỏng dính 3 khối.
 - **Đề là cả một app mà không liệt kê màn** ("dựng app đặt món cho quán mình", "làm app chi tiêu") ⚑: dựng **một luồng
   chính 3–5 màn**, là việc chính đầu tiên của người dùng từ màn gốc tới lúc xong (đặt món: menu, sheet món, giỏ, đặt xong),
   cộng trạng thái của các màn đó. Không tự dựng cả app hai ba chục màn: tốn thời gian của người dùng mà phần lớn chưa ai

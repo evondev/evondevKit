@@ -63,7 +63,7 @@ rời nhóm rồi xin mời lại được, cả ba vẫn đỏ.
 | Thu hồi khoá API, thu hồi lời mời | Có | 2 |
 | Đăng xuất, đăng xuất thiết bị khác, đăng xuất hàng loạt | Có | 3 (chủ dự án chốt) |
 | Rời nhóm, gỡ thành viên | Có | 3 |
-| Xoá ảnh đại diện (có Hoàn tác trong toast) | Không, nút viền trung tính | Không câu nào: ảnh cũ quay lại ngay khi bấm Hoàn tác (`app.md`, "Trang hồ sơ cá nhân") |
+| Xoá ảnh đại diện (có Hoàn tác trong toast) | Không, nút viền trung tính | Không câu nào: ảnh cũ quay lại ngay khi bấm Hoàn tác (`layouts/app/profile.md`, "Trang hồ sơ cá nhân") |
 | Gửi lại lời mời hàng loạt, gửi email cho 240 khách | Không | Không câu nào. Vẫn hỏi lại vì đụng nhiều thứ một lúc, dùng hộp trung tính (`overlay.md`) |
 
 Gặp việc chưa có trong bảng thì trả lời ba câu, ghi thêm một dòng vào bảng, và ghi mã
@@ -611,7 +611,7 @@ tiết" trong dòng, khối bước công cụ trong chat. Cùng lý do, **khôn
 kiện** (`{isOpen && …}`) hay `hidden` cho phần nội dung đó: cũng giật y như vậy.
 
 Mẫu đầy đủ cho accordion (padding, hover, khung, cách kiểm) ở `components/accordion.md`.
-Công thức lõi, giống nhóm sidebar (`layouts/app.md`):
+Công thức lõi, giống nhóm sidebar (`layouts/app/shell.md`):
 
 ```tsx
 <button type="button" aria-expanded={isOpen} aria-controls={panelId} onClick={() => setIsOpen(!isOpen)}>

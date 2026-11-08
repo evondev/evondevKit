@@ -2,7 +2,7 @@
 
 Tên bản ghi ở đầu trang (dự án, tài liệu, bảng) đổi được ngay tại chỗ, không mở form.
 Ô sửa tại chỗ trong dòng bảng (hạn chót, vai trò) là chuyện khác, xem `../layouts/app.md`.
-Email và mật khẩu không sửa tại chỗ (`../layouts/app.md`, trang hồ sơ).
+Email và mật khẩu không sửa tại chỗ (`../layouts/app/profile.md`, trang hồ sơ).
 
 ## Hành vi
 
@@ -35,7 +35,7 @@ Bấm vào tên thì chỉ khung hiện ra, chữ đứng yên từng pixel (`N1
 
 1. **Cùng khuôn chữ.** Nút tên và ô nhập cùng `px-2`, viền 1px (nút viền trong suốt), dòng
    `leading-7`, cao 44/40px (`min-h-11 py-1.75 md:min-h-10 md:py-1.25`), cỡ chữ đúng cỡ `<h1>`
-   của đầu trang (`text-xl font-semibold`, `../layouts/app.md`).
+   của đầu trang (`text-xl font-semibold`, `../layouts/app/shell.md`).
 2. **Chữ thẳng cột với phần còn lại của đầu trang, khung tràn ra trái.** Nền rê và viền ô nằm
    ngoài chữ, lùi ra trái đúng padding + viền (8 + 1 = 9px). Không lùi thì tên thụt 9px so với
    link cấp cha, câu mô tả, hàng tab ngay trên dưới nó. Các app có tên sửa tại chỗ đều giữ chữ thẳng cột, khung

@@ -1,7 +1,7 @@
 # Đường dẫn (breadcrumb)
 
 Dòng các cấp cha của trang đang xem, mỗi cấp là link. Nằm ở một trong hai chỗ: thanh header
-`h-16` của khung app, hoặc trên tên trang trong đầu trang (`../layouts/app.md`, "Đầu trang trong
+`h-16` của khung app, hoặc trên tên trang trong đầu trang (`../layouts/app/shell.md`, "Đầu trang trong
 vùng nội dung"). Không bao giờ cả hai.
 
 ## Khi nào có

@@ -2,7 +2,7 @@
 
 **Dự án đã có logo thì dùng của họ**, không vẽ lại, không chỉnh (logo là nhận diện, `V1` trong
 `review.md`). File này chỉ dùng khi dự án mới chưa có logo mà màn có chỗ cho logo: đầu sidebar,
-màn xác thực (`layouts/form.md`), trang lỗi đứng riêng (`layouts/app.md`). Việc nhỏ hơn một màn
+màn xác thực (`layouts/form.md`), trang lỗi đứng riêng (`layouts/app/error-pages.md`). Việc nhỏ hơn một màn
 mà màn đó không có chỗ cho logo thì không vẽ (`S3`).
 
 Tìm trước khi vẽ:
@@ -107,7 +107,7 @@ export default function ProductBrand({ name, className }: ProductBrandProps) {
 }
 ```
 
-- Sidebar thu gọn: ô đứng yên, tên bị cắt và mờ đi như chữ các mục (`layouts/app.md`, thu gọn
+- Sidebar thu gọn: ô đứng yên, tên bị cắt và mờ đi như chữ các mục (`layouts/app/shell.md`, thu gọn
   sidebar). Màn xác thực và trang lỗi đứng riêng dùng đúng component này, không vẽ bản thứ hai.
 - **Favicon từ cùng dấu**: một file SVG gồm ô vuông bo nền màu nhấn và dấu trắng (tab trình duyệt
   sáng hay tối đều thấy). Next.js App Router đặt ở `app/icon.svg`; dự án khác `public/favicon.svg`

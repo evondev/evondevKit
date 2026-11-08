@@ -27,7 +27,7 @@ Onboarding là luồng hay hỏng nhất, nên các luật dưới bắt đầu 
 | --- | --- | --- |
 | Là gì | Người dùng đã ở trong app (dashboard, danh sách); app chỉ chỗ bắt đầu | Các màn riêng chạy một lần, **trước** khi vào app: xin quyền, đồng ý điều khoản, hỏi tên, mục tiêu, sở thích để cá nhân hoá |
 | Hay gặp ở | App web, SaaS, dashboard | App mobile, app cá nhân hoá (học, sức khoẻ, tài chính, nội dung) |
-| Dựng bằng | Khung **Các bước bắt đầu**, màn rỗng lần đầu, gợi ý tại chỗ (`O1`–`O3`, `layouts/app.md`) | Chuỗi màn một câu hỏi một màn (`O8`) |
+| Dựng bằng | Khung **Các bước bắt đầu**, màn rỗng lần đầu, gợi ý tại chỗ (`O1`–`O3`, `layouts/app/dashboard.md`) | Chuỗi màn một câu hỏi một màn (`O8`) |
 | Kết thúc khi | Xong hay ẩn khung các bước | Màn cuối dẫn thẳng vào việc chính đầu tiên |
 
 Hai loại **nối nhau**: loại 2 xong thì người dùng rơi vào app, và loại 1 tiếp quản. Đề "dựng
@@ -47,7 +47,7 @@ Màn đầu tiên sau đăng ký là dashboard **chưa có dữ liệu**. Dựng
 năm ô số `0`, biểu đồ phẳng, bảng "Chưa có dữ liệu": người mới không biết bấm vào đâu.
 
 - Workspace mới thì khung **Các bước bắt đầu** thay cả lưới, hay một khối chào có một nút
-  `primary` dẫn tới việc chính đầu tiên (`layouts/app.md`, mục Các bước bắt đầu). Không dựng
+  `primary` dẫn tới việc chính đầu tiên (`layouts/app/dashboard.md`, mục Các bước bắt đầu). Không dựng
   lại ở đây, theo đúng mẫu đó.
 - Màn danh sách rỗng lần đầu (chưa từng có bản ghi) khác màn rỗng do lọc
   (`components/empty-state.md`): lần đầu thì một câu vì sao nên tạo, một nút tạo; rỗng do lọc

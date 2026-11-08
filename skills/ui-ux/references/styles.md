@@ -324,7 +324,7 @@ làm đúng như vậy.
 | **Sắc** ⚑ | Màu gắn với dữ liệu tới đâu | `neutral` (mặc định) · `tinted` · `vivid` (`P17`). Không nằm trong mười bộ, ghép với bộ nào cũng được |
 
 Ghép điều hướng với vùng chứa theo mục **Ghép điều hướng với vùng chứa** trong
-`layouts/app.md`: tổ hợp nào chạy được, tổ hợp nào không (`topnav` + `floating` không có sidebar
+`layouts/app/shell.md`: tổ hợp nào chạy được, tổ hợp nào không (`topnav` + `floating` không có sidebar
 để nổi).
 
 Bố cục nội dung (bảng trước, kanban, lịch, card) **không** nằm trong bộ mặt: đó là phương án
@@ -387,7 +387,7 @@ còn ghi tên tiếng Việt thì đọc theo bảng: Gọn = Clean, Sidebar t�
 Đêm = Midnight; sửa tại chỗ sang tên mới.
 
 **Được đè:** luật gu flat của khối `P` tương ứng, cộng dòng "sidebar nền trắng" ở
-`layouts/app.md` cho Dark Sidebar, Inset, Paper, Float, Rail, Topbar. **Không đè:** toàn bộ cột Nguyên tắc của `P2`, gồm
+`layouts/app/shell.md` cho Dark Sidebar, Inset, Paper, Float, Rail, Topbar. **Không đè:** toàn bộ cột Nguyên tắc của `P2`, gồm
 `F1` bo góc và `P3` tương phản. Bộ mặt không đổi bố cục, không đổi component, không thêm khối.
 
 **Font**: cả ba font có bộ `vietnamese` trên Google Fonts (đã kiểm 03/11/2026), vẫn kiểm bằng
@@ -414,11 +414,11 @@ mắt chữ "ữ", "ợ", "ằ" ở cỡ nhỏ nhất của màn (`T5`). Project
   biểu đồ ở nền tối (`components/charts.md`).
 - **Inset: nền rê, nền đang chọn của sidebar phải đổi theo nền trang.** `--item-hover` của
   sidebar trắng trùng đúng màu nền trang, đặt lên nền xám là rê vào không thấy gì. Theo mục
-  Khung bọc trong `layouts/app.md`.
+  Khung bọc trong `layouts/app/shell-inset.md`.
 - **Paper: cả màn trắng thì mọi ranh giới là đường kẻ `--border-strong`.** `--border` (`#f7f7f8`)
   trên nền trắng gần như không thấy, khung app mất ranh giới. Khối nội dung không bọc card trắng
   (trắng trên trắng chỉ còn cái viền): tách nhóm bằng tiêu đề, khoảng trắng và đường kẻ, bảng chạy
-  hết bề ngang. Theo mục Một mặt phẳng trong `layouts/app.md`.
+  hết bề ngang. Theo mục Một mặt phẳng trong `layouts/app/shell-unified.md`.
 - **Rail, Topbar có trần số mục**: Rail chỉ icon tới 8 mục chính, Rail có nhãn tới 7, Topbar tới
   6, cả ba không nhóm lồng.
   Đếm mục chính của app ở `U2` trước khi khuyên; vượt trần thì không khuyên hai bộ này, kể cả khi

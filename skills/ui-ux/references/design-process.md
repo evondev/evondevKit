@@ -303,7 +303,7 @@ dòng đó."* Dừng chờ.
     khối trắng bo góc cách mép, nền rê và nền đang chọn của sidebar đổi theo mục Khung bọc của
     `layouts/app.md`; ở khổ Mobile khối bọc trải hết màn, không bo, không cách mép. Paper: nền
     trang, `.wf-sidebar`, `.wf-main` cùng `--surface`, sidebar có `border-right`, header có
-    `border-bottom`, cả hai `--border-strong` (mục Một mặt phẳng của `layouts/app.md`). Float:
+    `border-bottom`, cả hai `--border-strong` (mục Một mặt phẳng của `layouts/app/shell-unified.md`). Float:
     `.wf-sidebar` thành khối trắng bo góc cách mép, header của `.wf-main` bỏ nền. Rail: nhãn chữ
     trong sidebar bọc `<span class="wf-label">`; kiểu Rail vẽ đúng biến thể sẽ khuyên (`P13`):
     chỉ icon thì ẩn nhãn, bóp sidebar về 64px, giữ icon đứng yên; có nhãn thì sidebar 80px, mục
@@ -592,7 +592,7 @@ dòng đó."* Dừng chờ.
     :root:not([data-mau="xam"])[data-kieu="soft"] { --app-font: "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif; }
     :root:not([data-mau="xam"])[data-kieu="midnight"] { --app-font: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif; }
     :root:not([data-mau="xam"])[data-kieu="dark-sidebar"] .wf-sidebar { color-scheme: dark; /* …nguyên khối token .force-dark */ }
-    /* Inset đổi khung, chạy cả ở nấc Xám. Số đo theo mục Khung bọc của layouts/app.md. */
+    /* Inset đổi khung, chạy cả ở nấc Xám. Số đo theo mục Khung bọc của layouts/app/shell-inset.md. */
     :root[data-kieu="inset"] .wf-sidebar { background: transparent; border: 0; }
     :root[data-kieu="inset"] .wf-sidebar a:hover { background: color-mix(in srgb, var(--foreground) 4%, transparent); }
     :root[data-kieu="inset"] .wf-sidebar a[aria-current="page"] { background: var(--secondary-hover); }
@@ -839,7 +839,7 @@ màu và nhấn theo mức đã khuyên, không hỏi lại.
   sánh wireframe với bản dựng qua lại là mọi khối nhảy.
 - **Mục điều hướng trỏ tới màn ngoài đề** (sidebar có "Bệnh nhân" mà đề chỉ xin hồ sơ một người):
   màn đó chưa qua `U2`, chưa có wireframe, nên không tự nghĩ bố cục. Dựng tối giản theo khuôn mặc
-  định của skill cho loại màn đó (danh sách thì "Danh sách có bộ lọc" trong `layouts/app.md`: ô tìm,
+  định của skill cho loại màn đó (danh sách thì "Danh sách có bộ lọc" trong `layouts/app/filtered-list.md`: ô tìm,
   dòng theo `components/list-row.md` có giá trị so sánh bên phải), rồi ghi một dòng lúc giao:
   *"Màn [X] ngoài đề, dựng tạm để menu không dẫn vào trang trống; muốn làm thật thì nhắn."* Đừng tự
   nghĩ bố cục: ra cột tên + mã rộng 1500px, nửa phải trống, không ô tìm, không giá trị so sánh.

@@ -219,7 +219,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   for (const container of document.querySelectorAll("body *")) {
     const overflowY = getComputedStyle(container).overflowY;
     if (!["auto", "scroll"].includes(overflowY) || container.scrollTop <= 0 || container.clientHeight < window.innerHeight * 0.6) continue;
-    // Lưới giờ cuộn sẵn tới vạch "bây giờ" (`data-now`, `layouts/app.md` "Lưới giờ trong ngày") là cố ý: vạch
+    // Lưới giờ cuộn sẵn tới vạch "bây giờ" (`data-now`, `layouts/app/calendar.md` "Lưới giờ trong ngày") là cố ý: vạch
     // nằm trong phần đang thấy của khung thì không tính (báo nhầm 30/09/2026, lịch hẹn nha khoa).
     const containerRect = container.getBoundingClientRect();
     const isScrolledToNow = [...container.querySelectorAll("[data-now]")].some((marker) => {
@@ -1105,7 +1105,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
 
   // 11b. Cột chữ của bảng bị ép xuống dòng trong khi bảng không cuộn: các cột khác `nowrap` giữ chỗ, cột
   //      tên / dịch vụ còn ~100px, nửa số dòng thành hai dòng, dòng cao thấp lởm chởm. Khung vừa phải ẩn cột
-  //      phụ theo `@container` của card (`layouts/app.md`, "Khung vừa thì ẩn cột phụ"), không theo viewport
+  //      phụ theo `@container` của card (`layouts/app/data-table.md`, "Khung vừa thì ẩn cột phụ"), không theo viewport
   //      (đã dính 30/09/2026, bảng Điều trị ở hồ sơ bệnh nhân 1280px: cột Điều trị 101px, 4/6 dòng hai dòng,
   //      vì cột Bác sĩ ẩn theo `lg:` mà cột phải 22rem đã lấy mất chỗ).
   const squeezedTableColumns = [];
@@ -4642,7 +4642,7 @@ function formatReport(results) {
       for (const item of result.unpinnedScrollTables.slice(0, 5)) problems.push(`  ${item}`);
     }
     if (result.squeezedTableColumns.length > 0) {
-      problems.push(`CỘT CHỮ CỦA BẢNG BỊ ÉP XUỐNG DÒNG (${result.squeezedTableColumns.length} cột; ẩn cột phụ theo @container của card, layouts/app.md "Bảng dữ liệu"):`);
+      problems.push(`CỘT CHỮ CỦA BẢNG BỊ ÉP XUỐNG DÒNG (${result.squeezedTableColumns.length} cột; ẩn cột phụ theo @container của card, layouts/app/data-table.md "Bảng dữ liệu"):`);
       for (const item of result.squeezedTableColumns.slice(0, 5)) problems.push(`  ${item}`);
     }
     if (result.crampedDescriptionLists.length > 0) {
@@ -4762,7 +4762,7 @@ function formatReport(results) {
       for (const item of result.mismatchedRuleColors) problems.push(`  ${item}`);
     }
     if (result.unevenHeaderActions.length > 0) {
-      problems.push(`HÀNG NÚT TRÊN HEADER KHÔNG ĐỒNG CỠ (layouts/app.md, "Nhóm nút bên phải thanh header"):`);
+      problems.push(`HÀNG NÚT TRÊN HEADER KHÔNG ĐỒNG CỠ (layouts/app/shell.md, "Nhóm nút bên phải thanh header"):`);
       for (const item of result.unevenHeaderActions) problems.push(`  ${item}`);
     }
     if (result.brokenRules.length > 0) {
@@ -4849,7 +4849,7 @@ function formatReport(results) {
       problems.push(`WIREFRAME THIẾU PHẦN CỦA THANH CÔNG CỤ (design-process.md, U3): ${result.missingWireframeParts.join(", ")}`);
     }
     if (result.coveredNowLines?.length > 0) {
-      problems.push(`VẠCH "BÂY GIỜ" BỊ Ô ĐÈ (layouts/app.md, "Lưới giờ trong ngày": vạch vẽ trên ô):`);
+      problems.push(`VẠCH "BÂY GIỜ" BỊ Ô ĐÈ (layouts/app/calendar.md, "Lưới giờ trong ngày": vạch vẽ trên ô):`);
       for (const item of result.coveredNowLines) problems.push(`  ${item}`);
     }
     if (result.wireframeChromeProblems?.length > 0) {
@@ -4865,7 +4865,7 @@ function formatReport(results) {
       for (const item of result.repeatedCardIssues) problems.push(`  ${item}`);
     }
     if (result.denseItems?.length > 0) {
-      problems.push(`MỤC LẶP DÀY CHỮ (từ 5 dòng mỗi mục; danh sách + chi tiết thì mục trái tối đa 3 dòng, layouts/app.md):`);
+      problems.push(`MỤC LẶP DÀY CHỮ (từ 5 dòng mỗi mục; danh sách + chi tiết thì mục trái tối đa 3 dòng, layouts/app/filtered-list.md):`);
       for (const item of result.denseItems) problems.push(`  ${item}`);
     }
     if (result.clippedBars?.length > 0) {

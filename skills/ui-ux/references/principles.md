@@ -268,7 +268,7 @@ cạnh một giá trị) **giữ hình, nới vùng bấm bằng `relative befor
 tới ~32–40px, không phóng to hình: to hình thì đẩy lệch hàng và nặng hơn việc của nó. Số âm ở đây
 buộc phải giữ (`N11`). Nếu hai vùng nới chạm nhau thì tách thứ đó ra hàng riêng trước. Đã dính:
 nút sao chép 28px, "Gửi lại · Huỷ" 18px, "Thử lại" 16px; công thức
-từng chỗ ở `components/description-list.md`, `layouts/app.md` (Hồ sơ), `components/file-upload.md`.
+từng chỗ ở `components/description-list.md`, `layouts/app/profile.md` (Hồ sơ), `components/file-upload.md`.
 
 Đã dính: bánh xe giờ chỉ cuộn mới chọn được, và cuộn khựng giữa chừng; chỉ có
 mũi tên ‹ › để đổi tháng, đi xa là mỏi tay (tiêu đề bấm ra lưới tháng/năm).
@@ -367,7 +367,7 @@ trong `components/` thì:
 1. **Tìm thứ gần nhất đã có mẫu và mượn khuôn** (`N5`). Stepper dọc mượn vòng,
    đường nối và bốn trạng thái của thanh các bước (`layouts/form.md`); bình luận
    lồng nhau mượn dòng danh sách (`components/list-row.md`); cây thư mục mượn link
-   sidebar có menu con (`layouts/app.md`); khung chat mượn cây thư mục, nút viền và
+   sidebar có menu con (`layouts/app/shell.md`); khung chat mượn cây thư mục, nút viền và
    "Lỗi tải" (`components/chat.md`).
    **Chỉ mượn từ file trong skill**, không mượn từ bản dựng chưa duyệt trong dự án.
    Khuôn lấy từ file thì dự án sau vẫn có, và lỗi không nhân đôi.
