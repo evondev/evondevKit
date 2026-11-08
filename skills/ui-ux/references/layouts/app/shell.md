@@ -47,7 +47,7 @@
 - **Dự án đã có badge màu brand trong sidebar** ("Mới" nền đỏ, vai màu, `review.md`) thì giữ,
   nhưng **mục đang chọn tô nền màu nhấn thì badge của nó đảo**: nền `--primary-foreground`,
   chữ `--primary`. Badge đỏ nằm trên nền đỏ thì tan mất, và cột có hai ba khối đỏ đặc tranh
-  nhau (`N3`). Wireframe vẽ luôn ca này (`design-process.md`, `U3`).
+  nhau (`N3`). Wireframe vẽ luôn ca này (`wireframe.md`, `U3`).
 
 ```tsx
 <Link

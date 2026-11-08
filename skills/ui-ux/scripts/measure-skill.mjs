@@ -26,31 +26,28 @@ const alwaysOpenFiles = [
 ];
 
 // Đề điển hình: những file một lượt làm phải đọc, cộng thêm vào bộ luôn mở.
+const appDashboardFiles = [
+  "references/styles.md",
+  "references/layouts/app.md",
+  "references/layouts/app/shell.md",
+  "references/layouts/app/dashboard.md",
+];
 const typicalTasks = [
   { name: "Bộ luôn mở (mọi task)", files: [] },
+  { name: "Lượt brief, cổng 1 (nhánh U)", files: ["references/design-process.md"] },
   {
-    name: "Dựng dashboard (nhánh U)",
-    files: [
-      "references/design-process.md",
-      "references/styles.md",
-      "references/layouts/app.md",
-      "references/layouts/app/shell.md",
-      "references/layouts/app/dashboard.md",
-    ],
+    name: "Dựng dashboard có wireframe (nhánh U)",
+    files: ["references/design-process.md", "references/wireframe.md", ...appDashboardFiles],
   },
-  {
-    name: "Dựng trang cài đặt (nhánh U)",
-    files: [
-      "references/design-process.md",
-      "references/styles.md",
-      "references/layouts/app.md",
-      "references/layouts/app/shell.md",
-      "references/layouts/app/settings.md",
-    ],
-  },
+  { name: "Dựng luôn dashboard", files: ["references/design-process.md", ...appDashboardFiles] },
   {
     name: "Dựng app điện thoại (nhánh U)",
-    files: ["references/design-process.md", "references/mobile.md", "references/layouts/mobile-app.html"],
+    files: [
+      "references/design-process.md",
+      "references/wireframe.md",
+      "references/mobile.md",
+      "references/layouts/mobile-app.html",
+    ],
   },
   { name: "Soi UI đang có (nhánh V)", files: ["references/review.md"] },
 ];

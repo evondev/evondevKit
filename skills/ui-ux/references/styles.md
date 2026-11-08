@@ -16,7 +16,7 @@ Ba ca, chọn đúng một:
 | --- | --- |
 | **Người dùng tự nêu phong cách** ("làm trang giá kiểu glassmorphism") | Làm theo phong cách đó, **không hỏi lại** |
 | **Audit thấy dự án có phong cách khác flat** (`P4`) | **Theo phong cách dự án**, dựng luôn, báo một dòng lúc giao (mẫu bên dưới) |
-| **Dự án flat hoặc trống**, người dùng không nêu gì | **Màn trong app web** (dashboard, danh sách, bảng, form, cài đặt): **bộ mặt khuyên dùng** theo người dùng của sản phẩm (`P13`), không mặc nhiên Clean; wireframe nhánh `U` có nhóm Kiểu liệt kê đủ mười bộ để người dùng tự đổi (`design-process.md`, `U3`). Màn khác: Flat (`P6`). Không hỏi về phong cách. Có màu chỉ khi người dùng tự xin trong đề: trang lướt để chọn theo `P12`, màn trong app theo Sắc Tinted hay Vivid (`P17`), mặc định Neutral; hai chế độ dựng lại: dòng Có màu (`V1d`), không chọn sẵn. Wireframe không có nấc Có màu, có nhóm Sắc trong menu Kiểu |
+| **Dự án flat hoặc trống**, người dùng không nêu gì | **Màn trong app web** (dashboard, danh sách, bảng, form, cài đặt): **bộ mặt khuyên dùng** theo người dùng của sản phẩm (`P13`), không mặc nhiên Clean; wireframe nhánh `U` có nhóm Kiểu liệt kê đủ mười bộ để người dùng tự đổi (`wireframe.md`, `U3`). Màn khác: Flat (`P6`). Không hỏi về phong cách. Có màu chỉ khi người dùng tự xin trong đề: trang lướt để chọn theo `P12`, màn trong app theo Sắc Tinted hay Vivid (`P17`), mặc định Neutral; hai chế độ dựng lại: dòng Có màu (`V1d`), không chọn sẵn. Wireframe không có nấc Có màu, có nhóm Sắc trong menu Kiểu |
 
 Vì sao theo dự án chứ không theo flat: một màn flat giữa app glass là màn lạc
 loài, người dùng thấy ngay. Nhất quán thắng gu.
@@ -258,7 +258,7 @@ Flat thuần đọc ra "buồn màu" ở hai chỗ: trang người dùng cuối 
 phòng, sản phẩm, khoá học), trang nào cũng như trang quản trị (chủ dự án thấy); và dashboard dự án mới chưa có brand, màu nhấn
 gần đen nên chọn "Màu" vẫn trắng đen. Hai chế độ dựng lại đưa nó thành dòng Có màu
 (`review.md`, `V1d`); người dùng tự xin trong đề thì dựng theo công thức dưới; ngoài hai chỗ đó thì
-theo `P1`. Wireframe không có nấc Có màu (`design-process.md`, `U3`).
+theo `P1`. Wireframe không có nấc Có màu (`wireframe.md`, `U3`).
 
 - **Nhận ra từ ảnh:** đầu trang là một dải màu đậm (đặc hoặc chuyển màu) ôm header và ô tìm,
   chân trang cùng màu; vài mục trong danh sách có nền nhạt màu nhấn kèm nhãn "Gấp", "Hot";
@@ -373,7 +373,7 @@ app là kế toán đối soát cả ngày thì Clean, không phải Soft. Nếu
 thì Clean. Không hỏi (`P1`):
 
 - Nhánh `U` có wireframe: nhóm Kiểu liệt kê mười bộ, **mặc định là bộ khuyên dùng**, khung lý
-  do một dòng vì sao cho từng bộ (`design-process.md`, `U3`).
+  do một dòng vì sao cho từng bộ (`wireframe.md`, `U3`).
 - "Dựng luôn" và chế độ dựng lại theo gu skill: dựng bộ khuyên dùng, báo một dòng lúc giao.
 - Mẫu dòng báo, nói bằng người dùng chứ không bằng tính từ: *"Bộ mặt: **Soft** (card nổi, font
   Be Vietnam Pro) vì chủ spa mở app giữa ca, xem card lịch hẹn nhiều hơn bảng. Muốn kiểu khác
@@ -569,7 +569,7 @@ Neutral ở mọi lối. Chỉ bật khi:
 
 - Đề có chữ xin màu: "nhiều màu", "có màu hơn", "sinh động", "colorful" → Tinted; "rực",
   "gradient", "vivid", "trẻ trung", "nổi bật hẳn" → Vivid. Không hỏi lại (`P1`).
-- Người dùng chọn trong nhóm Sắc của wireframe (`design-process.md`, `U3`).
+- Người dùng chọn trong nhóm Sắc của wireframe (`wireframe.md`, `U3`).
 - Ảnh tham chiếu có màu kiểu này: đọc ảnh ra nấc gần nhất, dựng theo bảng trên, không chép từng mã
   màu của ảnh.
 - Hai chế độ dựng lại: dòng Có màu (`V1d`) của dashboard là Tinted.

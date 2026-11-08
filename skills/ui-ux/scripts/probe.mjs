@@ -20,7 +20,7 @@
 // khổ vòng trước còn lỗi động (cuối báo cáo in sẵn lệnh).
 //
 // --quick: chỉ đo trang đứng yên (bố cục, chữ, tràn, tương phản, control gốc kể cả trong lớp đang ẩn), bỏ Tab,
-// rê chuột, bấm, mở lớp nổi. Vòng đầu cho wireframe (design-process.md, U3): ~4 lần nhanh hơn, rồi bước
+// rê chuột, bấm, mở lớp nổi. Vòng đầu cho wireframe (wireframe.md, U3): ~4 lần nhanh hơn, rồi bước
 // tự rà của U3 chạy --sweep đủ phần động trước khi gửi.
 //
 // --wireframe: so bản dựng với wireframe đã chọn (design-process.md, U4) ở 1440 và 375: khoảng nào cao thấp khác,
@@ -311,7 +311,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     return [...paths].sort().join("|");
   }
 
-  // Thanh công cụ và khung lý do của trang wireframe (`design-process.md` U3) nằm ngoài bản thiết kế: không đo.
+  // Thanh công cụ và khung lý do của trang wireframe (`wireframe.md` U3) nằm ngoài bản thiết kế: không đo.
   //  Đã báo nhầm 30/09/2026, wireframe nha khoa: "hàng nút header không đồng cỡ", chỗ bấm nhỏ, vạch lệch với thanh.
   // Thanh công cụ, khung lý do, danh sách màn cạnh khung máy: của trang wireframe, không thuộc bản thiết kế.
   const isWireframeChrome = (element) => Boolean(element.closest(".wf-bar, .wf-reason, [data-wf-reason], .wf-screens"));
@@ -2019,7 +2019,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     if (isGrayBehind) transparentHeaders.push(`nền sau rgb(${behindColor.red}, ${behindColor.green}, ${behindColor.blue}): ${describe(bar)}`);
   }
 
-  // 18m. Trang wireframe thiếu phần nào của thanh công cụ (`design-process.md` U3): phương án, nút Màu, Khổ,
+  // 18m. Trang wireframe thiếu phần nào của thanh công cụ (`wireframe.md` U3): phương án, nút Màu, Khổ,
   //      Trạng thái, khung lý do, số khối. Có lượt wireframe có thanh, có lượt không (29/09/2026). Trong khung
   //      mobile (`frame=1`) thanh ẩn là đúng, không tính.
   const wireframeParams = new URLSearchParams(location.search);
@@ -2065,7 +2065,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   if (wireframeBar && viewportWidth >= 1280 && wireframeBar.scrollWidth > wireframeBar.clientWidth + 1) {
     wireframeChromeProblems.push(`thanh công cụ tràn ${wireframeBar.scrollWidth - wireframeBar.clientWidth}px ở ${viewportWidth}px: rút nhãn (Màn một hai chữ, Phương án chỉ chữ cái)`);
   }
-  // Token focus theo màu nhấn đang áp (design-process.md, U3): đổi --primary trên body mà --border-focus khai
+  // Token focus theo màu nhấn đang áp (wireframe.md, U3): đổi --primary trên body mà --border-focus khai
   // `var(--primary)` ở :root thì đã tính xong ở :root, viền focus giữ màu cũ; --ring-focus viết cứng cũng vậy (đã dính
   // 01/10/2026, wireframe lớp học: chọn xanh ngọc mà ô tìm focus viền chàm ở mọi nấc). Đo ở khối thiết kế, nền sáng.
   if (wireframeBar && !document.documentElement.classList.contains("dark")) {
@@ -4846,14 +4846,14 @@ function formatReport(results) {
       for (const item of result.textOnlyPagers) problems.push(`  ${item}`);
     }
     if (result.missingWireframeParts?.length > 0) {
-      problems.push(`WIREFRAME THIẾU PHẦN CỦA THANH CÔNG CỤ (design-process.md, U3): ${result.missingWireframeParts.join(", ")}`);
+      problems.push(`WIREFRAME THIẾU PHẦN CỦA THANH CÔNG CỤ (wireframe.md, U3): ${result.missingWireframeParts.join(", ")}`);
     }
     if (result.coveredNowLines?.length > 0) {
       problems.push(`VẠCH "BÂY GIỜ" BỊ Ô ĐÈ (layouts/app/calendar.md, "Lưới giờ trong ngày": vạch vẽ trên ô):`);
       for (const item of result.coveredNowLines) problems.push(`  ${item}`);
     }
     if (result.wireframeChromeProblems?.length > 0) {
-      problems.push(`KHUNG WIREFRAME LÀM HỎNG BẢN THIẾT KẾ (design-process.md, U3):`);
+      problems.push(`KHUNG WIREFRAME LÀM HỎNG BẢN THIẾT KẾ (wireframe.md, U3):`);
       for (const item of result.wireframeChromeProblems.slice(0, 8)) problems.push(`  ${item}`);
     }
     if (result.misalignedControlRows?.length > 0) {

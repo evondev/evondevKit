@@ -84,7 +84,7 @@ một cột, ô hẹn cao theo thời lượng.
 - **Trạng thái suy từ giờ phải có mặt**: quá giờ hẹn mà chưa đến là "Trễ N phút", hổ phách
   như việc quá hạn (`M4`), đứng đầu hàng đếm trạng thái; quá lâu thì lễ tân tự chuyển "Không
   đến". Dữ liệu chỉ lưu "Đã xác nhận", nên phải tính ra, và wireframe phải có ít nhất một ca
-  (`design-process.md`, U3). Không ca nào trễ thì việc chính của lễ tân vắng mặt.
+  (`wireframe.md`, U3). Không ca nào trễ thì việc chính của lễ tân vắng mặt.
 - **Nút đổi trạng thái trên ô hay dòng là động từ** ("Tiếp đón", "Bắt đầu khám", "Hoàn tất"),
   không phải tên trạng thái đích (`rules-state.md`, bảng nút).
 - **Ô ngắn 30 phút chỉ giữ ba dòng**: giờ + trạng thái, tên, dịch vụ. Ghi chú để panel hay hồ sơ.

@@ -45,7 +45,7 @@ Cách nạp thì tuỳ bối cảnh:
 
 ## Màu nhấn gợi ý theo ngành, khi dự án chưa có brand ⚑
 
-Nhóm Nhấn của wireframe (`design-process.md`, `U3`) và trang design system (`system.md`) gợi ý
+Nhóm Nhấn của wireframe (`wireframe.md`, `U3`) và trang design system (`system.md`) gợi ý
 ba màu. Trước đây ba màu cố định cho mọi dự án, nên ba dự án khác ngành ra cùng một bảng màu.
 Giờ ba màu chọn theo ngành ở `U1`: **màu đầu là quy ước của ngành**, hai màu sau khác hướng để
 người dùng có lựa chọn không sáo. Không chọn thì dựng màu đầu, báo một dòng. Dự án có brand

@@ -21,7 +21,8 @@ skills/
     └── references/
         ├── principles.md           N — mười hai nguyên tắc đứng sau mọi luật, phép thử cho thứ chưa có mẫu
         ├── review.md               V — soi UI đang có, ba chế độ, bảng trước/sau
-        ├── design-process.md       U — thiết kế từ đầu: brief, việc chính, wireframe, dựng; U6 phân tích sản phẩm
+        ├── design-process.md       U — thiết kế từ đầu: brief, việc chính, dựng; U6 phân tích sản phẩm
+        ├── wireframe.md            U3 — wireframe phương án, chỉ mở sau cổng 1
         ├── flows.md                O — luồng qua nhiều màn, onboarding, lối soi luồng
         ├── industry-patterns.md    quy ước màn theo ngành, đo thật, dùng ở U2 và U6
         ├── mock-photos.md          S16 — ảnh thật cho dữ liệu giả

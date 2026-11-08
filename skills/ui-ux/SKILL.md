@@ -390,7 +390,7 @@ thì một trong hai chỗ là sai.
 | **D** | `references/system.md` | Đề nhiều hơn một màn: hợp đồng nguyên tố; dựng design system trước (`D9`) |
 | **V** | `references/review.md` | Soi UI đang có: ba hạng lỗi, quét bề rộng, dark mode của dự án, bảng trước/sau; so bản mới với bản gốc (`V6`) |
 | **L** | `references/refactor.md` | Refactor codebase đã có |
-| **U** | `references/design-process.md` | Thiết kế từ đầu: brief, việc chính của từng màn, wireframe phương án, dựng |
+| **U** | `references/design-process.md` | Thiết kế từ đầu: brief, việc chính của từng màn, dựng. Wireframe phương án (`U3`) ở `references/wireframe.md`, chỉ mở sau cổng 1 |
 | **W** | `references/tailwind-v4-traps.md` | Bẫy Tailwind v4 khi có CSS cũ |
 | **J** | `references/mobile.md` | App điện thoại: khung máy, thanh tab, đầu màn, cỡ ngón tay, sheet, app đặt món, mở app lần đầu, ô nhập và bàn phím, app nhập liệu; bộ mặt (`J15`), nhân vật (`J16`), biểu đồ (`J17`), lối trình diễn (`J18`) ⚑ |
 | **P** | `references/styles.md` | Phong cách thị giác: flat, nổi, glass, gradient, tối; mười bộ mặt dashboard theo các trục điều hướng, vùng chứa, header, bề mặt, font (`P13`); bề mặt Không viền, Xếp lớp, Editorial (`P14`–`P16`); Sắc Neutral, Tinted, Vivid (`P17`). Luật nào được đè, bẫy riêng, **tương phản** |
