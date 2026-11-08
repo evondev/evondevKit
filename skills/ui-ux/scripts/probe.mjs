@@ -3493,10 +3493,20 @@ function measureMobileScreen({ isFrame, minTap }) {
         const alpha = Number((style.backgroundColor.match(/[\d.]+(?=\)$)/) || ["1"])[0]);
         const hasFill = style.backgroundColor !== "transparent" && !/rgba\(0, 0, 0, 0\)/.test(style.backgroundColor) && (style.backgroundColor.startsWith("rgb(") || alpha >= 0.6);
 
-        return rect.top <= deviceRect.top + 1 && rect.bottom >= bandBottom - 1 && rect.width >= deviceRect.width * 0.9 && (hasFill || style.backdropFilter !== "none");
+        // blur(0px) không che gì: lách phép đo (11/2026, app AI nền tối).
+        const hasBlur = /blur\((?!0(px)?\))/.test(style.backdropFilter || "");
+
+        return rect.top <= deviceRect.top + 1 && rect.bottom >= bandBottom - 1 && rect.width >= deviceRect.width * 0.9 && (hasFill || hasBlur);
       };
-      const hasCover = [...device.querySelectorAll("div, header, span")].some(isCover);
+      // Đo dải che SAU khi cuộn: J18 cho dải trong suốt lúc chưa cuộn (để không che quầng), hiện nền khi cuộn. Phát sự kiện
+      // scroll cho script của app đổi class, tắt transition để đọc ngay giá trị cuối, đo xong trả lại.
       scroller.scrollTop = Math.min(240, scroller.scrollHeight - scroller.clientHeight);
+      const coverCandidates = [...device.querySelectorAll("div, header, span")].filter((element) => !scroller.contains(element) && ["absolute", "fixed", "sticky"].includes(getComputedStyle(element).position));
+      const savedTransitions = coverCandidates.map((element) => element.style.transition);
+      coverCandidates.forEach((element) => { element.style.transition = "none"; });
+      scroller.dispatchEvent(new Event("scroll"));
+      const hasCover = coverCandidates.some(isCover);
+      coverCandidates.forEach((element, index) => { element.style.transition = savedTransitions[index]; });
       const scrollerRect = scroller.getBoundingClientRect();
       const exposed = textLeaves.find((leaf) => {
         const rect = leaf.getBoundingClientRect();
@@ -3506,6 +3516,7 @@ function measureMobileScreen({ isFrame, minTap }) {
       });
       if (exposed && !hasCover) problems.push(`cuộn xuống thì "${exposed.textContent.trim().slice(0, 24)}" chạy dưới thanh trạng thái mà không có dải nền che, đè giờ và pin: thêm dải \`.status-cover\` cao --inset-top (J1)`);
       scroller.scrollTop = scrollBeforeCover;
+      scroller.dispatchEvent(new Event("scroll"));
     }
   }
 
