@@ -470,7 +470,7 @@ T6
 - **Lưới giãn hết bề ngang card**, khe `gap-1`, bo `rounded-xs`: `grid grid-flow-col auto-cols-fr
   grid-rows-[repeat(7,auto)] gap-1`, ô `aspect-square`. Khối lưới `min-w-[45rem]` (ô ~10px) để dưới mức
   đó thì cuộn ngang. Ô cố định `size-3` (53 cột ≈ 850px) thì card 1100px chừa một mảng trống bên phải,
-  chú giải "Ít … Nhiều" lạc ra mép card cách lưới 400px (chủ dự án chê "lệch", 07/11/2026). Nhãn tháng
+  chú giải "Ít … Nhiều" lạc ra mép card cách lưới 400px (chủ dự án chê "lệch"). Nhãn tháng
   đặt theo phần trăm (`left: tuần / 53 × 100%`); cột nhãn T2/T4/T6 là một lưới `grid-rows-7 gap-1` cao
   bằng lưới ô (cột `flex flex-col pt-6`, lưới `flex-1`) để nhãn luôn thẳng hàng ô dù ô to nhỏ.
 - **Hàng từ Thứ 2 tới Chủ nhật**, tuần theo lịch Việt Nam (`T28`). Nhãn ngày chỉ ghi **T2, T4, T6**

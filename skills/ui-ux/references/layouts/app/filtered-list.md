@@ -51,7 +51,7 @@ chia đường kẻ**, không phải mỗi dòng một card.
   state là logic (`N10`).
 - **Đầu chi tiết ở màn hẹp hai hàng**: hàng một là `‹` + tên bản ghi (cắt chữ, `T14`) + nhãn trạng
   thái; hàng hai là các nút hành động, nút phụ gom vào `⋯`. Một hàng 375px không chứa nổi nút quay
-  lại, tên, nhãn và hai nút: tên bị bóp về 0 chữ, nút tràn mép (đo trên trang mẫu, 05/11/2026).
+  lại, tên, nhãn và hai nút: tên bị bóp về 0 chữ, nút tràn mép (đo trên trang mẫu).
 - **Không dùng với vùng chứa `canvas`**: danh sách đặt thẳng trên nền xám không có mép để dòng rê
   dựa vào (`P13`, Mặt nền mở).
 

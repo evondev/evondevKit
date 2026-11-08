@@ -279,7 +279,7 @@ Dùng (gặp ở phần lớn ảnh mẫu, hợp quy ước):
   ví, viễn thông) ⚑. Mặc định **lưới 4 cột**: ô icon 52 bo 16 nền nhạt, nhãn 13 dưới ô tối đa hai dòng, tối đa 8 mục (hai
   hàng), mục thứ 8 là "Tất cả" mở danh sách đủ. Ảnh mẫu vẽ viên chip (icon + nhãn) thì dựng viên cao 44–48, **hai hàng cuộn
   ngang chung** (`grid grid-flow-col grid-rows-2 w-max`), và hàng phải **lộ 30–50% cột kế tiếp** ở cả 390 lẫn 360: cột cuối
-  vừa khít mép thì người dùng không biết còn mục, ba lối tắt sau mất hẳn (dính 08/11/2026, app bảo hiểm: 6 mục, chỉ thấy 4).
+  vừa khít mép thì người dùng không biết còn mục, ba lối tắt sau mất hẳn (6 mục chỉ thấy 4).
   Không đủ lộ thì đổi thứ tự cho nhãn dài nằm cột cuối, hay về lưới 4 cột.
 - **Hàng cuộn ngang có `scroll-snap`** (rail thẻ, carousel trên bản đồ): thêm `scroll-px-4` bằng lề 16, không thì thẻ hít
   sát mép màn, mất lề trái.
@@ -304,8 +304,8 @@ công thức thì ảnh thắng. Ảnh đè được gì:
 **Màu lấy đúng ảnh.** Đọc hex ở ba chỗ của ảnh (phần đậm nhất của quầng, chỗ chuyển, nền) và dùng chúng cho quầng, nền;
 không thay bằng màu trong bảng ngành của `brand-tokens.md` rồi pha đậm thêm. Bẫy "không đỏ" (`I4`) chỉ áp cho `--primary`
 của nút: ảnh có nút cam kết màu đen thì màu cam đỏ của ảnh chỉ nằm ở quầng, badge, ghim, không cần đổi. Chụp xong đặt ảnh cạnh
-ảnh mẫu, so tông, độ đậm, chỗ quầng mờ về nền; đậm hơn hay gắt hơn ảnh thì chỉnh trước khi giao (dính 08/11/2026, app bảo
-hiểm: đầu màn đỏ cam đậm gắt trong khi ảnh là cam nhạt chuyển dần sang xám). Chữ trắng trên quầng màu ảnh chưa đủ
+ảnh mẫu, so tông, độ đậm, chỗ quầng mờ về nền; đậm hơn hay gắt hơn ảnh thì chỉnh trước khi giao
+(đừng để đầu màn đỏ cam đậm gắt khi ảnh là cam nhạt chuyển dần sang xám). Chữ trắng trên quầng màu ảnh chưa đủ
 `P3` thì đậm riêng phần quầng ngay sau chữ (một lớp `radial-gradient` nhỏ sau dòng chữ), hay đẩy dòng chữ nhỏ lên 19px đậm
 700 để thành chữ lớn (ngưỡng 3:1); không đậm cả dải. Probe chấm chữ trên gradient bằng pixel thật dưới chữ.
 

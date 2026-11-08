@@ -5,7 +5,7 @@ Một mục của luật `J`. Luật nền `J1`–`J8` và bảng các mục ở
 ## J19. Bản đồ ⚑
 
 Màn tìm chỗ gần (bệnh viện trong mạng lưới, cửa hàng, chỗ ở, trạm sạc). Code bản đồ chép từ màn `map` của
-`layouts/mobile-photo.html`; luật dưới đây rút từ lần dựng app bảo hiểm (08/11/2026), chưa qua vòng test riêng.
+`layouts/mobile-photo.html`; luật dưới đây chưa qua vòng test riêng.
 
 - **Lớp bản đồ:** tile `World_Light_Gray_Base` của Esri (như file mẫu), xám nhạt để ghim và thẻ nổi lên. Tile của thành
   phố khác tính theo `z` (14–15 cho khu phố): `x = floor((lon + 180) / 360 · 2^z)`,

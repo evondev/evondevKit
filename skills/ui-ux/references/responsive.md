@@ -60,7 +60,7 @@ Cách khác cũng được: chèn phần tử đệm cuối hàng, `<div class="
 **Hàng cuộn có hít (`snap-x` + `snap-start`) thì khung cuộn mang `scroll-px` bằng đúng lề nội dung**
 (`scroll-px-4` với lề 16px). Thiếu thì trình duyệt hít mép card vào **mép khung cuộn**, mà khung cuộn
 chạm mép màn: cuộn qua thả tay là card giật sát lề, lệch khỏi tiêu đề khối phía trên, mỗi lần cuộn
-một lần giật (wireframe hàng card challenge, 12/10/2026). Cách cũ `pl-4` trên hàng trong cũng không
+một lần giật. Cách cũ `pl-4` trên hàng trong cũng không
 đủ, `scroll-padding` mới là chỗ hít dừng. Mẫu đủ: `<div class="snap-x snap-mandatory scroll-px-4
 overflow-x-auto"><div class="flex gap-4 px-4">…card `snap-start shrink-0`…</div></div>`.
 

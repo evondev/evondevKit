@@ -222,8 +222,8 @@ vào `U1` cho màn.
 
 Mỗi phiên mới, model không nhớ phiên trước đã chọn gì. Bộ mặt, màu nhấn, phong cách, bố cục
 đã duyệt chỉ nằm rải trong code (một dòng comment trong file token, class trên vài component),
-nên phiên sau audit ra khác, khuyên lại từ đầu, và màn thứ năm lệch màn đầu (chủ dự án,
-03/11/2026: ba màn hai mặt). `DESIGN.md` ở gốc dự án là trí nhớ đó.
+nên phiên sau audit ra khác, khuyên lại từ đầu, và màn thứ năm lệch màn đầu (chủ dự án:
+ba màn hai mặt). `DESIGN.md` ở gốc dự án là trí nhớ đó.
 
 **Đọc** ở audit câu 2 của `SKILL.md`, mọi lối, kể cả việc nhỏ hơn một màn. Có file thì những gì
 nó ghi **thắng** mặc định và lời khuyên của skill (bộ mặt `P13`, màu nhấn theo ngành, bố cục mặc

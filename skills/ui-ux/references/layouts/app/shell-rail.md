@@ -10,8 +10,8 @@ mục khuất), trừ phần chuyển động mở ra.
   Sidebar thay vì Rail.
 - **Icon nằm đúng tâm ô 40×40.** Bảng tâm 32px ở mục Thu gọn tính cho icon `size-4` (16px): đệm
   `12 + 12 + 8`. Dự án dùng icon 18px hay 20px mà giữ `px-3` thì tâm lệch phải 1–2px, nhìn dải
-  icon thấy rõ mỗi icon xô về một phía trong nền đang chọn (chủ dự án thấy trên trang mẫu,
-  05/11/2026). Icon khác 16px thì đệm trái của link là `(40 − cỡ icon) / 2`; ô tìm có viền 1px thì
+  icon thấy rõ mỗi icon xô về một phía trong nền đang chọn (chủ dự án thấy trên trang
+  mẫu). Icon khác 16px thì đệm trái của link là `(40 − cỡ icon) / 2`; ô tìm có viền 1px thì
   trừ thêm 1px. Đo: tâm icon trừ tâm ô phải bằng 0.
 - **Icon phải phân biệt được không cần chữ**: hai mục cùng một icon (Báo cáo và Thống kê cùng
   biểu đồ cột) là đổi một cái. Tooltip là phụ, không phải cách duy nhất biết mục là gì.
@@ -42,7 +42,7 @@ mục khuất), trừ phần chuyển động mở ra.
   nhãn thành chữ thừa sau tuần đầu. Bộ mặt Rail khuyên một trong hai theo người dùng ở `U1`.
 - **Dải `w-20` (80px)**, mục `flex flex-col items-center gap-1 py-1.5`, cả mục là vùng bấm
   (`I29`). Ô icon `size-10 rounded-xl`, icon `size-5` (20px) giữa ô: có chữ đi kèm thì icon
-  16px trông lọt thỏm trong ô 40px (đo trên trang mẫu, 05/11/2026); **nền rê và nền đang chọn chỉ tô ô
+  16px trông lọt thỏm trong ô 40px (đo trên trang mẫu); **nền rê và nền đang chọn chỉ tô ô
   icon** (`group-hover:bg-item-hover`, đang chọn `bg-secondary`), không tô cả mục: tô cả khối
   80×60 là một mảng xám to nhất cột. Nhãn `text-xs text-foreground/70`, đang chọn `font-medium
   text-foreground`.

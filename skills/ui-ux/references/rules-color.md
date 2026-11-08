@@ -265,8 +265,8 @@ Trong mỗi nhóm thì mọi chỗ dùng chung đúng một token, để đườ
 
 **Đường chia lặp lại trong card luôn là `--border`**: `divide-y` giữa các dòng, vạch giữa các ô số
 xếp cột, hàng chú giải dưới biểu đồ. Áp ở mọi bộ mặt, kể cả card nổi không viền (Soft, `P7`) và
-khi trông "gần tàng hình": đó là mức đã chọn, `#eaeaea` ở chỗ này bị chê đậm (chủ dự án,
-07/11/2026; cùng lý do bị bác ở luật chốt 18). Ngoại lệ có tên duy nhất là **một vạch đứng riêng**
+khi trông "gần tàng hình": đó là mức đã chọn, `#eaeaea` ở chỗ này bị chê đậm (chủ dự án;
+cùng lý do bị bác ở luật chốt 18). Ngoại lệ có tên duy nhất là **một vạch đứng riêng**
 chia hai phần của card (vạch giữa giá và tính năng ở `layouts/pricing.md`, đường "hoặc" ở
 `layouts/form.md`): vạch đó mới là `--border-strong`. Probe báo "ĐƯỜNG CHIA TRONG CARD ĐẬM".
 

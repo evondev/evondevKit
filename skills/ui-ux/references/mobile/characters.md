@@ -20,7 +20,7 @@ màn xong.
    dưới nên cả app một kiểu vẽ. Mỗi người có nhiều cử chỉ (đưa tay giới thiệu, giơ tay, OK, buồn, nhún vai), đủ cho các
    khoảnh khắc của `J16`. Bản mẫu nạp PNG qua jsDelivr ghim một commit, gán vào `img[data-art]` theo tên người và cử chỉ
    (`mobile-playful.html`); dự án thật tải file về `public/`.
-   - **Không lấy người vẽ tay nét đen** (DiceBear Open Peeps, Notionists): chủ dự án đã duyệt (07/11/2026) là trông thô,
+   - **Không lấy người vẽ tay nét đen** (DiceBear Open Peeps, Notionists): chủ dự án đã duyệt là trông thô,
      và đứng cạnh đồ vật 3D thì thành hai kiểu vẽ.
    - **Không lấy unDraw**: giấy phép cấm nhúng, tích hợp, thu thập tự động khi chưa xin phép, đúng việc skill làm.
    - **Không lấy Flaticon, Freepik, Icons8, bộ CC BY**: bản free bắt ghi công trên sản phẩm, cấm nhúng link thẳng, phải

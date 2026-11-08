@@ -304,12 +304,12 @@ màu xanh.
 ### P13. Bộ mặt dashboard — các trục, mười bộ có tên, khuyên theo người dùng
 
 Flat, Inter và màu nhấn gần đen là mặc định trung tính. Mặc định ấy đúng cho từng dự án,
-nhưng ba dashboard khác ngành dựng liền nhau thì ra cùng một mặt (chủ dự án, 03/11/2026:
+nhưng ba dashboard khác ngành dựng liền nhau thì ra cùng một mặt (chủ dự án:
 khách khen UX, rồi chê UI ba dự án nhìn như nhau). Bố cục giống nhau là chuyện bình thường,
 vì app nào cũng sidebar, header, card số liệu, bảng (quy ước). Thứ làm hai app trông khác
 nhau là **bộ mặt**.
 
-**Bốn trục, chọn riêng từng trục** (chủ dự án, 05/11/2026). Gộp mọi thứ vào một tên thì kiểu
+**Bốn trục, chọn riêng từng trục** (chủ dự án). Gộp mọi thứ vào một tên thì kiểu
 mới chỉ khác một trục (sidebar trong suốt, nội dung trong khối bọc) không có chỗ đứng; gộp điều
 hướng với vùng chứa vào một trục thì không ghép được dải icon với khối bọc, trong khi nhiều app
 làm đúng như vậy.
@@ -361,7 +361,7 @@ Nhấn của wireframe (`U3`) hay màu đầu của nhóm đó. Bộ mặt bám 
 án có phong cách riêng, có ảnh tham chiếu, đề nêu kiểu, hay chế độ giữ brand thì không dùng
 bảng này (`P1`). App điện thoại theo `mobile.md`, không theo bảng này: bộ mặt của nó ở `J15` (`mobile/faces.md`).
 
-**Bộ và biến thể còn cờ ⚑ không được tự khuyên** (chủ dự án, 05/11/2026): Inset, Paper, Float,
+**Bộ và biến thể còn cờ ⚑ không được tự khuyên** (chủ dự án): Inset, Paper, Float,
 Rail, Topbar, Editorial; biến thể Soft mở, Paper không viền, Inset xếp lớp; header `full`. Chúng
 chưa qua test ở dự án thật. Skill chỉ tự khuyên trong bốn bộ đã kiểm: **Clean, Dark Sidebar,
 Soft (biến thể `classic`), Midnight**, nên người đang dùng bản cũ không thấy hành vi mặc định đổi.
@@ -405,8 +405,8 @@ mắt chữ "ữ", "ợ", "ằ" ở cỡ nhỏ nhất của màn (`T5`). Project
   badge, ô tìm vẫn ra token sáng, nổi thành mảng trắng giữa cột tối. Logo dựng bằng token nên
   tự đúng trên nền tối (`components/logo.md`); logo ảnh của dự án thì cần bản nền tối. Dưới
   `lg` panel trượt vẫn tối, cùng khung.
-- **Soft: Be Vietnam Pro rộng hơn Inter khoảng 3%** (đo nhãn tiếng Việt 14px, weight 500,
-  03/11/2026). Nhãn sidebar, tab, nút vừa khít ở Inter có thể bị cắt. Probe ở 1280 và đo cắt chữ
+- **Soft: Be Vietnam Pro rộng hơn Inter khoảng 3%** (đo nhãn tiếng Việt 14px,
+  weight 500). Nhãn sidebar, tab, nút vừa khít ở Inter có thể bị cắt. Probe ở 1280 và đo cắt chữ
   theo `T14` sau khi đổi font, đừng đo ở Inter rồi mới đổi.
 - **Soft vẫn đủ bốn bậc bóng của `P7`**, kể cả sidebar trượt dưới `lg`. Bóng ở card mà modal
   phẳng là lỗi của `P7`, không phải "mềm".
@@ -474,7 +474,7 @@ Biến thể của Inset (`P13`). Ba tầng nền chồng nhau, **không viền 
 - **Tầng sau sáng hơn tầng trước ở nền tối** (`P10`). Tầng 2 dùng `foreground/4` vì nó tự đảo theo
   nền. Thẻ tầng 3 ở nền tối **không** dùng `--surface` (tối hơn vùng chứa, trông như bị khoét) và
   **không** dùng `--surface-overlay`: nó chỉ chênh tầng 2 khoảng 1 bậc, thẻ tan vào cột (đo trên
-  trang mẫu, 05/11/2026). Dùng `--secondary`, lớp trắng 8% chồng lên tầng 2, chênh ~18 bậc.
+  trang mẫu). Dùng `--secondary`, lớp trắng 8% chồng lên tầng 2, chênh ~18 bậc.
 - **Hai tầng kề nhau chênh ít nhất ~8 bậc độ sáng** (đo: sáng 11, 8, 8; tối 10, 9, 18); chênh ít hơn thì ranh giới biến mất, người
   ta lại thêm viền. Không thêm tầng thứ năm: bốn tông xám lồng nhau là bẩn.
 - **Bỏ viền khối bọc, viền thẻ, viền vùng con.** Control giữ viền như `P14`.
@@ -509,7 +509,7 @@ nhất**, không card, không nền màu.
 ### P17. Sắc — trục thứ năm của bộ mặt: Neutral, Tinted, Vivid ⚑
 
 Bộ mặt nào cũng ra trung tính: màu chỉ có ở nút chính, mục đang chọn và badge trạng thái.
-Muốn một dashboard nhiều màu, người dùng phải gửi ảnh và viết đề dài (chủ dự án, 07/11/2026).
+Muốn một dashboard nhiều màu, người dùng phải gửi ảnh và viết đề dài (chủ dự án).
 Các dashboard nhiều màu mà vẫn dễ đọc không tô bừa: **màu nào cũng gắn với một thứ trong dữ liệu**,
 ở ba tầng: **nghĩa** (mức độ, trạng thái), **phân loại** (loại việc, người phụ trách, nguồn), và
 **nhấn thương hiệu** (gradient ở một hai chỗ). Sắc là số tầng được bật. Trục này đứng riêng

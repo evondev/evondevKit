@@ -25,7 +25,7 @@ cao link, nhãn nhóm, số đếm, thu gọn), chỉ đổi chỗ đặt nền:
 - **Nền rê và nền đang chọn đổi theo nền xám**: rê `hover:bg-foreground/4`, đang chọn
   `bg-secondary-hover` + `font-medium`. `--item-hover` trùng đúng màu nền trang, giữ nguyên là rê
   vào không thấy gì. Rê bằng `--background-hover` thì chỉ chênh nền đang chọn ~12 bậc, rê qua mục
-  nào cũng trông như đang chọn (`I10`; đo trên trang mẫu 05/11/2026); `foreground/4` chênh ~17
+  nào cũng trông như đang chọn (`I10`; đo trên trang mẫu); `foreground/4` chênh ~17
   bậc và tự đảo ở nền tối. Ô tìm, hàng profile giữ nền `--surface` như cũ.
 - **Khối bọc** (từ `lg`): `my-2 mr-2`, `rounded-xl`, `bg-surface`, `border border-border`, **không
   bóng** (`M15`: bóng chỉ cho lớp nổi). Ở nền sáng viền gần như không thấy, trắng cạnh xám đã là
