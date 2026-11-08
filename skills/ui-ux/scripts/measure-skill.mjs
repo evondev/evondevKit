@@ -50,6 +50,7 @@ const typicalTasks = [
       "references/design-process.md",
       "references/wireframe.md",
       "references/mobile.md",
+      "references/mobile/faces.md",
       "references/layouts/mobile-app.html",
     ],
   },

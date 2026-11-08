@@ -2351,7 +2351,7 @@ async function findDrawnFocusRings(page) {
       // Lớp báo lỗi của Next lúc dev (`nextjs-portal`) không phải của trang (báo nhầm 28/09/2026).
       if (!element || element === document.body || element.tagName.startsWith("NEXTJS")) return null;
       // Thanh công cụ wireframe: Tab qua được nhưng không thuộc bản thiết kế, đánh dấu để bỏ qua. App điện thoại
-      // (khung `.device`) là màn chạm, không có Tab; focus do nền tảng lo khi chuyển sang code (mobile.md J9).
+      // (khung `.device`) là màn chạm, không có Tab; focus do nền tảng lo khi chuyển sang code (mobile/native-code.md J9).
       if (element.closest(".wf-bar, .wf-reason, [data-wf-reason], .wf-screens, .device")) return { id: "wf-chrome-" + (element.dataset.evonProbeId ||= String(Math.random()).slice(2)), kind: "wf-chrome", element: "", isField: true };
       if (!element.dataset.evonProbeId) element.dataset.evonProbeId = String(Math.random()).slice(2);
       const label = (element.getAttribute("aria-label") || element.textContent.trim() || element.getAttribute("title") || "").trim().replace(/\s+/g, " ").slice(0, 40);

@@ -104,7 +104,7 @@ Nút chỉ icon `ghost` `size-8`, có tooltip và `aria-label`: `Copy` "Sao ché
 
 - **Không có câu "Chưa có tin nhắn nào".** Ở đây người dùng là người mở lời, câu báo rỗng không nói họ làm gì tiếp (`N6`). Thay bằng **2–3 gợi ý mở đầu**, cùng khuôn gợi ý hỏi tiếp, nhãn "Thử hỏi", nằm **ngay trên ô soạn**, đúng chỗ gợi ý hỏi tiếp vẫn nằm trong cuộc trò chuyện (`N5`).
 - Không câu chào to, không logo, không hình (`empty-state.md`). Ngoại lệ có tên: màn gốc của app điện thoại trợ lý ở lối
-  trình diễn được khối hỏi lớn trên quầng (`J18` trong `../mobile.md`); màn cuộc trò chuyện mới mở từ đó vẫn theo dòng này. Placeholder của ô soạn đã nói hỏi được gì, câu chào nhắc lại là nói hai lần (`N3`).
+  trình diễn được khối hỏi lớn trên quầng (`J18` trong `../mobile/showcase.md`); màn cuộc trò chuyện mới mở từ đó vẫn theo dòng này. Placeholder của ô soạn đã nói hỏi được gì, câu chào nhắc lại là nói hai lần (`N3`).
 
 ## Ô soạn
 
@@ -133,3 +133,7 @@ Mỗi cái một ví dụ tĩnh (`N2`): xong có gợi ý · đang chạy chữ 
 chưa có chữ · đang soạn chưa có công cụ · một công cụ lỗi vẫn trả lời · người
 dùng bấm dừng · không trả lời được · cuộc trò chuyện mới · ca biên (tin rất dài,
 đường dẫn liền một chuỗi, ô soạn nhiều dòng).
+
+## Kiểm trước khi giao
+
+- [ ] **Khung chat** (`components/chat.md`): câu trả lời có vòng avatar robot không (bỏ)? Tên bước công cụ có nhỏ hơn và nhạt hơn câu trả lời không? Mở danh sách công cụ đang chạy: còn hai spinner không? Công cụ lỗi mà vẫn trả lời: có tự mở, có "1 lỗi" đỏ ở hàng đầu không? Mô tả bước có lặp con số câu trả lời sắp nói không? Câu bị dừng có hàng Sao chép / Tạo lại chưa? Gợi ý là nút viền chữ đậm, hay nền xám chữ xám trông như bị khoá? Gợi ý có dài quá một dòng, rộng quá cột câu trả lời không? Chat mới là gợi ý mở đầu, hay "Chưa có tin nhắn nào"? Ô soạn trống: nút gửi mờ `opacity-30`, góc nút song song góc ô (`M19`)?

@@ -17,7 +17,7 @@ echo "== Tầng 1 — stack"
 ls package.json 2>/dev/null || echo "KHÔNG CÓ package.json — xem dòng cuối bảng câu 2"
 grep -E '"(tailwindcss|@radix-ui|@mui|antd|@chakra|bootstrap)"' package.json 2>/dev/null
 ls -d components/ui src/components/ui 2>/dev/null   # dấu hiệu shadcn
-# app điện thoại: React Native / Expo, Flutter (J9 trong references/mobile.md)
+# app điện thoại: React Native / Expo, Flutter (J9 trong references/mobile/native-code.md)
 grep -E '"(react-native|expo|nativewind|@react-navigation/[a-z-]+|@gorhom/bottom-sheet|react-native-safe-area-context)"' package.json 2>/dev/null
 ls pubspec.yaml lib/main.dart 2>/dev/null && grep -E "^\s+(flutter|cupertino_icons|go_router|google_fonts):" pubspec.yaml
 # thư viện chuyên dụng: biểu đồ, lịch/ngày, bảng, danh sách ảo

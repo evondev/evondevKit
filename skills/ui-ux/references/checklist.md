@@ -35,7 +35,7 @@ bắt được lỗi nào thì xoá (luật ở `DEVELOP.md`, mục Thêm luật
 ## Cổng 2 — dựng xong, trước khi báo
 
 - [ ] **Mười hai phép thử `N1`–`N12`** (`principles.md`) đã chạy chưa? Thứ không có dòng riêng trong checklist này thì bám chúng.
-- [ ] **Mục kiểm của màn, khối vừa dựng** đã chạy chưa? Mục riêng của từng màn (bảo mật, khoá API, thanh toán, thành viên, cài đặt, lịch, lỗi, báo cáo, kanban, bảng nhóm, chi tiết bản ghi, sidebar), màn xác thực, bảng giá, lớp nổi (panel, menu), khối (đường dẫn, logo, accordion, tải tệp, ô số lượng, tên sửa tại chỗ, tiêu đề cột, biểu đồ đường) nằm **cuối file của nó**, mục "Kiểm trước khi giao".
+- [ ] **Mục kiểm của màn, khối vừa dựng** đã chạy chưa? Mục riêng của app điện thoại (`mobile.md` và file mục J), khung chat, của từng màn (bảo mật, khoá API, thanh toán, thành viên, cài đặt, lịch, lỗi, báo cáo, kanban, bảng nhóm, chi tiết bản ghi, sidebar), màn xác thực, bảng giá, lớp nổi (panel, menu), khối (đường dẫn, logo, accordion, tải tệp, ô số lượng, tên sửa tại chỗ, tiêu đề cột, biểu đồ đường) nằm **cuối file của nó**, mục "Kiểm trước khi giao".
 
 ### Phạm vi
 
@@ -50,10 +50,6 @@ bắt được lỗi nào thì xoá (luật ở `DEVELOP.md`, mục Thêm luật
 - [ ] **Cả màn có chỗ nào dùng màu nhấn không?** Không có là chưa quyết định, không phải tối giản (`D5`).
 - [ ] Có khối nào được tô nền màu chỉ để phân loại không? Phân loại bằng icon + chữ (`M5`).
 - [ ] Grep mã hex. Chỉ được có trong khối đổi thương hiệu ở đầu file.
-- [ ] **App điện thoại (`J`)**: dựng trong khung của `mobile-app.html` chưa (mép chừa bằng `--inset-top` / `--inset-bottom`)? Thanh tab 3–5 mục có chữ, không nút "+" trong thanh; màn con để xem giữ thanh và sáng tab cha, form / giỏ / thanh toán ẩn thanh? Dòng, nút, thẻ có chữ dùng `min-h-*` để chữ to lên không tràn? Chữ thân 16, không chữ dưới 11, mọi chỗ bấm ≥ 44px? Hành động chính không nổi đè lên nội dung? Cuộn màn gốc lên, chữ có lướt dưới dải nền `.status-cover` chứ không đè giờ và pin? Tên trong dòng danh sách có bị cắt `…` không? Đã chạy `probe.mjs --mobile --widths 390,1280` (đi qua từng màn, ở 390 và khung máy tính) và xem ảnh `mobile-*.png` chưa?
-- [ ] **App đặt món (`J11`)**: đầu màn là một hàng "Giao đến" cuộn đi, không hai thẻ dính? Thanh giỏ hàng nằm ngay trên thanh tab, không thẻ nổi nào khác ở đáy? Sheet chọn món: mọi nhóm là dòng có "+giá" phải, "Bắt buộc · chọn 1" bằng chữ, không chip, không dấu sao; nút X còn trong tầm khi cuộn; nút đáy giãn hết ghi tổng tiền? Giỏ là một trang cuộn, tóm tắt tiền khớp nút, không "Xoá" ở góc trái thanh trên?
-- [ ] **Mở app, đăng nhập, quyền, rỗng (`J12`)**: app mua bán cho xem trước, chỉ hỏi đăng nhập ở bước đặt? Số điện thoại + mã 6 số là chính, có Google thì có Apple cùng cỡ? Không xin quyền lúc mở app, có màn mồi nút "Tiếp tục" / "Để sau"? Tab chưa có gì có icon, tiêu đề, một câu, một nút? Có "Xoá tài khoản" trong app, chữ đỏ?
-- [ ] **Ô nhập và bàn phím (`J13`)**: mỗi ô đúng `type` / `inputmode` / `autocomplete` (số tiền, số điện thoại, email, OTP, tìm kiếm)? Phím Enter nói việc tiếp theo? Màn một ô chính focus sẵn, form nhiều ô thì không? Nút dính đáy không bị bàn phím che?
 - [ ] Mọi mã hex có đúng 6 hoặc 8 ký tự sau `#` không? Lệch là CSS chết âm thầm.
 - [ ] Khối thương hiệu có khớp **từng ký tự** với `tokens.css` không?
 - [ ] Có chữ `text-muted` nào nằm trên nền xám đậm hơn nền trang không (`--secondary`, lớp phủ `foreground/5`–`/8`, `--background-hover`)? Có thì đổi sang `text-foreground/70` (`styles.md`).
@@ -91,7 +87,6 @@ bắt được lỗi nào thì xoá (luật ở `DEVELOP.md`, mục Thêm luật
 - [ ] Đường chia trong dropdown, card: có chạm hai mép khối không, hay thụt theo padding (`F25`)?
 - [ ] **Bo lồng nhau (`M19`)**: bo khung ngoài = bo phần tử trong + padding khung? Dropdown mặc định `rounded-2xl` + `p-1` + mục `rounded-xl` (`layouts/overlay.md`). Command palette rộng thì `p-2` + mục `rounded-lg`. Trong bằng ngoài là góc phình.
 - [ ] **Vùng cuộn trong lớp nổi** (select, dropdown dài, command palette): chưa rê chuột, mép dưới có cắt ngang một mục (lộ khoảng nửa) không? Cắt sát ranh giới hai mục là trông như đã hết. Rê chuột vào (không cuộn) thì thanh cuộn có hiện không? Chỉ hiện khi cuộn là đang dùng CSS thanh cuộn cũ (`I18`).
-- [ ] **Khung chat** (`components/chat.md`): câu trả lời có vòng avatar robot không (bỏ)? Tên bước công cụ có nhỏ hơn và nhạt hơn câu trả lời không? Mở danh sách công cụ đang chạy: còn hai spinner không? Công cụ lỗi mà vẫn trả lời: có tự mở, có "1 lỗi" đỏ ở hàng đầu không? Mô tả bước có lặp con số câu trả lời sắp nói không? Câu bị dừng có hàng Sao chép / Tạo lại chưa? Gợi ý là nút viền chữ đậm, hay nền xám chữ xám trông như bị khoá? Gợi ý có dài quá một dòng, rộng quá cột câu trả lời không? Chat mới là gợi ý mở đầu, hay "Chưa có tin nhắn nào"? Ô soạn trống: nút gửi mờ `opacity-30`, góc nút song song góc ô (`M19`)?
 - [ ] **Rê chuột chậm từ mép trái sang mép phải** của từng mục menu, link sidebar, dòng bấm được: con trỏ có giữ bàn tay suốt không? Đổi một lần là vùng bấm hụt (`I29`).
 - [ ] Tailwind v4: `<button>` có `cursor-pointer` chưa, hoặc base CSS đã trả lại chưa (`W7`)?
 - [ ] **Bấm Tab qua các nút, tab, checkbox**: không có vòng bao ngoài nào (`I13`)? **Trong menu** thì mục đang focus đổi nền như hover.

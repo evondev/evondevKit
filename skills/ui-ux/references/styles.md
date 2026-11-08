@@ -359,7 +359,7 @@ Nhấn của wireframe (`U3`) hay màu đầu của nhóm đó. Bộ mặt bám 
 
 **Dùng khi:** màn trong app web, dự án flat hoặc trống (`P4`), đề không nêu phong cách. Dự
 án có phong cách riêng, có ảnh tham chiếu, đề nêu kiểu, hay chế độ giữ brand thì không dùng
-bảng này (`P1`). App điện thoại theo `mobile.md`, không theo bảng này: bộ mặt của nó ở `J15`.
+bảng này (`P1`). App điện thoại theo `mobile.md`, không theo bảng này: bộ mặt của nó ở `J15` (`mobile/faces.md`).
 
 **Bộ và biến thể còn cờ ⚑ không được tự khuyên** (chủ dự án, 05/11/2026): Inset, Paper, Float,
 Rail, Topbar, Editorial; biến thể Soft mở, Paper không viền, Inset xếp lớp; header `full`. Chúng

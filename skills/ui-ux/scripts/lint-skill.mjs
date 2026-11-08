@@ -223,7 +223,7 @@ const alwaysOpenLimitKb = 95;
 const referenceFileLimitKb = 70;
 const alwaysOpenFiles = ["principles.md", "budgets.md", "brand-tokens.md", "checklist.md", "locked-rules.md"];
 // File đã quá trần, đang chờ tách. Tách xong thì xoá khỏi đây.
-const filesWaitingSplit = new Set(["references/mobile.md"]);
+const filesWaitingSplit = new Set([]);
 
 function lintFileSizes() {
   const findings = [];

@@ -32,6 +32,8 @@ skills/
         ├── rules-form.md           F — khối, lưới, bo góc, khoảng thở, icon
         ├── rules-state.md          I — nút, hover, focus, danh sách, modal
         ├── responsive.md           R — màn hẹp, ngưỡng 375px
+        ├── mobile.md               J — app điện thoại: luật nền J1–J8, bảng mở file mục khác
+        ├── mobile/                 J9–J19 mỗi mục một file; faces.md (bộ mặt) mở ở mọi lần dựng
         ├── system.md               D — đề nhiều hơn một màn, dựng design system trước (D9), DESIGN.md (D10)
         ├── refactor.md             L — refactor codebase đã có
         ├── tailwind-v4-traps.md    W — bẫy Tailwind v4 khi có CSS cũ
