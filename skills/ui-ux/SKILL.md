@@ -417,9 +417,12 @@ mockup và wireframe dùng ảnh thật, trang mới trông như sản phẩm đ
 
 - **Ảnh cảnh, vật**: Unsplash, dạng
   `https://images.unsplash.com/photo-<id>?w=800&q=80&auto=format&fit=crop`, đúng chủ đề của
-  mục (phòng trọ là nội thất phòng, tin tuyển dụng là văn phòng). Không tự bịa `<id>`: tìm
-  bằng tìm kiếm web giới hạn `unsplash.com/photos` (trang tìm và API của Unsplash chặn khi gọi từ dòng lệnh), rồi
-  `curl -sI` từng link, không ra 200 thì thay. Mỗi mục một ảnh khác nhau.
+  mục (phòng trọ là nội thất phòng, tin tuyển dụng là văn phòng). Không tự bịa `<id>`: lấy bằng công cụ đọc trang
+  web (WebFetch) mở `https://unsplash.com/s/photos/<chủ-đề>` rồi nhặt các link `images.unsplash.com/photo-…` trong trang
+  (curl tới trang ảnh, link tải của Unsplash ra 401; tìm kiếm web thường không trả id); không có công cụ đó thì tìm web giới
+  hạn `unsplash.com/photos`. Rồi `curl -sI` từng link, không ra 200 thì thay. Mỗi mục một ảnh khác nhau. **Bỏ ảnh có biển
+  tên, logo, chữ thương hiệu thật** (bệnh viện, cửa hàng, khách sạn có thật): bản mẫu đặt tên giả cạnh biển tên thật thì
+  vừa sai vừa dính thương hiệu người khác.
 - **Avatar người**: ảnh chân dung (`https://randomuser.me/api/portraits/women/<0-99>.jpg`,
   `.../men/<0-99>.jpg`), khớp giới của tên giả. Ảnh vẫn theo khuôn của `components/avatar.md`.
 - **Logo công ty giả**: ô chữ cái theo `components/avatar.md` (hình vuông bo góc), không lấy
@@ -457,7 +460,7 @@ thì một trong hai chỗ là sai.
 | **L** | `references/refactor.md` | Refactor codebase đã có |
 | **U** | `references/design-process.md` | Thiết kế từ đầu: brief, việc chính của từng màn, wireframe phương án, dựng |
 | **W** | `references/tailwind-v4-traps.md` | Bẫy Tailwind v4 khi có CSS cũ |
-| **J** | `references/mobile.md` | App điện thoại: khung máy và mép chừa, thanh tab sáu kiểu (Float, Center, Pill, Dark, Bubbles, Glass), đầu màn, kích cỡ cho ngón tay, hành động chính, sheet, phản hồi khi nhấn, app đặt món, mở app lần đầu, đăng nhập, xin quyền, rỗng, ô nhập và bàn phím, app quản lý nhập liệu (bảng thành danh sách, số lượng và đơn vị, chi tiết phiếu); tám bộ mặt Clean, Mono, Photo, Playful, Immersive, Editorial, Glow, Tinted (`J15`); nhân vật và minh hoạ: bộ của dự án, chưa có thì nhân vật CC0 sinh tại chỗ (`J16`); biểu đồ trên điện thoại: chạm thay rê, hàng đọc số, trục giá, màu danh mục, vòng và cung cho app sức khoẻ, thói quen (`J17`); lối trình diễn: quầng màu, tấm trắng trượt lên, một điểm nhìn lớn, font hình học (`J18`) ⚑ |
+| **J** | `references/mobile.md` | App điện thoại: khung máy và mép chừa, thanh tab sáu kiểu (Float, Center, Pill, Dark, Bubbles, Glass), đầu màn, kích cỡ cho ngón tay, hành động chính, sheet, phản hồi khi nhấn, app đặt món, mở app lần đầu, đăng nhập, xin quyền, rỗng, ô nhập và bàn phím, app quản lý nhập liệu (bảng thành danh sách, số lượng và đơn vị, chi tiết phiếu); tám bộ mặt Clean, Mono, Photo, Playful, Immersive, Editorial, Glow, Tinted (`J15`); nhân vật và minh hoạ: bộ của dự án, chưa có thì nhân vật CC0 sinh tại chỗ (`J16`); biểu đồ trên điện thoại: chạm thay rê, hàng đọc số, trục giá, màu danh mục, vòng và cung cho app sức khoẻ, thói quen (`J17`); lối trình diễn: quầng màu, tấm trắng trượt lên, một điểm nhìn lớn, font hình học (`J18`), ảnh mẫu kiểu trình diễn đè luật gu nào (`J8`); bản đồ: ghim, thẻ và danh sách nổi trên bản đồ (`J19`) ⚑ |
 | **P** | `references/styles.md` | Phong cách thị giác: flat, nổi, glass, gradient, tối; mười bộ mặt dashboard theo các trục điều hướng, vùng chứa, header, bề mặt, font (`P13`); bề mặt Không viền, Xếp lớp, Editorial (`P14`–`P16`); Sắc Neutral, Tinted, Vivid (`P17`). Luật nào được đè, bẫy riêng, **tương phản** |
 
 **Luôn mở, mọi task:**

@@ -60,6 +60,10 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   class, font chưa nạp, biểu đồ đo sai bề rộng rồi bị chép nguyên vào bảng. **Wireframe (`U3`) gọi lại
   `placeBlockNumbers()` sau `buildBoard`**, trên cả trang chứ không chỉ máy thật (ngoại lệ duy nhất của luật tìm trong
   máy thật): lúc chép, máy thật đang ẩn sau bảng nên hàm đo ra "không đè", số khối trên bảng nằm đè lên chữ đầu khối.
+  **Bản mẫu tiếng Anh** (`T27`) dịch luôn chữ cứng của khối bảng, các file mẫu viết tiếng Việt: "Bản mẫu app điện
+  thoại" → "Mobile app prototype", "N màn" → "N screens", "Bấm một màn để chạy thử từ đó" → "Click a screen to try it from
+  there", "Cuộn sang trái / phải" → "Scroll left / right", "Chạy luồng" → "Play flow", "Chạy thử từ màn đang phát" → "Try
+  from this screen", "Dừng / Phát" → "Pause / Play". Comment trong code giữ nguyên được.
 - **Nút chính của luồng dẫn tới kết quả thấy được.** Bấm "Lưu", "Tạo", "Đặt" trong wireframe hay bản mẫu thì về
   màn trước **đã đổi**: dòng mới ở đầu danh sách (nhãn "Mới"), số đếm và số dư cộng thêm, thông báo ngắn `J7`
   ("Đã thêm Ăn tối", có Hoàn tác). Quay về màn cũ y nguyên thì người duyệt không thấy lưu xong ra sao, nên không
@@ -133,6 +137,10 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   mua sắm. Nút quay lại một trong hai kiểu, cả app một kiểu: chevron 24px + tên màn cha (cao 44px; tên dài quá
   12 ký tự thì chỉ chevron), hoặc **chỉ chevron trong nút tròn 44px** `rounded-full bg-secondary` như iOS hiện hành và
   phần lớn ảnh mẫu mới. Nút tròn hợp màn có ảnh tràn đầu (nền ảnh nào cũng thấy nút).
+- **Chuyển cách xem** (thẻ / danh sách, danh sách / bản đồ): hai cách thì **một nút icon** đổi qua lại (icon là cách
+  sẽ chuyển tới, `aria-label` "Xem dạng danh sách"), như `mobile-photo.html`; ảnh mẫu vẽ cặp icon cạnh nhau thì dựng
+  **một điều khiển phân đoạn chỉ icon** (rãnh 52 `p-1`, hai nút 44, `J4`) và tính là **một** nút phải của thanh trên.
+  Khi đó tiêu đề canh trái ngay sau nút quay lại (giữa thì đụng điều khiển rộng 96px), vẫn 17–22px.
 - **Luồng nhiều bước** (đặt lịch, thanh toán): thanh bước mảnh ngay dưới thanh trên, tiêu đề là tên bước. Không
   thêm dòng "Bước 2/3 · Thợ và giờ": tiêu đề, thanh bước và dòng này nói cùng một ý ba lần.
 - Vào màn con **trượt từ phải** 300ms (`push-in`); giảm chuyển động thì mờ dần 200ms thay cho trượt (`J10`).
@@ -243,12 +251,39 @@ Dùng (gặp ở phần lớn ảnh mẫu, hợp quy ước):
   140–180px, thẻ dịch vụ và người làm có ảnh, không chỉ avatar 40px. Ảnh lớn là thứ làm app trông "muốn dùng";
   màu nhấn thì chỉ ở nút và chỗ đang chọn.
 - Icon danh mục trong vòng tròn 40px nền nhạt của một sắc riêng, chữ icon đậm cùng sắc (đạt 4.5:1).
+- **Lối tắt dịch vụ trên trang chủ** (thanh toán, tải sao kê, nạp tiền, tìm bệnh viện, tư vấn từ xa: app ngân hàng, bảo hiểm,
+  ví, viễn thông) ⚑. Mặc định **lưới 4 cột**: ô icon 52 bo 16 nền nhạt, nhãn 13 dưới ô tối đa hai dòng, tối đa 8 mục (hai
+  hàng), mục thứ 8 là "Tất cả" mở danh sách đủ. Ảnh mẫu vẽ viên chip (icon + nhãn) thì dựng viên cao 44–48, **hai hàng cuộn
+  ngang chung** (`grid grid-flow-col grid-rows-2 w-max`), và hàng phải **lộ 30–50% cột kế tiếp** ở cả 390 lẫn 360: cột cuối
+  vừa khít mép thì người dùng không biết còn mục, ba lối tắt sau mất hẳn (dính 08/11/2026, app bảo hiểm: 6 mục, chỉ thấy 4).
+  Không đủ lộ thì đổi thứ tự cho nhãn dài nằm cột cuối, hay về lưới 4 cột.
+- **Hàng cuộn ngang có `scroll-snap`** (rail thẻ, carousel trên bản đồ): thêm `scroll-px-4` bằng lề 16, không thì thẻ hít
+  sát mép màn, mất lề trái.
 
 Không dùng (đẹp trong ảnh, hỏng trên máy thật):
 - Chữ 9–10px, chữ pastel trên nền pastel (dưới 4.5:1).
 - Minh hoạ 3D, nhân vật trang trí chiếm nửa màn ở màn làm việc. Nhân vật và minh hoạ chỉ ở các chỗ của `J16`.
 - Nhiều màu nhấn trên một màn; thanh tab không có chữ; nút "+" nằm giữa thanh tab.
-- Dải đầu màn tô màu nhấn, nút gradient, bóng đậm: kiểu cũ, ảnh mẫu được khen không còn dùng.
+- Dải đầu màn tô màu nhấn, nút gradient, bóng đậm: kiểu cũ, ảnh mẫu được khen không còn dùng. Trừ khi người dùng gửi ảnh
+  có chúng (mục dưới).
+
+**Ảnh mẫu là bản trình diễn** (ảnh kiểu Dribbble người dùng gửi kèm "như này", "like this") ⚑. Nhận ra: quầng hay
+gradient đầu màn, bóng mềm thay viền, nút tròn trắng nổi, bo 24 trở lên, nền xám hay kem nhạt. Ảnh là design ref (`S12`,
+bám cả màu) nên **bật luôn `J18`** dù đề không có từ "đẹp", "trình diễn": `J18` là công thức gần ảnh nhất, phần ảnh khác
+công thức thì ảnh thắng. Ảnh đè được gì:
+
+| Loại | Luật | Ảnh đè không |
+| --- | --- | --- |
+| **Gu** | `J1` nền trắng (ảnh nền xám thì theo ảnh, gắn `data-ref-bg` lên `.device` để probe không bắt) · `J3` canh lề, cỡ tiêu đề · `J8` "không dùng" dải đầu màn màu, gradient · `J15` bộ mặt khuyên dùng · `J18` chữ tối trên quầng, cỡ điểm nhìn, font · kiểu thanh tab `J2` (thanh dính đáy của ảnh dựng bằng `float`, kiểu gần nhất có code) | **Được**, theo ảnh |
+| **Nguyên tắc** | `J2` mục có chữ, **không mục "More"/"Thêm"** (đổi thành mục có tên: "Account", "Tài khoản", báo một dòng), giữ thanh tab ở màn con để xem · `J4` kích cỡ, chữ từ 11 · `J5` một hành động chính · tương phản `P3` (đo ở chỗ chữ nằm) | **Không**, ảnh vẽ khác thì sửa theo luật, báo một dòng lúc giao |
+
+**Màu lấy đúng ảnh.** Đọc hex ở ba chỗ của ảnh (phần đậm nhất của quầng, chỗ chuyển, nền) và dùng chúng cho quầng, nền;
+không thay bằng màu trong bảng ngành của `brand-tokens.md` rồi pha đậm thêm. Bẫy "không đỏ" chỉ áp cho `--primary` của
+nút: ảnh có nút cam kết màu đen thì màu cam đỏ của ảnh chỉ nằm ở quầng, badge, ghim, không cần đổi. Chụp xong đặt ảnh cạnh
+ảnh mẫu, so tông, độ đậm, chỗ quầng mờ về nền; đậm hơn hay gắt hơn ảnh thì chỉnh trước khi giao (dính 08/11/2026, app bảo
+hiểm: đầu màn đỏ cam đậm gắt trong khi ảnh là cam nhạt chuyển dần sang xám). Chữ trắng trên quầng màu ảnh chưa đủ
+`P3` thì đậm riêng phần quầng ngay sau chữ (một lớp `radial-gradient` nhỏ sau dòng chữ), hay đẩy dòng chữ nhỏ lên 19px đậm
+700 để thành chữ lớn (ngưỡng 3:1); không đậm cả dải. Probe chấm chữ trên gradient bằng pixel thật dưới chữ.
 
 ## J9. Chuyển sang code React Native, Flutter ⚑
 
@@ -849,7 +884,8 @@ trình diễn giữ nguyên luồng, màn, nội dung, chỉ đổi cách trình
 nhiều. Code mẫu: `layouts/mobile-showcase.html` (ba màn app đếm kcal).
 
 **Khi nào:** đề nói "đẹp", "gây ấn tượng", "trình bày khách", "như Dribbble", "nhìn sang", hay người dùng bật công tắc
-**Trình diễn** trên wireframe (`?show=1`, đứng sau nhóm Tab). Không tự bật: app quản lý, nhập liệu dày (`J14`) và
+**Trình diễn** trên wireframe (`?show=1`, đứng sau nhóm Tab), hay gửi **ảnh mẫu là bản trình diễn** (`J8`: màu, vị trí
+theo ảnh, ảnh thắng công thức ở các luật gu). Không tự bật: app quản lý, nhập liệu dày (`J14`) và
 app cho cửa hàng, công ty giữ bản thực dụng vì cần nhiều thông tin trên một màn. Ghép được với mọi bộ mặt `J15`. Đề
 trình diễn mà chưa nêu bộ mặt thì lấy, không hỏi: **Tinted** cho app một người tự chăm mình (ăn uống, sức khoẻ, chi tiêu,
 thói quen), **Glow** cho AI, sáng tạo, âm nhạc, **Photo** cho lướt chọn bằng ảnh, còn lại **Clean**; báo một dòng lúc giao.
@@ -910,8 +946,31 @@ trên quầng có viền trắng 10% (kính cần mép), dòng trong mảng tố
 là màu nền 80% cộng `backdrop-blur-xl`, lúc chưa cuộn trong suốt (script: lắng nghe `scroll` của vùng cuộn, gắn
 `data-scrolled` khi `scrollTop > 8`). Chữ cuộn lên dưới thanh trên trong suốt thì vùng cuộn mờ mép trên 24px (`mask-image`).
 
-**Vẫn giữ:** tương phản 4.5:1 (đo chữ ở chỗ quầng sáng nhất), chỗ bấm 44px (điều khiển phân đoạn rãnh 52 `p-1` cho nút 44),
+**Vẫn giữ:** tương phản 4.5:1 (đo ở chỗ chữ nằm, không ở chỗ quầng đậm nhất hay nhạt nhất), chỗ bấm 44px (điều khiển phân đoạn rãnh 52 `p-1` cho nút 44),
 chữ nội dung chính 16px và không cắt chữ (`J4`), tiêu đề lớn ở màn gốc (`J3`, lời chào nhỏ đứng trên), kính `backdrop-blur`
 chỉ cho lớp cố định (thanh tab, đầu màn), `J2` ẩn thanh tab ở màn phải làm cho xong, một hành động chính mỗi màn. Logo app:
 đầu bảng luồng, favicon, màn chào và đăng nhập (`J12`), không trên mọi màn.
 
+## J19. Bản đồ ⚑
+
+Màn tìm chỗ gần (bệnh viện trong mạng lưới, cửa hàng, chỗ ở, trạm sạc). Code bản đồ chép từ màn `map` của
+`layouts/mobile-photo.html`; luật dưới đây rút từ lần dựng app bảo hiểm (08/11/2026), chưa qua vòng test riêng.
+
+- **Lớp bản đồ:** tile `World_Light_Gray_Base` của Esri (như file mẫu), xám nhạt để ghim và thẻ nổi lên. Tile của thành
+  phố khác tính theo `z` (14–15 cho khu phố): `x = floor((lon + 180) / 360 · 2^z)`,
+  `y = floor((1 − ln(tan(lat) + 1 / cos(lat)) / π) / 2 · 2^z)` (lat đổi ra radian); lưới 3×4 tile quanh điểm đó phủ đủ
+  khung 390×844. Bản đồ phủ cả màn dưới thanh trên; thanh trên có nền mờ dần (nền màn → trong suốt) để tiêu đề đọc được.
+- **Ghim:** vùng bấm 44 dù ghim vẽ nhỏ hơn; ghim đang chọn đổi hình rõ (nền `--foreground` hay màu nhấn, to hơn), các ghim
+  khác trắng có bóng. **Chấm "vị trí của bạn"**: chấm màu nhấn 16 viền trắng 3px, quầng cùng màu 20% đường kính 64, không
+  bấm được. Ghim không lố mép màn (probe bắt cuộn ngang) và không đè dòng ghi công.
+- **Ghi công bản đồ** ("Map: Esri, OpenStreetMap") chữ 11 ở góc không có ghim, nằm trên thẻ hay danh sách nổi, không bị
+  chúng che.
+- **Thẻ trên bản đồ:** hàng thẻ cuộn ngang có snap (`scroll-px-4`, `J8`), lộ mép thẻ sau 16–24px; thẻ đang thấy ứng với ghim
+  đang chọn. Thẻ có ảnh, badge loại, tên, địa chỉ kèm khoảng cách, giờ mở cửa, nút chính (Chỉ đường) và hai nút tròn 44 (gọi,
+  ⋯). **Ở 360×640** ảnh thẻ co (tỉ lệ 16:9 xuống 21:9 hay bỏ ảnh) để bản đồ còn ít nhất một phần ba chiều cao màn; thẻ
+  ăn hết màn thì không còn là màn bản đồ.
+- **Danh sách trên bản đồ:** vùng cuộn phủ cả màn, đầu vùng là khoảng đệm trong suốt (~40% chiều cao) để bản đồ lộ phía
+  trên; cuộn lên thì danh sách che dần bản đồ. Dòng là thẻ ngang: ảnh trái 96–108 bo theo thẻ, badge, tên (xuống dòng đủ,
+  `J4`), địa chỉ kèm khoảng cách. Cuối danh sách chừa đáy cho thanh tab (`J2`).
+- Chuyển thẻ / danh sách bằng nút trên thanh trên (`J3` "Chuyển cách xem"). Màn bản đồ là màn con để xem: giữ thanh tab
+  (`J2`). Lần đầu mở màn bản đồ cần màn mồi xin vị trí (`J12`); bản mẫu chưa dựng thì báo một dòng lúc giao.
