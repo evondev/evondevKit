@@ -3,7 +3,7 @@
 Ba cổng. Mỗi cổng chạy ở một thời điểm khác nhau — đừng gộp làm một lượt cuối.
 
 Mỗi dòng ở đây là một lỗi **đã thật sự xảy ra**. Dòng nào ba vòng test liền không
-bắt được lỗi nào thì xoá (luật ở `SKILL.md` mục 4).
+bắt được lỗi nào thì xoá (luật ở `DEVELOP.md`, mục Thêm luật mới).
 
 ---
 

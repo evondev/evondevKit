@@ -25,12 +25,7 @@ modal. Không lo trang bán hàng, trừ bảng giá (`references/layouts/pricin
 
 **App điện thoại** ("app mobile", "app điện thoại", "iOS", "Android", ảnh màn điện thoại): vẫn đi đúng
 lối của câu 1 (mặc định nhánh `U`), cộng mở `references/mobile.md` (luật `J`). Đầu ra là bản mẫu HTML
-trong khung điện thoại, mỗi màn một đường dẫn, theo `references/layouts/mobile-app.html`; app đặt món, bán
-hàng (menu, giỏ, ưu đãi), đăng nhập, xin quyền, rỗng theo `references/layouts/mobile-order.html` (`J11`, `J12`);
-bộ mặt Playful (onboarding hỏi từng câu, bài tập có phản hồi, nhân vật) theo `references/layouts/mobile-playful.html`,
-Photo (đặt phòng: ảnh to, tìm nhiều bước, lịch khoảng ngày, bản đồ ghim giá, thanh giá dính đáy) theo
-`references/layouts/mobile-photo.html`, Immersive (nghe: nền tối có sắc, trình phát toàn màn và thu nhỏ, hẹn giờ, tốc
-độ) theo `references/layouts/mobile-immersive.html` (`J15`, `J16`). ⚑
+trong khung điện thoại, mỗi màn một đường dẫn; file mẫu theo loại app liệt kê cuối mục 2. ⚑
 
 **Đề là loại UI skill chưa được dạy thì báo trước một dòng, rồi vẫn làm.** Gồm: landing
 page, trang giới thiệu, trang chủ website; cửa hàng online phía người mua (trang chủ shop,
@@ -103,79 +98,37 @@ theo ảnh (`S13`–`S15`). Đề vừa muốn dọn code vừa muốn đổi h�
 
 ### Câu 2 — Dự án đang dùng gì? (TỰ TÌM, ĐỪNG HỎI)
 
-> **Audit là CỔNG CHẶN, không phải bước tham khảo.** Chưa chạy xong khối lệnh
+> **Audit là CỔNG CHẶN, không phải bước tham khảo.** Chưa chạy xong lệnh
 > dưới đây thì chưa được mở file layout, chưa được đề xuất bố cục, chưa được
 > viết dòng code nào — kể cả khi đề bài nhỏ như "thêm một cái dropdown".
 
 Skill này **bám theo codebase**, không áp bộ công cụ của mình lên dự án người ta.
-Audit ba tầng: **stack** (dự án dùng gì), **component** (thứ sắp dựng đã có
-chưa), và **phong cách** (dự án đang flat, glass, gradient hay tối).
+Chạy ở gốc dự án, truyền tên thứ sắp dựng (avatar, dropdown, modal, button, badge…):
 
 ```bash
-# Tầng 1 — stack
-ls package.json 2>/dev/null || echo "KHÔNG CÓ package.json — xem dòng cuối bảng"
-cat package.json 2>/dev/null | grep -E '"(tailwindcss|@radix-ui|@mui|antd|@chakra|bootstrap)"'
-ls components/ui src/components/ui 2>/dev/null          # dấu hiệu shadcn
-# app điện thoại: React Native / Expo, Flutter (J9 trong references/mobile.md)
-cat package.json 2>/dev/null | grep -E '"(react-native|expo|nativewind|@react-navigation/[a-z-]+|@gorhom/bottom-sheet|react-native-safe-area-context)"'
-ls pubspec.yaml lib/main.dart 2>/dev/null && grep -E "^\s+(flutter|cupertino_icons|go_router|google_fonts):" pubspec.yaml
-# thư viện chuyên dụng: biểu đồ, lịch/ngày, bảng, danh sách ảo
-cat package.json 2>/dev/null | grep -E '"(recharts|chart\.js|react-chartjs-2|echarts[a-z-]*|@tremor/react|@nivo/[a-z]+|victory|react-apexcharts|react-day-picker|react-datepicker|@mantine/dates|@fullcalendar/[a-z]+|react-big-calendar|date-fns|dayjs|@tanstack/react-table|@tanstack/react-virtual|react-window|react-virtuoso|ag-grid-react)"'
-grep -rn "@import\|@theme\|--primary\|--brand\|font-family" \
-  app/globals.css src/index.css tailwind.config.* 2>/dev/null | head   # không có `@import "tailwindcss"` = không preflight, W9
-
-# Tầng 2 — thứ sắp dựng đã có chưa. Thay TÊN bằng thứ đang dựng:
-# avatar, dropdown, menu, modal, dialog, button, input, badge, toast...
-find . -path ./node_modules -prune -o -iname "*TÊN*" -print 2>/dev/null | head
-grep -rliE "function TÊN|const TÊN|export.*TÊN" --include="*.tsx" --include="*.jsx" \
-  --include="*.vue" --include="*.svelte" . 2>/dev/null | grep -v node_modules | head
+bash <thư mục skill này>/scripts/audit.sh avatar dropdown
 ```
 
-**Tầng 2 là tầng hay bị bỏ.** Dự án có sẵn `Avatar` mà dựng thêm một cái nữa thì
-app có hai kiểu avatar, và cái mới dựng lệch với mọi chỗ khác. Đã có thì **dùng
-cái của họ**, chỉ chỉnh token nếu nó trái luật.
+Script chỉ đọc, in bốn tầng: **`DESIGN.md`** (tầng 0), **stack** (tầng 1), **thứ sắp dựng đã có
+chưa** (tầng 2), **phong cách** (tầng 3: số file có tín hiệu glass, gradient, nổi, màu; thang màu
+biểu đồ; nền tối; token phong cách; thanh cuộn). Không chạy được bash thì đọc lệnh trong script
+rồi dò tay đúng các tầng đó.
 
-**Tầng 0 — `DESIGN.md`.** Chạy trước ba tầng: `cat DESIGN.md 2>/dev/null | head -60`. Có file
-thì những gì nó ghi (bộ mặt, màu nhấn, phong cách, điều người dùng dặn) thắng mặc định và lời
-khuyên của skill, không khuyên lại; skill chốt quyết định mới cho cả dự án thì ghi vào đó
-(`references/system.md`, `D10`).
+- **Tầng 0:** có `DESIGN.md` thì những gì nó ghi (bộ mặt, màu nhấn, phong cách, điều người dùng
+  dặn) thắng mặc định và lời khuyên của skill, không khuyên lại; skill chốt quyết định mới cho cả
+  dự án thì ghi vào đó (`references/system.md`, `D10`).
+- **Tầng 2 là tầng hay bị bỏ.** Dự án có sẵn `Avatar` mà dựng thêm một cái nữa thì app có hai
+  kiểu avatar, và cái mới dựng lệch với mọi chỗ khác. Đã có thì **dùng cái của họ**, chỉ chỉnh
+  token nếu nó trái luật.
+- **Tầng 3** cố ý bỏ qua file dialog, dropdown, toast… vì `M15` cho lớp nổi có bóng và blur. Đọc
+  số theo `P4` trong `references/styles.md`. Dự án không có phong cách riêng thì flat. Có phong
+  cách riêng thì **theo phong cách dự án**, báo lúc giao (`P1`).
 
-**Báo kết quả audit một dòng trước khi đi tiếp**, kể cả khi không tìm thấy gì:
+**Báo kết quả audit một dòng trước khi đi tiếp**, kể cả khi không tìm thấy gì. Dòng này làm
+cho việc bỏ audit **nhìn thấy được**:
 
 > Audit: Next + Tailwind v4, có shadcn, token ở `globals.css`. Đã có `Avatar` ở
 > `components/ui/avatar.tsx` — dùng cái đó. Chưa có dropdown — dựng mới.
-
-Dòng này làm cho việc bỏ audit **nhìn thấy được**. Không có dòng này thì người
-dùng không biết AI đã kiểm hay đoán.
-
-**Tầng 3 — phong cách.** Đếm **số file** có tín hiệu, không đếm số dòng:
-
-```bash
-count_files() {
-  grep -rlE "$1" --include='*.tsx' --include='*.jsx' --include='*.vue' --include='*.svelte' \
-    --include='*.html' --include='*.css' --include='*.scss' . 2>/dev/null \
-    | grep -viE 'node_modules|dialog|modal|popover|dropdown|menu|select|toast|tooltip|sheet|drawer|command' \
-    | wc -l | tr -d ' '
-}
-echo "glass:    $(count_files 'backdrop-blur|backdrop-filter')"
-echo "gradient: $(count_files 'bg-gradient-|bg-linear-|bg-radial-|linear-gradient\(|radial-gradient\(')"
-echo "nổi:      $(count_files 'shadow-(md|lg|xl|2xl)')"
-# Màu: nền / viền / chữ có sắc dùng làm trang trí hay phân vai, không phải trạng thái
-echo "màu:      $(count_files '(bg|border|ring)-(blue|sky|indigo|violet|purple|fuchsia|pink|cyan|teal)-(50|100|200)|bg-primary/(5|10|15|20)|bg-(accent|brand)')"
-# Thang màu biểu đồ có sẵn (shadcn sinh --chart-1..5)
-grep -rhoE -- '--(chart|categorical|category)-[a-z0-9-]*' --include='*.css' . 2>/dev/null | grep -v node_modules | sort -u | head
-# Tối: chỉ cần MỘT file, là layout gốc
-grep -rlE '<(body|html)[^>]*(bg-black|bg-(zinc|neutral|slate|gray|stone)-9[0-9]{2})|color-scheme: *dark' \
-  --include='*.tsx' --include='*.jsx' --include='*.html' --include='*.css' . 2>/dev/null | grep -v node_modules | head -3
-# Token phong cách: có là có chủ đích, dù đếm file ra ít
-grep -rhoE -- '--(glass|gradient|shadow|blur)[a-z0-9-]*' --include='*.css' . 2>/dev/null | grep -v node_modules | sort -u | head
-```
-
-Lệnh **cố ý bỏ qua** file dialog, dropdown, toast... vì `M15` cho lớp nổi có
-bóng và blur. Không bỏ qua thì dự án flat nào dùng shadcn cũng bị đếm thành "nổi".
-
-Đọc số theo `P4` trong `references/styles.md`. Dự án không có phong cách riêng
-thì flat. Có phong cách riêng thì **theo phong cách dự án**, báo lúc giao (`P1`).
 
 Dòng `Audit:` thêm phần phong cách:
 
@@ -411,27 +364,9 @@ không. Mặc định đặt **lên đầu**, vì đó là chỗ duy nhất có 
 Nói bằng tiếng người dùng đang viết, kể cả khi skill và nhãn trên UI là tiếng
 Việt (`T27`).
 
-**S16. Dữ liệu giả có ảnh thì dùng ảnh chụp thật, không khối xám hay hình vẽ** ⚑. Mục mà
-sản phẩm thật sẽ có ảnh (phòng, sản phẩm, bài viết, ảnh bìa công ty, avatar người) thì
-mockup và wireframe dùng ảnh thật, trang mới trông như sản phẩm đang chạy:
-
-- **Ảnh cảnh, vật**: Unsplash, dạng
-  `https://images.unsplash.com/photo-<id>?w=800&q=80&auto=format&fit=crop`, đúng chủ đề của
-  mục (phòng trọ là nội thất phòng, tin tuyển dụng là văn phòng). Không tự bịa `<id>`: tìm
-  bằng tìm kiếm web giới hạn `unsplash.com/photos` (trang tìm và API của Unsplash chặn khi gọi từ dòng lệnh), rồi
-  `curl -sI` từng link, không ra 200 thì thay. Mỗi mục một ảnh khác nhau.
-- **Avatar người**: ảnh chân dung (`https://randomuser.me/api/portraits/women/<0-99>.jpg`,
-  `.../men/<0-99>.jpg`), khớp giới của tên giả. Ảnh vẫn theo khuôn của `components/avatar.md`.
-- **Logo công ty giả**: ô chữ cái theo `components/avatar.md` (hình vuông bo góc), không lấy
-  logo thương hiệu thật gắn cho công ty giả.
-- **Vẫn giữ ca biên của `S8`**: ít nhất một mục không ảnh, một người không avatar, để thấy
-  chỗ rơi về chữ cái hay khung "Chưa có ảnh".
-- Next.js thì thêm hai host vào `images.remotePatterns` trong `next.config`; dự án có ảnh
-  riêng (thư mục `public/`, CDN của họ) thì dùng ảnh của họ trước.
-- Lúc giao, dòng "số liệu giả" của `S15` nói luôn: ảnh từ Unsplash và randomuser là ảnh
-  mẫu, thay bằng ảnh thật trước khi chạy thật.
-
-Tám hình vẽ gần giống nhau cho tám mục thì trang trông "nhìn chán" dù bố cục đã đúng.
+**S16. Dữ liệu giả có ảnh thì dùng ảnh chụp thật, không khối xám hay hình vẽ** ⚑. Mục mà sản
+phẩm thật sẽ có ảnh (phòng, sản phẩm, bài viết, avatar người): mở `references/mock-photos.md` lấy
+nguồn ảnh, cách kiểm link và ca biên trước khi điền.
 
 ---
 
@@ -457,7 +392,7 @@ thì một trong hai chỗ là sai.
 | **L** | `references/refactor.md` | Refactor codebase đã có |
 | **U** | `references/design-process.md` | Thiết kế từ đầu: brief, việc chính của từng màn, wireframe phương án, dựng |
 | **W** | `references/tailwind-v4-traps.md` | Bẫy Tailwind v4 khi có CSS cũ |
-| **J** | `references/mobile.md` | App điện thoại: khung máy và mép chừa, thanh tab sáu kiểu (Float, Center, Pill, Dark, Bubbles, Glass), đầu màn, kích cỡ cho ngón tay, hành động chính, sheet, phản hồi khi nhấn, app đặt món, mở app lần đầu, đăng nhập, xin quyền, rỗng, ô nhập và bàn phím, app quản lý nhập liệu (bảng thành danh sách, số lượng và đơn vị, chi tiết phiếu); tám bộ mặt Clean, Mono, Photo, Playful, Immersive, Editorial, Glow, Tinted (`J15`); nhân vật và minh hoạ: bộ của dự án, chưa có thì nhân vật CC0 sinh tại chỗ (`J16`); biểu đồ trên điện thoại: chạm thay rê, hàng đọc số, trục giá, màu danh mục, vòng và cung cho app sức khoẻ, thói quen (`J17`); lối trình diễn: quầng màu, tấm trắng trượt lên, một điểm nhìn lớn, font hình học (`J18`) ⚑ |
+| **J** | `references/mobile.md` | App điện thoại: khung máy, thanh tab, đầu màn, cỡ ngón tay, sheet, app đặt món, mở app lần đầu, ô nhập và bàn phím, app nhập liệu; bộ mặt (`J15`), nhân vật (`J16`), biểu đồ (`J17`), lối trình diễn (`J18`) ⚑ |
 | **P** | `references/styles.md` | Phong cách thị giác: flat, nổi, glass, gradient, tối; mười bộ mặt dashboard theo các trục điều hướng, vùng chứa, header, bề mặt, font (`P13`); bề mặt Không viền, Xếp lớp, Editorial (`P14`–`P16`); Sắc Neutral, Tinted, Vivid (`P17`). Luật nào được đè, bẫy riêng, **tương phản** |
 
 **Luôn mở, mọi task:**
@@ -466,7 +401,7 @@ thì một trong hai chỗ là sai.
 | --- | --- |
 | Nguyên tắc chung, phép thử cho UI chưa có mẫu | `references/principles.md` |
 | Ngân sách, nhịp, thang cỡ chữ | `references/budgets.md` |
-| Bảng màu, font, cách đổi thương hiệu | `references/brand-tokens.md` + `references/tokens.css` |
+| Bảng màu, font, cách đổi thương hiệu | `references/brand-tokens.md`. `references/tokens.css` (dài) thì đọc cả file khi audit không thấy token hay khi dựng wireframe; dự án có token rồi thì chỉ lấy khối thanh cuộn (từ dòng `THANH CUỘN TỰ ẨN` tới hết file), và khối nào luật khác trỏ tên (`.dark`, `.force-dark`, khối Sắc) thì đọc đúng khối đó |
 | Kiểm trước khi báo xong | `references/checklist.md` |
 | Luật chủ dự án đã chốt và lý lẽ đã bị bác: mở trước khi chọn màu, mức nặng của nút (đỏ hay trung tính, `primary` hay viền) | `references/locked-rules.md` |
 
@@ -509,12 +444,13 @@ tử chưa có file thì theo luồng **"Dựng một thứ chưa có mẫu"** �
 `references/principles.md`: mượn khuôn gần nhất, dựng cả ca biên, probe tự sửa, soi
 năm câu bằng mắt, lúc giao nói một dòng *"X chưa có mẫu đã duyệt, mình mượn khuôn của Y"*.
 
-**Code mẫu đã duyệt** (chỉ mở sau khi chốt loại màn hình, luật `S11`):
-`references/layouts/app-kanban.html`, `references/layouts/mobile-app.html` (app điện thoại, `J`),
-`references/layouts/mobile-order.html` (app đặt món điện thoại, `J11`), `references/layouts/mobile-playful.html` (bộ mặt
-Playful, onboarding và bài tập, `J15`, `J16`), `references/layouts/mobile-photo.html` (bộ mặt Photo, đặt phòng),
-`references/layouts/mobile-immersive.html` (bộ mặt Immersive, thiền và sách nói), `references/layouts/mobile-tabbars.html`
-(sáu kiểu thanh tab, `J2`), `references/layouts/mobile-charts.html` (vòng và cung, `J17`), `references/layouts/mobile-showcase.html` (lối trình diễn, `J18`)
+**Code mẫu đã duyệt** (chỉ mở sau khi chốt loại màn hình, luật `S11`), trong `references/layouts/`:
+`app-kanban.html`; app điện thoại (`J`): `mobile-app.html` (mặc định), `mobile-order.html` (đặt món, bán
+hàng: menu, giỏ, ưu đãi; đăng nhập, xin quyền, rỗng, `J11`, `J12`), `mobile-playful.html` (bộ mặt Playful:
+onboarding hỏi từng câu, bài tập có phản hồi, nhân vật, `J15`, `J16`), `mobile-photo.html` (Photo: đặt phòng,
+ảnh to, lịch khoảng ngày, bản đồ ghim giá), `mobile-immersive.html` (Immersive: thiền, sách nói, trình phát),
+`mobile-tabbars.html` (sáu kiểu thanh tab, `J2`), `mobile-charts.html` (vòng và cung, `J17`),
+`mobile-showcase.html` (lối trình diễn, `J18`)
 
 ---
 
@@ -531,17 +467,7 @@ Rút gọn từ `references/checklist.md`. Chạy hết checklist đầy đủ t
 
 ---
 
-## 4. Thêm luật mới thì theo quy tắc này
+## 4. Sửa skill
 
-Skill này đã có lần **tệ đi vì thêm luật**. Luật viết để chữa một triệu chứng
-thường đẻ ra triệu chứng khác ở lần dựng sau.
-
-- Mỗi đợt tối đa **5 luật mới**.
-- Mỗi luật mới phải nói rõ nó **thay thế** hay **mâu thuẫn** với luật nào đang có. Đảo một luật cũ thì để lại một khối ⚠️ ghi rõ "luật cũ đã bỏ, đừng hồi sinh" và vì sao.
-- Luật phải kèm **điều kiện áp dụng**. "Trong app thì X, khi refactor thì Y" chứ không phải "luôn luôn X".
-- Luật nào chưa từng bắt được lỗi thật sau 3 vòng test thì bỏ.
-- **Một luật một chỗ.** Thêm luật vào đúng file của nhóm nó. `SKILL.md` chỉ được trỏ số hiệu.
-- **Thêm luật xong thì rà lại file mẫu trong `layouts/` và `components/`** xem chúng có vi phạm luật vừa thêm không. Code mẫu được chép nguyên, nên một lỗi nằm trong đó sẽ đi khắp nơi. Đã xảy ra thật hai lần.
-- **Skill ghi luật và lý do, không ghi lịch sử.** Không ngày tháng, không tên trang hay dự án test, không "lượt hai", không kể các bản đã thử. Bản sai mà AI dễ tự làm lại thì một câu "Đừng X: hậu quả". Ngày và chỗ dính ghi trong commit message. Quyết định của chủ dự án giữ đúng động từ gốc ("chốt", "bỏ", "chọn"…), không kèm ngày, không tự nâng thành "chốt". Ngày tháng duy nhất được ghi trong skill là cột "Chốt ngày" của `locked-rules.md`.
-- **Đánh số liền mạch trong nhóm.** Đừng đẻ `15b`, `15c`, `17d` chen vào giữa.
-- **Luật chưa qua vòng test nào thì gắn dấu ⚑**, để người dùng biết đang dùng thứ chưa ai thử.
+Đang **sửa** skill (thêm luật, đổi luật), không phải dùng nó để dựng: theo mục "Thêm luật mới"
+trong `DEVELOP.md` ở gốc repo evondevKit. Dùng skill để dựng thì bỏ qua mục này.

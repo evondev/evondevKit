@@ -13,6 +13,8 @@ skills/
     ├── SKILL.md          bộ định tuyến: 4 câu hỏi vào việc, luật phạm vi, bảng mở doc
     ├── VERSION           version cho người cài bằng npx skills, phải khớp plugin.json
     ├── scripts/
+    │   ├── audit.sh      audit câu 2: DESIGN.md, stack, thứ sắp dựng đã có chưa, phong cách
+    │   ├── measure-skill.mjs đo skill nặng bao nhiêu token, file nào lớn, một đề nạp bao nhiêu
     │   ├── probe.mjs     mở trang thật ở 6 bề rộng, đo lỗi đo được, chụp ảnh, quét bề rộng, --stress bơm dữ liệu khó
     │   ├── lint-skill.mjs soát câu chữ của skill, và VERSION khớp plugin.json, trước khi commit
     │   └── check-update.mjs báo bản mới cho người cài bằng npx skills (so VERSION với master)
@@ -22,6 +24,7 @@ skills/
         ├── design-process.md       U — thiết kế từ đầu: brief, việc chính, wireframe, dựng; U6 phân tích sản phẩm
         ├── flows.md                O — luồng qua nhiều màn, onboarding, lối soi luồng
         ├── industry-patterns.md    quy ước màn theo ngành, đo thật, dùng ở U2 và U6
+        ├── mock-photos.md          S16 — ảnh thật cho dữ liệu giả
         ├── locked-rules.md         luật chủ dự án đã chốt, lý lẽ đã bị bác
         ├── rules-color.md          M — màu, viền, bóng, dark mode, token
         ├── rules-type.md           T — chữ, font, xuống dòng, cắt chữ, copy, tiếng Anh
@@ -95,7 +98,25 @@ Thêm plugin thứ hai thì tạo thư mục riêng cho nó, thêm một mục v
 
 `SKILL.md` cố ý giữ mỏng và **chỉ trỏ số hiệu luật**, không chép lại nội dung. Mỗi luật
 sống ở đúng một file. Thấy hai chỗ cùng nói một luật thì một trong hai chỗ là sai. Quy tắc
-thêm luật ở mục 4 của `SKILL.md`.
+thêm luật ở mục "Thêm luật mới" ngay dưới.
+
+## Thêm luật mới
+
+Skill này đã có lần **tệ đi vì thêm luật**. Luật viết để chữa một triệu chứng
+thường đẻ ra triệu chứng khác ở lần dựng sau.
+
+- Mỗi đợt tối đa **5 luật mới**.
+- Mỗi luật mới phải nói rõ nó **thay thế** hay **mâu thuẫn** với luật nào đang có. Đảo một luật cũ thì để lại một khối ⚠️ ghi rõ "luật cũ đã bỏ, đừng hồi sinh" và vì sao.
+- Luật phải kèm **điều kiện áp dụng**. "Trong app thì X, khi refactor thì Y" chứ không phải "luôn luôn X".
+- Luật nào chưa từng bắt được lỗi thật sau 3 vòng test thì bỏ.
+- **Một luật một chỗ.** Thêm luật vào đúng file của nhóm nó. `SKILL.md` chỉ được trỏ số hiệu.
+- **Thêm luật xong thì rà lại file mẫu trong `layouts/` và `components/`** xem chúng có vi phạm luật vừa thêm không. Code mẫu được chép nguyên, nên một lỗi nằm trong đó sẽ đi khắp nơi. Đã xảy ra thật hai lần.
+- **Skill ghi luật và lý do, không ghi lịch sử.** Không ngày tháng, không tên trang hay dự án test, không "lượt hai", không kể các bản đã thử. Bản sai mà AI dễ tự làm lại thì một câu "Đừng X: hậu quả". Ngày và chỗ dính ghi trong commit message. Quyết định của chủ dự án giữ đúng động từ gốc ("chốt", "bỏ", "chọn"…), không kèm ngày, không tự nâng thành "chốt". Ngày tháng duy nhất được ghi trong skill là cột "Chốt ngày" của `locked-rules.md`.
+- **Đánh số liền mạch trong nhóm.** Đừng đẻ `15b`, `15c`, `17d` chen vào giữa.
+- **Luật chưa qua vòng test nào thì gắn dấu ⚑**, để người dùng biết đang dùng thứ chưa ai thử.
+- **Giữ skill nhẹ.** `SKILL.md` và các file "luôn mở" bị nạp ở mọi task. Luật chỉ cần cho một loại
+  việc thì đặt vào file của loại việc đó, `SKILL.md` chỉ trỏ tới. Đo bằng
+  `node skills/ui-ux/scripts/measure-skill.mjs` trước và sau khi thêm.
 
 Mười ba nhóm, không nhóm nào trùng ký tự:
 

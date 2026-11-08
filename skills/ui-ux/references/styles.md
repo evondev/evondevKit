@@ -1,7 +1,7 @@
 # Phong cách thị giác — luật P
 
 Nguồn duy nhất cho: nhận ra dự án đang dùng phong cách gì, phong cách đó được đè
-luật nào, và bẫy riêng của từng phong cách. Lệnh audit nằm ở `SKILL.md` câu 2,
+luật nào, và bẫy riêng của từng phong cách. Lệnh audit nằm ở `scripts/audit.sh` (`SKILL.md` câu 2),
 tầng 3. File này dạy cách **đọc** kết quả.
 
 ---
@@ -103,7 +103,7 @@ phong cách làm nó trượt.
 **P4. Tự tìm phong cách của dự án, để biết có theo hay không. Một phong
 cách chỉ là "của dự án" khi nó có mặt trên bề mặt chính.**
 
-Chạy lệnh tầng 3 ở `SKILL.md` câu 2, rồi đọc số:
+Chạy `scripts/audit.sh` (`SKILL.md` câu 2), đọc số ở tầng 3:
 
 | Kết quả | Kết luận |
 | --- | --- |
