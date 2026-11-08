@@ -34,7 +34,11 @@ const appDashboardFiles = [
 ];
 const typicalTasks = [
   { name: "Bộ luôn mở (mọi task)", files: [] },
-  { name: "Lượt brief, cổng 1 (nhánh U)", files: ["references/design-process.md"] },
+  {
+    name: "Lượt brief, cổng 1 (nhánh U)",
+    files: ["SKILL.md", "references/design-process.md", "references/industry-patterns.md"],
+    skipsAlwaysOpen: true,
+  },
   {
     name: "Dựng dashboard có wireframe (nhánh U)",
     files: ["references/design-process.md", "references/wireframe.md", ...appDashboardFiles],
@@ -93,7 +97,7 @@ for (const file of allFiles.slice(0, 15)) console.log(`${formatSize(file.bytes)}
 
 console.log("\nMột đề phải nạp trước khi dựng:");
 for (const task of typicalTasks) {
-  const taskBytes = sumBytes([...alwaysOpenFiles, ...task.files]);
+  const taskBytes = sumBytes(task.skipsAlwaysOpen ? task.files : [...alwaysOpenFiles, ...task.files]);
 
   console.log(`${formatSize(taskBytes)}  ${task.name}`);
 }

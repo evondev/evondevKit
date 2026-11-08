@@ -395,7 +395,10 @@ thì một trong hai chỗ là sai.
 | **J** | `references/mobile.md` | App điện thoại: khung máy, thanh tab, đầu màn, cỡ ngón tay, sheet, app đặt món, mở app lần đầu, ô nhập và bàn phím, app nhập liệu; bộ mặt (`J15`), nhân vật (`J16`), biểu đồ (`J17`), lối trình diễn (`J18`) ⚑ |
 | **P** | `references/styles.md` | Phong cách thị giác: flat, nổi, glass, gradient, tối; mười bộ mặt dashboard theo các trục điều hướng, vùng chứa, header, bề mặt, font (`P13`); bề mặt Không viền, Xếp lớp, Editorial (`P14`–`P16`); Sắc Neutral, Tinted, Vivid (`P17`). Luật nào được đè, bẫy riêng, **tương phản** |
 
-**Luôn mở, mọi task:**
+**Luôn mở, mọi task, trước dòng HTML hay class đầu tiên** (dựng, vẽ wireframe, sửa, soi). Hai
+lượt không viết giao diện thì chưa mở: lượt brief của nhánh `U` (dừng ở cổng 1; lượt sau cổng 1 mở
+trước khi vẽ wireframe) và phân tích sản phẩm `U6` (chỉ đọc bảng "Màu nhấn gợi ý theo ngành" của
+`brand-tokens.md`).
 
 | Cần | Mở |
 | --- | --- |
