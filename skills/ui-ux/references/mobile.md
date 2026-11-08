@@ -60,6 +60,10 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   class, font chưa nạp, biểu đồ đo sai bề rộng rồi bị chép nguyên vào bảng. **Wireframe (`U3`) gọi lại
   `placeBlockNumbers()` sau `buildBoard`**, trên cả trang chứ không chỉ máy thật (ngoại lệ duy nhất của luật tìm trong
   máy thật): lúc chép, máy thật đang ẩn sau bảng nên hàm đo ra "không đè", số khối trên bảng nằm đè lên chữ đầu khối.
+  **Bản mẫu tiếng Anh** (`T27`) dịch luôn chữ cứng của khối bảng, các file mẫu viết tiếng Việt: "Bản mẫu app điện
+  thoại" → "Mobile app prototype", "N màn" → "N screens", "Bấm một màn để chạy thử từ đó" → "Click a screen to try it from
+  there", "Cuộn sang trái / phải" → "Scroll left / right", "Chạy luồng" → "Play flow", "Chạy thử từ màn đang phát" → "Try
+  from this screen", "Dừng / Phát" → "Pause / Play". Comment trong code giữ nguyên được.
 - **Nút chính của luồng dẫn tới kết quả thấy được.** Bấm "Lưu", "Tạo", "Đặt" trong wireframe hay bản mẫu thì về
   màn trước **đã đổi**: dòng mới ở đầu danh sách (nhãn "Mới"), số đếm và số dư cộng thêm, thông báo ngắn `J7`
   ("Đã thêm Ăn tối", có Hoàn tác). Quay về màn cũ y nguyên thì người duyệt không thấy lưu xong ra sao, nên không
@@ -85,7 +89,7 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   `backdrop-blur-xl`, viền 4% và bóng mềm. Kiểu thanh nổi là kiểu của iOS hiện hành và phần lớn ảnh mẫu.
 - **Thanh tab chỉ để đi lại.** Hành động (thêm, quét, đăng) không nằm trong thanh tab, kể cả nút "+" giữa
   thanh hay gặp ở ảnh mẫu: dùng nút tròn đứng riêng cạnh thanh (`J5`). Ngoại lệ duy nhất là kiểu Center dưới đây.
-- **Sáu kiểu thanh tab** (Float, Dark đã qua test; Center, Pill, Bubbles, Glass còn cờ ⚑), code chép từ `layouts/mobile-tabbars.html`. Mặc định Float; năm kiểu kia chọn trên wireframe
+- **Sáu kiểu thanh tab** (Float, Dark, Glass đã qua test; Center, Pill, Bubbles còn cờ ⚑), code chép từ `layouts/mobile-tabbars.html`. Mặc định Float; năm kiểu kia chọn trên wireframe
   (nhóm Tab, `?tab=`) hay khi đề nêu ("thanh tab tối", "nút giữa"). Kiểu chỉ đổi hình thanh, không đổi mục, không đổi icon.
 
   | Kiểu | Hình | Dùng khi | Ràng buộc |
@@ -95,7 +99,7 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   | `pill` | Chỉ icon, mục đang chọn là viên màu nhấn có chữ | App nội dung, mua bán, du lịch muốn thanh gọn | 3–5 mục |
   | `dark` | Thanh gần đen `#18181b` cao 64 trên màn sáng, mục chọn là viên tròn trắng 48 **đồng tâm với đầu bo** (`justify-between px-2`: cách mép trái phải bằng cách mép trên dưới, 8px; chia đều thì viên đầu trôi vào giữa, đầu bo trống), bóng nhẹ `0 8px 20px -12px` | Màn sáng hay nền màu cả app (kem, be), muốn thanh là điểm nhấn | Chỉ icon: tối đa 4 mục |
   | `bubbles` | Mỗi mục một nút tròn rời 52px, mục chọn đặc màu nhấn, hành động tách ra mép phải | App học, app nội dung ít mục | Chỉ icon: tối đa 4 mục |
-  | `glass` | Thanh kính `bg-white/12 backdrop-blur-2xl`, chữ trắng | Phía sau là ảnh, nền tối, quầng màu (Immersive) | Không dùng trên nền sáng trơn (`F19`); đo tương phản chữ ở chỗ nền sau sáng nhất |
+  | `glass` | Thanh kính `bg-white/12 backdrop-blur-2xl`, chữ trắng 70%, mục chọn viên `bg-white/18` chữ trắng (thanh đã sáng hơn nền nên viên cần 18%; thanh đặc của Immersive dùng 12%) | Phía sau là ảnh, nền tối, quầng màu (Immersive) | Không dùng trên nền sáng trơn (`F19`); đo tương phản chữ ở chỗ nền sau sáng nhất |
 
   Thanh khai kiểu trên `nav`: `data-tab-style="dark"` (probe đọc thuộc tính này, thiếu thì báo "không có chữ"). Màn gốc
   có việc thêm (`J5`) mà chọn `pill`, `dark`, `glass`: thanh thu lại `right-[92px]`, cao 64px bằng nút, nút thêm màu nhấn
@@ -117,6 +121,11 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   bỏ dở việc. Sheet và hộp hỏi phủ lên thanh tab.
 - **Màn xem có thanh hành động dính đáy cũng ẩn thanh tab** (trang chỗ ở, sản phẩm có "giá · Đặt", "Thêm vào giỏ"): thanh
   hành động là việc chính của màn, hai dải đáy chồng nhau thì nút chính bị đẩy lên giữa màn.
+- **Màn chi tiết một mục mở đầu bằng ảnh tràn mép cũng ẩn thanh tab** (điểm đến, chỗ ở, món, sản phẩm: ảnh lớn chạy
+  qua tai thỏ, tấm nội dung trượt lên), dù chưa có thanh hành động. Ảnh là chủ thể của màn, giống xem ảnh toàn màn; thanh
+  tab nổi đè lên thẻ ảnh ngay màn đầu làm đáy màn nặng hơn đỉnh. Đường về là nút tròn quay lại trên ảnh và vuốt mép trái.
+  Vùng cuộn chừa đáy `inset-bottom + 24px`, không `.pad-tabbar`. Màn con mở đầu bằng chữ (chi tiết giao dịch, hồ sơ,
+  bài viết) vẫn giữ thanh như trên.
 - **Chấm đỏ có số trên mục** chỉ cho việc người dùng phải xử lý (tin nhắn chưa đọc, đơn cần xác nhận), không cho
   khuyến mãi hay mục mới: chấm đỏ ở mọi tab thì không ai nhìn nữa. Viên `bg-danger` chữ trắng 11px, cao 16, góc phải
   trên icon; trên 99 ghi "99+".
@@ -133,6 +142,10 @@ Bản iOS hiện hành không còn công bố chiều cao thanh tiêu đề, tha
   mua sắm. Nút quay lại một trong hai kiểu, cả app một kiểu: chevron 24px + tên màn cha (cao 44px; tên dài quá
   12 ký tự thì chỉ chevron), hoặc **chỉ chevron trong nút tròn 44px** `rounded-full bg-secondary` như iOS hiện hành và
   phần lớn ảnh mẫu mới. Nút tròn hợp màn có ảnh tràn đầu (nền ảnh nào cũng thấy nút).
+- **Chuyển cách xem** (thẻ / danh sách, danh sách / bản đồ): hai cách thì **một nút icon** đổi qua lại (icon là cách
+  sẽ chuyển tới, `aria-label` "Xem dạng danh sách"), như `mobile-photo.html`; ảnh mẫu vẽ cặp icon cạnh nhau thì dựng
+  **một điều khiển phân đoạn chỉ icon** (rãnh 52 `p-1`, hai nút 44, `J4`) và tính là **một** nút phải của thanh trên.
+  Khi đó tiêu đề canh trái ngay sau nút quay lại (giữa thì đụng điều khiển rộng 96px), vẫn 17–22px.
 - **Luồng nhiều bước** (đặt lịch, thanh toán): thanh bước mảnh ngay dưới thanh trên, tiêu đề là tên bước. Không
   thêm dòng "Bước 2/3 · Thợ và giờ": tiêu đề, thanh bước và dòng này nói cùng một ý ba lần.
 - Vào màn con **trượt từ phải** 300ms (`push-in`); giảm chuyển động thì mờ dần 200ms thay cho trượt (`J10`).
@@ -218,7 +231,8 @@ thanh tab và thanh trên giữ `h-*` cố định: nền tảng cũng giữ c�
 
 - **Nhấn**: mọi thứ bấm được co `scale(0.97)` 120ms (`.press`), dòng danh sách thêm nền `active:bg-background`.
   Bỏ ô sáng mặc định khi chạm (`-webkit-tap-highlight-color: transparent`).
-- **Thông báo ngắn**: viên tròn nền tối giữa màn, **ngay trên thanh tab**, tự đi sau 4 giây; có "Hoàn tác"
+- **Thông báo ngắn**: viên tròn nền tối giữa màn (app nền tối: viên sáng `bg-white` chữ tối, viên tối chìm vào nền), **ngay
+  trên thanh tab**, màn không có thanh tab thì ngay trên thanh dính đáy hay ô soạn, tự đi sau 4 giây; có "Hoàn tác"
   thì một nút chữ trong viên. Không đặt ở đỉnh màn (dưới tai thỏ, ngoài tầm mắt khi đang thao tác đáy).
 - Hộp hỏi (alert) chỉ cho việc không lấy lại được, tối đa 3 nút, nút huỷ là "Huỷ".
 
@@ -242,12 +256,39 @@ Dùng (gặp ở phần lớn ảnh mẫu, hợp quy ước):
   140–180px, thẻ dịch vụ và người làm có ảnh, không chỉ avatar 40px. Ảnh lớn là thứ làm app trông "muốn dùng";
   màu nhấn thì chỉ ở nút và chỗ đang chọn.
 - Icon danh mục trong vòng tròn 40px nền nhạt của một sắc riêng, chữ icon đậm cùng sắc (đạt 4.5:1).
+- **Lối tắt dịch vụ trên trang chủ** (thanh toán, tải sao kê, nạp tiền, tìm bệnh viện, tư vấn từ xa: app ngân hàng, bảo hiểm,
+  ví, viễn thông) ⚑. Mặc định **lưới 4 cột**: ô icon 52 bo 16 nền nhạt, nhãn 13 dưới ô tối đa hai dòng, tối đa 8 mục (hai
+  hàng), mục thứ 8 là "Tất cả" mở danh sách đủ. Ảnh mẫu vẽ viên chip (icon + nhãn) thì dựng viên cao 44–48, **hai hàng cuộn
+  ngang chung** (`grid grid-flow-col grid-rows-2 w-max`), và hàng phải **lộ 30–50% cột kế tiếp** ở cả 390 lẫn 360: cột cuối
+  vừa khít mép thì người dùng không biết còn mục, ba lối tắt sau mất hẳn (dính 08/11/2026, app bảo hiểm: 6 mục, chỉ thấy 4).
+  Không đủ lộ thì đổi thứ tự cho nhãn dài nằm cột cuối, hay về lưới 4 cột.
+- **Hàng cuộn ngang có `scroll-snap`** (rail thẻ, carousel trên bản đồ): thêm `scroll-px-4` bằng lề 16, không thì thẻ hít
+  sát mép màn, mất lề trái.
 
 Không dùng (đẹp trong ảnh, hỏng trên máy thật):
 - Chữ 9–10px, chữ pastel trên nền pastel (dưới 4.5:1).
 - Minh hoạ 3D, nhân vật trang trí chiếm nửa màn ở màn làm việc. Nhân vật và minh hoạ chỉ ở các chỗ của `J16`.
 - Nhiều màu nhấn trên một màn; thanh tab không có chữ; nút "+" nằm giữa thanh tab.
-- Dải đầu màn tô màu nhấn, nút gradient, bóng đậm: kiểu cũ, ảnh mẫu được khen không còn dùng.
+- Dải đầu màn tô màu nhấn, nút gradient, bóng đậm: kiểu cũ, ảnh mẫu được khen không còn dùng. Trừ khi người dùng gửi ảnh
+  có chúng (mục dưới).
+
+**Ảnh mẫu là bản trình diễn** (ảnh kiểu Dribbble người dùng gửi kèm "như này", "like this") ⚑. Nhận ra: quầng hay
+gradient đầu màn, bóng mềm thay viền, nút tròn trắng nổi, bo 24 trở lên, nền xám hay kem nhạt. Ảnh là design ref (`S12`,
+bám cả màu) nên **bật luôn `J18`** dù đề không có từ "đẹp", "trình diễn": `J18` là công thức gần ảnh nhất, phần ảnh khác
+công thức thì ảnh thắng. Ảnh đè được gì:
+
+| Loại | Luật | Ảnh đè không |
+| --- | --- | --- |
+| **Gu** | `J1` nền trắng (ảnh nền xám thì theo ảnh, gắn `data-ref-bg` lên `.device` để probe không bắt) · `J3` canh lề, cỡ tiêu đề · `J8` "không dùng" dải đầu màn màu, gradient · `J15` bộ mặt khuyên dùng · `J18` chữ tối trên quầng, cỡ điểm nhìn, font · kiểu thanh tab `J2` (thanh dính đáy của ảnh dựng bằng `float`, kiểu gần nhất có code) | **Được**, theo ảnh |
+| **Nguyên tắc** | `J2` mục có chữ, **không mục "More"/"Thêm"** (đổi thành mục có tên: "Account", "Tài khoản", báo một dòng), giữ hay ẩn thanh tab ở màn con theo các ca của `J2` (ảnh vẽ khác thì theo `J2`) · `J4` kích cỡ, chữ từ 11 · `J5` một hành động chính · tương phản `P3` (đo ở chỗ chữ nằm) | **Không**, ảnh vẽ khác thì sửa theo luật, báo một dòng lúc giao |
+
+**Màu lấy đúng ảnh.** Đọc hex ở ba chỗ của ảnh (phần đậm nhất của quầng, chỗ chuyển, nền) và dùng chúng cho quầng, nền;
+không thay bằng màu trong bảng ngành của `brand-tokens.md` rồi pha đậm thêm. Bẫy "không đỏ" chỉ áp cho `--primary` của
+nút: ảnh có nút cam kết màu đen thì màu cam đỏ của ảnh chỉ nằm ở quầng, badge, ghim, không cần đổi. Chụp xong đặt ảnh cạnh
+ảnh mẫu, so tông, độ đậm, chỗ quầng mờ về nền; đậm hơn hay gắt hơn ảnh thì chỉnh trước khi giao (dính 08/11/2026, app bảo
+hiểm: đầu màn đỏ cam đậm gắt trong khi ảnh là cam nhạt chuyển dần sang xám). Chữ trắng trên quầng màu ảnh chưa đủ
+`P3` thì đậm riêng phần quầng ngay sau chữ (một lớp `radial-gradient` nhỏ sau dòng chữ), hay đẩy dòng chữ nhỏ lên 19px đậm
+700 để thành chữ lớn (ngưỡng 3:1); không đậm cả dải. Probe chấm chữ trên gradient bằng pixel thật dưới chữ.
 
 ## J9. Chuyển sang code React Native, Flutter ⚑
 
@@ -602,7 +643,7 @@ lúc trình bày (app AI, sáng tạo; sức khoẻ, ăn uống, phong cách s�
 | **Playful** | Trắng, phản hồi tô cả dải đáy | Một màu thương hiệu bão hoà cho nút chính và thanh tiến độ; thêm tối đa hai màu **có nghĩa** (đúng, sai, chuỗi ngày) | Nunito 700–800, nút chữ đậm | Thẻ chọn viền 2px có viền đáy 4px (trông bấm được), bo 16; nút tròn, ô vuông, lục giác không gờ; đồ vật 3D ở bộ đếm, lộ trình, huy hiệu (`J16`); thanh tiến độ cao 12–16 bo tròn; nhân vật đổi cử chỉ theo đúng sai (`J16`) | Người cần động lực quay lại mỗi ngày: học, thói quen, thể dục cho người dùng phổ thông, trẻ. Code mẫu `mobile-playful.html` |
 | **Immersive** | Nền tối có sắc (xanh đêm, tím than) cả app, chuyển dọc nhẹ hai tông gần nhau | Nút chính trắng chữ tối, không màu nhấn rực | Inter, tiêu đề lớn trắng, chữ phụ trắng 72% | Ảnh lớn bo 12–16 làm điểm nhìn, thẻ là lớp trắng 8–10% trên nền | Người dùng để thư giãn, nghe, xem, thường buổi tối: thiền, ngủ, nhạc, podcast, sách nói, video. Code mẫu `mobile-immersive.html` |
 | **Editorial** ⚑ | Trắng hay kem ấm `#fbf8f3`, gần như không thẻ | Một sắc nhỏ cho link, nút theo dõi; nút chính đen hay màu đó | Tiêu đề bài và thân bài **Lora** (serif), thân 18/1.6; khung app (tab, nút, nhãn) vẫn Inter | Dòng bài: chữ trái, ảnh vuông 64 phải; trang đọc lề 20, không khung | Người **đọc** dài: bản tin, báo, sách, khoá học dạng đọc, công thức nấu ăn |
-| **Glow** ⚑ | Gần đen `#0b0b0f` cả app, hai ba **quầng màu mờ** lớn (màu nhấn và một sắc kề) ở đầu màn và sau khối chính | Nút chính màu nhấn rực **chữ tối**, mic, nút gửi; quầng màu là chỗ màu nhiều nhất | Inter, tiêu đề màn rất lớn 36–40 `tracking-tight`, chữ phụ trắng 65% | Thẻ kính trắng 8% viền trắng 10%, bo 20–24; thanh tab `glass` (`J2`) | Người dùng app AI, sáng tạo, âm nhạc, đầu tư trẻ, học kỹ năng sáng tạo: cần cảm giác mới, năng lượng |
+| **Glow** | Gần đen `#0b0b0f` cả app, hai ba **quầng màu mờ** lớn (màu nhấn và một sắc kề) ở đầu màn và sau khối chính | Nút chính màu nhấn rực **chữ tối**, mic, nút gửi; quầng màu là chỗ màu nhiều nhất | Inter (lối trình diễn: font hình học của `J18`), tiêu đề màn 32–36 `tracking-tight`, chữ phụ trắng 65% | Thẻ trắng 8% viền trắng 10%, bo 20–24, **không blur** (kính chỉ cho lớp cố định: thanh tab, ô soạn, thanh trên); thanh tab `glass` (`J2`) | Người dùng app AI, sáng tạo, âm nhạc, đầu tư trẻ, học kỹ năng sáng tạo: cần cảm giác mới, năng lượng |
 | **Tinted** | **Cả app một màu nền nhạt** pha từ màu nhấn (tím nhạt, kem đào, bạc hà) thay trắng và xám; thẻ trắng nổi trên nền màu | Nút chính đen hay màu nhấn đậm; khối nhấn đầu màn là cùng sắc đậm hơn | Inter hay font tròn hơn, số lớn đậm | Bo 20–28, thẻ trắng không viền, bóng rất nhẹ; thanh tab `dark` hay `pill` (`J2`); hợp vòng và cung (`J17`), đồ vật 3D cho món, danh mục (`J16`) | Người tự chăm mình mỗi ngày mà không cần gamification: ăn uống, kcal, sức khoẻ, chi tiêu cá nhân nhẹ nhàng, du lịch, phong cách sống |
 
 **Token đổi theo bộ** (khối đổi thương hiệu của `mobile-app.html`, tương phản đã đo):
@@ -614,7 +655,7 @@ lúc trình bày (app AI, sáng tạo; sức khoẻ, ăn uống, phong cách s�
 | Playful | `--app-font: "Nunito"`; `--primary` đậm đủ cho chữ trắng: xanh lá `#2f7d00` 5.18:1. **Xanh lá rực `#58cc02` chữ trắng chỉ 2.09:1**: muốn màu rực thì nút rực chữ tối, hay chữ trắng trên nền đậm. Dải đúng `#d7ffb8` chữ `#2f7d00` (4.66:1), dải sai `--danger-bg` chữ `--danger` |
 | Immersive | Cả khung mang `force-dark` (`M33`), chép khối `.force-dark` của `tokens.css` rồi đè các token sau. **Nền là màu nhấn của ngành hay brand pha tối**: `--background` = 30% `--primary` trên `#0b0d18` (`color-mix(in oklab, var(--primary) 30%, #0b0d18)`: Chàm ra `#1f1e56`, Cam ra `#421d14`, Xanh ngọc ra `#0c2c32`), chuyển dọc xuống tông tối hơn 15%; không dùng một màu navy cho mọi app. `--surface` trắng 10% trên nền (chữ trắng từ 10.9:1), sheet và hộp hỏi trắng 14%; `--muted` trắng 72% (từ 8.3:1 trên nền, 6.5:1 trên thẻ); `--danger: #ff9aab` (từ 5.4:1 trên thẻ; `#ff637e` của `.force-dark` chỉ 3.9:1), `--success: #5fd99a`; nút chính `bg-white` chữ màu nền |
 | Editorial | Nạp thêm Lora 400, 700 (có bộ `vietnamese`, đã kiểm); `--background: #fbf8f3`, `--muted: #6b6459` (5.5:1 trên kem), sắc nhấn cam `#c2410c` (4.9:1 trên kem) |
-| Glow | Cả khung `force-dark` như Immersive. `--background: #0b0b0f`; quầng: `radial-gradient` 2–3 lớp từ `--primary` và một sắc cách nó 30–60°, độ phủ 45–60%, nằm ở đỉnh màn và sau khối chính, không sau chữ nhỏ; `--surface` trắng 8%, viền trắng 10%, `backdrop-blur-xl`; `--muted` trắng 65% (từ 6.6:1 trên thẻ). `--primary` rực (cam `#f97316`, tím `#a78bfa`) thì **chữ trên nút là `#111`** (6.7:1, 6.9:1); chữ trắng trên cam rực chỉ 2.8:1. Bong bóng tin nhắn của người dùng được tô màu nhấn |
+| Glow | Cả khung `force-dark` như Immersive. `--background: #0b0b0f`; quầng: `radial-gradient` 2–3 lớp từ `--primary` và một sắc cách nó 60–150° (như `J18`; cam với hồng tím, tím với xanh ngọc), độ phủ 45–60%, nằm ở đỉnh màn và sau khối chính, không sau chữ nhỏ; `--surface` trắng 8%, viền trắng 10%, không `backdrop-blur` trên thẻ trong vùng cuộn; `--muted` trắng 65% (từ 6.6:1 trên thẻ). Ngành AI, sáng tạo chưa có dòng đo thật trong `brand-tokens.md`: tạm dùng cam `#f97316` hay tím `#a78bfa` và báo một dòng lúc giao. `--primary` rực thì **chữ trên nút là `#111`** (6.7:1, 6.9:1); chữ trắng trên cam rực chỉ 2.8:1. Chữ, link màu nhấn trên nền tối là bản sáng hơn của nó (cam `#ffa45c`, tím `#c4b5fd`, từ 4.5:1 trên thẻ). Bong bóng tin nhắn của người dùng được tô màu nhấn chữ tối (đè `components/chat.md` "không màu nhấn", chỉ trong Glow) |
 | Tinted | Nền theo màu nhấn: `--background` = `color-mix(in oklab, var(--primary) 10%, #f6f3ee)` (tím ra tím nhạt `#eae1ee`, cam ra kem đào, xanh lá ra bạc hà, xanh dương ra xám xanh); muốn kem trung tính thì pha từ một `--tint` riêng thay `--primary`. `--surface: #fff`. Chữ phụ cùng sắc: `--muted` = `color-mix(in oklab, var(--primary) 15%, #4a4640)` (~7:1 trên nền, ~8.9:1 trên trắng); `--secondary` (rãnh điều khiển phân đoạn, nút phụ, ô nhập) = `color-mix(in oklab, var(--primary) 6%, #efeef1)`: xám nhạt ngả theo màu nhấn, nhẹ cả trên nền màu lẫn trên sheet trắng; xám `#e7e8ec` của `J4` lệch tông trên nền màu, còn pha từ nền màn thì trên sheet trắng thành một dải tím xám nặng. Khối nhấn (thẻ số chính, đầu màn có biểu đồ) = 30–35% `--primary` pha kem, **chữ tối** `--foreground`; chữ phụ trên khối `--hero-muted` = `color-mix(in oklab, var(--primary) 18%, #2c2c2c)` (~6.6:1); rãnh vòng và cung trên khối trắng 55% (`--hero-track`). Chữ trắng trên khối nhạt chỉ 1.6:1. Nút chính màu nhấn khi chữ trắng trên nó từ 4.5:1, không thì đen. Đè thẻ số chính `#1c1c1e` của `J5` |
 
 **Chọn bộ nào.** Bộ mặt bám **người dùng và việc chính** ở `U1`, `U2`, không bám ngành: app spa mà người mở là kế toán
@@ -627,8 +668,8 @@ khớp:
 3. Một người tự làm việc của mình mỗi ngày và cần động lực quay lại (học, thói quen, thể dục) → **Playful**.
 4. Còn lại, nhất là ghi chép, quản lý, tài chính, app cho cửa hàng hay công ty → **Clean**.
 
-Tinted đã qua test: tự khuyên ở lối trình diễn (`J18`) cho app một người tự chăm mình; đề thường vẫn theo bốn câu trên, hợp
-rõ thì báo Tinted một dòng. Mono, Editorial, Glow còn cờ ⚑ (chưa qua test): không tự khuyên; đề hợp rõ thì báo một dòng lúc giao. Mẫu dòng báo, nói bằng
+Tinted, Glow đã qua test: tự khuyên ở lối trình diễn (`J18`), Tinted cho app một người tự chăm mình, Glow cho AI, sáng tạo,
+âm nhạc; đề thường vẫn theo bốn câu trên, hợp rõ thì báo một dòng. Mono, Editorial còn cờ ⚑ (chưa qua test): không tự khuyên; đề hợp rõ thì báo một dòng lúc giao. Mẫu dòng báo, nói bằng
 người dùng: *"Bộ mặt: **Playful** (nút đậm, thẻ bấm được, phản hồi tô cả dải đáy) vì người học cần quay lại mỗi ngày.
 Muốn kiểu khác thì nói: Clean, Photo, Immersive, Mono, Editorial, Glow, Tinted."* Wireframe app điện thoại có nhóm Kiểu liệt kê tám bộ
 (`design-process.md`, `U3`), mặc định là bộ khuyên dùng. Bộ nào qua test thì gỡ cờ ⚑ ở bảng trên.
@@ -657,6 +698,20 @@ mỗi màn.
 - **Photo không có ảnh thật thì đừng chọn.** Cả app toàn ô xám thay ảnh trông như app hỏng; dữ liệu giả dùng ảnh thật
   có quyền dùng, không vẽ minh hoạ thay ảnh. Một mục thiếu ảnh để thử ca biên (`S16`) thì vẫn có: khung nền
   `--background`, icon và chữ "Chưa có ảnh", không phải ô xám trơn.
+- **Chữ đè lên ảnh (thẻ nổi bật, ảnh đầu màn) cần lớp tối riêng dưới chữ**, không trông vào phần tối của ảnh: đổi ảnh khác
+  (trời sáng, cát trắng) là chữ trắng tan. Một `span` `absolute inset-x-0 bottom-0 h-3/5 bg-linear-to-t from-black/85
+  via-black/45 to-transparent` nằm giữa ảnh và chữ; dòng nhỏ (quốc gia, số đánh giá) trắng đặc, không `text-white/85`.
+  Probe chụp nền thật dưới từng chữ trên ảnh rồi chấm 4.5:1 (chữ lớn 3:1).
+- **Ảnh lớn đầu màn chi tiết với tấm nội dung trượt lên:** ảnh là khối đầu của vùng cuộn như quầng của `J18`, tấm trắng
+  bo 28–36 là khối kế tiếp trong luồng. Đừng đẩy tấm xuống bằng `mt-[300px]` trong khối bọc không có padding: lề trên
+  dồn ra khối bọc (margin collapse), ảnh mất và nút quay lại rơi đè tiêu đề. Đặt ảnh `absolute` cao cố định trong khối
+  bọc `relative pt-[300px]` (hay khối bọc `flow-root`), tấm bắt đầu ngay dưới. Tấm không kéo được thì không vẽ thanh kéo
+  (thanh kéo chỉ cho sheet `J6`), dù ảnh mẫu có vẽ.
+- **Thanh trạng thái trên ảnh đầu màn:** dải che tai thỏ trong suốt lúc chưa cuộn (`J18`), giờ và pin chữ trắng, thêm
+  một lớp tối mỏng ở đỉnh ảnh (`h-24 bg-linear-to-b from-black/45 to-transparent`) để giờ trắng không tan vào trời nhạt.
+  Cuộn qua ảnh thì dải có nền, chữ về màu tối như mọi màn.
+- **Hàng cuộn ngang trong khung máy không có nút mũi tên.** Người dùng vuốt bằng ngón tay; nút mũi tên tròn kiểu desktop
+  đè lên chip cuối và chữ của thẻ kế bên. Mép mờ phía còn mục khuất là đủ (`R10`); probe không bắt hàng cuộn trong `.device`.
 - **Playful: gờ đáy 4px là `box-shadow` đặc, không phải `border-bottom`.** Chưa bấm `box-shadow: 0 4px 0 <màu gờ>`; nhấn
   thì `translate: 0 2px` và gờ còn `0 2px 0`: mép dưới đứng yên, bố cục không đổi. Đừng đổi `border-bottom-width` rồi bù
   `margin`: thẻ có `min-height` không thấp đi, phần bù dư ra, mọi thẻ bên dưới giật xuống mỗi lần nhấn. Gờ nằm ngoài
@@ -672,11 +727,14 @@ mỗi màn.
 - **Playful: không IN HOA chữ tiếng Việt trên nút.** IN HOA kèm dấu chồng lên nhau ("TIẾP TỤC" cao hơn hàng), đọc chậm.
   Dùng chữ thường đậm 800.
 - **Immersive: đi hết bẫy `P10`**: tiêu đề, icon, chữ trong ô nhập đổi theo nền; sheet và hộp hỏi trên nền tối cũng
-  tối, không bật ra một tấm trắng. Ảnh tối trên nền tối thì thêm viền trắng 10%. Bàn phím vẽ (`J13`) cũng bản tối:
-  khối `#1f1f22`, phím `#4a4a4d` chữ trắng, phím chức năng `#323235`.
+  tối, không bật ra một tấm trắng. Ảnh tối trên nền tối thì thêm viền trắng 10%. Bàn phím vẽ (`J13`) cũng bản tối,
+  cho mọi bộ mặt nền tối (Immersive, Glow): khối `#2b2b30`, phím `#6b6b70` chữ trắng, phím chức năng `#46464b` (đúng như
+  `mobile-immersive.html`).
 - **Glow: quầng màu là nền, không phải nội dung.** Quầng sau chữ nhỏ làm chữ chỗ sáng chỗ tối, đo tương phản ở chỗ quầng
-  sáng nhất. Không thêm quầng vào từng thẻ: mỗi màn hai ba quầng, cố định khi cuộn (`background-attachment` theo khung,
-  không theo nội dung). Thẻ kính trên nền đen trơn (không quầng phía sau) chỉ là thẻ xám, kính chỉ thấy khi có quầng.
+  sáng nhất. Không thêm quầng vào từng thẻ: mỗi màn hai ba quầng. Màn gốc cuộn được thì quầng là khối đầu của vùng cuộn,
+  cuộn cùng nội dung (`J18`); màn có thanh trên cố định (chat, bản nháp) thì quầng nằm ở lớp nền của màn, ngoài vùng cuộn,
+  đứng yên sau cả thanh trên, để mép thanh không cắt ngang quầng. Thẻ kính trên nền đen trơn (không quầng phía sau) chỉ là thẻ xám, kính chỉ thấy khi có quầng. Thanh tab `glass` cũng vậy: màn không có quầng đầu (Tài khoản, danh sách) thì thêm một quầng nhỏ mờ ở đáy
+  màn, ngay sau thanh tab (`radial-gradient` màu nhấn 25%, cao 160px), để thanh kính không thành viên xám.
 - **Tinted: một sắc nền cho cả app, không đổi theo màn.** Sheet, hộp hỏi, bàn phím vẽ vẫn trắng. Màu trạng thái (đỏ
   vượt, xanh đạt) đo lại trên nền màu; ảnh món, ảnh phòng trên nền be thì thêm viền trắng 2px cho khỏi lẫn.
 - **Editorial: serif chỉ cho nội dung đọc.** Lora cho nhãn tab, nút, ô nhập thì khung app thành giả cổ, chữ nhỏ 11–13
@@ -845,7 +903,8 @@ trình diễn giữ nguyên luồng, màn, nội dung, chỉ đổi cách trình
 nhiều. Code mẫu: `layouts/mobile-showcase.html` (ba màn app đếm kcal).
 
 **Khi nào:** đề nói "đẹp", "gây ấn tượng", "trình bày khách", "như Dribbble", "nhìn sang", hay người dùng bật công tắc
-**Trình diễn** trên wireframe (`?show=1`, đứng sau nhóm Tab). Không tự bật: app quản lý, nhập liệu dày (`J14`) và
+**Trình diễn** trên wireframe (`?show=1`, đứng sau nhóm Tab), hay gửi **ảnh mẫu là bản trình diễn** (`J8`: màu, vị trí
+theo ảnh, ảnh thắng công thức ở các luật gu). Không tự bật: app quản lý, nhập liệu dày (`J14`) và
 app cho cửa hàng, công ty giữ bản thực dụng vì cần nhiều thông tin trên một màn. Ghép được với mọi bộ mặt `J15`. Đề
 trình diễn mà chưa nêu bộ mặt thì lấy, không hỏi: **Tinted** cho app một người tự chăm mình (ăn uống, sức khoẻ, chi tiêu,
 thói quen), **Glow** cho AI, sáng tạo, âm nhạc, **Photo** cho lướt chọn bằng ảnh, còn lại **Clean**; báo một dòng lúc giao.
@@ -857,10 +916,13 @@ thói quen), **Glow** cho AI, sáng tạo, âm nhạc, **Photo** cho lướt ch�
 - **Tấm trắng trượt lên:** vùng "nhìn" (số chính, hình) nằm trên quầng; vùng "làm" (danh sách, form, nút) là tấm trắng bo
   36 hai góc trên, bóng ngược mềm. Thay cho thẻ số chính nền đen của `J5`.
 - **Một điểm nhìn mỗi màn, cỡ lớn:** số chính của màn 56–64px `font-extrabold tracking-[-0.04em]` (số nằm trong khối màu
-  40–48px), hay hình chính 180–200px (đồ vật
+  40–48px); app không có số đáng nhìn (trợ lý AI, viết, tìm kiếm) thì điểm nhìn là **khối hỏi lớn** trên quầng: câu hỏi
+  26–30px đậm **thay luôn tiêu đề màn** ("Hôm nay viết gì?", đến 20 ký tự, ngoại lệ có tên của 15 ký tự ở `J3`), ô gõ,
+  nút mic tròn màu nhấn 56px. Đây là màn gốc của app; màn cuộc trò chuyện mới bên trong chat vẫn theo `components/chat.md`
+  (không câu chào to); hay hình chính 180–200px (đồ vật
   3D `J16`, ảnh cắt nền) có quầng trắng mờ phía sau và bóng bầu dục dưới đáy để vật đứng trên mặt.
 - **Font hình học có tiếng Việt:** Plus Jakarta Sans (mặc định), Lexend, Manrope, Be Vietnam Pro (đã kiểm có bộ
-  `vietnamese`). Tiêu đề màn 28–32 `font-extrabold`, chữ phụ 13.
+  `vietnamese`). Tiêu đề màn 30–36 `font-extrabold`, chữ phụ 13.
 - **Bo to, không viền, bóng mềm ngả màu nhấn:** thẻ, dòng bo 20–24; khối nhấn bo 32. Tách khối bằng nền (`--soft`: 7% màu
   nhấn pha xám nhạt) hay bóng `--shadow-card` lan rộng, không viền 1px, không vạch ngăn giữa các dòng.
 - **Nút tròn trắng nổi 44px** cho quay lại, thông báo, lưu, bớt thêm; nhãn nhỏ trên quầng là viên kính trắng 70%. Nút cam
@@ -872,11 +934,22 @@ thói quen), **Glow** cho AI, sáng tạo, âm nhạc, **Photo** cho lướt ch�
   cột trắng thì khối nhạt nhoà, mất điểm nhìn. Số to giữ số của cả khối (trung bình tuần) vì đó là câu trả lời của màn; số
   của cột đang chọn nằm trên đầu cột, chạm cột khác thì cột trắng và số dời theo. Đây là ngoại lệ có tên của "số to đổi theo
   mốc" và "cột đang chọn không đổi màu" (`J17`): trong khối màu các cột kia là nền, không phải chuỗi.
-- **Thanh tab** `dark`, `pill` hay `glass` (`J2`). Ngoại lệ có tên của nút thêm nổi (`J5`): màn gốc mà hành động thêm đã
-  nằm trên dòng (nút + tròn màu nhấn ở bữa chưa ghi, mục chưa có) thì không thêm nút nổi. Thanh `dark` 3 mục thì co theo nội
+- **Thanh tab** `dark`, `pill` hay `glass` (`J2`). Ngoại lệ có tên của nút thêm nổi (`J5`): tab danh sách mà việc tạo mới
+  đi từ màn gốc khác (bản nháp tạo từ Trang chủ) thì không có nút thêm; màn gốc mà hành động chính đã nằm trên màn (nút + tròn màu nhấn ở bữa chưa ghi, mục chưa có; khối hỏi có ô gõ và nút mic) thì không thêm nút nổi. Thanh `dark` 3 mục thì co theo nội
   dung, nằm giữa (`inset-x-0 mx-auto w-fit gap-6 px-2`), không giãn hết bề ngang cho thưa.
 - **Bớt chữ:** mỗi dòng một tên đậm và một dòng phụ, bỏ nhãn lặp, bỏ câu giải thích; khoảng trắng tách khối thay tiêu đề nhỏ.
-- **Màn rỗng trình diễn:** nhân vật hay đồ vật 3D cạnh câu chào và nút, **cộng một hàng gợi ý nhanh** 3 mục có nút + (gợi ý
+- **Nhịp và độ đậm.** Màn trình diễn mà "chật" thường không do thiếu chỗ, mà do chữ nào cũng đậm và các tầng chữ dính nhau
+  (app AI: tên dòng 700 dài 3 dòng, giờ 800, tiêu đề nhóm 700, tên dính dòng phụ 0px):
+  - Chỉ điểm nhìn và tiêu đề màn đậm 800. Tiêu đề khối và chữ trên nút cam kết 700. Tên dòng 600 (cả dòng-thẻ lẫn dòng
+    trong danh sách), giờ và số phụ 600, dòng phụ 400. File mẫu `mobile-showcase.html` theo đúng các bậc này.
+  - Tên dòng ở dữ liệu mẫu 1–2 dòng (khoảng 40 ký tự trở xuống); ba dòng đậm làm danh sách thành bức tường chữ. Ca tên dài
+    để thử (`S16`) vẫn giữ một mục, xuống dòng đủ, không cắt.
+  - Tên cách dòng phụ 4px (`mt-1`), thẻ đệm 18–20 (dòng-thẻ có ô icon 52px đệm 12), thẻ và dòng cách nhau 12, giữa các khối
+    32–40, tiêu đề khối cách thẻ đầu 12–14.
+  - **Màn có số chính thì tiêu đề màn 26–30** (probe đo): tiêu đề 36 chồng trên số 60 là hai điểm nhìn. Đầu màn trên quầng
+    tối đa ba tầng chữ: dòng nhỏ, tiêu đề hay số, một dòng phụ.
+  - Hàng chip lọc chọn một không xuống dòng (`R6`, probe đo): cuộn ngang, mép mờ.
+- **Màn rỗng trình diễn:** nhân vật hay đồ vật 3D (đồ vật 96–120px, có quầng trắng mờ sau lưng) cạnh câu chào và nút, **cộng một hàng gợi ý nhanh** 3 mục có nút + (gợi ý
   bữa sáng, mẫu ngân sách): nửa dưới trống trơn trông như lỗi tải.
 - **Ráp vào khung `J1`:** quầng là khối đầu của vùng cuộn (cuộn cùng nội dung), tấm trắng là khối kế tiếp trong luồng cuộn
   (`rounded-t-[36px]`, `min-h` tới đáy), không `absolute` (dòng cuối lọt dưới thanh tab). Dải che tai thỏ (`.status-cover`)
@@ -884,8 +957,39 @@ thói quen), **Glow** cho AI, sáng tạo, âm nhạc, **Photo** cho lướt ch�
   (`J5`), chừa khoảng trắng 16px phía trên. Màn nhóm (Tài khoản, cài đặt) giữ thẻ nhóm có vạch nhạt `divide-y` như `J4`:
   đó là màn thực dụng, không cần quầng.
 
-**Vẫn giữ:** tương phản 4.5:1 (đo chữ ở chỗ quầng sáng nhất), chỗ bấm 44px (điều khiển phân đoạn rãnh 52 `p-1` cho nút 44),
+**Bản tối** (Glow, Immersive): chữ trên quầng là chữ trắng; tấm trượt lên là mảng tối `#141419` bo 36 thay tấm trắng; nút
+tròn nổi là trắng 10% viền trắng 12%; viên nhãn trên quầng trắng 12%; nút cam kết là màu nhấn chữ tối (viên đen tàng hình
+trên nền tối); ô icon là sắc của danh mục 25% chuyển xuống 10% thay pastel sáng; khối màu chứa biểu đồ là trắng 8%. Thẻ nằm
+trên quầng có viền trắng 10% (kính cần mép), dòng trong mảng tối không viền, nền dòng (thay `--soft`) trắng 6%. Sheet
+`#1c1c22` bo 28; viên chọn của điều khiển phân đoạn trắng 16%; chip đang chọn màu nhấn chữ tối; dải che tai thỏ khi đã cuộn
+là màu nền 80% cộng `backdrop-blur-xl`, lúc chưa cuộn trong suốt (script: lắng nghe `scroll` của vùng cuộn, gắn
+`data-scrolled` khi `scrollTop > 8`). Chữ cuộn lên dưới thanh trên trong suốt thì vùng cuộn mờ mép trên 24px (`mask-image`).
+
+**Vẫn giữ:** tương phản 4.5:1 (đo ở chỗ chữ nằm, không ở chỗ quầng đậm nhất hay nhạt nhất), chỗ bấm 44px (điều khiển phân đoạn rãnh 52 `p-1` cho nút 44),
 chữ nội dung chính 16px và không cắt chữ (`J4`), tiêu đề lớn ở màn gốc (`J3`, lời chào nhỏ đứng trên), kính `backdrop-blur`
 chỉ cho lớp cố định (thanh tab, đầu màn), `J2` ẩn thanh tab ở màn phải làm cho xong, một hành động chính mỗi màn. Logo app:
 đầu bảng luồng, favicon, màn chào và đăng nhập (`J12`), không trên mọi màn.
 
+## J19. Bản đồ ⚑
+
+Màn tìm chỗ gần (bệnh viện trong mạng lưới, cửa hàng, chỗ ở, trạm sạc). Code bản đồ chép từ màn `map` của
+`layouts/mobile-photo.html`; luật dưới đây rút từ lần dựng app bảo hiểm (08/11/2026), chưa qua vòng test riêng.
+
+- **Lớp bản đồ:** tile `World_Light_Gray_Base` của Esri (như file mẫu), xám nhạt để ghim và thẻ nổi lên. Tile của thành
+  phố khác tính theo `z` (14–15 cho khu phố): `x = floor((lon + 180) / 360 · 2^z)`,
+  `y = floor((1 − ln(tan(lat) + 1 / cos(lat)) / π) / 2 · 2^z)` (lat đổi ra radian); lưới 3×4 tile quanh điểm đó phủ đủ
+  khung 390×844. Bản đồ phủ cả màn dưới thanh trên; thanh trên có nền mờ dần (nền màn → trong suốt) để tiêu đề đọc được.
+- **Ghim:** vùng bấm 44 dù ghim vẽ nhỏ hơn; ghim đang chọn đổi hình rõ (nền `--foreground` hay màu nhấn, to hơn), các ghim
+  khác trắng có bóng. **Chấm "vị trí của bạn"**: chấm màu nhấn 16 viền trắng 3px, quầng cùng màu 20% đường kính 64, không
+  bấm được. Ghim không lố mép màn (probe bắt cuộn ngang) và không đè dòng ghi công.
+- **Ghi công bản đồ** ("Map: Esri, OpenStreetMap") chữ 11 ở góc không có ghim, nằm trên thẻ hay danh sách nổi, không bị
+  chúng che.
+- **Thẻ trên bản đồ:** hàng thẻ cuộn ngang có snap (`scroll-px-4`, `J8`), lộ mép thẻ sau 16–24px; thẻ đang thấy ứng với ghim
+  đang chọn. Thẻ có ảnh, badge loại, tên, địa chỉ kèm khoảng cách, giờ mở cửa, nút chính (Chỉ đường) và hai nút tròn 44 (gọi,
+  ⋯). **Ở 360×640** ảnh thẻ co (tỉ lệ 16:9 xuống 21:9 hay bỏ ảnh) để bản đồ còn ít nhất một phần ba chiều cao màn; thẻ
+  ăn hết màn thì không còn là màn bản đồ.
+- **Danh sách trên bản đồ:** vùng cuộn phủ cả màn, đầu vùng là khoảng đệm trong suốt (~40% chiều cao) để bản đồ lộ phía
+  trên; cuộn lên thì danh sách che dần bản đồ. Dòng là thẻ ngang: ảnh trái 96–108 bo theo thẻ, badge, tên (xuống dòng đủ,
+  `J4`), địa chỉ kèm khoảng cách. Cuối danh sách chừa đáy cho thanh tab (`J2`).
+- Chuyển thẻ / danh sách bằng nút trên thanh trên (`J3` "Chuyển cách xem"). Màn bản đồ là màn con để xem: giữ thanh tab
+  (`J2`). Lần đầu mở màn bản đồ cần màn mồi xin vị trí (`J12`); bản mẫu chưa dựng thì báo một dòng lúc giao.

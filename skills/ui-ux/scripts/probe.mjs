@@ -1326,14 +1326,27 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     // xét các lớp nằm sau chữ trong chồng. Đã đo nhầm một nút nền xanh ra 1:1 vì thanh dưới đáy màu trắng che nút
     // (27/09/2026, dự án mồi phase 2). Chữ bị che hẳn thì đi theo các cha trong DOM.
     const stack = document.elementsFromPoint(centerX, centerY);
-    const textIndex = stack.findIndex((layer) => layer === element || element.contains(layer));
+    // Chữ `pointer-events: none` (thanh trạng thái giả của khung máy J1) không có trong `elementsFromPoint`: cả chồng
+    // là các lớp nằm dưới nó. Đi theo cha thì ra nền `.device`, bỏ qua đầu màn gradient ngay dưới giờ (báo nhầm "9:41"
+    // trắng 1.15:1, 08/11/2026, app bảo hiểm).
+    const isClickThrough = getComputedStyle(element).pointerEvents === "none";
+    const foundIndex = stack.findIndex((layer) => layer === element || element.contains(layer));
+    const textIndex = foundIndex === -1 && isClickThrough ? 0 : foundIndex;
     if (textIndex === -1) return readAncestorBackdrops(element);
 
-    // Lớp không phải cha mà có gradient (lớp phủ trên ảnh bìa) vẫn bỏ đo: ảnh nằm cạnh nó, không phải cha.
+    // Chữ nằm trên ảnh (hay lớp phủ gradient trên ảnh) không đọc được màu nền từ CSS: trả "pixels" để chụp nền thật dưới
+    // chữ rồi chấm (`verifyGradientContrast`). Trước đây bỏ đo, sót giờ trắng trên trời nhạt của ảnh đầu màn và chữ trên
+    // thẻ ảnh (08/11/2026, app du lịch theo ảnh mẫu).
     for (const layer of stack.slice(textIndex)) {
       if (layer === element || element.contains(layer)) continue;
-      if (layer.contains(element)) break;
-      if (["IMG", "VIDEO", "CANVAS", "svg"].includes(layer.tagName) || getComputedStyle(layer).backgroundImage !== "none") return null;
+      // Cha trong suốt (khối bọc chữ `relative` trên ảnh) không che gì: đi tiếp xuống ảnh nằm dưới nó. Dừng ở đây thì
+      // đo theo nền của thẻ (`bg-foreground` lót sau ảnh), chữ trắng trên ảnh trời sáng vẫn qua.
+      if (layer.contains(element)) {
+        const layerStyle = getComputedStyle(layer);
+        if (layerStyle.backgroundImage === "none" && readColor(layerStyle.backgroundColor).alpha === 0) continue;
+        break;
+      }
+      if (["IMG", "VIDEO", "CANVAS", "svg"].includes(layer.tagName) || getComputedStyle(layer).backgroundImage !== "none") return "pixels";
       if (readColor(getComputedStyle(layer).backgroundColor).alpha > 0) return readAncestorBackdrops(layer);
     }
 
@@ -1354,6 +1367,10 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     const backdrops = readBackdrop(element);
     if (!backdrops) {
       unmeasuredContrastCount++;
+      return;
+    }
+    if (backdrops === "pixels") {
+      markPhotoText(element, cssColor, sample);
       return;
     }
 
@@ -1378,12 +1395,61 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     if (ratio >= requiredRatio) return;
 
     const key = `${toHex(shownColor)}|${toHex(backdrop)}|${element.tagName}.${element.getAttribute("class") || ""}`;
+    // Nền qua gradient: điểm dừng tệ nhất có thể nằm xa chữ (đầu màn cam mờ dần về nền xám ở đáy, chữ trắng nằm trên
+    // phần cam đậm báo 1.14:1, đo pixel thật 5.7:1; 08/11/2026, app bảo hiểm theo ảnh mẫu). Đánh dấu mọi chữ cùng cặp
+    // màu để `verifyGradientContrast` chụp nền thật dưới từng chữ rồi chấm lại: cùng cặp mà một chữ nằm trên phần sáng
+    // thì vẫn báo. Có chữ ngoài khung nhìn (không chụp được) thì giữ cách chấm cũ cho cả cặp.
+    const rect = element.getBoundingClientRect();
+    const isInViewport = rect.width > 0 && rect.height > 0 && rect.left >= 0 && rect.top >= 0 && rect.right <= innerWidth && rect.bottom <= innerHeight;
+    const isGradient = backdrops.length > 1;
     if (!lowContrastTexts.has(key)) {
       lowContrastTexts.set(key, {
         ratio,
         line: `${ratio.toFixed(2)}:1, cần ${requiredRatio}:1, chữ ${toHex(shownColor)} trên nền ${toHex(backdrop)} "${sample}": ${describe(element)}`,
+        gradientId: isGradient ? String(lowContrastTexts.size) : null,
+        requiredRatio,
+        textColor,
       });
     }
+    const entry = lowContrastTexts.get(key);
+    if (!entry.gradientId) return;
+    if (!isGradient || !isInViewport) {
+      entry.gradientId = null;
+      return;
+    }
+    element.dataset.evonGradientText = entry.gradientId;
+  }
+
+  // Chữ trên ảnh: chưa biết tỉ lệ, ghi tạm là một mục tương phản thấp và đánh dấu để chụp pixel nền; đạt ngưỡng thì
+  // `verifyGradientContrast` gỡ mục đi. Chữ ngoài khung nhìn không chụp được: tính là chỗ không đo, không báo nhầm.
+  function markPhotoText(element, cssColor, sample) {
+    const rect = element.getBoundingClientRect();
+    const isInViewport = rect.width > 0 && rect.height > 0 && rect.left >= 0 && rect.top >= 0 && rect.right <= innerWidth && rect.bottom <= innerHeight;
+    if (!isInViewport) {
+      unmeasuredContrastCount++;
+      return;
+    }
+
+    const textColor = readColor(cssColor);
+    const opacityChain = readOpacityChain(element);
+    if (opacityChain < 0.05) return;
+    textColor.alpha *= opacityChain;
+    const style = getComputedStyle(element);
+    const fontSize = parseFloat(style.fontSize);
+    const isLargeText = fontSize >= 24 || (fontSize >= 18.66 && Number(style.fontWeight) >= 700);
+    const requiredRatio = isLargeText ? 3 : 4.5;
+    const key = `photo|${toHex(textColor)}|${element.tagName}.${element.getAttribute("class") || ""}`;
+    if (!lowContrastTexts.has(key)) {
+      lowContrastTexts.set(key, {
+        // Xếp sau các cặp đã đo ra tỉ lệ thật: danh sách hiện 12 dòng đầu.
+        ratio: requiredRatio,
+        line: `cần ${requiredRatio}:1, chữ ${toHex(textColor)} trên ảnh "${sample}": ${describe(element)}`,
+        gradientId: String(lowContrastTexts.size),
+        requiredRatio,
+        textColor,
+      });
+    }
+    element.dataset.evonGradientText = lowContrastTexts.get(key).gradientId;
   }
 
   // Nhãn của ô đang khoá mờ theo ô là cố ý (choice-controls.md, bảng Khoá) và WCAG miễn chữ của control khoá.
@@ -1676,6 +1742,9 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     const style = getComputedStyle(element);
     if (!["auto", "scroll"].includes(style.overflowX) || style.scrollbarWidth !== "none" || !isVisible(element)) continue;
     if (element.scrollWidth <= element.clientWidth + 4) continue;
+    // Trong khung máy của bản mẫu điện thoại (J1): người dùng thật vuốt bằng ngón tay, không cần nút mũi tên cho chuột
+    // (11/2026, app AI: hàng chip trong sheet bị báo ở khổ 1280).
+    if (element.closest(".device")) continue;
     const scope = element.parentElement?.parentElement || element.parentElement;
     const hasArrowButton = [...(scope?.querySelectorAll("button, [role='button']") || [])]
       .some((button) => !element.contains(button) && isVisible(button) && button.getBoundingClientRect().width < 64);
@@ -2187,6 +2256,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     wrappedRows,
     lowContrastTexts: sortedLowContrast.slice(0, 12).map((item) => item.line),
     lowContrastCount: sortedLowContrast.length,
+    gradientContrastChecks: sortedLowContrast.filter((item) => item.gradientId).map(({ gradientId, line, requiredRatio, textColor }) => ({ gradientId, line, requiredRatio, textColor })),
     unmeasuredContrastCount,
     viewportWidth,
     pageScrollWidth,
@@ -3396,10 +3466,24 @@ function measureMobileScreen({ isFrame, minTap }) {
       return rect.width >= deviceRect.width * 0.8 && rect.height >= 48 && rect.height <= 72 && !control.querySelector("img") && deviceRect.bottom - rect.bottom < 140;
     }) : null;
     if (stickyAction) problems.push(`màn con "${screenName}" có nút dính đáy ${describe(stickyAction)} mà vẫn hiện thanh tab: form, giỏ hàng, thanh toán ẩn thanh tab (J2, J5)`);
+
+    // Màn chi tiết một mục mở đầu bằng ảnh tràn mép (ảnh chạy qua tai thỏ, rộng hết khung) ẩn thanh tab (J2): thanh tối
+    // nổi đè lên thẻ ảnh ngay màn đầu, nặng hơn ảnh mẫu (08/11/2026, app du lịch). Ô bản đồ nhỏ (256px) không tính, nền
+    // mờ trang trí sau bìa (`aria-hidden`, blur, mờ: trang sách nói, album) không phải ảnh chủ thể.
+    const heroPhoto = isChildScreen ? [...screen.querySelectorAll("img, video")].find((media) => {
+      if (!isShown(media) || media.getAttribute("aria-hidden") === "true") return false;
+      const mediaStyle = getComputedStyle(media);
+      if (mediaStyle.filter.includes("blur") || Number(mediaStyle.opacity) < 0.9) return false;
+      const rect = media.getBoundingClientRect();
+
+      return rect.top <= deviceRect.top + 8 && rect.width >= deviceRect.width * 0.95 && rect.height >= 240;
+    }) : null;
+    if (heroPhoto && !stickyAction) problems.push(`màn con "${screenName}" mở đầu bằng ảnh tràn mép mà vẫn hiện thanh tab: màn chi tiết một mục có ảnh lớn đầu màn ẩn thanh tab, quay về bằng nút tròn trên ảnh (J2)`);
   }
 
   // J1: nền màn sáng mà xám (thẻ trắng trên nền xám kiểu dashboard) chỉ cho màn danh sách nhóm `.is-grouped`.
-  if (screen && !screen.classList.contains("is-grouped")) {
+  // Nền xám lấy từ ảnh mẫu (`.device[data-ref-bg]`, J8 "Ảnh mẫu là bản trình diễn") là gu của ảnh, không phải xám dashboard.
+  if (screen && !screen.classList.contains("is-grouped") && !screen.closest("[data-ref-bg]")) {
     // Đọc màu qua canvas: color-mix trả về oklab(), regex số đọc sai (11/2026, nền Tinted lọt qua vì vậy).
     const context = document.createElement("canvas").getContext("2d");
     context.fillStyle = getComputedStyle(screen).backgroundColor;
@@ -3410,6 +3494,43 @@ function measureMobileScreen({ isFrame, minTap }) {
     // Nền có sắc (Tinted, Editorial kem: lệch kênh từ 6) là bộ mặt (J15), không phải xám dashboard.
     const isTinted = Math.max(red, green, blue) - Math.min(red, green, blue) >= 6;
     if (alpha > 0.5 && !isTinted && lightness >= 200 && lightness < 250) problems.push(`màn nền xám rgb(${red}, ${green}, ${blue}) mà không phải danh sách nhóm: nền màn trắng, xám chỉ cho màn .is-grouped (cài đặt, tài khoản) (J1)`);
+  }
+
+  // R6 trên điện thoại: hàng chip lọc xuống dòng, chip cuối rớt xuống đứng lẻ (11/2026, app AI "Email 4" một mình hàng hai).
+  // Hàng có từ 3 viên bo tròn hết (bo >= nửa chiều cao) mà các viên nằm trên hơn một hàng: cho cuộn ngang.
+  if (screen) {
+    for (const row of screen.querySelectorAll("div, nav, ul")) {
+      const style = getComputedStyle(row);
+      if (style.display !== "flex" || style.flexWrap !== "wrap" || !isShown(row)) continue;
+      const pills = [...row.children].filter((child) => {
+        const rect = child.getBoundingClientRect();
+        return isShown(child) && rect.height >= 28 && rect.height <= 56 && parseFloat(getComputedStyle(child).borderTopLeftRadius) >= rect.height / 2 - 1;
+      });
+      if (pills.length < 3 || pills.length < row.children.length) continue;
+      // Chỉ hàng lọc chọn một (R6): đúng một viên đang chọn, hay hàng khai tablist / nhãn "lọc". Đám gợi ý tìm kiếm và chip chọn
+      // nhiều ở onboarding được xuống dòng.
+      const selectedCount = pills.filter((pill) => ["aria-pressed", "aria-selected", "aria-checked"].some((attribute) => pill.getAttribute(attribute) === "true") || pill.hasAttribute("aria-current")).length;
+      const isFilterRow = row.getAttribute("role") === "tablist" || /lọc|filter/i.test(row.getAttribute("aria-label") || "") || selectedCount === 1;
+      if (!isFilterRow) continue;
+      const tops = new Set(pills.map((pill) => Math.round(pill.getBoundingClientRect().top / 4)));
+      if (tops.size > 1) {
+        problems.push(`hàng chip ${describe(row)} xuống ${tops.size} hàng: hàng chip lọc không wrap, cho cuộn ngang trong khung, chip shrink-0, mép mờ (R6)`);
+        break;
+      }
+    }
+  }
+
+  // J18: một điểm nhìn mỗi màn. Màn có số hay chữ từ 48px mà tiêu đề màn từ 32px nằm ngay trên (trong 160px) thì hai khối to
+  // tranh nhau (11/2026, app AI: "Lịch đăng" 36px chồng trên "4 bài" 60px). Tiêu đề màn khi có số chính: <= 30px.
+  if (screen) {
+    const bigTexts = [...screen.querySelectorAll("h1, h2, p, span, div")].filter((element) => {
+      if (!isShown(element) || ![...element.childNodes].some((node) => node.nodeType === 3 && node.textContent.trim())) return false;
+      const rect = element.getBoundingClientRect();
+      return rect.top < deviceRect.top + 560 && parseFloat(getComputedStyle(element).fontSize) >= 32;
+    }).map((element) => ({ element, size: parseFloat(getComputedStyle(element).fontSize), rect: element.getBoundingClientRect() }));
+    const hero = bigTexts.find((item) => item.size >= 48);
+    const titleAbove = hero && bigTexts.find((item) => item !== hero && item.size < hero.size && item.rect.bottom <= hero.rect.top + 4 && hero.rect.top - item.rect.bottom < 160);
+    if (titleAbove) problems.push(`hai điểm nhìn chồng nhau: "${titleAbove.element.textContent.trim().slice(0, 20)}" ${titleAbove.size}px ngay trên "${hero.element.textContent.trim().slice(0, 12)}" ${hero.size}px: màn có số chính thì tiêu đề màn tối đa 30px (J18)`);
   }
 
   // J8: chọn giờ chỉ hiện giờ trống. Nút giờ gạch ngang ("8:00" có line-through) là giờ kín để lẫn vào.
@@ -3493,10 +3614,20 @@ function measureMobileScreen({ isFrame, minTap }) {
         const alpha = Number((style.backgroundColor.match(/[\d.]+(?=\)$)/) || ["1"])[0]);
         const hasFill = style.backgroundColor !== "transparent" && !/rgba\(0, 0, 0, 0\)/.test(style.backgroundColor) && (style.backgroundColor.startsWith("rgb(") || alpha >= 0.6);
 
-        return rect.top <= deviceRect.top + 1 && rect.bottom >= bandBottom - 1 && rect.width >= deviceRect.width * 0.9 && (hasFill || style.backdropFilter !== "none");
+        // blur(0px) không che gì: lách phép đo (11/2026, app AI nền tối).
+        const hasBlur = /blur\((?!0(px)?\))/.test(style.backdropFilter || "");
+
+        return rect.top <= deviceRect.top + 1 && rect.bottom >= bandBottom - 1 && rect.width >= deviceRect.width * 0.9 && (hasFill || hasBlur);
       };
-      const hasCover = [...device.querySelectorAll("div, header, span")].some(isCover);
+      // Đo dải che SAU khi cuộn: J18 cho dải trong suốt lúc chưa cuộn (để không che quầng), hiện nền khi cuộn. Phát sự kiện
+      // scroll cho script của app đổi class, tắt transition để đọc ngay giá trị cuối, đo xong trả lại.
       scroller.scrollTop = Math.min(240, scroller.scrollHeight - scroller.clientHeight);
+      const coverCandidates = [...device.querySelectorAll("div, header, span")].filter((element) => !scroller.contains(element) && ["absolute", "fixed", "sticky"].includes(getComputedStyle(element).position));
+      const savedTransitions = coverCandidates.map((element) => element.style.transition);
+      coverCandidates.forEach((element) => { element.style.transition = "none"; });
+      scroller.dispatchEvent(new Event("scroll"));
+      const hasCover = coverCandidates.some(isCover);
+      coverCandidates.forEach((element, index) => { element.style.transition = savedTransitions[index]; });
       const scrollerRect = scroller.getBoundingClientRect();
       const exposed = textLeaves.find((leaf) => {
         const rect = leaf.getBoundingClientRect();
@@ -3506,6 +3637,7 @@ function measureMobileScreen({ isFrame, minTap }) {
       });
       if (exposed && !hasCover) problems.push(`cuộn xuống thì "${exposed.textContent.trim().slice(0, 24)}" chạy dưới thanh trạng thái mà không có dải nền che, đè giờ và pin: thêm dải \`.status-cover\` cao --inset-top (J1)`);
       scroller.scrollTop = scrollBeforeCover;
+      scroller.dispatchEvent(new Event("scroll"));
     }
   }
 
@@ -3639,6 +3771,84 @@ function formatMobileReport(screens) {
   return lines.join("\n");
 }
 
+// Tương phản ở phân vị 10 tệ nhất giữa màu chữ và từng pixel nền của ảnh chụp hộp chữ (chữ đã ẩn). Chạy trong trang.
+async function readPixelContrast({ base64, textColor }) {
+  const image = new Image();
+  image.src = `data:image/png;base64,${base64}`;
+  await image.decode();
+  const canvas = document.createElement("canvas");
+  canvas.width = image.naturalWidth;
+  canvas.height = image.naturalHeight;
+  const context = canvas.getContext("2d");
+  context.drawImage(image, 0, 0);
+  const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+
+  const toLinear = (channel) => {
+    const value = channel / 255;
+
+    return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+  };
+  const readLuminance = (red, green, blue) => 0.2126 * toLinear(red) + 0.7152 * toLinear(green) + 0.0722 * toLinear(blue);
+  const ratios = [];
+  const step = Math.max(1, Math.floor(pixels.length / 4 / 4000));
+
+  for (let index = 0; index < pixels.length; index += 4 * step) {
+    const [red, green, blue] = [pixels[index], pixels[index + 1], pixels[index + 2]];
+    const textLuminance = readLuminance(
+      textColor.red * textColor.alpha + red * (1 - textColor.alpha),
+      textColor.green * textColor.alpha + green * (1 - textColor.alpha),
+      textColor.blue * textColor.alpha + blue * (1 - textColor.alpha),
+    );
+    const backgroundLuminance = readLuminance(red, green, blue);
+    ratios.push((Math.max(textLuminance, backgroundLuminance) + 0.05) / (Math.min(textLuminance, backgroundLuminance) + 0.05));
+  }
+  ratios.sort((first, second) => first - second);
+
+  return ratios[Math.floor(ratios.length * 0.1)] || 0;
+}
+
+// Chấm lại chữ trên nền gradient bằng pixel thật: ẩn chữ (và icon theo màu chữ), chụp hộp từng chữ cùng cặp màu, trộn màu
+// chữ lên từng pixel nền rồi lấy mức tệ ở phân vị 10 (bỏ vài pixel mép hộp nằm ngoài chỗ chữ). Mọi chữ của cặp đạt thì gỡ
+// khỏi danh sách tương phản thấp; không thì giữ, ghi số đo pixel tệ nhất.
+async function verifyGradientContrast(page, measurements) {
+  const checks = measurements.gradientContrastChecks || [];
+  if (checks.length === 0) return measurements;
+
+  const passedLines = new Set();
+  const updatedLines = new Map();
+  const hideStyle = await page.addStyleTag({ content: "[data-evon-hide-text], [data-evon-hide-text] * { color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; caret-color: transparent !important; }" });
+
+  for (const check of checks.slice(0, 24)) {
+    const rects = await page.evaluate((gradientId) => [...document.querySelectorAll(`[data-evon-gradient-text="${gradientId}"]`)].slice(0, 6).map((element) => {
+      const box = element.getBoundingClientRect();
+
+      return { x: box.left, y: box.top, width: box.width, height: box.height, sample: element.textContent.trim().slice(0, 24) };
+    }), check.gradientId);
+    if (rects.length === 0) continue;
+
+    await page.evaluate((gradientId) => document.querySelectorAll(`[data-evon-gradient-text="${gradientId}"]`).forEach((element) => element.setAttribute("data-evon-hide-text", "")), check.gradientId);
+    let worstRatio = Infinity;
+    let worstSample = "";
+    for (const { sample, ...rect } of rects) {
+      if (rect.width < 1 || rect.height < 1) continue;
+      const shot = await page.screenshot({ clip: rect, animations: "disabled" });
+      const ratio = await page.evaluate(readPixelContrast, { base64: shot.toString("base64"), textColor: check.textColor });
+      if (ratio < worstRatio) [worstRatio, worstSample] = [ratio, sample];
+    }
+    await page.evaluate(() => document.querySelectorAll("[data-evon-hide-text]").forEach((element) => element.removeAttribute("data-evon-hide-text")));
+    if (worstRatio === Infinity) continue;
+
+    if (worstRatio >= check.requiredRatio) passedLines.add(check.line);
+    else updatedLines.set(check.line, `${check.line} (đo pixel nền thật dưới chữ, tệ nhất "${worstSample}": ${worstRatio.toFixed(2)}:1)`);
+  }
+
+  await hideStyle.evaluate((styleElement) => styleElement.remove());
+  await page.evaluate(() => document.querySelectorAll("[data-evon-gradient-text]").forEach((element) => element.removeAttribute("data-evon-gradient-text")));
+  const lowContrastTexts = measurements.lowContrastTexts.filter((line) => !passedLines.has(line)).map((line) => updatedLines.get(line) || line);
+
+  return { ...measurements, lowContrastTexts, lowContrastCount: Math.max(0, measurements.lowContrastCount - passedLines.size) };
+}
+
 async function probeWidth(browser, options, width) {
   const isMobile = width < mobileWidthLimit;
   const context = await browser.newContext({
@@ -3681,7 +3891,7 @@ async function probeWidth(browser, options, width) {
 
   // Đo trước khi chụp: chụp fullPage ở khổ mobile làm trang mất `(pointer: coarse)`, nút
   // `pointer-coarse:size-10` co về 28px và bị báo nhầm là chỗ bấm nhỏ (đã dính 26/09/2026).
-  const measurements = await page.evaluate(measureInPage, { minTapSize, isMobile });
+  const measurements = await verifyGradientContrast(page, await page.evaluate(measureInPage, { minTapSize, isMobile }));
 
   const screenshotPath = join(options.out, `${width}${options.isDark ? "-dark" : ""}${options.isStress ? "-stress" : ""}.png`);
   await takeFullScreenshot(page, screenshotPath);
@@ -3697,7 +3907,7 @@ async function probeWidth(browser, options, width) {
   // Mở khối đang đóng trước khi rê và chạm: cây thư mục nằm trong accordion đóng ở /components thì
   // tooltip tên tệp tràn màn chỉ lộ khi khối đã mở (27/09/2026).
   const expandedCount = isDynamic ? await expandCollapsedBlocks(page) : 0;
-  const allMeasurements = expandedCount > 0 ? mergeMeasurements(measurements, await page.evaluate(measureInPage, { minTapSize, isMobile })) : measurements;
+  const allMeasurements = expandedCount > 0 ? mergeMeasurements(measurements, await verifyGradientContrast(page, await page.evaluate(measureInPage, { minTapSize, isMobile }))) : measurements;
   // Khối vừa mở có thể chứa bản mẫu lớp nổi (hộp xác nhận bày tĩnh có lớp phủ): đo dark mode thêm một lần.
   if (options.isDark && expandedCount > 0) for (const line of [...(await page.evaluate(findDarkModeProblems)), ...(await page.evaluate(findSunkenSelections))]) darkModeProblemSet.add(line);
 

@@ -103,7 +103,8 @@ Nút chỉ icon `ghost` `size-8`, có tooltip và `aria-label`: `Copy` "Sao ché
 ## Rỗng: cuộc trò chuyện mới
 
 - **Không có câu "Chưa có tin nhắn nào".** Ở đây người dùng là người mở lời, câu báo rỗng không nói họ làm gì tiếp (`N6`). Thay bằng **2–3 gợi ý mở đầu**, cùng khuôn gợi ý hỏi tiếp, nhãn "Thử hỏi", nằm **ngay trên ô soạn**, đúng chỗ gợi ý hỏi tiếp vẫn nằm trong cuộc trò chuyện (`N5`).
-- Không câu chào to, không logo, không hình (`empty-state.md`). Placeholder của ô soạn đã nói hỏi được gì, câu chào nhắc lại là nói hai lần (`N3`).
+- Không câu chào to, không logo, không hình (`empty-state.md`). Ngoại lệ có tên: màn gốc của app điện thoại trợ lý ở lối
+  trình diễn được khối hỏi lớn trên quầng (`J18` trong `../mobile.md`); màn cuộc trò chuyện mới mở từ đó vẫn theo dòng này. Placeholder của ô soạn đã nói hỏi được gì, câu chào nhắc lại là nói hai lần (`N3`).
 
 ## Ô soạn
 
@@ -121,7 +122,9 @@ Nút chỉ icon `ghost` `size-8`, có tooltip và `aria-label`: `Copy` "Sao ché
 - **Bo lồng nhau** (`M19`): ô `rounded-3xl` (24px) = nút `rounded-2xl` (16px) + `p-2`. Lệch thì nút sát mép ô ~4px, góc nút và góc ô không song song.
 - **Ô trống thì nút gửi khoá `opacity-30`**, không `opacity-50` như mọi nút khoá khác. Ngoại lệ có lý do: đây là nút khoá **đứng thường trực** trên màn, `primary` mờ 50% ra khối xám giữa, thành thứ đậm nhất màn rỗng.
 - Focus giống ô nhập (`F20`): viền `--border-focus` + ring mờ, trên cả khung, không chỉ quanh textarea.
-- Bàn phím (`N9`): Enter gửi, Shift+Enter xuống dòng. Gửi là handler rỗng (`onSend`).
+- Bàn phím (`N9`): Enter gửi, Shift+Enter xuống dòng. Gửi là handler rỗng (`onSend`). App điện thoại: phím Enter của bàn
+  phím là xuống dòng (ô soạn nhiều dòng), gửi bằng nút gửi tròn 44px; ô soạn dính trên bàn phím, hàng thao tác dưới tin luôn
+  hiện (không rê chuột), nút thao tác và gợi ý hỏi tiếp cao từ 44px (`J4`). Màn chat ẩn thanh tab (`J2`, việc đang làm dở).
 - Người dùng cuộn lên đọc lại trong lúc chữ đang chạy: hiện một nút tròn `ArrowDown` viền, `size-8`, giữa cột ngay trên ô soạn, bấm là xuống cuối. Có kéo tự động hay không là logic của người dùng (`N10`).
 
 ## Trạng thái phải dựng

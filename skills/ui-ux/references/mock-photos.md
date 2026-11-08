@@ -8,9 +8,12 @@ mockup và wireframe dùng ảnh thật, trang mới trông như sản phẩm đ
 
 - **Ảnh cảnh, vật**: Unsplash, dạng
   `https://images.unsplash.com/photo-<id>?w=800&q=80&auto=format&fit=crop`, đúng chủ đề của
-  mục (phòng trọ là nội thất phòng, tin tuyển dụng là văn phòng). Không tự bịa `<id>`: tìm
-  bằng tìm kiếm web giới hạn `unsplash.com/photos` (trang tìm và API của Unsplash chặn khi gọi từ dòng lệnh), rồi
-  `curl -sI` từng link, không ra 200 thì thay. Mỗi mục một ảnh khác nhau.
+  mục (phòng trọ là nội thất phòng, tin tuyển dụng là văn phòng). Không tự bịa `<id>`: lấy bằng công cụ đọc trang
+  web (WebFetch) mở `https://unsplash.com/s/photos/<chủ-đề>` rồi nhặt các link `images.unsplash.com/photo-…` trong trang
+  (curl tới trang ảnh, link tải của Unsplash ra 401; tìm kiếm web thường không trả id); không có công cụ đó thì tìm web giới
+  hạn `unsplash.com/photos`. Rồi `curl -sI` từng link, không ra 200 thì thay. Mỗi mục một ảnh khác nhau. **Bỏ ảnh có biển
+  tên, logo, chữ thương hiệu thật** (bệnh viện, cửa hàng, khách sạn có thật): bản mẫu đặt tên giả cạnh biển tên thật thì
+  vừa sai vừa dính thương hiệu người khác.
 - **Avatar người**: ảnh chân dung (`https://randomuser.me/api/portraits/women/<0-99>.jpg`,
   `.../men/<0-99>.jpg`), khớp giới của tên giả. Ảnh vẫn theo khuôn của `components/avatar.md`.
 - **Logo công ty giả**: ô chữ cái theo `components/avatar.md` (hình vuông bo góc), không lấy
