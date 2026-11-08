@@ -1,7 +1,7 @@
 # Phong cách thị giác — luật P
 
 Nguồn duy nhất cho: nhận ra dự án đang dùng phong cách gì, phong cách đó được đè
-luật nào, và bẫy riêng của từng phong cách. Lệnh audit nằm ở `SKILL.md` câu 2,
+luật nào, và bẫy riêng của từng phong cách. Lệnh audit nằm ở `scripts/audit.sh` (`SKILL.md` câu 2),
 tầng 3. File này dạy cách **đọc** kết quả.
 
 ---
@@ -16,7 +16,7 @@ Ba ca, chọn đúng một:
 | --- | --- |
 | **Người dùng tự nêu phong cách** ("làm trang giá kiểu glassmorphism") | Làm theo phong cách đó, **không hỏi lại** |
 | **Audit thấy dự án có phong cách khác flat** (`P4`) | **Theo phong cách dự án**, dựng luôn, báo một dòng lúc giao (mẫu bên dưới) |
-| **Dự án flat hoặc trống**, người dùng không nêu gì | **Màn trong app web** (dashboard, danh sách, bảng, form, cài đặt): **bộ mặt khuyên dùng** theo người dùng của sản phẩm (`P13`), không mặc nhiên Clean; wireframe nhánh `U` có nhóm Kiểu liệt kê đủ mười bộ để người dùng tự đổi (`design-process.md`, `U3`). Màn khác: Flat (`P6`). Không hỏi về phong cách. Có màu chỉ khi người dùng tự xin trong đề: trang lướt để chọn theo `P12`, màn trong app theo Sắc Tinted hay Vivid (`P17`), mặc định Neutral; hai chế độ dựng lại: dòng Có màu (`V1d`), không chọn sẵn. Wireframe không có nấc Có màu, có nhóm Sắc trong menu Kiểu |
+| **Dự án flat hoặc trống**, người dùng không nêu gì | **Màn trong app web** (dashboard, danh sách, bảng, form, cài đặt): **bộ mặt khuyên dùng** theo người dùng của sản phẩm (`P13`), không mặc nhiên Clean; wireframe nhánh `U` có nhóm Kiểu liệt kê đủ mười bộ để người dùng tự đổi (`wireframe.md`, `U3`). Màn khác: Flat (`P6`). Không hỏi về phong cách. Có màu chỉ khi người dùng tự xin trong đề: trang lướt để chọn theo `P12`, màn trong app theo Sắc Tinted hay Vivid (`P17`), mặc định Neutral; hai chế độ dựng lại: dòng Có màu (`V1d`), không chọn sẵn. Wireframe không có nấc Có màu, có nhóm Sắc trong menu Kiểu |
 
 Vì sao theo dự án chứ không theo flat: một màn flat giữa app glass là màn lạc
 loài, người dùng thấy ngay. Nhất quán thắng gu.
@@ -103,7 +103,7 @@ phong cách làm nó trượt.
 **P4. Tự tìm phong cách của dự án, để biết có theo hay không. Một phong
 cách chỉ là "của dự án" khi nó có mặt trên bề mặt chính.**
 
-Chạy lệnh tầng 3 ở `SKILL.md` câu 2, rồi đọc số:
+Chạy `scripts/audit.sh` (`SKILL.md` câu 2), đọc số ở tầng 3:
 
 | Kết quả | Kết luận |
 | --- | --- |
@@ -258,7 +258,7 @@ Flat thuần đọc ra "buồn màu" ở hai chỗ: trang người dùng cuối 
 phòng, sản phẩm, khoá học), trang nào cũng như trang quản trị (chủ dự án thấy); và dashboard dự án mới chưa có brand, màu nhấn
 gần đen nên chọn "Màu" vẫn trắng đen. Hai chế độ dựng lại đưa nó thành dòng Có màu
 (`review.md`, `V1d`); người dùng tự xin trong đề thì dựng theo công thức dưới; ngoài hai chỗ đó thì
-theo `P1`. Wireframe không có nấc Có màu (`design-process.md`, `U3`).
+theo `P1`. Wireframe không có nấc Có màu (`wireframe.md`, `U3`).
 
 - **Nhận ra từ ảnh:** đầu trang là một dải màu đậm (đặc hoặc chuyển màu) ôm header và ô tìm,
   chân trang cùng màu; vài mục trong danh sách có nền nhạt màu nhấn kèm nhãn "Gấp", "Hot";
@@ -304,12 +304,12 @@ màu xanh.
 ### P13. Bộ mặt dashboard — các trục, mười bộ có tên, khuyên theo người dùng
 
 Flat, Inter và màu nhấn gần đen là mặc định trung tính. Mặc định ấy đúng cho từng dự án,
-nhưng ba dashboard khác ngành dựng liền nhau thì ra cùng một mặt (chủ dự án, 03/11/2026:
+nhưng ba dashboard khác ngành dựng liền nhau thì ra cùng một mặt (chủ dự án:
 khách khen UX, rồi chê UI ba dự án nhìn như nhau). Bố cục giống nhau là chuyện bình thường,
 vì app nào cũng sidebar, header, card số liệu, bảng (quy ước). Thứ làm hai app trông khác
 nhau là **bộ mặt**.
 
-**Bốn trục, chọn riêng từng trục** (chủ dự án, 05/11/2026). Gộp mọi thứ vào một tên thì kiểu
+**Bốn trục, chọn riêng từng trục** (chủ dự án). Gộp mọi thứ vào một tên thì kiểu
 mới chỉ khác một trục (sidebar trong suốt, nội dung trong khối bọc) không có chỗ đứng; gộp điều
 hướng với vùng chứa vào một trục thì không ghép được dải icon với khối bọc, trong khi nhiều app
 làm đúng như vậy.
@@ -324,7 +324,7 @@ làm đúng như vậy.
 | **Sắc** ⚑ | Màu gắn với dữ liệu tới đâu | `neutral` (mặc định) · `tinted` · `vivid` (`P17`). Không nằm trong mười bộ, ghép với bộ nào cũng được |
 
 Ghép điều hướng với vùng chứa theo mục **Ghép điều hướng với vùng chứa** trong
-`layouts/app.md`: tổ hợp nào chạy được, tổ hợp nào không (`topnav` + `floating` không có sidebar
+`layouts/app/shell.md`: tổ hợp nào chạy được, tổ hợp nào không (`topnav` + `floating` không có sidebar
 để nổi).
 
 Bố cục nội dung (bảng trước, kanban, lịch, card) **không** nằm trong bộ mặt: đó là phương án
@@ -359,9 +359,9 @@ Nhấn của wireframe (`U3`) hay màu đầu của nhóm đó. Bộ mặt bám 
 
 **Dùng khi:** màn trong app web, dự án flat hoặc trống (`P4`), đề không nêu phong cách. Dự
 án có phong cách riêng, có ảnh tham chiếu, đề nêu kiểu, hay chế độ giữ brand thì không dùng
-bảng này (`P1`). App điện thoại theo `mobile.md`, không theo bảng này.
+bảng này (`P1`). App điện thoại theo `mobile.md`, không theo bảng này: bộ mặt của nó ở `J15` (`mobile/faces.md`).
 
-**Bộ và biến thể còn cờ ⚑ không được tự khuyên** (chủ dự án, 05/11/2026): Inset, Paper, Float,
+**Bộ và biến thể còn cờ ⚑ không được tự khuyên** (chủ dự án): Inset, Paper, Float,
 Rail, Topbar, Editorial; biến thể Soft mở, Paper không viền, Inset xếp lớp; header `full`. Chúng
 chưa qua test ở dự án thật. Skill chỉ tự khuyên trong bốn bộ đã kiểm: **Clean, Dark Sidebar,
 Soft (biến thể `classic`), Midnight**, nên người đang dùng bản cũ không thấy hành vi mặc định đổi.
@@ -373,7 +373,7 @@ app là kế toán đối soát cả ngày thì Clean, không phải Soft. Nếu
 thì Clean. Không hỏi (`P1`):
 
 - Nhánh `U` có wireframe: nhóm Kiểu liệt kê mười bộ, **mặc định là bộ khuyên dùng**, khung lý
-  do một dòng vì sao cho từng bộ (`design-process.md`, `U3`).
+  do một dòng vì sao cho từng bộ (`wireframe.md`, `U3`).
 - "Dựng luôn" và chế độ dựng lại theo gu skill: dựng bộ khuyên dùng, báo một dòng lúc giao.
 - Mẫu dòng báo, nói bằng người dùng chứ không bằng tính từ: *"Bộ mặt: **Soft** (card nổi, font
   Be Vietnam Pro) vì chủ spa mở app giữa ca, xem card lịch hẹn nhiều hơn bảng. Muốn kiểu khác
@@ -387,7 +387,7 @@ còn ghi tên tiếng Việt thì đọc theo bảng: Gọn = Clean, Sidebar t�
 Đêm = Midnight; sửa tại chỗ sang tên mới.
 
 **Được đè:** luật gu flat của khối `P` tương ứng, cộng dòng "sidebar nền trắng" ở
-`layouts/app.md` cho Dark Sidebar, Inset, Paper, Float, Rail, Topbar. **Không đè:** toàn bộ cột Nguyên tắc của `P2`, gồm
+`layouts/app/shell.md` cho Dark Sidebar, Inset, Paper, Float, Rail, Topbar. **Không đè:** toàn bộ cột Nguyên tắc của `P2`, gồm
 `F1` bo góc và `P3` tương phản. Bộ mặt không đổi bố cục, không đổi component, không thêm khối.
 
 **Font**: cả ba font có bộ `vietnamese` trên Google Fonts (đã kiểm 03/11/2026), vẫn kiểm bằng
@@ -405,8 +405,8 @@ mắt chữ "ữ", "ợ", "ằ" ở cỡ nhỏ nhất của màn (`T5`). Project
   badge, ô tìm vẫn ra token sáng, nổi thành mảng trắng giữa cột tối. Logo dựng bằng token nên
   tự đúng trên nền tối (`components/logo.md`); logo ảnh của dự án thì cần bản nền tối. Dưới
   `lg` panel trượt vẫn tối, cùng khung.
-- **Soft: Be Vietnam Pro rộng hơn Inter khoảng 3%** (đo nhãn tiếng Việt 14px, weight 500,
-  03/11/2026). Nhãn sidebar, tab, nút vừa khít ở Inter có thể bị cắt. Probe ở 1280 và đo cắt chữ
+- **Soft: Be Vietnam Pro rộng hơn Inter khoảng 3%** (đo nhãn tiếng Việt 14px,
+  weight 500). Nhãn sidebar, tab, nút vừa khít ở Inter có thể bị cắt. Probe ở 1280 và đo cắt chữ
   theo `T14` sau khi đổi font, đừng đo ở Inter rồi mới đổi.
 - **Soft vẫn đủ bốn bậc bóng của `P7`**, kể cả sidebar trượt dưới `lg`. Bóng ở card mà modal
   phẳng là lỗi của `P7`, không phải "mềm".
@@ -414,11 +414,11 @@ mắt chữ "ữ", "ợ", "ằ" ở cỡ nhỏ nhất của màn (`T5`). Project
   biểu đồ ở nền tối (`components/charts.md`).
 - **Inset: nền rê, nền đang chọn của sidebar phải đổi theo nền trang.** `--item-hover` của
   sidebar trắng trùng đúng màu nền trang, đặt lên nền xám là rê vào không thấy gì. Theo mục
-  Khung bọc trong `layouts/app.md`.
+  Khung bọc trong `layouts/app/shell-inset.md`.
 - **Paper: cả màn trắng thì mọi ranh giới là đường kẻ `--border-strong`.** `--border` (`#f7f7f8`)
   trên nền trắng gần như không thấy, khung app mất ranh giới. Khối nội dung không bọc card trắng
   (trắng trên trắng chỉ còn cái viền): tách nhóm bằng tiêu đề, khoảng trắng và đường kẻ, bảng chạy
-  hết bề ngang. Theo mục Một mặt phẳng trong `layouts/app.md`.
+  hết bề ngang. Theo mục Một mặt phẳng trong `layouts/app/shell-unified.md`.
 - **Rail, Topbar có trần số mục**: Rail chỉ icon tới 8 mục chính, Rail có nhãn tới 7, Topbar tới
   6, cả ba không nhóm lồng.
   Đếm mục chính của app ở `U2` trước khi khuyên; vượt trần thì không khuyên hai bộ này, kể cả khi
@@ -474,7 +474,7 @@ Biến thể của Inset (`P13`). Ba tầng nền chồng nhau, **không viền 
 - **Tầng sau sáng hơn tầng trước ở nền tối** (`P10`). Tầng 2 dùng `foreground/4` vì nó tự đảo theo
   nền. Thẻ tầng 3 ở nền tối **không** dùng `--surface` (tối hơn vùng chứa, trông như bị khoét) và
   **không** dùng `--surface-overlay`: nó chỉ chênh tầng 2 khoảng 1 bậc, thẻ tan vào cột (đo trên
-  trang mẫu, 05/11/2026). Dùng `--secondary`, lớp trắng 8% chồng lên tầng 2, chênh ~18 bậc.
+  trang mẫu). Dùng `--secondary`, lớp trắng 8% chồng lên tầng 2, chênh ~18 bậc.
 - **Hai tầng kề nhau chênh ít nhất ~8 bậc độ sáng** (đo: sáng 11, 8, 8; tối 10, 9, 18); chênh ít hơn thì ranh giới biến mất, người
   ta lại thêm viền. Không thêm tầng thứ năm: bốn tông xám lồng nhau là bẩn.
 - **Bỏ viền khối bọc, viền thẻ, viền vùng con.** Control giữ viền như `P14`.
@@ -509,7 +509,7 @@ nhất**, không card, không nền màu.
 ### P17. Sắc — trục thứ năm của bộ mặt: Neutral, Tinted, Vivid ⚑
 
 Bộ mặt nào cũng ra trung tính: màu chỉ có ở nút chính, mục đang chọn và badge trạng thái.
-Muốn một dashboard nhiều màu, người dùng phải gửi ảnh và viết đề dài (chủ dự án, 07/11/2026).
+Muốn một dashboard nhiều màu, người dùng phải gửi ảnh và viết đề dài (chủ dự án).
 Các dashboard nhiều màu mà vẫn dễ đọc không tô bừa: **màu nào cũng gắn với một thứ trong dữ liệu**,
 ở ba tầng: **nghĩa** (mức độ, trạng thái), **phân loại** (loại việc, người phụ trách, nguồn), và
 **nhấn thương hiệu** (gradient ở một hai chỗ). Sắc là số tầng được bật. Trục này đứng riêng
@@ -569,7 +569,7 @@ Neutral ở mọi lối. Chỉ bật khi:
 
 - Đề có chữ xin màu: "nhiều màu", "có màu hơn", "sinh động", "colorful" → Tinted; "rực",
   "gradient", "vivid", "trẻ trung", "nổi bật hẳn" → Vivid. Không hỏi lại (`P1`).
-- Người dùng chọn trong nhóm Sắc của wireframe (`design-process.md`, `U3`).
+- Người dùng chọn trong nhóm Sắc của wireframe (`wireframe.md`, `U3`).
 - Ảnh tham chiếu có màu kiểu này: đọc ảnh ra nấc gần nhất, dựng theo bảng trên, không chép từng mã
   màu của ảnh.
 - Hai chế độ dựng lại: dòng Có màu (`V1d`) của dashboard là Tinted.

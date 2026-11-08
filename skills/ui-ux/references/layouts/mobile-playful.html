@@ -1,0 +1,913 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Nói Liền — app mẫu Playful</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <style>
+      /* ===== KHỐI ĐỔI THƯƠNG HIỆU ===== */
+      :root {
+        /* Bộ mặt: Playful (J15) */
+        --app-font: "Nunito", ui-sans-serif, system-ui, sans-serif;
+
+        /* Màu nhấn của app mẫu. Chữ trắng trên --primary 4.7:1. --primary-dark là gờ đáy của nút (trông bấm được). */
+        --primary: #c84a26;
+        --primary-hover: #a83c1d;
+        --primary-dark: #a83c1d;
+        --primary-foreground: #ffffff;
+        --primary-light: #faede9;
+
+        --background: #f4f4f6;
+        --surface: #ffffff;
+        --foreground: #2c2c2c;
+        --muted: #707070;
+        /* Đậm hơn tokens.css (#f7f7f8): app điện thoại nền trắng, vạch ngăn dòng phải thấy được (J1). */
+        --border: #f0f0f2;
+        --border-strong: #e3e3e7;
+        --secondary: #e7e8ec;
+        --danger: #c70036;
+        --danger-bg: #ffe4ea;
+        --success: #2f7d00;
+        --success-bg: #d7ffb8;
+
+        --cat-amber-bg: #fff1d6; --cat-amber: #a35c00;
+        --cat-blue-bg: #e3efff;  --cat-blue: #1d5fbf;
+        --cat-rose-bg: #ffe4ec;  --cat-rose: #b4234d;
+        --cat-green-bg: #dff5ea; --cat-green: #00754e;
+        --cat-violet-bg: #efe6ff; --cat-violet: #6b3fc7;
+
+        --frame-page: #e9e9ec;
+        --frame-muted: #565656;
+      }
+      /* ===== HẾT KHỐI ĐỔI THƯƠNG HIỆU ===== */
+
+      /* ===== THANH CUỘN (SKILL.md câu 2), chép từ tokens.css: cho phần ngoài khung máy (trang bảng luồng dài). Vùng cuộn
+         trong khung (.scroll) ẩn hẳn, ngoại lệ của luật chốt 13. ===== */
+      * { --scrollbar-thumb: transparent; }
+      *:hover { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 16%, transparent); }
+      .is-scrolling { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 28%, transparent); }
+      ::-webkit-scrollbar { width: 4px; height: 4px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 9999px; }
+      ::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--foreground) 40%, transparent); }
+      @supports not selector(::-webkit-scrollbar) {
+        * { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+        *:hover { scrollbar-color: color-mix(in srgb, var(--foreground) 18%, transparent) transparent; }
+        .is-scrolling { scrollbar-color: color-mix(in srgb, var(--foreground) 28%, transparent) transparent; }
+      }
+
+      /* ===== KHUNG MÁY (J1), chép từ layouts/mobile-app.html ===== */
+      :root { --inset-top: env(safe-area-inset-top, 0px); --inset-bottom: env(safe-area-inset-bottom, 0px); }
+      .device { --screen-bg: var(--surface); position: relative; width: 100%; height: 100dvh; overflow: hidden; background: var(--screen-bg); }
+      .status-bar, .home-indicator { display: none; }
+      @media (min-width: 500px) {
+        :root { --inset-top: 47px; --inset-bottom: 34px; }
+        .device { width: 390px; height: 844px; border-radius: 48px; box-shadow: 0 0 0 10px #1c1c1e, 0 0 0 11px #3a3a3c, 0 30px 60px -10px rgb(0 0 0 / 0.35); }
+        .status-bar { display: flex; }
+        .home-indicator { display: block; }
+      }
+
+      .screen { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--screen-bg); visibility: hidden; }
+      .screen.is-active { visibility: visible; }
+      @media (prefers-reduced-motion: no-preference) {
+        .screen.is-pushed.is-active { animation: push-in 300ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .screen.is-pushed.is-active { animation: fade-in 200ms ease; }
+      }
+      @keyframes push-in { from { translate: 30% 0; opacity: 0.6; } to { translate: 0 0; opacity: 1; } }
+      @keyframes fade-in { from { opacity: 0; } }
+
+      .scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+      .scroll::-webkit-scrollbar { display: none; }
+      .pad-top { padding-top: var(--inset-top); }
+      .pad-bottom { padding-bottom: calc(var(--inset-bottom) + 16px); }
+
+      .press { transition: scale 120ms cubic-bezier(0.23, 1, 0.32, 1), background-color 150ms ease; -webkit-tap-highlight-color: transparent; }
+      .press:active { scale: 0.97; }
+      @media (prefers-reduced-motion: reduce) { .press:active { scale: 1; } }
+
+      /* ===== PLAYFUL (J15): thẻ chọn và nút có gờ đáy 4px (trông bấm được). Gờ là box-shadow đặc, không phải viền: nhấn thì
+         thẻ tụt 2px, gờ còn 2px, mép dưới đứng yên, không đẩy thẻ bên dưới. Làm bằng border-bottom thì thẻ có min-height
+         không thấp đi, phần bù margin dư ra, cả cột giật xuống mỗi lần nhấn. Không vòng focus (I13). ===== */
+      .choice, .chip, .btn { --edge: var(--border-strong); box-shadow: 0 4px 0 var(--edge); outline: none; -webkit-tap-highlight-color: transparent; transition: translate 120ms ease, box-shadow 120ms ease, border-color 150ms ease, background-color 150ms ease; }
+      .choice:active, .chip:active, .btn:active { translate: 0 2px; box-shadow: 0 2px 0 var(--edge); }
+
+      .choice {
+        display: flex; align-items: center; gap: 12px; width: 100%; min-height: 64px; padding: 12px 16px;
+        border: 2px solid var(--border-strong); border-radius: 16px; background: var(--surface);
+        text-align: left; font-size: 16px; font-weight: 600;
+      }
+      .choice[aria-checked="true"] { --edge: var(--primary); border-color: var(--primary); background: var(--primary-light); }
+      .choice.is-correct { --edge: var(--success); border-color: var(--success); background: var(--success-bg); }
+      .choice.is-wrong { --edge: var(--danger); border-color: var(--danger); background: var(--danger-bg); }
+
+      .chip {
+        display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 0 16px;
+        border: 2px solid var(--border-strong); border-radius: 9999px; background: var(--surface);
+        font-size: 16px; font-weight: 600;
+      }
+      .chip[aria-checked="true"] { --edge: var(--primary); border-color: var(--primary); background: var(--primary-light); }
+      .chip .chip-check { display: none; }
+      .chip[aria-checked="true"] .chip-check { display: block; color: var(--primary); }
+
+      .btn {
+        display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 52px; padding: 0 16px;
+        border-radius: 16px; font-size: 16px; font-weight: 800;
+      }
+      .btn-primary { --edge: var(--primary-dark); background: var(--primary); color: var(--primary-foreground); }
+      .btn-outline { background: var(--surface); color: var(--foreground); border: 2px solid var(--border-strong); }
+      .btn-success { --edge: #235e00; background: var(--success); color: #fff; }
+      .btn-danger { --edge: #9a002a; background: var(--danger); color: #fff; }
+      /* Chưa chọn thì mờ và khoá (O8), không gờ: trông không bấm được. */
+      .btn[aria-disabled="true"] { background: var(--secondary); color: var(--muted); box-shadow: none; pointer-events: none; }
+      /* Gờ nằm ngoài khối: chừa đáy vùng cuộn để thẻ cuối không bị cắt mất gờ. */
+      .scroll::after { content: ""; display: block; height: 8px; flex-shrink: 0; }
+
+      @media (prefers-reduced-motion: reduce) {
+        .choice:active, .chip:active, .btn:active { translate: 0 0; box-shadow: 0 4px 0 var(--edge); }
+      }
+
+      /* Bàn phím vẽ (J13): chỉ là hình, không bấm được. */
+      .kb-key { display: grid; place-items: center; height: 42px; border-radius: 5px; background: #fff; box-shadow: 0 1px 0 #898a8d; font-size: 22px; color: #000; }
+      .kb-key.is-fn { background: #abb0ba; font-size: 15px; }
+
+      /* ===== CHUYỂN ĐỘNG (J10): chỉ chỗ có việc. ===== */
+      /* Dải phản hồi trượt lên từ đáy (vào 320ms, đường giảm tốc): người học thấy kết quả vừa tới. */
+      .screen.is-active .feedback { animation: band-up 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+      @keyframes band-up { from { translate: 0 100%; } }
+      /* Sóng âm khi đang nghe: cho biết mic đang thu, không phải trang trí. */
+      .wave { display: flex; align-items: center; gap: 5px; height: 32px; }
+      .wave span { width: 6px; height: 100%; border-radius: 3px; background: currentColor; animation: wave 900ms ease-in-out infinite; }
+      .wave span:nth-child(2n) { animation-delay: -300ms; }
+      .wave span:nth-child(3n) { animation-delay: -600ms; }
+      .wave span:nth-child(4n+1) { animation-delay: -150ms; }
+      @keyframes wave { 0%, 100% { transform: scaleY(0.25); } 50% { transform: scaleY(1); } }
+      @media (prefers-reduced-motion: reduce) {
+        .screen.is-active .feedback { animation: fade-in 200ms ease both; }
+        .wave span { animation: none; transform: scaleY(0.6); }
+      }
+
+      /* ===== BẢNG LUỒNG: chỉ cho người duyệt trên màn rộng, không thuộc app. Mỗi luồng một hàng, các màn cạnh nhau,
+         cuộn ngang. Mở link không có #màn thì ra bảng; bấm một màn là chạy thử từ màn đó. ===== */
+      body.is-board { display: block !important; min-height: 100vh; padding: 0 !important; background: #141414 !important; color: #f4f4f5; }
+      body.is-board > .device, body.is-board > .wf-screens { display: none !important; }
+      .flow-board { display: none; }
+      body.is-board .flow-board { display: block; }
+      .flow-row { display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 48px; padding: 8px 48px 24px; scrollbar-width: none; }
+      .flow-row::-webkit-scrollbar { display: none; }
+      .board-card { flex: none; scroll-snap-align: start; color: inherit; text-decoration: none; }
+      .board-phone { width: calc(390px * 0.7); height: calc(844px * 0.7); overflow: hidden; border-radius: 32px; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08); transition: box-shadow 150ms ease; }
+      .board-card:hover .board-phone { box-shadow: 0 0 0 2px var(--primary); }
+      .board-card:focus-visible { outline: none; }
+            /* Khai lại màu chữ của app: nền bảng tối đặt chữ trắng cho body, màn chép vào sẽ thừa hưởng nếu không khai. */
+      .board-device { color: var(--foreground); --inset-top: 47px; --inset-bottom: 34px; zoom: 0.7; width: 390px !important; height: 844px !important; border-radius: 0 !important; box-shadow: none !important; }
+      .board-device .status-bar { display: flex; }
+      .board-device .home-indicator { display: block; }
+      .board-device .screen { visibility: visible; animation: none !important; }
+      @media (prefers-reduced-motion: no-preference) {
+        .board-card { animation: card-in 400ms cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(var(--order) * 40ms); }
+      }
+      @keyframes card-in { from { opacity: 0; translate: 0 16px; } }
+      .player-toggle .icon-play { display: none; }
+      .player-toggle[aria-pressed="false"] .icon-play { display: block; }
+      .player-toggle[aria-pressed="false"] .icon-pause { display: none; }
+    </style>
+
+    <style type="text/tailwindcss">
+      @theme inline {
+        --font-sans: var(--app-font);
+        --color-primary: var(--primary);
+        --color-primary-dark: var(--primary-dark);
+        --color-primary-foreground: var(--primary-foreground);
+        --color-primary-light: var(--primary-light);
+        --color-background: var(--background);
+        --color-surface: var(--surface);
+        --color-foreground: var(--foreground);
+        --color-muted: var(--muted);
+        --color-border: var(--border);
+        --color-border-strong: var(--border-strong);
+        --color-secondary: var(--secondary);
+        --color-danger: var(--danger);
+        --color-danger-bg: var(--danger-bg);
+        --color-success: var(--success);
+        --color-success-bg: var(--success-bg);
+      }
+    </style>
+  </head>
+
+  <body class="bg-background font-sans text-foreground antialiased min-[500px]:flex min-[500px]:min-h-screen min-[500px]:items-center min-[500px]:justify-center min-[500px]:gap-12 min-[500px]:bg-(--frame-page) min-[500px]:py-10">
+    <!-- Danh sách màn: chỉ ở màn rộng, để người duyệt nhảy thẳng tới từng màn. Không thuộc app. -->
+    <nav class="wf-screens hidden w-56 text-sm min-[900px]:block" aria-label="Màn trong bản mẫu">
+      <a href="#" class="mb-4 inline-flex items-center gap-1 rounded-md py-1.5 pr-2 font-medium text-(--frame-muted) hover:text-foreground"><i data-lucide="layout-grid" class="size-4"></i>Bảng luồng</a>
+      <p class="mb-3 font-medium">Onboarding</p>
+      <ol class="space-y-1 text-(--frame-muted)" data-flow="Onboarding" data-flow-note="Từ mở app tới bài đầu tiên">
+        <li><a href="#welcome" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">1. Màn chào</a></li>
+        <li><a href="#goal" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">2. Mục tiêu</a></li>
+        <li><a href="#level" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">3. Trình độ</a></li>
+        <li><a href="#time" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">4. Mỗi ngày bao lâu</a></li>
+        <li><a href="#topics" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">5. Chủ đề (chọn nhiều)</a></li>
+        <li><a href="#name" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">6. Tên gọi (bàn phím)</a></li>
+        <li><a href="#signup" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">7. Lưu lộ trình</a></li>
+        <li><a href="#otp" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">8. Nhập mã</a></li>
+        <li><a href="#notify" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">9. Nhắc luyện mỗi ngày</a></li>
+        <li><a href="#plan" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">10. Lộ trình sẵn sàng</a></li>
+      </ol>
+      <p class="mt-6 mb-3 font-medium">Bài đầu tiên</p>
+      <ol class="space-y-1 text-(--frame-muted)" data-flow="Bài đầu tiên" data-flow-note="Chọn câu đáp, rồi luyện nói">
+        <li><a href="#lesson" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">1. Chọn câu · chưa chọn</a></li>
+        <li><a href="#lesson-correct" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">2. Chọn câu · đúng</a></li>
+        <li><a href="#lesson-wrong" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">3. Chọn câu · sai</a></li>
+        <li><a href="#speak" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">4. Nói lại câu</a></li>
+        <li><a href="#speak-listening" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">5. Đang nghe</a></li>
+        <li><a href="#speak-correct" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">6. Nói đúng</a></li>
+      </ol>
+    </nav>
+
+    <div class="device">
+      <div class="status-bar pointer-events-none absolute inset-x-0 top-0 z-40 h-[47px] items-center justify-between px-8 pt-1 text-[15px] font-semibold" aria-hidden="true">
+        <span>9:41</span>
+        <span class="flex items-center gap-1.5"><i data-lucide="signal" class="size-4"></i><i data-lucide="wifi" class="size-4"></i><i data-lucide="battery-full" class="size-5"></i></span>
+      </div>
+
+      <!-- ================= 1. MÀN CHÀO (J12): một màn, không băng chuyền. Hình lớn là nhân vật dẫn (J16) nói một câu
+           chào. Hai nút dính đáy. ================= -->
+      <section class="screen" data-screen="welcome" aria-label="Chào mừng">
+        <div class="scroll pad-top flex flex-col">
+          <div class="flex flex-1 flex-col items-center justify-center px-6 pt-6 text-center">
+            <p class="flex items-center gap-2 text-xl font-extrabold tracking-tight"><span class="grid size-9 place-items-center rounded-xl border-b-[3px] border-primary-dark bg-primary text-primary-foreground"><i data-lucide="mic" class="size-5"></i></span>Nói Liền</p>
+
+            <!-- Nhân vật dẫn (J16): một nhân vật cho cả app, chỉ đổi nét mặt theo khoảnh khắc. -->
+            <p class="mt-8 max-w-[260px] rounded-[20px] border-2 border-border-strong bg-surface px-4 py-3 text-base">Hi! Mình là Mia, cùng luyện nói 10&nbsp;phút mỗi ngày nhé.</p>
+            <img data-art="mia" data-art-face="smile" alt="" class="mt-2 size-44" />
+
+            <h1 class="mt-6 text-[28px]/[34px] font-extrabold tracking-tight text-balance">Nói tiếng Anh 10&nbsp;phút mỗi ngày</h1>
+            <p class="mt-2 text-base text-pretty text-muted">Luyện hội thoại với tình huống thật, được sửa phát âm ngay khi nói.</p>
+          </div>
+          <div class="grid gap-2 px-4 pt-8 pad-bottom">
+            <a href="#goal" class="btn btn-primary">Bắt đầu</a>
+            <a href="#signup" class="press flex min-h-11 items-center justify-center text-base font-semibold text-primary">Tôi đã có tài khoản</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 2. MỤC TIÊU (O8): một câu một màn. Chọn một: bấm cả hàng, chọn rồi viền và nền nhạt. ================= -->
+      <section class="screen is-pushed" data-screen="goal" aria-label="Mục tiêu">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#welcome" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Quay lại"><i data-lucide="arrow-left" class="size-6"></i></a>
+            <div class="h-3 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Bước 1 trên 8" aria-valuenow="1" aria-valuemin="0" aria-valuemax="8"><div class="h-full rounded-full bg-primary" style="width: 12.5%"></div></div>
+            <span class="size-11 shrink-0" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="scroll px-4">
+          <h1 class="pt-4 text-2xl font-bold tracking-tight text-balance">Bạn học tiếng Anh để làm gì?</h1>
+          <p class="mt-1 text-base text-muted">Để chọn tình huống hội thoại hợp với bạn.</p>
+          <div class="mt-6 grid gap-3" role="radiogroup" aria-label="Mục tiêu" data-group="goal">
+            <button role="radio" aria-checked="false" class="choice"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-blue-bg) text-(--cat-blue)"><i data-lucide="briefcase" class="size-5"></i></span>Đi làm, phỏng vấn xin việc</button>
+            <button role="radio" aria-checked="false" class="choice"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-green-bg) text-(--cat-green)"><i data-lucide="plane" class="size-5"></i></span>Du lịch nước ngoài</button>
+            <button role="radio" aria-checked="false" class="choice"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-amber-bg) text-(--cat-amber)"><i data-lucide="message-circle" class="size-5"></i></span>Giao tiếp hằng ngày với người nước ngoài</button>
+            <button role="radio" aria-checked="false" class="choice"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-violet-bg) text-(--cat-violet)"><i data-lucide="graduation-cap" class="size-5"></i></span>Thi nói IELTS, TOEIC</button>
+            <button role="radio" aria-checked="false" class="choice"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-rose-bg) text-(--cat-rose)"><i data-lucide="sparkles" class="size-5"></i></span>Học cho vui, giữ thói quen</button>
+          </div>
+        </div>
+        <div class="shrink-0 border-t border-border px-4 pt-3 pad-bottom">
+          <a href="#level" class="btn btn-primary" aria-disabled="true" data-next="goal">Tiếp tục</a>
+        </div>
+      </section>
+
+      <!-- ================= 3. TRÌNH ĐỘ (O8): icon cùng một bộ (cột sóng), cùng cỡ. ================= -->
+      <section class="screen is-pushed" data-screen="level" aria-label="Trình độ">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#goal" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Quay lại"><i data-lucide="arrow-left" class="size-6"></i></a>
+            <div class="h-3 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Bước 2 trên 8" aria-valuenow="2" aria-valuemin="0" aria-valuemax="8"><div class="h-full rounded-full bg-primary" style="width: 25%"></div></div>
+            <span class="size-11 shrink-0" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="scroll px-4">
+          <h1 class="pt-4 text-2xl font-bold tracking-tight text-balance">Bạn nói tiếng Anh tới đâu rồi?</h1>
+          <p class="mt-1 text-base text-muted">Để bài đầu tiên vừa sức, không quá dễ.</p>
+          <div class="mt-6 grid gap-3" role="radiogroup" aria-label="Trình độ" data-group="level">
+            <button role="radio" aria-checked="false" class="choice"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-primary-light" aria-hidden="true"><span class="flex h-3.5 items-end gap-0.5"><span class="w-1 rounded-full h-1.5 bg-primary/25"></span><span class="w-1 rounded-full h-2.5 bg-primary/25"></span><span class="w-1 rounded-full h-3.5 bg-primary/25"></span></span></span><span>Mới bắt đầu<span class="block text-[13px] font-normal text-muted">Chưa nói được câu nào</span></span></button>
+            <button role="radio" aria-checked="false" class="choice"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-primary-light" aria-hidden="true"><span class="flex h-3.5 items-end gap-0.5"><span class="w-1 rounded-full h-1.5 bg-primary"></span><span class="w-1 rounded-full h-2.5 bg-primary/25"></span><span class="w-1 rounded-full h-3.5 bg-primary/25"></span></span></span><span>Biết vài câu chào hỏi<span class="block text-[13px] font-normal text-muted">Hello, thank you, how much…</span></span></button>
+            <button role="radio" aria-checked="false" class="choice"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-primary-light" aria-hidden="true"><span class="flex h-3.5 items-end gap-0.5"><span class="w-1 rounded-full h-1.5 bg-primary"></span><span class="w-1 rounded-full h-2.5 bg-primary"></span><span class="w-1 rounded-full h-3.5 bg-primary/25"></span></span></span><span>Nói được câu đơn giản<span class="block text-[13px] font-normal text-muted">Nghe hiểu khi người ta nói chậm</span></span></button>
+            <button role="radio" aria-checked="false" class="choice"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-primary-light" aria-hidden="true"><span class="flex h-3.5 items-end gap-0.5"><span class="w-1 rounded-full h-1.5 bg-primary"></span><span class="w-1 rounded-full h-2.5 bg-primary"></span><span class="w-1 rounded-full h-3.5 bg-primary"></span></span></span><span>Nói khá, muốn trôi chảy hơn<span class="block text-[13px] font-normal text-muted">Họp, thuyết trình còn ngập ngừng</span></span></button>
+          </div>
+        </div>
+        <div class="shrink-0 border-t border-border px-4 pt-3 pad-bottom">
+          <a href="#time" class="btn btn-primary" aria-disabled="true" data-next="level">Tiếp tục</a>
+        </div>
+      </section>
+
+      <!-- ================= 4. MỖI NGÀY BAO LÂU (O8) ================= -->
+      <section class="screen is-pushed" data-screen="time" aria-label="Mỗi ngày bao lâu">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#level" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Quay lại"><i data-lucide="arrow-left" class="size-6"></i></a>
+            <div class="h-3 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Bước 3 trên 8" aria-valuenow="3" aria-valuemin="0" aria-valuemax="8"><div class="h-full rounded-full bg-primary" style="width: 37.5%"></div></div>
+            <span class="size-11 shrink-0" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="scroll px-4">
+          <h1 class="pt-4 text-2xl font-bold tracking-tight text-balance">Mỗi ngày bạn luyện được bao lâu?</h1>
+          <p class="mt-1 text-base text-muted">Đổi lúc nào cũng được trong Cài đặt.</p>
+          <div class="mt-6 grid gap-3" role="radiogroup" aria-label="Thời gian mỗi ngày" data-group="time">
+            <button role="radio" aria-checked="false" class="choice justify-between"><span class="tabular-nums">5 phút</span><span class="text-sm font-medium text-muted">Nhẹ nhàng</span></button>
+            <button role="radio" aria-checked="false" class="choice justify-between"><span class="tabular-nums">10 phút</span><span class="text-sm font-medium text-muted">Vừa sức</span></button>
+            <button role="radio" aria-checked="false" class="choice justify-between"><span class="tabular-nums">15 phút</span><span class="text-sm font-medium text-muted">Nghiêm túc</span></button>
+            <button role="radio" aria-checked="false" class="choice justify-between"><span class="tabular-nums">20 phút</span><span class="text-sm font-medium text-muted">Tăng tốc</span></button>
+          </div>
+        </div>
+        <div class="shrink-0 border-t border-border px-4 pt-3 pad-bottom">
+          <a href="#topics" class="btn btn-primary" aria-disabled="true" data-next="time">Tiếp tục</a>
+        </div>
+      </section>
+
+      <!-- ================= 5. CHỦ ĐỀ (O8): chọn nhiều bằng chip có dấu tick, câu không bắt buộc nên có Bỏ qua. ================= -->
+      <section class="screen is-pushed" data-screen="topics" aria-label="Chủ đề">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#time" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Quay lại"><i data-lucide="arrow-left" class="size-6"></i></a>
+            <div class="h-3 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Bước 4 trên 8" aria-valuenow="4" aria-valuemin="0" aria-valuemax="8"><div class="h-full rounded-full bg-primary" style="width: 50%"></div></div>
+            <a href="#name" class="press inline-flex h-11 shrink-0 items-center px-3 text-base font-semibold text-muted">Bỏ qua</a>
+          </div>
+        </header>
+        <div class="scroll px-4">
+          <h1 class="pt-4 text-2xl font-bold tracking-tight text-balance">Bạn thích nói về chủ đề nào?</h1>
+          <p class="mt-1 text-base text-muted">Chọn một hay nhiều. Bài nói sẽ xoay quanh các chủ đề này.</p>
+          <div class="mt-6 flex flex-wrap gap-2" role="group" aria-label="Chủ đề" data-group="topics" data-multi>
+            <button role="checkbox" aria-checked="false" class="chip"><i data-lucide="check" class="chip-check size-4"></i>Công việc</button>
+            <button role="checkbox" aria-checked="false" class="chip"><i data-lucide="check" class="chip-check size-4"></i>Du lịch</button>
+            <button role="checkbox" aria-checked="false" class="chip"><i data-lucide="check" class="chip-check size-4"></i>Phim, nhạc</button>
+            <button role="checkbox" aria-checked="false" class="chip"><i data-lucide="check" class="chip-check size-4"></i>Ăn uống</button>
+            <button role="checkbox" aria-checked="false" class="chip"><i data-lucide="check" class="chip-check size-4"></i>Công nghệ</button>
+            <button role="checkbox" aria-checked="false" class="chip"><i data-lucide="check" class="chip-check size-4"></i>Thể thao</button>
+            <button role="checkbox" aria-checked="false" class="chip"><i data-lucide="check" class="chip-check size-4"></i>Sức khoẻ</button>
+            <button role="checkbox" aria-checked="false" class="chip"><i data-lucide="check" class="chip-check size-4"></i>Mua sắm</button>
+            <button role="checkbox" aria-checked="false" class="chip"><i data-lucide="check" class="chip-check size-4"></i>Gia đình, con cái</button>
+            <button role="checkbox" aria-checked="false" class="chip"><i data-lucide="check" class="chip-check size-4"></i>Khởi nghiệp, kinh doanh</button>
+          </div>
+        </div>
+        <div class="shrink-0 border-t border-border px-4 pt-3 pad-bottom">
+          <a href="#name" class="btn btn-primary" aria-disabled="true" data-next="topics">Tiếp tục</a>
+        </div>
+      </section>
+
+      <!-- ================= 6. TÊN GỌI (O8, J13): một ô, tự focus, bàn phím bật sẵn; nút Tiếp ngay trên bàn phím. ================= -->
+      <section class="screen is-pushed" data-screen="name" aria-label="Tên gọi">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#topics" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Quay lại"><i data-lucide="arrow-left" class="size-6"></i></a>
+            <div class="h-3 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Bước 5 trên 8" aria-valuenow="5" aria-valuemin="0" aria-valuemax="8"><div class="h-full rounded-full bg-primary" style="width: 62.5%"></div></div>
+            <a href="#signup" class="press inline-flex h-11 shrink-0 items-center px-3 text-base font-semibold text-muted">Bỏ qua</a>
+          </div>
+        </header>
+        <div class="scroll px-4">
+          <h1 class="pt-4 text-2xl font-bold tracking-tight text-balance">Bạn muốn được gọi là gì?</h1>
+          <p class="mt-1 text-base text-muted">Bạn luyện nói sẽ gọi tên này trong hội thoại.</p>
+          <label class="mt-6 block"><span class="sr-only">Tên gọi</span>
+            <input type="text" autocomplete="given-name" enterkeyhint="next" value="Lan" placeholder="Ví dụ: Lan" class="h-[52px] w-full rounded-2xl border-2 border-primary bg-surface px-4 text-base font-semibold outline-none placeholder:font-normal placeholder:text-muted" data-name-input />
+          </label>
+        </div>
+        <div class="shrink-0 px-4 pt-3 pb-3">
+          <a href="#signup" class="btn btn-primary" data-next="name">Tiếp tục</a>
+        </div>
+        <!-- Bàn phím chữ có hàng gợi ý (J13), khoảng 335px, che phần dưới như máy thật. -->
+        <div class="shrink-0 bg-[#d1d3d9] px-1 pt-2" style="height: 335px" aria-hidden="true">
+          <div class="flex h-9 items-center justify-around text-base text-black"><span>Lan</span><span class="h-5 w-px bg-black/20"></span><span>Lành</span><span class="h-5 w-px bg-black/20"></span><span>Làn</span></div>
+          <div class="mt-1 grid grid-cols-10 gap-1.5 px-0.5"><span class="kb-key">q</span><span class="kb-key">w</span><span class="kb-key">e</span><span class="kb-key">r</span><span class="kb-key">t</span><span class="kb-key">y</span><span class="kb-key">u</span><span class="kb-key">i</span><span class="kb-key">o</span><span class="kb-key">p</span></div>
+          <div class="mt-3 grid grid-cols-9 gap-1.5 px-5"><span class="kb-key">a</span><span class="kb-key">s</span><span class="kb-key">d</span><span class="kb-key">f</span><span class="kb-key">g</span><span class="kb-key">h</span><span class="kb-key">j</span><span class="kb-key">k</span><span class="kb-key">l</span></div>
+          <div class="mt-3 flex gap-1.5 px-0.5"><span class="kb-key is-fn w-11"><i data-lucide="arrow-big-up" class="size-5"></i></span><span class="grid flex-1 grid-cols-7 gap-1.5"><span class="kb-key">z</span><span class="kb-key">x</span><span class="kb-key">c</span><span class="kb-key">v</span><span class="kb-key">b</span><span class="kb-key">n</span><span class="kb-key">m</span></span><span class="kb-key is-fn w-11"><i data-lucide="delete" class="size-5"></i></span></div>
+          <div class="mt-3 flex gap-1.5 px-0.5"><span class="kb-key is-fn w-[88px]">123</span><span class="kb-key flex-1 text-base">dấu cách</span><span class="kb-key is-fn w-[88px] !bg-[#007aff] text-white">tiếp</span></div>
+        </div>
+      </section>
+
+      <!-- ================= 7. LƯU LỘ TRÌNH (J12): hỏi tài khoản sau khi đã cá nhân hoá, có lý do. Số điện thoại là cách chính,
+           Apple và Google là đường phụ, câu điều khoản dưới nút, không ô tick. ================= -->
+      <section class="screen is-pushed" data-screen="signup" aria-label="Lưu lộ trình">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#name" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Quay lại"><i data-lucide="arrow-left" class="size-6"></i></a>
+            <div class="h-3 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Bước 6 trên 8" aria-valuenow="6" aria-valuemin="0" aria-valuemax="8"><div class="h-full rounded-full bg-primary" style="width: 75%"></div></div>
+            <span class="size-11 shrink-0" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="scroll px-4 pad-bottom">
+          <h1 class="pt-4 text-2xl font-bold tracking-tight text-balance">Lưu lộ trình của bạn</h1>
+          <p class="mt-1 text-base text-pretty text-muted">Tạo tài khoản để giữ tiến độ khi đổi máy. Mình gửi mã 6 số qua SMS.</p>
+          <label class="mt-6 block"><span class="sr-only">Số điện thoại</span>
+            <span class="flex h-[52px] items-center rounded-2xl border-2 border-border-strong bg-surface focus-within:border-primary">
+              <button type="button" class="press flex h-full shrink-0 items-center gap-1 border-r-2 border-border-strong pr-3 pl-4 text-base font-semibold" aria-label="Đổi mã vùng, đang chọn Việt Nam +84">+84<i data-lucide="chevron-down" class="size-4 text-muted"></i></button>
+              <input type="tel" inputmode="tel" autocomplete="tel-national" placeholder="Số điện thoại" class="h-full min-w-0 flex-1 bg-transparent px-3 text-base tabular-nums outline-none placeholder:text-muted" />
+            </span>
+          </label>
+          <a href="#otp" class="btn btn-primary mt-3">Gửi mã</a>
+          <div class="my-5 flex items-center gap-3"><span class="h-px flex-1 bg-border-strong"></span><span class="text-[13px] text-muted">hoặc</span><span class="h-px flex-1 bg-border-strong"></span></div>
+          <div class="grid gap-3">
+            <a href="#notify" class="btn btn-outline font-semibold"><svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.43zm4.565 15.71c-.03.07-.463 1.58-1.518 3.12-.945 1.34-1.94 2.71-3.43 2.71-1.517 0-1.9-.88-3.63-.88-1.698 0-2.302.91-3.67.91-1.377 0-2.332-1.26-3.428-2.8-1.287-1.82-2.323-4.63-2.323-7.28 0-4.28 2.797-6.55 5.552-6.550 1.448 0 2.675.95 3.6.95.865 0 2.222-1.01 3.902-1.01.613 0 2.886.06 4.374 2.19-.13.09-2.383 1.37-2.383 4.19 0 3.26 2.854 4.42 2.955 4.45z"/></svg>Tiếp tục với Apple</a>
+            <a href="#notify" class="btn btn-outline font-semibold"><svg viewBox="0 0 48 48" class="size-5" aria-hidden="true"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>Tiếp tục với Google</a>
+          </div>
+          <p class="mt-5 text-center text-[13px] text-muted">Bằng việc tiếp tục, bạn đồng ý với <a href="#signup" class="text-foreground underline underline-offset-2">Điều khoản</a> và <a href="#signup" class="text-foreground underline underline-offset-2">Chính sách quyền riêng tư</a></p>
+        </div>
+      </section>
+
+      <!-- ================= 8. NHẬP MÃ (J12, components/otp-input.md): một ô chính nên focus sẵn, bàn phím số 290px,
+           nút ngay dưới ô. ================= -->
+      <section class="screen is-pushed" data-screen="otp" aria-label="Nhập mã">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#signup" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Quay lại nhập số"><i data-lucide="arrow-left" class="size-6"></i></a>
+            <div class="h-3 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Bước 7 trên 8" aria-valuenow="7" aria-valuemin="0" aria-valuemax="8"><div class="h-full rounded-full bg-primary" style="width: 87.5%"></div></div>
+            <span class="size-11 shrink-0" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="scroll px-4">
+          <h1 class="pt-4 text-2xl font-bold tracking-tight">Nhập mã 6 số</h1>
+          <p class="mt-1 flex flex-wrap items-center gap-x-2 text-base text-muted"><span>Vừa gửi tới <span class="font-medium text-foreground tabular-nums">+84 937 878 335</span></span><a href="#signup" class="press inline-flex h-11 items-center text-foreground underline underline-offset-2">Đổi số</a></p>
+          <fieldset class="mt-3">
+            <legend class="sr-only">Mã xác thực</legend>
+            <div class="grid grid-cols-6 gap-2">
+              <input inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="4" aria-label="Số thứ 1 trên 6" class="h-14 w-full min-w-0 rounded-xl border-2 border-border-strong bg-surface text-center text-2xl font-bold tabular-nums outline-none" />
+              <input inputmode="numeric" maxlength="1" value="8" aria-label="Số thứ 2 trên 6" class="h-14 w-full min-w-0 rounded-xl border-2 border-border-strong bg-surface text-center text-2xl font-bold tabular-nums outline-none" />
+              <input inputmode="numeric" maxlength="1" value="2" aria-label="Số thứ 3 trên 6" class="h-14 w-full min-w-0 rounded-xl border-2 border-border-strong bg-surface text-center text-2xl font-bold tabular-nums outline-none" />
+              <input inputmode="numeric" maxlength="1" aria-label="Số thứ 4 trên 6" class="h-14 w-full min-w-0 rounded-xl border-2 border-primary bg-surface text-center text-2xl font-bold tabular-nums outline-none" />
+              <input inputmode="numeric" maxlength="1" aria-label="Số thứ 5 trên 6" class="h-14 w-full min-w-0 rounded-xl border-2 border-border-strong bg-surface text-center text-2xl font-bold tabular-nums outline-none" />
+              <input inputmode="numeric" maxlength="1" aria-label="Số thứ 6 trên 6" class="h-14 w-full min-w-0 rounded-xl border-2 border-border-strong bg-surface text-center text-2xl font-bold tabular-nums outline-none" />
+            </div>
+          </fieldset>
+          <p class="flex min-h-11 items-center text-[15px] text-muted tabular-nums" role="status">Chưa nhận được mã? Gửi lại sau 0:24</p>
+          <a href="#notify" class="btn btn-primary mt-1" aria-disabled="true">Xác nhận</a>
+        </div>
+        <!-- Bàn phím số (J13), khoảng 290px. -->
+        <div class="grid shrink-0 grid-cols-3 content-start gap-1.5 bg-[#d1d3d9] px-1.5 pt-1.5" style="height: 290px" aria-hidden="true">
+          <span class="kb-key !h-[46px]">1</span><span class="kb-key !h-[46px]">2</span><span class="kb-key !h-[46px]">3</span>
+          <span class="kb-key !h-[46px]">4</span><span class="kb-key !h-[46px]">5</span><span class="kb-key !h-[46px]">6</span>
+          <span class="kb-key !h-[46px]">7</span><span class="kb-key !h-[46px]">8</span><span class="kb-key !h-[46px]">9</span>
+          <span></span><span class="kb-key !h-[46px]">0</span><span class="grid h-[46px] place-items-center"><i data-lucide="delete" class="size-6"></i></span>
+        </div>
+      </section>
+
+      <!-- ================= 9. NHẮC LUYỆN MỖI NGÀY (O8, J12): màn mồi trước hộp hệ thống, ở cuối chuỗi. Minh hoạ đúng
+           thông báo người dùng sẽ nhận. "Tiếp tục" mới mở hộp hệ thống (logic). ================= -->
+      <section class="screen is-pushed" data-screen="notify" aria-label="Nhắc luyện mỗi ngày">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#otp" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Quay lại"><i data-lucide="arrow-left" class="size-6"></i></a>
+            <div class="h-3 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Bước 8 trên 8" aria-valuenow="8" aria-valuemin="0" aria-valuemax="8"><div class="h-full rounded-full bg-primary" style="width: 100%"></div></div>
+            <span class="size-11 shrink-0" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="scroll flex flex-col px-4">
+          <div class="flex flex-1 flex-col justify-center">
+            <!-- Thông báo mẫu, giống thông báo thật trên màn khoá. -->
+            <div class="rounded-[20px] bg-background p-3" aria-hidden="true">
+              <div class="flex items-start gap-3 rounded-2xl bg-surface p-3 shadow-[0_8px_24px_-12px_rgb(0_0_0/0.25)]">
+                <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground"><i data-lucide="mic" class="size-5"></i></span>
+                <span class="min-w-0 flex-1">
+                  <span class="flex justify-between text-[13px] text-muted"><span class="font-semibold text-foreground">Nói Liền</span><span>20:00</span></span>
+                  <span class="mt-0.5 block text-[15px]">Lan ơi, tới giờ luyện nói 10 phút rồi. Hôm nay: gọi món ở quán cà phê.</span>
+                </span>
+              </div>
+            </div>
+            <h1 class="mt-8 text-center text-2xl font-bold tracking-tight text-balance">Nhắc bạn luyện mỗi ngày?</h1>
+            <p class="mt-2 text-center text-base text-pretty text-muted">Một thông báo lúc 20:00 mỗi ngày, đổi giờ trong Cài đặt. Không gửi quảng cáo.</p>
+          </div>
+        </div>
+        <div class="grid shrink-0 gap-1 px-4 pt-3 pad-bottom">
+          <a href="#plan" class="btn btn-primary">Tiếp tục</a>
+          <a href="#plan" class="press flex min-h-11 items-center justify-center text-base font-semibold text-muted">Để sau</a>
+        </div>
+      </section>
+
+      <!-- ================= 10. LỘ TRÌNH SẴN SÀNG (O8 màn cuối): nói kết quả các câu trả lời, một nút đi thẳng vào bài đầu. ================= -->
+      <section class="screen is-pushed" data-screen="plan" aria-label="Lộ trình sẵn sàng">
+        <div class="scroll pad-top px-4">
+          <div class="flex flex-col items-center pt-6 text-center">
+            <img data-art="mia" data-art-face="lovingGrin1" alt="" class="size-36" />
+            <h1 class="mt-2 text-[28px]/[34px] font-extrabold tracking-tight text-balance">Lộ trình của Lan đã sẵn sàng</h1>
+            <p class="mt-2 text-base text-pretty text-muted">10 phút mỗi ngày. Sau 4 tuần bạn tự giới thiệu và trả lời được 10 câu phỏng vấn hay gặp.</p>
+          </div>
+          <dl class="mt-8 divide-y divide-border overflow-hidden rounded-[20px] border-2 border-border-strong text-base">
+            <div class="flex min-h-14 items-center justify-between gap-4 px-4 py-2"><dt class="text-muted">Mục tiêu</dt><dd class="text-right font-semibold">Đi làm, phỏng vấn xin việc</dd></div>
+            <div class="flex min-h-14 items-center justify-between gap-4 px-4 py-2"><dt class="text-muted">Trình độ</dt><dd class="text-right font-semibold">Nói được câu đơn giản</dd></div>
+            <div class="flex min-h-14 items-center justify-between gap-4 px-4 py-2"><dt class="text-muted">Mỗi ngày</dt><dd class="text-right font-semibold tabular-nums">10 phút · nhắc lúc 20:00</dd></div>
+            <div class="flex min-h-14 items-center justify-between gap-4 px-4 py-2"><dt class="text-muted">Chủ đề</dt><dd class="text-right font-semibold">Công việc, Du lịch, Công nghệ</dd></div>
+          </dl>
+          <p class="mt-6 text-[13px] font-semibold text-muted">BÀI ĐẦU TIÊN</p>
+          <div class="mt-2 flex items-center gap-3 rounded-[20px] border-2 border-primary bg-primary-light p-4 shadow-[0_4px_0_var(--primary)]">
+            <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-primary text-primary-foreground"><i data-lucide="briefcase" class="size-6"></i></span>
+            <span class="min-w-0 flex-1"><span class="block text-base font-bold">Tự giới thiệu khi phỏng vấn</span><span class="block text-[13px] text-(--primary-dark)">Bài 1 · 5 phút · 6 câu</span></span>
+          </div>
+        </div>
+        <div class="shrink-0 px-4 pt-3 pad-bottom">
+          <a href="#lesson" class="btn btn-primary">Bắt đầu bài 1</a>
+        </div>
+      </section>
+
+      <!-- ================= 11. BÀI 1 · CHƯA CHỌN: việc chính đầu tiên. Đóng bằng X (thoát bài), thanh tiến độ của bài. ================= -->
+      <section class="screen is-pushed" data-screen="lesson" aria-label="Bài 1">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#plan" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Thoát bài"><i data-lucide="x" class="size-6"></i></a>
+            <div class="h-3 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Câu 1 trên 6" aria-valuenow="1" aria-valuemin="0" aria-valuemax="6"><div class="h-full rounded-full bg-primary" style="width: 8%"></div></div>
+            <span class="size-11 shrink-0" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="scroll px-4">
+          <h1 class="pt-4 text-2xl font-bold tracking-tight text-balance">Chọn câu đáp lại hợp nhất</h1>
+          <div class="mt-5 flex items-end gap-2">
+            <img data-art="daniel" data-art-face="explaining" alt="" class="size-14 shrink-0 rounded-full bg-background" />
+            <div class="flex items-center gap-1 rounded-[20px] rounded-bl-md bg-background py-1 pr-1 pl-4">
+              <p class="text-[17px] text-pretty">Hi, I'm Daniel. How's it going?</p>
+              <button class="press grid size-11 shrink-0 place-items-center rounded-full text-primary" aria-label="Nghe lại"><i data-lucide="volume-2" class="size-5"></i></button>
+            </div>
+          </div>
+          <div class="mt-6 grid gap-3" role="radiogroup" aria-label="Câu trả lời" data-group="lesson">
+            <button role="radio" aria-checked="false" class="choice font-medium" data-answer="correct">Pretty good, thanks. I'm Lan.</button>
+            <button role="radio" aria-checked="false" class="choice font-medium">It's going to the office.</button>
+            <button role="radio" aria-checked="false" class="choice font-medium">Yes, I'm going.</button>
+          </div>
+        </div>
+        <div class="shrink-0 border-t border-border px-4 pt-3 pad-bottom">
+          <a href="#lesson-correct" class="btn btn-primary" aria-disabled="true" data-next="lesson">Kiểm tra</a>
+        </div>
+      </section>
+
+      <!-- ================= 12. BÀI 1 · ĐÚNG (J15 Playful): phản hồi tô cả dải đáy, màu đúng cố định một nghĩa. ================= -->
+      <section class="screen" data-screen="lesson-correct" aria-label="Bài 1, trả lời đúng">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#plan" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Thoát bài"><i data-lucide="x" class="size-6"></i></a>
+            <div class="h-3 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Câu 1 trên 6" aria-valuenow="1" aria-valuemin="0" aria-valuemax="6"><div class="h-full rounded-full bg-primary" style="width: 17%"></div></div>
+            <span class="size-11 shrink-0" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="scroll px-4">
+          <h1 class="pt-4 text-2xl font-bold tracking-tight text-balance">Chọn câu đáp lại hợp nhất</h1>
+          <div class="mt-5 flex items-end gap-2">
+            <img data-art="daniel" data-art-face="lovingGrin1" alt="" class="size-14 shrink-0 rounded-full bg-background" />
+            <div class="flex items-center gap-1 rounded-[20px] rounded-bl-md bg-background py-1 pr-1 pl-4">
+              <p class="text-[17px] text-pretty">Hi, I'm Daniel. How's it going?</p>
+              <button class="press grid size-11 shrink-0 place-items-center rounded-full text-primary" aria-label="Nghe lại"><i data-lucide="volume-2" class="size-5"></i></button>
+            </div>
+          </div>
+          <div class="mt-6 grid gap-3">
+            <div class="choice is-correct font-medium">Pretty good, thanks. I'm Lan.<i data-lucide="circle-check" class="ml-auto size-5 shrink-0 text-success"></i></div>
+            <div class="choice font-medium text-muted">It's going to the office.</div>
+            <div class="choice font-medium text-muted">Yes, I'm going.</div>
+          </div>
+        </div>
+        <div class="feedback shrink-0 bg-success-bg px-4 pt-4 pad-bottom" role="status">
+          <p class="flex items-center gap-2 text-lg font-extrabold text-success"><i data-lucide="circle-check" class="size-6"></i>Chính xác!</p>
+          <p class="mt-1 text-base text-success">"Pretty good, thanks" là cách đáp tự nhiên nhất, kèm tên mình.</p>
+          <a href="#speak" class="btn btn-success mt-4">Tiếp tục</a>
+        </div>
+      </section>
+
+      <!-- ================= 13. BÀI 1 · SAI: dải đỏ nhạt, nói đáp án đúng, không trách. ================= -->
+      <section class="screen" data-screen="lesson-wrong" aria-label="Bài 1, trả lời sai">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#plan" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Thoát bài"><i data-lucide="x" class="size-6"></i></a>
+            <div class="h-3 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Câu 1 trên 6" aria-valuenow="1" aria-valuemin="0" aria-valuemax="6"><div class="h-full rounded-full bg-primary" style="width: 8%"></div></div>
+            <span class="size-11 shrink-0" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="scroll px-4">
+          <h1 class="pt-4 text-2xl font-bold tracking-tight text-balance">Chọn câu đáp lại hợp nhất</h1>
+          <div class="mt-5 flex items-end gap-2">
+            <img data-art="daniel" data-art-face="concerned" alt="" class="size-14 shrink-0 rounded-full bg-background" />
+            <div class="flex items-center gap-1 rounded-[20px] rounded-bl-md bg-background py-1 pr-1 pl-4">
+              <p class="text-[17px] text-pretty">Hi, I'm Daniel. How's it going?</p>
+              <button class="press grid size-11 shrink-0 place-items-center rounded-full text-primary" aria-label="Nghe lại"><i data-lucide="volume-2" class="size-5"></i></button>
+            </div>
+          </div>
+          <div class="mt-6 grid gap-3">
+            <div class="choice font-medium text-muted">Pretty good, thanks. I'm Lan.</div>
+            <div class="choice is-wrong font-medium">It's going to the office.<i data-lucide="circle-x" class="ml-auto size-5 shrink-0 text-danger"></i></div>
+            <div class="choice font-medium text-muted">Yes, I'm going.</div>
+          </div>
+        </div>
+        <div class="feedback shrink-0 bg-danger-bg px-4 pt-4 pad-bottom" role="status">
+          <p class="flex items-center gap-2 text-lg font-extrabold text-danger"><i data-lucide="circle-x" class="size-6"></i>Chưa đúng</p>
+          <p class="mt-1 text-base text-danger">Đáp án: <span class="font-semibold">Pretty good, thanks. I'm Lan.</span> "How's it going?" là hỏi thăm, không hỏi bạn đi đâu.</p>
+          <a href="#lesson" class="btn btn-danger mt-4">Đã hiểu</a>
+        </div>
+      </section>
+
+      <!-- ================= 14. NÓI LẠI CÂU: việc chính của app luyện nói. Nút mic to giữa vùng ngón cái, không nút Kiểm tra
+           (nói xong là chấm). "Không nói được lúc này" là lối thoát khi đang ở chỗ đông người. ================= -->
+      <section class="screen is-pushed" data-screen="speak" aria-label="Nói lại câu">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#plan" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Thoát bài"><i data-lucide="x" class="size-6"></i></a>
+            <div class="h-3 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Câu 2 trên 6" aria-valuenow="2" aria-valuemin="0" aria-valuemax="6"><div class="h-full rounded-full bg-primary" style="width: 33%"></div></div>
+            <span class="size-11 shrink-0" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="scroll flex flex-col px-4">
+          <h1 class="pt-4 text-2xl font-bold tracking-tight text-balance">Nói lại theo Mia</h1>
+          <div class="mt-4 flex flex-col items-center">
+            <div class="flex items-center gap-1 rounded-[20px] border-2 border-border-strong bg-surface py-1 pr-1 pl-4">
+              <p class="text-[17px] text-pretty">Nice to meet you, Daniel.</p>
+              <button class="press grid size-11 shrink-0 place-items-center rounded-full text-primary" aria-label="Nghe mẫu"><i data-lucide="volume-2" class="size-5"></i></button>
+            </div>
+            <img data-art="mia" data-art-face="explaining" alt="" class="mt-2 size-40" />
+          </div>
+          <div class="flex flex-1 flex-col items-center justify-center gap-3 py-4">
+            <a href="#speak-listening" class="btn btn-primary !min-h-[72px] !w-28 rounded-[20px]" aria-label="Bấm để nói"><i data-lucide="mic" class="size-8"></i></a>
+            <p class="text-[15px] text-muted">Bấm rồi nói</p>
+          </div>
+        </div>
+        <div class="shrink-0 px-4 pt-3 pad-bottom">
+          <a href="#lesson" class="press flex min-h-11 items-center justify-center text-base font-semibold text-muted">Không nói được lúc này</a>
+        </div>
+      </section>
+
+      <!-- ================= 15. ĐANG NGHE: nút giãn ra thành sóng âm chạy, bấm lần nữa để dừng. ================= -->
+      <section class="screen" data-screen="speak-listening" aria-label="Đang nghe">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#plan" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Thoát bài"><i data-lucide="x" class="size-6"></i></a>
+            <div class="h-3 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Câu 2 trên 6" aria-valuenow="2" aria-valuemin="0" aria-valuemax="6"><div class="h-full rounded-full bg-primary" style="width: 33%"></div></div>
+            <span class="size-11 shrink-0" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="scroll flex flex-col px-4">
+          <h1 class="pt-4 text-2xl font-bold tracking-tight text-balance">Nói lại theo Mia</h1>
+          <div class="mt-4 flex flex-col items-center">
+            <div class="flex items-center gap-1 rounded-[20px] border-2 border-border-strong bg-surface py-1 pr-1 pl-4">
+              <p class="text-[17px] text-pretty">Nice to meet you, Daniel.</p>
+              <button class="press grid size-11 shrink-0 place-items-center rounded-full text-primary" aria-label="Nghe mẫu"><i data-lucide="volume-2" class="size-5"></i></button>
+            </div>
+            <img data-art="mia" data-art-face="calm" alt="" class="mt-2 size-40" />
+          </div>
+          <div class="flex flex-1 flex-col items-center justify-center gap-3 py-4">
+            <a href="#speak-correct" class="btn btn-primary !min-h-[72px] !w-56 rounded-[20px]" aria-label="Đang nghe, bấm để dừng">
+              <span class="wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
+            </a>
+            <p class="text-[15px] font-medium text-primary" role="status">Đang nghe… bấm để dừng</p>
+          </div>
+        </div>
+        <div class="shrink-0 px-4 pt-3 pad-bottom">
+          <a href="#lesson" class="press flex min-h-11 items-center justify-center text-base font-semibold text-muted">Không nói được lúc này</a>
+        </div>
+      </section>
+
+      <!-- ================= 16. NÓI ĐÚNG: từ nói đúng tô xanh trong bong bóng, dải đáy có nghĩa của câu. ================= -->
+      <section class="screen" data-screen="speak-correct" aria-label="Nói đúng">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#plan" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Thoát bài"><i data-lucide="x" class="size-6"></i></a>
+            <div class="h-3 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Câu 2 trên 6" aria-valuenow="2" aria-valuemin="0" aria-valuemax="6"><div class="h-full rounded-full bg-primary" style="width: 42%"></div></div>
+            <span class="size-11 shrink-0" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="scroll flex flex-col px-4">
+          <h1 class="pt-4 text-2xl font-bold tracking-tight text-balance">Nói lại theo Mia</h1>
+          <div class="mt-4 flex flex-col items-center">
+            <div class="flex items-center gap-1 rounded-[20px] border-2 border-border-strong bg-surface py-1 pr-1 pl-4">
+              <p class="text-[17px] font-semibold text-success underline decoration-2 underline-offset-4">Nice to meet you, Daniel.</p>
+              <button class="press grid size-11 shrink-0 place-items-center rounded-full text-primary" aria-label="Nghe mẫu"><i data-lucide="volume-2" class="size-5"></i></button>
+            </div>
+            <img data-art="mia" data-art-face="lovingGrin1" alt="" class="mt-2 size-40" />
+          </div>
+        </div>
+        <div class="feedback shrink-0 bg-success-bg px-4 pt-4 pad-bottom" role="status">
+          <p class="flex items-center gap-2 text-lg font-extrabold text-success"><i data-lucide="circle-check" class="size-6"></i>Phát âm rõ!</p>
+          <p class="mt-1 text-base text-success"><span class="font-semibold">Nghĩa:</span> Rất vui được gặp anh, Daniel.</p>
+          <a href="#lesson" class="btn btn-success mt-4">Tiếp tục</a>
+        </div>
+      </section>
+
+      <div class="home-indicator pointer-events-none absolute bottom-2 inset-x-0 mx-auto z-[70] h-[5px] w-[134px] rounded-full bg-foreground" aria-hidden="true"></div>
+    </div>
+
+    <!-- Bảng luồng (chỉ màn rộng, cho người duyệt): dựng bằng script từ danh sách màn, mỗi data-flow một hàng. -->
+    <main class="flow-board" aria-label="Bảng luồng">
+      <header class="flex items-end justify-between gap-6 px-12 pt-10 pb-6">
+        <div>
+          <p class="text-sm text-white/60">Bản mẫu app điện thoại</p>
+          <h1 class="mt-1 text-[28px] font-bold tracking-tight">Nói Liền</h1>
+        </div>
+        <p class="text-sm text-white/60">Bấm một màn để chạy thử từ màn đó</p>
+      </header>
+      <div data-board-rows></div>
+    </main>
+
+    <script>
+      lucide.createIcons();
+      // Máy thật là .device đầu tiên. Script của app tìm phần tử trong đó, không tìm khắp trang: bảng luồng (J1) chép cả
+      // khung máy, giữ nguyên data-* để CSS theo trạng thái còn đúng, nên tìm khắp trang là đổi nhầm cả bản chép.
+      const liveDevice = document.querySelector(".device");
+
+      const isReducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const wideScreen = matchMedia("(min-width: 900px)");
+      let lastProgress = null;
+
+      // Thanh tiến độ chạy từ bước trước sang bước này (400ms, đường giảm tốc): người dùng thấy mình vừa tiến lên.
+      function animateProgress(screen) {
+        const fill = screen?.querySelector('[role="progressbar"] > div');
+        if (!fill) { lastProgress = null; return; }
+        const targetWidth = fill.style.width;
+        if (lastProgress && lastProgress !== targetWidth && !isReducedMotion) {
+          fill.animate([{ width: lastProgress }, { width: targetWidth }], { duration: 400, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" });
+        }
+        lastProgress = targetWidth;
+      }
+
+      function showScreen(name) {
+        const exists = document.querySelector(`.device:not(.board-device) [data-screen="${name}"]`);
+        const target = exists ? name : "welcome";
+        document.querySelectorAll(".device:not(.board-device) [data-screen]").forEach((screen) => screen.classList.toggle("is-active", screen.dataset.screen === target));
+        animateProgress(document.querySelector(`[data-screen="${target}"]`));
+      }
+
+      // Màn rộng, link không có #màn: bảng luồng. Có #màn: chạy thử trong khung máy.
+      function route() {
+        const name = location.hash.slice(1);
+        document.body.classList.toggle("is-board", !name && wideScreen.matches);
+        showScreen(name || "welcome");
+      }
+
+      // Dựng bảng: mỗi danh sách data-flow thành một hàng; mỗi màn là bản chép tĩnh của màn thật trong khung thu nhỏ.
+      function buildBoard(renderScreen) {
+        const rowsContainer = document.querySelector("[data-board-rows]");
+        const liveDevice = document.querySelector(".device");
+        const isReduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        let order = 0;
+        document.querySelectorAll("[data-flow]").forEach((flowList) => {
+          const links = [...flowList.querySelectorAll("a[href^='#']")];
+          const section = document.createElement("section");
+          section.className = "pb-8";
+          section.innerHTML = `
+            <div class="flex items-end justify-between gap-4 px-12 pb-3">
+              <div><h2 class="text-xl font-semibold">${flowList.dataset.flow}</h2><p class="mt-0.5 text-sm text-white/60">${links.length} màn · ${flowList.dataset.flowNote || ""}</p></div>
+              <div class="flex gap-2">
+                <button type="button" class="grid size-11 place-items-center rounded-full bg-white/10 hover:bg-white/20" aria-label="Cuộn sang trái" data-scroll="-1"><i data-lucide="arrow-left" class="size-5"></i></button>
+                <button type="button" class="grid size-11 place-items-center rounded-full bg-white/10 hover:bg-white/20" aria-label="Cuộn sang phải" data-scroll="1"><i data-lucide="arrow-right" class="size-5"></i></button>
+              </div>
+            </div>
+            <div class="flow-row"></div>`;
+          const row = section.querySelector(".flow-row");
+          const frames = [];
+          links.forEach((link, index) => {
+            const screenName = link.getAttribute("href").slice(1);
+            renderScreen(screenName);
+            const deviceCopy = liveDevice.cloneNode(true);
+            deviceCopy.classList.add("board-device");
+            deviceCopy.inert = true;
+            deviceCopy.querySelectorAll(".screen:not(.is-active), .sheet:not(.is-open), .scrim:not(.is-open), [data-toast], [hidden]").forEach((element) => element.remove());
+            // Gỡ data-screen để probe và script chỉ thấy màn của máy thật. Giữ các data-* khác: CSS hay ẩn hiện theo chúng
+            // (nút phát/dừng theo [data-play-toggle][aria-pressed]), gỡ đi thì bản chép hiện cả hai icon.
+            deviceCopy.querySelectorAll("[data-screen]").forEach((element) => element.removeAttribute("data-screen"));
+            // Bỏ name, id, for: radio cùng name ở bản chép giành mất dấu chọn của máy thật (sheet món mất "Vừa", giá sai).
+            deviceCopy.querySelectorAll("[name], [id], [for]").forEach((element) => ["name", "id", "for"].forEach((attribute) => element.removeAttribute(attribute)));
+            frames.push({ name: screenName, device: deviceCopy });
+            const card = document.createElement("a");
+            card.href = `#${screenName}`;
+            card.className = "board-card";
+            card.style.setProperty("--order", ++order);
+            const phone = document.createElement("div");
+            phone.className = "board-phone";
+            phone.append(deviceCopy);
+            const label = document.createElement("p");
+            label.className = "mt-3 text-sm text-white/70";
+            label.textContent = `${index + 1}. ${link.textContent.replace(/^\d+\.\s*/, "")}`;
+            card.append(phone, label);
+            row.append(card);
+          });
+          // Thẻ đầu hàng: tự phát cả luồng như một đoạn video, dùng chính các màn vừa chép.
+          if (frames.length > 1) row.prepend(createFlowPlayer(frames, isReduced));
+          section.querySelectorAll("[data-scroll]").forEach((button) => {
+            button.addEventListener("click", () => row.scrollBy({ left: Number(button.dataset.scroll) * row.clientWidth * 0.8, behavior: isReduced ? "auto" : "smooth" }));
+          });
+          rowsContainer.append(section);
+        });
+        lucide.createIcons();
+      }
+
+      // ===== CHẠY LUỒNG (J1): 1,6 giây mỗi màn, màn sau trượt vào như bấm thật, thanh tiến độ chạy tiếp. Chỉ phát khi thẻ nằm
+      // trong màn hình, rê chuột thì dừng, có nút dừng / phát (nội dung tự chạy quá 5 giây phải dừng được). Giảm chuyển
+      // động thì không tự phát, bấm ▶ mới chạy, đổi màn bằng mờ dần. Bấm khung máy là chạy thử đúng màn đang phát. =====
+      function createFlowPlayer(frames, isReduced) {
+        const card = document.createElement("div");
+        card.className = "board-card";
+        card.style.setProperty("--order", 0);
+        card.innerHTML = `
+          <a class="block" aria-label="Chạy thử từ màn đang phát" data-player-link><div class="board-phone" data-player-phone></div></a>
+          <div class="mt-3 flex w-[273px] items-center justify-between gap-2">
+            <p class="text-sm text-white/70">Chạy luồng · <span class="tabular-nums" data-player-step></span></p>
+            <button type="button" class="player-toggle grid size-11 place-items-center rounded-full bg-white/10 hover:bg-white/20" data-player-toggle><i data-lucide="pause" class="icon-pause size-5"></i><i data-lucide="play" class="icon-play size-5"></i></button>
+          </div>
+          <div class="mt-2 flex w-[273px] gap-1" aria-hidden="true" data-player-segments>${frames.map(() => '<span class="h-1 flex-1 rounded-full bg-white/20"></span>').join("")}</div>`;
+        const phone = card.querySelector("[data-player-phone]");
+        const link = card.querySelector("[data-player-link]");
+        const step = card.querySelector("[data-player-step]");
+        const segments = [...card.querySelector("[data-player-segments]").children];
+        const toggle = card.querySelector("[data-player-toggle]");
+        let index = 0;
+        let timer = null;
+        let isPlaying = !isReduced;
+        let isHovered = false;
+        let isVisible = false;
+        let lastWidth = null;
+
+        function show(nextIndex, shouldAnimate) {
+          index = nextIndex;
+          phone.replaceChildren(frames[index].device.cloneNode(true));
+          link.href = `#${frames[index].name}`;
+          step.textContent = `${index + 1}/${frames.length}`;
+          // Đổi hẳn class, không chồng bg-white lên bg-white/20: hai class cùng thuộc tính thì thứ tự trong CSS quyết định, đoạn đã
+          // phát không sáng lên.
+          segments.forEach((segment, segmentIndex) => { segment.className = `h-1 flex-1 rounded-full ${segmentIndex <= index ? "bg-white" : "bg-white/20"}`; });
+          const screen = phone.querySelector(".screen");
+          const fill = phone.querySelector('[role="progressbar"] > div');
+          if (shouldAnimate && screen) {
+            screen.animate(isReduced ? [{ opacity: 0 }, { opacity: 1 }] : [{ translate: "30% 0", opacity: 0.6 }, { translate: "0 0", opacity: 1 }], { duration: isReduced ? 200 : 300, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" });
+            if (fill && lastWidth && lastWidth !== fill.style.width && !isReduced) {
+              fill.animate([{ width: lastWidth }, { width: fill.style.width }], { duration: 400, delay: 150, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)", fill: "backwards" });
+            }
+          }
+          lastWidth = fill ? fill.style.width : null;
+        }
+
+        function sync() {
+          const shouldRun = isPlaying && isVisible && !isHovered;
+          if (shouldRun && !timer) timer = setInterval(() => show((index + 1) % frames.length, true), 1600);
+          if (!shouldRun && timer) { clearInterval(timer); timer = null; }
+          toggle.setAttribute("aria-pressed", String(isPlaying));
+          toggle.setAttribute("aria-label", isPlaying ? "Dừng chạy luồng" : "Chạy luồng");
+        }
+
+        toggle.addEventListener("click", () => { isPlaying = !isPlaying; sync(); });
+        card.addEventListener("mouseenter", () => { isHovered = true; sync(); });
+        card.addEventListener("mouseleave", () => { isHovered = false; sync(); });
+        // Hình gán sau (nhân vật J16 nạp từ CDN): chép lại màn đang hiện khi hình đã có.
+        document.addEventListener("art-ready", () => show(index, false));
+        new IntersectionObserver(([entry]) => { isVisible = entry.isIntersecting; sync(); }, { threshold: 0.5 }).observe(card);
+        show(0, false);
+        sync();
+
+        return card;
+      }
+
+      // Chọn trong một nhóm: chọn một thì bỏ chọn cái khác; chọn nhiều thì bật tắt. Có lựa chọn thì nút Tiếp sáng lên (O8).
+      liveDevice.querySelectorAll("[data-group]").forEach((group) => {
+        const isMulti = group.hasAttribute("data-multi");
+        const nextButton = document.querySelector(`[data-next="${group.dataset.group}"]`);
+        group.querySelectorAll('[role="radio"], [role="checkbox"]').forEach((option) => {
+          option.addEventListener("click", () => {
+            if (isMulti) option.setAttribute("aria-checked", option.getAttribute("aria-checked") === "true" ? "false" : "true");
+            else group.querySelectorAll('[role="radio"]').forEach((item) => item.setAttribute("aria-checked", item === option ? "true" : "false"));
+            const hasSelection = group.querySelector('[aria-checked="true"]') !== null;
+            if (nextButton) nextButton.setAttribute("aria-disabled", hasSelection ? "false" : "true");
+            // Bài 1: chọn đúng thì Kiểm tra dẫn tới màn đúng, chọn sai tới màn sai (chỉ để xem hai trạng thái).
+            if (group.dataset.group === "lesson") nextButton.setAttribute("href", option.dataset.answer === "correct" ? "#lesson-correct" : "#lesson-wrong");
+          });
+        });
+      });
+
+      // Ô tên trống thì khoá Tiếp tục.
+      const nameInput = document.querySelector("[data-name-input]");
+      nameInput.addEventListener("input", () => {
+        document.querySelector('[data-next="name"]').setAttribute("aria-disabled", nameInput.value.trim() ? "false" : "true");
+      });
+
+      buildBoard(showScreen);
+      lastProgress = null;
+      window.addEventListener("hashchange", route);
+      wideScreen.addEventListener("change", route);
+      route();
+    </script>
+    <!-- Nhân vật (J16): dự án chưa có bộ hình nên sinh tại chỗ bằng DiceBear, kiểu Open Peeps (CC0, không cần ghi nguồn).
+         Không gọi api.dicebear.com (chỉ cho phi thương mại). Có bộ hình thương hiệu thì thay ở đây: mỗi img[data-art]
+         lấy file theo tên nhân vật và nét mặt. -->
+    <script type="module">
+      import { createAvatar } from "https://cdn.jsdelivr.net/npm/@dicebear/core@9.4.3/+esm";
+      import * as openPeeps from "https://cdn.jsdelivr.net/npm/@dicebear/open-peeps@9.4.3/+esm";
+
+      // Một nhân vật giữ nguyên tóc, áo (màu nhấn) ở mọi màn; chỉ nét mặt đổi theo khoảnh khắc.
+      const characters = {
+        mia: { seed: "mia", head: ["long"], clothingColor: ["c84a26"], accessoriesProbability: 0, facialHairProbability: 0, maskProbability: 0 },
+        daniel: { seed: "daniel", head: ["short2"], facialHair: ["full"], facialHairProbability: 100, clothingColor: ["78e185"], accessoriesProbability: 0, maskProbability: 0 },
+      };
+
+      document.querySelectorAll("img[data-art]").forEach((image) => {
+        const character = characters[image.dataset.art];
+        if (!character) return;
+        image.src = createAvatar(openPeeps, { ...character, face: [image.dataset.artFace || "calm"] }).toDataUri();
+      });
+      document.dispatchEvent(new Event("art-ready"));
+    </script>
+  </body>
+</html>

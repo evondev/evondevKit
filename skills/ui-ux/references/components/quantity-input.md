@@ -98,3 +98,11 @@ cân nặng) thì dùng ô nhập thường (`input.md`), không dùng khuôn n�
   hơn."*). Bấm − một lần thì về thẳng 8.
 - Dòng gợi ý nói giới hạn thật của thứ đang mua, không phải khoảng kỹ thuật chung chung
   ("Từ 1 đến 99"). Không có giới hạn đáng nói thì không có dòng gợi ý.
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Ô số lượng − +**: rê vào nút thì nền là ô vuông bo thụt vào, hay một mảng phủ kín từ viền tới viền cắt ngang lưng chừng khung? Giới hạn biết trước (tồn kho) đã là `max` để nút + mờ ở đó chưa, hay vẫn bấm được rồi mới báo lỗi? Dòng gợi ý nói giới hạn thật ("Còn 8 sản phẩm"), không phải "Từ 1 đến 99" (`components/quantity-input.md`).

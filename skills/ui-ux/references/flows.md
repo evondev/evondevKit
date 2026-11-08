@@ -27,13 +27,15 @@ Onboarding là luồng hay hỏng nhất, nên các luật dưới bắt đầu 
 | --- | --- | --- |
 | Là gì | Người dùng đã ở trong app (dashboard, danh sách); app chỉ chỗ bắt đầu | Các màn riêng chạy một lần, **trước** khi vào app: xin quyền, đồng ý điều khoản, hỏi tên, mục tiêu, sở thích để cá nhân hoá |
 | Hay gặp ở | App web, SaaS, dashboard | App mobile, app cá nhân hoá (học, sức khoẻ, tài chính, nội dung) |
-| Dựng bằng | Khung **Các bước bắt đầu**, màn rỗng lần đầu, gợi ý tại chỗ (`O1`–`O3`, `layouts/app.md`) | Chuỗi màn một câu hỏi một màn (`O8`) |
+| Dựng bằng | Khung **Các bước bắt đầu**, màn rỗng lần đầu, gợi ý tại chỗ (`O1`–`O3`, `layouts/app/dashboard.md`) | Chuỗi màn một câu hỏi một màn (`O8`) |
 | Kết thúc khi | Xong hay ẩn khung các bước | Màn cuối dẫn thẳng vào việc chính đầu tiên |
 
 Hai loại **nối nhau**: loại 2 xong thì người dùng rơi vào app, và loại 1 tiếp quản. Đề "dựng
 onboarding" không nói loại nào thì `U1` tự chọn theo nền tảng và ghi một dòng trong brief để
 người dùng sửa ở cổng 1, không thêm cổng hỏi: app mobile hoặc sản phẩm có cá nhân hoá thì dựng
-loại 2 rồi loại 1; app web làm việc (SaaS, quản lý) thì đăng ký gọn rồi dựng loại 1. Đề nói "xin
+loại 2 rồi loại 1, **trừ app mua bán, đặt món, đặt lịch**: vào thẳng app, chỉ hỏi đăng nhập lúc cần biết ai đặt
+(`J12`), nên không có chuỗi màn vào lần đầu, kể cả khi đề gọi là "onboarding" (khi đó là chọn cách nhận, nơi nhận,
+xin vị trí đúng lúc); app web làm việc (SaaS, quản lý) thì đăng ký gọn rồi dựng loại 1. Đề nói "xin
 quyền", "hỏi sở thích", "màn chào", "welcome screens" là loại 2. Đề nói "checklist", "hướng dẫn
 trong app", "người mới vào dashboard" là loại 1.
 
@@ -45,7 +47,7 @@ Màn đầu tiên sau đăng ký là dashboard **chưa có dữ liệu**. Dựng
 năm ô số `0`, biểu đồ phẳng, bảng "Chưa có dữ liệu": người mới không biết bấm vào đâu.
 
 - Workspace mới thì khung **Các bước bắt đầu** thay cả lưới, hay một khối chào có một nút
-  `primary` dẫn tới việc chính đầu tiên (`layouts/app.md`, mục Các bước bắt đầu). Không dựng
+  `primary` dẫn tới việc chính đầu tiên (`layouts/app/dashboard.md`, mục Các bước bắt đầu). Không dựng
   lại ở đây, theo đúng mẫu đó.
 - Màn danh sách rỗng lần đầu (chưa từng có bản ghi) khác màn rỗng do lọc
   (`components/empty-state.md`): lần đầu thì một câu vì sao nên tạo, một nút tạo; rỗng do lọc
@@ -183,8 +185,9 @@ rộng hết màn):
   riêng chỉ khi phải xin đồng ý riêng (nhận email quảng cáo, xác nhận đủ tuổi), và ô đó bỏ trống
   sẵn.
 - **Xin quyền** (thông báo, vị trí, camera): một **màn mồi** trước hộp hệ thống, minh hoạ đúng cái
-  người dùng sẽ nhận (một thông báo mẫu "Tới giờ học 15 phút rồi"), nút `primary` "Bật thông báo"
-  và nút ghost "Để sau". Chỉ nút Bật mới gọi hộp hệ thống (logic, ghi gợi ý). Đặt ở **cuối chuỗi**
+  người dùng sẽ nhận (một thông báo mẫu "Tới giờ học 15 phút rồi"), nút `primary` và nút ghost "Để
+  sau"; chữ trên nút chính theo `J12` ở app điện thoại ("Tiếp tục": hộp hệ thống mới là chỗ cho
+  phép). Chỉ nút chính mới gọi hộp hệ thống (logic, ghi gợi ý). Đặt ở **cuối chuỗi**
   hay lúc cần tới quyền đó, không đặt ở màn đầu. Quyền chưa cần ngay thì không xin trong chuỗi.
 - **Màn cuối** nói kết quả của các câu trả lời ("Lộ trình 15 phút mỗi ngày, bắt đầu từ bài 1") và
   một nút đi thẳng vào **việc chính đầu tiên**. Không đưa người dùng vào một dashboard rỗng.

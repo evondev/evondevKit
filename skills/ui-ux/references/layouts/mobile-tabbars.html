@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Thanh tab — sáu kiểu (J2)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+      /* Token như mobile-app.html (khối đổi thương hiệu). Đổi --primary là cả sáu kiểu đổi theo. */
+      :root {
+        --app-font: "Inter", ui-sans-serif, system-ui, sans-serif;
+        --primary: #181818;
+        --primary-foreground: #ffffff;
+        --background: #f4f4f6;
+        --surface: #ffffff;
+        --foreground: #2c2c2c;
+        --muted: #707070;
+        --secondary: #e7e8ec;
+        /* Thanh tối (Dark, Center khi nút giữa tối): nền gần đen trung tính, không theo màu nhấn (như thẻ số chính J5). */
+        --bar-dark: #18181b;
+      }
+      body { font-family: var(--app-font); }
+      .press { transition: scale 120ms cubic-bezier(0.23, 1, 0.32, 1), background-color 150ms ease, color 150ms ease; -webkit-tap-highlight-color: transparent; }
+      .press:active { scale: 0.95; }
+      @media (prefers-reduced-motion: reduce) { .press:active { scale: 1; } }
+      /* Sân khấu: một dải đáy màn 390px, nội dung giả phía sau để thấy thanh nổi, bóng, kính. */
+      .stage { position: relative; width: 390px; max-width: 100%; height: 188px; overflow: hidden; border-radius: 28px; background: var(--background); }
+      .stage-glass { background: radial-gradient(120% 90% at 10% 0%, #ff7a3d 0%, transparent 55%), radial-gradient(90% 80% at 100% 30%, #7c3aed 0%, transparent 60%), #0b0b10; }
+    </style>
+    <!-- @theme phải nằm trong style text/tailwindcss thì Tailwind bản trình duyệt mới đọc (bg-primary, bg-surface…). -->
+    <style type="text/tailwindcss">
+      @theme inline {
+        --font-sans: var(--app-font);
+        --color-primary: var(--primary);
+        --color-primary-foreground: var(--primary-foreground);
+        --color-background: var(--background);
+        --color-surface: var(--surface);
+        --color-foreground: var(--foreground);
+        --color-muted: var(--muted);
+        --color-secondary: var(--secondary);
+        --color-bar-dark: var(--bar-dark);
+      }
+    </style>
+  </head>
+  <body class="bg-[#ececef] px-4 py-10 text-foreground antialiased">
+    <main class="mx-auto flex max-w-[420px] flex-col gap-10">
+      <header>
+        <h1 class="text-2xl font-semibold tracking-tight">Thanh tab — sáu kiểu</h1>
+        <p class="mt-2 text-sm text-muted text-pretty">Luật chung ở J2 (mobile.md). Mỗi thanh khai <code>data-tab-style</code> để probe biết kiểu chỉ icon là có chủ ý. Mặc định Float; năm kiểu còn lại chọn trên wireframe (nhóm Tab, <code>?tab=</code>) hay khi đề nêu. Bấm thử từng mục.</p>
+      </header>
+
+      <!-- ===== 1. FLOAT (mặc định, J2): viên nổi có chữ, hành động chính là nút tròn đứng riêng bên phải (J5). ===== -->
+      <section>
+        <h2 class="text-base font-semibold">1. Float <span class="font-normal text-muted">· mặc định</span></h2>
+        <p class="mt-1 text-sm text-muted">Mọi app. Có chữ dưới icon, đọc được ngay lần đầu mở.</p>
+        <div class="stage mt-3">
+          <div class="absolute inset-x-4 top-4 h-24 rounded-[20px] bg-surface"></div>
+          <a href="#tabbars" class="press absolute right-4 bottom-4 z-10 grid size-16 place-items-center rounded-full bg-primary text-primary-foreground shadow-[0_8px_24px_-8px_rgb(0_0_0/0.45)]" aria-label="Thêm"><i data-lucide="plus" class="size-7"></i></a>
+          <nav class="absolute bottom-4 left-4 right-[92px] grid h-16 grid-cols-3 rounded-full bg-surface/90 px-2 shadow-[0_0_0_1px_rgb(0_0_0/0.04),0_8px_24px_-8px_rgb(0_0_0/0.18)] backdrop-blur-xl" aria-label="Điều hướng chính" data-tabs data-tab-style="float">
+            <a href="#tabbars" aria-current="page" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground"><i data-lucide="house" class="size-6"></i><span class="text-[11px] font-medium">Tổng quan</span></a>
+            <a href="#tabbars" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground"><i data-lucide="chart-column" class="size-6"></i><span class="text-[11px] font-medium">Thống kê</span></a>
+            <a href="#tabbars" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground"><i data-lucide="settings" class="size-6"></i><span class="text-[11px] font-medium">Cài đặt</span></a>
+          </nav>
+        </div>
+      </section>
+
+      <!-- ===== 2. CENTER: hành động chính nằm giữa thanh, nhô lên. Ngoại lệ có tên của "thanh tab chỉ để đi lại" (J2):
+           chỉ khi app có MỘT hành động làm hằng ngày (ghi khoản chi, quét món, đăng bài, chuyển tiền), và thanh có 4 mục
+           (2 trái, 2 phải). Nút 56px, nhô bằng `bottom` dương (N11), viền 4px màu nền để tách khỏi thanh. ===== -->
+      <section>
+        <h2 class="text-base font-semibold">2. Center</h2>
+        <p class="mt-1 text-sm text-muted">Một hành động làm hằng ngày (ghi chi, quét, chuyển tiền). Đúng 4 mục, chia đôi hai bên.</p>
+        <div class="stage mt-3">
+          <div class="absolute inset-x-4 top-4 h-24 rounded-[20px] bg-surface"></div>
+          <nav class="absolute inset-x-4 bottom-4 grid h-16 grid-cols-5 rounded-full bg-surface/90 px-1 shadow-[0_0_0_1px_rgb(0_0_0/0.04),0_8px_24px_-8px_rgb(0_0_0/0.18)] backdrop-blur-xl" aria-label="Điều hướng chính" data-tabs data-tab-style="center">
+            <a href="#tabbars" aria-current="page" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground"><i data-lucide="house" class="size-6"></i><span class="text-[11px] font-medium">Trang chủ</span></a>
+            <a href="#tabbars" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground"><i data-lucide="chart-pie" class="size-6"></i><span class="text-[11px] font-medium">Phân tích</span></a>
+            <!-- Ô giữa không phải tab: nút hành động, không mang aria-current, bấm mở sheet hay màn tạo mới. -->
+            <div class="relative flex justify-center">
+              <a href="#tabbars" class="press relative bottom-5 grid size-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-[0_0_0_4px_var(--background),0_10px_24px_-8px_rgb(0_0_0/0.5)]" aria-label="Thêm khoản chi" data-action><i data-lucide="plus" class="size-7"></i></a>
+            </div>
+            <a href="#tabbars" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground"><i data-lucide="history" class="size-6"></i><span class="text-[11px] font-medium">Lịch sử</span></a>
+            <a href="#tabbars" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground"><i data-lucide="user-round" class="size-6"></i><span class="text-[11px] font-medium">Tài khoản</span></a>
+          </nav>
+        </div>
+      </section>
+
+      <!-- ===== 3. PILL: chỉ mục đang chọn hiện chữ, trong viên màu nhấn; các mục khác chỉ icon. Người dùng luôn đọc được
+           mình đang ở đâu, thanh gọn hơn Float. 3–5 mục, icon quen (nhà, tìm, tim, người, biểu đồ), mỗi mục aria-label. ===== -->
+      <section>
+        <h2 class="text-base font-semibold">3. Pill</h2>
+        <p class="mt-1 text-sm text-muted">Gọn, hiện đại, vẫn có chữ ở mục đang chọn. 3–5 mục, icon quen.</p>
+        <div class="stage mt-3">
+          <div class="absolute inset-x-4 top-4 h-24 rounded-[20px] bg-surface"></div>
+          <nav class="absolute inset-x-4 bottom-4 flex h-16 items-center justify-between rounded-full bg-surface/90 px-2 shadow-[0_0_0_1px_rgb(0_0_0/0.04),0_8px_24px_-8px_rgb(0_0_0/0.18)] backdrop-blur-xl" aria-label="Điều hướng chính" data-tabs data-tab-style="pill">
+            <a href="#tabbars" aria-current="page" aria-label="Trang chủ" class="press group flex h-12 min-w-12 items-center justify-center gap-2 rounded-full px-3 text-muted aria-[current=page]:bg-primary aria-[current=page]:px-4 aria-[current=page]:text-primary-foreground"><i data-lucide="house" class="size-6"></i><span class="hidden text-sm font-semibold group-aria-[current=page]:inline">Trang chủ</span></a>
+            <a href="#tabbars" aria-label="Tìm kiếm" class="press group flex h-12 min-w-12 items-center justify-center gap-2 rounded-full px-3 text-muted aria-[current=page]:bg-primary aria-[current=page]:px-4 aria-[current=page]:text-primary-foreground"><i data-lucide="search" class="size-6"></i><span class="hidden text-sm font-semibold group-aria-[current=page]:inline">Tìm kiếm</span></a>
+            <a href="#tabbars" aria-label="Đã lưu" class="press group flex h-12 min-w-12 items-center justify-center gap-2 rounded-full px-3 text-muted aria-[current=page]:bg-primary aria-[current=page]:px-4 aria-[current=page]:text-primary-foreground"><i data-lucide="heart" class="size-6"></i><span class="hidden text-sm font-semibold group-aria-[current=page]:inline">Đã lưu</span></a>
+            <a href="#tabbars" aria-label="Tài khoản" class="press group flex h-12 min-w-12 items-center justify-center gap-2 rounded-full px-3 text-muted aria-[current=page]:bg-primary aria-[current=page]:px-4 aria-[current=page]:text-primary-foreground"><i data-lucide="user-round" class="size-6"></i><span class="hidden text-sm font-semibold group-aria-[current=page]:inline">Tài khoản</span></a>
+          </nav>
+        </div>
+      </section>
+
+      <!-- ===== 4. DARK: thanh tối gần đen trên màn sáng, mục đang chọn là viên tròn trắng chứa icon tối. Viên đồng tâm với đầu
+           bo của thanh: thanh 64, viên 48, cách mép trên dưới 8 thì cách mép trái phải cũng 8 (justify-between px-2). Chia đều
+           (justify-around) thì viên đầu trôi vào giữa, đầu bo trống một mảng. Bóng nhẹ: bóng đậm dưới thanh đen thành vệt
+           như thanh thứ hai. Chỉ icon nên tối đa
+           4 mục, icon quen, aria-label. Icon chưa chọn white/60 trên #18181b (~6:1). Hợp app nền kem, nền màu (Tinted). ===== -->
+      <section>
+        <h2 class="text-base font-semibold">4. Dark</h2>
+        <p class="mt-1 text-sm text-muted">Nổi bật trên nền sáng hay nền màu. Chỉ icon: tối đa 4 mục, icon quen.</p>
+        <!-- Nền kem đặt bằng style: .stage là CSS ngoài layer, đè mất class bg-[…] của Tailwind. -->
+        <div class="stage mt-3" style="background: #efe9df">
+          <div class="absolute inset-x-4 top-4 h-24 rounded-[20px] bg-surface"></div>
+          <nav class="absolute inset-x-6 bottom-4 flex h-16 items-center justify-between rounded-full bg-bar-dark px-2 shadow-[0_8px_20px_-12px_rgb(0_0_0/0.4)]" aria-label="Điều hướng chính" data-tabs data-tab-style="dark">
+            <a href="#tabbars" aria-current="page" aria-label="Trang chủ" class="press grid size-12 place-items-center rounded-full text-white/60 aria-[current=page]:bg-white aria-[current=page]:text-bar-dark"><i data-lucide="house" class="size-6"></i></a>
+            <a href="#tabbars" aria-label="Lịch trình" class="press grid size-12 place-items-center rounded-full text-white/60 aria-[current=page]:bg-white aria-[current=page]:text-bar-dark"><i data-lucide="calendar-days" class="size-6"></i></a>
+            <a href="#tabbars" aria-label="Yêu thích" class="press grid size-12 place-items-center rounded-full text-white/60 aria-[current=page]:bg-white aria-[current=page]:text-bar-dark"><i data-lucide="heart" class="size-6"></i></a>
+            <a href="#tabbars" aria-label="Tài khoản" class="press grid size-12 place-items-center rounded-full text-white/60 aria-[current=page]:bg-white aria-[current=page]:text-bar-dark"><i data-lucide="user-round" class="size-6"></i></a>
+          </nav>
+        </div>
+      </section>
+
+      <!-- Dark ghép nút thêm riêng (J5, màn gốc có việc thêm): thanh 3 mục thu lại right-[92px], cao 64px bằng nút; nút màu
+           nhấn đứng riêng bên phải, cùng đáy. Hai khối nặng cạnh nhau nên nút là màu nhấn, không đen như thanh. -->
+      <section>
+        <h2 class="text-base font-semibold">4b. Dark cộng nút thêm</h2>
+        <p class="mt-1 text-sm text-muted">Màn gốc có việc thêm: thanh 3 mục thu lại, nút màu nhấn đứng riêng, cùng cao 64px.</p>
+        <div class="stage mt-3" style="background: #e8e3f0">
+          <div class="absolute inset-x-4 top-4 h-24 rounded-[20px] bg-surface"></div>
+          <a href="#tabbars" class="press absolute right-4 bottom-4 z-10 grid size-16 place-items-center rounded-full text-white shadow-[0_8px_24px_-8px_rgb(0_0_0/0.45)]" style="background: #7c3aed" aria-label="Thêm bữa ăn"><i data-lucide="plus" class="size-7"></i></a>
+          <nav class="absolute bottom-4 left-4 right-[92px] flex h-16 items-center justify-between rounded-full bg-bar-dark px-2 shadow-[0_8px_20px_-12px_rgb(0_0_0/0.4)]" aria-label="Điều hướng chính" data-tabs data-tab-style="dark">
+            <a href="#tabbars" aria-current="page" aria-label="Hôm nay" class="press grid size-12 place-items-center rounded-full text-white/60 aria-[current=page]:bg-white aria-[current=page]:text-bar-dark"><i data-lucide="house" class="size-6"></i></a>
+            <a href="#tabbars" aria-label="Nhật ký" class="press grid size-12 place-items-center rounded-full text-white/60 aria-[current=page]:bg-white aria-[current=page]:text-bar-dark"><i data-lucide="calendar-days" class="size-6"></i></a>
+            <a href="#tabbars" aria-label="Tài khoản" class="press grid size-12 place-items-center rounded-full text-white/60 aria-[current=page]:bg-white aria-[current=page]:text-bar-dark"><i data-lucide="user-round" class="size-6"></i></a>
+          </nav>
+        </div>
+      </section>
+
+      <!-- ===== 5. BUBBLES: mỗi mục một nút tròn rời 52px, mục đang chọn đặc màu nhấn. Hành động riêng (phát, thêm) là một
+           nút tròn tách ra mép phải. Hợp app học, app nội dung ít mục. Tối đa 4 mục, icon quen, aria-label. ===== -->
+      <section>
+        <h2 class="text-base font-semibold">5. Bubbles</h2>
+        <p class="mt-1 text-sm text-muted">Vui, nhẹ, hợp app học và nội dung. Tối đa 4 mục, hành động tách ra mép phải.</p>
+        <div class="stage mt-3">
+          <div class="absolute inset-x-4 top-4 h-24 rounded-[20px] bg-surface"></div>
+          <div class="absolute inset-x-4 bottom-4 flex items-center justify-between">
+            <nav class="flex gap-2" aria-label="Điều hướng chính" data-tabs data-tab-style="bubbles">
+              <a href="#tabbars" aria-current="page" aria-label="Trang chủ" class="press grid size-[52px] place-items-center rounded-full bg-surface text-foreground shadow-[0_0_0_1px_rgb(0_0_0/0.06),0_6px_16px_-8px_rgb(0_0_0/0.25)] aria-[current=page]:bg-primary aria-[current=page]:text-primary-foreground"><i data-lucide="house" class="size-6"></i></a>
+              <a href="#tabbars" aria-label="Khoá học" class="press grid size-[52px] place-items-center rounded-full bg-surface text-foreground shadow-[0_0_0_1px_rgb(0_0_0/0.06),0_6px_16px_-8px_rgb(0_0_0/0.25)] aria-[current=page]:bg-primary aria-[current=page]:text-primary-foreground"><i data-lucide="book-open" class="size-6"></i></a>
+              <a href="#tabbars" aria-label="Yêu thích" class="press grid size-[52px] place-items-center rounded-full bg-surface text-foreground shadow-[0_0_0_1px_rgb(0_0_0/0.06),0_6px_16px_-8px_rgb(0_0_0/0.25)] aria-[current=page]:bg-primary aria-[current=page]:text-primary-foreground"><i data-lucide="star" class="size-6"></i></a>
+            </nav>
+            <a href="#tabbars" aria-label="Học tiếp" class="press grid size-[52px] place-items-center rounded-full bg-surface text-foreground shadow-[0_0_0_1px_rgb(0_0_0/0.06),0_6px_16px_-8px_rgb(0_0_0/0.25)]" data-action><i data-lucide="play" class="size-6"></i></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 6. GLASS: thanh kính trên nền tối, ảnh hay quầng màu (Immersive, Glow). Phía sau trơn sáng thì kính không thấy
+           gì, đừng dùng (F19). Có chữ: chữ trắng trên kính mờ chỉ đọc được khi nền sau đủ tối, đo tương phản ở chỗ sáng nhất. ===== -->
+      <section>
+        <h2 class="text-base font-semibold">6. Glass</h2>
+        <p class="mt-1 text-sm text-muted">Chỉ khi phía sau là ảnh, nền tối hay quầng màu. Giữ chữ, đo tương phản ở chỗ sáng nhất.</p>
+        <div class="stage stage-glass mt-3">
+          <div class="absolute inset-x-4 top-4 h-24 rounded-[20px] bg-white/8 ring-1 ring-white/10 ring-inset"></div>
+          <nav class="absolute inset-x-4 bottom-4 grid h-16 grid-cols-4 rounded-full bg-white/12 px-1.5 py-1.5 ring-1 ring-white/20 ring-inset backdrop-blur-2xl" aria-label="Điều hướng chính" data-tabs data-tab-style="glass">
+            <a href="#tabbars" aria-current="page" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-white/70 aria-[current=page]:bg-white/18 aria-[current=page]:text-white"><i data-lucide="house" class="size-6"></i><span class="text-[11px] font-medium">Trang chủ</span></a>
+            <a href="#tabbars" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-white/70 aria-[current=page]:bg-white/18 aria-[current=page]:text-white"><i data-lucide="message-circle" class="size-6"></i><span class="text-[11px] font-medium">Trò chuyện</span></a>
+            <a href="#tabbars" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-white/70 aria-[current=page]:bg-white/18 aria-[current=page]:text-white"><i data-lucide="compass" class="size-6"></i><span class="text-[11px] font-medium">Khám phá</span></a>
+            <a href="#tabbars" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-white/70 aria-[current=page]:bg-white/18 aria-[current=page]:text-white"><i data-lucide="settings" class="size-6"></i><span class="text-[11px] font-medium">Cài đặt</span></a>
+          </nav>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      lucide.createIcons();
+      // Bấm một mục: chỉ mục đó mang aria-current="page" trong thanh của nó. Nút hành động (data-action) không là tab.
+      document.querySelectorAll("[data-tabs]").forEach((tabs) => {
+        tabs.addEventListener("click", (event) => {
+          const tab = event.target.closest("a");
+          if (!tab || tab.hasAttribute("data-action")) return;
+          event.preventDefault();
+          tabs.querySelectorAll("a:not([data-action])").forEach((item) => item.toggleAttribute("aria-current", item === tab));
+          tabs.querySelectorAll("a[aria-current]").forEach((item) => item.setAttribute("aria-current", "page"));
+        });
+      });
+    </script>
+  </body>
+</html>

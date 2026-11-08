@@ -35,7 +35,7 @@ là không có điểm neo**:
 **M3. Đúng một màu nhấn cho cả app.** Nút chính, link, control đang bật (checkbox,
 switch, chip lọc đã chọn) dùng chung nó. Mục **điều hướng** đang chọn (sidebar, tab,
 trang hiện tại) thì dùng nền xám hoặc vạch `--foreground`, không màu nhấn. Ngoại lệ có tên: màu
-nhấn có sắc thì mục sidebar đang chọn là `bg-primary-light text-primary` (`layouts/app.md`,
+nhấn có sắc thì mục sidebar đang chọn là `bg-primary-light text-primary` (`layouts/app/shell.md`,
 "Khung app có sidebar"); tab vẫn vạch `--foreground` (bảng
 công thức phần tử bên dưới, `small-controls.md`). Màu thứ hai phải xin phép.
 
@@ -257,16 +257,16 @@ Trang phẳng, sạch; thứ bậc đến từ cỡ chữ, độ đậm và màu
 
 | Token | Cho | Vì sao |
 | --- | --- | --- |
-| `--border` | Viền card, khung dropdown, đường chia trong danh sách và menu, **đường kẻ dưới đầu sidebar và dưới header** (cùng màu vạch trong menu, chủ dự án chốt, `layouts/app.md`) | **Trang trí**: chỉ vạch ranh giới, nhạt được bao nhiêu thì nhạt |
-| `--border-strong` | **Viền ô nhập**, **viền nút outline**, select, viền card khi hover, **mọi đường kẻ nằm thẳng trên nền trang xám** (footer trang; xem dưới bảng; riêng đường kẻ hàng tab `underline` là `--tab-rail`, `components/small-controls.md`), kẻ dọc sidebar **chỉ khi vùng nội dung cũng trắng** (`layouts/app.md`) | **Chức năng**: ô nhập và nút outline cùng nền trắng với card, viền là thứ duy nhất báo "đây là chỗ gõ", "đây là chỗ bấm" (`I8`) |
+| `--border` | Viền card, khung dropdown, đường chia trong danh sách và menu, **đường kẻ dưới đầu sidebar và dưới header** (cùng màu vạch trong menu, chủ dự án chốt, `layouts/app/shell.md`) | **Trang trí**: chỉ vạch ranh giới, nhạt được bao nhiêu thì nhạt |
+| `--border-strong` | **Viền ô nhập**, **viền nút outline**, select, viền card khi hover, **mọi đường kẻ nằm thẳng trên nền trang xám** (footer trang; xem dưới bảng; riêng đường kẻ hàng tab `underline` là `--tab-rail`, `components/small-controls.md`), kẻ dọc sidebar **chỉ khi vùng nội dung cũng trắng** (`layouts/app/shell.md`) | **Chức năng**: ô nhập và nút outline cùng nền trắng với card, viền là thứ duy nhất báo "đây là chỗ gõ", "đây là chỗ bấm" (`I8`) |
 
 Trong mỗi nhóm thì mọi chỗ dùng chung đúng một token, để đường tóc không chỗ
 đậm chỗ nhạt. Muốn viền card nhạt đi thì hạ `--border`, ô nhập không nhạt theo.
 
 **Đường chia lặp lại trong card luôn là `--border`**: `divide-y` giữa các dòng, vạch giữa các ô số
 xếp cột, hàng chú giải dưới biểu đồ. Áp ở mọi bộ mặt, kể cả card nổi không viền (Soft, `P7`) và
-khi trông "gần tàng hình": đó là mức đã chọn, `#eaeaea` ở chỗ này bị chê đậm (chủ dự án,
-07/11/2026; cùng lý do bị bác ở luật chốt 18). Ngoại lệ có tên duy nhất là **một vạch đứng riêng**
+khi trông "gần tàng hình": đó là mức đã chọn, `#eaeaea` ở chỗ này bị chê đậm (chủ dự án;
+cùng lý do bị bác ở luật chốt 18). Ngoại lệ có tên duy nhất là **một vạch đứng riêng**
 chia hai phần của card (vạch giữa giá và tính năng ở `layouts/pricing.md`, đường "hoặc" ở
 `layouts/form.md`): vạch đó mới là `--border-strong`. Probe báo "ĐƯỜNG CHIA TRONG CARD ĐẬM".
 
@@ -569,7 +569,7 @@ bóng rất mờ, không phải viền đậm hơn.**
 *Gu flat — phong cách khác đã chọn theo `P1` thì xem `P2` trong `references/styles.md`.*
 
 Đăng nhập, đăng ký, quên mật khẩu, màn onboarding một khối. (Trang lỗi không dùng card, xem
-"Trang lỗi" ở `layouts/app.md`.) Đặc điểm
+"Trang lỗi" ở `layouts/app/error-pages.md`.) Đặc điểm
 chung: **không có khối thứ hai nào để mà tách khỏi.**
 
 `M13` bắt viền vì viền là thứ phân định ranh giới giữa các khối nằm cạnh nhau.

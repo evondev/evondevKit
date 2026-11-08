@@ -45,11 +45,12 @@ Cách nạp thì tuỳ bối cảnh:
 
 ## Màu nhấn gợi ý theo ngành, khi dự án chưa có brand ⚑
 
-Nhóm Nhấn của wireframe (`design-process.md`, `U3`) và trang design system (`system.md`) gợi ý
+Nhóm Nhấn của wireframe (`wireframe.md`, `U3`) và trang design system (`system.md`) gợi ý
 ba màu. Trước đây ba màu cố định cho mọi dự án, nên ba dự án khác ngành ra cùng một bảng màu.
 Giờ ba màu chọn theo ngành ở `U1`: **màu đầu là quy ước của ngành**, hai màu sau khác hướng để
 người dùng có lựa chọn không sáo. Không chọn thì dựng màu đầu, báo một dòng. Dự án có brand
-thì brand thắng, không gợi ý.
+thì brand thắng, không gợi ý. **Dự án đã có UI là đã có brand**, kể cả màu nhấn gần đen: giữ màu
+của dự án (chủ dự án chốt, `wireframe.md`).
 
 **Bảng màu, chỉ lấy từ đây** (đều đạt từ 5 : 1 với chữ trắng trên nút chính, `P3`):
 
@@ -65,15 +66,15 @@ thì brand thắng, không gợi ý.
 
 `--primary-hover`, `--primary-light` và bản nền tối suy từ `--primary` như các mục bên dưới.
 
-**Ngành → ba màu gợi ý.** Cột giữa là số đo thật: màu chính trên trang chủ của khoảng 60
-sản phẩm, 12 ngành, đo 03/11/2026, chỉ đếm những trang đọc ra màu. Đừng sửa bảng theo trí nhớ
+**Ngành → ba màu gợi ý.** Cột giữa là số đo thật: màu chính trên trang chủ (trang chặn đọc thì icon app) của
+khoảng 95 sản phẩm, 14 ngành, đo 03/11/2026 (hai ngành cuối 07/11/2026), chỉ đếm những trang đọc ra màu. Đừng sửa bảng theo trí nhớ
 hay theo sáo ("spa thì hồng"); muốn sửa thì đo lại.
 
 | Ngành ở `U1` | Đo được | Ba màu, màu đầu mặc định |
 | --- | --- | --- |
 | Tài chính, kế toán, ngân hàng | xanh dương, chàm 5/8; cam, xanh lá lẻ | Xanh dương · Xanh lá · Cam |
 | Y tế, phòng khám, nha khoa | xanh dương 2, xanh ngọc 1, vàng 1 trên 4 | Xanh ngọc · Xanh dương · Tím |
-| Đồ ăn, nhà hàng, giao đồ ăn | đỏ, đỏ cam 3/3 | Cam · Xanh lá · Chàm |
+| Đồ ăn, nhà hàng, giao đồ ăn; đồ uống, cà phê, trà sữa (gộp vào đây, chưa đo riêng) | đỏ, đỏ cam 3/3 | Cam · Xanh lá · Chàm |
 | Spa, làm đẹp, đặt lịch | tím 1, cam 2, vàng 1 trên 4: **không có quy ước rõ** | Tím · Cam · Xanh ngọc |
 | Bán lẻ, cửa hàng, bán hàng tại quầy | xanh dương 4, xanh lá 2 trên 6 | Xanh dương · Xanh lá · Cam |
 | Giáo dục, khoá học | xanh dương 3, tím vàng 1 trên 4 | Xanh dương · Tím · Cam |
@@ -82,6 +83,8 @@ hay theo sáo ("spa thì hồng"); muốn sửa thì đo lại.
 | Nhân sự, chấm công | tím 2, xanh dương 1 trên 3 | Tím · Xanh dương · Xanh ngọc |
 | CRM, bán hàng B2B | cam, xanh dương, xanh lá, tím rải đều: **không có quy ước** | Chàm · Cam · Xanh ngọc |
 | Du lịch, khách sạn, homestay | hồng đỏ, cam, đỏ tím, xanh dương trên 4 | Cam · Hồng tím · Xanh dương |
+| Sức khoẻ cá nhân, thói quen, thể dục, ăn uống lành mạnh | cam 4, xanh dương 3, xanh ngọc 2, xanh lá 2, hồng đỏ 2, đen 2, tím 1, chàm 1 trên 17: **không có quy ước rõ** | Tím · Cam · Xanh lá |
+| Thiền, ngủ, sách nói, podcast | cam 3, xanh ngọc 3, xanh dương 2, xanh lá 2, hổ phách 2, đen 2, đỏ, chàm, tím mỗi màu 1 trên 17: **không có quy ước**; nhánh thiền nghiêng lạnh, nhánh sách nói nghiêng ấm | Hồng tím · Xanh ngọc · Cam |
 | Ngành khác, không rõ | | Chàm · Xanh ngọc · Cam |
 
 Xanh dương là màu chung của gần hết các ngành, nên chỉ để nó đứng đầu ở ngành mà số đo nghiêng

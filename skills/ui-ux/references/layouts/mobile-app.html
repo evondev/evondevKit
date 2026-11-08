@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <!-- viewport-fit=cover: chạy trên điện thoại thật thì nội dung tràn dưới tai thỏ, tự chừa bằng env(safe-area-inset-*). -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Chi Tiêu — app mẫu</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <style>
+      /* ===== KHỐI ĐỔI THƯƠNG HIỆU, chép từ references/tokens.css (nền sáng). ===== */
+      :root {
+        --app-font: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+        --primary: #181818;
+        --primary-hover: #2e2e2e;
+        --primary-foreground: #ffffff;
+
+        --background: #f4f4f6;
+        --surface: #ffffff;
+        --foreground: #2c2c2c;
+        --muted: #707070;
+        /* Đậm hơn tokens.css (#f7f7f8): app điện thoại nền trắng, vạch ngăn dòng phải thấy được (J1). */
+        --border: #f0f0f2;
+        --border-strong: #eaeaea;
+        --secondary: #e7e8ec;
+        --danger: #c70036;
+        --danger-bg: rgb(255 32 86 / 0.1);
+        --success: #00875a;
+
+        /* Màu danh mục (J17): một thang cho icon và biểu đồ, theo thứ tự thang mặc định của charts.md, nhóm lớn tới
+           nhỏ. Không đỏ, hổ phách, xanh lá: app tiền dùng chúng cho trạng thái (vượt ngân sách, tiền vào). Icon đạt
+           4.5:1 trên nền của nó. --cat-green-bg chỉ cho dòng thu nhập, đi cùng --success. */
+        --cat-blue-bg: #e3efff;   --cat-blue: #1d5fbf;
+        --cat-sky-bg: #e0f2fe;    --cat-sky: #0369a1;
+        --cat-violet-bg: #ede9fe; --cat-violet: #6d28d9;
+        --cat-green-bg: #dff5ea;
+        --avatar-bg: #ffd8c2;    --avatar-text: #8a3b12;
+
+        /* Thẻ số chính (J5): nền tối trung tính, không theo màu nhấn. Thanh tiến độ trong thẻ trắng khi màu nhấn
+           trung tính; dự án có màu nhấn rực thì đổi thành color-mix(in oklab, var(--primary) 70%, white). */
+        --hero-bg: #1c1c1e;
+        --hero-accent: #ffffff;
+
+        /* Nền quanh khung máy (chỉ màn rộng, không thuộc app). */
+        --frame-page: #e9e9ec;
+        --frame-muted: #565656;  /* chữ phụ trên --frame-page, 5.9:1; --muted trên nền này chỉ 4.09:1 */
+      }
+      /* ===== HẾT KHỐI ĐỔI THƯƠNG HIỆU ===== */
+
+      /* ===== THANH CUỘN (SKILL.md câu 2), chép từ tokens.css: cho phần ngoài khung máy (trang bảng luồng dài). Vùng cuộn
+         trong khung (.scroll) ẩn hẳn, ngoại lệ của luật chốt 13. ===== */
+      * { --scrollbar-thumb: transparent; }
+      *:hover { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 16%, transparent); }
+      .is-scrolling { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 28%, transparent); }
+      ::-webkit-scrollbar { width: 4px; height: 4px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 9999px; }
+      ::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--foreground) 40%, transparent); }
+      @supports not selector(::-webkit-scrollbar) {
+        * { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+        *:hover { scrollbar-color: color-mix(in srgb, var(--foreground) 18%, transparent) transparent; }
+        .is-scrolling { scrollbar-color: color-mix(in srgb, var(--foreground) 28%, transparent) transparent; }
+      }
+
+      /* ===== KHUNG MÁY (J1). Hai chế độ:
+         - Màn hẹp (điện thoại thật, probe 390): màn tràn hết, chừa tai thỏ và thanh home bằng env().
+         - Màn rộng (máy tính): màn 390×844 nằm trong khung điện thoại, vẽ thanh trạng thái 47px và thanh home 34px. ===== */
+      :root { --inset-top: env(safe-area-inset-top, 0px); --inset-bottom: env(safe-area-inset-bottom, 0px); }
+      /* Nền màn (J1): trắng mặc định; màn danh sách nhóm (.is-grouped, như Cài đặt) nền xám, thẻ trắng nằm trên. */
+      .device { --screen-bg: var(--surface); position: relative; width: 100%; height: 100dvh; overflow: hidden; background: var(--screen-bg); }
+      .device:has(.screen.is-grouped.is-active) { --screen-bg: var(--background); }
+      .status-bar, .home-indicator { display: none; }
+      @media (min-width: 500px) {
+        :root { --inset-top: 47px; --inset-bottom: 34px; }
+        .device { width: 390px; height: 844px; border-radius: 48px; box-shadow: 0 0 0 10px #1c1c1e, 0 0 0 11px #3a3a3c, 0 30px 60px -10px rgb(0 0 0 / 0.35); }
+        .status-bar { display: flex; }
+        .home-indicator { display: block; }
+      }
+
+      /* Màn: mỗi màn là một lớp phủ kín khung; màn đang xem có .is-active. Đẩy màn con vào từ phải (J3). */
+      .screen { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--screen-bg); visibility: hidden; }
+      .screen.is-grouped { --screen-bg: var(--background); }
+      .screen.is-active { visibility: visible; }
+      /* Chuyển động (J10): vào đường giảm tốc, ra đường tăng tốc và nhanh hơn. */
+      @media (prefers-reduced-motion: no-preference) {
+        .screen.is-pushed.is-active { animation: push-in 300ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .sheet { transition: translate 250ms cubic-bezier(0.3, 0, 1, 1); }
+        .sheet.is-open { transition: translate 320ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .screen.is-pushed.is-active { animation: fade-in 200ms ease; }
+      }
+      @keyframes push-in { from { translate: 30% 0; opacity: 0.6; } to { translate: 0 0; opacity: 1; } }
+      @keyframes fade-in { from { opacity: 0; } }
+
+      /* Vùng cuộn: chừa đỉnh cho tai thỏ, chừa đáy cho thanh tab nổi + thanh home (J2). */
+      .scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+      .scroll::-webkit-scrollbar { display: none; }
+      .pad-top { padding-top: var(--inset-top); }
+      .pad-tabbar { padding-bottom: calc(var(--inset-bottom) + 96px); }
+      /* Màn ẩn thanh tab (form, thanh toán, luồng nhiều bước: J2) chỉ chừa thanh home. */
+      .pad-bottom { padding-bottom: calc(var(--inset-bottom) + 16px); }
+      .above-home { bottom: calc(var(--inset-bottom) + 8px); }
+
+      /* Sheet (J6): trượt từ đáy, bo 28px hai góc trên, thanh kéo 36×5, lớp phủ đen 40%. */
+      .sheet { translate: 0 100%; }
+      .sheet.is-open { translate: 0 0; }
+      .scrim { opacity: 0; pointer-events: none; transition: opacity 200ms ease; }
+      .scrim.is-open { opacity: 1; pointer-events: auto; transition-duration: 240ms; }
+      /* Giảm chuyển động: sheet mờ dần tại chỗ thay cho trượt (J10), không hiện "phựt". */
+      @media (prefers-reduced-motion: reduce) {
+        .sheet { translate: 0 0; opacity: 0; visibility: hidden; transition: opacity 200ms ease, visibility 200ms; }
+        .sheet.is-open { opacity: 1; visibility: visible; }
+      }
+
+      /* Nhấn: co nhẹ (đúng như chạm thật), nút tối thì sáng lên một bậc. */
+      .press { transition: scale 120ms cubic-bezier(0.23, 1, 0.32, 1), background-color 150ms ease; -webkit-tap-highlight-color: transparent; }
+      .press:active { scale: 0.97; }
+      @media (prefers-reduced-motion: reduce) { .press:active { scale: 1; } }
+
+      /* ===== BẢNG LUỒNG (J1): chỉ cho người duyệt trên màn rộng, không thuộc app. Mở link không có #màn thì ra bảng:
+         mỗi luồng một hàng, các màn cạnh nhau theo thứ tự đi, cuộn ngang; bấm một màn là chạy thử từ màn đó. ===== */
+      body.is-board { display: block !important; min-height: 100vh; padding: 0 !important; background: #141414 !important; color: #f4f4f5; }
+      body.is-board > .device, body.is-board > .wf-screens { display: none !important; }
+      .flow-board { display: none; }
+      body.is-board .flow-board { display: block; }
+      .flow-row { display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 48px; padding: 8px 48px 24px; scrollbar-width: none; }
+      .flow-row::-webkit-scrollbar { display: none; }
+      .board-card { flex: none; scroll-snap-align: start; color: inherit; text-decoration: none; }
+      .board-phone { width: calc(390px * 0.7); height: calc(844px * 0.7); overflow: hidden; border-radius: 32px; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08); transition: box-shadow 150ms ease; }
+      .board-card:hover .board-phone { box-shadow: 0 0 0 2px var(--primary-foreground); }
+      .board-card:focus-visible { outline: none; }
+      /* Khai lại màu chữ của app: body của bảng chữ trắng, bản chép sẽ thừa hưởng nếu không khai. */
+      .board-device { color: var(--foreground); --inset-top: 47px; --inset-bottom: 34px; zoom: 0.7; width: 390px !important; height: 844px !important; border-radius: 0 !important; box-shadow: none !important; }
+      .board-device .status-bar { display: flex; }
+      .board-device .home-indicator { display: block; }
+      .board-device .screen { visibility: visible; animation: none !important; }
+      .board-device .sheet, .board-device .scrim { transition: none; }
+      @media (prefers-reduced-motion: no-preference) {
+        .board-card { animation: card-in 400ms cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(var(--order) * 40ms); }
+      }
+      @keyframes card-in { from { opacity: 0; translate: 0 16px; } }
+      .player-toggle .icon-play { display: none; }
+      .player-toggle[aria-pressed="false"] .icon-play { display: block; }
+      .player-toggle[aria-pressed="false"] .icon-pause { display: none; }
+    </style>
+
+    <style type="text/tailwindcss">
+      @theme inline {
+        --font-sans: var(--app-font);
+        --color-primary: var(--primary);
+        --color-primary-hover: var(--primary-hover);
+        --color-primary-foreground: var(--primary-foreground);
+        --color-background: var(--background);
+        --color-surface: var(--surface);
+        --color-foreground: var(--foreground);
+        --color-muted: var(--muted);
+        --color-border: var(--border);
+        --color-border-strong: var(--border-strong);
+        --color-secondary: var(--secondary);
+        --color-danger: var(--danger);
+        --color-danger-bg: var(--danger-bg);
+        --color-success: var(--success);
+      }
+    </style>
+  </head>
+
+  <body class="bg-background font-sans text-foreground antialiased min-[500px]:flex min-[500px]:min-h-screen min-[500px]:items-center min-[500px]:justify-center min-[500px]:gap-12 min-[500px]:bg-(--frame-page) min-[500px]:py-10">
+    <!-- Danh sách màn: chỉ ở màn rộng, để người duyệt nhảy thẳng tới từng màn. Không thuộc app. -->
+    <nav class="wf-screens hidden w-48 text-sm min-[900px]:block" aria-label="Màn trong bản mẫu">
+      <a href="#" class="mb-4 inline-flex items-center gap-1 rounded-md py-1.5 pr-2 font-medium text-(--frame-muted) hover:text-foreground"><i data-lucide="layout-grid" class="size-4"></i>Bảng luồng</a>
+      <p class="mb-3 font-medium">Chi Tiêu · 5 màn</p>
+      <!-- Mỗi luồng một <ol data-flow>: bảng luồng dựng mỗi danh sách thành một hàng, theo đúng thứ tự này. -->
+      <ol class="space-y-1 text-(--frame-muted)" data-flow="Ghi chi tiêu" data-flow-note="Xem tổng quan, thêm một khoản, xem thống kê">
+        <li><a href="#home" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">1. Tổng quan</a></li>
+        <li><a href="#add" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">2. Thêm giao dịch (sheet)</a></li>
+        <li><a href="#detail" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">3. Chi tiết giao dịch</a></li>
+        <li><a href="#stats" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">4. Thống kê</a></li>
+        <li><a href="#settings" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">5. Cài đặt</a></li>
+      </ol>
+    </nav>
+
+    <div class="device">
+      <!-- Thanh trạng thái giả (chỉ khung máy tính): 47px, giờ trái, sóng / pin phải. -->
+      <div class="status-bar pointer-events-none absolute inset-x-0 top-0 z-40 h-[47px] items-center justify-between px-8 pt-1 text-[15px] font-semibold" aria-hidden="true">
+        <span>9:41</span>
+        <span class="flex items-center gap-1.5"><i data-lucide="signal" class="size-4"></i><i data-lucide="wifi" class="size-4"></i><i data-lucide="battery-full" class="size-5"></i></span>
+      </div>
+      <!-- Dải nền dưới thanh trạng thái (J1): nội dung cuộn lên mờ dần dưới dải này, không đè giờ và pin. Máy thật cũng cần. -->
+      <div class="status-cover pointer-events-none absolute inset-x-0 top-0 z-30 h-(--inset-top) bg-(--screen-bg)/85 backdrop-blur-xl" aria-hidden="true"></div>
+
+      <!-- ================= 1. TỔNG QUAN (tab 1) ================= -->
+      <section class="screen" data-screen="home" aria-label="Tổng quan">
+        <div class="scroll pad-top pad-tabbar">
+          <!-- Đầu màn gốc (J3): lời chào nhỏ + tiêu đề lớn canh trái, avatar phải. -->
+          <header class="flex items-start justify-between px-4 pt-3">
+            <div>
+              <p class="text-sm text-muted">Chào buổi sáng, Lan</p>
+              <h1 class="mt-0.5 text-[32px]/[38px] font-semibold tracking-tight">Tháng 10</h1>
+            </div>
+            <a href="#settings" class="press mt-1 grid size-11 place-items-center rounded-full bg-(--avatar-bg) text-[15px] font-semibold text-(--avatar-text)" aria-label="Tài khoản">L</a>
+          </header>
+
+          <!-- Thẻ số chính (J5): một con số lớn nhất màn, kèm ngân sách còn lại. -->
+          <div class="mx-4 mt-5 rounded-[20px] bg-(--hero-bg) p-5 text-white">
+            <p class="text-sm text-white/70">Đã chi tháng này</p>
+            <p class="mt-1 text-[36px]/[42px] font-semibold tracking-tight tabular-nums">8.450.000 <span class="text-2xl font-medium text-white/70">đ</span></p>
+            <div class="mt-4 h-1.5 overflow-hidden rounded-full bg-white/15"><div class="h-full w-[70%] rounded-full bg-(--hero-accent)"></div></div>
+            <p class="mt-2 flex justify-between text-[13px] text-white/70"><span>70% ngân sách</span><span class="tabular-nums">Còn 3.550.000 đ</span></p>
+          </div>
+
+          <!-- Dải ngày trong tuần (J5): bảy ô bấm được, hôm nay đậm, ngày có chi tiêu có chấm. -->
+          <div class="mt-6 flex items-center justify-between px-4">
+            <h2 class="text-[20px]/[25px] font-semibold">Tuần này</h2>
+            <span class="text-sm text-muted tabular-nums">6–12/10</span>
+          </div>
+          <!-- Không gap: viền trong suốt 3px + bg-clip-padding tạo khe 6px giữa các ô, cả cột vẫn là chỗ bấm (≥ 44px ở khổ 360). px-[13px] để mép ô thấy được thẳng lề 16. -->
+          <div class="mt-3 grid grid-cols-7 px-[13px]" role="tablist" aria-label="Ngày trong tuần">
+            <button role="tab" aria-selected="false" class="press flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border-[3px] border-transparent bg-clip-padding bg-surface text-muted ring-1 ring-border-strong ring-inset"><span class="text-xs">T2</span><span class="text-base font-semibold text-foreground tabular-nums">6</span><span class="size-1 rounded-full bg-muted"></span></button>
+            <button role="tab" aria-selected="false" class="press flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border-[3px] border-transparent bg-clip-padding bg-surface text-muted ring-1 ring-border-strong ring-inset"><span class="text-xs">T3</span><span class="text-base font-semibold text-foreground tabular-nums">7</span><span class="size-1 rounded-full bg-muted"></span></button>
+            <button role="tab" aria-selected="false" class="press flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border-[3px] border-transparent bg-clip-padding bg-surface text-muted ring-1 ring-border-strong ring-inset"><span class="text-xs">T4</span><span class="text-base font-semibold text-foreground tabular-nums">8</span><span class="size-1 rounded-full bg-transparent"></span></button>
+            <button role="tab" aria-selected="true" class="press flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border-[3px] border-transparent bg-clip-padding bg-primary text-white/70"><span class="text-xs">T5</span><span class="text-base font-semibold text-white tabular-nums">9</span><span class="size-1 rounded-full bg-white"></span></button>
+            <button role="tab" aria-selected="false" class="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border-[3px] border-transparent text-muted/60" disabled><span class="text-xs">T6</span><span class="text-base font-semibold tabular-nums">10</span><span class="size-1"></span></button>
+            <button role="tab" aria-selected="false" class="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border-[3px] border-transparent text-muted/60" disabled><span class="text-xs">T7</span><span class="text-base font-semibold tabular-nums">11</span><span class="size-1"></span></button>
+            <button role="tab" aria-selected="false" class="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border-[3px] border-transparent text-muted/60" disabled><span class="text-xs">CN</span><span class="text-base font-semibold tabular-nums">12</span><span class="size-1"></span></button>
+          </div>
+
+          <!-- Danh sách nhóm trong thẻ (J4): dòng 64px, icon tròn 40px, tên + giờ trái, số tiền phải. -->
+          <div class="mt-6 flex items-center justify-between px-4">
+            <h2 class="text-[20px]/[25px] font-semibold">Hôm nay</h2>
+            <a href="#stats" class="press -mr-2 inline-flex h-11 items-center px-2 text-sm font-medium text-muted">Xem tất cả</a>
+          </div>
+          <ul class="mx-4 mt-2 divide-y divide-border overflow-hidden rounded-[20px] bg-surface ring-1 ring-border-strong ring-inset">
+            <li><a href="#detail" class="press flex min-h-16 items-center gap-3 px-4 py-3 active:bg-background">
+              <span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-sky-bg) text-(--cat-sky)"><i data-lucide="coffee" class="size-5"></i></span>
+              <span class="min-w-0 flex-1"><span class="block text-base font-medium text-pretty">Cà phê sáng</span><span class="block text-[13px] text-muted">Ăn uống · 8:15</span></span>
+              <span class="shrink-0 text-base font-medium tabular-nums">−45.000 đ</span>
+            </a></li>
+            <li><a href="#detail" class="press flex min-h-16 items-center gap-3 px-4 py-3 active:bg-background">
+              <span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-violet-bg) text-(--cat-violet)"><i data-lucide="car" class="size-5"></i></span>
+              <span class="min-w-0 flex-1"><span class="block text-base font-medium text-pretty">Grab đi làm</span><span class="block text-[13px] text-muted">Đi lại · 8:40</span></span>
+              <span class="shrink-0 text-base font-medium tabular-nums">−62.000 đ</span>
+            </a></li>
+            <li><a href="#detail" class="press flex min-h-16 items-center gap-3 px-4 py-3 active:bg-background">
+              <span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-blue-bg) text-(--cat-blue)"><i data-lucide="shopping-bag" class="size-5"></i></span>
+              <span class="min-w-0 flex-1"><span class="block text-base font-medium text-pretty">Đi chợ cuối tuần cho cả nhà, mua thêm rau và trái cây</span><span class="block text-[13px] text-muted">Đi chợ · 11:02</span></span>
+              <span class="shrink-0 text-base font-medium tabular-nums">−386.000 đ</span>
+            </a></li>
+            <li><a href="#detail" class="press flex min-h-16 items-center gap-3 px-4 py-3 active:bg-background">
+              <span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-green-bg) text-success"><i data-lucide="wallet" class="size-5"></i></span>
+              <span class="min-w-0 flex-1"><span class="block text-base font-medium text-pretty">Tiền thưởng dự án</span><span class="block text-[13px] text-muted">Thu nhập · 14:30</span></span>
+              <span class="shrink-0 text-base font-medium text-success tabular-nums">+2.000.000 đ</span>
+            </a></li>
+          </ul>
+        </div>
+
+      </section>
+
+      <!-- ================= 2. CHI TIẾT GIAO DỊCH (màn con để xem, đẩy vào từ phải, giữ thanh tab: J2) ================= -->
+      <section class="screen is-pushed" data-screen="detail" aria-label="Chi tiết giao dịch">
+        <!-- Thanh trên màn con (J3): 44px, nút quay lại trái, tiêu đề giữa 17px, hành động phụ phải. -->
+        <header class="pad-top shrink-0 bg-(--screen-bg)">
+          <div class="flex h-11 items-center justify-between px-2">
+            <a href="#home" class="press inline-flex h-11 items-center gap-0.5 rounded-full pr-3 pl-1 text-base" aria-label="Quay lại Tổng quan"><i data-lucide="chevron-left" class="size-6"></i>Tổng quan</a>
+            <p class="absolute inset-x-0 mx-auto w-fit text-[17px] font-semibold">Giao dịch</p>
+            <button class="press grid size-11 place-items-center rounded-full" aria-label="Sửa"><i data-lucide="pencil" class="size-5"></i></button>
+          </div>
+        </header>
+        <div class="scroll pad-tabbar">
+          <div class="flex flex-col items-center px-4 pt-6 pb-8 text-center">
+            <span class="grid size-16 place-items-center rounded-full bg-(--cat-blue-bg) text-(--cat-blue)"><i data-lucide="shopping-bag" class="size-7"></i></span>
+            <p class="mt-4 text-[36px]/[42px] font-semibold tracking-tight tabular-nums">−386.000 đ</p>
+            <p class="mt-1 text-base text-pretty text-muted">Đi chợ cuối tuần cho cả nhà, mua thêm rau và trái cây</p>
+          </div>
+          <dl class="mx-4 divide-y divide-border overflow-hidden rounded-[20px] bg-surface text-base ring-1 ring-border-strong ring-inset">
+            <div class="flex min-h-14 items-center justify-between gap-4 px-4"><dt class="text-muted">Danh mục</dt><dd class="font-medium">Đi chợ</dd></div>
+            <div class="flex min-h-14 items-center justify-between gap-4 px-4"><dt class="text-muted">Thời gian</dt><dd class="font-medium tabular-nums">09/10 · 11:02</dd></div>
+            <div class="flex min-h-14 items-center justify-between gap-4 px-4"><dt class="text-muted">Ví</dt><dd class="font-medium">Tiền mặt</dd></div>
+            <div class="flex min-h-14 items-center justify-between gap-4 px-4"><dt class="text-muted">Chia với</dt><dd class="font-medium">Minh, Hà</dd></div>
+          </dl>
+          <p class="mx-4 mt-3 text-[13px] text-muted">Ảnh hoá đơn và ghi chú thêm nằm trong mục Sửa.</p>
+          <!-- Việc nguy hiểm: đỏ nhạt (I4), đứng riêng cuối màn, cách xa nút chính. -->
+          <button class="press mx-4 mt-8 flex h-[52px] w-[calc(100%-2rem)] items-center justify-center gap-2 rounded-2xl bg-danger-bg text-base font-medium text-danger">
+            <i data-lucide="trash-2" class="size-5"></i>Xoá giao dịch
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= 4. THỐNG KÊ (tab 2) ================= -->
+      <section class="screen" data-screen="stats" aria-label="Thống kê">
+        <div class="scroll pad-top pad-tabbar">
+          <header class="px-4 pt-3"><h1 class="text-[32px]/[38px] font-semibold tracking-tight">Thống kê</h1></header>
+          <!-- Điều khiển phân đoạn (J4): cao 36px, tối đa 5 mục, nền rãnh xám, mục chọn nền trắng. Chữ mọi mục
+               cùng --foreground: --muted trên rãnh --secondary chỉ 4.04:1. -->
+          <div class="mx-4 mt-4 grid h-11 grid-cols-3 rounded-xl bg-secondary text-sm font-medium" role="tablist" aria-label="Khoảng thời gian">
+            <!-- Nút cao trọn 44px (chỗ bấm J4), viên chọn 36px nằm trong nút nhờ p-1: đệm của rãnh không thành chỗ chết. -->
+            <button role="tab" aria-selected="false" class="press group p-1"><span class="flex h-full items-center justify-center rounded-lg group-aria-selected:bg-surface group-aria-selected:shadow-[0_1px_3px_rgb(0_0_0/0.08)]">Tuần</span></button>
+            <button role="tab" aria-selected="true" class="press group p-1"><span class="flex h-full items-center justify-center rounded-lg group-aria-selected:bg-surface group-aria-selected:shadow-[0_1px_3px_rgb(0_0_0/0.08)]">Tháng</span></button>
+            <button role="tab" aria-selected="false" class="press group p-1"><span class="flex h-full items-center justify-center rounded-lg group-aria-selected:bg-surface group-aria-selected:shadow-[0_1px_3px_rgb(0_0_0/0.08)]">Năm</span></button>
+          </div>
+          <!-- Biểu đồ trên điện thoại (J17): cả chuỗi một màu --chart-fill (bản sáng là --primary), số trên mọi cột, tháng đang
+               chạy nhạt /35. Chạm hay kéo ngang thì số to đổi thành số của cột gần ngón tay nhất, không nhãn bay theo ngón
+               tay (ngón che mất). Cột đang chọn không đổi màu, chỉ đậm số và nhãn trục. -->
+          <div class="mx-4 mt-4 rounded-[20px] bg-surface p-5 ring-1 ring-border-strong ring-inset" data-chart>
+            <p class="text-sm text-muted" data-chart-label>6 tháng gần đây, số trên cột là triệu đồng</p>
+            <p class="mt-1 text-2xl font-semibold tabular-nums" data-chart-value>57.750.000 đ</p>
+            <!-- Cả vùng là một chỗ chạm: sáu cột chỉ ~43px mỗi cột ở 390, dưới 44px (J4). pan-y: kéo ngang là dò số, kéo
+                 dọc vẫn cuộn màn. Nhãn "T5" vừa khe nên ghi đủ; "Tháng này" rộng hơn khe thì tràn sang trái, canh theo
+                 mép phải cột cuối (min-w-0 để cột không phình theo nhãn). Ở 360 nó chạm "T9" nên bỏ nhãn T9 (giữ chỗ
+                 bằng invisible); chạm cột T9 thì số to vẫn ghi "Tháng 9". -->
+            <div class="mt-5 flex h-40 touch-pan-y items-end gap-2.5" role="group" aria-label="Chi tiêu từng tháng, mũi tên trái phải để đọc từng tháng" tabindex="0" data-chart-plot>
+              <div class="group flex h-full min-w-0 flex-1 flex-col items-center gap-2" data-bar data-label="Tháng 5" data-value="9.200.000 đ"><div class="flex w-full flex-1 flex-col justify-end gap-1"><span class="text-center text-xs text-muted tabular-nums group-data-[selected]:font-semibold group-data-[selected]:text-foreground">9,2</span><div class="rounded-lg bg-primary" style="height: 69%"></div></div><span class="text-xs text-muted group-data-[selected]:font-semibold group-data-[selected]:text-foreground">T5</span></div>
+              <div class="group flex h-full min-w-0 flex-1 flex-col items-center gap-2" data-bar data-label="Tháng 6" data-value="10.400.000 đ"><div class="flex w-full flex-1 flex-col justify-end gap-1"><span class="text-center text-xs text-muted tabular-nums group-data-[selected]:font-semibold group-data-[selected]:text-foreground">10,4</span><div class="rounded-lg bg-primary" style="height: 78%"></div></div><span class="text-xs text-muted group-data-[selected]:font-semibold group-data-[selected]:text-foreground">T6</span></div>
+              <div class="group flex h-full min-w-0 flex-1 flex-col items-center gap-2" data-bar data-label="Tháng 7" data-value="8.800.000 đ"><div class="flex w-full flex-1 flex-col justify-end gap-1"><span class="text-center text-xs text-muted tabular-nums group-data-[selected]:font-semibold group-data-[selected]:text-foreground">8,8</span><div class="rounded-lg bg-primary" style="height: 66%"></div></div><span class="text-xs text-muted group-data-[selected]:font-semibold group-data-[selected]:text-foreground">T7</span></div>
+              <div class="group flex h-full min-w-0 flex-1 flex-col items-center gap-2" data-bar data-label="Tháng 8" data-value="11.300.000 đ"><div class="flex w-full flex-1 flex-col justify-end gap-1"><span class="text-center text-xs text-muted tabular-nums group-data-[selected]:font-semibold group-data-[selected]:text-foreground">11,3</span><div class="rounded-lg bg-primary" style="height: 85%"></div></div><span class="text-xs text-muted group-data-[selected]:font-semibold group-data-[selected]:text-foreground">T8</span></div>
+              <div class="group flex h-full min-w-0 flex-1 flex-col items-center gap-2" data-bar data-label="Tháng 9" data-value="9.600.000 đ"><div class="flex w-full flex-1 flex-col justify-end gap-1"><span class="text-center text-xs text-muted tabular-nums group-data-[selected]:font-semibold group-data-[selected]:text-foreground">9,6</span><div class="rounded-lg bg-primary" style="height: 72%"></div></div><span class="invisible text-xs" aria-hidden="true">T9</span></div>
+              <div class="group flex h-full min-w-0 flex-1 flex-col items-center gap-2" data-bar data-label="Tháng này, tới 09/10 · đang chạy" data-value="8.450.000 đ"><div class="flex w-full flex-1 flex-col justify-end gap-1"><span class="text-center text-xs text-muted tabular-nums group-data-[selected]:font-semibold group-data-[selected]:text-foreground">8,5</span><div class="rounded-lg bg-primary/35" style="height: 64%"></div></div><span class="self-end text-xs whitespace-nowrap text-muted group-data-[selected]:font-semibold group-data-[selected]:text-foreground">Tháng này</span></div>
+            </div>
+          </div>
+          <h2 class="mt-6 px-4 text-[20px]/[25px] font-semibold">Theo danh mục</h2>
+          <ul class="mx-4 mt-2 divide-y divide-border overflow-hidden rounded-[20px] bg-surface ring-1 ring-border-strong ring-inset">
+            <li class="flex min-h-16 items-center gap-3 px-4 py-3"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-blue-bg) text-(--cat-blue)"><i data-lucide="shopping-bag" class="size-5"></i></span><span class="min-w-0 flex-1"><span class="flex justify-between text-base font-medium"><span>Đi chợ</span><span class="tabular-nums">3.120.000 đ</span></span><span class="mt-2 block h-1.5 overflow-hidden rounded-full bg-secondary"><span class="block h-full w-[37%] rounded-full bg-primary"></span></span></span></li>
+            <li class="flex min-h-16 items-center gap-3 px-4 py-3"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-sky-bg) text-(--cat-sky)"><i data-lucide="coffee" class="size-5"></i></span><span class="min-w-0 flex-1"><span class="flex justify-between text-base font-medium"><span>Ăn uống</span><span class="tabular-nums">2.480.000 đ</span></span><span class="mt-2 block h-1.5 overflow-hidden rounded-full bg-secondary"><span class="block h-full w-[29%] rounded-full bg-primary"></span></span></span></li>
+            <li class="flex min-h-16 items-center gap-3 px-4 py-3"><span class="grid size-10 shrink-0 place-items-center rounded-full bg-(--cat-violet-bg) text-(--cat-violet)"><i data-lucide="car" class="size-5"></i></span><span class="min-w-0 flex-1"><span class="flex justify-between text-base font-medium"><span>Đi lại</span><span class="tabular-nums">1.350.000 đ</span></span><span class="mt-2 block h-1.5 overflow-hidden rounded-full bg-secondary"><span class="block h-full w-[16%] rounded-full bg-primary"></span></span></span></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= 5. CÀI ĐẶT (tab 3) ================= -->
+      <section class="screen is-grouped" data-screen="settings" aria-label="Cài đặt">
+        <div class="scroll pad-top pad-tabbar">
+          <header class="px-4 pt-3"><h1 class="text-[32px]/[38px] font-semibold tracking-tight">Cài đặt</h1></header>
+          <a href="#settings" class="press mx-4 mt-4 flex items-center gap-3 rounded-[20px] bg-surface p-4">
+            <span class="grid size-14 shrink-0 place-items-center rounded-full bg-(--avatar-bg) text-lg font-semibold text-(--avatar-text)">L</span>
+            <span class="min-w-0 flex-1"><span class="block text-[17px] font-semibold">Nguyễn Thị Lan</span><span class="block truncate text-sm text-muted">lan.nguyen@gmail.com</span></span>
+            <i data-lucide="chevron-right" class="size-5 shrink-0 text-muted"></i>
+          </a>
+          <!-- Nhóm dòng (J4): tiêu đề nhóm 13px viết hoa nhỏ, các dòng 56px trong một thẻ, chevron khi dẫn sang màn khác. -->
+          <h2 class="mt-6 px-8 text-[13px] font-medium text-muted">CHI TIÊU</h2>
+          <ul class="mx-4 mt-2 divide-y divide-border overflow-hidden rounded-[20px] bg-surface text-base">
+            <li><a href="#settings" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="target" class="size-5 text-muted"></i><span class="flex-1">Ngân sách tháng</span><span class="text-muted tabular-nums">12.000.000 đ</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+            <li><a href="#settings" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="tags" class="size-5 text-muted"></i><span class="flex-1">Danh mục</span><span class="text-muted">9</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+            <li><a href="#settings" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="wallet" class="size-5 text-muted"></i><span class="flex-1">Ví và tài khoản</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+          </ul>
+          <h2 class="mt-6 px-8 text-[13px] font-medium text-muted">THÔNG BÁO</h2>
+          <ul class="mx-4 mt-2 divide-y divide-border overflow-hidden rounded-[20px] bg-surface text-base">
+            <li><label class="flex min-h-14 cursor-pointer items-center gap-3 px-4"><i data-lucide="bell" class="size-5 text-muted"></i><span class="flex-1">Nhắc ghi chi tiêu lúc 21:00</span><input type="checkbox" class="peer sr-only" checked /><span class="relative h-[31px] w-[51px] shrink-0 rounded-full bg-secondary transition-colors peer-checked:bg-success after:absolute after:top-[2px] after:left-[2px] after:size-[27px] after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:after:translate-x-5"></span></label></li>
+            <li><label class="flex min-h-14 cursor-pointer items-center gap-3 px-4"><i data-lucide="triangle-alert" class="size-5 text-muted"></i><span class="flex-1">Báo khi vượt 80% ngân sách</span><input type="checkbox" class="peer sr-only" /><span class="relative h-[31px] w-[51px] shrink-0 rounded-full bg-secondary transition-colors peer-checked:bg-success after:absolute after:top-[2px] after:left-[2px] after:size-[27px] after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:after:translate-x-5"></span></label></li>
+          </ul>
+          <!-- Đăng xuất: chữ đỏ trong thẻ riêng ở cuối (I4). -->
+          <button class="press mx-4 mt-6 flex min-h-14 w-[calc(100%-2rem)] items-center justify-center rounded-[20px] bg-surface text-base font-medium text-danger">Đăng xuất</button>
+          <p class="mt-4 text-center text-[13px] text-muted">Phiên bản 2.4.0</p>
+        </div>
+      </section>
+
+      <!-- ================= THANH TAB NỔI (J2): 64px, tách mép 16px, bo tròn, 3 mục có chữ. Hành động chính của tab
+           (J5) là nút tròn 64px đứng riêng bên phải cùng hàng, không nằm trong thanh tab (thanh tab chỉ để đi lại)
+           và không nổi đè lên nội dung. ================= -->
+      <a href="#add" class="press above-home absolute right-4 z-30 grid size-16 place-items-center rounded-full bg-primary text-primary-foreground shadow-[0_8px_24px_-8px_rgb(0_0_0/0.45)]" aria-label="Thêm giao dịch" data-fab>
+        <i data-lucide="plus" class="size-7"></i>
+      </a>
+      <nav class="above-home absolute left-4 right-[92px] z-30 grid h-16 grid-cols-3 rounded-full bg-surface/90 px-2 shadow-[0_0_0_1px_rgb(0_0_0/0.04),0_8px_24px_-8px_rgb(0_0_0/0.18)] backdrop-blur-xl" aria-label="Điều hướng chính" data-tabbar>
+        <a href="#home" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground" data-tab="home"><i data-lucide="house" class="size-6"></i><span class="text-[11px] font-medium">Tổng quan</span></a>
+        <a href="#stats" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground" data-tab="stats"><i data-lucide="chart-column" class="size-6"></i><span class="text-[11px] font-medium">Thống kê</span></a>
+        <a href="#settings" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground" data-tab="settings"><i data-lucide="settings" class="size-6"></i><span class="text-[11px] font-medium">Cài đặt</span></a>
+      </nav>
+
+      <!-- ================= 3. THÊM GIAO DỊCH (sheet, J6) ================= -->
+      <div class="scrim absolute inset-0 z-40 bg-black/40" data-scrim></div>
+      <section class="sheet absolute inset-x-0 bottom-0 z-50 flex max-h-[92%] flex-col rounded-t-[28px] bg-surface" role="dialog" aria-modal="true" aria-label="Thêm giao dịch" data-sheet>
+        <div class="flex justify-center pt-2"><span class="h-[5px] w-9 rounded-full bg-border-strong" aria-hidden="true"></span></div>
+        <div class="flex h-11 items-center justify-between px-2">
+          <a href="#home" class="press inline-flex h-11 items-center rounded-full px-3 text-base text-muted" data-close>Huỷ</a>
+          <p class="text-[17px] font-semibold">Thêm giao dịch</p>
+          <!-- Sheet nhiều ô, ô số tiền bật bàn phím sẵn: "Lưu" chữ góc phải, đối xứng với "Huỷ" (J6). Nút to dưới đáy
+               bị bàn phím che hay phải đẩy lên theo, ăn thêm phần form còn thấy. -->
+          <a href="#home" class="press inline-flex h-11 items-center rounded-full px-3 text-base font-semibold text-primary" data-save>Lưu</a>
+        </div>
+        <div class="overflow-y-auto px-4" style="padding-bottom: calc(var(--inset-bottom) + 16px)">
+          <label class="mt-3 block text-center">
+            <span class="text-sm text-muted">Số tiền</span>
+            <span class="mt-1 flex items-baseline justify-center gap-1"><input inputmode="numeric" value="45.000" placeholder="0" class="min-w-8 bg-transparent [field-sizing:content] text-center text-[40px]/[48px] font-semibold tracking-tight tabular-nums outline-none placeholder:text-muted" aria-label="Số tiền" /><span class="text-2xl font-medium text-muted">đ</span></span>
+          </label>
+          <p class="mt-5 text-sm font-medium">Danh mục</p>
+          <div class="mt-2 grid grid-cols-4 gap-2" role="radiogroup" aria-label="Danh mục">
+            <button role="radio" aria-checked="true" class="press flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-2xl bg-primary text-[13px] text-primary-foreground"><i data-lucide="coffee" class="size-5"></i>Ăn uống</button>
+            <button role="radio" aria-checked="false" class="press flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-2xl bg-background text-[13px]"><i data-lucide="car" class="size-5"></i>Đi lại</button>
+            <button role="radio" aria-checked="false" class="press flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-2xl bg-background text-[13px]"><i data-lucide="shopping-bag" class="size-5"></i>Đi chợ</button>
+            <button role="radio" aria-checked="false" class="press flex h-[76px] flex-col items-center justify-center gap-1.5 rounded-2xl bg-background text-[13px]"><i data-lucide="ellipsis" class="size-5"></i>Khác</button>
+          </div>
+          <label class="mt-5 block"><span class="text-sm font-medium">Ghi chú</span>
+            <input class="mt-2 h-[52px] w-full rounded-2xl border border-border-strong bg-surface px-4 text-base outline-none placeholder:text-muted focus:border-primary" placeholder="Ví dụ: cà phê với khách" />
+          </label>
+          <button class="press mt-3 flex h-14 w-full items-center gap-3 rounded-2xl bg-background px-4 text-base"><i data-lucide="calendar" class="size-5 text-muted"></i><span class="flex-1 text-left">Hôm nay, 09/10</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></button>
+        </div>
+      </section>
+
+      <!-- Thông báo ngắn (J7): trên thanh tab, giữa, tự đi sau 4 giây. -->
+      <div class="pointer-events-none absolute inset-x-4 z-[60] flex justify-center" style="bottom: calc(var(--inset-bottom) + 88px)" aria-live="polite">
+        <p class="translate-y-2 rounded-full bg-foreground px-4 py-3 text-sm font-medium text-white opacity-0 shadow-lg transition-all duration-200" data-toast>Đã lưu giao dịch 45.000 đ</p>
+      </div>
+
+      <div class="home-indicator pointer-events-none absolute bottom-2 inset-x-0 mx-auto z-[70] h-[5px] w-[134px] rounded-full bg-foreground" aria-hidden="true"></div>
+    </div>
+
+    <!-- Bảng luồng (J1): script dựng từ danh sách màn, mỗi <ol data-flow> một hàng. -->
+    <main class="flow-board" aria-label="Bảng luồng">
+      <header class="flex items-end justify-between gap-6 px-12 pt-10 pb-6">
+        <div>
+          <p class="text-sm text-white/60">Bản mẫu app điện thoại</p>
+          <h1 class="mt-1 text-[28px] font-bold tracking-tight">Chi Tiêu</h1>
+        </div>
+        <p class="text-sm text-white/60">Bấm một màn để chạy thử từ màn đó</p>
+      </header>
+      <div data-board-rows></div>
+    </main>
+
+    <script>
+      lucide.createIcons();
+      // Máy thật là .device đầu tiên. Script của app tìm phần tử trong đó, không tìm khắp trang: bảng luồng (J1) chép cả
+      // khung máy, giữ nguyên data-* để CSS theo trạng thái còn đúng, nên tìm khắp trang là đổi nhầm cả bản chép.
+      const liveDevice = document.querySelector(".device");
+
+      // Biểu đồ (J17): chạm một lần giữ chọn, chạm lại hay chạm chỗ khác thì về tổng; kéo ngang thì dò, thả tay về tổng.
+      liveDevice.querySelectorAll("[data-chart]").forEach((chart) => {
+        const plot = chart.querySelector("[data-chart-plot]");
+        const bars = [...plot.querySelectorAll("[data-bar]")];
+        const labelText = chart.querySelector("[data-chart-label]");
+        const valueText = chart.querySelector("[data-chart-value]");
+        const totalLabel = labelText.textContent;
+        const totalValue = valueText.textContent;
+        let selectedIndex = -1;
+        let pressedIndex = -1;
+        let isDragging = false;
+
+        function selectBar(index) {
+          selectedIndex = index;
+          bars.forEach((bar, barIndex) => bar.toggleAttribute("data-selected", barIndex === index));
+          labelText.textContent = index < 0 ? totalLabel : bars[index].dataset.label;
+          valueText.textContent = index < 0 ? totalValue : bars[index].dataset.value;
+        }
+
+        function findNearestBar(clientX) {
+          const distances = bars.map((bar) => {
+            const rect = bar.getBoundingClientRect();
+            return Math.abs(rect.left + rect.width / 2 - clientX);
+          });
+
+          return distances.indexOf(Math.min(...distances));
+        }
+
+        plot.addEventListener("pointerdown", (event) => {
+          pressedIndex = findNearestBar(event.clientX);
+          isDragging = false;
+          plot.setPointerCapture(event.pointerId);
+        });
+        plot.addEventListener("pointermove", (event) => {
+          if (!plot.hasPointerCapture(event.pointerId)) return;
+          const index = findNearestBar(event.clientX);
+          if (index !== pressedIndex) isDragging = true;
+          if (isDragging) selectBar(index);
+        });
+        plot.addEventListener("pointerup", () => {
+          if (isDragging) selectBar(-1);
+          else selectBar(pressedIndex === selectedIndex ? -1 : pressedIndex);
+        });
+        liveDevice.addEventListener("pointerdown", (event) => {
+          if (!plot.contains(event.target) && selectedIndex >= 0) selectBar(-1);
+        });
+        plot.addEventListener("keydown", (event) => {
+          if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+          event.preventDefault();
+          const step = event.key === "ArrowRight" ? 1 : -1;
+          const startIndex = selectedIndex < 0 ? bars.length : selectedIndex;
+          selectBar(Math.min(bars.length - 1, Math.max(0, startIndex + step)));
+        });
+      });
+
+      // Điều hướng bằng hash: #home, #stats, #settings là tab; #detail là màn con; #add mở sheet trên màn đang xem.
+      const tabScreens = ["home", "stats", "settings"];
+      // Màn con để xem thuộc tab nào (J2): giữ thanh tab, sáng mục của tab cha. Màn phải làm cho xong (form, thanh toán)
+      // không có trong đây nên ẩn thanh tab.
+      const parentTabs = { detail: "home" };
+      const sheet = document.querySelector("[data-sheet]");
+      const scrim = document.querySelector("[data-scrim]");
+      const tabbar = document.querySelector("[data-tabbar]");
+      const fab = document.querySelector("[data-fab]");
+      let baseScreen = "home";
+
+      function showScreen(name) {
+        liveDevice.querySelectorAll("[data-screen]").forEach((screen) => screen.classList.toggle("is-active", screen.dataset.screen === name));
+        const currentTab = tabScreens.includes(name) ? name : parentTabs[name];
+        liveDevice.querySelectorAll("[data-tab]").forEach((tab) => {
+          if (tab.dataset.tab === currentTab) tab.setAttribute("aria-current", "page");
+          else tab.removeAttribute("aria-current");
+        });
+        tabbar.hidden = !currentTab;
+        // Nút thêm chỉ ở tab có việc thêm (Tổng quan); tab khác thanh tab giãn hết bề ngang.
+        fab.hidden = name !== "home";
+        tabbar.classList.toggle("right-[92px]", name === "home");
+        tabbar.classList.toggle("right-4", name !== "home");
+      }
+
+      // Dựng một màn theo tên (cả sheet trên màn nền của nó). route() và bảng luồng cùng gọi hàm này.
+      function renderScreen(name) {
+        const isSheet = name === "add";
+        if (!isSheet) baseScreen = name;
+        showScreen(isSheet ? baseScreen : name);
+        sheet.classList.toggle("is-open", isSheet);
+        scrim.classList.toggle("is-open", isSheet);
+        sheet.inert = !isSheet;
+        requestAnimationFrame(() => revealNewRows(liveDevice));
+      }
+
+      // Dòng vừa lưu (gắn data-reveal, nhãn "Mới") phải nằm trên thông báo và thanh tab (J1). Chỉ cuộn vừa đủ: dòng đã thấy thì
+      // không cuộn, khối số ở đầu màn còn nguyên. Đặt scrollTop của vùng cuộn, không scrollIntoView: nó cuộn cả khung .device,
+      // lộ sheet đang giấu ở đáy. Bản chép trên bảng luồng không giữ scrollTop nên buildBoard gọi lại hàm này sau khi chèn.
+      function revealNewRows(root) {
+        root.querySelectorAll("[data-reveal]").forEach((row) => {
+          const scroller = row.closest(".scroll");
+          if (!scroller || !scroller.clientHeight) return;
+          const scrollerRect = scroller.getBoundingClientRect();
+          const rowRect = row.getBoundingClientRect();
+          // Bản chép trên bảng thu nhỏ (zoom 0.7): đổi khoảng đo được về px của vùng cuộn.
+          const scale = scrollerRect.height / scroller.clientHeight;
+          // Chừa đáy cho thông báo có Hoàn tác (~56), thanh tab 64 + 8, thanh home 34 trong khung, khoảng thở.
+          const reservedBottom = 180;
+          const overflow = (rowRect.bottom - scrollerRect.bottom) / scale + reservedBottom;
+          if (overflow > 0) scroller.scrollTop += overflow;
+        });
+      }
+
+      // Màn rộng, link không có #màn: bảng luồng (J1). Có #màn: chạy thử trong khung máy.
+      const wideScreen = matchMedia("(min-width: 900px)");
+      function route() {
+        const name = location.hash.slice(1);
+        document.body.classList.toggle("is-board", !name && wideScreen.matches);
+        renderScreen(name || "home");
+      }
+
+      // ===== BẢNG LUỒNG (J1): chép nguyên hàm này. Mỗi <ol data-flow> thành một hàng; mỗi màn được dựng trên máy thật bằng
+      // renderScreen (thanh tab, nút thêm, sheet đúng trạng thái) rồi chép cả khung máy, nên không phải vẽ lại màn nào. =====
+      function buildBoard(renderScreen) {
+        const rowsContainer = document.querySelector("[data-board-rows]");
+        const liveDevice = document.querySelector(".device");
+        const isReduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        let order = 0;
+        document.querySelectorAll("[data-flow]").forEach((flowList) => {
+          const links = [...flowList.querySelectorAll("a[href^='#']")];
+          const section = document.createElement("section");
+          section.className = "pb-8";
+          section.innerHTML = `
+            <div class="flex items-end justify-between gap-4 px-12 pb-3">
+              <div><h2 class="text-xl font-semibold">${flowList.dataset.flow}</h2><p class="mt-0.5 text-sm text-white/60">${links.length} màn · ${flowList.dataset.flowNote || ""}</p></div>
+              <div class="flex gap-2">
+                <button type="button" class="grid size-11 place-items-center rounded-full bg-white/10 hover:bg-white/20" aria-label="Cuộn sang trái" data-scroll="-1"><i data-lucide="arrow-left" class="size-5"></i></button>
+                <button type="button" class="grid size-11 place-items-center rounded-full bg-white/10 hover:bg-white/20" aria-label="Cuộn sang phải" data-scroll="1"><i data-lucide="arrow-right" class="size-5"></i></button>
+              </div>
+            </div>
+            <div class="flow-row"></div>`;
+          const row = section.querySelector(".flow-row");
+          const frames = [];
+          links.forEach((link, index) => {
+            const screenName = link.getAttribute("href").slice(1);
+            renderScreen(screenName);
+            const deviceCopy = liveDevice.cloneNode(true);
+            deviceCopy.classList.add("board-device");
+            deviceCopy.inert = true;
+            deviceCopy.querySelectorAll(".screen:not(.is-active), .sheet:not(.is-open), .scrim:not(.is-open), [data-toast], [hidden]").forEach((element) => element.remove());
+            // Gỡ data-screen để probe và script chỉ thấy màn của máy thật. Giữ các data-* khác: CSS hay ẩn hiện theo chúng
+            // (nút phát/dừng theo [data-play-toggle][aria-pressed]), gỡ đi thì bản chép hiện cả hai icon.
+            deviceCopy.querySelectorAll("[data-screen]").forEach((element) => element.removeAttribute("data-screen"));
+            // Bỏ name, id, for: radio cùng name ở bản chép giành mất dấu chọn của máy thật (sheet món mất "Vừa", giá sai).
+            deviceCopy.querySelectorAll("[name], [id], [for]").forEach((element) => ["name", "id", "for"].forEach((attribute) => element.removeAttribute(attribute)));
+            frames.push({ name: screenName, device: deviceCopy });
+            const card = document.createElement("a");
+            card.href = `#${screenName}`;
+            card.className = "board-card";
+            card.style.setProperty("--order", ++order);
+            const phone = document.createElement("div");
+            phone.className = "board-phone";
+            phone.append(deviceCopy);
+            const label = document.createElement("p");
+            label.className = "mt-3 text-sm text-white/70";
+            label.textContent = `${index + 1}. ${link.textContent.replace(/^\d+\.\s*/, "")}`;
+            card.append(phone, label);
+            row.append(card);
+          });
+          // Thẻ đầu hàng: tự phát cả luồng như một đoạn video, dùng chính các màn vừa chép.
+          if (frames.length > 1) row.prepend(createFlowPlayer(frames, isReduced));
+          section.querySelectorAll("[data-scroll]").forEach((button) => {
+            button.addEventListener("click", () => row.scrollBy({ left: Number(button.dataset.scroll) * row.clientWidth * 0.8, behavior: isReduced ? "auto" : "smooth" }));
+          });
+          rowsContainer.append(section);
+          section.querySelectorAll(".board-device").forEach((deviceCopy) => revealNewRows(deviceCopy));
+        });
+        lucide.createIcons();
+      }
+
+      // ===== CHẠY LUỒNG (J1): 1,6 giây mỗi màn, màn sau trượt vào như bấm thật, thanh tiến độ chạy tiếp. Chỉ phát khi thẻ nằm
+      // trong màn hình, rê chuột thì dừng, có nút dừng / phát (nội dung tự chạy quá 5 giây phải dừng được). Giảm chuyển
+      // động thì không tự phát, bấm ▶ mới chạy, đổi màn bằng mờ dần. Bấm khung máy là chạy thử đúng màn đang phát. =====
+      function createFlowPlayer(frames, isReduced) {
+        const card = document.createElement("div");
+        card.className = "board-card";
+        card.style.setProperty("--order", 0);
+        card.innerHTML = `
+          <a class="block" aria-label="Chạy thử từ màn đang phát" data-player-link><div class="board-phone" data-player-phone></div></a>
+          <div class="mt-3 flex w-[273px] items-center justify-between gap-2">
+            <p class="text-sm text-white/70">Chạy luồng · <span class="tabular-nums" data-player-step></span></p>
+            <button type="button" class="player-toggle grid size-11 place-items-center rounded-full bg-white/10 hover:bg-white/20" data-player-toggle><i data-lucide="pause" class="icon-pause size-5"></i><i data-lucide="play" class="icon-play size-5"></i></button>
+          </div>
+          <div class="mt-2 flex w-[273px] gap-1" aria-hidden="true" data-player-segments>${frames.map(() => '<span class="h-1 flex-1 rounded-full bg-white/20"></span>').join("")}</div>`;
+        const phone = card.querySelector("[data-player-phone]");
+        const link = card.querySelector("[data-player-link]");
+        const step = card.querySelector("[data-player-step]");
+        const segments = [...card.querySelector("[data-player-segments]").children];
+        const toggle = card.querySelector("[data-player-toggle]");
+        let index = 0;
+        let timer = null;
+        let isPlaying = !isReduced;
+        let isHovered = false;
+        let isVisible = false;
+        let lastWidth = null;
+
+        function show(nextIndex, shouldAnimate) {
+          index = nextIndex;
+          phone.replaceChildren(frames[index].device.cloneNode(true));
+          link.href = `#${frames[index].name}`;
+          step.textContent = `${index + 1}/${frames.length}`;
+          // Đổi hẳn class, không chồng bg-white lên bg-white/20: hai class cùng thuộc tính thì thứ tự trong CSS quyết định, đoạn đã
+          // phát không sáng lên.
+          segments.forEach((segment, segmentIndex) => { segment.className = `h-1 flex-1 rounded-full ${segmentIndex <= index ? "bg-white" : "bg-white/20"}`; });
+          const screen = phone.querySelector(".screen");
+          const fill = phone.querySelector('[role="progressbar"] > div');
+          if (shouldAnimate && screen) {
+            screen.animate(isReduced ? [{ opacity: 0 }, { opacity: 1 }] : [{ translate: "30% 0", opacity: 0.6 }, { translate: "0 0", opacity: 1 }], { duration: isReduced ? 200 : 300, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" });
+            if (fill && lastWidth && lastWidth !== fill.style.width && !isReduced) {
+              fill.animate([{ width: lastWidth }, { width: fill.style.width }], { duration: 400, delay: 150, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)", fill: "backwards" });
+            }
+          }
+          lastWidth = fill ? fill.style.width : null;
+        }
+
+        function sync() {
+          const shouldRun = isPlaying && isVisible && !isHovered;
+          if (shouldRun && !timer) timer = setInterval(() => show((index + 1) % frames.length, true), 1600);
+          if (!shouldRun && timer) { clearInterval(timer); timer = null; }
+          toggle.setAttribute("aria-pressed", String(isPlaying));
+          toggle.setAttribute("aria-label", isPlaying ? "Dừng chạy luồng" : "Chạy luồng");
+        }
+
+        toggle.addEventListener("click", () => { isPlaying = !isPlaying; sync(); });
+        card.addEventListener("mouseenter", () => { isHovered = true; sync(); });
+        card.addEventListener("mouseleave", () => { isHovered = false; sync(); });
+        // Hình gán sau (nhân vật J16 nạp từ CDN): chép lại màn đang hiện khi hình đã có.
+        document.addEventListener("art-ready", () => show(index, false));
+        new IntersectionObserver(([entry]) => { isVisible = entry.isIntersecting; sync(); }, { threshold: 0.5 }).observe(card);
+        show(0, false);
+        sync();
+
+        return card;
+      }
+
+      buildBoard(renderScreen);
+      window.addEventListener("hashchange", route);
+      wideScreen.addEventListener("change", route);
+      scrim.addEventListener("click", () => { location.hash = baseScreen; });
+      document.querySelector("[data-save]").addEventListener("click", () => {
+        const toast = document.querySelector("[data-toast]");
+        setTimeout(() => toast.classList.remove("opacity-0", "translate-y-2"), 250);
+        setTimeout(() => toast.classList.add("opacity-0", "translate-y-2"), 4250);
+      });
+      route();
+    </script>
+  </body>
+</html>

@@ -1,7 +1,7 @@
 # Tiêu đề cột sắp xếp
 
 Ô tiêu đề cột bảng bấm được để sắp xếp dòng. Bảng quanh nó (tab, lọc, chọn nhiều dòng,
-phân trang) xem "Bảng dữ liệu" trong `../layouts/app.md`. Dự án có `@tanstack/react-table`
+phân trang) xem "Bảng dữ liệu" trong `../layouts/app/data-table.md`. Dự án có `@tanstack/react-table`
 thì để nó giữ trạng thái sắp, skill chỉ lo hình ô (`N10`).
 
 ## Ba trạng thái
@@ -84,3 +84,11 @@ Thứ tự vòng bấm là logic, component chỉ gọi `onSort` (`N10`). Khi đ
 - Mép trái chữ tiêu đề bằng mép trái chữ dữ liệu cột đó; cột số: mép phải chữ tiêu đề bằng mép
   phải con số (đo bằng `Range`).
 - Ở 375px: còn thấy tiêu đề (hoặc nút "Sắp xếp:") cho từng cột sắp được không?
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Tiêu đề cột sắp xếp**: rê lên tiêu đề cột đầu và cột cuối, có mảng nền nào chạm mép card không (chỉ chữ đậm lên)? Cột số có mũi tên trước chữ, chữ thẳng mép phải với số? Ở 375px còn thấy cách sắp theo từng cột (tiêu đề hoặc nút "Sắp xếp:"), hay cột đó trôi ra ngoài khung (`components/sortable-header.md`)?

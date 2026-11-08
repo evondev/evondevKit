@@ -4,6 +4,10 @@ Biểu đồ là chỗ luật một màu nhấn hay bị phá nhất. Bốn ô s
 xanh cột đỏ, biểu đồ tròn bảy múi bảy sắc. Nhìn thì tưởng nhiều thông tin, thật
 ra là không quyết định được cái nào quan trọng.
 
+File này viết cho màn có chuột. **Biểu đồ trong app điện thoại** (chạm thay rê, hàng đọc số, trục co theo dữ liệu
+giá, cột đang chọn, nhãn ở khổ hẹp, màu danh mục) đọc thêm `J17` trong `../mobile/charts.md`; chỗ nào hai bên khác nhau
+thì `J17` thắng.
+
 ---
 
 ## Màu
@@ -26,6 +30,12 @@ một. Bậc `/15` và `/35` dưới 3:1 trên nền
 trắng, nên **mỗi cột, mỗi phần phải có con số đi kèm** (số trên đầu cột, số
 trong bảng chú giải donut); màu nhạt không bao giờ là thứ duy nhất mang giá trị
 (`N4`). Chấm chú giải dùng đúng class của cột.
+
+**Thanh chia theo các bước của một quy trình** (chờ xác nhận → đang làm → xong, kèm huỷ): bước mang nghĩa trạng
+thái giữ màu trạng thái (chờ `--warning`, xong `--success`, huỷ `--danger`, `M7`); các bước đang làm dở ở giữa
+là đậm nhạt của `--chart-fill` theo thứ tự, bước sau đậm hơn (bảng bậc ở trên). Không tô các bước giữa bằng xám:
+xám đọc thành "chưa tô" hay "không hoạt động", thanh trông như làm dở. Chấm cạnh tên bước trong danh sách dưới
+thanh dùng đúng màu của đoạn đó.
 
 **Phân loại từ 5 nhóm trở lên thì mỗi nhóm một sắc.** Ngành, kênh, quốc gia, loại
 khách: năm bậc đậm nhạt của một màu thì bậc 4 và bậc 5 mắt không tách được nữa, chấm
@@ -231,7 +241,10 @@ cách tô với hạn trong `list-row.md`. Tô cả thanh hổ phách thì dự 
 "tiến độ có vấn đề", vài thanh cam thành thứ nặng nhất màn.
 Màu theo trạng thái (dưới đây) chỉ cho **thanh đứng riêng**, nơi màu nói về chính
 đại lượng thanh đo (dung lượng gần đầy). Mục xong 100% thì thanh emerald như
-thanh đứng riêng.
+thanh đứng riêng. **Ngoại lệ: thanh trần trong danh sách** (ngân sách từng danh mục, hạn mức thẻ): màu nói
+về chính đại lượng thanh đo, nên tô như thanh dung lượng, `bg-primary` khi ổn, amber khi sắp chạm, đỏ khi
+vượt, kèm dòng phụ bằng chữ ("Sắp vượt · còn 350.000 đ", "Đã vượt 65.000 đ"). Các app ngân sách phổ biến
+đều tô vậy.
 
 **Thanh tiến độ đứng riêng** (dung lượng, checklist): hàng trên là
 nhãn trái + số phải, thanh ở giữa, một dòng phụ `text-xs text-muted` bên dưới.
@@ -258,7 +271,7 @@ nhãn trái + số phải, thanh ở giữa, một dòng phụ `text-xs text-mut
 - **Đáy là 0**, đường kẻ đáy `border-border`, nhãn tháng `text-xs text-muted` bên dưới. Tháng bằng 0 thì chạm đáy.
 - **Không có số khác với bằng 0.** Tháng chưa có dữ liệu (chưa tới, chưa ghi nhận) thì **đứt đường** ở đó, không kéo xuống đáy: kéo xuống 0 là nói dối "tháng đó không bán được gì".
 - **Màn hẹp**: 12 nhãn tháng ở 375px sát vào nhau. Dưới `sm` ghi **cách một nhãn, đếm ngược từ nhãn cuối** (nhãn cuối, cuối − 2, cuối − 4…); đường vẫn đủ 12 điểm. Đừng đếm xuôi "nhãn lẻ + nhãn cuối": số điểm chẵn thì nhãn cuối đứng sát nhãn lẻ cuối cùng, "14/09 21/09" dính nhau ở 375px. Cột cũng theo luật này.
-- **Mới một điểm thì chưa phải biểu đồ.** Một chấm lơ lửng giữa khung trống trông như vẽ lỗi. Thay vùng vẽ bằng khối chữ, **giữ nguyên chiều cao**: con số `text-2xl font-semibold tabular-nums` + dòng `text-sm text-muted` "Số của tháng 9. Từ tháng sau sẽ thấy xu hướng" (`N6`). Luật này cho dữ liệu **chưa có** điểm thứ hai (tháng đầu mở bán). Trang báo cáo mà người dùng tự chọn khoảng một ngày thì không rơi vào đây: chia nhỏ mốc xuống theo giờ (xem "Trang báo cáo" trong `../layouts/app.md`). Thay biểu đồ bằng một con số thì số đó trùng ô "Doanh thu" ngay trên (`N3`).
+- **Mới một điểm thì chưa phải biểu đồ.** Một chấm lơ lửng giữa khung trống trông như vẽ lỗi. Thay vùng vẽ bằng khối chữ, **giữ nguyên chiều cao**: con số `text-2xl font-semibold tabular-nums` + dòng `text-sm text-muted` "Số của tháng 9. Từ tháng sau sẽ thấy xu hướng" (`N6`). Luật này cho dữ liệu **chưa có** điểm thứ hai (tháng đầu mở bán). Trang báo cáo mà người dùng tự chọn khoảng một ngày thì không rơi vào đây: chia nhỏ mốc xuống theo giờ (xem "Trang báo cáo" trong `../layouts/app/report.md`). Thay biểu đồ bằng một con số thì số đó trùng ô "Doanh thu" ngay trên (`N3`).
 - **Rỗng**: giữ chiều cao, câu nói vì sao và bao giờ có: "Chưa có doanh thu. Số liệu hiện sau đơn hàng đầu tiên" (`components/empty-state.md`). Bỏ luôn đường đáy: đáy không nhãn đứng một mình trông như đường kẻ lạc.
 - `role="img"` + `aria-label` tóm tắt bằng chữ ("Doanh thu 12 tháng, tăng từ 0,9 tỷ lên 1,46 tỷ"); điểm nhận focus thì mỗi điểm có `aria-label` tháng + số.
 
@@ -331,8 +344,8 @@ nhãn trái + số phải, thanh ở giữa, một dòng phụ `text-xs text-mut
 - **Màu theo tốt/xấu, không theo lên/xuống.** Doanh thu tăng là xanh, nhưng chi phí hay số đơn huỷ tăng là đỏ. Để một prop kiểu `tone="positive" | "negative" | "neutral"` cho người dùng quyết, đừng suy màu từ dấu của con số. Xanh `emerald-700`, đỏ `red-700`: chữ `text-xs` cần 4.5:1, `emerald-600` và `red-500` không đạt.
 - **Không đổi**: icon `minus`, chữ `text-muted`, không màu. **Một ô không có kỳ trước** (các ô khác có): một câu `text-muted` ngắn ("Chưa có kỳ trước"). Hai ca này vẫn **giữ đúng một dòng**, để các ô trong hàng cao bằng nhau. Ngưỡng coi là "không đổi" do người dùng quyết.
 - **Kỳ so sánh ghi MỘT lần cho cả hàng, không lặp ở từng ô.** Bốn ô cùng đuôi "so với 2025" là một ý nói bốn lần (`N3`), và chính cái đuôi đó làm ô hẹp vỡ dòng. Ghi kỳ một lần ở tiêu đề mục hoặc dòng `text-xs text-muted` trên hàng ô ("12 tháng gần nhất, so với 12 tháng trước"), mỗi ô chỉ còn icon + số ("↗ 12,4%", "↗ 0,6 điểm"). Nhãn ô cũng bỏ kỳ: "Doanh thu", không "Doanh thu 12 tháng" khi ô bên cạnh là "Số đơn" trơn, vì đọc ra hai ô hai kỳ khác nhau. **Kỳ so phải cùng loại với kỳ đo**: đo 12 tháng gần nhất thì so với 12 tháng trước đó, không so với "năm 2025".
-- **Cả hàng không có kỳ trước thì cũng nói một lần**, ở đúng chỗ ghi kỳ ("Khách mới, chưa có kỳ trước để so"), các ô bỏ hẳn dòng so sánh. Bốn ô cùng dòng "Chưa có kỳ trước" là cùng lỗi lặp ở trên. Ngoại lệ: trên cùng màn có số khác kỳ đếm cùng thứ (tab "Đơn hàng 42" trọn đời) thì riêng ô đó ghi kỳ trong nhãn, "Đơn đã giao · 12 tháng" (`layouts/app.md`, "Trang chi tiết bản ghi").
-- **Cả hàng rỗng (khách chưa có đơn nào) thì không dựng lưới số 0.** Bốn ô "0 đ", "0 đơn", "—", "—" là bốn khung chỉ để nói một ý "chưa có gì". Thay cả hàng bằng một khung gọn cùng viền và **cùng nền `bg-surface`** với các card (khung trong suốt nằm trên nền trang thì chỉ còn một dòng chữ xám lơ lửng, viền `--border` gần như không thấy), một câu `text-sm text-muted` nói vì sao và bao giờ có: "Chưa có đơn nào. Số liệu hiện sau đơn đầu tiên" (`components/empty-state.md`, `N6`). Có nút tạo đơn ở chỗ khác trên màn thì không lặp nút ở đây. **Trang chi tiết có tab Đơn hàng thì bỏ hẳn hàng số**, không dựng cả khung gọn: tab rỗng đã nói câu đó (`layouts/app.md`, "Trang chi tiết bản ghi").
+- **Cả hàng không có kỳ trước thì cũng nói một lần**, ở đúng chỗ ghi kỳ ("Khách mới, chưa có kỳ trước để so"), các ô bỏ hẳn dòng so sánh. Bốn ô cùng dòng "Chưa có kỳ trước" là cùng lỗi lặp ở trên. Ngoại lệ: trên cùng màn có số khác kỳ đếm cùng thứ (tab "Đơn hàng 42" trọn đời) thì riêng ô đó ghi kỳ trong nhãn, "Đơn đã giao · 12 tháng" (`layouts/app/record-detail.md`, "Trang chi tiết bản ghi").
+- **Cả hàng rỗng (khách chưa có đơn nào) thì không dựng lưới số 0.** Bốn ô "0 đ", "0 đơn", "—", "—" là bốn khung chỉ để nói một ý "chưa có gì". Thay cả hàng bằng một khung gọn cùng viền và **cùng nền `bg-surface`** với các card (khung trong suốt nằm trên nền trang thì chỉ còn một dòng chữ xám lơ lửng, viền `--border` gần như không thấy), một câu `text-sm text-muted` nói vì sao và bao giờ có: "Chưa có đơn nào. Số liệu hiện sau đơn đầu tiên" (`components/empty-state.md`, `N6`). Có nút tạo đơn ở chỗ khác trên màn thì không lặp nút ở đây. **Trang chi tiết có tab Đơn hàng thì bỏ hẳn hàng số**, không dựng cả khung gọn: tab rỗng đã nói câu đó (`layouts/app/record-detail.md`, "Trang chi tiết bản ghi").
 - **`—` chỉ khi không tính được** (mẫu số bằng 0: chưa có đơn nào thì chưa có tỷ lệ hoàn). Có 3 đơn, không đơn nào hoàn thì là `0%`, không phải `—`: `—` ở đó đọc ra "thiếu dữ liệu" trong khi số đã rõ.
 - **Ô không có giá trị thì `—` `text-muted font-normal`**, cùng ký hiệu với ô trống trong bảng (`T18`). `—` tô `text-foreground font-semibold` ở `text-2xl` thành một vạch đen dày, đọc như con số chứ không như "trống".
 - **Nhãn đã nói đơn vị thì số không lặp đơn vị.** Nhãn "Số đơn" thì số là `24`, không `24 đơn`; nhãn "Khách hàng" thì `1.204`, không `1.204 khách`. Đơn vị chữ chỉ gắn khi nhãn chưa nói (nhãn "Đơn hàng" có thể `24 đơn`, nhưng thường thừa).
@@ -410,7 +423,9 @@ thay cho sparkline.
   375px chỉ 138px). Chữ và đuôi nằm trong **một** span, icon là con kia: để đuôi thành con thứ ba
   của `inline-flex gap-1` thì giữa "10%" và "so" thừa một khoảng.
 - **Thanh, không vòng.** Nguồn chia đôi giữa thanh và vòng, nhưng skill đã dùng thanh cho mọi tiến độ
-  (`N5`): một app một hình cho "đã được bao nhiêu". Vòng chỉ khi dự án đã dùng vòng.
+  (`N5`): một app một hình cho "đã được bao nhiêu". Vòng chỉ khi dự án đã dùng vòng, hoặc app điện thoại sức khoẻ, thể
+  dục, ăn uống, thói quen, tiết kiệm (vòng và cung của `J17` trong `../mobile/charts.md`); app đó dùng vòng thì dùng vòng ở mọi
+  chỗ "đã được bao nhiêu".
 - **Màu thanh** theo thanh đứng riêng ở trên: đang chạy `bg-primary`, **đạt mục tiêu** `bg-emerald-600`.
   **Vượt mục tiêu**: thanh đầy, emerald, phần trăm vẫn ghi số thật "112% mục tiêu".
 - **Chậm nhịp** (chỉ khi dự án có nhịp kỳ vọng, cách tính là logic người dùng `N10`): thanh giữ
@@ -418,7 +433,8 @@ thay cho sparkline.
   và dòng phụ đổi trái thành "Chậm 12% so với nhịp" `text-amber-700` kèm icon. Không tô cả thanh
   amber: như "Thanh trong danh sách", thanh chỉ nói đã được bao nhiêu.
 - **Chỉ số càng thấp càng tốt** (chi phí, hạn mức dùng) không phải mục tiêu mà là trần: theo thanh
-  dung lượng (amber, đỏ khi gần đầy).
+  dung lượng (amber, đỏ khi gần đầy). Có nhịp kỳ vọng (ngân sách tháng) thì vạch nhịp như trên, đặt ở mức
+  chi đều tới hôm nay; thanh vượt vạch là đang chi nhanh hơn nhịp.
 - **Một hàng một kiểu phần dưới**: cả hàng là sparkline, hoặc cả hàng là thanh mục tiêu. Hàng trộn
   thì ô nào thiếu thì giữ chỗ cùng chiều cao như luật sparkline, nhưng nên tách ô mục tiêu ra một
   hàng hay một card riêng.
@@ -454,7 +470,7 @@ T6
 - **Lưới giãn hết bề ngang card**, khe `gap-1`, bo `rounded-xs`: `grid grid-flow-col auto-cols-fr
   grid-rows-[repeat(7,auto)] gap-1`, ô `aspect-square`. Khối lưới `min-w-[45rem]` (ô ~10px) để dưới mức
   đó thì cuộn ngang. Ô cố định `size-3` (53 cột ≈ 850px) thì card 1100px chừa một mảng trống bên phải,
-  chú giải "Ít … Nhiều" lạc ra mép card cách lưới 400px (chủ dự án chê "lệch", 07/11/2026). Nhãn tháng
+  chú giải "Ít … Nhiều" lạc ra mép card cách lưới 400px (chủ dự án chê "lệch"). Nhãn tháng
   đặt theo phần trăm (`left: tuần / 53 × 100%`); cột nhãn T2/T4/T6 là một lưới `grid-rows-7 gap-1` cao
   bằng lưới ô (cột `flex flex-col pt-6`, lưới `flex-1`) để nhãn luôn thẳng hàng ô dù ô to nhỏ.
 - **Hàng từ Thứ 2 tới Chủ nhật**, tuần theo lịch Việt Nam (`T28`). Nhãn ngày chỉ ghi **T2, T4, T6**
@@ -477,3 +493,11 @@ T6
   nhất: số nằm trong câu.
 - **Chưa có hoạt động nào**: không dựng 365 ô xám. Giữ chiều cao khung, một câu theo
   `empty-state.md` ("Chưa có hoạt động. Lịch sẽ dày dần từ buổi đầu tiên").
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Biểu đồ đường** (`components/charts.md`): số ở điểm cuối có nằm đè lên đoạn nối không (điểm cuối thấp hơn điểm kề thì số phải xuống dưới chấm; probe báo "Nhãn số đè lên đường biểu đồ")? Điểm sát đáy (hôm nay mới vài giờ, số nhỏ): số có rơi xuống dưới đường 0, chen vào hàng nhãn trục ngay trên "27/09" không (probe báo "Nhãn số lòi ra ngoài vùng vẽ"; đặt sang cạnh chấm)? Rê vào một điểm giữa khi trục chỉ ghi vài nhãn: số có kèm ngày ("13/09 · 70,9 tr đ") không, hay chỉ còn con số không biết của ngày nào? Điểm chưa trọn kỳ có ghi "Hôm nay" không? Tab vào biểu đồ: số của mốc đang đứng có hiện ra không?

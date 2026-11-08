@@ -4,7 +4,15 @@
 //
 //   node probe.mjs <url> [--widths 375,768,1024,1280,1440,1920] [--out <thư mục>] [--dark] [--wait 800] [--dpr 1]
 //                        [--sweep [1440,375,20]] [--wireframe <link phương án đã chọn>] [--quick]
-//                        [--dynamic-widths 1280,375|none]
+//                        [--dynamic-widths 1280,375|none] [--mobile] [--stress]
+//
+// --mobile: bản mẫu app điện thoại theo layouts/mobile-app.html (luật J, references/mobile.md). Ngoài các khổ của
+// --widths, mở TỪNG MÀN (mỗi [data-screen] và mỗi hash dẫn tới sheet như #add) ở 390×844 giả lập chạm và ở khung
+// máy tính 1280, chụp từng màn, đo: chữ dưới 11px, chữ ô nhập dưới 16px, chỗ bấm dưới 44px, thanh tab (3–5 mục,
+// mục nào cũng có chữ, không nút hành động trong thanh, màn con giữ thanh thì sáng tab cha, không cạnh nút dính đáy), nút nổi đè lên chữ, dòng cuối không
+// cuộn ra khỏi thanh tab được, chữ hay chỗ bấm chui vào vùng tai thỏ / thanh home của khung, cuộn xuống mà chữ
+// chạy dưới thanh trạng thái không có dải nền che. Trong khung `.device` bỏ các phép đo của web: vòng focus (màn
+// chạm), sàn chữ 12px (nhãn thanh tab 11), header trong suốt (tiêu đề lớn), bóng của sheet.
 //
 // Phép đo động (Tab, rê chuột, bấm, mở lớp nổi) chiếm phần lớn thời gian mà ít đổi theo bề rộng, nên mặc định
 // chỉ chạy ở các khổ mobile, khổ gần 768 và gần 1280 nhất; khổ khác đo trang đứng yên.
@@ -12,7 +20,7 @@
 // khổ vòng trước còn lỗi động (cuối báo cáo in sẵn lệnh).
 //
 // --quick: chỉ đo trang đứng yên (bố cục, chữ, tràn, tương phản, control gốc kể cả trong lớp đang ẩn), bỏ Tab,
-// rê chuột, bấm, mở lớp nổi. Vòng đầu cho wireframe (design-process.md, U3): ~4 lần nhanh hơn, rồi bước
+// rê chuột, bấm, mở lớp nổi. Vòng đầu cho wireframe (wireframe.md, U3): ~4 lần nhanh hơn, rồi bước
 // tự rà của U3 chạy --sweep đủ phần động trước khi gửi.
 //
 // --wireframe: so bản dựng với wireframe đã chọn (design-process.md, U4) ở 1440 và 375: khoảng nào cao thấp khác,
@@ -50,7 +58,7 @@ const maxTabStops = 160;
 const maxFocusChecksPerKind = 2;
 
 function parseArgs(argv) {
-  const options = { url: "", widths: defaultWidths, out: "", isDark: false, waitMs: 800, dpr: 1, playwrightDir: "", sweep: null, wireframeUrl: "", isQuick: false, isStress: false, dynamicWidths: null };
+  const options = { url: "", widths: defaultWidths, out: "", isDark: false, waitMs: 800, dpr: 1, playwrightDir: "", sweep: null, wireframeUrl: "", isQuick: false, isStress: false, dynamicWidths: null, isMobileApp: false };
   const rest = [...argv];
 
   while (rest.length > 0) {
@@ -68,6 +76,7 @@ function parseArgs(argv) {
     else if (arg === "--pw") options.playwrightDir = rest.shift();
     else if (arg === "--wireframe") options.wireframeUrl = rest.shift();
     else if (arg === "--quick") options.isQuick = true;
+    else if (arg === "--mobile") options.isMobileApp = true;
     else if (arg === "--stress") options.isStress = true;
     else if (arg === "--dynamic-widths") {
       const value = rest.shift() ?? "";
@@ -210,7 +219,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   for (const container of document.querySelectorAll("body *")) {
     const overflowY = getComputedStyle(container).overflowY;
     if (!["auto", "scroll"].includes(overflowY) || container.scrollTop <= 0 || container.clientHeight < window.innerHeight * 0.6) continue;
-    // Lưới giờ cuộn sẵn tới vạch "bây giờ" (`data-now`, `layouts/app.md` "Lưới giờ trong ngày") là cố ý: vạch
+    // Lưới giờ cuộn sẵn tới vạch "bây giờ" (`data-now`, `layouts/app/calendar.md` "Lưới giờ trong ngày") là cố ý: vạch
     // nằm trong phần đang thấy của khung thì không tính (báo nhầm 30/09/2026, lịch hẹn nha khoa).
     const containerRect = container.getBoundingClientRect();
     const isScrolledToNow = [...container.querySelectorAll("[data-now]")].some((marker) => {
@@ -302,9 +311,10 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     return [...paths].sort().join("|");
   }
 
-  // Thanh công cụ và khung lý do của trang wireframe (`design-process.md` U3) nằm ngoài bản thiết kế: không đo.
+  // Thanh công cụ và khung lý do của trang wireframe (`wireframe.md` U3) nằm ngoài bản thiết kế: không đo.
   //  Đã báo nhầm 30/09/2026, wireframe nha khoa: "hàng nút header không đồng cỡ", chỗ bấm nhỏ, vạch lệch với thanh.
-  const isWireframeChrome = (element) => Boolean(element.closest(".wf-bar, .wf-reason, [data-wf-reason]"));
+  // Thanh công cụ, khung lý do, danh sách màn cạnh khung máy: của trang wireframe, không thuộc bản thiết kế.
+  const isWireframeChrome = (element) => Boolean(element.closest(".wf-bar, .wf-reason, [data-wf-reason], .wf-screens"));
   const allElements = [...document.body.querySelectorAll("*")].filter((element) => !["SCRIPT", "STYLE", "svg", "path"].includes(element.tagName) && !isWireframeChrome(element));
 
   // 1. Cuộn ngang: trang rộng hơn màn, và phần tử nào lòi ra ngoài mép phải.
@@ -514,6 +524,10 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
 
     for (const siblings of [...groups.values()].flatMap(splitByStructure)) {
       if (siblings.length < 3) continue;
+      // Cao ngoài đã bằng nhau thì không lệch: dòng `min-h-*` trong `divide-y` cao đúng min-h kể cả viền, trừ viền ra
+      // thì dòng có viền thấp hơn dòng cuối 1px, báo nhầm (ba lượt dựng app điện thoại 07/11/2026).
+      const outerHeights = siblings.map((sibling) => sibling.getBoundingClientRect().height);
+      if (Math.max(...outerHeights) - Math.min(...outerHeights) < 0.5) continue;
 
       const innerHeights = siblings.map((sibling) => {
         const style = getComputedStyle(sibling);
@@ -777,6 +791,53 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     }
   }
 
+  // 6c. Số và đơn vị tách dòng ("1.290.000" cuối dòng, "đ" trơ dòng dưới): khoảng trắng thường giữa số và
+  //     đơn vị cho trình duyệt ngắt ở đó. Đã dính 31/10/2026: màn chào có ví dụ của app chia tiền, câu
+  //     "mỗi người 1.290.000 đ" trong thẻ tối ở 390px.
+  const splitAmounts = [];
+  const amountPattern = /\d[\d.,]*([ \t\n]+)(đ|₫|%|VND|k|tr|triệu|tỷ)(?=$|[\s.,;:!?)·/])/g;
+  const amountWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  while (amountWalker.nextNode() && splitAmounts.length < 10) {
+    const textNode = amountWalker.currentNode;
+    const parent = textNode.parentElement;
+    if (!parent || !isVisible(parent) || parent.closest("script, style, code, pre")) continue;
+    if (getComputedStyle(parent).whiteSpace === "nowrap") continue;
+    for (const match of textNode.data.matchAll(amountPattern)) {
+      const spaceIndex = match.index + match[0].length - match[2].length - match[1].length;
+      const digitRange = document.createRange();
+      digitRange.setStart(textNode, spaceIndex - 1);
+      digitRange.setEnd(textNode, spaceIndex);
+      const unitRange = document.createRange();
+      unitRange.setStart(textNode, spaceIndex + match[1].length);
+      unitRange.setEnd(textNode, spaceIndex + match[1].length + 1);
+      const digitRect = digitRange.getBoundingClientRect();
+      const unitRect = unitRange.getBoundingClientRect();
+      if (digitRect.width && unitRect.width && unitRect.top >= digitRect.bottom - 2) {
+        splitAmounts.push(`"${match[0].replace(/\s+/g, " ")}": ${describe(parent)}`);
+      }
+    }
+  }
+
+  // 6d. Ô số tiền to có đơn vị đứng sau ("0 đ" giữa sheet): ô rộng cố định, chữ căn giữa trong ô nên "đ" đứng xa
+  //     số. Đo từ mép phải của chữ (canvas đo theo font của ô) tới mép trái đơn vị. Đã dính 31/10/2026: app chia
+  //     tiền bỏ `field-sizing: content`, ô 64px, "0" cách "đ" 23px, gõ số dài thì xa hơn.
+  const loosenedUnits = [];
+  const measureCanvas = document.createElement("canvas").getContext("2d");
+  for (const input of document.querySelectorAll('input[inputmode="numeric"], input[inputmode="decimal"]')) {
+    if (loosenedUnits.length >= 5 || !isVisible(input)) continue;
+    const unit = input.nextElementSibling;
+    const style = getComputedStyle(input);
+    // Đơn vị là chữ ("đ", "kg"), không phải ô nhập kế bên: dãy ô OTP cũng numeric, căn giữa, đứng liền nhau.
+    const unitText = unit?.textContent.trim() ?? "";
+    if (!unit || unit.matches("input, select, textarea, button") || !isVisible(unit) || unitText.length === 0 || unitText.length > 3 || style.textAlign === "left" || style.textAlign === "start") continue;
+    measureCanvas.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+    const textWidth = measureCanvas.measureText(input.value || input.placeholder).width;
+    const inputRect = input.getBoundingClientRect();
+    const textRight = style.textAlign === "center" ? inputRect.left + inputRect.width / 2 + textWidth / 2 : inputRect.right - parseFloat(style.paddingRight);
+    const gap = unit.getBoundingClientRect().left - textRight;
+    if (gap > 12) loosenedUnits.push(`"${input.value || input.placeholder}" cách "${unit.textContent.trim()}" ${Math.round(gap)}px (ô ${Math.round(inputRect.width)}px): ${describe(input)}`);
+  }
+
   // 7. Ô nhập lệch mép với nút rộng hết khung trong cùng form / hộp thoại: màn hẹp nút xếp dọc
   //    rộng hết, còn ô nằm trong cột chữ thụt sau icon (hộp xác nhận có ô gõ lại tên: ô 239px ở
   //    x=96, nút 295px ở x=40, đo 26/09/2026). Nút tự co theo chữ (màn rộng) thì không so.
@@ -797,6 +858,8 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
 
     for (const field of fields) {
       if (!isVisible(field)) continue;
+      // Ô nhập số tiền cỡ chữ lớn canh giữa (sheet thêm khoản của app điện thoại) là số chính, không phải ô điền.
+      if (parseFloat(getComputedStyle(field).fontSize) >= 28) continue;
       // Hàng nhiều ô cùng cỡ (OTP sáu ô 40–57px) không cần khớp mép nút (báo nhầm 26/09/2026).
       const siblingFields = [...(field.parentElement?.parentElement || field.parentElement).querySelectorAll("input")].filter(isVisible);
       if (siblingFields.length >= 3 && siblingFields.every((sibling) => Math.abs(sibling.getBoundingClientRect().width - field.getBoundingClientRect().width) <= 2)) continue;
@@ -1042,7 +1105,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
 
   // 11b. Cột chữ của bảng bị ép xuống dòng trong khi bảng không cuộn: các cột khác `nowrap` giữ chỗ, cột
   //      tên / dịch vụ còn ~100px, nửa số dòng thành hai dòng, dòng cao thấp lởm chởm. Khung vừa phải ẩn cột
-  //      phụ theo `@container` của card (`layouts/app.md`, "Khung vừa thì ẩn cột phụ"), không theo viewport
+  //      phụ theo `@container` của card (`layouts/app/data-table.md`, "Khung vừa thì ẩn cột phụ"), không theo viewport
   //      (đã dính 30/09/2026, bảng Điều trị ở hồ sơ bệnh nhân 1280px: cột Điều trị 101px, 4/6 dòng hai dòng,
   //      vì cột Bác sĩ ẩn theo `lg:` mà cột phải 22rem đã lấy mất chỗ).
   const squeezedTableColumns = [];
@@ -1088,6 +1151,13 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   for (const group of document.querySelectorAll("fieldset, [role='radiogroup'], [role='group']")) {
     const choices = [...group.querySelectorAll("input[type='radio'], input[type='checkbox'], [role='radio']")].filter(isVisible);
     if (choices.length < 3) continue;
+    // Lưới ô icon (chọn danh mục, chọn loại: mỗi ô một icon trên nhãn) là tập không thứ tự, xếp lưới là số đông
+    // (mobile-app.html, sheet thêm giao dịch). Luật chữ Z chỉ cho thang có thứ tự (11/2026, app tài chính).
+    const isIconTileGrid = choices.every((choice) => {
+      const tile = choice.matches("input") ? choice.closest("label") || choice.parentElement : choice;
+      return tile?.querySelector("svg, img, i[data-lucide]");
+    });
+    if (isIconTileGrid) continue;
 
     const lefts = new Set(choices.map((choice) => Math.round(choice.getBoundingClientRect().left / 4)));
     const tops = new Set(choices.map((choice) => Math.round(choice.getBoundingClientRect().top / 4)));
@@ -1256,14 +1326,27 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     // xét các lớp nằm sau chữ trong chồng. Đã đo nhầm một nút nền xanh ra 1:1 vì thanh dưới đáy màu trắng che nút
     // (27/09/2026, dự án mồi phase 2). Chữ bị che hẳn thì đi theo các cha trong DOM.
     const stack = document.elementsFromPoint(centerX, centerY);
-    const textIndex = stack.findIndex((layer) => layer === element || element.contains(layer));
+    // Chữ `pointer-events: none` (thanh trạng thái giả của khung máy J1) không có trong `elementsFromPoint`: cả chồng
+    // là các lớp nằm dưới nó. Đi theo cha thì ra nền `.device`, bỏ qua đầu màn gradient ngay dưới giờ (báo nhầm "9:41"
+    // trắng 1.15:1, 08/11/2026, app bảo hiểm).
+    const isClickThrough = getComputedStyle(element).pointerEvents === "none";
+    const foundIndex = stack.findIndex((layer) => layer === element || element.contains(layer));
+    const textIndex = foundIndex === -1 && isClickThrough ? 0 : foundIndex;
     if (textIndex === -1) return readAncestorBackdrops(element);
 
-    // Lớp không phải cha mà có gradient (lớp phủ trên ảnh bìa) vẫn bỏ đo: ảnh nằm cạnh nó, không phải cha.
+    // Chữ nằm trên ảnh (hay lớp phủ gradient trên ảnh) không đọc được màu nền từ CSS: trả "pixels" để chụp nền thật dưới
+    // chữ rồi chấm (`verifyGradientContrast`). Trước đây bỏ đo, sót giờ trắng trên trời nhạt của ảnh đầu màn và chữ trên
+    // thẻ ảnh (08/11/2026, app du lịch theo ảnh mẫu).
     for (const layer of stack.slice(textIndex)) {
       if (layer === element || element.contains(layer)) continue;
-      if (layer.contains(element)) break;
-      if (["IMG", "VIDEO", "CANVAS", "svg"].includes(layer.tagName) || getComputedStyle(layer).backgroundImage !== "none") return null;
+      // Cha trong suốt (khối bọc chữ `relative` trên ảnh) không che gì: đi tiếp xuống ảnh nằm dưới nó. Dừng ở đây thì
+      // đo theo nền của thẻ (`bg-foreground` lót sau ảnh), chữ trắng trên ảnh trời sáng vẫn qua.
+      if (layer.contains(element)) {
+        const layerStyle = getComputedStyle(layer);
+        if (layerStyle.backgroundImage === "none" && readColor(layerStyle.backgroundColor).alpha === 0) continue;
+        break;
+      }
+      if (["IMG", "VIDEO", "CANVAS", "svg"].includes(layer.tagName) || getComputedStyle(layer).backgroundImage !== "none") return "pixels";
       if (readColor(getComputedStyle(layer).backgroundColor).alpha > 0) return readAncestorBackdrops(layer);
     }
 
@@ -1286,10 +1369,18 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
       unmeasuredContrastCount++;
       return;
     }
+    if (backdrops === "pixels") {
+      markPhotoText(element, cssColor, sample);
+      return;
+    }
 
     const style = getComputedStyle(element);
     const textColor = readColor(cssColor);
-    textColor.alpha *= readOpacityChain(element);
+    const opacityChain = readOpacityChain(element);
+    // Đang ẩn bằng độ mờ (thông báo ngắn chờ hiện, lớp đang mờ dần): người dùng không thấy, không chấm. Chấm vào thì
+    // chữ trong suốt ra 1:1, báo nhầm.
+    if (opacityChain < 0.05) return;
+    textColor.alpha *= opacityChain;
     const fontSize = parseFloat(style.fontSize);
     const isLargeText = fontSize >= 24 || (fontSize >= 18.66 && Number(style.fontWeight) >= 700);
     const requiredRatio = isLargeText ? 3 : 4.5;
@@ -1304,12 +1395,61 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     if (ratio >= requiredRatio) return;
 
     const key = `${toHex(shownColor)}|${toHex(backdrop)}|${element.tagName}.${element.getAttribute("class") || ""}`;
+    // Nền qua gradient: điểm dừng tệ nhất có thể nằm xa chữ (đầu màn cam mờ dần về nền xám ở đáy, chữ trắng nằm trên
+    // phần cam đậm báo 1.14:1, đo pixel thật 5.7:1; 08/11/2026, app bảo hiểm theo ảnh mẫu). Đánh dấu mọi chữ cùng cặp
+    // màu để `verifyGradientContrast` chụp nền thật dưới từng chữ rồi chấm lại: cùng cặp mà một chữ nằm trên phần sáng
+    // thì vẫn báo. Có chữ ngoài khung nhìn (không chụp được) thì giữ cách chấm cũ cho cả cặp.
+    const rect = element.getBoundingClientRect();
+    const isInViewport = rect.width > 0 && rect.height > 0 && rect.left >= 0 && rect.top >= 0 && rect.right <= innerWidth && rect.bottom <= innerHeight;
+    const isGradient = backdrops.length > 1;
     if (!lowContrastTexts.has(key)) {
       lowContrastTexts.set(key, {
         ratio,
         line: `${ratio.toFixed(2)}:1, cần ${requiredRatio}:1, chữ ${toHex(shownColor)} trên nền ${toHex(backdrop)} "${sample}": ${describe(element)}`,
+        gradientId: isGradient ? String(lowContrastTexts.size) : null,
+        requiredRatio,
+        textColor,
       });
     }
+    const entry = lowContrastTexts.get(key);
+    if (!entry.gradientId) return;
+    if (!isGradient || !isInViewport) {
+      entry.gradientId = null;
+      return;
+    }
+    element.dataset.evonGradientText = entry.gradientId;
+  }
+
+  // Chữ trên ảnh: chưa biết tỉ lệ, ghi tạm là một mục tương phản thấp và đánh dấu để chụp pixel nền; đạt ngưỡng thì
+  // `verifyGradientContrast` gỡ mục đi. Chữ ngoài khung nhìn không chụp được: tính là chỗ không đo, không báo nhầm.
+  function markPhotoText(element, cssColor, sample) {
+    const rect = element.getBoundingClientRect();
+    const isInViewport = rect.width > 0 && rect.height > 0 && rect.left >= 0 && rect.top >= 0 && rect.right <= innerWidth && rect.bottom <= innerHeight;
+    if (!isInViewport) {
+      unmeasuredContrastCount++;
+      return;
+    }
+
+    const textColor = readColor(cssColor);
+    const opacityChain = readOpacityChain(element);
+    if (opacityChain < 0.05) return;
+    textColor.alpha *= opacityChain;
+    const style = getComputedStyle(element);
+    const fontSize = parseFloat(style.fontSize);
+    const isLargeText = fontSize >= 24 || (fontSize >= 18.66 && Number(style.fontWeight) >= 700);
+    const requiredRatio = isLargeText ? 3 : 4.5;
+    const key = `photo|${toHex(textColor)}|${element.tagName}.${element.getAttribute("class") || ""}`;
+    if (!lowContrastTexts.has(key)) {
+      lowContrastTexts.set(key, {
+        // Xếp sau các cặp đã đo ra tỉ lệ thật: danh sách hiện 12 dòng đầu.
+        ratio: requiredRatio,
+        line: `cần ${requiredRatio}:1, chữ ${toHex(textColor)} trên ảnh "${sample}": ${describe(element)}`,
+        gradientId: String(lowContrastTexts.size),
+        requiredRatio,
+        textColor,
+      });
+    }
+    element.dataset.evonGradientText = lowContrastTexts.get(key).gradientId;
   }
 
   // Nhãn của ô đang khoá mờ theo ô là cố ý (choice-controls.md, bảng Khoá) và WCAG miễn chữ của control khoá.
@@ -1382,7 +1522,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   //      bản sửa chênh 16 được duyệt. `bg-secondary` thẳng trên nền trang chỉ chênh 13 (`bg-tab-selected`).
   const faintSelectedTabs = [];
   for (const tab of document.querySelectorAll("[role='tab'][aria-selected='true'], [aria-current='page']")) {
-    if (faintSelectedTabs.length >= 4 || !isVisible(tab)) continue;
+    if (faintSelectedTabs.length >= 4 || !isVisible(tab) || isWireframeChrome(tab)) continue;
     // Link `aria-current` chỉ tính khi nằm trong hàng ngang (tab là link): mục sidebar xếp dọc theo luật riêng.
     const parentStyle = tab.parentElement ? getComputedStyle(tab.parentElement) : null;
     if (tab.getAttribute("role") !== "tab" && !(parentStyle?.display.includes("flex") && parentStyle.flexDirection.startsWith("row"))) continue;
@@ -1400,7 +1540,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   //      Dòng bảng không bo góc thì bỏ qua.
   const stuckRows = [];
   for (const row of document.querySelectorAll("[aria-current]:not([aria-current='false']), [aria-selected='true'], [data-state='active'], [data-active='true']")) {
-    if (stuckRows.length >= 4 || !isVisible(row)) continue;
+    if (stuckRows.length >= 4 || !isVisible(row) || isWireframeChrome(row)) continue;
     const rowStyle = getComputedStyle(row);
     if (!(parseFloat(rowStyle.borderTopLeftRadius) > 0) || readColor(rowStyle.backgroundColor).alpha < 0.02) continue;
     const rowRect = row.getBoundingClientRect();
@@ -1602,6 +1742,9 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     const style = getComputedStyle(element);
     if (!["auto", "scroll"].includes(style.overflowX) || style.scrollbarWidth !== "none" || !isVisible(element)) continue;
     if (element.scrollWidth <= element.clientWidth + 4) continue;
+    // Trong khung máy của bản mẫu điện thoại (J1): người dùng thật vuốt bằng ngón tay, không cần nút mũi tên cho chuột
+    // (11/2026, app AI: hàng chip trong sheet bị báo ở khổ 1280).
+    if (element.closest(".device")) continue;
     const scope = element.parentElement?.parentElement || element.parentElement;
     const hasArrowButton = [...(scope?.querySelectorAll("button, [role='button']") || [])]
       .some((button) => !element.contains(button) && isVisible(button) && button.getBoundingClientRect().width < 64);
@@ -1788,6 +1931,8 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   const denseItems = [];
   for (const parent of allElements) {
     if (denseItems.length >= 3) break;
+    // Trong khung app điện thoại thì tên xuống dòng hết, không cắt (J4): mục dài lên 5 dòng là đúng, không báo.
+    if (parent.closest(".device")) continue;
     const items = [...parent.children].filter((child) => isVisible(child) && child.getBoundingClientRect().height >= 48);
     if (items.length < 3) continue;
     // Cùng loại = cùng thẻ và cùng class đầu: mục đang chọn thêm class trạng thái (`sel`, `lg:bg-…`) vẫn cùng loại.
@@ -1928,9 +2073,11 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
 
   // 18o. Thanh header trong suốt nằm trên nền trang xám: các app để header nền trắng; trong suốt thì trông như
   //      chưa xong, dính đỉnh thì nội dung cuộn lên lộ sau chữ (29/09/2026, wireframe khách truy cập).
+  //      App điện thoại (khung `.device`) không tính: đầu màn gốc là tiêu đề lớn trên nền màn, dải `.status-cover` che
+  //      phần cuộn (mobile.md J1, J3).
   const transparentHeaders = [];
   for (const bar of document.querySelectorAll("header, [role='banner']")) {
-    if (transparentHeaders.length >= 2 || !isVisible(bar)) continue;
+    if (transparentHeaders.length >= 2 || !isVisible(bar) || bar.closest(".device")) continue;
     const rect = bar.getBoundingClientRect();
     if (rect.height < 44 || rect.height > 96 || rect.width < window.innerWidth * 0.4 || rect.top > 8) continue;
     if (readColor(getComputedStyle(bar).backgroundColor).alpha > 0.1) continue;
@@ -1941,7 +2088,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     if (isGrayBehind) transparentHeaders.push(`nền sau rgb(${behindColor.red}, ${behindColor.green}, ${behindColor.blue}): ${describe(bar)}`);
   }
 
-  // 18m. Trang wireframe thiếu phần nào của thanh công cụ (`design-process.md` U3): phương án, nút Màu, Khổ,
+  // 18m. Trang wireframe thiếu phần nào của thanh công cụ (`wireframe.md` U3): phương án, nút Màu, Khổ,
   //      Trạng thái, khung lý do, số khối. Có lượt wireframe có thanh, có lượt không (29/09/2026). Trong khung
   //      mobile (`frame=1`) thanh ẩn là đúng, không tính.
   const wireframeParams = new URLSearchParams(location.search);
@@ -1950,7 +2097,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   const missingWireframeParts = !/wireframe/i.test(location.pathname) || wireframeParams.has("frame") ? [] : [
     countLinksWith("v") < 2 && "thanh phương án (?v=)",
     countLinksWith("mau") < 1 && "công tắc Màu (mau=)",
-    countLinksWith("kho") < 2 && "nút Khổ desktop / mobile (kho=)",
+    countLinksWith("kho") < 2 && countLinksWith("may") < 2 && "nút Khổ desktop / mobile (kho=), app điện thoại thì nút Máy (may=)",
     countLinksWith("tt") < 2 && "nút Trạng thái (tt=)",
     !document.querySelector("[data-wf-reason]") && "khung lý do (data-wf-reason)",
     document.querySelectorAll("[data-wf-block]").length < 2 && "số khối (data-wf-block)",
@@ -1987,7 +2134,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   if (wireframeBar && viewportWidth >= 1280 && wireframeBar.scrollWidth > wireframeBar.clientWidth + 1) {
     wireframeChromeProblems.push(`thanh công cụ tràn ${wireframeBar.scrollWidth - wireframeBar.clientWidth}px ở ${viewportWidth}px: rút nhãn (Màn một hai chữ, Phương án chỉ chữ cái)`);
   }
-  // Token focus theo màu nhấn đang áp (design-process.md, U3): đổi --primary trên body mà --border-focus khai
+  // Token focus theo màu nhấn đang áp (wireframe.md, U3): đổi --primary trên body mà --border-focus khai
   // `var(--primary)` ở :root thì đã tính xong ở :root, viền focus giữ màu cũ; --ring-focus viết cứng cũng vậy (đã dính
   // 01/10/2026, wireframe lớp học: chọn xanh ngọc mà ô tìm focus viền chàm ở mọi nấc). Đo ở khối thiết kế, nền sáng.
   if (wireframeBar && !document.documentElement.classList.contains("dark")) {
@@ -2058,13 +2205,16 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     const ownText = [...element.childNodes].filter((node) => node.nodeType === Node.TEXT_NODE).map((node) => node.textContent).join("").trim();
     if (ownText.length <= 3 || element.closest("svg") || !isVisible(element)) continue;
     const fontSize = parseFloat(getComputedStyle(element).fontSize);
-    if (fontSize >= 12) continue;
+    // App điện thoại: nhãn thanh tab 11px là cỡ chuẩn (mobile.md J4), sàn là 11.
+    if (fontSize >= (element.closest(".device") ? 11 : 12)) continue;
     tinyTextCount += 1;
     if (tinyTexts.length < 10) tinyTexts.push(`${fontSize}px "${ownText.slice(0, 32)}": ${describe(element)}`);
   }
 
   return {
     orphanWords,
+    splitAmounts,
+    loosenedUnits,
     invisibleFrames,
     faintLines,
     faintSelectedTabs,
@@ -2106,6 +2256,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     wrappedRows,
     lowContrastTexts: sortedLowContrast.slice(0, 12).map((item) => item.line),
     lowContrastCount: sortedLowContrast.length,
+    gradientContrastChecks: sortedLowContrast.filter((item) => item.gradientId).map(({ gradientId, line, requiredRatio, textColor }) => ({ gradientId, line, requiredRatio, textColor })),
     unmeasuredContrastCount,
     viewportWidth,
     pageScrollWidth,
@@ -2199,6 +2350,9 @@ async function findDrawnFocusRings(page) {
       const element = document.activeElement;
       // Lớp báo lỗi của Next lúc dev (`nextjs-portal`) không phải của trang (báo nhầm 28/09/2026).
       if (!element || element === document.body || element.tagName.startsWith("NEXTJS")) return null;
+      // Thanh công cụ wireframe: Tab qua được nhưng không thuộc bản thiết kế, đánh dấu để bỏ qua. App điện thoại
+      // (khung `.device`) là màn chạm, không có Tab; focus do nền tảng lo khi chuyển sang code (mobile/native-code.md J9).
+      if (element.closest(".wf-bar, .wf-reason, [data-wf-reason], .wf-screens, .device")) return { id: "wf-chrome-" + (element.dataset.evonProbeId ||= String(Math.random()).slice(2)), kind: "wf-chrome", element: "", isField: true };
       if (!element.dataset.evonProbeId) element.dataset.evonProbeId = String(Math.random()).slice(2);
       const label = (element.getAttribute("aria-label") || element.textContent.trim() || element.getAttribute("title") || "").trim().replace(/\s+/g, " ").slice(0, 40);
       const isField = element.matches("input:not([type='checkbox']):not([type='radio']):not([type='range']), textarea, select, [contenteditable='true'], [role='combobox']");
@@ -2437,7 +2591,7 @@ async function probeHoverStates(page) {
 
     for (const element of candidates) {
       const rect = element.getBoundingClientRect();
-      if (rect.width < 8 || rect.height < 8 || element.closest("[inert], [aria-hidden='true'], [data-demo-state]")) continue;
+      if (rect.width < 8 || rect.height < 8 || element.closest("[inert], [aria-hidden='true'], [data-demo-state], .wf-bar, .wf-reason, [data-wf-reason], .wf-screens")) continue;
       if (getComputedStyle(element).visibility === "hidden") continue;
       // Nút đang vô hiệu ("Trang trước" ở trang 1) không rê được: không đổi nền là đúng (báo nhầm 30/09/2026).
       if (element.matches(":disabled, [aria-disabled='true']")) continue;
@@ -3199,6 +3353,502 @@ async function takeFullScreenshot(page, path) {
   }
 }
 
+// ---------- App điện thoại (--mobile, luật J) ----------
+
+// Chạy trong trang, màn đang hiện là .screen.is-active (hay cả trang nếu không có khung mẫu).
+function measureMobileScreen({ isFrame, minTap }) {
+  const problems = [];
+  const device = document.querySelector(".device") || document.body;
+  const deviceRect = device.getBoundingClientRect();
+  const isShown = (element) => {
+    const rect = element.getBoundingClientRect();
+    if (rect.width < 1 || rect.height < 1) return false;
+    for (let node = element; node && node !== document.body; node = node.parentElement) {
+      const style = getComputedStyle(node);
+      if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity) < 0.05 || node.hidden) return false;
+    }
+    // Ngoài khung máy (danh sách màn của người duyệt) không thuộc app.
+    return rect.right > deviceRect.left && rect.left < deviceRect.right && rect.bottom > deviceRect.top && rect.top < deviceRect.bottom;
+  };
+  const isDecor = (element) => Boolean(element.closest("[aria-hidden='true'], .status-bar, .home-indicator"));
+  const isInert = (element) => Boolean(element.closest("[inert]"));
+  const describe = (element) => `${element.tagName.toLowerCase()} "${(element.getAttribute("aria-label") || element.textContent || "").trim().replace(/\s+/g, " ").slice(0, 30)}"`;
+  // Khối nổi nằm ngay trên thanh tab (khe ≤ 24px), rộng từ 80% thanh: thanh giỏ hàng của app đặt món (J11).
+  const isDockedAboveTabbar = (floatRect, barRect) => floatRect.bottom <= barRect.top + 1 && barRect.top - floatRect.bottom <= 24 && floatRect.width >= barRect.width * 0.8;
+
+  // J4: chữ dưới 11px; chữ ô nhập dưới 16px (trình duyệt di động tự phóng to khi focus).
+  const tinyTexts = new Set();
+  const walker = document.createTreeWalker(device, NodeFilter.SHOW_TEXT);
+  while (walker.nextNode()) {
+    const node = walker.currentNode;
+    const parent = node.parentElement;
+    if (!node.data.trim() || !parent || isDecor(parent) || !isShown(parent)) continue;
+    if (parseFloat(getComputedStyle(parent).fontSize) < 11) tinyTexts.add(`"${node.data.trim().slice(0, 24)}" ${getComputedStyle(parent).fontSize}`);
+  }
+  for (const text of [...tinyTexts].slice(0, 4)) problems.push(`chữ dưới 11px: ${text} (J4)`);
+  for (const field of device.querySelectorAll("input:not([type=checkbox]):not([type=radio]):not([type=range]), textarea, select")) {
+    if (!isShown(field) || isInert(field) || field.classList.contains("sr-only")) continue;
+    const size = parseFloat(getComputedStyle(field).fontSize);
+    if (size < 16) problems.push(`ô nhập ${describe(field)} chữ ${size}px: dưới 16px trình duyệt di động phóng to khi chạm vào (J4)`);
+  }
+
+  // J4: chỗ bấm dưới 44px (cao hay rộng). Bỏ link chữ nằm trong đoạn văn.
+  const smallTaps = [];
+  for (const control of device.querySelectorAll("a[href], button, [role='tab'], [role='radio'], [role='switch'], label:has(input)")) {
+    if (!isShown(control) || isInert(control) || isDecor(control)) continue;
+    if (control.closest("p") && control.tagName === "A") continue;
+    const rect = control.getBoundingClientRect();
+    if (rect.height < minTap - 0.5 || rect.width < minTap - 0.5) smallTaps.push(`${describe(control)} ${Math.round(rect.width)}×${Math.round(rect.height)}`);
+  }
+  for (const item of smallTaps.slice(0, 5)) problems.push(`chỗ bấm dưới ${minTap}px: ${item} (J4)`);
+
+  // J2: thanh tab = khối nav dính đáy có từ hai link.
+  const screen = document.querySelector(".screen.is-active");
+  const tabbar = [...device.querySelectorAll("nav")].find((nav) => {
+    if (!isShown(nav)) return false;
+    const rect = nav.getBoundingClientRect();
+    const position = getComputedStyle(nav).position;
+
+    return (position === "absolute" || position === "fixed") && deviceRect.bottom - rect.bottom < 140 && nav.querySelectorAll("a, button").length >= 2;
+  });
+  const screenName = screen?.dataset.screen;
+  const tabTargets = tabbar ? [...tabbar.querySelectorAll("a[href^='#']")].map((link) => link.getAttribute("href").slice(1)) : [];
+  if (tabbar) {
+    const items = [...tabbar.querySelectorAll("a, button")].filter(isShown);
+    const tabCount = items.filter((item) => !item.hasAttribute("data-action")).length;
+    if (tabCount < 3 || tabCount > 5) problems.push(`thanh tab có ${tabCount} mục, cần 3–5 (J2)`);
+    if (["dark", "bubbles"].includes(tabbar.dataset.tabStyle) && tabCount > 4) problems.push(`thanh tab kiểu ${tabbar.dataset.tabStyle} có ${tabCount} mục: kiểu chỉ icon tối đa 4 (J2)`);
+    // Kiểu thanh tab có tên (J2, layouts/mobile-tabbars.html) khai trên nav bằng data-tab-style: pill, dark, bubbles được chỉ
+    // icon khi có aria-label; center được một nút hành động data-action ở giữa (11/2026, app kcal kiểu Dark bị báo nhầm).
+    const tabStyle = tabbar.dataset.tabStyle || "float";
+    const isIconOnlyStyle = ["pill", "dark", "bubbles"].includes(tabStyle);
+    for (const item of items) {
+      const isCenterAction = tabStyle === "center" && item.hasAttribute("data-action");
+      if (isCenterAction) continue;
+      const label = [...item.querySelectorAll("span, p")].map((element) => element.textContent.trim()).find((text) => text.length >= 2) || (item.textContent.trim().length >= 2 ? item.textContent.trim() : "");
+      if (!label && isIconOnlyStyle && (item.getAttribute("aria-label") || "").trim().length < 2) problems.push(`mục thanh tab ${describe(item)} chỉ icon mà thiếu aria-label: kiểu ${tabStyle} cần aria-label mỗi mục (J2)`);
+      if (!label && !isIconOnlyStyle) problems.push(`mục thanh tab ${describe(item)} không có chữ: mục nào cũng có chữ dưới icon, trừ kiểu chỉ icon có tên khai data-tab-style (J2)`);
+      if (item.tagName === "BUTTON" || /^#(add|new|create|them)/i.test(item.getAttribute("href") || "") || /^\+$|thêm|add|new/i.test(item.getAttribute("aria-label") || "")) problems.push(`thanh tab chứa hành động ${describe(item)}: thanh tab chỉ để đi lại, nút thêm đứng riêng cạnh thanh (J2, J5)`);
+    }
+    // J2: nhãn kề nhau cách từ 8px, nhãn hai đầu cách mép bo của thanh từ 8px. Đo bằng Range trên chữ, không bằng
+    // khung mục: thanh thu lại cho nút tròn mà có 5 mục thì nhãn tràn khung mục (bản dựng studio 10/10/2026).
+    const barRect = tabbar.getBoundingClientRect();
+    const labelRects = items.map((item) => {
+      const label = [...item.querySelectorAll("span, p")].find((element) => element.children.length === 0 && element.textContent.trim().length >= 2);
+      if (!label) return null;
+      const range = document.createRange();
+      range.selectNodeContents(label);
+
+      return { text: label.textContent.trim(), rect: range.getBoundingClientRect() };
+    }).filter(Boolean).sort((first, second) => first.rect.left - second.rect.left);
+    const crampedLabels = [];
+    labelRects.forEach((label, index) => {
+      const next = labelRects[index + 1];
+      if (next && next.rect.left - label.rect.right < 8) crampedLabels.push(`"${label.text}" cách "${next.text}" ${Math.round(next.rect.left - label.rect.right)}px`);
+    });
+    const edgeGaps = labelRects.length > 0 ? [labelRects[0].rect.left - barRect.left, barRect.right - labelRects.at(-1).rect.right] : [];
+    if (edgeGaps.some((gap) => gap < 8)) crampedLabels.push(`nhãn hai đầu cách mép thanh ${edgeGaps.map(Math.round).join(" / ")}px`);
+    if (crampedLabels.length > 0) problems.push(`nhãn thanh tab chật (${crampedLabels.slice(0, 3).join(", ")}): nhãn cách nhau từ 8px, cách mép bo từ 8px; thanh 5 mục thì không thu lại cho nút tròn (J2, J5)`);
+
+    // Màn con để xem giữ thanh tab nhưng phải sáng mục của tab cha (J2).
+    const hasCurrentTab = Boolean(tabbar.querySelector("[aria-current]:not([aria-current='false']), [aria-selected='true']"));
+    const isChildScreen = Boolean(screenName) && tabTargets.length > 0 && !tabTargets.includes(screenName);
+    if (isChildScreen && !hasCurrentTab) problems.push(`màn con "${screenName}" hiện thanh tab mà không mục nào sáng: giữ thanh tab thì sáng mục của tab cha (J2)`);
+
+    // Màn con có nút chính dính đáy (form, giỏ hàng, thanh toán) là việc phải làm cho xong: ẩn thanh tab (J2, J5).
+    // Nút dính đáy = nút rộng từ 80% khung, cao từ 48, sát đáy, không nằm trong vùng cuộn. Màn gốc bỏ qua vì thanh
+    // giỏ hàng của app đặt món (J11) cũng rộng và sát đáy.
+    const stickyAction = isChildScreen ? [...screen.querySelectorAll("button, a")].find((control) => {
+      if (!isShown(control) || control.closest(".scroll")) return false;
+      const rect = control.getBoundingClientRect();
+
+      // Thẻ xem trước nổi trên bản đồ (có ảnh, cao hơn 72) là để lướt, không phải nút làm cho xong việc: không tính.
+      return rect.width >= deviceRect.width * 0.8 && rect.height >= 48 && rect.height <= 72 && !control.querySelector("img") && deviceRect.bottom - rect.bottom < 140;
+    }) : null;
+    if (stickyAction) problems.push(`màn con "${screenName}" có nút dính đáy ${describe(stickyAction)} mà vẫn hiện thanh tab: form, giỏ hàng, thanh toán ẩn thanh tab (J2, J5)`);
+
+    // Màn chi tiết một mục mở đầu bằng ảnh tràn mép (ảnh chạy qua tai thỏ, rộng hết khung) ẩn thanh tab (J2): thanh tối
+    // nổi đè lên thẻ ảnh ngay màn đầu, nặng hơn ảnh mẫu (08/11/2026, app du lịch). Ô bản đồ nhỏ (256px) không tính, nền
+    // mờ trang trí sau bìa (`aria-hidden`, blur, mờ: trang sách nói, album) không phải ảnh chủ thể.
+    const heroPhoto = isChildScreen ? [...screen.querySelectorAll("img, video")].find((media) => {
+      if (!isShown(media) || media.getAttribute("aria-hidden") === "true") return false;
+      const mediaStyle = getComputedStyle(media);
+      if (mediaStyle.filter.includes("blur") || Number(mediaStyle.opacity) < 0.9) return false;
+      const rect = media.getBoundingClientRect();
+
+      return rect.top <= deviceRect.top + 8 && rect.width >= deviceRect.width * 0.95 && rect.height >= 240;
+    }) : null;
+    if (heroPhoto && !stickyAction) problems.push(`màn con "${screenName}" mở đầu bằng ảnh tràn mép mà vẫn hiện thanh tab: màn chi tiết một mục có ảnh lớn đầu màn ẩn thanh tab, quay về bằng nút tròn trên ảnh (J2)`);
+  }
+
+  // J1: nền màn sáng mà xám (thẻ trắng trên nền xám kiểu dashboard) chỉ cho màn danh sách nhóm `.is-grouped`.
+  // Nền xám lấy từ ảnh mẫu (`.device[data-ref-bg]`, J8 "Ảnh mẫu là bản trình diễn") là gu của ảnh, không phải xám dashboard.
+  if (screen && !screen.classList.contains("is-grouped") && !screen.closest("[data-ref-bg]")) {
+    // Đọc màu qua canvas: color-mix trả về oklab(), regex số đọc sai (11/2026, nền Tinted lọt qua vì vậy).
+    const context = document.createElement("canvas").getContext("2d");
+    context.fillStyle = getComputedStyle(screen).backgroundColor;
+    context.fillRect(0, 0, 1, 1);
+    const [red, green, blue, alphaByte] = context.getImageData(0, 0, 1, 1).data;
+    const alpha = alphaByte / 255;
+    const lightness = (Math.max(red, green, blue) + Math.min(red, green, blue)) / 2;
+    // Nền có sắc (Tinted, Editorial kem: lệch kênh từ 6) là bộ mặt (J15), không phải xám dashboard.
+    const isTinted = Math.max(red, green, blue) - Math.min(red, green, blue) >= 6;
+    if (alpha > 0.5 && !isTinted && lightness >= 200 && lightness < 250) problems.push(`màn nền xám rgb(${red}, ${green}, ${blue}) mà không phải danh sách nhóm: nền màn trắng, xám chỉ cho màn .is-grouped (cài đặt, tài khoản) (J1)`);
+  }
+
+  // R6 trên điện thoại: hàng chip lọc xuống dòng, chip cuối rớt xuống đứng lẻ (11/2026, app AI "Email 4" một mình hàng hai).
+  // Hàng có từ 3 viên bo tròn hết (bo >= nửa chiều cao) mà các viên nằm trên hơn một hàng: cho cuộn ngang.
+  if (screen) {
+    for (const row of screen.querySelectorAll("div, nav, ul")) {
+      const style = getComputedStyle(row);
+      if (style.display !== "flex" || style.flexWrap !== "wrap" || !isShown(row)) continue;
+      const pills = [...row.children].filter((child) => {
+        const rect = child.getBoundingClientRect();
+        return isShown(child) && rect.height >= 28 && rect.height <= 56 && parseFloat(getComputedStyle(child).borderTopLeftRadius) >= rect.height / 2 - 1;
+      });
+      if (pills.length < 3 || pills.length < row.children.length) continue;
+      // Chỉ hàng lọc chọn một (R6): đúng một viên đang chọn, hay hàng khai tablist / nhãn "lọc". Đám gợi ý tìm kiếm và chip chọn
+      // nhiều ở onboarding được xuống dòng.
+      const selectedCount = pills.filter((pill) => ["aria-pressed", "aria-selected", "aria-checked"].some((attribute) => pill.getAttribute(attribute) === "true") || pill.hasAttribute("aria-current")).length;
+      const isFilterRow = row.getAttribute("role") === "tablist" || /lọc|filter/i.test(row.getAttribute("aria-label") || "") || selectedCount === 1;
+      if (!isFilterRow) continue;
+      const tops = new Set(pills.map((pill) => Math.round(pill.getBoundingClientRect().top / 4)));
+      if (tops.size > 1) {
+        problems.push(`hàng chip ${describe(row)} xuống ${tops.size} hàng: hàng chip lọc không wrap, cho cuộn ngang trong khung, chip shrink-0, mép mờ (R6)`);
+        break;
+      }
+    }
+  }
+
+  // J18: một điểm nhìn mỗi màn. Màn có số hay chữ từ 48px mà tiêu đề màn từ 32px nằm ngay trên (trong 160px) thì hai khối to
+  // tranh nhau (11/2026, app AI: "Lịch đăng" 36px chồng trên "4 bài" 60px). Tiêu đề màn khi có số chính: <= 30px.
+  if (screen) {
+    const bigTexts = [...screen.querySelectorAll("h1, h2, p, span, div")].filter((element) => {
+      if (!isShown(element) || ![...element.childNodes].some((node) => node.nodeType === 3 && node.textContent.trim())) return false;
+      const rect = element.getBoundingClientRect();
+      return rect.top < deviceRect.top + 560 && parseFloat(getComputedStyle(element).fontSize) >= 32;
+    }).map((element) => ({ element, size: parseFloat(getComputedStyle(element).fontSize), rect: element.getBoundingClientRect() }));
+    const hero = bigTexts.find((item) => item.size >= 48);
+    const titleAbove = hero && bigTexts.find((item) => item !== hero && item.size < hero.size && item.rect.bottom <= hero.rect.top + 4 && hero.rect.top - item.rect.bottom < 160);
+    if (titleAbove) problems.push(`hai điểm nhìn chồng nhau: "${titleAbove.element.textContent.trim().slice(0, 20)}" ${titleAbove.size}px ngay trên "${hero.element.textContent.trim().slice(0, 12)}" ${hero.size}px: màn có số chính thì tiêu đề màn tối đa 30px (J18)`);
+  }
+
+  // J8: chọn giờ chỉ hiện giờ trống. Nút giờ gạch ngang ("8:00" có line-through) là giờ kín để lẫn vào.
+  const struckSlots = screen ? [...screen.querySelectorAll("button, a, [role='radio'], [role='option']")].filter((control) => {
+    if (!isShown(control) || !/^\s*\d{1,2}[:h]\d{2}\s*$/.test(control.textContent)) return false;
+
+    return [control, ...control.querySelectorAll("*")].some((element) => getComputedStyle(element).textDecorationLine.includes("line-through"));
+  }) : [];
+  if (struckSlots.length >= 2) problems.push(`${struckSlots.length} ô giờ gạch ngang (${struckSlots.slice(0, 3).map((slot) => slot.textContent.trim()).join(", ")}): giấu giờ đã kín, chỉ hiện giờ trống (J8)`);
+
+  // J5: nút nổi (tuyệt đối / cố định, không phải thanh tab, không phải thông báo) đè lên chữ của màn.
+  const floaters = [...device.querySelectorAll("a, button")].filter((element) => {
+    if (!isShown(element) || isInert(element) || (tabbar && tabbar.contains(element))) return false;
+    const position = getComputedStyle(element).position;
+
+    if ((position !== "absolute" && position !== "fixed") || element.closest("[role='dialog']")) return false;
+    // Nút cùng dải với thanh tab (nút thêm đứng cạnh thanh) thuộc thanh đáy: nội dung cuộn qua dưới nó như cuộn qua
+    // dưới thanh tab, không tính là đè (báo nhầm mẫu mobile-app.html 09/10/2026).
+    if (tabbar) {
+      const floatRect = element.getBoundingClientRect();
+      const barRect = tabbar.getBoundingClientRect();
+      if (floatRect.bottom > barRect.top && floatRect.top < barRect.bottom) return false;
+      // Thanh giỏ hàng (J11) xếp ngay trên thanh tab, cùng bề ngang: thuộc dải đáy, vùng cuộn chừa thêm chỗ cho nó.
+      if (isDockedAboveTabbar(floatRect, barRect)) return false;
+    }
+
+    return true;
+  });
+  const textLeaves = screen ? [...screen.querySelectorAll("span, p, h1, h2, h3, dt, dd, li")].filter((element) => element.children.length === 0 && element.textContent.trim() && isShown(element) && !isInert(element)) : [];
+  for (const floater of floaters) {
+    const floatRect = floater.getBoundingClientRect();
+    const covered = textLeaves.find((leaf) => {
+      if (floater.contains(leaf)) return false;
+      const rect = leaf.getBoundingClientRect();
+
+      return rect.left < floatRect.right - 2 && rect.right > floatRect.left + 2 && rect.top < floatRect.bottom - 2 && rect.bottom > floatRect.top + 2;
+    });
+    if (covered) problems.push(`nút nổi ${describe(floater)} đè lên chữ "${covered.textContent.trim().slice(0, 24)}": đặt cạnh thanh tab hay dính đáy, không nổi trên nội dung (J5)`);
+  }
+
+  // J2: cuộn hết vùng cuộn, dòng cuối phải ra khỏi thanh tab.
+  const scroller = screen?.querySelector(".scroll") || screen;
+  if (tabbar && scroller && scroller.scrollHeight > scroller.clientHeight) {
+    // Trả về đúng chỗ cuộn ban đầu, không về 0: màn "vừa lưu" cuộn sẵn tới dòng mới (J1), về 0 thì ảnh chụp sai.
+    const scrollBefore = scroller.scrollTop;
+    scroller.scrollTop = scroller.scrollHeight;
+    const lastLeaf = [...textLeaves].sort((first, second) => second.getBoundingClientRect().bottom - first.getBoundingClientRect().bottom)[0];
+    const barRect = tabbar.getBoundingClientRect();
+    // Có thanh giỏ hàng xếp trên thanh tab thì dòng cuối phải ra khỏi cả thanh giỏ.
+    const dockTops = [...device.querySelectorAll("a, button")].filter((element) => isShown(element) && !tabbar.contains(element) && ["absolute", "fixed"].includes(getComputedStyle(element).position)).map((element) => element.getBoundingClientRect()).filter((rect) => isDockedAboveTabbar(rect, barRect)).map((rect) => rect.top);
+    const tabTop = Math.min(barRect.top, ...dockTops);
+    if (lastLeaf && lastLeaf.getBoundingClientRect().bottom > tabTop + 1) problems.push(`cuộn hết mà "${lastLeaf.textContent.trim().slice(0, 24)}" vẫn nằm dưới thanh tab${dockTops.length > 0 ? " và thanh giỏ" : ""}: vùng cuộn chừa đáy inset + 96px (.pad-tabbar, J2), có thanh giỏ thì + 160px (.pad-cartbar, J11)`);
+    scroller.scrollTop = scrollBefore;
+  }
+
+  // J1: khung máy tính, chữ hay chỗ bấm chui vào vùng tai thỏ (47px) hay thanh home (34px).
+  if (isFrame && screen) {
+    const insetTop = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--inset-top")) || 0;
+    const insetBottom = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--inset-bottom")) || 0;
+    // Đo lúc chưa cuộn: màn "vừa lưu" cuộn sẵn tới dòng mới (J1), nội dung cuộn qua tai thỏ khi đó là bình thường.
+    const scrollBeforeFrame = scroller ? scroller.scrollTop : 0;
+    if (scroller) scroller.scrollTop = 0;
+    const intruders = [...screen.querySelectorAll("a, button, span, p, h1, h2, input")].filter((element) => {
+      if (!isShown(element) || isInert(element) || isDecor(element) || element.children.length > 0 && !element.matches("a, button, input")) return false;
+      const rect = element.getBoundingClientRect();
+      // Chỉ xét lúc chưa cuộn: phần nội dung cuộn qua tai thỏ là bình thường.
+      return rect.top < deviceRect.top + insetTop - 1 || rect.bottom > deviceRect.bottom - insetBottom + 1 && rect.top < deviceRect.bottom;
+    }).filter((element) => !element.closest(".scroll") || element.getBoundingClientRect().top < deviceRect.top + insetTop - 1);
+    for (const element of intruders.slice(0, 3)) problems.push(`${describe(element)} nằm trong vùng ${element.getBoundingClientRect().top < deviceRect.top + insetTop ? "tai thỏ" : "thanh home"} của khung: chừa bằng --inset-top / --inset-bottom (J1)`);
+    if (scroller) scroller.scrollTop = scrollBeforeFrame;
+
+    // J1: cuộn xuống, chữ chạy dưới thanh trạng thái mà không có dải nền che thì đè giờ và pin.
+    const bandBottom = deviceRect.top + insetTop;
+    if (insetTop > 0 && scroller && scroller.scrollHeight > scroller.clientHeight + 40) {
+      const scrollBeforeCover = scroller.scrollTop;
+      const isCover = (element) => {
+        if (element.closest(".status-bar") || scroller.contains(element) || !isShown(element)) return false;
+        const style = getComputedStyle(element);
+        if (!["absolute", "fixed", "sticky"].includes(style.position)) return false;
+        const rect = element.getBoundingClientRect();
+        const alpha = Number((style.backgroundColor.match(/[\d.]+(?=\)$)/) || ["1"])[0]);
+        const hasFill = style.backgroundColor !== "transparent" && !/rgba\(0, 0, 0, 0\)/.test(style.backgroundColor) && (style.backgroundColor.startsWith("rgb(") || alpha >= 0.6);
+
+        // blur(0px) không che gì: lách phép đo (11/2026, app AI nền tối).
+        const hasBlur = /blur\((?!0(px)?\))/.test(style.backdropFilter || "");
+
+        return rect.top <= deviceRect.top + 1 && rect.bottom >= bandBottom - 1 && rect.width >= deviceRect.width * 0.9 && (hasFill || hasBlur);
+      };
+      // Đo dải che SAU khi cuộn: J18 cho dải trong suốt lúc chưa cuộn (để không che quầng), hiện nền khi cuộn. Phát sự kiện
+      // scroll cho script của app đổi class, tắt transition để đọc ngay giá trị cuối, đo xong trả lại.
+      scroller.scrollTop = Math.min(240, scroller.scrollHeight - scroller.clientHeight);
+      const coverCandidates = [...device.querySelectorAll("div, header, span")].filter((element) => !scroller.contains(element) && ["absolute", "fixed", "sticky"].includes(getComputedStyle(element).position));
+      const savedTransitions = coverCandidates.map((element) => element.style.transition);
+      coverCandidates.forEach((element) => { element.style.transition = "none"; });
+      scroller.dispatchEvent(new Event("scroll"));
+      const hasCover = coverCandidates.some(isCover);
+      coverCandidates.forEach((element, index) => { element.style.transition = savedTransitions[index]; });
+      const scrollerRect = scroller.getBoundingClientRect();
+      const exposed = textLeaves.find((leaf) => {
+        const rect = leaf.getBoundingClientRect();
+        const visibleTop = Math.max(rect.top, scrollerRect.top);
+
+        return scroller.contains(leaf) && visibleTop < bandBottom - 2 && rect.bottom > deviceRect.top + 4 && rect.bottom > scrollerRect.top;
+      });
+      if (exposed && !hasCover) problems.push(`cuộn xuống thì "${exposed.textContent.trim().slice(0, 24)}" chạy dưới thanh trạng thái mà không có dải nền che, đè giờ và pin: thêm dải \`.status-cover\` cao --inset-top (J1)`);
+      scroller.scrollTop = scrollBeforeCover;
+      scroller.dispatchEvent(new Event("scroll"));
+    }
+  }
+
+  if (device.scrollWidth > device.clientWidth + 1) problems.push(`màn cuộn ngang ${device.scrollWidth - device.clientWidth}px (J1)`);
+
+  // J8: hàng cuộn ngang chỉ lố vài px: ô cuối dính mép màn, trông như bị cắt mà vuốt gần như không đi. Vừa thì
+  // xếp lưới cho vừa khung (dải 7 ngày `grid-cols-7`), nhiều thì để lộ rõ nửa ô tiếp theo.
+  for (const row of screen ? screen.querySelectorAll("*") : []) {
+    if (!isShown(row) || !["auto", "scroll"].includes(getComputedStyle(row).overflowX)) continue;
+    const extra = row.scrollWidth - row.clientWidth;
+    if (extra > 1 && extra <= 24 && row.children.length >= 3) {
+      problems.push(`hàng cuộn ngang chỉ lố ${extra}px (${describe(row)}): ô cuối dính mép như bị cắt; xếp lưới cho vừa khung hoặc để lộ rõ nửa ô (J8)`);
+      break;
+    }
+  }
+
+  // J13: ô số tiền to có đơn vị đứng sau mà ô rộng cố định, chữ căn giữa nên "đ" đứng xa số (cùng phép 6d ở phép
+  // đo chung; ô này hay nằm trong sheet, phép đo chung chỉ thấy màn đầu).
+  const measureCanvas = document.createElement("canvas").getContext("2d");
+  for (const input of device.querySelectorAll('input[inputmode="numeric"], input[inputmode="decimal"]')) {
+    const unit = input.nextElementSibling;
+    const style = getComputedStyle(input);
+    // Đơn vị là chữ ("đ", "kg"), không phải ô nhập kế bên: dãy ô OTP cũng numeric, căn giữa, đứng liền nhau.
+    const unitText = unit?.textContent.trim() ?? "";
+    if (!isShown(input) || !unit || unit.matches("input, select, textarea, button") || !isShown(unit) || unitText.length === 0 || unitText.length > 3 || style.textAlign !== "center") continue;
+    measureCanvas.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+    const inputRect = input.getBoundingClientRect();
+    const textRight = inputRect.left + inputRect.width / 2 + measureCanvas.measureText(input.value || input.placeholder).width / 2;
+    const gap = unit.getBoundingClientRect().left - textRight;
+    if (gap > 12) problems.push(`"${input.value || input.placeholder}" cách "${unit.textContent.trim()}" ${Math.round(gap)}px trong ô số tiền ${Math.round(inputRect.width)}px: ô co theo chữ, field-sizing: content (J13)`);
+  }
+
+  return { screen: screenName || "", problems };
+}
+
+async function probeMobileApp(browser, options) {
+  const base = options.url.split("#")[0];
+  const discover = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const discoverPage = await discover.newPage();
+  await discoverPage.goto(base, { waitUntil: "load" });
+  await discoverPage.waitForTimeout(options.waitMs);
+  const hashes = await discoverPage.evaluate(() => {
+    const names = [...document.querySelectorAll("[data-screen]")].map((screen) => screen.dataset.screen);
+    const links = [...document.querySelectorAll("a[href^='#']")].map((link) => link.getAttribute("href").slice(1)).filter((name) => name && !names.includes(name));
+
+    return [...new Set([...names, ...links])].filter((name) => !/^main$|^top$/.test(name));
+  });
+  // Bảng luồng (J1): bản chép còn name, id thì radio cùng name giành mất dấu chọn của máy thật (sheet món không còn
+  // lựa chọn nào được chọn, giá sai). Mắt thường mới thấy, nên đo thẳng ở đây.
+  const boardLeaks = await discoverPage.evaluate(() => document.querySelectorAll(".board-device [name], .board-device [id]").length);
+  await discover.close();
+
+  // Số khối của wireframe (U3) đè chữ đầu khối trên bảng luồng: placeBlockNumbers chạy lúc máy thật đang ẩn sau bảng,
+  // đo ra "không đè", bản chép giữ số đè chữ (11/2026, wireframe app chi tiêu: "1" đè "Chào buổi sáng"). Đo ở 1440.
+  const boardContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const boardPage = await boardContext.newPage();
+  await boardPage.goto(base, { waitUntil: "load" });
+  await boardPage.waitForTimeout(options.waitMs);
+  const boardNumberOverlaps = await boardPage.evaluate(() => {
+    if (!document.body.classList.contains("is-board")) return [];
+    const isOverlap = (first, second) => first.left < second.right && first.right > second.left && first.top < second.bottom && first.bottom > second.top;
+    const found = [];
+    for (const block of document.querySelectorAll(".board-device [data-wf-block]:not([data-wf-block-out])")) {
+      const blockRect = block.getBoundingClientRect();
+      if (!blockRect.width) continue;
+      const scale = blockRect.width / block.offsetWidth;
+      const numberRect = { left: blockRect.left + 4 * scale, top: blockRect.top + 4 * scale, right: blockRect.left + 22 * scale, bottom: blockRect.top + 22 * scale };
+      const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT);
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        if (!node.textContent.trim()) continue;
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        if ([...range.getClientRects()].some((rect) => rect.width > 0 && isOverlap(rect, numberRect))) {
+          found.push(`khối ${block.dataset.wfBlock} đè "${node.textContent.trim().slice(0, 24)}"`);
+          break;
+        }
+      }
+    }
+
+    return found;
+  });
+  // Chụp cả bảng luồng (J1): người duyệt mở link trên máy tính là thấy bảng này trước, nên mắt phải xem nó như các màn.
+  if (await boardPage.evaluate(() => document.body.classList.contains("is-board"))) {
+    await boardPage.screenshot({ path: join(options.out, "mobile-board-1440.png"), fullPage: true });
+  }
+  await boardContext.close();
+
+  const screens = [];
+  if (boardNumberOverlaps.length > 0) screens.push({ view: "bảng luồng", hash: "board-numbers", shotPath: join(options.out, "mobile-board.png"), problems: [`bảng luồng: ${boardNumberOverlaps.length} số khối đè chữ (${boardNumberOverlaps.slice(0, 3).join("; ")}); gọi lại placeBlockNumbers() sau buildBoard, trên cả trang (J1)`] });
+  if (boardLeaks > 0) screens.push({ view: "bảng luồng", hash: "board", shotPath: join(options.out, "mobile-board.png"), problems: [`bảng luồng: ${boardLeaks} phần tử trong bản chép còn name hay id, radio của bản chép giành dấu chọn của máy thật; chép buildBoard mới nhất của mobile-app.html (J1)`] });
+  // 360×640: Android giá rẻ, máy cũ (khổ hẹp nhất còn phổ biến). Hàng 7 ô vừa ở 390 có thể lố ở đây.
+  const runs = [
+    ["390", { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: options.dpr }, false],
+    ["360", { viewport: { width: 360, height: 640 }, isMobile: true, hasTouch: true, deviceScaleFactor: options.dpr }, false],
+    ["khung 1280", { viewport: { width: 1280, height: 960 }, deviceScaleFactor: options.dpr }, true],
+  ];
+  for (const [label, contextOptions, isFrame] of runs) {
+    const context = await browser.newContext(contextOptions);
+    const page = await context.newPage();
+    for (const hash of hashes.length > 0 ? hashes : [""]) {
+      await page.goto(`${base}${hash ? `#${hash}` : ""}`, { waitUntil: "load" });
+      await page.waitForTimeout(options.waitMs);
+      await page.addStyleTag({ content: freezeMotionCss });
+      await page.waitForTimeout(150);
+      const result = await page.evaluate(measureMobileScreen, { isFrame, minTap: 44 });
+      const shotPath = join(options.out, `mobile-${isFrame ? "frame" : label}-${hash || "start"}.png`);
+      await page.screenshot({ path: shotPath });
+      screens.push({ view: label, hash: hash || "start", shotPath, problems: result.problems });
+    }
+    await context.close();
+  }
+
+  return screens;
+}
+
+function formatMobileReport(screens) {
+  const lines = ["\n=== APP ĐIỆN THOẠI (luật J, references/mobile.md) ==="];
+  const byMessage = new Map();
+  for (const screen of screens) {
+    for (const problem of screen.problems) {
+      const key = problem;
+      if (!byMessage.has(key)) byMessage.set(key, []);
+      byMessage.get(key).push(`#${screen.hash} ${screen.view}`);
+    }
+  }
+  if (byMessage.size === 0) lines.push("Không lỗi J đo được ở các màn.");
+  let index = 1;
+  for (const [problem, where] of byMessage) lines.push(`J${index++} [${[...new Set(where)].join(", ")}] ${problem}`);
+  lines.push(`Ảnh từng màn: ${[...new Set(screens.map((screen) => dirname(screen.shotPath)))][0] || ""}/mobile-*.png`);
+
+  return lines.join("\n");
+}
+
+// Tương phản ở phân vị 10 tệ nhất giữa màu chữ và từng pixel nền của ảnh chụp hộp chữ (chữ đã ẩn). Chạy trong trang.
+async function readPixelContrast({ base64, textColor }) {
+  const image = new Image();
+  image.src = `data:image/png;base64,${base64}`;
+  await image.decode();
+  const canvas = document.createElement("canvas");
+  canvas.width = image.naturalWidth;
+  canvas.height = image.naturalHeight;
+  const context = canvas.getContext("2d");
+  context.drawImage(image, 0, 0);
+  const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+
+  const toLinear = (channel) => {
+    const value = channel / 255;
+
+    return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+  };
+  const readLuminance = (red, green, blue) => 0.2126 * toLinear(red) + 0.7152 * toLinear(green) + 0.0722 * toLinear(blue);
+  const ratios = [];
+  const step = Math.max(1, Math.floor(pixels.length / 4 / 4000));
+
+  for (let index = 0; index < pixels.length; index += 4 * step) {
+    const [red, green, blue] = [pixels[index], pixels[index + 1], pixels[index + 2]];
+    const textLuminance = readLuminance(
+      textColor.red * textColor.alpha + red * (1 - textColor.alpha),
+      textColor.green * textColor.alpha + green * (1 - textColor.alpha),
+      textColor.blue * textColor.alpha + blue * (1 - textColor.alpha),
+    );
+    const backgroundLuminance = readLuminance(red, green, blue);
+    ratios.push((Math.max(textLuminance, backgroundLuminance) + 0.05) / (Math.min(textLuminance, backgroundLuminance) + 0.05));
+  }
+  ratios.sort((first, second) => first - second);
+
+  return ratios[Math.floor(ratios.length * 0.1)] || 0;
+}
+
+// Chấm lại chữ trên nền gradient bằng pixel thật: ẩn chữ (và icon theo màu chữ), chụp hộp từng chữ cùng cặp màu, trộn màu
+// chữ lên từng pixel nền rồi lấy mức tệ ở phân vị 10 (bỏ vài pixel mép hộp nằm ngoài chỗ chữ). Mọi chữ của cặp đạt thì gỡ
+// khỏi danh sách tương phản thấp; không thì giữ, ghi số đo pixel tệ nhất.
+async function verifyGradientContrast(page, measurements) {
+  const checks = measurements.gradientContrastChecks || [];
+  if (checks.length === 0) return measurements;
+
+  const passedLines = new Set();
+  const updatedLines = new Map();
+  const hideStyle = await page.addStyleTag({ content: "[data-evon-hide-text], [data-evon-hide-text] * { color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; caret-color: transparent !important; }" });
+
+  for (const check of checks.slice(0, 24)) {
+    const rects = await page.evaluate((gradientId) => [...document.querySelectorAll(`[data-evon-gradient-text="${gradientId}"]`)].slice(0, 6).map((element) => {
+      const box = element.getBoundingClientRect();
+
+      return { x: box.left, y: box.top, width: box.width, height: box.height, sample: element.textContent.trim().slice(0, 24) };
+    }), check.gradientId);
+    if (rects.length === 0) continue;
+
+    await page.evaluate((gradientId) => document.querySelectorAll(`[data-evon-gradient-text="${gradientId}"]`).forEach((element) => element.setAttribute("data-evon-hide-text", "")), check.gradientId);
+    let worstRatio = Infinity;
+    let worstSample = "";
+    for (const { sample, ...rect } of rects) {
+      if (rect.width < 1 || rect.height < 1) continue;
+      const shot = await page.screenshot({ clip: rect, animations: "disabled" });
+      const ratio = await page.evaluate(readPixelContrast, { base64: shot.toString("base64"), textColor: check.textColor });
+      if (ratio < worstRatio) [worstRatio, worstSample] = [ratio, sample];
+    }
+    await page.evaluate(() => document.querySelectorAll("[data-evon-hide-text]").forEach((element) => element.removeAttribute("data-evon-hide-text")));
+    if (worstRatio === Infinity) continue;
+
+    if (worstRatio >= check.requiredRatio) passedLines.add(check.line);
+    else updatedLines.set(check.line, `${check.line} (đo pixel nền thật dưới chữ, tệ nhất "${worstSample}": ${worstRatio.toFixed(2)}:1)`);
+  }
+
+  await hideStyle.evaluate((styleElement) => styleElement.remove());
+  await page.evaluate(() => document.querySelectorAll("[data-evon-gradient-text]").forEach((element) => element.removeAttribute("data-evon-gradient-text")));
+  const lowContrastTexts = measurements.lowContrastTexts.filter((line) => !passedLines.has(line)).map((line) => updatedLines.get(line) || line);
+
+  return { ...measurements, lowContrastTexts, lowContrastCount: Math.max(0, measurements.lowContrastCount - passedLines.size) };
+}
+
 async function probeWidth(browser, options, width) {
   const isMobile = width < mobileWidthLimit;
   const context = await browser.newContext({
@@ -3220,6 +3870,19 @@ async function probeWidth(browser, options, width) {
   // Ghi `transition` sau khi trang đã hydrate: gắn thuộc tính trước đó thì React báo lệch HTML (báo nhầm
   // lỗi console 28/09/2026, Next).
   await page.waitForTimeout(options.waitMs);
+  // Bản mẫu app điện thoại mở trên màn rộng ra bảng luồng (J1): bản chép thu nhỏ cho người duyệt, không phải app.
+  // Đo màn đầu trong khung máy thay cho bảng; từng màn đã có chế độ --mobile đo.
+  const isFlowBoard = await page.evaluate(() => {
+    const board = document.querySelector(".flow-board");
+    const firstScreen = document.querySelector("[data-screen]");
+    if (!board || !firstScreen || getComputedStyle(board).display === "none") return false;
+    location.hash = firstScreen.dataset.screen;
+
+    return true;
+  });
+  if (isFlowBoard) await page.waitForTimeout(300);
+  // Danh sách màn bên trái khung máy (nav.wf-screens) là của người duyệt, không thuộc app (J1): ẩn trước khi đo.
+  await page.evaluate(() => { if (document.querySelector(".device")) document.querySelectorAll(".wf-screens").forEach((nav) => { nav.style.display = "none"; }); });
   await page.evaluate(stampTransitions);
   await page.addStyleTag({ content: freezeMotionCss });
   if (options.isDark) await page.evaluate(() => document.documentElement.classList.add("dark"));
@@ -3228,7 +3891,7 @@ async function probeWidth(browser, options, width) {
 
   // Đo trước khi chụp: chụp fullPage ở khổ mobile làm trang mất `(pointer: coarse)`, nút
   // `pointer-coarse:size-10` co về 28px và bị báo nhầm là chỗ bấm nhỏ (đã dính 26/09/2026).
-  const measurements = await page.evaluate(measureInPage, { minTapSize, isMobile });
+  const measurements = await verifyGradientContrast(page, await page.evaluate(measureInPage, { minTapSize, isMobile }));
 
   const screenshotPath = join(options.out, `${width}${options.isDark ? "-dark" : ""}${options.isStress ? "-stress" : ""}.png`);
   await takeFullScreenshot(page, screenshotPath);
@@ -3244,7 +3907,7 @@ async function probeWidth(browser, options, width) {
   // Mở khối đang đóng trước khi rê và chạm: cây thư mục nằm trong accordion đóng ở /components thì
   // tooltip tên tệp tràn màn chỉ lộ khi khối đã mở (27/09/2026).
   const expandedCount = isDynamic ? await expandCollapsedBlocks(page) : 0;
-  const allMeasurements = expandedCount > 0 ? mergeMeasurements(measurements, await page.evaluate(measureInPage, { minTapSize, isMobile })) : measurements;
+  const allMeasurements = expandedCount > 0 ? mergeMeasurements(measurements, await verifyGradientContrast(page, await page.evaluate(measureInPage, { minTapSize, isMobile }))) : measurements;
   // Khối vừa mở có thể chứa bản mẫu lớp nổi (hộp xác nhận bày tĩnh có lớp phủ): đo dark mode thêm một lần.
   if (options.isDark && expandedCount > 0) for (const line of [...(await page.evaluate(findDarkModeProblems)), ...(await page.evaluate(findSunkenSelections))]) darkModeProblemSet.add(line);
 
@@ -3344,7 +4007,7 @@ function findHeavyDecorativeBorders() {
   const findings = new Map();
   for (const element of document.querySelectorAll("body *")) {
     if (findings.size >= 6) break;
-    if (element.matches("input, textarea, select, button, a, label, [role='button'], [role='textbox'], [role='combobox']")) continue;
+    if (element.matches("input, textarea, select, button, a, label, [role='button'], [role='textbox'], [role='combobox']") || element.closest(".wf-bar, .wf-reason, [data-wf-reason], .wf-screens")) continue;
     // Ô bày viền focus trên trang design system là ví dụ trạng thái, không phải viền trang trí (`D9`, 30/09/2026).
     if (element.closest("[data-demo-state]")) continue;
     const style = getComputedStyle(element);
@@ -3688,6 +4351,9 @@ function findHeavyNavLinks() {
   // bề rộng 150–360px, xếp dọc.
   const columns = new Map();
   for (const link of document.querySelectorAll("a[href], button")) {
+    // Trong khung điện thoại không có sidebar: các nút chính 358px của từng màn (Tạo, Thêm, Lưu) cùng mép
+    // trái, cùng bề rộng, bị nhận nhầm là cột điều hướng (báo nhầm 31/10/2026, wireframe app chia tiền).
+    if (link.closest(".device, [data-screen]")) continue;
     const rect = link.getBoundingClientRect();
     if (rect.width < 150 || rect.width > 360 || rect.height === 0 || rect.height > 64 || (link.textContent || "").trim().length < 2) continue;
     const key = `${Math.round(rect.left / 2)}-${Math.round(rect.width / 2)}`;
@@ -3917,7 +4583,8 @@ function findOpenedLayerProblems(triggerLabel) {
 
       return isShown(box) && isOpaque(box) && isTall && !isFullScreen;
     });
-    if (panel) {
+    // Sheet trong khung app điện thoại nổi nhờ lớp phủ tối, không đổ bóng (mobile.md J6).
+    if (panel && !panel.closest(".device")) {
       const panelReach = Math.max(readShadowReach(panel), readShadowReach(root));
       const name = `${panel.tagName.toLowerCase()}${panel.getAttribute("aria-label") ? ` "${panel.getAttribute("aria-label")}"` : ""}`;
       if (panelReach === 0) flatLayers.push(`bấm "${triggerLabel}": ${name} không có bóng (panel trượt, modal: shadow-modal, layouts/overlay.md)`);
@@ -4185,7 +4852,7 @@ function formatReport(results) {
       for (const item of result.unpinnedScrollTables.slice(0, 5)) problems.push(`  ${item}`);
     }
     if (result.squeezedTableColumns.length > 0) {
-      problems.push(`CỘT CHỮ CỦA BẢNG BỊ ÉP XUỐNG DÒNG (${result.squeezedTableColumns.length} cột; ẩn cột phụ theo @container của card, layouts/app.md "Bảng dữ liệu"):`);
+      problems.push(`CỘT CHỮ CỦA BẢNG BỊ ÉP XUỐNG DÒNG (${result.squeezedTableColumns.length} cột; ẩn cột phụ theo @container của card, layouts/app/data-table.md "Bảng dữ liệu"):`);
       for (const item of result.squeezedTableColumns.slice(0, 5)) problems.push(`  ${item}`);
     }
     if (result.crampedDescriptionLists.length > 0) {
@@ -4231,6 +4898,14 @@ function formatReport(results) {
     if (result.orphanWords?.length > 0) {
       problems.push(`CHỮ ĐƠN CÔI Ở DÒNG CUỐI (${result.orphanWords.length} chỗ, thêm text-pretty, tiêu đề ngắn text-balance, T10):`);
       for (const item of result.orphanWords.slice(0, 5)) problems.push(`  ${item}`);
+    }
+    if (result.splitAmounts?.length > 0) {
+      problems.push(`SỐ VÀ ĐƠN VỊ TÁCH DÒNG (${result.splitAmounts.length} chỗ, nối bằng &nbsp; hay bọc whitespace-nowrap, T16):`);
+      for (const item of result.splitAmounts.slice(0, 5)) problems.push(`  ${item}`);
+    }
+    if (result.loosenedUnits?.length > 0) {
+      problems.push(`ĐƠN VỊ ĐỨNG XA SỐ TRONG Ô SỐ TIỀN (${result.loosenedUnits.length} chỗ, ô co theo chữ: field-sizing: content, J13):`);
+      for (const item of result.loosenedUnits) problems.push(`  ${item}`);
     }
     if (result.misalignedFields.length > 0) {
       problems.push(`Ô NHẬP LỆCH MÉP VỚI NÚT RỘNG HẾT KHUNG (${result.misalignedFields.length} khung, ô và nút phải cùng mép trái phải):`);
@@ -4297,7 +4972,7 @@ function formatReport(results) {
       for (const item of result.mismatchedRuleColors) problems.push(`  ${item}`);
     }
     if (result.unevenHeaderActions.length > 0) {
-      problems.push(`HÀNG NÚT TRÊN HEADER KHÔNG ĐỒNG CỠ (layouts/app.md, "Nhóm nút bên phải thanh header"):`);
+      problems.push(`HÀNG NÚT TRÊN HEADER KHÔNG ĐỒNG CỠ (layouts/app/shell.md, "Nhóm nút bên phải thanh header"):`);
       for (const item of result.unevenHeaderActions) problems.push(`  ${item}`);
     }
     if (result.brokenRules.length > 0) {
@@ -4381,14 +5056,14 @@ function formatReport(results) {
       for (const item of result.textOnlyPagers) problems.push(`  ${item}`);
     }
     if (result.missingWireframeParts?.length > 0) {
-      problems.push(`WIREFRAME THIẾU PHẦN CỦA THANH CÔNG CỤ (design-process.md, U3): ${result.missingWireframeParts.join(", ")}`);
+      problems.push(`WIREFRAME THIẾU PHẦN CỦA THANH CÔNG CỤ (wireframe.md, U3): ${result.missingWireframeParts.join(", ")}`);
     }
     if (result.coveredNowLines?.length > 0) {
-      problems.push(`VẠCH "BÂY GIỜ" BỊ Ô ĐÈ (layouts/app.md, "Lưới giờ trong ngày": vạch vẽ trên ô):`);
+      problems.push(`VẠCH "BÂY GIỜ" BỊ Ô ĐÈ (layouts/app/calendar.md, "Lưới giờ trong ngày": vạch vẽ trên ô):`);
       for (const item of result.coveredNowLines) problems.push(`  ${item}`);
     }
     if (result.wireframeChromeProblems?.length > 0) {
-      problems.push(`KHUNG WIREFRAME LÀM HỎNG BẢN THIẾT KẾ (design-process.md, U3):`);
+      problems.push(`KHUNG WIREFRAME LÀM HỎNG BẢN THIẾT KẾ (wireframe.md, U3):`);
       for (const item of result.wireframeChromeProblems.slice(0, 8)) problems.push(`  ${item}`);
     }
     if (result.misalignedControlRows?.length > 0) {
@@ -4400,7 +5075,7 @@ function formatReport(results) {
       for (const item of result.repeatedCardIssues) problems.push(`  ${item}`);
     }
     if (result.denseItems?.length > 0) {
-      problems.push(`MỤC LẶP DÀY CHỮ (từ 5 dòng mỗi mục; danh sách + chi tiết thì mục trái tối đa 3 dòng, layouts/app.md):`);
+      problems.push(`MỤC LẶP DÀY CHỮ (từ 5 dòng mỗi mục; danh sách + chi tiết thì mục trái tối đa 3 dòng, layouts/app/filtered-list.md):`);
       for (const item of result.denseItems) problems.push(`  ${item}`);
     }
     if (result.clippedBars?.length > 0) {
@@ -4882,11 +5557,13 @@ async function main() {
   const results = [];
   let sweepSteps = [];
   let wireframeComparisons = [];
+  let mobileScreens = [];
 
   try {
     for (const width of options.widths) results.push(await probeWidth(browser, options, width));
     if (options.sweep) sweepSteps = await sweepWidths(browser, options);
     if (options.wireframeUrl) wireframeComparisons = await compareWithWireframe(browser, options);
+    if (options.isMobileApp) mobileScreens = await probeMobileApp(browser, options);
   } catch (error) {
     console.error(`Không mở được ${options.url}: ${error.message.split("\n")[0]}. Dev server đã chạy chưa?`);
     process.exit(2);
@@ -4894,7 +5571,7 @@ async function main() {
     await browser.close();
   }
 
-  writeFileSync(join(options.out, "report.json"), JSON.stringify({ widths: results, sweep: sweepSteps, wireframe: wireframeComparisons }, null, 2));
+  writeFileSync(join(options.out, "report.json"), JSON.stringify({ widths: results, sweep: sweepSteps, wireframe: wireframeComparisons, mobile: mobileScreens }, null, 2));
   if (options.isStress) {
     const counts = results.map((result) => `${result.width}px: ${result.stressedCount}`).join(", ");
     console.log(`Dữ liệu khó: đã bơm tên dài, số lớn vào ${counts} chỗ. Lỗi bên dưới là chỗ vỡ khi gặp dữ liệu thật; sửa bằng cắt chữ có tooltip, xuống dòng, min-w-0, tabular-nums (T13, T14, T16), không bằng bớt dữ liệu mẫu.`);
@@ -4904,6 +5581,7 @@ async function main() {
   console.log(formatReport(results));
   if (sweepSteps.length > 0) console.log(formatSweepReport(sweepSteps, options.sweep.step));
   if (wireframeComparisons.length > 0) console.log(formatWireframeReport(wireframeComparisons));
+  if (options.isMobileApp) console.log(formatMobileReport(mobileScreens));
   const mustReportItems = [...listMustReportItems(results, sweepSteps), ...listWireframeMustReportItems(wireframeComparisons)];
   console.log(formatMustReportList(mustReportItems, options.sweep?.step ?? 20));
   console.log(formatNextRoundHint(results, options));

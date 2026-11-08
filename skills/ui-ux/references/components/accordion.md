@@ -244,3 +244,11 @@ window.setTimeout(() => focusFieldById(fieldId), accordionDurationMs);
 - Khu thu gọn trong form: lúc đóng có trông như ô select không; mở ra thì nhãn và ô bên trong
   có cùng `left` và bề rộng với ô phía trên không; focus ô nhập trong khu, chụp cận mép trái
   mép phải xem quầng có bị cắt không; bấm gửi khi ô trong khu sai và khu đang đóng.
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] Có accordion: trượt bằng `grid-rows` (không `<details>`), mục đóng có `inert`? Rê vào tiêu đề: không nền xám, chỉ chevron đậm lên? Tô màu nút, khối bọc, nội dung: nút đều hai mép cả lúc mở, nội dung cùng `px` với nút và lấp kín khối bọc (không `max-w`, không `pr` riêng)? Mục đóng không lòi chữ lúc đang trượt? Tiêu đề `text-pretty`? (`components/accordion.md`)

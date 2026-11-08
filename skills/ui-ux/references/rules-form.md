@@ -171,7 +171,7 @@ board hay lịch.
 **F22. Không animate hình khối.** Không `scale-105` khi hover, không nhấc lên
 (`hover:-translate-y-*`), không đổ bóng thêm. Ngoài chuyện gu: card nằm trong khung cuộn
 (`overflow-x-auto` cắt luôn cả chiều dọc), trong card cha `overflow-hidden`, hay sát mép trên của vùng
-cuộn chính thì nhấc 2px là **mất một khúc viền trên** (hàng card cuộn ngang, 12/10/2026). Rê vào thì
+cuộn chính thì nhấc 2px là **mất một khúc viền trên**. Rê vào thì
 đổi viền hoặc nền (`hover:border-strong`, `hover:bg-surface-hover`). Mũi tên nhỏ trong card nhích sang
 phải (`group-hover:translate-x-0.5` trên icon) thì được, nó không phải khối.
 

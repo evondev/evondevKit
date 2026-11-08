@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Biểu đồ cong — bốn dạng (J17)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+      /* Token như mobile-app.html. --chart-fill là màu một chuỗi (charts.md), ở đây Tím, màu đầu của ngành sức khoẻ, thói quen
+         (brand-tokens.md). Trên khối nhấn của Tinted (J15) rãnh là trắng 55% (--hero-track), không phải --chart-track. */
+      :root {
+        --app-font: "Inter", ui-sans-serif, system-ui, sans-serif;
+        --background: #f4f4f6;
+        --surface: #ffffff;
+        --foreground: #2c2c2c;
+        --muted: #707070;
+        --chart-fill: #7c3aed;
+        /* Rãnh của vòng: cùng sắc, nhạt. Trên thẻ tối thì trắng 10%. */
+        --chart-track: color-mix(in oklab, var(--chart-fill) 14%, white);
+        --hero-bg: #1c1c1e;
+        /* Thang phân loại bản tối (charts.md, "Nền tối"): sáng một bậc; nhóm Khác slate-600. */
+        --cat-dark-1: #60a5fa;
+        --cat-dark-2: #a78bfa;
+        --cat-dark-3: #e879f9;
+        --cat-dark-4: #2dd4bf;
+        --cat-dark-other: #475569;
+      }
+      body { font-family: var(--app-font); }
+    </style>
+    <style type="text/tailwindcss">
+      @theme inline {
+        --font-sans: var(--app-font);
+        --color-background: var(--background);
+        --color-surface: var(--surface);
+        --color-foreground: var(--foreground);
+        --color-muted: var(--muted);
+        --color-chart-fill: var(--chart-fill);
+        --color-hero-bg: var(--hero-bg);
+      }
+    </style>
+  </head>
+  <body class="bg-[#ececef] px-4 py-10 text-foreground antialiased">
+    <main class="mx-auto flex max-w-[390px] flex-col gap-8">
+      <header>
+        <h1 class="text-2xl font-semibold tracking-tight">Biểu đồ cong — bốn dạng</h1>
+        <p class="mt-2 text-sm text-muted text-pretty">Luật ở J17 (mobile.md), mục "Vòng và cung". Một hàm vẽ cho cả bốn: <code>drawArc()</code> ở cuối file, SVG thuần, không thư viện.</p>
+      </header>
+
+      <!-- ===== 1. VÒNG MỤC TIÊU: một số so với một mục tiêu (bước, phút tập, ly nước, tiền tiết kiệm). Số ở giữa là thứ to
+           nhất thẻ, mục tiêu nhỏ bên dưới, câu còn bao nhiêu ở dòng phụ. Vượt 100% thì vòng đầy, số vẫn ghi thật. ===== -->
+      <section class="rounded-[24px] bg-surface p-5">
+        <p class="text-sm text-muted">Hôm nay · Bước chân</p>
+        <div class="relative mx-auto mt-3 size-[184px]">
+          <svg viewBox="0 0 184 184" class="size-full" role="img" aria-label="6.240 trên 8.000 bước, 78%" data-ring data-value="6240" data-max="8000" data-width="16"></svg>
+          <div class="absolute inset-0 grid place-content-center text-center">
+            <p class="text-[32px]/none font-semibold tracking-tight tabular-nums">6.240</p>
+            <p class="mt-1.5 text-sm text-muted tabular-nums">/ 8.000 bước</p>
+          </div>
+        </div>
+        <p class="mt-3 text-center text-sm text-muted">Còn <span class="font-semibold text-foreground tabular-nums">1.760</span> bước, khoảng 15 phút đi bộ</p>
+      </section>
+
+      <!-- ===== 2. CUNG CHIA KHÚC: cùng ý nghĩa với vòng mục tiêu, hình đậm và vui hơn (kcal, nước, giấc ngủ). Cung 240°, hở
+           phía dưới để chỗ cho số; 8–10 khúc bo tròn, mỗi khúc dài gấp đôi bề dày (ngắn hơn thì thành chấm tròn), khúc đã đạt tô màu, còn lại rãnh. Làm tròn xuống: chưa đủ một khúc
+           thì chưa tô, khỏi đọc ra "đã đạt". ===== -->
+      <section class="rounded-[24px] bg-surface p-5">
+        <p class="text-sm text-muted">20/11 · Năng lượng nạp vào</p>
+        <div class="relative mx-auto mt-2 h-[196px] w-[260px]">
+          <svg viewBox="0 0 260 260" class="absolute inset-x-0 top-0 h-[260px] w-[260px]" role="img" aria-label="1.250 trên 2.000 kcal" data-segments data-value="1250" data-max="2000" data-count="10"></svg>
+          <div class="absolute inset-x-0 top-[92px] text-center">
+            <p class="text-[32px]/none font-semibold tracking-tight tabular-nums">1.250 <span class="text-lg font-medium text-muted">kcal</span></p>
+            <p class="mt-1.5 text-sm text-muted tabular-nums">Mục tiêu 2.000 kcal</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 3. VÒNG TỪNG NGÀY: bảy vòng nhỏ dưới tên thứ, mỗi vòng là một ngày so với mục tiêu ngày. Hôm nay đậm chữ, có
+           chấm dưới; ngày chưa tới chỉ có rãnh. Chạm một ngày thì thẻ dưới đổi sang ngày đó (J17, chạm thay rê). ===== -->
+      <section class="rounded-[24px] bg-surface p-5">
+        <div class="flex items-baseline justify-between">
+          <p class="text-sm text-muted">Tuần này · Thói quen</p>
+          <p class="text-sm text-muted tabular-nums">4/7 ngày đạt</p>
+        </div>
+        <ol class="mt-4 grid grid-cols-7 gap-1 text-center" data-week>
+          <li data-day="T2" data-value="100"></li>
+          <li data-day="T3" data-value="100"></li>
+          <li data-day="T4" data-value="60"></li>
+          <li data-day="T5" data-value="100"></li>
+          <li data-day="T6" data-value="100" data-today></li>
+          <li data-day="T7" data-value="0" data-future></li>
+          <li data-day="CN" data-value="0" data-future></li>
+        </ol>
+      </section>
+
+      <!-- ===== 4. DONUT CÓ KHE TRÊN NỀN TỐI: cơ cấu chi tiêu, tối đa 4 phần cộng "Khác" (charts.md: quá 4 phần thì mắt không so
+           được). Khe giữa các phần thay cho viền trắng; số tổng ở giữa; bảng dưới có chấm màu, số và % (N4). ===== -->
+      <section class="rounded-[24px] bg-hero-bg p-5 text-white">
+        <p class="text-sm text-white/65">Tháng 11 · Chi theo nhóm</p>
+        <div class="relative mx-auto mt-3 size-[200px]">
+          <svg viewBox="0 0 200 200" class="size-full" role="img" aria-label="Tổng chi 7.190.000 đồng: Nhà cửa 33%, Ăn uống 24%, Đi chợ 17%, Mua sắm 15%, Khác 11%" data-donut></svg>
+          <div class="absolute inset-0 grid place-content-center text-center">
+            <p class="text-xs text-white/65">Đã chi</p>
+            <p class="mt-1 text-2xl/none font-semibold tracking-tight tabular-nums">7,19 tr</p>
+          </div>
+        </div>
+        <ul class="mt-4 divide-y divide-white/10 text-sm" data-donut-legend>
+          <li class="flex items-center gap-2.5 py-2.5"><span class="size-2.5 shrink-0 rounded-full" style="background: var(--cat-dark-1)"></span><span class="flex-1">Nhà cửa</span><span class="tabular-nums">2.370.000</span><span class="w-10 text-right text-white/65 tabular-nums">33%</span></li>
+          <li class="flex items-center gap-2.5 py-2.5"><span class="size-2.5 shrink-0 rounded-full" style="background: var(--cat-dark-2)"></span><span class="flex-1">Ăn uống</span><span class="tabular-nums">1.730.000</span><span class="w-10 text-right text-white/65 tabular-nums">24%</span></li>
+          <li class="flex items-center gap-2.5 py-2.5"><span class="size-2.5 shrink-0 rounded-full" style="background: var(--cat-dark-3)"></span><span class="flex-1">Đi chợ</span><span class="tabular-nums">1.220.000</span><span class="w-10 text-right text-white/65 tabular-nums">17%</span></li>
+          <li class="flex items-center gap-2.5 py-2.5"><span class="size-2.5 shrink-0 rounded-full" style="background: var(--cat-dark-4)"></span><span class="flex-1">Mua sắm</span><span class="tabular-nums">1.080.000</span><span class="w-10 text-right text-white/65 tabular-nums">15%</span></li>
+          <li class="flex items-center gap-2.5 py-2.5"><span class="size-2.5 shrink-0 rounded-full" style="background: var(--cat-dark-other)"></span><span class="flex-1">Khác</span><span class="tabular-nums">790.000</span><span class="w-10 text-right text-white/65 tabular-nums">11%</span></li>
+        </ul>
+      </section>
+    </main>
+
+    <script>
+      const SVG_NS = "http://www.w3.org/2000/svg";
+
+      // Vẽ một cung trên vòng tròn. pathLength 360 nên một đơn vị nét là một độ; 0° ở 3 giờ, đi theo chiều kim đồng hồ
+      // (90° là 6 giờ, 270° là 12 giờ). Đầu bo tròn lòi ra mỗi bên nửa bề dày nét, nên cung vẽ ngắn lại đúng phần đó để
+      // hình thấy được bắt đầu ở startDegree và dài sweepDegree. Không số âm (N11): dashoffset quy về 0–360.
+      function drawArc(svg, { center, radius, width, startDegree, sweepDegree, color, isRound = true }) {
+        const capDegree = isRound ? ((width / 2) / (2 * Math.PI * radius)) * 360 : 0;
+        const visibleSweep = Math.max(0.01, sweepDegree - capDegree * 2);
+        const drawStart = (startDegree + capDegree) % 360;
+        const circle = document.createElementNS(SVG_NS, "circle");
+        circle.setAttribute("cx", center);
+        circle.setAttribute("cy", center);
+        circle.setAttribute("r", radius);
+        circle.setAttribute("fill", "none");
+        circle.setAttribute("stroke", color);
+        circle.setAttribute("stroke-width", width);
+        circle.setAttribute("stroke-linecap", isRound ? "round" : "butt");
+        circle.setAttribute("pathLength", "360");
+        circle.setAttribute("stroke-dasharray", `${visibleSweep} ${360 - visibleSweep}`);
+        circle.setAttribute("stroke-dashoffset", `${(360 - drawStart) % 360}`);
+        svg.append(circle);
+      }
+
+      // Vòng mục tiêu: rãnh đủ vòng, phần đạt bắt đầu từ 12 giờ. Vượt mục tiêu thì đầy vòng.
+      function drawRing(svg, { size, width, ratio, color, trackColor }) {
+        const center = size / 2;
+        const radius = center - width / 2;
+        drawArc(svg, { center, radius, width, startDegree: 0, sweepDegree: 360, color: trackColor, isRound: false });
+        if (ratio <= 0) return;
+        if (ratio >= 1) {
+          drawArc(svg, { center, radius, width, startDegree: 0, sweepDegree: 360, color, isRound: false });
+          return;
+        }
+        drawArc(svg, { center, radius, width, startDegree: 270, sweepDegree: ratio * 360, color });
+      }
+
+      const readColor = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+      // 1. Vòng mục tiêu
+      document.querySelectorAll("[data-ring]").forEach((svg) => {
+        const ratio = Number(svg.dataset.value) / Number(svg.dataset.max);
+        drawRing(svg, { size: 184, width: Number(svg.dataset.width), ratio, color: readColor("--chart-fill"), trackColor: readColor("--chart-track") });
+      });
+
+      // 2. Cung chia khúc: 240°, hở phía dưới (bắt đầu 150°, kết thúc 30°), khe 6px giữa các khúc.
+      document.querySelectorAll("[data-segments]").forEach((svg) => {
+        const count = Number(svg.dataset.count);
+        const filledCount = Math.floor((Number(svg.dataset.value) / Number(svg.dataset.max)) * count);
+        const center = 130;
+        const width = 24;
+        const radius = center - width / 2;
+        const totalSweep = 240;
+        const gapDegree = (6 / (2 * Math.PI * radius)) * 360;
+        const segmentSweep = (totalSweep - gapDegree * (count - 1)) / count;
+        for (let i = 0; i < count; i++) {
+          const startDegree = 150 + i * (segmentSweep + gapDegree);
+          drawArc(svg, { center, radius, width, startDegree, sweepDegree: segmentSweep, color: i < filledCount ? readColor("--chart-fill") : readColor("--chart-track") });
+        }
+      });
+
+      // 3. Vòng từng ngày: vòng 36px nét 4px; hôm nay chữ đậm và chấm dưới.
+      document.querySelectorAll("[data-week] li").forEach((day) => {
+        const isToday = day.hasAttribute("data-today");
+        const label = document.createElement("span");
+        label.className = isToday ? "block text-xs font-semibold" : "block text-xs text-muted";
+        label.textContent = day.dataset.day;
+        const svg = document.createElementNS(SVG_NS, "svg");
+        svg.setAttribute("viewBox", "0 0 36 36");
+        svg.setAttribute("class", "mx-auto mt-2 size-9");
+        svg.setAttribute("role", "img");
+        svg.setAttribute("aria-label", day.hasAttribute("data-future") ? `${day.dataset.day}: chưa tới` : `${day.dataset.day}: ${day.dataset.value}%`);
+        drawRing(svg, { size: 36, width: 4, ratio: Number(day.dataset.value) / 100, color: readColor("--chart-fill"), trackColor: readColor("--chart-track") });
+        const dot = document.createElement("span");
+        dot.className = isToday ? "mx-auto mt-1.5 block size-1 rounded-full bg-foreground" : "mx-auto mt-1.5 block size-1";
+        day.append(label, svg, dot);
+      });
+
+      // 4. Donut có khe: phần theo %, khe 8px, đầu bo tròn. Thứ tự lớn tới nhỏ từ 12 giờ, "Khác" cuối.
+      document.querySelectorAll("[data-donut]").forEach((svg) => {
+        const parts = [[33, "--cat-dark-1"], [24, "--cat-dark-2"], [17, "--cat-dark-3"], [15, "--cat-dark-4"], [11, "--cat-dark-other"]];
+        const center = 100;
+        const width = 18;
+        const radius = center - width / 2;
+        const gapDegree = (8 / (2 * Math.PI * radius)) * 360;
+        let startDegree = 270;
+        for (const [percent, colorName] of parts) {
+          const sweepDegree = (percent / 100) * 360 - gapDegree;
+          drawArc(svg, { center, radius, width, startDegree, sweepDegree, color: readColor(colorName) });
+          startDegree = (startDegree + (percent / 100) * 360) % 360;
+        }
+      });
+    </script>
+  </body>
+</html>

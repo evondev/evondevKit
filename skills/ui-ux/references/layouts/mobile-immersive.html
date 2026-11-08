@@ -1,0 +1,1237 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Lắng — app mẫu thiền, ngủ, sách nói</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <style>
+      /* Nền quanh khung máy (chỉ màn rộng, không thuộc app). */
+      :root {
+        --frame-page: #e9e9ec;
+        --frame-text: #2c2c2c;
+        --frame-muted: #565656;
+      }
+
+      /* ===== KHỐI ĐỔI THƯƠNG HIỆU ===== */
+      /* Bộ mặt: Immersive (J15). Cả khung app mang .force-dark (M33): mọi token khai lại tại đây, component con tự đổi theo. */
+      .force-dark {
+        color-scheme: dark;
+        --app-font: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+        /* Nút chính trắng chữ tối, không màu nhấn rực (J15). */
+        --primary: #ffffff;
+        --primary-hover: #e9edf5;
+        --primary-foreground: #1b2350;
+
+        /* Nền tối có sắc: xanh đêm, chuyển dọc nhẹ hai tông gần nhau (J15 đè nền trắng J1, gradient J8 chỉ cho nền). */
+        --background: #1b2350;
+        --bg-top: #222b5e;
+        --bg-bottom: #141a3e;
+        --screen-bg: var(--bg-top);
+
+        /* Thẻ là lớp trắng 10% trên nền (J15). Lớp nổi (sheet, trình phát thu nhỏ) sáng hơn thẻ một bậc (M21, P10). */
+        --surface: #323962;
+        --surface-overlay: #3a426e;
+        --foreground: #f5f6fb;
+        --muted: rgb(255 255 255 / 0.72);
+        --border: rgb(255 255 255 / 0.08);
+        --border-strong: rgb(255 255 255 / 0.14);
+        --secondary: rgb(255 255 255 / 0.1);
+        --item-press: rgb(255 255 255 / 0.06);
+
+        /* Trạng thái, bản nền tối: sáng lên để đạt 4.5:1 trên --surface. */
+        --danger: #ff9aab;
+        --danger-bg: rgb(255 32 86 / 0.16);
+        --success: #5ee0b0;
+      }
+      /* ===== HẾT KHỐI ĐỔI THƯƠNG HIỆU ===== */
+
+      /* ===== THANH CUỘN (SKILL.md câu 2), chép từ tokens.css: cho phần ngoài khung máy (trang bảng luồng dài). Vùng cuộn
+         trong khung (.scroll) ẩn hẳn, ngoại lệ của luật chốt 13. ===== */
+      * { --scrollbar-thumb: transparent; }
+      *:hover { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 16%, transparent); }
+      .is-scrolling { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 28%, transparent); }
+      ::-webkit-scrollbar { width: 4px; height: 4px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 9999px; }
+      ::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--foreground) 40%, transparent); }
+      @supports not selector(::-webkit-scrollbar) {
+        * { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+        *:hover { scrollbar-color: color-mix(in srgb, var(--foreground) 18%, transparent) transparent; }
+        .is-scrolling { scrollbar-color: color-mix(in srgb, var(--foreground) 28%, transparent) transparent; }
+      }
+
+      /* ===== KHUNG MÁY (J1), chép từ layouts/mobile-app.html ===== */
+      :root { --inset-top: env(safe-area-inset-top, 0px); --inset-bottom: env(safe-area-inset-bottom, 0px); }
+      .device { position: relative; width: 100%; height: 100dvh; overflow: hidden; background: var(--bg-bottom); color: var(--foreground); }
+      .status-bar, .home-indicator { display: none; }
+      @media (min-width: 500px) {
+        :root { --inset-top: 47px; --inset-bottom: 34px; }
+        .device { width: 390px; height: 844px; border-radius: 48px; box-shadow: 0 0 0 10px #1c1c1e, 0 0 0 11px #3a3a3c, 0 30px 60px -10px rgb(0 0 0 / 0.35); }
+        .status-bar { display: flex; }
+        .home-indicator { display: block; }
+      }
+
+      /* Màn: nền là gradient dọc cố định (không cuộn theo nội dung), dải dưới tai thỏ lấy tông trên của gradient. */
+      .screen { position: absolute; inset: 0; overflow: hidden; display: flex; flex-direction: column; background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom)); visibility: hidden; }
+      .screen.is-active { visibility: visible; }
+      @media (prefers-reduced-motion: no-preference) {
+        .screen.is-pushed.is-active { animation: push-in 300ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+        /* Trình phát toàn màn trượt lên từ đáy, như mở từ trình phát thu nhỏ. */
+        .screen.is-cover.is-active { animation: cover-in 320ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .sheet { transition: translate 250ms cubic-bezier(0.3, 0, 1, 1); }
+        .sheet.is-open { transition: translate 320ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .screen.is-pushed.is-active, .screen.is-cover.is-active { animation: fade-in 200ms ease; }
+      }
+      @keyframes push-in { from { translate: 30% 0; opacity: 0.6; } to { translate: 0 0; opacity: 1; } }
+      @keyframes cover-in { from { translate: 0 40%; opacity: 0.4; } to { translate: 0 0; opacity: 1; } }
+      @keyframes fade-in { from { opacity: 0; } }
+
+      .scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+      .scroll::-webkit-scrollbar { display: none; }
+      .hscroll { overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain; }
+      .hscroll::-webkit-scrollbar { display: none; }
+      /* Hàng cuộn ngang mờ mép phải 32px: biết còn mục phía sau (R10). */
+      .hscroll-fade { mask-image: linear-gradient(to right, black calc(100% - 32px), transparent); }
+      .pad-top { padding-top: var(--inset-top); }
+      /* Màn có thanh tab + trình phát thu nhỏ: chừa thanh tab 64, trình phát 64, hai khe 8 (như .pad-cartbar của J11). */
+      .pad-dock { padding-bottom: calc(var(--inset-bottom) + 168px); }
+      .pad-tabbar { padding-bottom: calc(var(--inset-bottom) + 96px); }
+      .pad-bottom { padding-bottom: calc(var(--inset-bottom) + 16px); }
+      .above-home { bottom: calc(var(--inset-bottom) + 8px); }
+      .above-tabbar { bottom: calc(var(--inset-bottom) + 80px); }
+
+      /* Sheet (J6). */
+      .sheet { translate: 0 100%; }
+      .sheet.is-open { translate: 0 0; }
+      .scrim { opacity: 0; pointer-events: none; transition: opacity 200ms ease; }
+      .scrim.is-open { opacity: 1; pointer-events: auto; transition-duration: 240ms; }
+      @media (prefers-reduced-motion: reduce) {
+        .sheet { translate: 0 0; opacity: 0; visibility: hidden; transition: opacity 200ms ease, visibility 200ms; }
+        .sheet.is-open { opacity: 1; visibility: visible; }
+      }
+
+      /* Nhấn (J7). */
+      .press { transition: scale 120ms cubic-bezier(0.23, 1, 0.32, 1), background-color 150ms ease; -webkit-tap-highlight-color: transparent; }
+      .press:active { scale: 0.97; }
+      @media (prefers-reduced-motion: reduce) { .press:active { scale: 1; } }
+
+      /* Nút phát / dừng dùng chung một trạng thái ở trình phát toàn màn và thu nhỏ. */
+      [data-play-toggle] .icon-play { display: none; }
+      [data-play-toggle][aria-pressed="false"] .icon-play { display: block; }
+      [data-play-toggle][aria-pressed="false"] .icon-pause { display: none; }
+      [data-save] .icon-saved { display: none; }
+      [data-save][aria-pressed="true"] .icon-saved { display: block; }
+      [data-save][aria-pressed="true"] .icon-save { display: none; }
+
+      /* Dòng chọn của onboarding (O8): bấm cả hàng, chọn rồi viền sáng và nền trắng phủ mờ. */
+      .choice { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 64px; padding: 12px 16px; border-radius: 16px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--border-strong); text-align: left; font-size: 16px; font-weight: 500; transition: box-shadow 150ms ease, background-color 150ms ease; -webkit-tap-highlight-color: transparent; }
+      .choice[aria-checked="true"] { background: rgb(255 255 255 / 0.18); box-shadow: inset 0 0 0 2px var(--foreground); }
+      .choice .tick { display: grid; place-items: center; width: 24px; height: 24px; flex-shrink: 0; border-radius: 8px; box-shadow: inset 0 0 0 2px var(--border-strong); color: transparent; }
+      .choice[role="radio"] .tick { border-radius: 9999px; }
+      .choice[aria-checked="true"] .tick { background: var(--primary); color: var(--primary-foreground); box-shadow: none; }
+      .btn-disabled[aria-disabled="true"] { background: var(--secondary); color: var(--muted); pointer-events: none; }
+
+      /* Thanh tua (trình phát). */
+      .seek { position: relative; height: 4px; border-radius: 9999px; background: rgb(255 255 255 / 0.2); }
+      .seek > span { position: absolute; inset: 0 auto 0 0; border-radius: inherit; background: var(--foreground); }
+      .seek > i { position: absolute; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 9999px; background: var(--foreground); }
+
+      /* Bàn phím vẽ (J13), chép từ mobile-playful.html, tô lại bản tối cho app nền tối. Chỉ là hình. */
+      .kb-key { display: grid; place-items: center; height: 42px; border-radius: 5px; background: #6b6b70; box-shadow: 0 1px 0 #111114; font-size: 22px; color: #fff; }
+      .kb-key.is-fn { background: #46464b; font-size: 15px; }
+
+      /* ===== BẢNG LUỒNG (J1), chép từ mobile-app.html ===== */
+      body.is-board { display: block !important; min-height: 100vh; padding: 0 !important; background: #141414 !important; color: #f4f4f5; }
+      body.is-board > .device, body.is-board > .wf-screens { display: none !important; }
+      .flow-board { display: none; }
+      body.is-board .flow-board { display: block; }
+      .flow-row { display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 48px; padding: 8px 48px 24px; scrollbar-width: none; }
+      .flow-row::-webkit-scrollbar { display: none; }
+      .board-card { flex: none; scroll-snap-align: start; color: inherit; text-decoration: none; }
+      .board-phone { width: calc(390px * 0.7); height: calc(844px * 0.7); overflow: hidden; border-radius: 32px; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08); transition: box-shadow 150ms ease; }
+      .board-card:hover .board-phone { box-shadow: 0 0 0 2px #ffffff; }
+      .board-card:focus-visible { outline: none; }
+      .board-device { color: var(--foreground); --inset-top: 47px; --inset-bottom: 34px; zoom: 0.7; width: 390px !important; height: 844px !important; border-radius: 0 !important; box-shadow: none !important; }
+      .board-device .status-bar { display: flex; }
+      .board-device .home-indicator { display: block; }
+      .board-device .screen { visibility: visible; animation: none !important; }
+      .board-device .sheet, .board-device .scrim { transition: none; }
+      @media (prefers-reduced-motion: no-preference) {
+        .board-card { animation: card-in 400ms cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(var(--order) * 40ms); }
+      }
+      @keyframes card-in { from { opacity: 0; translate: 0 16px; } }
+      .player-toggle .icon-play { display: none; }
+      .player-toggle[aria-pressed="false"] .icon-play { display: block; }
+      .player-toggle[aria-pressed="false"] .icon-pause { display: none; }
+    </style>
+
+    <style type="text/tailwindcss">
+      @theme inline {
+        --font-sans: var(--app-font);
+        --color-primary: var(--primary);
+        --color-primary-hover: var(--primary-hover);
+        --color-primary-foreground: var(--primary-foreground);
+        --color-background: var(--background);
+        --color-surface: var(--surface);
+        --color-surface-overlay: var(--surface-overlay);
+        --color-foreground: var(--foreground);
+        --color-muted: var(--muted);
+        --color-border: var(--border);
+        --color-border-strong: var(--border-strong);
+        --color-secondary: var(--secondary);
+        --color-danger: var(--danger);
+        --color-danger-bg: var(--danger-bg);
+        --color-success: var(--success);
+      }
+    </style>
+  </head>
+
+  <body class="font-[Inter,ui-sans-serif,system-ui,sans-serif] antialiased bg-[#141a3e] min-[500px]:flex min-[500px]:min-h-screen min-[500px]:items-center min-[500px]:justify-center min-[500px]:gap-12 min-[500px]:bg-(--frame-page) min-[500px]:py-10">
+    <!-- Danh sách màn: chỉ ở màn rộng, để người duyệt nhảy thẳng tới từng màn. Không thuộc app. -->
+    <nav class="wf-screens hidden max-h-[844px] w-60 overflow-y-auto text-sm text-(--frame-text) min-[900px]:block" aria-label="Màn trong bản mẫu">
+      <a href="#" class="mb-4 inline-flex items-center gap-1 rounded-md py-1.5 pr-2 font-medium text-(--frame-muted) hover:text-(--frame-text)"><i data-lucide="layout-grid" class="size-4"></i>Bảng luồng</a>
+      <p class="mb-2 font-medium">Mở app lần đầu</p>
+      <ol class="mb-5 space-y-1 text-(--frame-muted)" data-flow="Mở app lần đầu" data-flow-note="Từ màn chào tới bài thiền đầu tiên">
+        <li><a href="#welcome" class="block rounded-md px-2 py-1 hover:bg-white/60">1. Màn chào</a></li>
+        <li><a href="#goals" class="block rounded-md px-2 py-1 hover:bg-white/60">2. Mục tiêu (chọn nhiều)</a></li>
+        <li><a href="#reminder" class="block rounded-md px-2 py-1 hover:bg-white/60">3. Giờ nhắc tối</a></li>
+        <li><a href="#signup" class="block rounded-md px-2 py-1 hover:bg-white/60">4. Tạo tài khoản</a></li>
+        <li><a href="#otp" class="block rounded-md px-2 py-1 hover:bg-white/60">5. Nhập mã</a></li>
+        <li><a href="#notify" class="block rounded-md px-2 py-1 hover:bg-white/60">6. Bật thông báo (màn mồi)</a></li>
+        <li><a href="#ready" class="block rounded-md px-2 py-1 hover:bg-white/60">7. Lộ trình sẵn sàng</a></li>
+        <li><a href="#player-first" class="block rounded-md px-2 py-1 hover:bg-white/60">8. Nghe bài đầu tiên</a></li>
+        <li><a href="#home-new" class="block rounded-md px-2 py-1 hover:bg-white/60">9. Trang chủ lần đầu</a></li>
+      </ol>
+      <p class="mb-2 font-medium">Nghe sách nói</p>
+      <ol class="mb-5 space-y-1 text-(--frame-muted)" data-flow="Nghe sách nói" data-flow-note="Trang chủ, chi tiết sách, trình phát, hẹn giờ, tốc độ">
+        <li><a href="#home" class="block rounded-md px-2 py-1 hover:bg-white/60">1. Trang chủ (đang nghe)</a></li>
+        <li><a href="#book" class="block rounded-md px-2 py-1 hover:bg-white/60">2. Chi tiết sách nói</a></li>
+        <li><a href="#player" class="block rounded-md px-2 py-1 hover:bg-white/60">3. Trình phát toàn màn</a></li>
+        <li><a href="#timer" class="block rounded-md px-2 py-1 hover:bg-white/60">4. Hẹn giờ tắt (sheet)</a></li>
+        <li><a href="#speed" class="block rounded-md px-2 py-1 hover:bg-white/60">5. Tốc độ đọc (sheet)</a></li>
+      </ol>
+      <p class="mb-2 font-medium">Khám phá và tìm</p>
+      <ol class="mb-5 space-y-1 text-(--frame-muted)" data-flow="Khám phá và tìm" data-flow-note="Khám phá, gõ tìm, có kết quả, không ra kết quả">
+        <li><a href="#explore" class="block rounded-md px-2 py-1 hover:bg-white/60">1. Khám phá</a></li>
+        <li><a href="#search" class="block rounded-md px-2 py-1 hover:bg-white/60">2. Tìm (chưa gõ, bàn phím)</a></li>
+        <li><a href="#search-results" class="block rounded-md px-2 py-1 hover:bg-white/60">3. Kết quả "mưa"</a></li>
+        <li><a href="#search-none" class="block rounded-md px-2 py-1 hover:bg-white/60">4. Không ra kết quả</a></li>
+      </ol>
+      <p class="mb-2 font-medium">Thư viện và hồ sơ</p>
+      <ol class="space-y-1 text-(--frame-muted)" data-flow="Thư viện và hồ sơ" data-flow-note="Đang nghe dở, đã lưu, đã tải, rỗng, thống kê">
+        <li><a href="#library" class="block rounded-md px-2 py-1 hover:bg-white/60">1. Thư viện · Đang nghe</a></li>
+        <li><a href="#library-saved" class="block rounded-md px-2 py-1 hover:bg-white/60">2. Thư viện · Đã lưu</a></li>
+        <li><a href="#library-downloads" class="block rounded-md px-2 py-1 hover:bg-white/60">3. Thư viện · Đã tải</a></li>
+        <li><a href="#library-new" class="block rounded-md px-2 py-1 hover:bg-white/60">4. Thư viện rỗng (người mới)</a></li>
+        <li><a href="#profile" class="block rounded-md px-2 py-1 hover:bg-white/60">5. Hồ sơ, thống kê</a></li>
+      </ol>
+    </nav>
+
+    <div class="device force-dark font-sans">
+      <div class="status-bar pointer-events-none absolute inset-x-0 top-0 z-40 h-[47px] items-center justify-between px-8 pt-1 text-[15px] font-semibold" aria-hidden="true">
+        <span>21:41</span>
+        <span class="flex items-center gap-1.5"><i data-lucide="signal" class="size-4"></i><i data-lucide="wifi" class="size-4"></i><i data-lucide="battery-medium" class="size-5"></i></span>
+      </div>
+      <!-- Dải nền dưới thanh trạng thái (J1): lấy tông trên của gradient nền. -->
+      <div class="status-cover pointer-events-none absolute inset-x-0 top-0 z-30 h-(--inset-top) bg-(--screen-bg)/85 backdrop-blur-xl" aria-hidden="true"></div>
+
+      <!-- ================= ONBOARDING 1. MÀN CHÀO (J12): một màn, ảnh lớn làm điểm nhìn (J15), hai nút dính đáy. ================= -->
+      <section class="screen" data-screen="welcome" aria-label="Chào mừng">
+        <img src="https://images.unsplash.com/photo-1761207280136-eb485a5c85c4?w=800&q=80&auto=format&fit=crop" alt="" class="absolute inset-x-0 top-0 h-[58%] w-full object-cover" />
+        <div class="absolute inset-x-0 top-0 h-[58%] bg-linear-to-b from-[#222b5e]/10 via-[#1b2350]/40 to-[#1a2150]" aria-hidden="true"></div>
+        <div class="scroll pad-top relative flex flex-col">
+          <div class="flex items-center gap-2.5 px-4 pt-3">
+            <span class="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground" aria-hidden="true">
+              <svg viewBox="0 0 24 24" class="size-5" fill="currentColor"><path d="M6 14.5a6 6 0 0 1 12 0Z" /><rect x="4" y="16.5" width="16" height="2.5" rx="1.25" /></svg>
+            </span>
+            <span class="text-base font-semibold">Lắng</span>
+          </div>
+          <div class="flex-1"></div>
+          <div class="px-4 pt-40">
+            <h1 class="text-[32px]/[38px] font-semibold tracking-tight text-balance">Ngủ ngon hơn, bắt đầu từ tối nay</h1>
+            <p class="mt-3 text-base text-pretty text-muted">Thiền có hướng dẫn, truyện kể trước giờ ngủ và sách nói tiếng Việt, nghe được cả khi không có mạng.</p>
+          </div>
+          <div class="grid gap-2 px-4 pt-8 pad-bottom">
+            <a href="#goals" class="press flex min-h-[52px] items-center justify-center rounded-2xl bg-primary px-4 text-base font-semibold text-primary-foreground">Bắt đầu</a>
+            <a href="#signup" class="press flex min-h-11 items-center justify-center text-base font-medium">Tôi đã có tài khoản</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= ONBOARDING 2. MỤC TIÊU (O8): chọn nhiều, dòng có ô tick. ================= -->
+      <section class="screen is-pushed" data-screen="goals" aria-label="Mục tiêu">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#welcome" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Quay lại"><i data-lucide="arrow-left" class="size-6"></i></a>
+            <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Bước 1 trên 4" aria-valuenow="1" aria-valuemin="0" aria-valuemax="4"><div class="h-full rounded-full bg-primary" style="width: 25%"></div></div>
+            <span class="size-11 shrink-0" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="scroll px-4">
+          <h1 class="pt-4 text-2xl font-semibold tracking-tight text-balance">Bạn muốn Lắng giúp điều gì?</h1>
+          <p class="mt-1 text-base text-muted">Chọn một hay nhiều. Trang chủ sẽ gợi ý bài hợp với bạn mỗi tối.</p>
+          <div class="mt-6 grid gap-3 pb-4" role="group" aria-label="Mục tiêu" data-multi data-next-target="goals">
+            <button role="checkbox" aria-checked="true" class="choice press"><i data-lucide="moon" class="size-6 shrink-0"></i><span class="flex-1">Ngủ ngon, ngủ sâu hơn</span><span class="tick"><i data-lucide="check" class="size-4"></i></span></button>
+            <button role="checkbox" aria-checked="true" class="choice press"><i data-lucide="cloud" class="size-6 shrink-0"></i><span class="flex-1">Bớt lo âu, căng thẳng</span><span class="tick"><i data-lucide="check" class="size-4"></i></span></button>
+            <button role="checkbox" aria-checked="false" class="choice press"><i data-lucide="target" class="size-6 shrink-0"></i><span class="flex-1">Tập trung khi làm việc, học bài</span><span class="tick"><i data-lucide="check" class="size-4"></i></span></button>
+            <button role="checkbox" aria-checked="false" class="choice press"><i data-lucide="wind" class="size-6 shrink-0"></i><span class="flex-1">Thở chậm lại khi thấy bồn chồn</span><span class="tick"><i data-lucide="check" class="size-4"></i></span></button>
+            <button role="checkbox" aria-checked="false" class="choice press"><i data-lucide="headphones" class="size-6 shrink-0"></i><span class="flex-1">Nghe sách khi đi đường, trước khi ngủ</span><span class="tick"><i data-lucide="check" class="size-4"></i></span></button>
+            <button role="checkbox" aria-checked="false" class="choice press"><i data-lucide="heart" class="size-6 shrink-0"></i><span class="flex-1">Chăm sóc cảm xúc mỗi ngày</span><span class="tick"><i data-lucide="check" class="size-4"></i></span></button>
+          </div>
+        </div>
+        <div class="shrink-0 border-t border-border px-4 pt-3 pad-bottom">
+          <a href="#reminder" class="btn-disabled press flex min-h-[52px] items-center justify-center rounded-2xl bg-primary px-4 text-base font-semibold text-primary-foreground" aria-disabled="false" data-next="goals">Tiếp tục</a>
+        </div>
+      </section>
+
+      <!-- ================= ONBOARDING 3. GIỜ NHẮC TỐI (O8): chọn một, câu không bắt buộc nên có Bỏ qua. ================= -->
+      <section class="screen is-pushed" data-screen="reminder" aria-label="Giờ nhắc tối">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#goals" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Quay lại"><i data-lucide="arrow-left" class="size-6"></i></a>
+            <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Bước 2 trên 4" aria-valuenow="2" aria-valuemin="0" aria-valuemax="4"><div class="h-full rounded-full bg-primary" style="width: 50%"></div></div>
+            <a href="#signup" class="press inline-flex h-11 shrink-0 items-center px-3 text-base font-medium text-muted">Bỏ qua</a>
+          </div>
+        </header>
+        <div class="scroll px-4">
+          <h1 class="pt-4 text-2xl font-semibold tracking-tight text-balance">Mấy giờ bạn muốn được nhắc thả lỏng?</h1>
+          <p class="mt-1 text-base text-muted">Nên trước giờ ngủ khoảng 30 phút. Đổi lúc nào cũng được trong Hồ sơ.</p>
+          <div class="mt-6 grid gap-3 pb-4" role="radiogroup" aria-label="Giờ nhắc">
+            <button role="radio" aria-checked="false" class="choice press"><span class="flex-1 tabular-nums">21:00</span><span class="tick"><i data-lucide="check" class="size-4"></i></span></button>
+            <button role="radio" aria-checked="false" class="choice press"><span class="flex-1 tabular-nums">21:30</span><span class="tick"><i data-lucide="check" class="size-4"></i></span></button>
+            <button role="radio" aria-checked="true" class="choice press"><span class="flex-1"><span class="tabular-nums">22:00</span><span class="block text-[13px] font-normal text-muted">Hợp nếu bạn ngủ lúc 22:30</span></span><span class="tick"><i data-lucide="check" class="size-4"></i></span></button>
+            <button role="radio" aria-checked="false" class="choice press"><span class="flex-1 tabular-nums">22:30</span><span class="tick"><i data-lucide="check" class="size-4"></i></span></button>
+            <button role="radio" aria-checked="false" class="choice press"><span class="flex-1 tabular-nums">23:00</span><span class="tick"><i data-lucide="check" class="size-4"></i></span></button>
+            <button role="radio" aria-checked="false" class="choice press"><i data-lucide="clock" class="size-6 shrink-0"></i><span class="flex-1">Chọn giờ khác</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></button>
+          </div>
+        </div>
+        <div class="shrink-0 border-t border-border px-4 pt-3 pad-bottom">
+          <a href="#signup" class="press flex min-h-[52px] items-center justify-center rounded-2xl bg-primary px-4 text-base font-semibold text-primary-foreground">Tiếp tục</a>
+        </div>
+      </section>
+
+      <!-- ================= ONBOARDING 4. TẠO TÀI KHOẢN (J12): số điện thoại là cách chính, Apple và Google đường phụ. ================= -->
+      <section class="screen is-pushed" data-screen="signup" aria-label="Tạo tài khoản">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#reminder" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Quay lại"><i data-lucide="arrow-left" class="size-6"></i></a>
+            <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Bước 3 trên 4" aria-valuenow="3" aria-valuemin="0" aria-valuemax="4"><div class="h-full rounded-full bg-primary" style="width: 75%"></div></div>
+            <span class="size-11 shrink-0" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="scroll px-4 pad-bottom">
+          <h1 class="pt-4 text-2xl font-semibold tracking-tight text-balance">Tạo tài khoản để giữ lộ trình</h1>
+          <p class="mt-1 text-base text-pretty text-muted">Giữ chuỗi ngày, bài đã lưu và sách đang nghe dở khi đổi máy. Mình gửi mã 6 số qua SMS.</p>
+          <label class="mt-6 block"><span class="sr-only">Số điện thoại</span>
+            <span class="flex h-[52px] items-center rounded-2xl bg-surface ring-1 ring-border-strong ring-inset focus-within:ring-2 focus-within:ring-foreground/60">
+              <button type="button" class="press flex h-full shrink-0 items-center gap-1 border-r border-border-strong pr-3 pl-4 text-base font-medium" aria-label="Đổi mã vùng, đang chọn Việt Nam +84">+84<i data-lucide="chevron-down" class="size-4 text-muted"></i></button>
+              <input type="tel" inputmode="tel" autocomplete="tel-national" enterkeyhint="send" placeholder="Số điện thoại" class="h-full min-w-0 flex-1 bg-transparent px-3 text-base tabular-nums outline-none placeholder:text-muted" />
+            </span>
+          </label>
+          <a href="#otp" class="press mt-3 flex min-h-[52px] items-center justify-center rounded-2xl bg-primary px-4 text-base font-semibold text-primary-foreground">Gửi mã</a>
+          <div class="my-5 flex items-center gap-3"><span class="h-px flex-1 bg-border-strong"></span><span class="text-[13px] text-muted">hoặc</span><span class="h-px flex-1 bg-border-strong"></span></div>
+          <div class="grid gap-3">
+            <a href="#notify" class="press flex min-h-[52px] items-center justify-center gap-2 rounded-2xl px-4 text-base font-medium ring-1 ring-border-strong ring-inset"><svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.43zm4.565 15.71c-.03.07-.463 1.58-1.518 3.12-.945 1.34-1.94 2.71-3.43 2.71-1.517 0-1.9-.88-3.63-.88-1.698 0-2.302.91-3.67.91-1.377 0-2.332-1.26-3.428-2.8-1.287-1.82-2.323-4.63-2.323-7.28 0-4.28 2.797-6.55 5.552-6.550 1.448 0 2.675.95 3.6.95.865 0 2.222-1.01 3.902-1.01.613 0 2.886.06 4.374 2.19-.13.09-2.383 1.37-2.383 4.19 0 3.26 2.854 4.42 2.955 4.45z"/></svg>Tiếp tục với Apple</a>
+            <a href="#notify" class="press flex min-h-[52px] items-center justify-center gap-2 rounded-2xl px-4 text-base font-medium ring-1 ring-border-strong ring-inset"><svg viewBox="0 0 48 48" class="size-5" aria-hidden="true"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>Tiếp tục với Google</a>
+          </div>
+          <p class="mt-5 text-center text-[13px] text-muted">Bằng việc tiếp tục, bạn đồng ý với <a href="#signup" class="text-foreground underline underline-offset-2">Điều khoản</a> và <a href="#signup" class="text-foreground underline underline-offset-2">Chính sách quyền riêng tư</a></p>
+        </div>
+      </section>
+
+      <!-- ================= ONBOARDING 5. NHẬP MÃ (J12, otp-input.md): bàn phím số 290px, nút ngay dưới ô. ================= -->
+      <section class="screen is-pushed" data-screen="otp" aria-label="Nhập mã">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#signup" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Quay lại nhập số"><i data-lucide="arrow-left" class="size-6"></i></a>
+            <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Bước 3 trên 4" aria-valuenow="3" aria-valuemin="0" aria-valuemax="4"><div class="h-full rounded-full bg-primary" style="width: 75%"></div></div>
+            <span class="size-11 shrink-0" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="scroll px-4">
+          <h1 class="pt-4 text-2xl font-semibold tracking-tight">Nhập mã 6 số</h1>
+          <p class="mt-1 flex flex-wrap items-center gap-x-2 text-base text-muted"><span>Vừa gửi tới <span class="font-medium text-foreground tabular-nums">+84 937 878 335</span></span><a href="#signup" class="press inline-flex h-11 items-center text-foreground underline underline-offset-2">Đổi số</a></p>
+          <fieldset class="mt-3">
+            <legend class="sr-only">Mã xác thực</legend>
+            <div class="grid grid-cols-6 gap-2">
+              <input inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="4" aria-label="Số thứ 1 trên 6" class="h-14 w-full min-w-0 rounded-xl bg-surface text-center text-2xl font-semibold tabular-nums ring-1 ring-border-strong ring-inset outline-none" />
+              <input inputmode="numeric" maxlength="1" value="8" aria-label="Số thứ 2 trên 6" class="h-14 w-full min-w-0 rounded-xl bg-surface text-center text-2xl font-semibold tabular-nums ring-1 ring-border-strong ring-inset outline-none" />
+              <input inputmode="numeric" maxlength="1" value="2" aria-label="Số thứ 3 trên 6" class="h-14 w-full min-w-0 rounded-xl bg-surface text-center text-2xl font-semibold tabular-nums ring-1 ring-border-strong ring-inset outline-none" />
+              <input inputmode="numeric" maxlength="1" aria-label="Số thứ 4 trên 6" class="h-14 w-full min-w-0 rounded-xl bg-surface text-center text-2xl font-semibold tabular-nums ring-2 ring-foreground/70 ring-inset outline-none" />
+              <input inputmode="numeric" maxlength="1" aria-label="Số thứ 5 trên 6" class="h-14 w-full min-w-0 rounded-xl bg-surface text-center text-2xl font-semibold tabular-nums ring-1 ring-border-strong ring-inset outline-none" />
+              <input inputmode="numeric" maxlength="1" aria-label="Số thứ 6 trên 6" class="h-14 w-full min-w-0 rounded-xl bg-surface text-center text-2xl font-semibold tabular-nums ring-1 ring-border-strong ring-inset outline-none" />
+            </div>
+          </fieldset>
+          <p class="flex min-h-11 items-center text-[15px] text-muted tabular-nums" role="status">Chưa nhận được mã? Gửi lại sau 0:24</p>
+          <a href="#notify" class="btn-disabled press mt-1 flex min-h-[52px] items-center justify-center rounded-2xl bg-primary px-4 text-base font-semibold text-primary-foreground" aria-disabled="true">Xác nhận và tạo tài khoản</a>
+        </div>
+        <div class="grid shrink-0 grid-cols-3 content-start gap-1.5 bg-[#2b2b30] px-1.5 pt-1.5" style="height: 290px" aria-hidden="true">
+          <span class="kb-key !h-[46px]">1</span><span class="kb-key !h-[46px]">2</span><span class="kb-key !h-[46px]">3</span>
+          <span class="kb-key !h-[46px]">4</span><span class="kb-key !h-[46px]">5</span><span class="kb-key !h-[46px]">6</span>
+          <span class="kb-key !h-[46px]">7</span><span class="kb-key !h-[46px]">8</span><span class="kb-key !h-[46px]">9</span>
+          <span></span><span class="kb-key !h-[46px]">0</span><span class="grid h-[46px] place-items-center text-white"><i data-lucide="delete" class="size-6"></i></span>
+        </div>
+      </section>
+
+      <!-- ================= ONBOARDING 6. BẬT THÔNG BÁO (J12, O8): màn mồi, minh hoạ đúng thông báo sẽ nhận. ================= -->
+      <section class="screen is-pushed" data-screen="notify" aria-label="Bật thông báo">
+        <header class="pad-top shrink-0">
+          <div class="flex h-14 items-center gap-2 px-2">
+            <a href="#otp" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Quay lại"><i data-lucide="arrow-left" class="size-6"></i></a>
+            <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-secondary" role="progressbar" aria-label="Bước 4 trên 4" aria-valuenow="4" aria-valuemin="0" aria-valuemax="4"><div class="h-full rounded-full bg-primary" style="width: 100%"></div></div>
+            <span class="size-11 shrink-0" aria-hidden="true"></span>
+          </div>
+        </header>
+        <div class="scroll flex flex-col px-4">
+          <div class="flex flex-1 flex-col justify-center">
+            <div class="rounded-[20px] bg-white/5 p-3" aria-hidden="true">
+              <div class="flex items-start gap-3 rounded-2xl bg-surface-overlay p-3 ring-1 ring-white/10">
+                <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground"><svg viewBox="0 0 24 24" class="size-6" fill="currentColor"><path d="M6 14.5a6 6 0 0 1 12 0Z" /><rect x="4" y="16.5" width="16" height="2.5" rx="1.25" /></svg></span>
+                <span class="min-w-0 flex-1">
+                  <span class="flex justify-between text-[13px] text-muted"><span class="font-semibold text-foreground">Lắng</span><span class="tabular-nums">22:00</span></span>
+                  <span class="mt-0.5 block text-[15px]">Tới giờ thả lỏng rồi, Lan. Tối nay: 10 phút thở chậm trước khi ngủ.</span>
+                </span>
+              </div>
+            </div>
+            <h1 class="mt-8 text-center text-2xl font-semibold tracking-tight text-balance">Nhắc bạn lúc 22:00 mỗi tối?</h1>
+            <p class="mt-2 text-center text-base text-pretty text-muted">Một thông báo nhẹ mỗi tối, không âm thanh lớn, không gửi quảng cáo.</p>
+          </div>
+        </div>
+        <div class="grid shrink-0 gap-1 px-4 pt-3 pad-bottom">
+          <a href="#ready" class="press flex min-h-[52px] items-center justify-center rounded-2xl bg-primary px-4 text-base font-semibold text-primary-foreground">Tiếp tục</a>
+          <a href="#ready" class="press flex min-h-11 items-center justify-center text-base font-medium text-muted">Để sau</a>
+        </div>
+      </section>
+
+      <!-- ================= ONBOARDING 7. LỘ TRÌNH SẴN SÀNG (O8 màn cuối): nói kết quả các câu trả lời, nút đi thẳng vào bài đầu. ================= -->
+      <section class="screen is-pushed" data-screen="ready" aria-label="Lộ trình sẵn sàng">
+        <div class="scroll pad-top px-4">
+          <div class="flex flex-col items-center pt-8 text-center">
+            <img src="https://images.unsplash.com/photo-1536183922588-166604504d5e?w=600&q=80&auto=format&fit=crop" alt="" class="size-40 rounded-full object-cover ring-1 ring-white/10" />
+            <h1 class="mt-6 text-[28px]/[34px] font-semibold tracking-tight text-balance">Lộ trình ngủ ngon của Lan đã sẵn sàng</h1>
+            <p class="mt-2 text-base text-pretty text-muted">Mỗi tối một bài 10 phút. Sau 2 tuần, phần lớn người nghe đều đặn vào giấc nhanh hơn.</p>
+          </div>
+          <dl class="mt-8 divide-y divide-border overflow-hidden rounded-[20px] bg-surface text-base">
+            <div class="flex min-h-14 items-center justify-between gap-4 px-4 py-2"><dt class="text-muted">Mục tiêu</dt><dd class="text-right font-medium">Ngủ ngon, bớt lo âu</dd></div>
+            <div class="flex min-h-14 items-center justify-between gap-4 px-4 py-2"><dt class="text-muted">Nhắc mỗi tối</dt><dd class="text-right font-medium tabular-nums">22:00</dd></div>
+          </dl>
+          <p class="mt-6 text-[13px] font-medium text-muted">BÀI ĐẦU TIÊN</p>
+          <div class="mt-2 flex items-center gap-3 rounded-[20px] bg-surface p-3">
+            <img src="https://images.unsplash.com/photo-1536183922588-166604504d5e?w=200&q=80&auto=format&fit=crop" alt="" class="size-16 shrink-0 rounded-xl object-cover" />
+            <span class="min-w-0 flex-1"><span class="block text-base font-semibold">Thả lỏng trước giờ ngủ</span><span class="block text-[13px] text-muted">Thiền có hướng dẫn · 10 phút</span></span>
+          </div>
+        </div>
+        <div class="shrink-0 px-4 pt-3 pad-bottom">
+          <a href="#player-first" class="press flex min-h-[52px] items-center justify-center gap-2 rounded-2xl bg-primary px-4 text-base font-semibold text-primary-foreground"><i data-lucide="play" class="size-5 fill-current"></i>Nghe bài đầu tiên</a>
+        </div>
+      </section>
+
+      <!-- ================= TAB 1. TRANG CHỦ. Trạng thái "new" = người vừa xong onboarding (chuỗi 0, chưa nghe gì). ================= -->
+      <section class="screen" data-screen="home" aria-label="Trang chủ">
+        <div class="scroll pad-top pad-dock">
+          <header class="flex items-start justify-between px-4 pt-3">
+            <div>
+              <p class="text-sm text-muted">Chào buổi tối, Lan</p>
+              <h1 class="mt-0.5 text-[32px]/[38px] font-semibold tracking-tight">Tối nay</h1>
+            </div>
+            <a href="#profile" class="press mt-1 grid size-11 place-items-center overflow-hidden rounded-full ring-1 ring-white/10" aria-label="Hồ sơ"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" class="size-11 object-cover" /></a>
+          </header>
+
+          <!-- Bài gợi ý hôm nay: ảnh lớn là điểm nhìn (J15), chữ HTML trên lớp tối của ảnh (J11). Nút trắng là hành động chính của màn. -->
+          <a href="#player" class="press relative mx-4 mt-5 block overflow-hidden rounded-[20px] ring-1 ring-white/10" data-when="default">
+            <img src="https://images.unsplash.com/photo-1566342088293-38debd381c63?w=800&q=80&auto=format&fit=crop" alt="" class="h-[220px] w-full object-cover" />
+            <span class="absolute inset-0 bg-linear-to-t from-black/75 via-black/30 to-transparent" aria-hidden="true"></span>
+            <span class="absolute inset-x-0 bottom-0 flex items-end gap-3 p-4">
+              <span class="min-w-0 flex-1">
+                <span class="block text-[13px] font-medium text-white/80">Gợi ý tối nay · cho giấc ngủ</span>
+                <span class="mt-1 block text-[22px]/[28px] font-semibold text-white">Thở chậm 4-7-8 trước khi ngủ</span>
+                <span class="mt-1 block text-[13px] text-white/80">Thiền có hướng dẫn · 12 phút</span>
+              </span>
+              <span class="grid size-[52px] shrink-0 place-items-center rounded-full bg-primary text-primary-foreground" aria-hidden="true"><i data-lucide="play" class="size-6 fill-current"></i></span>
+            </span>
+          </a>
+          <a href="#player-first" class="press relative mx-4 mt-5 block overflow-hidden rounded-[20px] ring-1 ring-white/10" data-when="new">
+            <img src="https://images.unsplash.com/photo-1536183922588-166604504d5e?w=800&q=80&auto=format&fit=crop" alt="" class="h-[220px] w-full object-cover" />
+            <span class="absolute inset-0 bg-linear-to-t from-black/75 via-black/30 to-transparent" aria-hidden="true"></span>
+            <span class="absolute inset-x-0 bottom-0 flex items-end gap-3 p-4">
+              <span class="min-w-0 flex-1">
+                <span class="block text-[13px] font-medium text-white/80">Bài đầu tiên của bạn</span>
+                <span class="mt-1 block text-[22px]/[28px] font-semibold text-white">Thả lỏng trước giờ ngủ</span>
+                <span class="mt-1 block text-[13px] text-white/80">Thiền có hướng dẫn · 10 phút</span>
+              </span>
+              <span class="grid size-[52px] shrink-0 place-items-center rounded-full bg-primary text-primary-foreground" aria-hidden="true"><i data-lucide="play" class="size-6 fill-current"></i></span>
+            </span>
+          </a>
+
+          <!-- Chuỗi ngày: dải ngày trong tuần (J8), hôm nay tô nút chính, ngày đã thiền có chấm, ngày tới mờ và khoá. -->
+          <div class="mt-7 flex items-center justify-between px-4">
+            <h2 class="min-w-0 text-[20px]/[25px] font-semibold"><span data-when="default">Chuỗi 12 ngày</span><span data-when="new">Chuỗi ngày</span></h2>
+            <span class="text-sm text-muted" data-when="default">Dài nhất 21 ngày</span>
+            <span class="text-sm text-muted" data-when="new">Bắt đầu từ tối nay</span>
+          </div>
+          <div class="mt-3 grid grid-cols-7 px-[13px]" role="list" aria-label="Tuần này">
+            <span role="listitem" class="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border-[3px] border-transparent bg-surface bg-clip-padding text-muted"><span class="text-xs">T2</span><span class="text-base font-semibold text-foreground tabular-nums">2</span><span class="size-1 rounded-full bg-foreground" data-when="default"></span><span class="size-1" data-when="new"></span></span>
+            <span role="listitem" class="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border-[3px] border-transparent bg-surface bg-clip-padding text-muted"><span class="text-xs">T3</span><span class="text-base font-semibold text-foreground tabular-nums">3</span><span class="size-1 rounded-full bg-foreground" data-when="default"></span><span class="size-1" data-when="new"></span></span>
+            <span role="listitem" class="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border-[3px] border-transparent bg-surface bg-clip-padding text-muted"><span class="text-xs">T4</span><span class="text-base font-semibold text-foreground tabular-nums">4</span><span class="size-1 rounded-full bg-foreground" data-when="default"></span><span class="size-1" data-when="new"></span></span>
+            <span role="listitem" class="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border-[3px] border-transparent bg-surface bg-clip-padding text-muted"><span class="text-xs">T5</span><span class="text-base font-semibold text-foreground tabular-nums">5</span><span class="size-1 rounded-full bg-foreground" data-when="default"></span><span class="size-1" data-when="new"></span></span>
+            <span role="listitem" class="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border-[3px] border-transparent bg-surface bg-clip-padding text-muted"><span class="text-xs">T6</span><span class="text-base font-semibold text-foreground tabular-nums">6</span><span class="size-1 rounded-full bg-foreground" data-when="default"></span><span class="size-1" data-when="new"></span></span>
+            <span role="listitem" aria-current="date" class="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border-[3px] border-transparent bg-white/[0.14] bg-clip-padding text-white/70 ring-2 ring-white ring-inset"><span class="text-xs">T7</span><span class="text-base font-semibold text-white tabular-nums">7</span><span class="size-1 rounded-full bg-white" data-when="default"></span><span class="size-1" data-when="new"></span></span>
+            <span role="listitem" class="flex h-16 flex-col items-center justify-center gap-1 rounded-2xl border-[3px] border-transparent text-white/60"><span class="text-xs">CN</span><span class="text-base font-semibold tabular-nums">8</span><span class="size-1"></span></span>
+          </div>
+
+          <!-- Các mục thiền: lưới 2 cột, ảnh trên, tên dưới, không bọc thẻ. -->
+          <div class="mt-8 flex items-center justify-between px-4">
+            <h2 class="min-w-0 text-[20px]/[25px] font-semibold">Thiền</h2>
+            <a href="#explore" class="press inline-flex h-11 shrink-0 items-center pl-2 text-sm font-medium whitespace-nowrap text-muted">Xem tất cả</a>
+          </div>
+          <div class="mt-2 grid grid-cols-2 gap-x-3 gap-y-4 px-4">
+            <a href="#explore" class="press block"><img src="https://images.unsplash.com/photo-1580659986392-440ea995857c?w=400&q=80&auto=format&fit=crop" alt="" class="aspect-[16/10] w-full rounded-xl object-cover ring-1 ring-white/10" /><span class="mt-2 block text-base font-medium">Ngủ ngon</span><span class="block text-[13px] text-muted">32 bài</span></a>
+            <a href="#explore" class="press block"><img src="https://images.unsplash.com/photo-1487621167305-5d248087c724?w=400&q=80&auto=format&fit=crop" alt="" class="aspect-[16/10] w-full rounded-xl object-cover ring-1 ring-white/10" /><span class="mt-2 block text-base font-medium">Bớt lo âu</span><span class="block text-[13px] text-muted">24 bài</span></a>
+            <a href="#explore" class="press block"><img src="https://images.unsplash.com/photo-1532009877282-3340270e0529?w=400&q=80&auto=format&fit=crop" alt="" class="aspect-[16/10] w-full rounded-xl object-cover ring-1 ring-white/10" /><span class="mt-2 block text-base font-medium">Tập trung</span><span class="block text-[13px] text-muted">18 bài</span></a>
+            <a href="#explore" class="press block"><img src="https://images.unsplash.com/photo-1496450681664-3df85efbd29f?w=400&q=80&auto=format&fit=crop" alt="" class="aspect-[16/10] w-full rounded-xl object-cover ring-1 ring-white/10" /><span class="mt-2 block text-base font-medium">Thở chậm</span><span class="block text-[13px] text-muted">12 bài</span></a>
+          </div>
+
+          <!-- Câu chuyện ngủ: hàng cuộn ngang lộ nửa ô (J8). -->
+          <div class="mt-8 flex items-center justify-between px-4">
+            <h2 class="min-w-0 text-[20px]/[25px] font-semibold">Câu chuyện ngủ</h2>
+            <a href="#explore" class="press inline-flex h-11 shrink-0 items-center pl-2 text-sm font-medium whitespace-nowrap text-muted">Xem tất cả</a>
+          </div>
+          <div class="hscroll hscroll-fade mt-2 flex gap-3 px-4">
+            <a href="#player" class="press w-[156px] shrink-0"><img src="https://images.unsplash.com/photo-1444080748397-f442aa95c3e5?w=400&q=80&auto=format&fit=crop" alt="" class="aspect-square w-full rounded-xl object-cover ring-1 ring-white/10" /><span class="mt-2 block text-base font-medium">Chuyến tàu đêm qua đèo</span><span class="block text-[13px] text-muted">Minh Thư kể · 34 phút</span></a>
+            <a href="#player" class="press w-[156px] shrink-0"><img src="https://images.unsplash.com/photo-1533088339408-74fcf62b8e6a?w=400&q=80&auto=format&fit=crop" alt="" class="aspect-square w-full rounded-xl object-cover ring-1 ring-white/10" /><span class="mt-2 block text-base font-medium">Đêm lửa trại bên hồ Ba Bể, nghe tiếng côn trùng tới khi buồn ngủ</span><span class="block text-[13px] text-muted">Quang Huy kể · 41 phút</span></a>
+            <a href="#player" class="press w-[156px] shrink-0"><img src="https://images.unsplash.com/photo-1509635022432-0220ac12960b?w=400&q=80&auto=format&fit=crop" alt="" class="aspect-square w-full rounded-xl object-cover ring-1 ring-white/10" /><span class="mt-2 block text-base font-medium">Mưa trên mái hiên phố cổ</span><span class="block text-[13px] text-muted">Minh Thư kể · 28 phút</span></a>
+            <a href="#player" class="press w-[156px] shrink-0"><img src="https://images.unsplash.com/photo-1477840539360-4a1d23071046?w=400&q=80&auto=format&fit=crop" alt="" class="aspect-square w-full rounded-xl object-cover ring-1 ring-white/10" /><span class="mt-2 block text-base font-medium">Ngọn núi tuyết</span><span class="block text-[13px] text-muted">Thu Hà kể · 25 phút</span></a>
+          </div>
+
+          <!-- Sách nói: bìa dọc 2:3. Một cuốn không có ảnh để thử ca biên (S16). -->
+          <div class="mt-8 flex items-center justify-between px-4">
+            <h2 class="min-w-0 text-[20px]/[25px] font-semibold">Sách nói</h2>
+            <a href="#explore" class="press inline-flex h-11 shrink-0 items-center pl-2 text-sm font-medium whitespace-nowrap text-muted">Xem tất cả</a>
+          </div>
+          <div class="hscroll hscroll-fade mt-2 flex gap-3 px-4">
+            <a href="#book" class="press w-[120px] shrink-0"><img src="https://images.unsplash.com/photo-1697029749544-ffa7f15f9dd0?w=300&h=450&q=80&auto=format&fit=crop" alt="" class="aspect-[2/3] w-full rounded-xl object-cover ring-1 ring-white/10" /><span class="mt-2 block text-[15px] font-medium">Những ngày bình yên ở Đà Lạt</span><span class="block text-[13px] text-muted">Trần Hoài An</span></a>
+            <a href="#book" class="press w-[120px] shrink-0"><img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?w=300&h=450&q=80&auto=format&fit=crop" alt="" class="aspect-[2/3] w-full rounded-xl object-cover ring-1 ring-white/10" /><span class="mt-2 block text-[15px] font-medium">Sống chậm giữa phố đông</span><span class="block text-[13px] text-muted">Lê Minh Khang</span></a>
+            <a href="#book" class="press w-[120px] shrink-0"><img src="https://images.unsplash.com/photo-1718176870429-653c7ee684cc?w=300&h=450&q=80&auto=format&fit=crop" alt="" class="aspect-[2/3] w-full rounded-xl object-cover ring-1 ring-white/10" /><span class="mt-2 block text-[15px] font-medium">Giấc ngủ và não bộ: hiểu để ngủ sâu hơn mỗi đêm</span><span class="block text-[13px] text-muted">BS. Đỗ Quang Vinh</span></a>
+            <a href="#book" class="press w-[120px] shrink-0"><span class="grid aspect-[2/3] w-full place-items-center rounded-xl bg-surface text-muted"><span class="flex flex-col items-center gap-1"><i data-lucide="book-open" class="size-6"></i><span class="text-[13px]">Chưa có ảnh</span></span></span><span class="mt-2 block text-[15px] font-medium">Ghi chép bên hiên nhà</span><span class="block text-[13px] text-muted">Phạm Ngọc Diệp</span></a>
+          </div>
+
+          <!-- Nhạc nền: ảnh tròn 64 + tên dưới, một mục không ảnh rơi về icon. -->
+          <h2 class="mt-8 px-4 text-[20px]/[25px] font-semibold">Nhạc nền</h2>
+          <div class="hscroll hscroll-fade mt-3 flex gap-4 px-4">
+            <a href="#player" class="press flex w-[72px] shrink-0 flex-col items-center gap-2 text-center"><img src="https://images.unsplash.com/photo-1501691223387-dd0500403074?w=200&q=80&auto=format&fit=crop" alt="" class="size-16 rounded-full object-cover ring-1 ring-white/10" /><span class="text-[13px]">Mưa đêm</span></a>
+            <a href="#player" class="press flex w-[72px] shrink-0 flex-col items-center gap-2 text-center"><img src="https://images.unsplash.com/photo-1470549584009-d347338fc0ff?w=200&q=80&auto=format&fit=crop" alt="" class="size-16 rounded-full object-cover ring-1 ring-white/10" /><span class="text-[13px]">Lửa trại</span></a>
+            <a href="#player" class="press flex w-[72px] shrink-0 flex-col items-center gap-2 text-center"><img src="https://images.unsplash.com/photo-1437751059337-ea72d4f73fcf?w=200&q=80&auto=format&fit=crop" alt="" class="size-16 rounded-full object-cover ring-1 ring-white/10" /><span class="text-[13px]">Sóng biển</span></a>
+            <a href="#player" class="press flex w-[72px] shrink-0 flex-col items-center gap-2 text-center"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=200&q=80&auto=format&fit=crop" alt="" class="size-16 rounded-full object-cover ring-1 ring-white/10" /><span class="text-[13px]">Rừng thông</span></a>
+            <a href="#player" class="press flex w-[72px] shrink-0 flex-col items-center gap-2 text-center"><span class="grid size-16 place-items-center rounded-full bg-surface"><i data-lucide="audio-waveform" class="size-6"></i></span><span class="text-[13px]">Ồn trắng</span></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CHI TIẾT SÁCH NÓI (màn con để xem, giữ thanh tab: J2; ảnh tràn đầu: hai nút tròn J3). ================= -->
+      <section class="screen is-pushed" data-screen="book" aria-label="Chi tiết sách nói">
+        <div class="scroll pad-dock">
+          <div class="relative overflow-hidden pt-(--inset-top)">
+            <img src="https://images.unsplash.com/photo-1697029749544-ffa7f15f9dd0?w=600&q=60&auto=format&fit=crop" alt="" class="absolute inset-0 size-full scale-110 object-cover opacity-50 blur-2xl [mask-image:linear-gradient(to_bottom,black_40%,transparent)]" aria-hidden="true" />
+            <div class="relative flex h-11 items-center justify-between px-2">
+              <a href="#home" class="press grid size-11 place-items-center rounded-full bg-black/30 backdrop-blur-md" aria-label="Quay lại Trang chủ"><i data-lucide="chevron-left" class="size-6"></i></a>
+              <div class="flex gap-2">
+                <button class="press grid size-11 place-items-center rounded-full bg-black/30 backdrop-blur-md" aria-label="Chia sẻ"><i data-lucide="share" class="size-5"></i></button>
+                <button class="press grid size-11 place-items-center rounded-full bg-black/30 backdrop-blur-md" aria-label="Lưu vào Thư viện" aria-pressed="true" data-save><i data-lucide="bookmark" class="icon-save size-5"></i><i data-lucide="bookmark-check" class="icon-saved size-5"></i></button>
+              </div>
+            </div>
+            <div class="relative flex flex-col items-center px-4 pt-4 pb-2 text-center">
+              <img src="https://images.unsplash.com/photo-1697029749544-ffa7f15f9dd0?w=400&h=600&q=80&auto=format&fit=crop" alt="" class="h-[240px] w-40 rounded-2xl object-cover shadow-[0_20px_40px_-12px_rgb(0_0_0/0.6)] ring-1 ring-white/10" />
+              <h1 class="mt-5 text-2xl font-semibold tracking-tight text-balance">Những ngày bình yên ở Đà Lạt</h1>
+              <p class="mt-1 text-[15px] text-muted">Trần Hoài An · Thu Hà đọc</p>
+              <p class="mt-1 text-[13px] text-muted tabular-nums">12 chương · 6 giờ 40 phút · Tiếng Việt</p>
+            </div>
+          </div>
+          <div class="px-4 pt-4">
+            <a href="#player" class="press flex min-h-[52px] items-center justify-center gap-2 rounded-2xl bg-primary px-4 text-base font-semibold text-primary-foreground"><i data-lucide="play" class="size-5 fill-current"></i>Nghe tiếp · Chương 2</a>
+            <button class="press mt-3 flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl px-4 text-base font-medium ring-1 ring-border-strong ring-inset" data-toast-msg="Đang tải 9 chương còn lại, 412 MB"><i data-lucide="arrow-down-to-line" class="size-5"></i>Tải cả sách · 520 MB</button>
+            <p class="mt-5 text-base text-pretty text-muted">Một người viết rời Sài Gòn lên Đà Lạt ở một mùa đông, thuê căn phòng nhỏ trên con dốc sương mù. Mười hai chương là mười hai buổi sáng chậm rãi: pha trà, đi chợ, nói chuyện với bà chủ nhà, và học cách không vội. Giọng đọc trầm, nhịp chậm, hợp nghe trước khi ngủ.</p>
+          </div>
+
+          <div class="mt-7 flex items-center justify-between px-4">
+            <h2 class="min-w-0 text-[20px]/[25px] font-semibold">12 chương</h2>
+            <span class="text-sm text-muted">Đã tải 3 chương</span>
+          </div>
+          <ol class="mx-4 mt-2 divide-y divide-border overflow-hidden rounded-[20px] bg-surface">
+            <li class="flex min-h-16 items-center gap-3 py-2 pr-1 pl-4">
+              <span class="grid size-8 shrink-0 place-items-center rounded-full bg-secondary text-success" aria-label="Đã nghe xong"><i data-lucide="check" class="size-4"></i></span>
+              <a href="#player" class="press min-w-0 flex-1 py-1"><span class="block text-base text-muted">1. Chuyến xe đêm lên núi</span><span class="block text-[13px] text-muted tabular-nums">Đã nghe · 28 phút</span></a>
+              <span class="grid size-11 shrink-0 place-items-center text-muted" aria-label="Đã tải về"><i data-lucide="circle-check" class="size-5"></i></span>
+            </li>
+            <li class="flex min-h-16 items-center gap-3 py-2 pr-1 pl-4">
+              <span class="grid size-8 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground" aria-label="Đang nghe"><i data-lucide="audio-lines" class="size-4"></i></span>
+              <a href="#player" class="press min-w-0 flex-1 py-1"><span class="block text-base font-medium">2. Con dốc sương mù</span><span class="mt-1.5 block h-1 overflow-hidden rounded-full bg-white/15"><span class="block h-full w-[41%] rounded-full bg-foreground"></span></span><span class="mt-1 block text-[13px] text-muted tabular-nums">Còn 18 phút</span></a>
+              <span class="grid size-11 shrink-0 place-items-center text-muted" aria-label="Đã tải về"><i data-lucide="circle-check" class="size-5"></i></span>
+            </li>
+            <li class="flex min-h-16 items-center gap-3 py-2 pr-1 pl-4">
+              <span class="grid size-8 shrink-0 place-items-center rounded-full bg-secondary text-[13px] font-medium tabular-nums">3</span>
+              <a href="#player" class="press min-w-0 flex-1 py-1"><span class="block text-base">Bà chủ nhà và ấm trà gừng buổi sáng đầu tiên trên căn gác gỗ</span><span class="block text-[13px] text-muted tabular-nums">36 phút</span></a>
+              <button class="press grid size-11 shrink-0 place-items-center" aria-label="Đang tải 45%, bấm để dừng">
+                <span class="relative grid size-7 place-items-center rounded-full" style="background: conic-gradient(var(--foreground) 45%, rgb(255 255 255 / 0.18) 0)"><span class="grid size-[22px] place-items-center rounded-full bg-surface"><i data-lucide="square" class="size-2.5 fill-current"></i></span></span>
+              </button>
+            </li>
+            <li class="flex min-h-16 items-center gap-3 py-2 pr-1 pl-4">
+              <span class="grid size-8 shrink-0 place-items-center rounded-full bg-secondary text-[13px] font-medium tabular-nums">4</span>
+              <a href="#player" class="press min-w-0 flex-1 py-1"><span class="block text-base">Chợ sớm</span><span class="block text-[13px] text-muted tabular-nums">31 phút</span></a>
+              <button class="press grid size-11 shrink-0 place-items-center text-muted" aria-label="Tải chương 4" data-toast-msg="Đang tải chương 4"><i data-lucide="arrow-down-to-line" class="size-5"></i></button>
+            </li>
+            <li class="flex min-h-16 items-center gap-3 py-2 pr-1 pl-4">
+              <span class="grid size-8 shrink-0 place-items-center rounded-full bg-secondary text-[13px] font-medium tabular-nums">5</span>
+              <a href="#player" class="press min-w-0 flex-1 py-1"><span class="block text-base">Lá thư không gửi</span><span class="block text-[13px] text-muted tabular-nums">34 phút</span></a>
+              <button class="press grid size-11 shrink-0 place-items-center text-muted" aria-label="Tải chương 5" data-toast-msg="Đang tải chương 5"><i data-lucide="arrow-down-to-line" class="size-5"></i></button>
+            </li>
+          </ol>
+          <a href="#book" class="press mx-4 mt-2 flex min-h-11 items-center justify-center text-sm font-medium text-muted">Xem cả 12 chương</a>
+        </div>
+      </section>
+
+      <!-- ================= TRÌNH PHÁT TOÀN MÀN: phủ cả thanh tab, mở từ đáy. Trạng thái "first" = bài thiền đầu tiên. ================= -->
+      <section class="screen is-cover" data-screen="player" aria-label="Trình phát">
+        <img src="https://images.unsplash.com/photo-1697029749544-ffa7f15f9dd0?w=600&q=60&auto=format&fit=crop" alt="" class="absolute inset-0 size-full scale-125 object-cover opacity-40 blur-3xl" aria-hidden="true" data-when="default" />
+        <img src="https://images.unsplash.com/photo-1536183922588-166604504d5e?w=600&q=60&auto=format&fit=crop" alt="" class="absolute inset-0 size-full scale-125 object-cover opacity-40 blur-3xl" aria-hidden="true" data-when="first" />
+        <div class="absolute inset-0 bg-linear-to-b from-[#222b5e]/40 to-[#141a3e]" aria-hidden="true"></div>
+        <div class="scroll pad-top pad-bottom relative flex flex-col">
+          <div class="flex h-14 items-center justify-between px-2">
+            <a href="#home" class="press grid size-11 place-items-center rounded-full" aria-label="Thu nhỏ trình phát" data-player-close><i data-lucide="chevron-down" class="size-7"></i></a>
+            <p class="text-[13px] font-medium text-muted"><span data-when="default">Sách nói</span><span data-when="first">Bài đầu tiên</span></p>
+            <a href="#book" class="press grid size-11 place-items-center rounded-full" aria-label="Danh sách chương" data-when="default"><i data-lucide="list" class="size-6"></i></a>
+            <span class="size-11" aria-hidden="true" data-when="first"></span>
+          </div>
+
+          <div class="flex flex-1 flex-col justify-center px-6 pt-4">
+            <img src="https://images.unsplash.com/photo-1697029749544-ffa7f15f9dd0?w=640&q=80&auto=format&fit=crop" alt="" class="mx-auto aspect-square w-full max-w-[320px] rounded-[20px] object-cover shadow-[0_24px_48px_-16px_rgb(0_0_0/0.6)] ring-1 ring-white/10" data-when="default" />
+            <img src="https://images.unsplash.com/photo-1536183922588-166604504d5e?w=640&q=80&auto=format&fit=crop" alt="" class="mx-auto aspect-square w-full max-w-[320px] rounded-[20px] object-cover shadow-[0_24px_48px_-16px_rgb(0_0_0/0.6)] ring-1 ring-white/10" data-when="first" />
+          </div>
+
+          <div class="px-6 pt-8">
+            <div class="flex items-start gap-3">
+              <div class="min-w-0 flex-1">
+                <h1 class="text-[22px]/[28px] font-semibold text-balance" data-when="default">Chương 2 · Con dốc sương mù</h1>
+                <h1 class="text-[22px]/[28px] font-semibold" data-when="first">Thả lỏng trước giờ ngủ</h1>
+                <p class="mt-1 text-[15px] text-muted" data-when="default">Những ngày bình yên ở Đà Lạt · Thu Hà đọc</p>
+                <p class="mt-1 text-[15px] text-muted" data-when="first">Thiền có hướng dẫn · Minh Thư</p>
+              </div>
+              <button class="press -mr-2 grid size-11 shrink-0 place-items-center rounded-full" aria-label="Lưu vào Thư viện" aria-pressed="true" data-save><i data-lucide="bookmark" class="icon-save size-6"></i><i data-lucide="bookmark-check" class="icon-saved size-6"></i></button>
+            </div>
+
+            <div class="mt-6">
+              <div class="seek" role="slider" aria-label="Tua" aria-valuemin="0" aria-valuemax="1865" aria-valuenow="768" data-when="default"><span style="width: 41%"></span><i style="left: 41%"></i></div>
+              <div class="seek" role="slider" aria-label="Tua" aria-valuemin="0" aria-valuemax="600" aria-valuenow="0" data-when="first"><span style="width: 0%"></span><i style="left: 0%"></i></div>
+              <div class="mt-2 flex justify-between text-[13px] text-muted tabular-nums" data-when="default"><span>12:48</span><span>−18:17</span></div>
+              <div class="mt-2 flex justify-between text-[13px] text-muted tabular-nums" data-when="first"><span>0:00</span><span>−10:00</span></div>
+            </div>
+
+            <div class="mt-4 flex items-center justify-between">
+              <a href="#speed" class="press grid h-11 min-w-11 place-items-center rounded-full px-2 text-[15px] font-semibold tabular-nums" aria-label="Tốc độ đọc" data-when="default" data-speed-label>1.0×</a>
+              <span class="size-11" aria-hidden="true" data-when="first"></span>
+              <button class="press relative grid size-14 place-items-center rounded-full" aria-label="Lùi 15 giây"><i data-lucide="rotate-ccw" class="size-8 stroke-[1.5]"></i><span class="absolute text-[11px] font-semibold">15</span></button>
+              <button class="press grid size-[72px] place-items-center rounded-full bg-primary text-primary-foreground" aria-label="Dừng" aria-pressed="true" data-play-toggle><i data-lucide="pause" class="icon-pause size-8 fill-current"></i><i data-lucide="play" class="icon-play ml-1 size-8 fill-current"></i></button>
+              <button class="press relative grid size-14 place-items-center rounded-full" aria-label="Tới 30 giây"><i data-lucide="rotate-cw" class="size-8 stroke-[1.5]"></i><span class="absolute text-[11px] font-semibold">30</span></button>
+              <a href="#timer" class="press grid h-11 min-w-11 place-items-center rounded-full px-1" aria-label="Hẹn giờ tắt" data-timer-label><i data-lucide="moon" class="size-6"></i></a>
+            </div>
+            <p class="mt-3 min-h-5 text-center text-[13px] text-muted tabular-nums" data-timer-note></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 2. KHÁM PHÁ ================= -->
+      <section class="screen" data-screen="explore" aria-label="Khám phá">
+        <div class="scroll pad-top pad-dock">
+          <header class="px-4 pt-3"><h1 class="text-[32px]/[38px] font-semibold tracking-tight">Khám phá</h1></header>
+          <a href="#search" class="press mx-4 mt-4 flex h-[52px] items-center gap-3 rounded-2xl bg-surface px-4 text-base text-muted"><i data-lucide="search" class="size-5"></i>Bài thiền, truyện, sách, người đọc</a>
+
+          <div class="hscroll hscroll-fade mt-4 flex gap-2 px-4" role="tablist" aria-label="Loại">
+            <button role="tab" aria-selected="true" class="press h-11 shrink-0 rounded-full bg-primary px-4 text-[15px] font-medium text-primary-foreground">Tất cả</button>
+            <button role="tab" aria-selected="false" class="press h-11 shrink-0 rounded-full px-4 text-[15px] font-medium ring-1 ring-border-strong ring-inset">Thiền</button>
+            <button role="tab" aria-selected="false" class="press h-11 shrink-0 rounded-full px-4 text-[15px] font-medium ring-1 ring-border-strong ring-inset">Câu chuyện ngủ</button>
+            <button role="tab" aria-selected="false" class="press h-11 shrink-0 rounded-full px-4 text-[15px] font-medium ring-1 ring-border-strong ring-inset">Sách nói</button>
+            <button role="tab" aria-selected="false" class="press h-11 shrink-0 rounded-full px-4 text-[15px] font-medium ring-1 ring-border-strong ring-inset">Nhạc nền</button>
+            <button role="tab" aria-selected="false" class="press h-11 shrink-0 rounded-full px-4 text-[15px] font-medium ring-1 ring-border-strong ring-inset">Cho bé</button>
+          </div>
+
+          <h2 class="mt-7 px-4 text-[20px]/[25px] font-semibold">Theo tâm trạng</h2>
+          <div class="mt-3 grid grid-cols-2 gap-x-3 gap-y-4 px-4">
+            <a href="#search-results" class="press block"><img src="https://images.unsplash.com/photo-1758023822490-d67991c886ca?w=400&q=80&auto=format&fit=crop" alt="" class="aspect-[4/3] w-full rounded-xl object-cover ring-1 ring-white/10" /><span class="mt-2 block text-base font-medium">Khó ngủ</span></a>
+            <a href="#search-results" class="press block"><img src="https://images.unsplash.com/photo-1528164604878-28ea0fb4f462?w=400&q=80&auto=format&fit=crop" alt="" class="aspect-[4/3] w-full rounded-xl object-cover ring-1 ring-white/10" /><span class="mt-2 block text-base font-medium">Buổi sáng nhẹ nhàng</span></a>
+            <a href="#search-results" class="press block"><img src="https://images.unsplash.com/photo-1601922046210-41e129a3e64a?w=400&q=80&auto=format&fit=crop" alt="" class="aspect-[4/3] w-full rounded-xl object-cover ring-1 ring-white/10" /><span class="mt-2 block text-base font-medium">Sau một ngày mệt</span></a>
+            <a href="#search-results" class="press block"><img src="https://images.unsplash.com/photo-1488866022504-f2584929ca5f?w=400&q=80&auto=format&fit=crop" alt="" class="aspect-[4/3] w-full rounded-xl object-cover ring-1 ring-white/10" /><span class="mt-2 block text-base font-medium">Nghĩ quá nhiều</span></a>
+          </div>
+
+          <div class="mt-8 flex items-center justify-between px-4">
+            <h2 class="min-w-0 text-[20px]/[25px] font-semibold">Mới thêm tuần này</h2>
+            <a href="#search-results" class="press inline-flex h-11 shrink-0 items-center pl-2 text-sm font-medium whitespace-nowrap text-muted">Xem tất cả</a>
+          </div>
+          <ul class="mt-1 px-4">
+            <li><a href="#player" class="press flex min-h-[72px] items-center gap-3 py-2 active:bg-(--item-press)"><img src="https://images.unsplash.com/photo-1491720731493-223f97d92c21?w=200&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-xl object-cover ring-1 ring-white/10" /><span class="min-w-0 flex-1"><span class="block text-base font-medium">Ấm trà trước giờ ngủ</span><span class="block text-[13px] text-muted">Thiền · 8 phút · Minh Thư</span></span><i data-lucide="play" class="size-5 shrink-0 text-muted"></i></a></li>
+            <li><a href="#book" class="press flex min-h-[72px] items-center gap-3 py-2 active:bg-(--item-press)"><img src="https://images.unsplash.com/photo-1519791883288-dc8bd696e667?w=200&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-xl object-cover ring-1 ring-white/10" /><span class="min-w-0 flex-1"><span class="block text-base font-medium">Thư gửi tôi năm ba mươi tuổi</span><span class="block text-[13px] text-muted">Sách nói · 4 giờ 12 phút · Phạm Ngọc Diệp</span></span><i data-lucide="chevron-right" class="size-5 shrink-0 text-muted"></i></a></li>
+            <li><a href="#player" class="press flex min-h-[72px] items-center gap-3 py-2 active:bg-(--item-press)"><img src="https://images.unsplash.com/photo-1566342088293-38debd381c63?w=200&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-xl object-cover ring-1 ring-white/10" /><span class="min-w-0 flex-1"><span class="block text-base font-medium">Ngọn hải đăng cuối cùng ở mũi Đại Lãnh</span><span class="block text-[13px] text-muted">Câu chuyện ngủ · 36 phút · Quang Huy</span></span><i data-lucide="play" class="size-5 shrink-0 text-muted"></i></a></li>
+          </ul>
+
+          <h2 class="mt-7 px-4 text-[20px]/[25px] font-semibold">Giọng đọc được nghe nhiều</h2>
+          <div class="hscroll hscroll-fade mt-3 flex gap-4 px-4">
+            <a href="#search-results" class="press flex w-[76px] shrink-0 flex-col items-center gap-2 text-center"><img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" class="size-16 rounded-full object-cover ring-1 ring-white/10" /><span class="text-[13px]">Minh Thư</span></a>
+            <a href="#search-results" class="press flex w-[76px] shrink-0 flex-col items-center gap-2 text-center"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" class="size-16 rounded-full object-cover ring-1 ring-white/10" /><span class="text-[13px]">Quang Huy</span></a>
+            <a href="#search-results" class="press flex w-[76px] shrink-0 flex-col items-center gap-2 text-center"><img src="https://randomuser.me/api/portraits/women/12.jpg" alt="" class="size-16 rounded-full object-cover ring-1 ring-white/10" /><span class="text-[13px]">Thu Hà</span></a>
+            <a href="#search-results" class="press flex w-[76px] shrink-0 flex-col items-center gap-2 text-center"><span class="grid size-16 place-items-center rounded-full bg-surface text-lg font-semibold">VK</span><span class="text-[13px]">Vũ Khánh</span></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TÌM (J14 Tìm): "default" chưa gõ + bàn phím; "results" có kết quả; "none" không ra. ================= -->
+      <section class="screen is-pushed" data-screen="search" aria-label="Tìm">
+        <header class="pad-top shrink-0">
+          <div class="flex items-center gap-1 pt-2 pr-1 pl-4">
+            <label class="flex h-[52px] min-w-0 flex-1 items-center gap-2 rounded-2xl bg-surface px-4 ring-2 ring-foreground/50 ring-inset">
+              <i data-lucide="search" class="size-5 shrink-0 text-muted"></i>
+              <span class="sr-only">Tìm</span>
+              <input type="search" enterkeyhint="search" placeholder="Tìm bài, sách, người đọc" class="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted [&::-webkit-search-cancel-button]:hidden" data-search-input />
+              <a href="#search" class="press -mr-3 grid size-11 shrink-0 place-items-center text-muted" aria-label="Xoá chữ đã gõ" data-when="results none"><i data-lucide="circle-x" class="size-5 fill-current stroke-(--surface)"></i></a>
+            </label>
+            <a href="#explore" class="press inline-flex h-11 shrink-0 items-center px-3 text-base font-medium">Huỷ</a>
+          </div>
+        </header>
+
+        <div class="scroll" data-when="default">
+          <div class="mt-4 flex items-center justify-between px-4">
+            <h2 class="min-w-0 text-[17px] font-semibold">Tìm gần đây</h2>
+            <button class="press inline-flex h-11 items-center pl-2 text-sm font-medium text-muted">Xoá hết</button>
+          </div>
+          <ul class="px-4">
+            <li class="flex min-h-12 items-center gap-3"><i data-lucide="history" class="size-5 shrink-0 text-muted"></i><a href="#search-results" class="press min-h-11 flex-1 py-2.5 text-base">mưa</a><button class="press grid size-11 place-items-center text-muted" aria-label="Xoá mưa khỏi tìm gần đây"><i data-lucide="x" class="size-5"></i></button></li>
+            <li class="flex min-h-12 items-center gap-3"><i data-lucide="history" class="size-5 shrink-0 text-muted"></i><a href="#search-results" class="press min-h-11 flex-1 py-2.5 text-base">ngủ sâu</a><button class="press grid size-11 place-items-center text-muted" aria-label="Xoá ngủ sâu khỏi tìm gần đây"><i data-lucide="x" class="size-5"></i></button></li>
+            <li class="flex min-h-12 items-center gap-3"><i data-lucide="history" class="size-5 shrink-0 text-muted"></i><a href="#search-results" class="press min-h-11 flex-1 py-2.5 text-base">Minh Thư</a><button class="press grid size-11 place-items-center text-muted" aria-label="Xoá Minh Thư khỏi tìm gần đây"><i data-lucide="x" class="size-5"></i></button></li>
+          </ul>
+          <h2 class="mt-4 px-4 text-[17px] font-semibold">Gợi ý</h2>
+          <div class="mt-3 flex flex-wrap gap-2 px-4">
+            <a href="#search-results" class="press inline-flex h-11 items-center rounded-full px-4 text-[15px] ring-1 ring-border-strong ring-inset">Ngủ trưa 20 phút</a>
+            <a href="#search-results" class="press inline-flex h-11 items-center rounded-full px-4 text-[15px] ring-1 ring-border-strong ring-inset">Thở khi lo âu</a>
+            <a href="#search-results" class="press inline-flex h-11 items-center rounded-full px-4 text-[15px] ring-1 ring-border-strong ring-inset">Truyện cho bé</a>
+          </div>
+        </div>
+        <div class="shrink-0 bg-[#2b2b30] px-1 pt-2" style="height: 335px" aria-hidden="true" data-when="default">
+          <div class="flex h-9 items-center justify-around text-base text-white"><span>mưa</span><span class="h-5 w-px bg-white/20"></span><span>ngủ</span><span class="h-5 w-px bg-white/20"></span><span>thiền</span></div>
+          <div class="mt-1 grid grid-cols-10 gap-1.5 px-0.5"><span class="kb-key">q</span><span class="kb-key">w</span><span class="kb-key">e</span><span class="kb-key">r</span><span class="kb-key">t</span><span class="kb-key">y</span><span class="kb-key">u</span><span class="kb-key">i</span><span class="kb-key">o</span><span class="kb-key">p</span></div>
+          <div class="mt-3 grid grid-cols-9 gap-1.5 px-5"><span class="kb-key">a</span><span class="kb-key">s</span><span class="kb-key">d</span><span class="kb-key">f</span><span class="kb-key">g</span><span class="kb-key">h</span><span class="kb-key">j</span><span class="kb-key">k</span><span class="kb-key">l</span></div>
+          <div class="mt-3 flex gap-1.5 px-0.5"><span class="kb-key is-fn w-11"><i data-lucide="arrow-big-up" class="size-5"></i></span><span class="grid flex-1 grid-cols-7 gap-1.5"><span class="kb-key">z</span><span class="kb-key">x</span><span class="kb-key">c</span><span class="kb-key">v</span><span class="kb-key">b</span><span class="kb-key">n</span><span class="kb-key">m</span></span><span class="kb-key is-fn w-11"><i data-lucide="delete" class="size-5"></i></span></div>
+          <div class="mt-3 flex gap-1.5 px-0.5"><span class="kb-key is-fn w-[88px]">123</span><span class="kb-key flex-1 text-base">dấu cách</span><span class="kb-key is-fn w-[88px] !bg-[#0a84ff] text-white">tìm</span></div>
+        </div>
+
+        <div class="scroll pad-dock" data-when="results">
+          <div class="hscroll hscroll-fade mt-3 flex gap-2 px-4" role="tablist" aria-label="Phạm vi">
+            <button role="tab" aria-selected="true" class="press h-11 shrink-0 rounded-full bg-primary px-4 text-[15px] font-medium text-primary-foreground tabular-nums">Tất cả 14</button>
+            <button role="tab" aria-selected="false" class="press h-11 shrink-0 rounded-full px-4 text-[15px] font-medium tabular-nums ring-1 ring-border-strong ring-inset">Nhạc nền 4</button>
+            <button role="tab" aria-selected="false" class="press h-11 shrink-0 rounded-full px-4 text-[15px] font-medium tabular-nums ring-1 ring-border-strong ring-inset">Câu chuyện ngủ 6</button>
+            <button role="tab" aria-selected="false" class="press h-11 shrink-0 rounded-full px-4 text-[15px] font-medium tabular-nums ring-1 ring-border-strong ring-inset">Thiền 3</button>
+            <button role="tab" aria-selected="false" class="press h-11 shrink-0 rounded-full px-4 text-[15px] font-medium tabular-nums ring-1 ring-border-strong ring-inset">Sách nói 1</button>
+          </div>
+          <div class="mt-5 flex items-center justify-between px-4">
+            <h2 class="min-w-0 text-[17px] font-semibold">Nhạc nền</h2>
+            <a href="#search-results" class="press inline-flex h-11 shrink-0 items-center pl-2 text-sm font-medium whitespace-nowrap text-muted">Xem tất cả</a>
+          </div>
+          <ul class="px-4">
+            <li><a href="#player" class="press flex min-h-[72px] items-center gap-3 py-2"><img src="https://images.unsplash.com/photo-1501691223387-dd0500403074?w=200&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-xl object-cover ring-1 ring-white/10" /><span class="min-w-0 flex-1"><span class="block text-base font-medium">Mưa đêm</span><span class="block text-[13px] text-muted">Phát liên tục · 2,1 tr lượt nghe</span></span><i data-lucide="play" class="size-5 shrink-0 text-muted"></i></a></li>
+            <li><a href="#player" class="press flex min-h-[72px] items-center gap-3 py-2"><img src="https://images.unsplash.com/photo-1758023822490-d67991c886ca?w=200&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-xl object-cover ring-1 ring-white/10" /><span class="min-w-0 flex-1"><span class="block text-base font-medium">Mưa rừng nhiệt đới</span><span class="block text-[13px] text-muted">Phát liên tục · 864 nghìn lượt nghe</span></span><i data-lucide="play" class="size-5 shrink-0 text-muted"></i></a></li>
+          </ul>
+          <div class="mt-4 flex items-center justify-between px-4">
+            <h2 class="min-w-0 text-[17px] font-semibold">Câu chuyện ngủ</h2>
+            <a href="#search-results" class="press inline-flex h-11 shrink-0 items-center pl-2 text-sm font-medium whitespace-nowrap text-muted">Xem tất cả</a>
+          </div>
+          <ul class="px-4">
+            <li><a href="#player" class="press flex min-h-[72px] items-center gap-3 py-2"><img src="https://images.unsplash.com/photo-1509635022432-0220ac12960b?w=200&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-xl object-cover ring-1 ring-white/10" /><span class="min-w-0 flex-1"><span class="block text-base font-medium">Mưa trên mái hiên phố cổ</span><span class="block text-[13px] text-muted">28 phút · Minh Thư kể</span></span><i data-lucide="play" class="size-5 shrink-0 text-muted"></i></a></li>
+            <li><a href="#player" class="press flex min-h-[72px] items-center gap-3 py-2"><span class="grid size-14 shrink-0 place-items-center rounded-xl bg-surface text-muted"><i data-lucide="image-off" class="size-5"></i></span><span class="min-w-0 flex-1"><span class="block text-base font-medium">Cơn mưa đầu mùa ở quê ngoại, khi cả nhà ngồi bên hiên chờ trời tạnh</span><span class="block text-[13px] text-muted">47 phút · Quang Huy kể</span></span><i data-lucide="play" class="size-5 shrink-0 text-muted"></i></a></li>
+          </ul>
+          <div class="mt-4 flex items-center justify-between px-4">
+            <h2 class="min-w-0 text-[17px] font-semibold">Thiền</h2>
+            <a href="#search-results" class="press inline-flex h-11 shrink-0 items-center pl-2 text-sm font-medium whitespace-nowrap text-muted">Xem tất cả</a>
+          </div>
+          <ul class="px-4">
+            <li><a href="#player" class="press flex min-h-[72px] items-center gap-3 py-2"><img src="https://images.unsplash.com/photo-1487621167305-5d248087c724?w=200&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-xl object-cover ring-1 ring-white/10" /><span class="min-w-0 flex-1"><span class="block text-base font-medium">Thiền nghe mưa</span><span class="block text-[13px] text-muted">15 phút · Thu Hà</span></span><i data-lucide="play" class="size-5 shrink-0 text-muted"></i></a></li>
+          </ul>
+        </div>
+
+        <div class="scroll pad-dock px-4" data-when="none">
+          <p class="mt-6 text-base">Không tìm thấy “sách tiếng Nhật”</p>
+          <p class="mt-1 text-[15px] text-muted">Thử từ ngắn hơn, hoặc tìm theo tên người đọc.</p>
+          <a href="#search" class="press inline-flex h-11 items-center text-[15px] font-medium underline underline-offset-2">Xoá tìm kiếm</a>
+          <h2 class="mt-6 text-[17px] font-semibold">Được nghe nhiều tuần này</h2>
+          <ul class="mt-1">
+            <li><a href="#book" class="press flex min-h-[72px] items-center gap-3 py-2"><img src="https://images.unsplash.com/photo-1697029749544-ffa7f15f9dd0?w=200&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-xl object-cover ring-1 ring-white/10" /><span class="min-w-0 flex-1"><span class="block text-base font-medium">Những ngày bình yên ở Đà Lạt</span><span class="block text-[13px] text-muted">Sách nói · 6 giờ 40 phút</span></span><i data-lucide="chevron-right" class="size-5 shrink-0 text-muted"></i></a></li>
+            <li><a href="#player" class="press flex min-h-[72px] items-center gap-3 py-2"><img src="https://images.unsplash.com/photo-1444080748397-f442aa95c3e5?w=200&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-xl object-cover ring-1 ring-white/10" /><span class="min-w-0 flex-1"><span class="block text-base font-medium">Chuyến tàu đêm qua đèo</span><span class="block text-[13px] text-muted">Câu chuyện ngủ · 34 phút</span></span><i data-lucide="play" class="size-5 shrink-0 text-muted"></i></a></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= TAB 3. THƯ VIỆN: điều khiển phân đoạn 3 mục (J4). "empty" = người mới, chưa nghe gì (J12 rỗng). ================= -->
+      <section class="screen" data-screen="library" aria-label="Thư viện">
+        <div class="scroll pad-top pad-dock flex flex-col">
+          <header class="px-4 pt-3"><h1 class="text-[32px]/[38px] font-semibold tracking-tight">Thư viện</h1></header>
+          <div class="mx-4 mt-4 grid h-11 shrink-0 grid-cols-3 rounded-xl bg-secondary text-[15px] font-medium" role="tablist" aria-label="Thư viện" data-when="default saved downloads">
+            <a href="#library" role="tab" class="press group p-1" data-seg="default"><span class="flex h-full items-center justify-center rounded-lg group-aria-selected:bg-primary group-aria-selected:text-primary-foreground">Đang nghe</span></a>
+            <a href="#library-saved" role="tab" class="press group p-1" data-seg="saved"><span class="flex h-full items-center justify-center rounded-lg group-aria-selected:bg-primary group-aria-selected:text-primary-foreground">Đã lưu</span></a>
+            <a href="#library-downloads" role="tab" class="press group p-1" data-seg="downloads"><span class="flex h-full items-center justify-center rounded-lg group-aria-selected:bg-primary group-aria-selected:text-primary-foreground">Đã tải</span></a>
+          </div>
+
+          <ul class="mt-3 px-4" data-when="default">
+            <li class="flex min-h-[88px] items-center gap-3 py-2">
+              <a href="#book" class="press flex min-w-0 flex-1 items-center gap-3"><span class="flex w-14 shrink-0 justify-center"><img src="https://images.unsplash.com/photo-1697029749544-ffa7f15f9dd0?w=200&h=300&q=80&auto=format&fit=crop" alt="" class="h-[72px] w-12 rounded-lg object-cover ring-1 ring-white/10" /></span><span class="min-w-0 flex-1"><span class="block text-base font-medium">Những ngày bình yên ở Đà Lạt</span><span class="block text-[13px] text-muted">Chương 2/12 · còn 5 giờ 52 phút</span><span class="mt-2 block h-1 overflow-hidden rounded-full bg-white/15"><span class="block h-full w-[12%] rounded-full bg-foreground"></span></span></span></a>
+              <a href="#player" class="press grid size-11 shrink-0 place-items-center rounded-full bg-secondary" aria-label="Nghe tiếp"><i data-lucide="play" class="size-5 fill-current"></i></a>
+            </li>
+            <li class="flex min-h-[88px] items-center gap-3 py-2">
+              <a href="#player" class="press flex min-w-0 flex-1 items-center gap-3"><img src="https://images.unsplash.com/photo-1533088339408-74fcf62b8e6a?w=200&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-lg object-cover ring-1 ring-white/10" /><span class="min-w-0 flex-1"><span class="block text-base font-medium">Đêm lửa trại bên hồ Ba Bể, nghe tiếng côn trùng tới khi buồn ngủ</span><span class="block text-[13px] text-muted">Câu chuyện ngủ · còn 18 phút</span><span class="mt-2 block h-1 overflow-hidden rounded-full bg-white/15"><span class="block h-full w-[56%] rounded-full bg-foreground"></span></span></span></a>
+              <a href="#player" class="press grid size-11 shrink-0 place-items-center rounded-full bg-secondary" aria-label="Nghe tiếp"><i data-lucide="play" class="size-5 fill-current"></i></a>
+            </li>
+            <li class="flex min-h-[88px] items-center gap-3 py-2">
+              <a href="#player" class="press flex min-w-0 flex-1 items-center gap-3"><img src="https://images.unsplash.com/photo-1487621167305-5d248087c724?w=200&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-lg object-cover ring-1 ring-white/10" /><span class="min-w-0 flex-1"><span class="block text-base font-medium">7 ngày bớt lo âu</span><span class="block text-[13px] text-muted">Khoá thiền · ngày 3/7</span><span class="mt-2 block h-1 overflow-hidden rounded-full bg-white/15"><span class="block h-full w-[29%] rounded-full bg-foreground"></span></span></span></a>
+              <a href="#player" class="press grid size-11 shrink-0 place-items-center rounded-full bg-secondary" aria-label="Nghe tiếp"><i data-lucide="play" class="size-5 fill-current"></i></a>
+            </li>
+          </ul>
+
+          <ul class="mt-3 px-4" data-when="saved">
+            <li><a href="#book" class="press flex min-h-[72px] items-center gap-3 py-2"><span class="flex w-14 shrink-0 justify-center"><img src="https://images.unsplash.com/photo-1697029749544-ffa7f15f9dd0?w=200&h=300&q=80&auto=format&fit=crop" alt="" class="h-[72px] w-12 rounded-lg object-cover ring-1 ring-white/10" /></span><span class="min-w-0 flex-1"><span class="block text-base font-medium">Những ngày bình yên ở Đà Lạt</span><span class="block text-[13px] text-muted">Sách nói · Trần Hoài An</span></span><i data-lucide="chevron-right" class="size-5 shrink-0 text-muted"></i></a></li>
+            <li><a href="#player" class="press flex min-h-[72px] items-center gap-3 py-2"><img src="https://images.unsplash.com/photo-1566342088293-38debd381c63?w=200&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-lg object-cover ring-1 ring-white/10" /><span class="min-w-0 flex-1"><span class="block text-base font-medium">Thở chậm 4-7-8 trước khi ngủ</span><span class="block text-[13px] text-muted">Thiền · 12 phút</span></span><i data-lucide="play" class="size-5 shrink-0 text-muted"></i></a></li>
+            <li><a href="#book" class="press flex min-h-[72px] items-center gap-3 py-2"><span class="flex w-14 shrink-0 justify-center"><span class="grid h-[72px] w-12 place-items-center rounded-lg bg-surface text-muted"><i data-lucide="book-open" class="size-5"></i></span></span><span class="min-w-0 flex-1"><span class="block text-base font-medium">Ghi chép bên hiên nhà</span><span class="block text-[13px] text-muted">Sách nói · Phạm Ngọc Diệp</span></span><i data-lucide="chevron-right" class="size-5 shrink-0 text-muted"></i></a></li>
+            <li><a href="#player" class="press flex min-h-[72px] items-center gap-3 py-2"><img src="https://images.unsplash.com/photo-1470549584009-d347338fc0ff?w=200&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-lg object-cover ring-1 ring-white/10" /><span class="min-w-0 flex-1"><span class="block text-base font-medium">Lửa trại</span><span class="block text-[13px] text-muted">Nhạc nền · phát liên tục</span></span><i data-lucide="play" class="size-5 shrink-0 text-muted"></i></a></li>
+          </ul>
+
+          <div class="mt-3 px-4" data-when="downloads">
+            <div class="rounded-[20px] bg-surface p-4">
+              <p class="flex justify-between text-[15px]"><span>Đang dùng</span><span class="font-medium tabular-nums">1,24 GB</span></p>
+              <div class="mt-3 flex h-1.5 overflow-hidden rounded-full bg-white/15"><span class="block h-full w-[6%] bg-foreground"></span></div>
+              <p class="mt-2 text-[13px] text-muted tabular-nums">Máy còn trống 18,6 GB · chỉ tải qua Wi‑Fi</p>
+            </div>
+            <ul class="mt-2">
+              <li class="flex min-h-[72px] items-center gap-3 py-2"><a href="#book" class="press flex min-w-0 flex-1 items-center gap-3"><span class="flex w-14 shrink-0 justify-center"><img src="https://images.unsplash.com/photo-1697029749544-ffa7f15f9dd0?w=200&h=300&q=80&auto=format&fit=crop" alt="" class="h-[72px] w-12 rounded-lg object-cover ring-1 ring-white/10" /></span><span class="min-w-0 flex-1"><span class="block text-base font-medium">Những ngày bình yên ở Đà Lạt</span><span class="block text-[13px] text-muted tabular-nums">3/12 chương · 108 MB</span><span class="mt-1 block text-[13px] text-muted tabular-nums">Đang tải chương 3 · 45%</span></span></a><button class="press grid size-11 shrink-0 place-items-center rounded-full text-muted" aria-label="Tuỳ chọn"><i data-lucide="ellipsis" class="size-5"></i></button></li>
+              <li class="flex min-h-[72px] items-center gap-3 py-2"><a href="#player" class="press flex min-w-0 flex-1 items-center gap-3"><img src="https://images.unsplash.com/photo-1509635022432-0220ac12960b?w=200&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-lg object-cover ring-1 ring-white/10" /><span class="min-w-0 flex-1"><span class="block text-base font-medium">Mưa trên mái hiên phố cổ</span><span class="block text-[13px] text-muted tabular-nums">Câu chuyện ngủ · 26 MB</span></span></a><button class="press grid size-11 shrink-0 place-items-center rounded-full text-muted" aria-label="Tuỳ chọn"><i data-lucide="ellipsis" class="size-5"></i></button></li>
+              <li class="flex min-h-[72px] items-center gap-3 py-2"><a href="#player" class="press flex min-w-0 flex-1 items-center gap-3"><img src="https://images.unsplash.com/photo-1501691223387-dd0500403074?w=200&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-lg object-cover ring-1 ring-white/10" /><span class="min-w-0 flex-1"><span class="block text-base font-medium">Mưa đêm</span><span class="block text-[13px] text-muted tabular-nums">Nhạc nền · 1.106 MB</span></span></a><button class="press grid size-11 shrink-0 place-items-center rounded-full text-muted" aria-label="Tuỳ chọn"><i data-lucide="ellipsis" class="size-5"></i></button></li>
+            </ul>
+          </div>
+
+          <!-- Rỗng (J12): khối giữa vùng trống. App lấy ảnh làm chủ nên không nhân vật vẽ tay (J16): icon 36 trong vòng 80. -->
+          <div class="flex flex-1 flex-col items-center justify-center px-8 py-10 text-center" data-when="empty">
+            <span class="grid size-20 place-items-center rounded-full bg-surface"><i data-lucide="library" class="size-9"></i></span>
+            <h2 class="mt-5 text-[20px]/[25px] font-semibold">Thư viện còn trống</h2>
+            <p class="mt-2 text-base text-pretty text-muted">Bài đang nghe dở, bài bạn lưu và bài đã tải để nghe không mạng sẽ nằm ở đây.</p>
+            <a href="#explore" class="press mt-6 inline-flex min-h-[52px] items-center rounded-2xl bg-primary px-6 text-base font-semibold text-primary-foreground">Khám phá bài nghe</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 4. HỒ SƠ: thẻ số chính (J5) cho phút đã thiền, rồi danh sách nhóm. ================= -->
+      <section class="screen" data-screen="profile" aria-label="Hồ sơ">
+        <div class="scroll pad-top pad-dock">
+          <header class="px-4 pt-3"><h1 class="text-[32px]/[38px] font-semibold tracking-tight">Hồ sơ</h1></header>
+          <div class="mx-4 mt-4 flex items-center gap-3">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" class="size-14 shrink-0 rounded-full object-cover ring-1 ring-white/10" />
+            <span class="min-w-0 flex-1"><span class="block text-[17px] font-semibold">Nguyễn Thị Phương Lan</span><span class="block text-sm text-muted tabular-nums">+84 937 878 335 · thành viên từ 03/2026</span></span>
+          </div>
+
+          <div class="mx-4 mt-5 rounded-[20px] bg-surface p-5 ring-1 ring-white/10">
+            <p class="text-sm text-muted">Đã thiền tháng 11</p>
+            <p class="mt-1 text-[36px]/[42px] font-semibold tracking-tight tabular-nums">120 <span class="text-2xl font-medium text-muted">phút</span></p>
+            <div class="mt-5 flex h-24 items-end gap-2" aria-hidden="true">
+              <div class="flex h-full flex-1 flex-col items-center justify-end gap-1.5"><div class="w-full rounded-md bg-white/25" style="height: 73%"></div><span class="text-[11px] text-muted">T2</span></div>
+              <div class="flex h-full flex-1 flex-col items-center justify-end gap-1.5"><div class="w-full rounded-md bg-white/25" style="height: 50%"></div><span class="text-[11px] text-muted">T3</span></div>
+              <div class="flex h-full flex-1 flex-col items-center justify-end gap-1.5"><div class="w-full rounded-md bg-white/25" style="height: 100%"></div><span class="text-[11px] text-muted">T4</span></div>
+              <div class="flex h-full flex-1 flex-col items-center justify-end gap-1.5"><div class="w-full rounded-md bg-white/25" style="height: 20%"></div><span class="text-[11px] text-muted">T5</span></div>
+              <div class="flex h-full flex-1 flex-col items-center justify-end gap-1.5"><div class="w-full rounded-md bg-white/25" style="height: 60%"></div><span class="text-[11px] text-muted">T6</span></div>
+              <div class="flex h-full flex-1 flex-col items-center justify-end gap-1.5"><div class="w-full rounded-md bg-foreground" style="height: 40%"></div><span class="text-[11px] font-medium">T7</span></div>
+              <div class="flex h-full flex-1 flex-col items-center justify-end gap-1.5"><div class="w-full rounded-md border border-dashed border-white/25" style="height: 8%"></div><span class="text-[11px] text-muted">CN</span></div>
+            </div>
+            <p class="mt-3 text-[13px] text-muted">Tuần này 120 phút, nhiều hơn tuần trước 35 phút</p>
+          </div>
+          <div class="mx-4 mt-2 grid grid-cols-3 gap-2">
+            <div class="rounded-2xl bg-surface p-3"><p class="text-[13px] text-muted">Chuỗi</p><p class="mt-1 text-[17px] font-semibold tabular-nums">12 ngày</p></div>
+            <div class="rounded-2xl bg-surface p-3"><p class="text-[13px] text-muted">Dài nhất</p><p class="mt-1 text-[17px] font-semibold tabular-nums">21 ngày</p></div>
+            <div class="rounded-2xl bg-surface p-3"><p class="text-[13px] text-muted">Tổng phút</p><p class="mt-1 text-[17px] font-semibold tabular-nums">1.284</p></div>
+          </div>
+
+          <h2 class="mt-7 px-8 text-[13px] font-medium text-muted">NHẮC NHỞ</h2>
+          <ul class="mx-4 mt-2 divide-y divide-border overflow-hidden rounded-[20px] bg-surface text-base">
+            <li><a href="#profile" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="bell" class="size-5 text-muted"></i><span class="flex-1">Giờ nhắc thả lỏng</span><span class="text-muted tabular-nums">22:00</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+            <li><label class="flex min-h-14 cursor-pointer items-center gap-3 px-4"><i data-lucide="moon-star" class="size-5 text-muted"></i><span class="flex-1">Tự hẹn giờ tắt 30 phút</span><input type="checkbox" class="peer sr-only" checked /><span class="relative h-[31px] w-[51px] shrink-0 rounded-full bg-white/20 transition-colors peer-checked:bg-success after:absolute after:top-[2px] after:left-[2px] after:size-[27px] after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:after:translate-x-5"></span></label></li>
+          </ul>
+          <h2 class="mt-6 px-8 text-[13px] font-medium text-muted">NGHE VÀ TẢI</h2>
+          <ul class="mx-4 mt-2 divide-y divide-border overflow-hidden rounded-[20px] bg-surface text-base">
+            <li><label class="flex min-h-14 cursor-pointer items-center gap-3 px-4"><i data-lucide="wifi" class="size-5 text-muted"></i><span class="flex-1">Chỉ tải qua Wi‑Fi</span><input type="checkbox" class="peer sr-only" checked /><span class="relative h-[31px] w-[51px] shrink-0 rounded-full bg-white/20 transition-colors peer-checked:bg-success after:absolute after:top-[2px] after:left-[2px] after:size-[27px] after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:after:translate-x-5"></span></label></li>
+            <li><a href="#profile" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="gauge" class="size-5 text-muted"></i><span class="flex-1">Tốc độ đọc mặc định</span><span class="text-muted tabular-nums">1.0×</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+            <li><a href="#library-downloads" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="hard-drive-download" class="size-5 text-muted"></i><span class="flex-1">Bộ nhớ đã tải</span><span class="text-muted tabular-nums">1,24 GB</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+          </ul>
+          <!-- Đăng xuất, xoá tài khoản: chữ đỏ, cùng thẻ, cuối màn (I4, J12). -->
+          <ul class="mx-4 mt-6 divide-y divide-border overflow-hidden rounded-[20px] bg-surface text-base font-medium text-danger">
+            <li><button class="press flex min-h-14 w-full items-center justify-center px-4">Đăng xuất</button></li>
+            <li><button class="press flex min-h-14 w-full items-center justify-center px-4">Xoá tài khoản</button></li>
+          </ul>
+          <p class="mt-4 text-center text-[13px] text-muted">Phiên bản 1.0.0</p>
+        </div>
+      </section>
+
+      <!-- ================= TRÌNH PHÁT THU NHỎ: dính ngay trên thanh tab khi đang nghe (như thanh giỏ hàng J11). ================= -->
+      <div class="above-tabbar absolute inset-x-4 z-30 flex h-16 items-center gap-1 overflow-hidden rounded-2xl bg-surface-overlay/95 pr-1 shadow-[0_8px_24px_-8px_rgb(0_0_0/0.5)] ring-1 ring-white/10 backdrop-blur-xl" data-mini>
+        <a href="#player" class="press flex min-w-0 flex-1 items-center gap-3 self-stretch pl-2" aria-label="Mở trình phát">
+          <img src="https://images.unsplash.com/photo-1697029749544-ffa7f15f9dd0?w=120&h=120&q=80&auto=format&fit=crop" alt="" class="size-12 shrink-0 rounded-lg object-cover" />
+          <span class="min-w-0 flex-1"><span class="block truncate text-[15px] font-medium">Chương 2 · Con dốc sương mù</span><span class="block truncate text-[13px] text-muted">Những ngày bình yên ở Đà Lạt</span></span>
+        </a>
+        <button class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Dừng" aria-pressed="true" data-play-toggle><i data-lucide="pause" class="icon-pause size-6 fill-current"></i><i data-lucide="play" class="icon-play size-6 fill-current"></i></button>
+        <span class="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-white/15" aria-hidden="true"><span class="block h-full w-[41%] rounded-full bg-foreground"></span></span>
+      </div>
+
+      <!-- ================= THANH TAB NỔI (J2): 4 mục có chữ, không nút hành động. Mục đang chọn có viên nền trắng 12% sau icon (J15 Immersive): trắng 100% với trắng 72% trên nền tối gần như không phân biệt được. ================= -->
+      <nav class="above-home absolute inset-x-4 z-30 grid h-16 grid-cols-4 rounded-full bg-surface/90 px-2 shadow-[0_8px_24px_-8px_rgb(0_0_0/0.5)] ring-1 ring-white/10 backdrop-blur-xl" aria-label="Điều hướng chính" data-tabbar>
+        <a href="#home" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground [&>svg]:box-content [&>svg]:rounded-full [&>svg]:px-3 [&>svg]:py-0.5 aria-[current=page]:[&>svg]:bg-white/[0.12]" data-tab="home"><i data-lucide="house" class="size-6"></i><span class="text-[11px] font-medium">Trang chủ</span></a>
+        <a href="#explore" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground [&>svg]:box-content [&>svg]:rounded-full [&>svg]:px-3 [&>svg]:py-0.5 aria-[current=page]:[&>svg]:bg-white/[0.12]" data-tab="explore"><i data-lucide="compass" class="size-6"></i><span class="text-[11px] font-medium">Khám phá</span></a>
+        <a href="#library" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground [&>svg]:box-content [&>svg]:rounded-full [&>svg]:px-3 [&>svg]:py-0.5 aria-[current=page]:[&>svg]:bg-white/[0.12]" data-tab="library"><i data-lucide="library" class="size-6"></i><span class="text-[11px] font-medium">Thư viện</span></a>
+        <a href="#profile" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground [&>svg]:box-content [&>svg]:rounded-full [&>svg]:px-3 [&>svg]:py-0.5 aria-[current=page]:[&>svg]:bg-white/[0.12]" data-tab="profile"><i data-lucide="circle-user-round" class="size-6"></i><span class="text-[11px] font-medium">Hồ sơ</span></a>
+      </nav>
+
+      <!-- ================= SHEET CHỌN MỘT (J6): bấm dòng là áp dụng và đóng. Trên nền tối sheet cũng tối (J15, P10). ================= -->
+      <div class="scrim absolute inset-0 z-40 bg-black/50" data-scrim></div>
+      <section class="sheet absolute inset-x-0 bottom-0 z-50 flex max-h-[92%] flex-col rounded-t-[28px] bg-surface-overlay ring-1 ring-white/10" role="dialog" aria-modal="true" aria-label="Hẹn giờ tắt" data-sheet="timer">
+        <div class="flex justify-center pt-2"><span class="h-[5px] w-9 rounded-full bg-white/25" aria-hidden="true"></span></div>
+        <div class="flex h-12 items-center justify-between pr-2 pl-4">
+          <p class="text-[17px] font-semibold">Hẹn giờ tắt</p>
+          <a href="#player" class="press grid size-11 place-items-center rounded-full" aria-label="Đóng"><i data-lucide="x" class="size-6"></i></a>
+        </div>
+        <ul class="overflow-y-auto px-2 text-base" style="padding-bottom: calc(var(--inset-bottom) + 8px)" role="listbox" aria-label="Hẹn giờ tắt">
+          <li><button role="option" aria-selected="true" class="press flex min-h-14 w-full items-center rounded-xl px-2 text-left active:bg-(--item-press)" data-timer="0"><span class="flex-1">Không hẹn giờ</span><i data-lucide="check" class="option-check size-5"></i></button></li>
+          <li><button role="option" aria-selected="false" class="press flex min-h-14 w-full items-center rounded-xl px-2 text-left active:bg-(--item-press)" data-timer="15"><span class="flex-1 tabular-nums">15 phút</span><i data-lucide="check" class="option-check size-5"></i></button></li>
+          <li><button role="option" aria-selected="false" class="press flex min-h-14 w-full items-center rounded-xl px-2 text-left active:bg-(--item-press)" data-timer="30"><span class="flex-1 tabular-nums">30 phút</span><i data-lucide="check" class="option-check size-5"></i></button></li>
+          <li><button role="option" aria-selected="false" class="press flex min-h-14 w-full items-center rounded-xl px-2 text-left active:bg-(--item-press)" data-timer="45"><span class="flex-1 tabular-nums">45 phút</span><i data-lucide="check" class="option-check size-5"></i></button></li>
+          <li><button role="option" aria-selected="false" class="press flex min-h-14 w-full items-center rounded-xl px-2 text-left active:bg-(--item-press)" data-timer="60"><span class="flex-1 tabular-nums">1 giờ</span><i data-lucide="check" class="option-check size-5"></i></button></li>
+          <li><button role="option" aria-selected="false" class="press flex min-h-16 w-full items-center rounded-xl px-2 py-2 text-left active:bg-(--item-press)" data-timer="chapter"><span class="flex-1">Hết chương này<span class="block text-[13px] text-muted tabular-nums">Còn 18 phút</span></span><i data-lucide="check" class="option-check size-5"></i></button></li>
+        </ul>
+      </section>
+      <section class="sheet absolute inset-x-0 bottom-0 z-50 flex max-h-[92%] flex-col rounded-t-[28px] bg-surface-overlay ring-1 ring-white/10" role="dialog" aria-modal="true" aria-label="Tốc độ đọc" data-sheet="speed">
+        <div class="flex justify-center pt-2"><span class="h-[5px] w-9 rounded-full bg-white/25" aria-hidden="true"></span></div>
+        <div class="flex h-12 items-center justify-between pr-2 pl-4">
+          <p class="text-[17px] font-semibold">Tốc độ đọc</p>
+          <a href="#player" class="press grid size-11 place-items-center rounded-full" aria-label="Đóng"><i data-lucide="x" class="size-6"></i></a>
+        </div>
+        <ul class="overflow-y-auto px-2 text-base" style="padding-bottom: calc(var(--inset-bottom) + 8px)" role="listbox" aria-label="Tốc độ đọc">
+          <li><button role="option" aria-selected="false" class="press flex min-h-14 w-full items-center rounded-xl px-2 text-left tabular-nums active:bg-(--item-press)" data-speed="0.75×"><span class="flex-1">0.75×</span><i data-lucide="check" class="option-check size-5"></i></button></li>
+          <li><button role="option" aria-selected="true" class="press flex min-h-14 w-full items-center rounded-xl px-2 text-left tabular-nums active:bg-(--item-press)" data-speed="1.0×"><span class="flex-1">1.0× <span class="text-muted">· Bình thường</span></span><i data-lucide="check" class="option-check size-5"></i></button></li>
+          <li><button role="option" aria-selected="false" class="press flex min-h-14 w-full items-center rounded-xl px-2 text-left tabular-nums active:bg-(--item-press)" data-speed="1.25×"><span class="flex-1">1.25×</span><i data-lucide="check" class="option-check size-5"></i></button></li>
+          <li><button role="option" aria-selected="false" class="press flex min-h-14 w-full items-center rounded-xl px-2 text-left tabular-nums active:bg-(--item-press)" data-speed="1.5×"><span class="flex-1">1.5×</span><i data-lucide="check" class="option-check size-5"></i></button></li>
+          <li><button role="option" aria-selected="false" class="press flex min-h-14 w-full items-center rounded-xl px-2 text-left tabular-nums active:bg-(--item-press)" data-speed="2.0×"><span class="flex-1">2.0×</span><i data-lucide="check" class="option-check size-5"></i></button></li>
+        </ul>
+      </section>
+
+      <!-- Thông báo ngắn (J7): ngay trên thanh tab (và trình phát thu nhỏ), tự đi sau 4 giây. Nền tối nên viên sáng hơn nền. -->
+      <div class="pointer-events-none absolute inset-x-4 z-[60] flex justify-center" style="bottom: calc(var(--inset-bottom) + 160px)" aria-live="polite">
+        <p class="translate-y-2 rounded-full bg-[#f5f6fb] px-4 py-3 text-sm font-medium text-[#1b2350] opacity-0 shadow-lg transition-all duration-200" data-toast></p>
+      </div>
+
+      <div class="home-indicator pointer-events-none absolute bottom-2 inset-x-0 mx-auto z-[70] h-[5px] w-[134px] rounded-full bg-foreground" aria-hidden="true"></div>
+    </div>
+
+    <main class="flow-board" aria-label="Bảng luồng">
+      <header class="flex items-end justify-between gap-6 px-12 pt-10 pb-6">
+        <div>
+          <p class="text-sm text-white/60">Bản mẫu app điện thoại · bộ mặt Immersive</p>
+          <h1 class="mt-1 text-[28px] font-bold tracking-tight">Lắng · thiền, ngủ, sách nói</h1>
+        </div>
+        <p class="text-sm text-white/60">Bấm một màn để chạy thử từ màn đó</p>
+      </header>
+      <div data-board-rows></div>
+    </main>
+
+    <script>
+      // Máy thật là .device đầu tiên. Script của app tìm phần tử trong đó, không tìm khắp trang: bảng luồng (J1) chép cả
+      // khung máy, giữ nguyên data-* để CSS theo trạng thái còn đúng, nên tìm khắp trang là đổi nhầm cả bản chép.
+      const liveDevice = document.querySelector(".device");
+      lucide.createIcons();
+
+      // Màn gốc của tab; màn con để xem thuộc tab nào (J2, giữ thanh tab); tên ảo = màn thật + trạng thái.
+      const tabScreens = ["home", "explore", "library", "profile"];
+      const parentTabs = { book: "home", search: "explore" };
+      const aliases = {
+        "home-new": ["home", "new"],
+        "library-saved": ["library", "saved"],
+        "library-downloads": ["library", "downloads"],
+        "library-new": ["library", "empty"],
+        "search-results": ["search", "results"],
+        "search-none": ["search", "none"],
+        "player-first": ["player", "first"],
+      };
+      const sheetBases = { timer: "player", speed: "player" };
+      // Trạng thái chưa nghe gì: không có trình phát thu nhỏ.
+      const noMiniStates = ["new", "empty"];
+      const scrim = document.querySelector("[data-scrim]");
+      const tabbar = document.querySelector("[data-tabbar]");
+      const mini = document.querySelector("[data-mini]");
+      const playerClose = document.querySelector("[data-player-close]");
+      let lastBase = "home";
+
+      function applyState(section, state) {
+        section.dataset.state = state;
+        section.querySelectorAll("[data-when]").forEach((element) => { element.hidden = !element.dataset.when.split(" ").includes(state); });
+        section.querySelectorAll("[data-seg]").forEach((segment) => segment.setAttribute("aria-selected", String(segment.dataset.seg === state)));
+        // Ô tìm mang đúng từ khoá của trạng thái (đặt cả thuộc tính để bản chép trên bảng luồng thấy chữ).
+        const searchInput = section.querySelector("[data-search-input]");
+        if (searchInput) {
+          const query = { results: "mưa", none: "sách tiếng Nhật" }[state] || "";
+          searchInput.value = query;
+          searchInput.setAttribute("value", query);
+        }
+      }
+
+      function showScreen(name, state) {
+        document.querySelectorAll(".device:not(.board-device) [data-screen]").forEach((section) => {
+          const isTarget = section.dataset.screen === name;
+          section.classList.toggle("is-active", isTarget);
+          if (isTarget) applyState(section, state);
+        });
+        const currentTab = tabScreens.includes(name) ? name : parentTabs[name];
+        liveDevice.querySelectorAll("[data-tab]").forEach((tab) => {
+          if (tab.dataset.tab === currentTab) tab.setAttribute("aria-current", "page");
+          else tab.removeAttribute("aria-current");
+        });
+        // Bàn phím đang mở ở màn tìm (chưa gõ) che đáy: ẩn thanh tab và trình phát thu nhỏ.
+        const isTyping = name === "search" && state === "default";
+        tabbar.hidden = !currentTab || isTyping;
+        mini.hidden = !currentTab || isTyping || noMiniStates.includes(state);
+      }
+
+      // Dựng một màn theo tên (cả sheet trên màn nền của nó). route() và bảng luồng cùng gọi hàm này.
+      function renderScreen(hashName) {
+        const isSheet = Boolean(sheetBases[hashName]);
+        let [name, state] = aliases[hashName] || [hashName, "default"];
+        if (!document.querySelector(`.device:not(.board-device) [data-screen="${name}"]`) && !isSheet) [name, state] = ["welcome", "default"];
+        if (isSheet) [name, state] = [sheetBases[hashName], "default"];
+        if (name !== "player" && !isSheet) lastBase = hashName;
+        // Thu nhỏ trình phát thì về màn đang ở trước đó; bài đầu tiên của onboarding thì về trang chủ lần đầu.
+        playerClose.setAttribute("href", hashName === "player-first" ? "#home-new" : `#${tabScreens.includes(lastBase) || aliases[lastBase] || parentTabs[lastBase] ? lastBase : "home"}`);
+        showScreen(name, state);
+        liveDevice.querySelectorAll("[data-sheet]").forEach((sheet) => {
+          const isOpen = sheet.dataset.sheet === hashName;
+          sheet.classList.toggle("is-open", isOpen);
+          sheet.inert = !isOpen;
+        });
+        scrim.classList.toggle("is-open", isSheet);
+      }
+
+      const wideScreen = matchMedia("(min-width: 900px)");
+      function route() {
+        const name = location.hash.slice(1);
+        document.body.classList.toggle("is-board", !name && wideScreen.matches);
+        renderScreen(name || "welcome");
+      }
+
+      // ===== BẢNG LUỒNG (J1): chép nguyên từ mobile-app.html. =====
+      function buildBoard(renderScreen) {
+        const rowsContainer = document.querySelector("[data-board-rows]");
+        const liveDevice = document.querySelector(".device");
+        const isReduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        let order = 0;
+        document.querySelectorAll("[data-flow]").forEach((flowList) => {
+          const links = [...flowList.querySelectorAll("a[href^='#']")];
+          const section = document.createElement("section");
+          section.className = "pb-8";
+          section.innerHTML = `
+            <div class="flex items-end justify-between gap-4 px-12 pb-3">
+              <div><h2 class="text-xl font-semibold">${flowList.dataset.flow}</h2><p class="mt-0.5 text-sm text-white/60">${links.length} màn · ${flowList.dataset.flowNote || ""}</p></div>
+              <div class="flex gap-2">
+                <button type="button" class="grid size-11 place-items-center rounded-full bg-white/10 hover:bg-white/20" aria-label="Cuộn sang trái" data-scroll="-1"><i data-lucide="arrow-left" class="size-5"></i></button>
+                <button type="button" class="grid size-11 place-items-center rounded-full bg-white/10 hover:bg-white/20" aria-label="Cuộn sang phải" data-scroll="1"><i data-lucide="arrow-right" class="size-5"></i></button>
+              </div>
+            </div>
+            <div class="flow-row"></div>`;
+          const row = section.querySelector(".flow-row");
+          const frames = [];
+          links.forEach((link, index) => {
+            const screenName = link.getAttribute("href").slice(1);
+            renderScreen(screenName);
+            const deviceCopy = liveDevice.cloneNode(true);
+            deviceCopy.classList.add("board-device");
+            deviceCopy.inert = true;
+            deviceCopy.querySelectorAll(".screen:not(.is-active), .sheet:not(.is-open), .scrim:not(.is-open), [data-toast], [hidden]").forEach((element) => element.remove());
+            // Gỡ data-screen để probe và script chỉ thấy màn của máy thật. Giữ các data-* khác: CSS hay ẩn hiện theo chúng
+            // (nút phát/dừng theo [data-play-toggle][aria-pressed]), gỡ đi thì bản chép hiện cả hai icon.
+            deviceCopy.querySelectorAll("[data-screen]").forEach((element) => element.removeAttribute("data-screen"));
+            // Bỏ name, id, for: radio cùng name ở bản chép giành mất dấu chọn của máy thật (sheet món mất "Vừa", giá sai).
+            deviceCopy.querySelectorAll("[name], [id], [for]").forEach((element) => ["name", "id", "for"].forEach((attribute) => element.removeAttribute(attribute)));
+            frames.push({ name: screenName, device: deviceCopy });
+            const card = document.createElement("a");
+            card.href = `#${screenName}`;
+            card.className = "board-card";
+            card.style.setProperty("--order", ++order);
+            const phone = document.createElement("div");
+            phone.className = "board-phone";
+            phone.append(deviceCopy);
+            const label = document.createElement("p");
+            label.className = "mt-3 text-sm text-white/70";
+            label.textContent = `${index + 1}. ${link.textContent.replace(/^\d+\.\s*/, "")}`;
+            card.append(phone, label);
+            row.append(card);
+          });
+          // Thẻ đầu hàng: tự phát cả luồng như một đoạn video, dùng chính các màn vừa chép.
+          if (frames.length > 1) row.prepend(createFlowPlayer(frames, isReduced));
+          section.querySelectorAll("[data-scroll]").forEach((button) => {
+            button.addEventListener("click", () => row.scrollBy({ left: Number(button.dataset.scroll) * row.clientWidth * 0.8, behavior: isReduced ? "auto" : "smooth" }));
+          });
+          rowsContainer.append(section);
+        });
+        lucide.createIcons();
+      }
+
+      // ===== CHẠY LUỒNG (J1): 1,6 giây mỗi màn, màn sau trượt vào như bấm thật, thanh tiến độ chạy tiếp. Chỉ phát khi thẻ nằm
+      // trong màn hình, rê chuột thì dừng, có nút dừng / phát (nội dung tự chạy quá 5 giây phải dừng được). Giảm chuyển
+      // động thì không tự phát, bấm ▶ mới chạy, đổi màn bằng mờ dần. Bấm khung máy là chạy thử đúng màn đang phát. =====
+      function createFlowPlayer(frames, isReduced) {
+        const card = document.createElement("div");
+        card.className = "board-card";
+        card.style.setProperty("--order", 0);
+        card.innerHTML = `
+          <a class="block" aria-label="Chạy thử từ màn đang phát" data-player-link><div class="board-phone" data-player-phone></div></a>
+          <div class="mt-3 flex w-[273px] items-center justify-between gap-2">
+            <p class="text-sm text-white/70">Chạy luồng · <span class="tabular-nums" data-player-step></span></p>
+            <button type="button" class="player-toggle grid size-11 place-items-center rounded-full bg-white/10 hover:bg-white/20" data-player-toggle><i data-lucide="pause" class="icon-pause size-5"></i><i data-lucide="play" class="icon-play size-5"></i></button>
+          </div>
+          <div class="mt-2 flex w-[273px] gap-1" aria-hidden="true" data-player-segments>${frames.map(() => '<span class="h-1 flex-1 rounded-full bg-white/20"></span>').join("")}</div>`;
+        const phone = card.querySelector("[data-player-phone]");
+        const link = card.querySelector("[data-player-link]");
+        const step = card.querySelector("[data-player-step]");
+        const segments = [...card.querySelector("[data-player-segments]").children];
+        const toggle = card.querySelector("[data-player-toggle]");
+        let index = 0;
+        let timer = null;
+        let isPlaying = !isReduced;
+        let isHovered = false;
+        let isVisible = false;
+        let lastWidth = null;
+
+        function show(nextIndex, shouldAnimate) {
+          index = nextIndex;
+          phone.replaceChildren(frames[index].device.cloneNode(true));
+          link.href = `#${frames[index].name}`;
+          step.textContent = `${index + 1}/${frames.length}`;
+          // Đổi hẳn class, không chồng bg-white lên bg-white/20: hai class cùng thuộc tính thì thứ tự trong CSS quyết định, đoạn đã
+          // phát không sáng lên.
+          segments.forEach((segment, segmentIndex) => { segment.className = `h-1 flex-1 rounded-full ${segmentIndex <= index ? "bg-white" : "bg-white/20"}`; });
+          const screen = phone.querySelector(".screen");
+          const fill = phone.querySelector('[role="progressbar"] > div');
+          if (shouldAnimate && screen) {
+            screen.animate(isReduced ? [{ opacity: 0 }, { opacity: 1 }] : [{ translate: "30% 0", opacity: 0.6 }, { translate: "0 0", opacity: 1 }], { duration: isReduced ? 200 : 300, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" });
+            if (fill && lastWidth && lastWidth !== fill.style.width && !isReduced) {
+              fill.animate([{ width: lastWidth }, { width: fill.style.width }], { duration: 400, delay: 150, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)", fill: "backwards" });
+            }
+          }
+          lastWidth = fill ? fill.style.width : null;
+        }
+
+        function sync() {
+          const shouldRun = isPlaying && isVisible && !isHovered;
+          if (shouldRun && !timer) timer = setInterval(() => show((index + 1) % frames.length, true), 1600);
+          if (!shouldRun && timer) { clearInterval(timer); timer = null; }
+          toggle.setAttribute("aria-pressed", String(isPlaying));
+          toggle.setAttribute("aria-label", isPlaying ? "Dừng chạy luồng" : "Chạy luồng");
+        }
+
+        toggle.addEventListener("click", () => { isPlaying = !isPlaying; sync(); });
+        card.addEventListener("mouseenter", () => { isHovered = true; sync(); });
+        card.addEventListener("mouseleave", () => { isHovered = false; sync(); });
+        // Hình gán sau (nhân vật J16 nạp từ CDN): chép lại màn đang hiện khi hình đã có.
+        document.addEventListener("art-ready", () => show(index, false));
+        new IntersectionObserver(([entry]) => { isVisible = entry.isIntersecting; sync(); }, { threshold: 0.5 }).observe(card);
+        show(0, false);
+        sync();
+
+        return card;
+      }
+
+      // ===== Tương tác của bản mẫu (chỉ hình; lưu, phát âm thanh, tải là logic người dùng tự nối). =====
+      const toast = document.querySelector("[data-toast]");
+      let toastTimer = null;
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.remove("opacity-0", "translate-y-2");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.add("opacity-0", "translate-y-2"), 4000);
+      }
+
+      // Onboarding: chọn nhiều thì đổi tick, chưa chọn mục nào thì khoá Tiếp tục; chọn một thì chỉ một dòng sáng.
+      liveDevice.querySelectorAll("[data-multi]").forEach((group) => {
+        group.addEventListener("click", (event) => {
+          const choice = event.target.closest("[role='checkbox']");
+          if (!choice) return;
+          choice.setAttribute("aria-checked", String(choice.getAttribute("aria-checked") !== "true"));
+          const hasChecked = Boolean(group.querySelector("[aria-checked='true']"));
+          document.querySelector(`[data-next="${group.dataset.nextTarget}"]`).setAttribute("aria-disabled", String(!hasChecked));
+        });
+      });
+      document.querySelectorAll("[role='radiogroup']").forEach((group) => {
+        group.addEventListener("click", (event) => {
+          const choice = event.target.closest("[role='radio'][aria-checked]");
+          if (!choice) return;
+          group.querySelectorAll("[role='radio'][aria-checked]").forEach((radio) => radio.setAttribute("aria-checked", String(radio === choice)));
+        });
+      });
+
+      // Phát / dừng: một trạng thái chung cho trình phát toàn màn và thu nhỏ.
+      liveDevice.querySelectorAll("[data-play-toggle]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const isPlaying = button.getAttribute("aria-pressed") !== "true";
+          document.querySelectorAll(".device:not(.board-device) [data-play-toggle]").forEach((toggle) => {
+            toggle.setAttribute("aria-pressed", String(isPlaying));
+            toggle.setAttribute("aria-label", isPlaying ? "Dừng" : "Phát");
+          });
+        });
+      });
+
+      liveDevice.querySelectorAll("[data-save]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const isSaved = button.getAttribute("aria-pressed") !== "true";
+          button.setAttribute("aria-pressed", String(isSaved));
+          showToast(isSaved ? "Đã lưu vào Thư viện" : "Đã bỏ khỏi Đã lưu");
+        });
+      });
+      liveDevice.querySelectorAll("[data-toast-msg]").forEach((button) => button.addEventListener("click", () => showToast(button.dataset.toastMsg)));
+
+      // Sheet chọn một: dấu ✓ chỉ ở dòng đang chọn; bấm dòng là áp dụng và đóng (J6).
+      const optionChecks = () => document.querySelectorAll(".device:not(.board-device) [role='option']").forEach((option) => {
+        option.querySelector(".option-check").style.visibility = option.getAttribute("aria-selected") === "true" ? "visible" : "hidden";
+      });
+      optionChecks();
+      const timerLabel = document.querySelector("[data-timer-label]");
+      const timerNote = document.querySelector("[data-timer-note]");
+      liveDevice.querySelectorAll("[data-timer]").forEach((option) => {
+        option.addEventListener("click", () => {
+          liveDevice.querySelectorAll("[data-timer]").forEach((item) => item.setAttribute("aria-selected", String(item === option)));
+          optionChecks();
+          const value = option.dataset.timer;
+          timerNote.textContent = value === "0" ? "" : value === "chapter" ? "Tắt khi hết chương này" : `Tắt sau ${value} phút`;
+          timerLabel.classList.toggle("bg-secondary", value !== "0");
+          location.hash = "player";
+        });
+      });
+      const speedLabel = document.querySelector("[data-speed-label]");
+      liveDevice.querySelectorAll("[data-speed]").forEach((option) => {
+        option.addEventListener("click", () => {
+          liveDevice.querySelectorAll("[data-speed]").forEach((item) => item.setAttribute("aria-selected", String(item === option)));
+          optionChecks();
+          speedLabel.textContent = option.dataset.speed;
+          location.hash = "player";
+        });
+      });
+
+      buildBoard(renderScreen);
+      window.addEventListener("hashchange", route);
+      wideScreen.addEventListener("change", route);
+      scrim.addEventListener("click", () => { location.hash = "player"; });
+      route();
+    </script>
+  </body>
+</html>

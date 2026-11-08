@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lối trình diễn — app điện thoại (J18)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Font hình học có bộ vietnamese (đã kiểm): Plus Jakarta Sans. Inter trung tính nên nhìn ra "app công cụ". -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+      /* ===== KHỐI ĐỔI THƯƠNG HIỆU (J18). Đổi --primary và --accent là cả bản mẫu đổi theo. ===== */
+      :root {
+        --app-font: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+        --primary: #7c3aed;            /* Tím, màu đầu của ngành sức khoẻ (brand-tokens.md); chữ trắng 5.7:1 */
+        --accent: #fdba74;             /* sắc phụ của quầng: cách màu nhấn 60–150° (đào cách tím ~130°), chỉ dùng trong quầng, không cho chữ, nút */
+        --background: #f5f1ec;         /* nền kem ấm dưới quầng (bộ mặt Tinted thì dùng nền Tinted); lệch kênh từ 6 nên probe không đọc thành xám */
+        --surface: #ffffff;
+        --foreground: #1f1b2e;
+        --muted: #635c6d;              /* 6.4:1 trên trắng, 5.7:1 trên nền; chữ phụ trên chỗ đậm của quầng vẫn từ 4.5:1 (probe đo pixel) */
+        --soft: color-mix(in oklab, var(--primary) 7%, #f4f3f6);   /* nền nút phụ, ô số phụ */
+        /* Bóng mềm, lan rộng, ngả sắc màu nhấn: thay viền. Một thang hai bậc cho cả bản mẫu. */
+        --shadow-card: 0 18px 40px -22px color-mix(in oklab, var(--primary) 35%, rgb(0 0 0 / 0.5));
+        --shadow-float: 0 10px 24px -12px rgb(20 16 40 / 0.28);
+      }
+      body { font-family: var(--app-font); }
+
+      /* Quầng màu đầu màn (J18): 2–3 radial-gradient từ màu nhấn và sắc phụ, mờ dần xuống nền ở 55–60% chiều cao. Nằm
+         sau nội dung, không nằm sau chữ nhỏ ở vùng sáng nhất; chữ trên quầng là chữ tối. */
+      .mesh {
+        position: absolute; inset: 0 0 auto 0; height: 520px; pointer-events: none;
+        background:
+          radial-gradient(55% 45% at 15% 8%, color-mix(in oklab, var(--primary) 45%, white) 0%, transparent 70%),
+          radial-gradient(50% 42% at 92% 22%, color-mix(in oklab, var(--accent) 80%, white) 0%, transparent 72%),
+          radial-gradient(70% 55% at 50% 62%, color-mix(in oklab, var(--primary) 16%, white) 0%, transparent 70%);
+        -webkit-mask-image: linear-gradient(#000 55%, transparent);
+        mask-image: linear-gradient(#000 55%, transparent);
+      }
+      .phone { position: relative; width: 390px; height: 844px; overflow: hidden; border-radius: 52px; background: var(--background); box-shadow: 0 0 0 10px #111, 0 40px 80px -30px rgb(0 0 0 / 0.45); }
+      .press { transition: scale 120ms cubic-bezier(0.23, 1, 0.32, 1); -webkit-tap-highlight-color: transparent; }
+      .press:active { scale: 0.96; }
+      @media (prefers-reduced-motion: reduce) { .press:active { scale: 1; } }
+    </style>
+    <style type="text/tailwindcss">
+      @theme inline {
+        --font-sans: var(--app-font);
+        --color-primary: var(--primary);
+        --color-background: var(--background);
+        --color-surface: var(--surface);
+        --color-foreground: var(--foreground);
+        --color-muted: var(--muted);
+        --color-soft: var(--soft);
+      }
+    </style>
+  </head>
+  <body class="bg-[#e6e3df] px-6 py-12 text-foreground antialiased">
+    <header class="mx-auto mb-10 max-w-[1260px]">
+      <h1 class="text-2xl font-bold tracking-tight">Lối trình diễn — ba màn của một app đếm kcal</h1>
+      <p class="mt-2 max-w-[70ch] text-sm text-muted text-pretty">Luật ở J18 (mobile.md). Cùng nội dung với bản thực dụng: chỉ đổi nền, mật độ, cỡ chữ, bóng, hình. Comment trong code nói vì sao từng chỗ.</p>
+    </header>
+
+    <main class="mx-auto flex max-w-[1260px] flex-wrap justify-center gap-14">
+      <!-- ================= 1. HÔM NAY: một điểm nhìn là con số còn lại trong cung, tấm trắng trượt lên chứa danh sách ================= -->
+      <section class="phone" aria-label="Hôm nay">
+        <div class="mesh"></div>
+        <div class="relative flex h-[47px] items-center justify-between px-8 pt-1 text-[15px] font-semibold" aria-hidden="true"><span>19:05</span><span class="flex items-center gap-1.5"><i data-lucide="signal" class="size-4"></i><i data-lucide="wifi" class="size-4"></i><i data-lucide="battery-full" class="size-5"></i></span></div>
+
+        <!-- Đầu màn: lời chào nhỏ + tiêu đề lớn của màn gốc (J3), nút tròn trắng nổi 44px (không nút icon trơn trên quầng). -->
+        <div class="relative flex items-center justify-between px-6 pt-3">
+          <div><p class="text-[13px] font-semibold text-muted">Chào buổi tối, Thu Hà</p><h2 class="text-[30px]/tight font-extrabold tracking-[-0.03em]">Hôm nay</h2></div>
+          <a href="#showcase" class="press grid size-11 place-items-center rounded-full bg-surface shadow-(--shadow-float)" aria-label="Thông báo"><i data-lucide="bell" class="size-5"></i></a>
+        </div>
+
+        <!-- Điểm nhìn: cung chia khúc 280px (J17) trên quầng, rãnh trắng 70%, số còn lại 60px đậm khít. -->
+        <div class="relative mx-auto h-[206px] w-[280px]">
+          <svg viewBox="0 0 280 280" class="absolute inset-x-0 top-0 size-[280px]" role="img" aria-label="Đã nạp 1.420 trên 2.000 kcal" data-segments data-value="1420" data-max="2000" data-count="10"></svg>
+          <div class="absolute inset-x-0 top-[78px] text-center">
+            <p class="text-[13px] font-semibold text-muted">Còn lại hôm nay</p>
+            <p class="mt-1 text-[60px]/none font-extrabold tracking-[-0.04em] tabular-nums">580</p>
+            <p class="mt-1.5 text-sm font-semibold text-muted">kcal · đã nạp 1.420</p>
+          </div>
+        </div>
+
+        <!-- Ba chất: trắng 75% trên quầng (không backdrop-blur: kính chỉ cho lớp cố định như thanh tab), không viền, số đậm, thanh mảnh. -->
+        <div class="relative mx-6 grid grid-cols-3 gap-2.5">
+          <div class="rounded-[20px] bg-white/75 px-3.5 py-3"><p class="text-xs font-semibold text-muted">Đạm</p><p class="mt-0.5 text-[15px] font-bold tabular-nums">59<span class="font-semibold text-muted">/100g</span></p><span class="mt-2 block h-1.5 rounded-full bg-primary/15"><span class="block h-full w-[59%] rounded-full bg-primary"></span></span></div>
+          <div class="rounded-[20px] bg-white/75 px-3.5 py-3"><p class="text-xs font-semibold text-muted">Tinh bột</p><p class="mt-0.5 text-[15px] font-bold tabular-nums">202<span class="font-semibold text-muted">/250g</span></p><span class="mt-2 block h-1.5 rounded-full bg-primary/15"><span class="block h-full w-[81%] rounded-full bg-primary"></span></span></div>
+          <div class="rounded-[20px] bg-white/75 px-3.5 py-3"><p class="text-xs font-semibold text-muted">Chất béo</p><p class="mt-0.5 text-[15px] font-bold tabular-nums">42<span class="font-semibold text-muted">/65g</span></p><span class="mt-2 block h-1.5 rounded-full bg-primary/15"><span class="block h-full w-[65%] rounded-full bg-primary"></span></span></div>
+        </div>
+
+        <!-- Tấm trắng trượt lên, bo 36 hai góc trên: tách vùng "nhìn" (quầng) khỏi vùng "làm" (danh sách). -->
+        <div class="absolute inset-x-0 top-[414px] bottom-0 rounded-t-[36px] bg-surface px-6 pt-3 shadow-[0_-12px_40px_-24px_rgb(40_30_80/0.25)]">
+          <div class="flex items-center justify-between"><h2 class="text-[19px] font-bold">Bữa hôm nay</h2><a href="#showcase" class="inline-flex h-11 items-center text-sm font-semibold text-muted">Nhật ký</a></div>
+          <ul class="mt-2 flex flex-col gap-2.5">
+            <!-- Dòng: ô 52px nền pastel chuyển nhẹ chứa đồ vật 3D 34px (J16), tên 600 (không 700: cả màn toàn chữ đậm thì chật, J18),
+                 dòng phụ cách 4px, số phải 600. Không viền, không vạch ngăn: dòng đệm 12, cách nhau 12. -->
+            <li class="flex items-center gap-3.5 rounded-[22px] bg-soft p-3 pr-4">
+              <span class="grid size-[52px] shrink-0 place-items-center rounded-[18px] bg-linear-to-br from-amber-100 to-orange-50"><img data-emoji="Croissant" alt="" class="size-[34px]" /></span>
+              <span class="min-w-0 flex-1"><span class="block text-base font-semibold">Bữa sáng</span><span class="mt-1 block text-[13px] text-muted">Bánh mì trứng, cà phê sữa</span></span>
+              <span class="text-[15px] font-semibold tabular-nums">530</span>
+            </li>
+            <li class="flex items-center gap-3.5 rounded-[22px] bg-soft p-3 pr-4">
+              <span class="grid size-[52px] shrink-0 place-items-center rounded-[18px] bg-linear-to-br from-lime-100 to-emerald-50"><img data-emoji="Bento box" alt="" class="size-[34px]" /></span>
+              <span class="min-w-0 flex-1"><span class="block text-base font-semibold">Bữa trưa</span><span class="mt-1 block text-[13px] text-muted">Cơm gà xối mỡ, canh rau</span></span>
+              <span class="text-[15px] font-semibold tabular-nums">680</span>
+            </li>
+            <!-- Bữa chưa ghi: cùng khuôn, số thay bằng nút + tròn màu nhấn. -->
+            <li class="flex items-center gap-3.5 rounded-[22px] bg-soft p-3">
+              <span class="grid size-[52px] shrink-0 place-items-center rounded-[18px] bg-linear-to-br from-violet-100 to-indigo-50"><img data-emoji="Steaming bowl" alt="" class="size-[34px]" /></span>
+              <span class="min-w-0 flex-1"><span class="block text-base font-semibold">Bữa tối</span><span class="mt-1 block text-[13px] text-muted">Chưa ghi · gợi ý 580 kcal</span></span>
+              <a href="#showcase" class="press grid size-11 place-items-center rounded-full bg-primary text-white" aria-label="Ghi bữa tối"><i data-lucide="plus" class="size-5"></i></a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Thanh tab Dark (J2), viên đồng tâm, 4 mục chỉ icon; hành động chính đã nằm trên dòng Bữa tối nên không thêm nút nổi. -->
+        <nav class="absolute inset-x-6 bottom-6 flex h-16 items-center justify-between rounded-full bg-[#18181b] px-2 shadow-[0_8px_20px_-12px_rgb(0_0_0/0.4)]" aria-label="Điều hướng chính" data-tab-style="dark">
+          <a href="#showcase" aria-current="page" aria-label="Hôm nay" class="grid size-12 place-items-center rounded-full bg-white text-[#18181b]"><i data-lucide="house" class="size-6"></i></a>
+          <a href="#showcase" aria-label="Tìm món" class="grid size-12 place-items-center rounded-full text-white/60"><i data-lucide="search" class="size-6"></i></a>
+          <a href="#showcase" aria-label="Tuần này" class="grid size-12 place-items-center rounded-full text-white/60"><i data-lucide="chart-no-axes-column" class="size-6"></i></a>
+          <a href="#showcase" aria-label="Tài khoản" class="grid size-12 place-items-center rounded-full text-white/60"><i data-lucide="user-round" class="size-6"></i></a>
+        </nav>
+      </section>
+
+      <!-- ================= 2. CHI TIẾT MÓN: đồ vật 3D to giữa quầng là điểm nhìn, tấm trắng chứa số và nút ================= -->
+      <section class="phone" aria-label="Chi tiết món">
+        <div class="mesh"></div>
+        <div class="relative flex h-[47px] items-center justify-between px-8 pt-1 text-[15px] font-semibold" aria-hidden="true"><span>19:06</span><span class="flex items-center gap-1.5"><i data-lucide="signal" class="size-4"></i><i data-lucide="wifi" class="size-4"></i><i data-lucide="battery-full" class="size-5"></i></span></div>
+        <div class="relative flex items-center justify-between px-6 pt-3">
+          <a href="#showcase" class="press grid size-11 place-items-center rounded-full bg-surface shadow-(--shadow-float)" aria-label="Quay lại"><i data-lucide="chevron-left" class="size-5"></i></a>
+          <span class="rounded-full bg-white/70 px-3.5 py-1.5 text-[13px] font-semibold backdrop-blur-xl">Bữa tối</span>
+          <a href="#showcase" class="press grid size-11 place-items-center rounded-full bg-surface shadow-(--shadow-float)" aria-label="Lưu món"><i data-lucide="heart" class="size-5"></i></a>
+        </div>
+        <!-- Hình chính 190px, quầng trắng sau lưng, bóng bầu dục dưới đáy cho vật "đứng" trên mặt. -->
+        <div class="relative mx-auto mt-6 grid h-[250px] w-[260px] place-items-center">
+          <span class="absolute inset-6 rounded-full bg-white/60 blur-2xl"></span>
+          <span class="absolute bottom-4 h-5 w-40 rounded-[50%] bg-[#2a1f4a]/15 blur-md"></span>
+          <img data-emoji="Steaming bowl" alt="" class="relative size-[190px]" />
+        </div>
+
+        <div class="absolute inset-x-0 top-[372px] bottom-0 rounded-t-[36px] bg-surface px-6 pt-7 shadow-[0_-12px_40px_-24px_rgb(40_30_80/0.25)]">
+          <div class="flex items-start justify-between gap-4">
+            <div><h2 class="text-[26px]/tight font-extrabold tracking-[-0.02em]">Phở bò tái</h2><p class="mt-1 text-sm text-muted">1 tô · khoảng 500 g</p></div>
+            <p class="text-right"><span class="block text-[32px]/none font-extrabold tracking-[-0.03em] tabular-nums">450</span><span class="text-sm font-semibold text-muted">kcal</span></p>
+          </div>
+          <!-- Ba ô số pastel, mỗi chất một sắc nhạt cố định (M8): không viền, bo 20. -->
+          <div class="mt-5 grid grid-cols-3 gap-2.5">
+            <div class="rounded-[20px] bg-violet-50 px-3 py-3 text-center"><p class="text-xs font-semibold text-violet-700">Đạm</p><p class="mt-0.5 text-lg font-bold tabular-nums">28g</p></div>
+            <div class="rounded-[20px] bg-amber-50 px-3 py-3 text-center"><p class="text-xs font-semibold text-amber-800">Tinh bột</p><p class="mt-0.5 text-lg font-bold tabular-nums">55g</p></div>
+            <div class="rounded-[20px] bg-sky-50 px-3 py-3 text-center"><p class="text-xs font-semibold text-sky-800">Chất béo</p><p class="mt-0.5 text-lg font-bold tabular-nums">12g</p></div>
+          </div>
+          <!-- Đơn vị: điều khiển phân đoạn nhạt (--soft), viên chọn trắng có bóng mềm; không rãnh xám đậm. -->
+          <div class="mt-4 grid h-[52px] grid-cols-2 rounded-full bg-soft p-1 text-[15px] font-semibold" role="tablist" aria-label="Đơn vị">
+            <button type="button" role="tab" aria-selected="true" class="rounded-full bg-surface shadow-(--shadow-float)">Tô</button>
+            <button type="button" role="tab" aria-selected="false" class="rounded-full text-muted">Gram</button>
+          </div>
+          <div class="mt-3 flex items-center justify-between rounded-[22px] bg-soft p-2 pl-4">
+            <span class="text-[15px] font-semibold">Số tô</span>
+            <span class="flex items-center gap-3">
+              <button type="button" class="press grid size-11 place-items-center rounded-full bg-surface shadow-(--shadow-float)" aria-label="Bớt một tô"><i data-lucide="minus" class="size-5"></i></button>
+              <span class="w-6 text-center text-lg font-bold tabular-nums">1</span>
+              <button type="button" class="press grid size-11 place-items-center rounded-full bg-surface shadow-(--shadow-float)" aria-label="Thêm một tô"><i data-lucide="plus" class="size-5"></i></button>
+            </span>
+          </div>
+          <!-- Nút cam kết: viên đen cao 56 hết bề ngang, số kcal trong nút. -->
+          <a href="#showcase" class="press absolute inset-x-6 bottom-8 grid h-14 place-items-center rounded-full bg-foreground text-[16px] font-bold text-white">Thêm vào bữa tối · 450 kcal</a>
+        </div>
+      </section>
+
+      <!-- ================= 3. TUẦN NÀY: khối màu đặc chứa biểu đồ cột bo tròn, cột đang chọn trắng có số ================= -->
+      <section class="phone" aria-label="Tuần này">
+        <div class="relative flex h-[47px] items-center justify-between px-8 pt-1 text-[15px] font-semibold" aria-hidden="true"><span>19:07</span><span class="flex items-center gap-1.5"><i data-lucide="signal" class="size-4"></i><i data-lucide="wifi" class="size-4"></i><i data-lucide="battery-full" class="size-5"></i></span></div>
+        <div class="flex items-center justify-between px-6 pt-3">
+          <h2 class="text-[32px] font-extrabold tracking-[-0.03em]">Tuần này</h2>
+          <a href="#showcase" class="press grid size-11 place-items-center rounded-full bg-surface shadow-(--shadow-float)" aria-label="Chọn tuần"><i data-lucide="calendar-days" class="size-5"></i></a>
+        </div>
+        <!-- Khối màu (Tinted J15): 30% màu nhấn pha kem, chữ tối. Cột chưa chọn trắng 45%, cột đang chọn trắng đặc có số và
+             chấm (J17: chạm đổi cột). Trong khối màu, cột đang chọn được đổi màu vì các cột còn lại là nền, không phải chuỗi. -->
+        <div class="mx-6 mt-4 rounded-[32px] p-5" style="background: color-mix(in oklab, var(--primary) 30%, #f6f3ee)">
+          <p class="text-[13px] font-semibold" style="color: color-mix(in oklab, var(--primary) 18%, #2c2c2c)">Trung bình mỗi ngày</p>
+          <p class="mt-0.5 text-[40px]/none font-extrabold tracking-[-0.04em] tabular-nums">1.760 <span class="text-lg font-bold">kcal</span></p>
+          <!-- Số to giữ trung bình tuần (câu trả lời của màn). Mặc định chọn ngày trọn gần nhất (T7, hôm qua): cột trắng, số trên đầu cột;
+               chạm cột khác thì cột trắng và số dời theo (J17). Cột chưa chọn trắng 60%: 45% chìm vào khối tím. -->
+          <div class="mt-9 flex h-[150px] items-end justify-between gap-2" role="img" aria-label="Thứ hai 1.650, thứ ba 1.980, thứ tư 1.720, thứ năm 2.210, thứ sáu 1.540, thứ bảy 1.880, hôm nay đang chạy 1.420 kcal">
+            <div class="flex h-full flex-1 flex-col items-center justify-end gap-2"><span class="block w-full rounded-full bg-white/60" style="height: 62%"></span><span class="text-xs font-semibold">T2</span></div>
+            <div class="flex h-full flex-1 flex-col items-center justify-end gap-2"><span class="block w-full rounded-full bg-white/60" style="height: 74%"></span><span class="text-xs font-semibold">T3</span></div>
+            <div class="flex h-full flex-1 flex-col items-center justify-end gap-2"><span class="block w-full rounded-full bg-white/60" style="height: 64%"></span><span class="text-xs font-semibold">T4</span></div>
+            <div class="flex h-full flex-1 flex-col items-center justify-end gap-2"><span class="block w-full rounded-full bg-white/60" style="height: 84%"></span><span class="text-xs font-semibold">T5</span></div>
+            <div class="flex h-full flex-1 flex-col items-center justify-end gap-2"><span class="block w-full rounded-full bg-white/60" style="height: 58%"></span><span class="text-xs font-semibold">T6</span></div>
+            <div class="flex h-full flex-1 flex-col items-center justify-end gap-2"><span class="relative block w-full rounded-full bg-white shadow-[0_8px_20px_-10px_rgb(40_20_90/0.45)]" style="height: 70%"><span class="absolute inset-x-0 bottom-full mb-2 text-center text-xs font-bold whitespace-nowrap tabular-nums">1.880</span><span class="absolute inset-x-0 top-2 mx-auto block size-2 rounded-full bg-primary"></span></span><span class="text-xs font-bold">T7</span></div>
+            <div class="flex h-full flex-1 flex-col items-center justify-end gap-2"><span class="block w-full rounded-full border-2 border-dashed border-white" style="height: 54%"></span><span class="text-xs font-semibold">Nay</span></div>
+          </div>
+        </div>
+        <div class="mt-6 flex items-baseline justify-between px-6"><h3 class="text-[19px] font-bold">Ăn nhiều nhất</h3><span class="text-sm font-semibold text-muted">7 ngày</span></div>
+        <ul class="mx-6 mt-3 flex flex-col gap-3">
+          <li class="flex items-center gap-3.5 rounded-[22px] bg-surface p-3 pr-4 shadow-(--shadow-card)"><span class="grid size-[52px] shrink-0 place-items-center rounded-[18px] bg-linear-to-br from-violet-100 to-indigo-50"><img data-emoji="Steaming bowl" alt="" class="size-[34px]" /></span><span class="min-w-0 flex-1"><span class="block text-base font-semibold">Phở bò tái</span><span class="mt-1 block text-[13px] text-muted">4 lần · 1.800 kcal</span></span><i data-lucide="chevron-right" class="size-5 text-muted"></i></li>
+          <li class="flex items-center gap-3.5 rounded-[22px] bg-surface p-3 pr-4 shadow-(--shadow-card)"><span class="grid size-[52px] shrink-0 place-items-center rounded-[18px] bg-linear-to-br from-amber-100 to-orange-50"><img data-emoji="Croissant" alt="" class="size-[34px]" /></span><span class="min-w-0 flex-1"><span class="block text-base font-semibold">Bánh mì trứng</span><span class="mt-1 block text-[13px] text-muted">3 lần · 1.230 kcal</span></span><i data-lucide="chevron-right" class="size-5 text-muted"></i></li>
+        </ul>
+        <nav class="absolute inset-x-6 bottom-6 flex h-16 items-center justify-between rounded-full bg-[#18181b] px-2 shadow-[0_8px_20px_-12px_rgb(0_0_0/0.4)]" aria-label="Điều hướng chính" data-tab-style="dark">
+          <a href="#showcase" aria-label="Hôm nay" class="grid size-12 place-items-center rounded-full text-white/60"><i data-lucide="house" class="size-6"></i></a>
+          <a href="#showcase" aria-label="Tìm món" class="grid size-12 place-items-center rounded-full text-white/60"><i data-lucide="search" class="size-6"></i></a>
+          <a href="#showcase" aria-current="page" aria-label="Tuần này" class="grid size-12 place-items-center rounded-full bg-white text-[#18181b]"><i data-lucide="chart-no-axes-column" class="size-6"></i></a>
+          <a href="#showcase" aria-label="Tài khoản" class="grid size-12 place-items-center rounded-full text-white/60"><i data-lucide="user-round" class="size-6"></i></a>
+        </nav>
+      </section>
+    </main>
+
+    <script>
+      lucide.createIcons();
+      // Đồ vật 3D (J16): Fluent Emoji, MIT, ghim commit. Tên đặt một chỗ, gán vào img[data-emoji].
+      const EMOJI_BASE = "https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@1ffb34c752ecf5d402f04cfb4b392c77f57c54bc/assets";
+      document.querySelectorAll("img[data-emoji]").forEach((image) => {
+        const name = image.dataset.emoji;
+        image.src = `${EMOJI_BASE}/${encodeURIComponent(name)}/3D/${name.toLowerCase().replaceAll(" ", "_")}_3d.png`;
+      });
+
+      // Cung chia khúc (J17, cùng hàm với mobile-charts.html): rãnh trắng 70% vì cung nằm trên quầng.
+      const SVG_NS = "http://www.w3.org/2000/svg";
+      function drawArc(svg, { center, radius, width, startDegree, sweepDegree, color }) {
+        const capDegree = ((width / 2) / (2 * Math.PI * radius)) * 360;
+        const visibleSweep = Math.max(0.01, sweepDegree - capDegree * 2);
+        const drawStart = (startDegree + capDegree) % 360;
+        const circle = document.createElementNS(SVG_NS, "circle");
+        Object.entries({ cx: center, cy: center, r: radius, fill: "none", stroke: color, "stroke-width": width, "stroke-linecap": "round", pathLength: 360, "stroke-dasharray": `${visibleSweep} ${360 - visibleSweep}`, "stroke-dashoffset": `${(360 - drawStart) % 360}` }).forEach(([key, value]) => circle.setAttribute(key, value));
+        svg.append(circle);
+      }
+      const primary = getComputedStyle(document.documentElement).getPropertyValue("--primary").trim();
+      document.querySelectorAll("[data-segments]").forEach((svg) => {
+        const count = Number(svg.dataset.count);
+        const filledCount = Math.floor((Number(svg.dataset.value) / Number(svg.dataset.max)) * count);
+        const center = 140;
+        const width = 22;
+        const radius = center - width / 2;
+        const gapDegree = (7 / (2 * Math.PI * radius)) * 360;
+        const segmentSweep = (240 - gapDegree * (count - 1)) / count;
+        for (let i = 0; i < count; i++) drawArc(svg, { center, radius, width, startDegree: 150 + i * (segmentSweep + gapDegree), sweepDegree: segmentSweep, color: i < filledCount ? primary : "rgb(255 255 255 / 0.7)" });
+      });
+    </script>
+  </body>
+</html>

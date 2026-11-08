@@ -123,7 +123,7 @@ panel trượt hoặc trang riêng.
 - Nút chính ở footer là `primary` (một hành động duy nhất của modal, `I2`), **chỉ có chữ** theo `I1`: "Gửi lời mời", không icon. Nút Huỷ `secondary`. Cả hai `h-11 md:h-10`, cao bằng ô nhập.
 - **Trạng thái đang gửi**: nút chỉ chữ thì **spinner đè lên giữa nút, chữ `invisible`** (vẫn chiếm chỗ), nút `aria-disabled` + `aria-busy`, không `disabled`. Chèn spinner cạnh chữ là nút rộng ra, đẩy Huỷ sang trái. Xem `../components/button.md`.
 - Câu lỗi dưới ô nói **cách sửa**, theo bảng "Ô trống thì viết gì" trong `form.md` (một nguồn): "Email phải có dấu @".
-- **Modal mời thành viên: ô email là tag input** (`../components/tag-input.md`), mời nhiều người một lần, nút ghi số ("Gửi 3 lời mời"); email trùng phân biệt "Đã là thành viên" với "Đã mời …, chưa chấp nhận". Chi tiết ở "Trang thành viên và phân quyền" trong `app.md`.
+- **Modal mời thành viên: ô email là tag input** (`../components/tag-input.md`), mời nhiều người một lần, nút ghi số ("Gửi 3 lời mời"); email trùng phân biệt "Đã là thành viên" với "Đã mời …, chưa chấp nhận". Chi tiết ở "Trang thành viên và phân quyền" trong `app/members.md`.
 
 **Modal xem bản ghi có nút trước / sau** (chi tiết đơn hàng, hoá đơn, phiếu nhập):
 
@@ -296,7 +296,7 @@ theo "Cắt email" bên dưới, không bẻ dòng.
 
 ### Menu tài khoản
 
-Mở từ avatar trên header, hoặc từ hàng profile chân sidebar (`app.md`).
+Mở từ avatar trên header, hoặc từ hàng profile chân sidebar (`app/shell.md`).
 
 - **Tài khoản chỉ có một lối vào.** Đề bảo đặt avatar trên header mà chân sidebar đã có hàng profile thì chuyển hẳn lên header, bỏ hàng profile, báo một dòng lúc giao. Hai chỗ mở cùng một menu là một ý nói hai lần (`N3`); các app lớn đều chỉ có một.
 - **Đầu menu mở từ avatar: tên + email, không avatar.** Avatar vừa bấm nằm ngay bên trên; lặp lại một avatar 40px ở đầu menu thì nó thành thứ nặng nhất menu. Tên `text-sm font-medium truncate`, email `text-xs text-muted` một dòng, khối `px-3 py-2`. Mở từ chân sidebar thì chỉ email, vì tên đã ở hàng profile.
@@ -409,7 +409,7 @@ bấm không ăn, mất lòng tin ngay.
 - **Ghim từ trên (`sm:top-[15vh]`), không căn giữa dọc.** Gõ để lọc thì danh sách co lại; khung căn giữa thì ô tìm nhảy lên xuống theo từng phím gõ, ngay dưới con trỏ (`N1`). Ghim từ trên thì ô tìm đứng yên, chỉ đáy khung co. Các bảng lệnh phổ biến đều ghim.
 - **Khe `p-2`, mục `rounded-lg`**: khung 16 = 8 + 8 (`M19`). Palette rộng 576px, khe `p-1` của dropdown ở bề ngang này thì nền sáng thành một thanh gần hết khung (lý do ở "Dropdown" bên trên). Mục `h-10`, icon `size-4 text-muted`, chữ `text-sm`.
 - **Icon ô tìm thẳng cột icon mục**: ô tìm `px-5` = khe `p-2` + mục `px-3`. Đổi một bên thì đổi cả hai.
-- **Nhãn nhóm gần nhóm của nó**: `pt-5 pb-1`. **Đo từ chữ tới chữ, không từ mép hàng**: mục `h-10` đã có sẵn 10px khoảng thở trên và dưới chữ, nên `pt-4 pb-1.5` nhìn bằng mắt chỉ còn 26px trên, 16px dưới, nhãn vẫn lơ lửng giữa hai nhóm. `pt-5 pb-1` ra 30px trên, 14px dưới, khoảng gấp đôi, mắt gắn nhãn với nhóm bên dưới. Kiểu chữ như nhãn nhóm sidebar (`app.md`): IN HOA bằng CSS, xám. Không kẻ đường giữa các nhóm.
+- **Nhãn nhóm gần nhóm của nó**: `pt-5 pb-1`. **Đo từ chữ tới chữ, không từ mép hàng**: mục `h-10` đã có sẵn 10px khoảng thở trên và dưới chữ, nên `pt-4 pb-1.5` nhìn bằng mắt chỉ còn 26px trên, 16px dưới, nhãn vẫn lơ lửng giữa hai nhóm. `pt-5 pb-1` ra 30px trên, 14px dưới, khoảng gấp đôi, mắt gắn nhãn với nhóm bên dưới. Kiểu chữ như nhãn nhóm sidebar (`app/shell.md`): IN HOA bằng CSS, xám. Không kẻ đường giữa các nhóm.
 - **Chiều cao theo `I18`**: đo ở trạng thái chưa gõ, xê `max-h` từng bậc 4px tới khi mục cuối lộ khoảng một nửa. Mở palette thì chớp thanh cuộn một lần (`flashScrollbar`).
 - **Khe hai bên bằng nhau dù có cuộn hay không**: thanh cuộn 4px chiếm chỗ bên phải, nên khung danh sách `p-2` thì khe phải thành 12px, khe trái 8px, lệch 4px mỗi khi danh sách dài. Sửa bằng `pr-1` + `[scrollbar-gutter:stable]`: luôn giữ chỗ 4px cho thanh, nên lọc còn một kết quả thì khe vẫn y như lúc cuộn.
 - **Rãnh thanh cuộn lùi `mt-2 mb-4`** (`[&::-webkit-scrollbar-track]:mt-2 [&::-webkit-scrollbar-track]:mb-4`). Đầu trên nằm dưới đường kẻ thẳng của ô tìm, lùi 8px để thanh không dính đường kẻ. Đầu dưới chạm góc bo 16px, **lùi bằng bán kính góc bo**: đầu tròn của thanh 4px sát mép chỉ nằm trọn trong góc bo khi cách đáy từ 14px (16 − 2). `my-2` cũ để đuôi bị vát mép phải khoảng 2px, thấy rõ khi phóng to 4 lần.
@@ -521,7 +521,7 @@ lấy số ở bảng này.
 | **Dropdown, popover, select, date picker** | `opacity` + `scale-95→100` + **dịch 4px từ phía nút**: mở xuống thì từ trên xuống (`-translate-y-1 → 0`), lật lên thì từ dưới lên (`translate-y-1 → 0`). Gốc biến hình ở mép gần nút. 150ms `ease-out` | `opacity` + `scale-95`, 100ms `ease-in`, không dịch |
 | **Toast** | trượt ra từ mép màn gần nhất, **quãng bằng cả chiều cao toast**: toast ở đáy `translate-y-full → 0` (dưới lên), toast ở đỉnh (màn hẹp) `-translate-y-full → 0`; kèm `opacity 0→1`. **300ms `ease-out`** | trượt ngược về mép đã ra + `opacity → 0`, **200ms `ease-in`** |
 | **Tooltip** | chỉ `opacity`, trễ 300–500ms mới hiện, 100ms | 100ms |
-| **Sidebar thu gọn, nhóm mở đóng** | theo `app.md`: `transition-[width]` và `grid-rows`, 200ms | như vào |
+| **Sidebar thu gọn, nhóm mở đóng** | theo `app/shell.md`: `transition-[width]` và `grid-rows`, 200ms | như vào |
 
 - **Tooltip mang nội dung người dùng đặt** (tên tệp, tên dự án, email) thì không `whitespace-nowrap`: `max-w-[min(20rem,calc(100vw-1rem))] whitespace-normal wrap-anywhere`. Tooltip nhãn nút ngắn ("Đơn trước") giữ một dòng. Chi tiết và ca đã dính ở `../components/tree.md`.
 
@@ -542,7 +542,7 @@ lấy số ở bảng này.
   - **`backdrop-blur` trên lớp phủ** bắt trình duyệt làm mờ cả trang mỗi khung hình, chuyển động rớt khung. Lớp phủ chỉ là màu đen trong suốt.
   - **Animate `right`, `left`, `width` của panel** thay vì `transform` là tính lại bố cục mỗi khung hình. Chỉ `translate`; thêm `will-change-transform` nếu vẫn rớt khung.
 - **Không nảy, không lố.** Không `spring` vượt đích, không `scale` dưới 95%, dropdown không dịch quá 8px. Đồ vật trong app làm việc thì đặt xuống, không nhảy ra.
-- **Chỉ `transform` và `opacity`.** Không animate `height`, `top`, `left`, `width` (trừ sidebar thu gọn, đã có lý do riêng ở `app.md`): làm trang giật và tính lại bố cục mỗi khung hình.
+- **Chỉ `transform` và `opacity`.** Không animate `height`, `top`, `left`, `width` (trừ sidebar thu gọn, đã có lý do riêng ở `app/shell.md`): làm trang giật và tính lại bố cục mỗi khung hình.
 - **Gốc biến hình đúng mép**: dropdown mở từ nút bên phải thì `origin-top-right`. Dùng Radix thì lấy sẵn `origin-(--radix-dropdown-menu-content-transform-origin)` (popover, select có biến tương tự), nó tự đổi khi menu lật.
 - **Cách viết**: có Radix/shadcn thì dùng `data-[state=open]:animate-in data-[state=closed]:animate-out fade-in-0 zoom-in-95 slide-in-from-top-1` của `tw-animate-css` (Tailwind v4; v3 là `tailwindcss-animate`). Tự dựng thì `transition` + thuộc tính `data-state`, lúc vào dùng `@starting-style`, lúc ra giữ phần tử trong DOM tới khi chạy xong (`transition-behavior: allow-discrete` hoặc chờ `transitionend`).
 - **`motion-reduce:`** tắt `scale` và `translate`, chỉ giữ `opacity` (hoặc tắt hẳn): người bật giảm chuyển động bị chóng mặt vì chuyển động chứ không vì mờ dần.
@@ -565,3 +565,13 @@ Chọn theo thứ tự, dừng ở bậc đầu tiên làm được việc:
 
 Thư viện nào cũng vẫn theo luật ở trên: chỉ `transform` và `opacity`, có bản `prefers-reduced-motion`, màn app làm việc không nảy.
 
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Panel thông báo**: có nút "Đánh dấu đã đọc" ở header không? Mục đã đọc có nhạt hơn mục chưa đọc (không chỉ thiếu chấm) không? Bấm sang tab rỗng thì panel có sụp chiều cao không? Tiêu đề dài có bị cắt ở 2 dòng không? Mép trên panel có cách đường kẻ header 8px, hay đường kẻ chọc vào góc bo (`layouts/overlay.md`)?
+- [ ] **Panel xem bản ghi có tab** (khách hàng, dự án): cuộn thân thì chỉ hàng tên + ✕ đứng yên, tab dính đỉnh, còn trạng thái và hàng nút cuộn đi chưa? Tên có phải chữ nặng nhất panel, hay số liệu to hơn tên? Ô số liệu là **một khung 2×2** số `text-lg`, hay bốn card rời số `text-3xl`? Kỳ so sánh ghi một lần hay lặp ở từng ô? Khách chưa có đơn nào thì còn lưới số 0 không? Tab tới hàng tab: không nền xám, không vòng (`components/small-controls.md`)?
+- [ ] **Modal xem bản ghi có nút trước / sau** (chi tiết đơn): modal neo đỉnh hay căn giữa dọc? Bấm Đơn sau sang đơn cao thấp khác thì nút ‹ › có đứng yên dưới con trỏ không? Tới đầu, cuối thì nút mờ nhưng vẫn giữ chỗ, tiêu điểm chuyển sang nút còn lại chưa? Chỉ phần mã `font-mono`? Tiền bám một mép phải, tạm tính đếm theo số lượng, các số cộng trừ có khớp không (`layouts/overlay.md`)?
+- [ ] **Menu con / menu tài khoản** (`layouts/overlay.md`): bay ra thì hàng đầu thẳng mục cha, mục cha giữ nền sáng, đi chéo chuột sang không tắt? Ở 375px menu con **thay chỗ** menu cha có nút `‹` lùi, hay đang xổ ra bên dưới mục cha? Hàng tài khoản có hàng nào quá hai dòng không (email phải một dòng, cắt phần trước `@`)? Đầu menu mở từ avatar có lặp lại avatar không? Header có avatar mà chân sidebar vẫn còn hàng profile là hai lối vào một menu.

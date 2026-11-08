@@ -215,11 +215,57 @@ function lintVersionFiles() {
   ];
 }
 
+// Trần cỡ file: SKILL.md và bộ "luôn mở" bị nạp ở mọi task, file references lớn quá thì một đề
+// nạp cả phần không dùng. Vượt trần thì tách theo loại việc (DEVELOP.md, "Giữ skill nhẹ"),
+// đo bằng scripts/measure-skill.mjs. Số là KB.
+const skillFileLimitKb = 48;
+const alwaysOpenLimitKb = 95;
+const referenceFileLimitKb = 70;
+const alwaysOpenFiles = ["principles.md", "budgets.md", "brand-tokens.md", "checklist.md", "locked-rules.md"];
+// File đã quá trần, đang chờ tách. Tách xong thì xoá khỏi đây.
+const filesWaitingSplit = new Set([]);
+
+function lintFileSizes() {
+  const findings = [];
+  const toKb = (byteCount) => Math.round(byteCount / 1024);
+  const skillPath = join(skillDir, "SKILL.md");
+  const skillKb = toKb(statSync(skillPath).size);
+
+  if (skillKb > skillFileLimitKb) {
+    findings.push({ path: skillPath, line: 1, problem: `SKILL.md ${skillKb}KB, trần ${skillFileLimitKb}KB.`, text: "" });
+  }
+
+  const alwaysOpenKb = toKb(
+    alwaysOpenFiles.reduce((total, fileName) => total + statSync(join(skillDir, "references", fileName)).size, 0),
+  );
+
+  if (alwaysOpenKb > alwaysOpenLimitKb) {
+    findings.push({
+      path: join(skillDir, "references"),
+      line: 1,
+      problem: `Bộ luôn mở (${alwaysOpenFiles.join(", ")}) ${alwaysOpenKb}KB, trần ${alwaysOpenLimitKb}KB.`,
+      text: "",
+    });
+  }
+
+  for (const path of listSkillMarkdown(join(skillDir, "references"))) {
+    const fileKb = toKb(statSync(path).size);
+    const relativePath = relative(skillDir, path);
+
+    if (fileKb > referenceFileLimitKb && !filesWaitingSplit.has(relativePath)) {
+      findings.push({ path, line: 1, problem: `${relativePath} ${fileKb}KB, trần ${referenceFileLimitKb}KB.`, text: "" });
+    }
+  }
+
+  return findings;
+}
+
 // locked-rules.md là chỗ ghi các lý lẽ đã bác, chính nó không phải spec.
 const findings = [...targets]
   .filter(([path]) => !path.endsWith("locked-rules.md"))
   .flatMap(([path, changedLines]) => lintFile(path, changedLines))
-  .concat(lintVersionFiles());
+  .concat(lintVersionFiles())
+  .concat(lintFileSizes());
 
 if (!findings.length) {
   console.log(`lint-skill: không bắt được câu nào (${targets.size} file). Máy chỉ đọc chữ, vẫn phải tự đọc lại.`);

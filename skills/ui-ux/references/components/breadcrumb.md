@@ -1,7 +1,7 @@
 # Đường dẫn (breadcrumb)
 
 Dòng các cấp cha của trang đang xem, mỗi cấp là link. Nằm ở một trong hai chỗ: thanh header
-`h-16` của khung app, hoặc trên tên trang trong đầu trang (`../layouts/app.md`, "Đầu trang trong
+`h-16` của khung app, hoặc trên tên trang trong đầu trang (`../layouts/app/shell.md`, "Đầu trang trong
 vùng nội dung"). Không bao giờ cả hai.
 
 ## Khi nào có
@@ -199,3 +199,11 @@ export default function BreadcrumbCrumb({ item, hasSeparator }: BreadcrumbCrumbP
 - Ở 375px: chỉ còn "‹ Cấp cha", cao 40px, không có mục nào bị cắt còn vài chữ. Tab tới: chữ gạch chân.
 - Rê vào mục và vào "…": chỉ đổi màu, không hiện ô nền. Tab tới: chỉ gạch chân, không vòng.
 - Trình đọc màn hình: `nav` có tên "Đường dẫn", mục trong `ol`, dấu › không bị đọc.
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Đường dẫn** (`components/breadcrumb.md`): chỉ cấp cha, không trùng chữ `<h1>` ngay dưới? Chữ mỗi mục đúng tên trang đích? Một hàng, không xuống dòng; từ 4 cấp cha có nút "…" mở menu, và nút đó trông như một mục chữ (không ô nền, nét cách dấu › bằng chữ cách dấu)? Tab tới một mục: chữ gạch chân, không vòng (`I13`)? Ở 375px chỉ còn "‹ Cấp cha" cao 40px? Đặt đúng một chỗ, header hoặc đầu trang?

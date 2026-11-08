@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <!-- viewport-fit=cover: chạy trên điện thoại thật thì nội dung tràn dưới tai thỏ, tự chừa bằng env(safe-area-inset-*). -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Mộc — app đặt món mẫu</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <style>
+      /* ===== KHỐI ĐỔI THƯƠNG HIỆU, chép từ references/tokens.css (nền sáng). ===== */
+      :root {
+        --app-font: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+        --primary: #181818;
+        --primary-hover: #2e2e2e;
+        --primary-foreground: #ffffff;
+
+        --background: #f4f4f6;
+        --surface: #ffffff;
+        --foreground: #2c2c2c;
+        --muted: #707070;
+        /* Đậm hơn tokens.css (#f7f7f8): app điện thoại nền trắng, vạch ngăn dòng phải thấy được (J1). */
+        --border: #f0f0f2;
+        --border-strong: #eaeaea;
+        --secondary: #e7e8ec;
+        --danger: #c70036;
+        --danger-bg: rgb(255 32 86 / 0.1);
+        --success: #00875a;
+
+        /* Cuống phiếu ưu đãi (J11): nền nhạt + chữ đậm cùng sắc, chữ đạt 4.5:1 trên nền của nó. */
+        --cat-amber-bg: #fff1d6; --cat-amber: #a35c00;
+        --cat-blue-bg: #e3efff;  --cat-blue: #1d5fbf;
+        --cat-green-bg: #dff5ea; --cat-green: #00754e; /* chữ trên nền xanh nhạt: --success chỉ 3.99:1, cái này 5.03:1 */
+        --avatar-bg: #ffd8c2;    --avatar-text: #8a3b12;
+
+        /* Thẻ thành viên (J5, J11): nền tối trung tính, không theo màu nhấn. */
+        --hero-bg: #1c1c1e;
+        --hero-accent: #ffffff;
+
+        /* Nền quanh khung máy (chỉ màn rộng, không thuộc app). */
+        --frame-page: #e9e9ec;
+        --frame-muted: #565656;
+      }
+      /* ===== HẾT KHỐI ĐỔI THƯƠNG HIỆU ===== */
+
+      /* ===== THANH CUỘN (SKILL.md câu 2), chép từ tokens.css: cho phần ngoài khung máy (trang bảng luồng dài). Vùng cuộn
+         trong khung (.scroll) ẩn hẳn, ngoại lệ của luật chốt 13. ===== */
+      * { --scrollbar-thumb: transparent; }
+      *:hover { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 16%, transparent); }
+      .is-scrolling { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 28%, transparent); }
+      ::-webkit-scrollbar { width: 4px; height: 4px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 9999px; }
+      ::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--foreground) 40%, transparent); }
+      @supports not selector(::-webkit-scrollbar) {
+        * { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+        *:hover { scrollbar-color: color-mix(in srgb, var(--foreground) 18%, transparent) transparent; }
+        .is-scrolling { scrollbar-color: color-mix(in srgb, var(--foreground) 28%, transparent) transparent; }
+      }
+
+      /* ===== KHUNG MÁY (J1), giống mobile-app.html. ===== */
+      :root { --inset-top: env(safe-area-inset-top, 0px); --inset-bottom: env(safe-area-inset-bottom, 0px); }
+      .device { --screen-bg: var(--surface); position: relative; width: 100%; height: 100dvh; overflow: hidden; background: var(--screen-bg); }
+      .device:has(.screen.is-grouped.is-active) { --screen-bg: var(--background); }
+      .status-bar, .home-indicator { display: none; }
+      @media (min-width: 500px) {
+        :root { --inset-top: 47px; --inset-bottom: 34px; }
+        .device { width: 390px; height: 844px; border-radius: 48px; box-shadow: 0 0 0 10px #1c1c1e, 0 0 0 11px #3a3a3c, 0 30px 60px -10px rgb(0 0 0 / 0.35); }
+        .status-bar { display: flex; }
+        .home-indicator { display: block; }
+      }
+
+      .screen { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--screen-bg); visibility: hidden; }
+      .screen.is-grouped { --screen-bg: var(--background); }
+      .screen.is-active { visibility: visible; }
+      @media (prefers-reduced-motion: no-preference) {
+        .screen.is-pushed.is-active { animation: push-in 300ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .sheet { transition: translate 250ms cubic-bezier(0.3, 0, 1, 1); }
+        .sheet.is-open { transition: translate 320ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .screen.is-pushed.is-active { animation: fade-in 200ms ease; }
+      }
+      @keyframes push-in { from { translate: 30% 0; opacity: 0.6; } to { translate: 0 0; opacity: 1; } }
+      @keyframes fade-in { from { opacity: 0; } }
+
+      .scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+      .scroll::-webkit-scrollbar { display: none; }
+      .pad-top { padding-top: var(--inset-top); }
+      .pad-tabbar { padding-bottom: calc(var(--inset-bottom) + 96px); }
+      /* Màn có thanh giỏ hàng nằm trên thanh tab (J11): chừa thêm 64px cho thanh giỏ. */
+      .pad-cartbar { padding-bottom: calc(var(--inset-bottom) + 160px); }
+      .above-home { bottom: calc(var(--inset-bottom) + 8px); }
+      .above-tabbar { bottom: calc(var(--inset-bottom) + 80px); }
+
+      .sheet { translate: 0 100%; }
+      .sheet.is-open { translate: 0 0; }
+      .scrim { opacity: 0; pointer-events: none; transition: opacity 200ms ease; }
+      .scrim.is-open { opacity: 1; pointer-events: auto; transition-duration: 240ms; }
+      @media (prefers-reduced-motion: reduce) {
+        .sheet { translate: 0 0; opacity: 0; visibility: hidden; transition: opacity 200ms ease, visibility 200ms; }
+        .sheet.is-open { opacity: 1; visibility: visible; }
+      }
+
+      .press { transition: scale 120ms cubic-bezier(0.23, 1, 0.32, 1), background-color 150ms ease; -webkit-tap-highlight-color: transparent; }
+      .press:active { scale: 0.97; }
+      @media (prefers-reduced-motion: reduce) { .press:active { scale: 1; } }
+
+      /* Hàng cuộn ngang lộ nửa thẻ cuối (J8): không thanh cuộn, bắt dính theo thẻ. */
+      .rail { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; padding-inline: 16px; scrollbar-width: none; }
+      .rail::-webkit-scrollbar { display: none; }
+      .rail > * { scroll-snap-align: start; flex-shrink: 0; }
+
+
+      /* Mã vạch giả của thẻ thành viên: sọc đen trắng, chỉ để nhìn (aria-hidden). Sang code dùng thư viện tạo mã thật. */
+      .barcode { background: repeating-linear-gradient(90deg, #111 0 2px, transparent 2px 4px, #111 4px 5px, transparent 5px 8px, #111 8px 11px, transparent 11px 12px, #111 12px 13px, transparent 13px 16px); }
+    </style>
+
+    <style type="text/tailwindcss">
+      @theme inline {
+        --font-sans: var(--app-font);
+        --color-primary: var(--primary);
+        --color-primary-hover: var(--primary-hover);
+        --color-primary-foreground: var(--primary-foreground);
+        --color-background: var(--background);
+        --color-surface: var(--surface);
+        --color-foreground: var(--foreground);
+        --color-muted: var(--muted);
+        --color-border: var(--border);
+        --color-border-strong: var(--border-strong);
+        --color-secondary: var(--secondary);
+        --color-danger: var(--danger);
+        --color-danger-bg: var(--danger-bg);
+        --color-success: var(--success);
+      }
+    </style>
+  </head>
+
+  <body class="bg-background font-sans text-foreground antialiased min-[500px]:flex min-[500px]:min-h-screen min-[500px]:items-center min-[500px]:justify-center min-[500px]:gap-12 min-[500px]:bg-(--frame-page) min-[500px]:py-10">
+    <nav class="wf-screens hidden w-48 text-sm min-[900px]:block" aria-label="Màn trong bản mẫu">
+      <p class="mb-3 font-medium">Mộc · 10 màn</p>
+      <ol class="space-y-1 text-(--frame-muted)">
+        <li><a href="#menu" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">1. Đặt món</a></li>
+        <li><a href="#item" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">2. Chọn món (sheet)</a></li>
+        <li><a href="#cart" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">3. Giỏ hàng</a></li>
+        <li><a href="#login" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">4. Đăng nhập (sheet)</a></li>
+        <li><a href="#otp" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">5. Nhập mã (sheet)</a></li>
+        <li><a href="#notify" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">6. Bật thông báo (sheet)</a></li>
+        <li><a href="#rewards" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">7. Ưu đãi</a></li>
+        <li><a href="#orders" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">8. Đơn hàng</a></li>
+        <li><a href="#orders-empty" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">9. Đơn hàng trống</a></li>
+        <li><a href="#account" class="block rounded-md px-2 py-1.5 hover:bg-white/60 hover:text-foreground">10. Tài khoản</a></li>
+      </ol>
+    </nav>
+
+    <div class="device">
+      <div class="status-bar pointer-events-none absolute inset-x-0 top-0 z-40 h-[47px] items-center justify-between px-8 pt-1 text-[15px] font-semibold" aria-hidden="true">
+        <span>9:41</span>
+        <span class="flex items-center gap-1.5"><i data-lucide="signal" class="size-4"></i><i data-lucide="wifi" class="size-4"></i><i data-lucide="battery-full" class="size-5"></i></span>
+      </div>
+      <div class="status-cover pointer-events-none absolute inset-x-0 top-0 z-30 h-(--inset-top) bg-(--screen-bg)/85 backdrop-blur-xl" aria-hidden="true"></div>
+
+      <!-- ================= 1. ĐẶT MÓN (tab 1) ================= -->
+      <section class="screen" data-screen="menu" aria-label="Đặt món">
+        <div class="scroll pad-top pad-cartbar">
+          <!-- Đầu màn gốc của app đặt món (J11): một hàng chọn cách nhận và nơi nhận thay cho tiêu đề lớn. Cuộn đi
+               cùng nội dung, không dính: chỉ cần lúc mới mở; đổi ở giỏ hàng cũng được. -->
+          <header class="flex items-center gap-2 px-4 pt-2">
+            <button class="press flex min-h-14 min-w-0 flex-1 items-center gap-3 rounded-2xl text-left" aria-label="Đổi cách nhận và địa chỉ">
+              <span class="grid size-10 shrink-0 place-items-center rounded-full bg-background"><i data-lucide="bike" class="size-5"></i></span>
+              <span class="min-w-0">
+                <span class="flex items-center gap-1 text-[13px] text-muted">Giao đến · Nhà<i data-lucide="chevron-down" class="size-4"></i></span>
+                <span class="block text-base font-medium">285 Cách Mạng Tháng 8</span>
+              </span>
+            </button>
+            <button class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Tìm món"><i data-lucide="search" class="size-6"></i></button>
+          </header>
+
+          <!-- Ảnh ưu đãi to (J8): chữ là HTML trên ảnh, không chữ in sẵn trong ảnh. Một ảnh, không băng chuyền. -->
+          <a href="#rewards" class="press relative mx-4 mt-3 block h-40 overflow-hidden rounded-[20px] bg-(--hero-bg)">
+            <img src="https://images.unsplash.com/photo-1749280447307-31a68eb38673?w=800&q=80&auto=format&fit=crop" alt="" class="absolute inset-0 size-full object-cover opacity-80" />
+            <span class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent"></span>
+            <span class="relative flex h-full flex-col justify-end p-4 text-white">
+              <span class="text-[13px] text-white/80">Đến hết Chủ nhật</span>
+              <span class="mt-0.5 text-[20px]/[25px] font-semibold">Mua 2 matcha, tặng 1</span>
+            </span>
+          </a>
+
+          <!-- Danh mục (J11): ảnh tròn 56px + tên dưới, xếp lưới vừa khung, bấm thì cuộn tới mục đó. -->
+          <div class="mt-5 grid grid-cols-5 px-2" aria-label="Danh mục">
+            <button class="press flex min-h-11 flex-col items-center gap-1.5 py-1" data-jump="cat-coffee"><img src="https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=160&q=80&auto=format&fit=crop" alt="" class="size-14 rounded-full object-cover" /><span class="text-[13px] font-medium">Cà phê</span></button>
+            <button class="press flex min-h-11 flex-col items-center gap-1.5 py-1" data-jump="cat-matcha"><img src="https://images.unsplash.com/photo-1751563721808-3b81940b88f7?w=160&q=80&auto=format&fit=crop" alt="" class="size-14 rounded-full object-cover" /><span class="text-[13px] font-medium">Matcha</span></button>
+            <button class="press flex min-h-11 flex-col items-center gap-1.5 py-1" data-jump="cat-tea"><img src="https://images.unsplash.com/photo-1676693420436-7fa448f054eb?w=160&q=80&auto=format&fit=crop" alt="" class="size-14 rounded-full object-cover" /><span class="text-[13px] font-medium">Trà</span></button>
+            <button class="press flex min-h-11 flex-col items-center gap-1.5 py-1" data-jump="cat-bakery"><img src="https://images.unsplash.com/photo-1691480162735-9b91238080f6?w=160&q=80&auto=format&fit=crop" alt="" class="size-14 rounded-full object-cover" /><span class="text-[13px] font-medium">Bánh</span></button>
+            <button class="press flex min-h-11 flex-col items-center gap-1.5 py-1" data-jump="cat-other"><span class="grid size-14 place-items-center rounded-full bg-background text-muted"><i data-lucide="cup-soda" class="size-6"></i></span><span class="text-[13px] font-medium">Khác</span></button>
+          </div>
+
+          <!-- Dòng món (J11): ảnh 88px trái, tên + mô tả đủ chữ, giá và nút "+" 44px cùng hàng dưới.
+               Bấm cả dòng mở sheet chọn món; nút "+" của món không có lựa chọn bắt buộc thì thêm thẳng. -->
+          <h2 id="cat-coffee" class="mt-6 scroll-mt-14 px-4 text-[20px]/[25px] font-semibold">Cà phê</h2>
+          <ul class="mt-1 divide-y divide-border px-4">
+            <li class="flex gap-3 py-3">
+              <a href="#item" class="press flex min-w-0 flex-1 gap-3"><img src="https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=240&q=80&auto=format&fit=crop" alt="" class="size-[88px] shrink-0 rounded-2xl object-cover" />
+                <span class="min-w-0"><span class="block text-base font-medium">Cà phê sữa đá</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Robusta Đắk Lắk pha phin, sữa đặc</span><span class="mt-1.5 block text-base font-semibold tabular-nums">35.000đ</span></span>
+              </a>
+              <a href="#item" class="press grid size-11 shrink-0 place-items-center self-end rounded-full bg-primary text-primary-foreground" aria-label="Chọn Cà phê sữa đá"><i data-lucide="plus" class="size-5"></i></a>
+            </li>
+            <li class="flex gap-3 py-3">
+              <a href="#item" class="press flex min-w-0 flex-1 gap-3"><img src="https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=240&q=80&auto=format&fit=crop" alt="" class="size-[88px] shrink-0 rounded-2xl object-cover" />
+                <span class="min-w-0"><span class="block text-base font-medium">Bạc xỉu</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Nhiều sữa, ít cà phê, hợp người mới uống</span><span class="mt-1.5 block text-base font-semibold tabular-nums">39.000đ</span></span>
+              </a>
+              <a href="#item" class="press grid size-11 shrink-0 place-items-center self-end rounded-full bg-primary text-primary-foreground" aria-label="Chọn Bạc xỉu"><i data-lucide="plus" class="size-5"></i></a>
+            </li>
+            <li class="flex gap-3 py-3">
+              <a href="#item" class="press flex min-w-0 flex-1 gap-3"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=240&q=80&auto=format&fit=crop" alt="" class="size-[88px] shrink-0 rounded-2xl object-cover" />
+                <span class="min-w-0"><span class="block text-base font-medium">Latte đá muối kem phô mai Đà Lạt</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Espresso, sữa tươi, lớp kem muối phô mai béo mặn</span><span class="mt-1.5 flex items-baseline gap-2"><span class="text-base font-semibold tabular-nums">49.000đ</span><span class="text-[13px] text-muted line-through tabular-nums">59.000đ</span></span></span>
+              </a>
+              <a href="#item" class="press grid size-11 shrink-0 place-items-center self-end rounded-full bg-primary text-primary-foreground" aria-label="Chọn Latte đá muối kem phô mai Đà Lạt"><i data-lucide="plus" class="size-5"></i></a>
+            </li>
+          </ul>
+
+          <h2 id="cat-matcha" class="mt-6 scroll-mt-14 px-4 text-[20px]/[25px] font-semibold">Matcha</h2>
+          <ul class="mt-1 divide-y divide-border px-4">
+            <li class="flex gap-3 py-3">
+              <a href="#item" class="press flex min-w-0 flex-1 gap-3"><img src="https://images.unsplash.com/photo-1751563721808-3b81940b88f7?w=240&q=80&auto=format&fit=crop" alt="" class="size-[88px] shrink-0 rounded-2xl object-cover" />
+                <span class="min-w-0"><span class="flex items-center gap-2"><span class="text-base font-medium">Matcha latte Tây Bắc</span></span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Bán chạy · Matcha Yên Bái, sữa tươi</span><span class="mt-1.5 block text-base font-semibold tabular-nums">55.000đ</span></span>
+              </a>
+              <a href="#item" class="press grid size-11 shrink-0 place-items-center self-end rounded-full bg-primary text-primary-foreground" aria-label="Chọn Matcha latte Tây Bắc"><i data-lucide="plus" class="size-5"></i></a>
+            </li>
+          </ul>
+
+          <h2 id="cat-tea" class="mt-6 scroll-mt-14 px-4 text-[20px]/[25px] font-semibold">Trà</h2>
+          <ul class="mt-1 divide-y divide-border px-4">
+            <li class="flex gap-3 py-3">
+              <a href="#item" class="press flex min-w-0 flex-1 gap-3"><img src="https://images.unsplash.com/photo-1676693420436-7fa448f054eb?w=240&q=80&auto=format&fit=crop" alt="" class="size-[88px] shrink-0 rounded-2xl object-cover" />
+                <span class="min-w-0"><span class="block text-base font-medium">Trà đào cam sả</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Đào ngâm, cam vàng, sả tươi</span><span class="mt-1.5 block text-base font-semibold tabular-nums">49.000đ</span></span>
+              </a>
+              <a href="#item" class="press grid size-11 shrink-0 place-items-center self-end rounded-full bg-primary text-primary-foreground" aria-label="Chọn Trà đào cam sả"><i data-lucide="plus" class="size-5"></i></a>
+            </li>
+          </ul>
+
+          <h2 id="cat-bakery" class="mt-6 scroll-mt-14 px-4 text-[20px]/[25px] font-semibold">Bánh</h2>
+          <ul class="mt-1 divide-y divide-border px-4">
+            <li class="flex gap-3 py-3">
+              <a href="#item" class="press flex min-w-0 flex-1 gap-3"><img src="https://images.unsplash.com/photo-1691480162735-9b91238080f6?w=240&q=80&auto=format&fit=crop" alt="" class="size-[88px] shrink-0 rounded-2xl object-cover" />
+                <span class="min-w-0"><span class="block text-base font-medium">Croissant bơ</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Nướng mỗi sáng</span><span class="mt-1.5 block text-base font-semibold tabular-nums">29.000đ</span></span>
+              </a>
+              <!-- Món không có lựa chọn bắt buộc: "+" thêm thẳng vào giỏ, báo bằng thông báo ngắn (J7). -->
+              <button class="press grid size-11 shrink-0 place-items-center self-end rounded-full bg-primary text-primary-foreground" aria-label="Thêm Croissant bơ vào giỏ" data-quick-add="Croissant bơ" data-price="29000"><i data-lucide="plus" class="size-5"></i></button>
+            </li>
+            <!-- Hết hàng (S8): ảnh mờ, dòng "Hết hôm nay", không có nút "+". Vẫn ở chỗ cũ trong danh mục, không giấu. -->
+            <li class="flex gap-3 py-3">
+              <span class="flex min-w-0 flex-1 gap-3"><img src="https://images.unsplash.com/photo-1681218079567-35aef7c8e7e4?w=240&q=80&auto=format&fit=crop" alt="" class="size-[88px] shrink-0 rounded-2xl object-cover opacity-50 grayscale" />
+                <span class="min-w-0"><span class="block text-base font-medium text-muted">Croissant hạnh nhân</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Hết hôm nay · có lại 7:00 sáng mai</span><span class="mt-1.5 block text-base font-semibold text-muted tabular-nums">35.000đ</span></span>
+              </span>
+            </li>
+          </ul>
+
+          <h2 id="cat-other" class="mt-6 scroll-mt-14 px-4 text-[20px]/[25px] font-semibold">Khác</h2>
+          <ul class="mt-1 divide-y divide-border px-4">
+            <!-- Món không ảnh (S16 ca biên): ô nền xám cùng cỡ, icon giữa, dòng không lệch. -->
+            <li class="flex gap-3 py-3">
+              <span class="flex min-w-0 flex-1 gap-3"><span class="grid size-[88px] shrink-0 place-items-center rounded-2xl bg-background text-muted"><i data-lucide="cup-soda" class="size-7"></i></span>
+                <span class="min-w-0"><span class="block text-base font-medium">Nước suối</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Chai 500ml</span><span class="mt-1.5 block text-base font-semibold tabular-nums">15.000đ</span></span>
+              </span>
+              <button class="press grid size-11 shrink-0 place-items-center self-end rounded-full bg-primary text-primary-foreground" aria-label="Thêm Nước suối vào giỏ" data-quick-add="Nước suối" data-price="15000"><i data-lucide="plus" class="size-5"></i></button>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= 3. GIỎ HÀNG (màn con, đẩy vào từ phải) ================= -->
+      <section class="screen is-pushed" data-screen="cart" aria-label="Giỏ hàng">
+        <header class="pad-top shrink-0 bg-(--screen-bg)">
+          <div class="relative flex h-11 items-center px-2">
+            <a href="#menu" class="press inline-flex h-11 items-center gap-0.5 rounded-full pr-3 pl-1 text-base" aria-label="Quay lại Đặt món"><i data-lucide="chevron-left" class="size-6"></i>Đặt món</a>
+            <p class="absolute inset-x-0 mx-auto w-fit text-[17px] font-semibold">Giỏ hàng</p>
+          </div>
+        </header>
+        <div class="scroll pb-4">
+          <!-- Cách nhận (J11): hai lựa chọn, điều khiển phân đoạn đầu màn; đổi thì khối địa chỉ đổi theo. -->
+          <div class="mx-4 mt-2 grid h-11 grid-cols-2 rounded-xl bg-secondary text-sm font-medium" role="tablist" aria-label="Cách nhận">
+            <button role="tab" aria-selected="true" class="press group p-1"><span class="flex h-full items-center justify-center rounded-lg group-aria-selected:bg-surface group-aria-selected:shadow-[0_1px_3px_rgb(0_0_0/0.08)]">Giao tận nơi</span></button>
+            <button role="tab" aria-selected="false" class="press group p-1"><span class="flex h-full items-center justify-center rounded-lg group-aria-selected:bg-surface group-aria-selected:shadow-[0_1px_3px_rgb(0_0_0/0.08)]">Tự đến lấy</span></button>
+          </div>
+
+          <div class="mx-4 mt-4 divide-y divide-border overflow-hidden rounded-[20px] bg-surface ring-1 ring-border-strong ring-inset">
+            <button class="press flex w-full items-center gap-3 px-4 py-3 text-left active:bg-background">
+              <i data-lucide="map-pin" class="size-5 shrink-0 text-muted"></i>
+              <span class="min-w-0 flex-1"><span class="block text-base font-medium">Nhà · Linh, 0937 878 335</span><span class="block text-[13px] text-muted">285 Cách Mạng Tháng 8, Phường 12, Quận 10, TP. Hồ Chí Minh</span></span>
+              <i data-lucide="chevron-right" class="size-5 shrink-0 text-muted"></i>
+            </button>
+            <button class="press flex min-h-14 w-full items-center gap-3 px-4 text-left active:bg-background">
+              <i data-lucide="clock" class="size-5 shrink-0 text-muted"></i>
+              <span class="flex-1 text-base">Sớm nhất · 15–30 phút</span>
+              <i data-lucide="chevron-right" class="size-5 shrink-0 text-muted"></i>
+            </button>
+            <label class="flex min-h-14 items-center gap-3 px-4">
+              <i data-lucide="message-square" class="size-5 shrink-0 text-muted"></i>
+              <input class="h-14 min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted" placeholder="Lời nhắn cho tài xế" />
+            </label>
+          </div>
+
+          <div class="mt-6 flex items-center justify-between px-4">
+            <h2 class="text-[20px]/[25px] font-semibold">Món đã chọn</h2>
+            <a href="#menu" class="press inline-flex h-11 items-center gap-1 px-2 text-sm font-medium"><i data-lucide="plus" class="size-4"></i>Thêm món</a>
+          </div>
+          <!-- Dòng món trong giỏ (J11): lựa chọn ghi đủ dưới tên, bấm tên để sửa; số lượng chỉnh ngay trên dòng,
+               về 0 là bỏ món (nút trừ đổi thành thùng rác). -->
+          <ul class="mt-1 divide-y divide-border px-4">
+            <li class="flex gap-3 py-3">
+              <img src="https://images.unsplash.com/photo-1751563721808-3b81940b88f7?w=160&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-xl object-cover" />
+              <div class="min-w-0 flex-1">
+                <div class="flex items-start justify-between gap-3"><span class="text-base font-medium">Matcha latte Tây Bắc</span><span class="shrink-0 text-base font-medium tabular-nums">60.000đ</span></div>
+                <p class="text-[13px] text-muted">Vừa · Sữa yến mạch · Ít đá · Bình thường</p>
+                <div class="mt-1 flex items-center justify-between">
+                  <a href="#item" class="press inline-flex h-11 min-w-11 items-center gap-1 text-sm font-medium text-muted"><i data-lucide="pencil" class="size-4"></i>Sửa</a>
+                  <div class="flex items-center rounded-full bg-background">
+                    <button class="press grid size-11 place-items-center rounded-full" aria-label="Bỏ Matcha latte Tây Bắc"><i data-lucide="trash-2" class="size-[18px]"></i></button>
+                    <span class="w-6 text-center text-base font-medium tabular-nums">1</span>
+                    <button class="press grid size-11 place-items-center rounded-full" aria-label="Thêm một Matcha latte Tây Bắc"><i data-lucide="plus" class="size-[18px]"></i></button>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="flex gap-3 py-3">
+              <img src="https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=160&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-xl object-cover" />
+              <div class="min-w-0 flex-1">
+                <div class="flex items-start justify-between gap-3"><span class="text-base font-medium">Bạc xỉu</span><span class="shrink-0 text-base font-medium tabular-nums">78.000đ</span></div>
+                <p class="text-[13px] text-muted">Vừa · Sữa tươi · Bình thường · Ít ngọt</p>
+                <div class="mt-1 flex items-center justify-between">
+                  <a href="#item" class="press inline-flex h-11 min-w-11 items-center gap-1 text-sm font-medium text-muted"><i data-lucide="pencil" class="size-4"></i>Sửa</a>
+                  <div class="flex items-center rounded-full bg-background">
+                    <button class="press grid size-11 place-items-center rounded-full" aria-label="Bớt một Bạc xỉu"><i data-lucide="minus" class="size-[18px]"></i></button>
+                    <span class="w-6 text-center text-base font-medium tabular-nums">2</span>
+                    <button class="press grid size-11 place-items-center rounded-full" aria-label="Thêm một Bạc xỉu"><i data-lucide="plus" class="size-[18px]"></i></button>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+          <!-- Gợi ý dùng kèm (J11): ở giỏ, sau món đã chọn, một hàng thẻ nhỏ cuộn ngang. Không đặt trước lựa chọn
+               bắt buộc ở sheet chọn món. -->
+          <h2 class="mt-6 px-4 text-[17px] font-semibold">Thường gọi kèm</h2>
+          <div class="rail mt-3 pb-1">
+            <div class="w-36 overflow-hidden rounded-2xl ring-1 ring-border-strong ring-inset">
+              <img src="https://images.unsplash.com/photo-1691480162735-9b91238080f6?w=300&q=80&auto=format&fit=crop" alt="" class="h-24 w-full object-cover" />
+              <div class="flex items-end justify-between gap-1 p-3 pt-2"><span class="min-w-0"><span class="block text-sm font-medium">Croissant bơ</span><span class="block text-[13px] text-muted tabular-nums">29.000đ</span></span>
+                <button class="press grid size-11 shrink-0 place-items-center rounded-full bg-background" aria-label="Thêm Croissant bơ" data-quick-add="Croissant bơ" data-price="29000"><i data-lucide="plus" class="size-5"></i></button></div>
+            </div>
+            <div class="w-36 overflow-hidden rounded-2xl ring-1 ring-border-strong ring-inset">
+              <img src="https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=300&q=80&auto=format&fit=crop" alt="" class="h-24 w-full object-cover" />
+              <div class="flex items-end justify-between gap-1 p-3 pt-2"><span class="min-w-0"><span class="block text-sm font-medium">Cà phê sữa đá</span><span class="block text-[13px] text-muted tabular-nums">35.000đ</span></span>
+                <a href="#item" class="press grid size-11 shrink-0 place-items-center rounded-full bg-background" aria-label="Chọn Cà phê sữa đá"><i data-lucide="plus" class="size-5"></i></a></div>
+            </div>
+            <div class="w-36 overflow-hidden rounded-2xl ring-1 ring-border-strong ring-inset">
+              <img src="https://images.unsplash.com/photo-1676693420436-7fa448f054eb?w=300&q=80&auto=format&fit=crop" alt="" class="h-24 w-full object-cover" />
+              <div class="flex items-end justify-between gap-1 p-3 pt-2"><span class="min-w-0"><span class="block text-sm font-medium">Trà đào cam sả</span><span class="block text-[13px] text-muted tabular-nums">49.000đ</span></span>
+                <a href="#item" class="press grid size-11 shrink-0 place-items-center rounded-full bg-background" aria-label="Chọn Trà đào cam sả"><i data-lucide="plus" class="size-5"></i></a></div>
+            </div>
+          </div>
+
+          <div class="mx-4 mt-6 divide-y divide-border overflow-hidden rounded-[20px] bg-surface ring-1 ring-border-strong ring-inset">
+            <a href="#rewards" class="press flex min-h-14 items-center gap-3 px-4 py-2 active:bg-background">
+              <i data-lucide="ticket-percent" class="size-5 shrink-0 text-muted"></i>
+              <span class="min-w-0 flex-1"><span class="block text-base">Giảm 15% đơn thứ 2 trong ngày</span><span class="block text-[13px] text-success">Đã áp dụng · −20.700đ</span></span>
+              <i data-lucide="chevron-right" class="size-5 shrink-0 text-muted"></i>
+            </a>
+            <button class="press flex min-h-14 w-full items-center gap-3 px-4 text-left active:bg-background">
+              <i data-lucide="wallet" class="size-5 shrink-0 text-muted"></i>
+              <span class="flex-1 text-base">Tiền mặt khi nhận</span>
+              <i data-lucide="chevron-right" class="size-5 shrink-0 text-muted"></i>
+            </button>
+          </div>
+
+          <!-- Tóm tắt tiền (J11): mọi khoản cộng trừ ghi ra, tổng ở dưới cùng đậm nhất. Không để tổng ở nút khác số
+               mà không thấy phí giao từ đâu ra. -->
+          <dl class="mx-4 mt-6 space-y-2 text-base">
+            <div class="flex justify-between"><dt class="text-muted">Tạm tính (3 món)</dt><dd class="tabular-nums">138.000đ</dd></div>
+            <div class="flex justify-between"><dt class="text-muted">Phí giao hàng</dt><dd class="tabular-nums">18.000đ</dd></div>
+            <div class="flex justify-between"><dt class="text-muted">Ưu đãi</dt><dd class="text-success tabular-nums">−20.700đ</dd></div>
+            <div class="flex justify-between border-t border-border pt-3 text-[17px] font-semibold"><dt>Tổng cộng</dt><dd class="tabular-nums">135.300đ</dd></div>
+          </dl>
+
+        </div>
+        <!-- Nút chính dính đáy (J5): 52px, cách hai mép 16px, ghi tổng tiền. Không thanh màu tràn sát mép. -->
+        <div class="shrink-0 border-t border-border bg-surface px-4 pt-3" style="padding-bottom: calc(var(--inset-bottom) + 12px)">
+          <a href="#login" class="press flex h-[52px] items-center justify-center gap-2 rounded-2xl bg-primary text-base font-semibold text-primary-foreground">Đặt hàng<span class="font-normal">·</span><span class="tabular-nums">135.300đ</span></a>
+        </div>
+      </section>
+
+      <!-- ================= 4. ƯU ĐÃI (tab 2) ================= -->
+      <section class="screen" data-screen="rewards" aria-label="Ưu đãi">
+        <div class="scroll pad-top pad-tabbar">
+          <header class="px-4 pt-3"><h1 class="text-[32px]/[38px] font-semibold tracking-tight">Ưu đãi</h1></header>
+
+          <!-- Thẻ thành viên (J11): một thẻ nền tối ở đầu màn, hạng + điểm là số lớn nhất màn, mã quét ở quầy nằm
+               trong ô trắng riêng (máy quét cần nền trắng). -->
+          <div class="mx-4 mt-4 rounded-[20px] bg-(--hero-bg) p-5 text-white">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <p class="text-sm text-white/70">Hạng Vàng</p>
+                <p class="mt-1 text-[36px]/[42px] font-semibold tracking-tight tabular-nums">275 <span class="text-2xl font-medium text-white/70">điểm</span></p>
+              </div>
+              <button class="press inline-flex h-11 items-center gap-1 rounded-full bg-white/15 px-4 text-sm font-medium">Đổi điểm</button>
+            </div>
+            <div class="mt-4 h-1.5 overflow-hidden rounded-full bg-white/15"><div class="h-full w-[69%] rounded-full bg-(--hero-accent)"></div></div>
+            <p class="mt-2 text-[13px] text-white/70">Còn 125 điểm lên hạng Kim Cương</p>
+            <div class="mt-4 rounded-2xl bg-white px-4 pt-4 pb-3 text-center text-foreground">
+              <div class="barcode mx-auto h-16 w-full" aria-hidden="true"></div>
+              <p class="mt-2 text-[15px] font-medium tracking-[0.2em] tabular-nums">M1651 1600</p>
+            </div>
+            <p class="mt-2 text-center text-[13px] text-white/70">Đưa mã này cho thu ngân để tích điểm</p>
+          </div>
+
+          <div class="mt-6 flex items-center justify-between px-4">
+            <h2 class="text-[20px]/[25px] font-semibold">Phiếu của bạn</h2>
+            <a href="#rewards" class="press inline-flex h-11 items-center px-2 text-sm font-medium text-muted">Xem tất cả</a>
+          </div>
+          <!-- Phiếu ưu đãi (J11): cuống trái ghi mức giảm to, thân phải ghi điều kiện và hạn. Sắp hết hạn chữ đỏ. -->
+          <ul class="mt-2 space-y-3 px-4">
+            <li><a href="#cart" class="press flex min-h-[104px] overflow-hidden rounded-2xl bg-surface ring-1 ring-border-strong ring-inset">
+              <span class="flex w-24 shrink-0 flex-col items-center justify-center bg-(--cat-amber-bg) text-(--cat-amber)"><span class="text-[28px]/[32px] font-bold tabular-nums">15%</span><span class="text-xs font-medium">Đơn thứ 2</span></span>
+              <span class="min-w-0 flex-1 border-l border-dashed border-border-strong px-4 py-3"><span class="block text-base font-medium">Giảm 15% đơn thứ 2 trong ngày</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Mọi kênh · tối đa 30.000đ</span><span class="mt-1 block text-[13px] font-medium text-danger">Hết hạn sau 13 giờ</span></span>
+            </a></li>
+            <li><a href="#cart" class="press flex min-h-[104px] overflow-hidden rounded-2xl bg-surface ring-1 ring-border-strong ring-inset">
+              <span class="flex w-24 shrink-0 flex-col items-center justify-center bg-(--cat-blue-bg) text-(--cat-blue)"><span class="text-[28px]/[32px] font-bold tabular-nums">35%</span><span class="text-xs font-medium">Giao hàng</span></span>
+              <span class="min-w-0 flex-1 border-l border-dashed border-border-strong px-4 py-3"><span class="block text-base font-medium">Giảm 35% và miễn phí giao cho đơn từ 5 ly</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Tối đa 500.000đ</span><span class="mt-1 block text-[13px] text-muted">Hạn đến 14/10</span></span>
+            </a></li>
+            <li><a href="#cart" class="press flex min-h-[104px] overflow-hidden rounded-2xl bg-surface ring-1 ring-border-strong ring-inset">
+              <span class="flex w-24 shrink-0 flex-col items-center justify-center bg-(--cat-green-bg) text-(--cat-green)"><span class="text-[28px]/[32px] font-bold">Free</span><span class="text-xs font-medium">Bánh</span></span>
+              <span class="min-w-0 flex-1 border-l border-dashed border-border-strong px-4 py-3"><span class="block text-base font-medium">Tặng một bánh bất kỳ khi mua ly lớn</span><span class="mt-0.5 block text-[13px] text-pretty text-muted">Tại quầy</span><span class="mt-1 block text-[13px] text-muted">Hạn đến 31/10</span></span>
+            </a></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= 5. ĐƠN HÀNG (tab 3) ================= -->
+      <section class="screen" data-screen="orders" aria-label="Đơn hàng">
+        <div class="scroll pad-top pad-tabbar">
+          <header class="px-4 pt-3"><h1 class="text-[32px]/[38px] font-semibold tracking-tight">Đơn hàng</h1></header>
+
+          <!-- Đơn đang làm (J11): thẻ ở đầu, trạng thái bằng chữ + thanh bước, giờ dự kiến là chữ lớn nhất thẻ. -->
+          <div class="mx-4 mt-4 rounded-[20px] p-5 ring-1 ring-border-strong ring-inset">
+            <p class="text-sm text-muted">Đang giao · Mã MC-2481</p>
+            <p class="mt-1 text-2xl font-semibold">Dự kiến 12:45</p>
+            <div class="mt-4 grid grid-cols-3 gap-1.5" aria-hidden="true">
+              <span class="h-1.5 rounded-full bg-primary"></span><span class="h-1.5 rounded-full bg-primary"></span><span class="h-1.5 rounded-full bg-secondary"></span>
+            </div>
+            <div class="mt-2 grid grid-cols-3 text-[13px]"><span class="text-muted">Đã nhận</span><span class="text-center font-medium">Đang giao</span><span class="text-right text-muted">Đã đến</span></div>
+            <p class="mt-4 text-base">Matcha latte Tây Bắc, Bạc xỉu ×2</p>
+          </div>
+
+          <h2 class="mt-6 px-4 text-[20px]/[25px] font-semibold">Đã đặt</h2>
+          <!-- Đặt lại (J11): đơn cũ có nút "Đặt lại" trên dòng, bỏ nguyên món và lựa chọn cũ vào giỏ. -->
+          <ul class="mt-1 divide-y divide-border px-4">
+            <li class="flex items-center gap-3 py-3">
+              <img src="https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=160&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-xl object-cover" />
+              <span class="min-w-0 flex-1"><span class="block text-base font-medium">Bạc xỉu, Croissant bơ</span><span class="block text-[13px] text-muted tabular-nums">08/10 · 68.000đ · Đã giao</span></span>
+              <a href="#cart" class="press inline-flex h-11 shrink-0 items-center rounded-full bg-background px-4 text-sm font-medium">Đặt lại</a>
+            </li>
+            <li class="flex items-center gap-3 py-3">
+              <img src="https://images.unsplash.com/photo-1676693420436-7fa448f054eb?w=160&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-xl object-cover" />
+              <span class="min-w-0 flex-1"><span class="block text-base font-medium">Trà đào cam sả ×3</span><span class="block text-[13px] text-muted tabular-nums">02/10 · 147.000đ · Tự lấy ở Võ Văn Tần</span></span>
+              <a href="#cart" class="press inline-flex h-11 shrink-0 items-center rounded-full bg-background px-4 text-sm font-medium">Đặt lại</a>
+            </li>
+            <li class="flex items-center gap-3 py-3">
+              <img src="https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=160&q=80&auto=format&fit=crop" alt="" class="size-14 shrink-0 rounded-xl object-cover" />
+              <span class="min-w-0 flex-1"><span class="block text-base font-medium">Cà phê sữa đá</span><span class="block text-[13px] text-muted tabular-nums">28/09 · 35.000đ · <span class="text-danger">Đã huỷ</span></span></span>
+              <a href="#cart" class="press inline-flex h-11 shrink-0 items-center rounded-full bg-background px-4 text-sm font-medium">Đặt lại</a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= 9. ĐƠN HÀNG, CHƯA CÓ ĐƠN (cùng tab 3) ================= -->
+      <!-- Màn gốc của tab rỗng (J12): icon trong vòng tròn, tiêu đề nói chưa có gì, một câu nói thứ gì sẽ hiện ở đây,
+           một nút dẫn tới việc làm nó đầy. Khối nằm giữa vùng trống, tiêu đề lớn của màn vẫn ở chỗ cũ. -->
+      <section class="screen" data-screen="orders-empty" data-tab-root="orders" aria-label="Đơn hàng">
+        <div class="scroll pad-top pad-tabbar flex flex-col">
+          <header class="px-4 pt-3"><h1 class="text-[32px]/[38px] font-semibold tracking-tight">Đơn hàng</h1></header>
+          <div class="flex flex-1 flex-col items-center justify-center px-8 pb-16 text-center">
+            <span class="grid size-20 place-items-center rounded-full bg-background text-muted"><i data-lucide="receipt-text" class="size-9"></i></span>
+            <h2 class="mt-5 text-[20px]/[25px] font-semibold">Chưa có đơn nào</h2>
+            <p class="mt-2 text-base text-pretty text-muted">Món bạn đặt sẽ hiện ở đây, kèm trạng thái quán làm và tài xế giao.</p>
+            <a href="#menu" class="press mt-6 inline-flex h-[52px] items-center rounded-2xl bg-primary px-6 text-base font-semibold text-primary-foreground">Xem menu</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 10. TÀI KHOẢN (tab 4, danh sách nhóm) ================= -->
+      <section class="screen is-grouped" data-screen="account" aria-label="Tài khoản">
+        <div class="scroll pad-top pad-tabbar">
+          <header class="px-4 pt-3"><h1 class="text-[32px]/[38px] font-semibold tracking-tight">Tài khoản</h1></header>
+          <a href="#account" class="press mx-4 mt-4 flex items-center gap-3 rounded-[20px] bg-surface p-4">
+            <span class="grid size-14 shrink-0 place-items-center rounded-full bg-(--avatar-bg) text-lg font-semibold text-(--avatar-text)">L</span>
+            <span class="min-w-0 flex-1"><span class="block text-[17px] font-semibold">Linh</span><span class="block text-sm text-muted tabular-nums">+84 937 878 335</span></span>
+            <i data-lucide="chevron-right" class="size-5 shrink-0 text-muted"></i>
+          </a>
+          <h2 class="mt-6 px-8 text-[13px] font-medium text-muted">ĐẶT MÓN</h2>
+          <ul class="mx-4 mt-2 divide-y divide-border overflow-hidden rounded-[20px] bg-surface text-base">
+            <li><a href="#account" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="map-pin" class="size-5 text-muted"></i><span class="flex-1">Địa chỉ đã lưu</span><span class="text-muted tabular-nums">2</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+            <li><a href="#account" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="wallet" class="size-5 text-muted"></i><span class="flex-1">Thanh toán</span><span class="text-muted">Tiền mặt</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+          </ul>
+          <!-- Quyền đã từ chối (J12): ghi trạng thái ở dòng, bấm thì mở Cài đặt của máy; không hỏi lại bằng hộp hệ thống. -->
+          <h2 class="mt-6 px-8 text-[13px] font-medium text-muted">CÀI ĐẶT</h2>
+          <ul class="mx-4 mt-2 divide-y divide-border overflow-hidden rounded-[20px] bg-surface text-base">
+            <li><a href="#account" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="bell" class="size-5 text-muted"></i><span class="flex-1">Thông báo</span><span class="text-muted">Đang tắt</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+            <li><a href="#account" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="navigation" class="size-5 text-muted"></i><span class="flex-1">Vị trí</span><span class="text-muted">Khi dùng app</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+            <li><a href="#account" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="file-text" class="size-5 text-muted"></i><span class="flex-1">Điều khoản và quyền riêng tư</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+          </ul>
+          <!-- Đăng xuất và Xoá tài khoản: chữ đỏ (I4, câu 3 và câu 1), thẻ riêng cuối màn. Xoá tài khoản (J12) bắt buộc có
+               trong app khi app cho tạo tài khoản; dẫn sang màn nói rõ mất gì rồi xác nhận lại bằng mã OTP. -->
+          <ul class="mx-4 mt-6 divide-y divide-border overflow-hidden rounded-[20px] bg-surface text-base">
+            <li><button class="press flex min-h-14 w-full items-center justify-center px-4 font-medium text-danger">Đăng xuất</button></li>
+            <li><a href="#account" class="press flex min-h-14 items-center justify-center px-4 font-medium text-danger">Xoá tài khoản</a></li>
+          </ul>
+          <p class="mt-4 text-center text-[13px] text-muted">Phiên bản 3.1.0</p>
+        </div>
+      </section>
+
+      <!-- ================= THANH GIỎ HÀNG (J11): chỉ ở màn Đặt món khi giỏ có món, nằm ngay trên thanh tab, cùng
+           lề 16px. Ghi số món + tổng tiền, bấm mở giỏ. ================= -->
+      <a href="#cart" class="press above-tabbar absolute inset-x-4 z-30 flex h-14 items-center gap-3 rounded-full bg-primary pr-5 pl-2 text-primary-foreground shadow-[0_8px_24px_-8px_rgb(0_0_0/0.45)]" data-cartbar>
+        <span class="grid size-10 place-items-center rounded-full bg-white/15 text-base font-semibold tabular-nums" data-cart-count>3</span>
+        <span class="flex-1 text-base font-semibold">Xem giỏ hàng</span>
+        <span class="text-base font-semibold tabular-nums" data-cart-total>138.000đ</span>
+      </a>
+
+      <!-- ================= THANH TAB NỔI (J2): 4 mục có chữ, không nút thêm (thêm món ở từng dòng). ================= -->
+      <nav class="above-home absolute inset-x-4 z-30 grid h-16 grid-cols-4 rounded-full bg-surface/90 px-2 shadow-[0_0_0_1px_rgb(0_0_0/0.04),0_8px_24px_-8px_rgb(0_0_0/0.18)] backdrop-blur-xl" aria-label="Điều hướng chính" data-tabbar>
+        <a href="#menu" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground" data-tab="menu"><i data-lucide="coffee" class="size-6"></i><span class="text-[11px] font-medium">Đặt món</span></a>
+        <a href="#rewards" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground" data-tab="rewards"><i data-lucide="ticket-percent" class="size-6"></i><span class="text-[11px] font-medium">Ưu đãi</span></a>
+        <a href="#orders" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground" data-tab="orders"><i data-lucide="receipt-text" class="size-6"></i><span class="text-[11px] font-medium">Đơn hàng</span></a>
+        <a href="#account" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground" data-tab="account"><i data-lucide="circle-user-round" class="size-6"></i><span class="text-[11px] font-medium">Tài khoản</span></a>
+      </nav>
+
+      <!-- ================= 2. CHỌN MÓN (sheet cao, J6 + J11) ================= -->
+      <div class="scrim absolute inset-0 z-40 bg-black/40" data-scrim></div>
+      <section class="sheet absolute inset-x-0 bottom-0 z-50 flex h-[92%] flex-col overflow-hidden rounded-t-[28px] bg-surface" role="dialog" aria-modal="true" aria-label="Matcha latte Tây Bắc" data-sheet="item">
+        <!-- Cuộn qua ảnh thì hiện thanh tên món 56px (J11): nút đóng luôn trong tầm, người dùng biết đang chọn món nào. -->
+        <div class="pointer-events-none absolute inset-x-0 top-0 z-10 flex h-14 items-center border-b border-border bg-surface/90 pr-16 pl-4 opacity-0 invisible backdrop-blur-xl transition-[opacity,visibility] duration-150" data-sheet-bar>
+          <p class="text-[17px] font-semibold">Matcha latte Tây Bắc</p>
+        </div>
+        <a href="#menu" class="press absolute top-1.5 right-3 z-20 grid size-11 place-items-center rounded-full bg-surface/90 backdrop-blur" aria-label="Đóng" data-close><i data-lucide="x" class="size-5"></i></a>
+        <div class="scroll" data-sheet-scroll>
+          <!-- Ảnh món to trên đầu sheet (J11), thanh kéo và nút đóng nổi trên ảnh. -->
+          <div class="relative h-64 bg-background">
+            <img src="https://images.unsplash.com/photo-1751563721808-3b81940b88f7?w=800&q=80&auto=format&fit=crop" alt="Ly matcha latte đá" class="size-full object-cover" />
+            <span class="absolute top-2 inset-x-0 mx-auto h-[5px] w-9 rounded-full bg-white/80" aria-hidden="true"></span>
+          </div>
+
+          <div class="px-4 pt-4">
+            <div class="flex items-start justify-between gap-3">
+              <h2 class="text-2xl/[30px] font-semibold tracking-tight">Matcha latte Tây Bắc</h2>
+              <button class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Lưu vào yêu thích"><i data-lucide="heart" class="size-6"></i></button>
+            </div>
+            <p class="mt-1 text-base font-medium tabular-nums">49.000đ</p>
+            <p class="mt-2 text-base text-muted">Matcha Yên Bái đánh tay, sữa tươi thanh trùng. Khuấy đều trước khi uống.</p>
+          </div>
+
+          <!-- Nhóm lựa chọn (J11): mọi nhóm là dòng 56px, nút chọn trái, tên giữa, phần cộng thêm "+6.000đ" phải (không
+               có thì để trống). "Bắt buộc · chọn 1" ghi bằng chữ, không dấu sao. App của một quán chọn sẵn mặc định. -->
+          <fieldset class="mt-6 border-t-8 border-background px-4 pt-5" data-group="size">
+            <legend class="sr-only">Cỡ ly</legend>
+            <div class="flex items-baseline justify-between"><h3 class="text-[17px] font-semibold">Cỡ ly</h3><span class="text-[13px] text-muted">Bắt buộc · chọn 1</span></div>
+            <div class="mt-1 divide-y divide-border">
+              <label class="press flex min-h-14 cursor-pointer items-center gap-3"><input type="radio" name="size" value="0" class="peer sr-only" data-delta="0" /><span class="grid size-[22px] shrink-0 place-items-center rounded-full ring-2 ring-border-strong ring-inset peer-checked:ring-[7px] peer-checked:ring-primary"></span><span class="flex-1 text-base">Nhỏ</span><span class="text-base text-muted tabular-nums"></span></label>
+              <label class="press flex min-h-14 cursor-pointer items-center gap-3"><input type="radio" name="size" value="1" class="peer sr-only" data-delta="6000" checked /><span class="grid size-[22px] shrink-0 place-items-center rounded-full ring-2 ring-border-strong ring-inset peer-checked:ring-[7px] peer-checked:ring-primary"></span><span class="flex-1 text-base">Vừa</span><span class="text-base text-muted tabular-nums">+6.000đ</span></label>
+              <label class="press flex min-h-14 cursor-pointer items-center gap-3"><input type="radio" name="size" value="2" class="peer sr-only" data-delta="10000" /><span class="grid size-[22px] shrink-0 place-items-center rounded-full ring-2 ring-border-strong ring-inset peer-checked:ring-[7px] peer-checked:ring-primary"></span><span class="flex-1 text-base">Lớn</span><span class="text-base text-muted tabular-nums">+10.000đ</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="mt-4 border-t-8 border-background px-4 pt-5">
+            <legend class="sr-only">Loại sữa</legend>
+            <div class="flex items-baseline justify-between"><h3 class="text-[17px] font-semibold">Loại sữa</h3><span class="text-[13px] text-muted">Bắt buộc · chọn 1</span></div>
+            <div class="mt-1 divide-y divide-border">
+              <label class="press flex min-h-14 cursor-pointer items-center gap-3"><input type="radio" name="milk" class="peer sr-only" data-delta="0" checked /><span class="grid size-[22px] shrink-0 place-items-center rounded-full ring-2 ring-border-strong ring-inset peer-checked:ring-[7px] peer-checked:ring-primary"></span><span class="flex-1 text-base">Sữa tươi</span><span class="text-base text-muted"></span></label>
+              <label class="press flex min-h-14 cursor-pointer items-center gap-3"><input type="radio" name="milk" class="peer sr-only" data-delta="5000" /><span class="grid size-[22px] shrink-0 place-items-center rounded-full ring-2 ring-border-strong ring-inset peer-checked:ring-[7px] peer-checked:ring-primary"></span><span class="flex-1 text-base">Sữa yến mạch</span><span class="text-base text-muted tabular-nums">+5.000đ</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="mt-4 border-t-8 border-background px-4 pt-5">
+            <legend class="sr-only">Lượng đá</legend>
+            <div class="flex items-baseline justify-between"><h3 class="text-[17px] font-semibold">Đá</h3><span class="text-[13px] text-muted">Bắt buộc · chọn 1</span></div>
+            <div class="mt-1 divide-y divide-border">
+              <label class="press flex min-h-14 cursor-pointer items-center gap-3"><input type="radio" name="ice" class="peer sr-only" checked /><span class="grid size-[22px] shrink-0 place-items-center rounded-full ring-2 ring-border-strong ring-inset peer-checked:ring-[7px] peer-checked:ring-primary"></span><span class="flex-1 text-base">Bình thường</span></label>
+              <label class="press flex min-h-14 cursor-pointer items-center gap-3"><input type="radio" name="ice" class="peer sr-only" /><span class="grid size-[22px] shrink-0 place-items-center rounded-full ring-2 ring-border-strong ring-inset peer-checked:ring-[7px] peer-checked:ring-primary"></span><span class="flex-1 text-base">Ít đá</span></label>
+              <label class="press flex min-h-14 cursor-pointer items-center gap-3"><input type="radio" name="ice" class="peer sr-only" /><span class="grid size-[22px] shrink-0 place-items-center rounded-full ring-2 ring-border-strong ring-inset peer-checked:ring-[7px] peer-checked:ring-primary"></span><span class="flex-1 text-base">Đá riêng</span></label>
+              <label class="press flex min-h-14 cursor-pointer items-center gap-3"><input type="radio" name="ice" class="peer sr-only" /><span class="grid size-[22px] shrink-0 place-items-center rounded-full ring-2 ring-border-strong ring-inset peer-checked:ring-[7px] peer-checked:ring-primary"></span><span class="flex-1 text-base">Không đá</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="mt-4 border-t-8 border-background px-4 pt-5">
+            <legend class="sr-only">Độ ngọt</legend>
+            <div class="flex items-baseline justify-between"><h3 class="text-[17px] font-semibold">Độ ngọt</h3><span class="text-[13px] text-muted">Bắt buộc · chọn 1</span></div>
+            <div class="mt-1 divide-y divide-border">
+              <label class="press flex min-h-14 cursor-pointer items-center gap-3"><input type="radio" name="sugar" class="peer sr-only" checked /><span class="grid size-[22px] shrink-0 place-items-center rounded-full ring-2 ring-border-strong ring-inset peer-checked:ring-[7px] peer-checked:ring-primary"></span><span class="flex-1 text-base">Bình thường</span></label>
+              <label class="press flex min-h-14 cursor-pointer items-center gap-3"><input type="radio" name="sugar" class="peer sr-only" /><span class="grid size-[22px] shrink-0 place-items-center rounded-full ring-2 ring-border-strong ring-inset peer-checked:ring-[7px] peer-checked:ring-primary"></span><span class="flex-1 text-base">Ít ngọt</span></label>
+              <label class="press flex min-h-14 cursor-pointer items-center gap-3"><input type="radio" name="sugar" class="peer sr-only" /><span class="grid size-[22px] shrink-0 place-items-center rounded-full ring-2 ring-border-strong ring-inset peer-checked:ring-[7px] peer-checked:ring-primary"></span><span class="flex-1 text-base">Thêm ngọt</span></label>
+              <label class="press flex min-h-14 cursor-pointer items-center gap-3"><input type="radio" name="sugar" class="peer sr-only" /><span class="grid size-[22px] shrink-0 place-items-center rounded-full ring-2 ring-border-strong ring-inset peer-checked:ring-[7px] peer-checked:ring-primary"></span><span class="flex-1 text-base">Không ngọt</span></label>
+            </div>
+          </fieldset>
+
+          <!-- Nhóm tuỳ chọn thêm: checkbox, ghi giới hạn "chọn tối đa 2"; chọn đủ thì các dòng còn lại mờ đi. -->
+          <fieldset class="mt-4 border-t-8 border-background px-4 pt-5" data-group="topping" data-max="2">
+            <legend class="sr-only">Topping</legend>
+            <div class="flex items-baseline justify-between"><h3 class="text-[17px] font-semibold">Topping</h3><span class="text-[13px] text-muted">Không bắt buộc · tối đa 2</span></div>
+            <div class="mt-1 divide-y divide-border">
+              <label class="press flex min-h-14 cursor-pointer items-center gap-3 has-disabled:opacity-40"><input type="checkbox" class="peer sr-only" data-delta="10000" /><span class="grid size-[22px] shrink-0 place-items-center rounded-md text-transparent ring-2 ring-border-strong ring-inset peer-checked:bg-primary peer-checked:text-primary-foreground peer-checked:ring-primary"><i data-lucide="check" class="size-4"></i></span><span class="flex-1 text-base">Trân châu trắng</span><span class="text-base text-muted tabular-nums">+10.000đ</span></label>
+              <label class="press flex min-h-14 cursor-pointer items-center gap-3 has-disabled:opacity-40"><input type="checkbox" class="peer sr-only" data-delta="15000" /><span class="grid size-[22px] shrink-0 place-items-center rounded-md text-transparent ring-2 ring-border-strong ring-inset peer-checked:bg-primary peer-checked:text-primary-foreground peer-checked:ring-primary"><i data-lucide="check" class="size-4"></i></span><span class="flex-1 text-base">Kem muối phô mai</span><span class="text-base text-muted tabular-nums">+15.000đ</span></label>
+              <label class="press flex min-h-14 cursor-pointer items-center gap-3 has-disabled:opacity-40"><input type="checkbox" class="peer sr-only" data-delta="12000" /><span class="grid size-[22px] shrink-0 place-items-center rounded-md text-transparent ring-2 ring-border-strong ring-inset peer-checked:bg-primary peer-checked:text-primary-foreground peer-checked:ring-primary"><i data-lucide="check" class="size-4"></i></span><span class="flex-1 text-base">Thêm một shot matcha</span><span class="text-base text-muted tabular-nums">+12.000đ</span></label>
+            </div>
+          </fieldset>
+
+          <div class="mt-4 flex items-center justify-between border-t-8 border-background px-4 pt-4">
+            <h3 class="text-[17px] font-semibold">Số lượng</h3>
+            <div class="flex items-center rounded-full bg-background">
+              <button class="press grid size-11 place-items-center rounded-full disabled:text-muted/50" aria-label="Bớt một ly" data-qty-minus disabled><i data-lucide="minus" class="size-[18px]"></i></button>
+              <span class="w-8 text-center text-base font-medium tabular-nums" data-qty>1</span>
+              <button class="press grid size-11 place-items-center rounded-full" aria-label="Thêm một ly" data-qty-plus><i data-lucide="plus" class="size-[18px]"></i></button>
+            </div>
+          </div>
+
+          <div class="mt-4 border-t-8 border-background px-4 pt-5 pb-6">
+            <label class="block"><span class="text-[17px] font-semibold">Ghi chú cho quán</span>
+              <input class="mt-3 h-[52px] w-full rounded-2xl border border-border-strong bg-surface px-4 text-base outline-none placeholder:text-muted focus:border-primary" placeholder="Ví dụ: ít đá hơn nữa" />
+            </label>
+          </div>
+        </div>
+        <!-- Đáy sheet (J11, J5): một nút giãn hết bề ngang, ghi tổng tiền theo lựa chọn và số lượng, đổi ngay khi chọn. -->
+        <div class="shrink-0 border-t border-border px-4 pt-3" style="padding-bottom: calc(var(--inset-bottom) + 12px)">
+          <a href="#menu" class="press flex h-[52px] items-center justify-center gap-1.5 rounded-2xl bg-primary text-base font-semibold text-primary-foreground" data-add>Thêm vào giỏ<span class="font-normal">·</span><span class="tabular-nums" data-item-total>55.000đ</span></a>
+        </div>
+      </section>
+
+
+      <!-- ================= 4. ĐĂNG NHẬP (sheet, J12): mở khi bấm "Đặt hàng" lúc chưa đăng nhập. Xem menu, thêm giỏ
+           không cần tài khoản; chỉ chặn ở bước cần biết ai đặt. Số điện thoại là cách chính (app Việt), mạng xã hội phụ. ===== -->
+      <section class="sheet absolute inset-x-0 bottom-0 z-50 flex max-h-[92%] flex-col rounded-t-[28px] bg-surface" role="dialog" aria-modal="true" aria-label="Đăng nhập để đặt hàng" data-sheet="login">
+        <div class="flex justify-center pt-2"><span class="h-[5px] w-9 rounded-full bg-border-strong" aria-hidden="true"></span></div>
+        <div class="relative flex h-11 items-center px-2">
+          <a href="#cart" class="press inline-flex h-11 items-center rounded-full px-3 text-base text-muted" data-close>Huỷ</a>
+          <p class="absolute inset-x-0 mx-auto w-fit text-[17px] font-semibold">Đăng nhập</p>
+        </div>
+        <div class="overflow-y-auto px-4 pt-3" style="padding-bottom: calc(var(--inset-bottom) + 16px)">
+          <h2 class="text-[20px]/[25px] font-semibold">Đăng nhập để đặt hàng</h2>
+          <p class="mt-1 text-base text-pretty text-muted">Mình gửi mã 6 số qua SMS. Giỏ hàng giữ nguyên.</p>
+          <!-- Ô số điện thoại (J12): mã vùng +84 là nút đổi nước trong cùng khung, bàn phím số, chữ 16. -->
+          <label class="mt-5 block"><span class="sr-only">Số điện thoại</span>
+            <span class="flex h-[52px] items-center rounded-2xl border border-border-strong bg-surface focus-within:border-primary">
+              <button type="button" class="press flex h-full shrink-0 items-center gap-1 border-r border-border-strong pr-3 pl-4 text-base font-medium" aria-label="Đổi mã vùng, đang chọn Việt Nam +84">+84<i data-lucide="chevron-down" class="size-4 text-muted"></i></button>
+              <input type="tel" inputmode="tel" autocomplete="tel-national" value="0937 878 335" placeholder="Số điện thoại" class="h-full min-w-0 flex-1 bg-transparent px-3 text-base tabular-nums outline-none placeholder:text-muted" />
+            </span>
+          </label>
+          <a href="#otp" class="press mt-3 flex h-[52px] items-center justify-center rounded-2xl bg-primary text-base font-semibold text-primary-foreground">Tiếp tục</a>
+          <div class="my-5 flex items-center gap-3"><span class="h-px flex-1 bg-border-strong"></span><span class="text-[13px] text-muted">hoặc</span><span class="h-px flex-1 bg-border-strong"></span></div>
+          <!-- Có Google thì có Apple, cùng cỡ, không phải cuộn mới thấy (App Store 4.8, J12). Logo giữ màu gốc (F16). -->
+          <div class="grid gap-3">
+            <button class="press flex h-[52px] items-center justify-center gap-2 rounded-2xl border border-border-strong text-base font-medium"><svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.43zm4.565 15.71c-.03.07-.463 1.58-1.518 3.12-.945 1.34-1.94 2.71-3.43 2.71-1.517 0-1.9-.88-3.63-.88-1.698 0-2.302.91-3.67.91-1.377 0-2.332-1.26-3.428-2.8-1.287-1.82-2.323-4.63-2.323-7.28 0-4.28 2.797-6.55 5.552-6.55 1.448 0 2.675.95 3.6.95.865 0 2.222-1.01 3.902-1.01.613 0 2.886.06 4.374 2.19-.13.09-2.383 1.37-2.383 4.19 0 3.26 2.854 4.42 2.955 4.45z"/></svg>Tiếp tục với Apple</button>
+            <button class="press flex h-[52px] items-center justify-center gap-2 rounded-2xl border border-border-strong text-base font-medium"><svg viewBox="0 0 48 48" class="size-5" aria-hidden="true"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>Tiếp tục với Google</button>
+          </div>
+          <p class="mt-5 text-center text-[13px] text-muted">Bằng việc tiếp tục, bạn đồng ý với <a href="#login" class="text-foreground underline underline-offset-2">Điều khoản</a> và <a href="#login" class="text-foreground underline underline-offset-2">Chính sách quyền riêng tư</a></p>
+        </div>
+      </section>
+
+      <!-- ================= 5. NHẬP MÃ (sheet, J12 + components/otp-input.md): bước sau của cùng sheet, nút trái là quay lại. ===== -->
+      <section class="sheet absolute inset-x-0 bottom-0 z-50 flex max-h-[92%] flex-col rounded-t-[28px] bg-surface" role="dialog" aria-modal="true" aria-label="Nhập mã xác thực" data-sheet="otp">
+        <div class="flex justify-center pt-2"><span class="h-[5px] w-9 rounded-full bg-border-strong" aria-hidden="true"></span></div>
+        <div class="relative flex h-11 items-center px-2">
+          <a href="#login" class="press grid size-11 place-items-center rounded-full" aria-label="Quay lại nhập số"><i data-lucide="chevron-left" class="size-6"></i></a>
+          <p class="absolute inset-x-0 mx-auto w-fit text-[17px] font-semibold">Nhập mã</p>
+        </div>
+        <div class="overflow-y-auto px-4 pt-3" style="padding-bottom: calc(var(--inset-bottom) + 16px)">
+          <p class="text-base text-muted">Mã 6 số vừa gửi tới</p>
+          <p class="flex flex-wrap items-center gap-x-2 text-base font-medium tabular-nums">+84 937 878 335<a href="#login" class="press inline-flex h-11 items-center font-normal text-muted underline underline-offset-2">Đổi số</a></p>
+          <fieldset class="mt-3">
+            <legend class="sr-only">Mã xác thực</legend>
+            <!-- Ô đầu autocomplete="one-time-code" maxlength 6: iOS gợi ý mã từ SMS ngay trên bàn phím, chạm là điền đủ. -->
+            <div class="grid grid-cols-6 gap-2">
+              <input inputmode="numeric" autocomplete="one-time-code" maxlength="6" aria-label="Số thứ 1 trên 6" class="h-14 w-full min-w-0 rounded-xl border border-border-strong bg-surface text-center text-2xl font-semibold tabular-nums outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" data-otp />
+              <input inputmode="numeric" maxlength="1" aria-label="Số thứ 2 trên 6" class="h-14 w-full min-w-0 rounded-xl border border-border-strong bg-surface text-center text-2xl font-semibold tabular-nums outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" data-otp />
+              <input inputmode="numeric" maxlength="1" aria-label="Số thứ 3 trên 6" class="h-14 w-full min-w-0 rounded-xl border border-border-strong bg-surface text-center text-2xl font-semibold tabular-nums outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" data-otp />
+              <input inputmode="numeric" maxlength="1" aria-label="Số thứ 4 trên 6" class="h-14 w-full min-w-0 rounded-xl border border-border-strong bg-surface text-center text-2xl font-semibold tabular-nums outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" data-otp />
+              <input inputmode="numeric" maxlength="1" aria-label="Số thứ 5 trên 6" class="h-14 w-full min-w-0 rounded-xl border border-border-strong bg-surface text-center text-2xl font-semibold tabular-nums outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" data-otp />
+              <input inputmode="numeric" maxlength="1" aria-label="Số thứ 6 trên 6" class="h-14 w-full min-w-0 rounded-xl border border-border-strong bg-surface text-center text-2xl font-semibold tabular-nums outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" data-otp />
+            </div>
+            <p aria-live="polite" class="mt-2 min-h-5 text-[13px] text-danger"></p>
+          </fieldset>
+          <!-- Đếm ngược gửi lại; hết đếm thì có thêm lối nhận mã qua cuộc gọi (SMS hay trễ ở VN). -->
+          <div class="flex min-h-11 flex-wrap items-center gap-x-3 text-[15px] text-muted tabular-nums" role="status" data-resend><span>Chưa nhận được mã? Gửi lại sau 0:<span data-countdown>30</span></span></div>
+          <a href="#notify" class="press mt-3 flex h-[52px] items-center justify-center rounded-2xl bg-primary text-base font-semibold text-primary-foreground" data-verify>Xác nhận và đặt hàng</a>
+        </div>
+      </section>
+
+      <!-- ================= 6. XIN BẬT THÔNG BÁO (sheet, J12): hỏi đúng lúc vừa đặt đơn xong, có lý do rõ; nút chính
+           "Tiếp tục" mở hộp của hệ thống, "Để sau" đóng và không hỏi lại ở lần đặt sau. ===== -->
+      <section class="sheet absolute inset-x-0 bottom-0 z-50 flex max-h-[92%] flex-col rounded-t-[28px] bg-surface" role="dialog" aria-modal="true" aria-label="Bật thông báo đơn hàng" data-sheet="notify">
+        <div class="flex justify-center pt-2"><span class="h-[5px] w-9 rounded-full bg-border-strong" aria-hidden="true"></span></div>
+        <div class="flex flex-col items-center px-6 pt-6 text-center">
+          <span class="grid size-16 place-items-center rounded-full bg-background"><i data-lucide="bell-ring" class="size-7"></i></span>
+          <h2 class="mt-4 text-[20px]/[25px] font-semibold">Báo khi đơn đang tới?</h2>
+          <p class="mt-2 text-base text-pretty text-muted">Bật thông báo để biết lúc quán làm xong và lúc tài xế tới cửa. Chỉ báo về đơn của bạn.</p>
+        </div>
+        <div class="grid gap-1 px-4 pt-6" style="padding-bottom: calc(var(--inset-bottom) + 12px)">
+          <a href="#orders" class="press flex h-[52px] items-center justify-center rounded-2xl bg-primary text-base font-semibold text-primary-foreground">Tiếp tục</a>
+          <a href="#orders" class="press flex h-11 items-center justify-center text-base font-medium text-muted">Để sau</a>
+        </div>
+      </section>
+
+      <div class="pointer-events-none absolute inset-x-4 z-[60] flex justify-center" style="bottom: calc(var(--inset-bottom) + 152px)" aria-live="polite">
+        <p class="translate-y-2 rounded-full bg-foreground px-4 py-3 text-sm font-medium text-white opacity-0 shadow-lg transition-all duration-200" data-toast></p>
+      </div>
+
+      <div class="home-indicator pointer-events-none absolute bottom-2 inset-x-0 mx-auto z-[70] h-[5px] w-[134px] rounded-full bg-foreground" aria-hidden="true"></div>
+    </div>
+
+    <script>
+      lucide.createIcons();
+      // Máy thật là .device đầu tiên. Script của app tìm phần tử trong đó, không tìm khắp trang: bảng luồng (J1) chép cả
+      // khung máy, giữ nguyên data-* để CSS theo trạng thái còn đúng, nên tìm khắp trang là đổi nhầm cả bản chép.
+      const liveDevice = document.querySelector(".device");
+
+      // Hash: #menu, #rewards, #orders, #account là tab (#orders-empty là bản rỗng của tab Đơn hàng); #cart là màn con;
+      // #item, #login, #otp, #notify mở sheet trên màn nền của nó.
+      const tabScreens = ["menu", "rewards", "orders", "account"];
+      // Màn nền cho phép của từng sheet; mở thẳng bằng link thì lấy màn đầu.
+      const sheetBases = { item: ["menu", "cart"], login: ["cart"], otp: ["cart"], notify: ["orders"] };
+      const sheet = document.querySelector("[data-sheet='item']");
+      const scrim = document.querySelector("[data-scrim]");
+      const tabbar = document.querySelector("[data-tabbar]");
+      const cartbar = document.querySelector("[data-cartbar]");
+      const toast = document.querySelector("[data-toast]");
+      const basePrice = 49000;
+      const cart = { count: 3, total: 138000 };
+      let baseScreen = "menu";
+
+      const formatPrice = (amount) => `${amount.toLocaleString("vi-VN")}đ`;
+
+      function showToast(message) {
+        toast.textContent = message;
+        setTimeout(() => toast.classList.remove("opacity-0", "translate-y-2"), 50);
+        clearTimeout(showToast.timer);
+        showToast.timer = setTimeout(() => toast.classList.add("opacity-0", "translate-y-2"), 4050);
+      }
+
+      function showScreen(name) {
+        let tabName = name;
+        liveDevice.querySelectorAll("[data-screen]").forEach((screen) => {
+          const isActive = screen.dataset.screen === name;
+          screen.classList.toggle("is-active", isActive);
+          if (isActive && screen.dataset.tabRoot) tabName = screen.dataset.tabRoot;
+        });
+        liveDevice.querySelectorAll("[data-tab]").forEach((tab) => {
+          if (tab.dataset.tab === tabName) tab.setAttribute("aria-current", "page");
+          else tab.removeAttribute("aria-current");
+        });
+        tabbar.hidden = !tabScreens.includes(tabName);
+        // Thanh giỏ chỉ ở màn Đặt món và khi giỏ có món.
+        cartbar.hidden = name !== "menu" || cart.count === 0;
+      }
+
+      function route() {
+        const name = location.hash.slice(1) || "menu";
+        const bases = sheetBases[name];
+        if (!bases) baseScreen = name;
+        else if (!bases.includes(baseScreen)) baseScreen = bases[0];
+        showScreen(baseScreen);
+        // Một sheet một lúc (J6).
+        liveDevice.querySelectorAll("[data-sheet]").forEach((panel) => {
+          const isOpen = panel.dataset.sheet === name;
+          panel.classList.toggle("is-open", isOpen);
+          panel.inert = !isOpen;
+        });
+        scrim.classList.toggle("is-open", Boolean(bases));
+        if (name === "otp") startCountdown();
+      }
+
+      // Đếm ngược gửi lại mã (components/otp-input.md); hết đếm thì hai lối: gửi lại SMS, nhận qua cuộc gọi.
+      function startCountdown() {
+        const resend = document.querySelector("[data-resend]");
+        let secondsLeft = 30;
+        clearInterval(startCountdown.timer);
+        resend.innerHTML = '<span>Chưa nhận được mã? Gửi lại sau 0:<span data-countdown>30</span></span>';
+        startCountdown.timer = setInterval(() => {
+          secondsLeft -= 1;
+          if (secondsLeft > 0) {
+            resend.querySelector("[data-countdown]").textContent = String(secondsLeft).padStart(2, "0");
+            return;
+          }
+          clearInterval(startCountdown.timer);
+          resend.innerHTML = '<span>Chưa nhận được mã?</span><button class="press inline-flex h-11 items-center font-medium text-foreground" data-resend-sms>Gửi lại mã</button><button class="press inline-flex h-11 items-center font-medium text-foreground">Gọi điện đọc mã</button>';
+          resend.querySelector("[data-resend-sms]").addEventListener("click", startCountdown);
+        }, 1000);
+      }
+
+      // Giá trên nút chính của sheet đổi theo lựa chọn và số lượng.
+      function updateItemTotal() {
+        const deltas = [...sheet.querySelectorAll("input:checked[data-delta]")].reduce((sum, input) => sum + Number(input.dataset.delta), 0);
+        const quantity = Number(sheet.querySelector("[data-qty]").textContent);
+        sheet.querySelector("[data-item-total]").textContent = formatPrice((basePrice + deltas) * quantity);
+        sheet.querySelector("[data-qty-minus]").disabled = quantity <= 1;
+        // Topping đủ giới hạn thì khoá các dòng chưa chọn.
+        const toppingGroup = sheet.querySelector("[data-group='topping']");
+        const toppings = [...toppingGroup.querySelectorAll("input")];
+        const isFull = toppings.filter((input) => input.checked).length >= Number(toppingGroup.dataset.max);
+        toppings.forEach((input) => { input.disabled = isFull && !input.checked; });
+      }
+
+      function changeQuantity(step) {
+        const quantityLabel = sheet.querySelector("[data-qty]");
+        quantityLabel.textContent = Math.max(1, Number(quantityLabel.textContent) + step);
+        updateItemTotal();
+      }
+
+      function addToCart(name, amount, quantity) {
+        cart.count += quantity;
+        cart.total += amount;
+        document.querySelector("[data-cart-count]").textContent = cart.count;
+        document.querySelector("[data-cart-total]").textContent = formatPrice(cart.total);
+        cartbar.hidden = baseScreen !== "menu";
+        showToast(`Đã thêm ${name} vào giỏ`);
+      }
+
+      sheet.addEventListener("change", updateItemTotal);
+      const sheetScroll = sheet.querySelector("[data-sheet-scroll]");
+      sheetScroll.addEventListener("scroll", () => {
+        const isOverImage = sheetScroll.scrollTop < 220;
+        sheet.querySelector("[data-sheet-bar]").classList.toggle("opacity-0", isOverImage);
+        sheet.querySelector("[data-sheet-bar]").classList.toggle("invisible", isOverImage);
+      }, { passive: true });
+      sheet.querySelector("[data-qty-minus]").addEventListener("click", () => changeQuantity(-1));
+      sheet.querySelector("[data-qty-plus]").addEventListener("click", () => changeQuantity(1));
+      sheet.querySelector("[data-add]").addEventListener("click", () => {
+        const quantity = Number(sheet.querySelector("[data-qty]").textContent);
+        const amount = Number(sheet.querySelector("[data-item-total]").textContent.replace(/\D/g, ""));
+        addToCart("Matcha latte Tây Bắc", amount, quantity);
+      });
+      liveDevice.querySelectorAll("[data-quick-add]").forEach((button) => {
+        button.addEventListener("click", () => addToCart(button.dataset.quickAdd, Number(button.dataset.price), 1));
+      });
+      liveDevice.querySelectorAll("[data-jump]").forEach((button) => {
+        button.addEventListener("click", () => document.getElementById(button.dataset.jump).scrollIntoView({ behavior: "smooth" }));
+      });
+
+      // Ô OTP: gõ một số thì sang ô sau, Backspace ở ô trống lùi về ô trước, iOS điền cả mã vào ô đầu thì chia ra.
+      const otpBoxes = [...liveDevice.querySelectorAll("[data-otp]")];
+      otpBoxes.forEach((box, index) => {
+        box.addEventListener("input", () => {
+          const digits = box.value.replace(/\D/g, "");
+          if (digits.length > 1) {
+            digits.slice(0, 6).split("").forEach((digit, offset) => { if (otpBoxes[index + offset]) otpBoxes[index + offset].value = digit; });
+            otpBoxes[Math.min(index + digits.length, 5)].focus();
+            return;
+          }
+          box.value = digits;
+          if (digits && otpBoxes[index + 1]) otpBoxes[index + 1].focus();
+        });
+        box.addEventListener("keydown", (event) => {
+          if (event.key === "Backspace" && !box.value && otpBoxes[index - 1]) otpBoxes[index - 1].focus();
+        });
+      });
+      document.querySelector("[data-verify]").addEventListener("click", () => showToast("Đã đặt đơn MC-2482"));
+
+      // Đóng sheet về màn đang xem dưới nó (Đặt món hay Giỏ hàng khi bấm "Sửa").
+      liveDevice.querySelectorAll("[data-sheet] [data-close], [data-add]").forEach((link) => link.addEventListener("click", (event) => {
+        event.preventDefault();
+        location.hash = baseScreen;
+      }));
+
+      window.addEventListener("hashchange", route);
+      scrim.addEventListener("click", () => { location.hash = baseScreen; });
+      updateItemTotal();
+      route();
+    </script>
+  </body>
+</html>

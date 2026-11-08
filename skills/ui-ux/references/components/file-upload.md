@@ -105,3 +105,11 @@ chỉ báo khi cả lượt tải kết thúc (xem mục Toast). Nút theo `butt
 
 Chưa có tệp · đang kéo vào khung · danh sách đủ năm trạng thái (có một tên rất dài) ·
 khung bị khoá vì hết dung lượng · hai toast. Ở 375px: tên dài cắt giữa vẫn còn đuôi, % và ✕ không bị đẩy xuống, câu "Kéo thả…" đã ẩn.
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Tải tệp lên** (`components/file-upload.md`): chỉ tệp đang tải có thanh (`h-1`), tệp xong và tệp hỏng không còn thanh, không còn số %? Tệp hỏng có cả Thử lại lẫn ✕? Đang kéo tệp vào thì viền đậm lên vừa phải, không nét đứt đen? Dòng đổi trạng thái thì các dòng dưới có nhảy không? Tên dài cắt giữa còn đuôi `.pdf` không? Tên cắt giữa có giữ vài ký tự cuối, không thành bốn chấm "….docx"? Icon tệp cùng dáng tờ giấy, viền không bị hình tròn cắt góc? Không có quyền thì ẩn cả khu tải, không dựng khung khoá? Khung bị khoá: tiêu đề là lý do, nền khác lúc kéo vào, có nút lối ra thay cho nút mờ chưa?

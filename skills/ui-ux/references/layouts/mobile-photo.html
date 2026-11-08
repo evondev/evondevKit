@@ -1,0 +1,1356 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <!-- viewport-fit=cover: chạy trên điện thoại thật thì nội dung tràn dưới tai thỏ, tự chừa bằng env(safe-area-inset-*). -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Hiên — app đặt homestay</title>
+    <!-- Logo tạm (components/logo.md, hướng 2 "ẩn dụ việc chính"): vòm hiên nhà, một màu, trong ô màu nhấn. -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23c2410c'/%3E%3Cpath d='M6.5 19v-7.5a5.5 5.5 0 0 1 11 0V19' fill='none' stroke='white' stroke-width='2.75' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='15.5' r='1.75' fill='white'/%3E%3C/svg%3E" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <style>
+      /* ===== KHỐI ĐỔI THƯƠNG HIỆU, chép từ references/tokens.css (nền sáng). =====
+         Bộ mặt: Photo (J15). Màu nhấn: Cam #c2410c (brand-tokens.md, ngành du lịch, màu đầu), chữ trắng 5.18:1.
+         Theo Photo, màu nhấn chỉ ở nút chính của luồng (Tìm kiếm, Đặt phòng, Tiếp tục, Xác nhận và thanh toán);
+         việc phụ là nút đen (bg-foreground) hay viền. */
+      :root {
+        --app-font: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+        --primary: #c2410c;
+        --primary-hover: #d24e14;
+        --primary-foreground: #ffffff;
+        --primary-light: #c2410c14;
+
+        --background: #f4f4f6;
+        --surface: #ffffff;
+        --foreground: #2c2c2c;
+        --muted: #707070;
+        /* Đậm hơn tokens.css (#f7f7f8): app điện thoại nền trắng, vạch ngăn dòng phải thấy được (J1). */
+        --border: #f0f0f2;
+        --border-strong: #eaeaea;
+        --secondary: #e7e8ec;
+        --item-hover: #f4f4f6;
+        --danger: #c70036;
+        --danger-bg: rgb(255 32 86 / 0.1);
+        --success: #00875a;
+        --avatar-bg: #ffd8c2;    --avatar-text: #8a3b12;
+
+        /* Nền quanh khung máy (chỉ màn rộng, không thuộc app). */
+        --frame-page: #e9e9ec;
+        --frame-muted: #565656;
+      }
+      /* ===== HẾT KHỐI ĐỔI THƯƠNG HIỆU ===== */
+
+      /* ===== THANH CUỘN (SKILL.md câu 2), chép từ tokens.css: cho phần ngoài khung máy (trang bảng luồng dài). Vùng cuộn
+         trong khung (.scroll) ẩn hẳn, ngoại lệ của luật chốt 13. ===== */
+      * { --scrollbar-thumb: transparent; }
+      *:hover { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 16%, transparent); }
+      .is-scrolling { --scrollbar-thumb: color-mix(in srgb, var(--foreground) 28%, transparent); }
+      ::-webkit-scrollbar { width: 4px; height: 4px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 9999px; }
+      ::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--foreground) 40%, transparent); }
+      @supports not selector(::-webkit-scrollbar) {
+        * { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+        *:hover { scrollbar-color: color-mix(in srgb, var(--foreground) 18%, transparent) transparent; }
+        .is-scrolling { scrollbar-color: color-mix(in srgb, var(--foreground) 28%, transparent) transparent; }
+      }
+
+      /* ===== KHUNG MÁY (J1), chép từ mobile-app.html. ===== */
+      :root { --inset-top: env(safe-area-inset-top, 0px); --inset-bottom: env(safe-area-inset-bottom, 0px); }
+      .device { --screen-bg: var(--surface); position: relative; width: 100%; height: 100dvh; overflow: hidden; background: var(--screen-bg); }
+      .device:has(.screen.is-grouped.is-active) { --screen-bg: var(--background); }
+      .status-bar, .home-indicator { display: none; }
+      @media (min-width: 500px) {
+        :root { --inset-top: 47px; --inset-bottom: 34px; }
+        .device { width: 390px; height: 844px; border-radius: 48px; box-shadow: 0 0 0 10px #1c1c1e, 0 0 0 11px #3a3a3c, 0 30px 60px -10px rgb(0 0 0 / 0.35); }
+        .status-bar { display: flex; }
+        .home-indicator { display: block; }
+      }
+
+      .screen { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--screen-bg); visibility: hidden; }
+      .screen.is-grouped { --screen-bg: var(--background); }
+      .screen.is-active { visibility: visible; }
+      @media (prefers-reduced-motion: no-preference) {
+        .screen.is-pushed.is-active { animation: push-in 300ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .sheet { transition: translate 250ms cubic-bezier(0.3, 0, 1, 1); }
+        .sheet.is-open { transition: translate 320ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .screen.is-pushed.is-active { animation: fade-in 200ms ease; }
+      }
+      @keyframes push-in { from { translate: 30% 0; opacity: 0.6; } to { translate: 0 0; opacity: 1; } }
+      @keyframes fade-in { from { opacity: 0; } }
+
+      .scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+      .scroll::-webkit-scrollbar { display: none; }
+      .pad-top { padding-top: var(--inset-top); }
+      .pad-tabbar { padding-bottom: calc(var(--inset-bottom) + 96px); }
+      .pad-bottom { padding-bottom: calc(var(--inset-bottom) + 16px); }
+      .above-home { bottom: calc(var(--inset-bottom) + 8px); }
+      .above-tabbar { bottom: calc(var(--inset-bottom) + 80px); }
+
+      .sheet { translate: 0 100%; }
+      .sheet.is-open { translate: 0 0; }
+      .scrim { opacity: 0; pointer-events: none; transition: opacity 200ms ease; }
+      .scrim.is-open { opacity: 1; pointer-events: auto; transition-duration: 240ms; }
+      @media (prefers-reduced-motion: reduce) {
+        .sheet { translate: 0 0; opacity: 0; visibility: hidden; transition: opacity 200ms ease, visibility 200ms; }
+        .sheet.is-open { opacity: 1; visibility: visible; }
+      }
+
+      .press { transition: scale 120ms cubic-bezier(0.23, 1, 0.32, 1), background-color 150ms ease; -webkit-tap-highlight-color: transparent; }
+      .press:active { scale: 0.97; }
+      @media (prefers-reduced-motion: reduce) { .press:active { scale: 1; } }
+
+      /* Hàng cuộn ngang lộ nửa ô cuối (J8): không thanh cuộn, bắt dính theo ô. */
+      .rail { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; padding-inline: 16px; scrollbar-width: none; }
+      .rail::-webkit-scrollbar { display: none; }
+      .rail > * { scroll-snap-align: start; flex-shrink: 0; }
+      /* Mép phải mờ 32px: biết hàng còn mục (responsive.md, sau R10). */
+      .rail { mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent); }
+
+      /* Tim đã lưu: tô đặc màu chữ (Photo: màu nhấn chỉ ở nút chính, nên tim không tô cam). */
+      [data-heart][aria-pressed="true"] svg { fill: var(--foreground); }
+
+      /* Bàn phím vẽ (J13), chép từ mobile-playful.html: chỉ là hình, không bấm được. */
+      .kb-key { display: grid; place-items: center; height: 42px; border-radius: 5px; background: #fff; box-shadow: 0 1px 0 #898a8d; font-size: 22px; color: #000; }
+      .kb-key.is-fn { background: #abb0ba; font-size: 15px; }
+
+      /* ===== BẢNG LUỒNG (J1), chép nguyên từ mobile-app.html. ===== */
+      body.is-board { display: block !important; min-height: 100vh; padding: 0 !important; background: #141414 !important; color: #f4f4f5; }
+      body.is-board > .device, body.is-board > .wf-screens { display: none !important; }
+      .flow-board { display: none; }
+      body.is-board .flow-board { display: block; }
+      .flow-row { display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 48px; padding: 8px 48px 24px; scrollbar-width: none; }
+      .flow-row::-webkit-scrollbar { display: none; }
+      .board-card { flex: none; scroll-snap-align: start; color: inherit; text-decoration: none; }
+      .board-phone { width: calc(390px * 0.7); height: calc(844px * 0.7); overflow: hidden; border-radius: 32px; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08); transition: box-shadow 150ms ease; }
+      .board-card:hover .board-phone { box-shadow: 0 0 0 2px #ffffff; }
+      .board-card:focus-visible { outline: none; }
+      .board-device { color: var(--foreground); --inset-top: 47px; --inset-bottom: 34px; zoom: 0.7; width: 390px !important; height: 844px !important; border-radius: 0 !important; box-shadow: none !important; }
+      .board-device .status-bar { display: flex; }
+      .board-device .home-indicator { display: block; }
+      .board-device .screen { visibility: visible; animation: none !important; }
+      .board-device .sheet, .board-device .scrim { transition: none; }
+      @media (prefers-reduced-motion: no-preference) {
+        .board-card { animation: card-in 400ms cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(var(--order) * 40ms); }
+      }
+      @keyframes card-in { from { opacity: 0; translate: 0 16px; } }
+      .player-toggle .icon-play { display: none; }
+      .player-toggle[aria-pressed="false"] .icon-play { display: block; }
+      .player-toggle[aria-pressed="false"] .icon-pause { display: none; }
+    </style>
+
+    <style type="text/tailwindcss">
+      @theme inline {
+        --font-sans: var(--app-font);
+        --color-primary: var(--primary);
+        --color-primary-hover: var(--primary-hover);
+        --color-primary-foreground: var(--primary-foreground);
+        --color-primary-light: var(--primary-light);
+        --color-background: var(--background);
+        --color-surface: var(--surface);
+        --color-foreground: var(--foreground);
+        --color-muted: var(--muted);
+        --color-border: var(--border);
+        --color-border-strong: var(--border-strong);
+        --color-secondary: var(--secondary);
+        --color-item-hover: var(--item-hover);
+        --color-danger: var(--danger);
+        --color-danger-bg: var(--danger-bg);
+        --color-success: var(--success);
+      }
+    </style>
+  </head>
+
+  <body class="bg-background font-sans text-foreground antialiased min-[500px]:flex min-[500px]:min-h-screen min-[500px]:items-center min-[500px]:justify-center min-[500px]:gap-12 min-[500px]:bg-(--frame-page) min-[500px]:py-10">
+    <!-- Danh sách màn: chỉ ở màn rộng, để người duyệt nhảy thẳng tới từng màn. Không thuộc app.
+         Mỗi luồng một <ol data-flow>: bảng luồng dựng mỗi danh sách thành một hàng. -->
+    <nav class="wf-screens hidden max-h-[844px] w-52 overflow-y-auto text-sm min-[900px]:block" aria-label="Màn trong bản mẫu">
+      <a href="#" class="mb-4 inline-flex items-center gap-1 rounded-md py-1.5 pr-2 font-medium text-(--frame-muted) hover:text-foreground"><i data-lucide="layout-grid" class="size-4"></i>Bảng luồng</a>
+      <p class="mb-2 font-medium">Hiên · 23 màn</p>
+      <p class="mt-3 mb-1 text-xs font-medium text-(--frame-muted)">Tìm chỗ ở</p>
+      <ol class="space-y-1 text-(--frame-muted)" data-flow="Tìm chỗ ở" data-flow-note="Lướt theo điểm đến, tìm theo ngày và số khách, lọc, xem bản đồ">
+        <li><a href="#home" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">1. Khám phá</a></li>
+        <li><a href="#search" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">2. Tìm: điểm đến</a></li>
+        <li><a href="#search-dates" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">3. Tìm: chọn ngày</a></li>
+        <li><a href="#search-guests" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">4. Tìm: số khách</a></li>
+        <li><a href="#results" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">5. Kết quả</a></li>
+        <li><a href="#filter" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">6. Bộ lọc (sheet)</a></li>
+        <li><a href="#results-empty" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">7. Lọc không ra chỗ nào</a></li>
+        <li><a href="#map" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">8. Bản đồ</a></li>
+      </ol>
+      <p class="mt-3 mb-1 text-xs font-medium text-(--frame-muted)">Xem chỗ ở</p>
+      <ol class="space-y-1 text-(--frame-muted)" data-flow="Xem chỗ ở" data-flow-note="Bộ ảnh, tiện nghi, chủ nhà, đánh giá, chính sách huỷ, thanh giá dính đáy">
+        <li><a href="#listing" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">1. Chi tiết chỗ ở</a></li>
+        <li><a href="#gallery" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">2. Bộ ảnh</a></li>
+        <li><a href="#amenities" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">3. Tiện nghi (sheet)</a></li>
+        <li><a href="#reviews" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">4. Đánh giá (sheet)</a></li>
+      </ol>
+      <p class="mt-3 mb-1 text-xs font-medium text-(--frame-muted)">Đặt phòng</p>
+      <ol class="space-y-1 text-(--frame-muted)" data-flow="Đặt phòng" data-flow-note="Chọn ngày, số khách, xác nhận và thanh toán, đặt xong, chuyến đi mới">
+        <li><a href="#book-dates" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">1. Chọn ngày (sheet)</a></li>
+        <li><a href="#book-guests" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">2. Số khách (sheet)</a></li>
+        <li><a href="#checkout" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">3. Xác nhận và thanh toán</a></li>
+        <li><a href="#pay-method" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">4. Cách thanh toán (sheet)</a></li>
+        <li><a href="#booked" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">5. Đặt xong</a></li>
+        <li><a href="#trips" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">6. Chuyến đi mới</a></li>
+      </ol>
+      <p class="mt-3 mb-1 text-xs font-medium text-(--frame-muted)">Của tôi</p>
+      <ol class="space-y-1 text-(--frame-muted)" data-flow="Chuyến đi, đã lưu, tài khoản" data-flow-note="Chi tiết chuyến, danh sách đã lưu, tài khoản, hai màn rỗng">
+        <li><a href="#trip" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">1. Chi tiết chuyến đi</a></li>
+        <li><a href="#trips-empty" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">2. Chưa có chuyến đi</a></li>
+        <li><a href="#saved" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">3. Đã lưu</a></li>
+        <li><a href="#saved-empty" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">4. Chưa lưu chỗ nào</a></li>
+        <li><a href="#account" class="block rounded-md px-2 py-1 hover:bg-white/60 hover:text-foreground">5. Tài khoản</a></li>
+      </ol>
+    </nav>
+
+    <div class="device">
+      <div class="status-bar pointer-events-none absolute inset-x-0 top-0 z-40 h-[47px] items-center justify-between px-8 pt-1 text-[15px] font-semibold" aria-hidden="true">
+        <span>9:41</span>
+        <span class="flex items-center gap-1.5"><i data-lucide="signal" class="size-4"></i><i data-lucide="wifi" class="size-4"></i><i data-lucide="battery-full" class="size-5"></i></span>
+      </div>
+      <div class="status-cover pointer-events-none absolute inset-x-0 top-0 z-30 h-(--inset-top) bg-(--screen-bg)/85 backdrop-blur-xl" aria-hidden="true"></div>
+
+      <!-- ================= 1. KHÁM PHÁ (tab 1) =================
+           Đầu màn là ô tìm (thay tiêu đề lớn của J3, như hàng "Giao đến" của J11): cuộn đi cùng nội dung, không dính.
+           Rồi hàng điểm đến ảnh vuông, rồi mỗi điểm đến một hàng chỗ ở cuộn ngang: lướt theo điểm đến. -->
+      <section class="screen" data-screen="home" aria-label="Khám phá">
+        <div class="scroll pad-top pad-tabbar">
+          <div class="px-4 pt-3">
+            <a href="#search" class="press flex min-h-14 items-center gap-3 rounded-full px-5 py-2 ring-1 ring-border-strong ring-inset" aria-label="Tìm chỗ ở">
+              <i data-lucide="search" class="size-5 shrink-0"></i>
+              <span class="min-w-0"><span class="block text-base font-semibold">Bạn muốn đi đâu?</span><span class="block text-[13px] text-muted">Ngày bất kỳ · Thêm khách</span></span>
+            </a>
+          </div>
+
+          <h2 class="mt-6 px-4 text-[20px]/[25px] font-semibold">Điểm đến</h2>
+          <div class="rail mt-3" data-render="destinations"></div>
+
+          <div data-render="home-sections"></div>
+        </div>
+      </section>
+
+      <!-- ================= 2–4. TÌM CHỖ Ở: luồng ba bước (J3: thanh bước mảnh, tiêu đề là tên bước). Ẩn thanh tab (J2). ===== -->
+      <section class="screen is-pushed" data-screen="search" aria-label="Tìm: điểm đến">
+        <header class="pad-top shrink-0">
+          <div class="relative flex h-11 items-center px-2">
+            <a href="#home" class="press grid size-11 place-items-center rounded-full" aria-label="Đóng tìm kiếm"><i data-lucide="x" class="size-6"></i></a>
+            <p class="absolute inset-x-0 mx-auto w-fit text-[17px] font-semibold">Điểm đến</p>
+          </div>
+          <div class="mx-4 mt-1 grid grid-cols-3 gap-1.5" aria-hidden="true"><span class="h-1 rounded-full bg-foreground"></span><span class="h-1 rounded-full bg-secondary"></span><span class="h-1 rounded-full bg-secondary"></span></div>
+        </header>
+        <div class="scroll px-4">
+          <!-- Màn một ô chính: focus sẵn, bàn phím bật (J13). -->
+          <label class="mt-4 flex h-[52px] items-center gap-3 rounded-2xl border border-foreground bg-surface px-4">
+            <i data-lucide="search" class="size-5 shrink-0 text-muted"></i>
+            <span class="sr-only">Điểm đến</span>
+            <input type="search" enterkeyhint="search" autocomplete="off" value="Đà" placeholder="Thành phố, vùng hay tên chỗ ở" class="h-full min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted" />
+          </label>
+          <ul class="mt-2 divide-y divide-border">
+            <li><a href="#search-dates" class="press flex min-h-16 items-center gap-3 py-2 active:bg-item-hover"><span class="grid size-10 shrink-0 place-items-center rounded-xl bg-background"><i data-lucide="map-pin" class="size-5"></i></span><span class="min-w-0"><span class="block text-base font-medium">Đà Lạt, Lâm Đồng</span><span class="block text-[13px] text-muted">1.284 chỗ ở</span></span></a></li>
+            <li><a href="#search-dates" class="press flex min-h-16 items-center gap-3 py-2 active:bg-item-hover"><span class="grid size-10 shrink-0 place-items-center rounded-xl bg-background"><i data-lucide="map-pin" class="size-5"></i></span><span class="min-w-0"><span class="block text-base font-medium">Đà Nẵng</span><span class="block text-[13px] text-muted">2.106 chỗ ở</span></span></a></li>
+            <li><a href="#search-dates" class="press flex min-h-16 items-center gap-3 py-2 active:bg-item-hover"><span class="grid size-10 shrink-0 place-items-center rounded-xl bg-background"><i data-lucide="history" class="size-5"></i></span><span class="min-w-0"><span class="block text-base font-medium">Hồ Tuyền Lâm, Đà Lạt</span><span class="block text-[13px] text-muted">Tìm gần đây · 12–14/12 · 2 khách</span></span></a></li>
+          </ul>
+        </div>
+        <div class="shrink-0 bg-[#d1d3d9] px-1 pt-2" style="height: 335px" aria-hidden="true">
+          <div class="flex h-9 items-center justify-around text-base text-black"><span>Đà</span><span class="h-5 w-px bg-black/20"></span><span>Đà Lạt</span><span class="h-5 w-px bg-black/20"></span><span>Đà Nẵng</span></div>
+          <div class="mt-1 grid grid-cols-10 gap-1.5 px-0.5"><span class="kb-key">q</span><span class="kb-key">w</span><span class="kb-key">e</span><span class="kb-key">r</span><span class="kb-key">t</span><span class="kb-key">y</span><span class="kb-key">u</span><span class="kb-key">i</span><span class="kb-key">o</span><span class="kb-key">p</span></div>
+          <div class="mt-3 grid grid-cols-9 gap-1.5 px-5"><span class="kb-key">a</span><span class="kb-key">s</span><span class="kb-key">d</span><span class="kb-key">f</span><span class="kb-key">g</span><span class="kb-key">h</span><span class="kb-key">j</span><span class="kb-key">k</span><span class="kb-key">l</span></div>
+          <div class="mt-3 flex gap-1.5 px-0.5"><span class="kb-key is-fn w-11"><i data-lucide="arrow-big-up" class="size-5"></i></span><span class="grid flex-1 grid-cols-7 gap-1.5"><span class="kb-key">z</span><span class="kb-key">x</span><span class="kb-key">c</span><span class="kb-key">v</span><span class="kb-key">b</span><span class="kb-key">n</span><span class="kb-key">m</span></span><span class="kb-key is-fn w-11"><i data-lucide="delete" class="size-5"></i></span></div>
+          <div class="mt-3 flex gap-1.5 px-0.5"><span class="kb-key is-fn w-[88px]">123</span><span class="kb-key flex-1 text-base">dấu cách</span><span class="kb-key is-fn w-[88px] !bg-[#007aff] text-white">tìm</span></div>
+        </div>
+      </section>
+
+      <section class="screen is-pushed" data-screen="search-dates" aria-label="Tìm: chọn ngày">
+        <header class="pad-top shrink-0">
+          <div class="relative flex h-11 items-center px-2">
+            <a href="#search" class="press grid size-11 place-items-center rounded-full" aria-label="Quay lại điểm đến"><i data-lucide="chevron-left" class="size-6"></i></a>
+            <p class="absolute inset-x-0 mx-auto w-fit text-[17px] font-semibold">Ngày nhận và trả phòng</p>
+          </div>
+          <div class="mx-4 mt-1 grid grid-cols-3 gap-1.5" aria-hidden="true"><span class="h-1 rounded-full bg-foreground"></span><span class="h-1 rounded-full bg-foreground"></span><span class="h-1 rounded-full bg-secondary"></span></div>
+          <p class="mt-3 px-4 text-[15px] text-muted">Đà Lạt, Lâm Đồng</p>
+          <div class="mt-2 grid grid-cols-7 border-b border-border px-4 pb-2 text-center text-[13px] text-muted" aria-hidden="true"><span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span><span>CN</span></div>
+        </header>
+        <div class="scroll px-4" data-render="calendar"></div>
+        <div class="shrink-0 border-t border-border bg-surface px-4 pt-3" style="padding-bottom: calc(var(--inset-bottom) + 12px)">
+          <p class="text-[15px] font-medium tabular-nums">2 đêm · 12/12 – 14/12/2026</p>
+          <div class="mt-2 flex items-center gap-3">
+            <a href="#search-guests" class="press inline-flex h-11 items-center px-1 text-base font-semibold underline underline-offset-2">Bỏ qua</a>
+            <a href="#search-guests" class="press ml-auto flex h-[52px] items-center justify-center rounded-2xl bg-foreground px-8 text-base font-semibold text-surface">Tiếp</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen is-pushed" data-screen="search-guests" aria-label="Tìm: số khách">
+        <header class="pad-top shrink-0">
+          <div class="relative flex h-11 items-center px-2">
+            <a href="#search-dates" class="press grid size-11 place-items-center rounded-full" aria-label="Quay lại chọn ngày"><i data-lucide="chevron-left" class="size-6"></i></a>
+            <p class="absolute inset-x-0 mx-auto w-fit text-[17px] font-semibold">Số khách</p>
+          </div>
+          <div class="mx-4 mt-1 grid grid-cols-3 gap-1.5" aria-hidden="true"><span class="h-1 rounded-full bg-foreground"></span><span class="h-1 rounded-full bg-foreground"></span><span class="h-1 rounded-full bg-foreground"></span></div>
+        </header>
+        <div class="scroll px-4">
+          <p class="mt-3 text-[15px] text-muted tabular-nums">Đà Lạt, Lâm Đồng · 12/12 – 14/12</p>
+          <ul class="mt-2 divide-y divide-border" data-render="guests" data-max="16"></ul>
+        </div>
+        <div class="shrink-0 border-t border-border bg-surface px-4 pt-3" style="padding-bottom: calc(var(--inset-bottom) + 12px)">
+          <a href="#results" class="press flex h-[52px] items-center justify-center gap-2 rounded-2xl bg-primary text-base font-semibold text-primary-foreground"><i data-lucide="search" class="size-5"></i>Tìm 128 chỗ ở</a>
+        </div>
+      </section>
+
+      <!-- ================= 5. KẾT QUẢ (màn con của Khám phá, giữ thanh tab: J2) =================
+           Đầu màn: nút lùi, viên tóm tắt tìm kiếm (bấm để sửa), nút bản đồ. Hàng lọc là chip cuộn ngang, đầu hàng là nút
+           lọc có số điều kiện (J14). Bản đồ là nút ở đầu màn, không nổi đè lên danh sách (J5). -->
+      <section class="screen is-pushed" data-screen="results" aria-label="Kết quả tìm kiếm">
+        <header class="pad-top shrink-0 bg-surface">
+          <div class="flex items-center gap-2 px-4 pt-1">
+            <a href="#home" class="press grid size-11 shrink-0 place-items-center rounded-full bg-secondary" aria-label="Quay lại Khám phá"><i data-lucide="chevron-left" class="size-6"></i></a>
+            <a href="#search-dates" class="press flex min-h-12 min-w-0 flex-1 flex-col justify-center rounded-full px-4 py-1 ring-1 ring-border-strong ring-inset" aria-label="Sửa tìm kiếm">
+              <span class="block text-[15px] font-semibold">Đà Lạt</span>
+              <span class="block text-[13px] text-muted tabular-nums">12–14/12 · 2 khách</span>
+            </a>
+            <a href="#map" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Xem trên bản đồ"><i data-lucide="map" class="size-6"></i></a>
+          </div>
+          <div class="rail mt-3 gap-2 pb-3">
+            <a href="#filter" class="press relative grid size-11 place-items-center rounded-full ring-1 ring-border-strong ring-inset" aria-label="Bộ lọc, đang áp 2 điều kiện"><i data-lucide="sliders-horizontal" class="size-5"></i><span class="absolute top-0 right-0 grid h-4 min-w-4 place-items-center rounded-full bg-foreground px-1 text-[11px] font-semibold text-surface">2</span></a>
+            <a href="#filter" class="press inline-flex h-11 items-center gap-1 rounded-full px-4 text-[15px] ring-1 ring-border-strong ring-inset">Giá<i data-lucide="chevron-down" class="size-4"></i></a>
+            <a href="#filter" class="press inline-flex h-11 items-center rounded-full bg-foreground px-4 text-[15px] font-medium text-surface">Nguyên căn</a>
+            <a href="#filter" class="press inline-flex h-11 items-center rounded-full bg-foreground px-4 text-[15px] font-medium text-surface">Huỷ miễn phí</a>
+            <a href="#filter" class="press inline-flex h-11 items-center gap-1 rounded-full px-4 text-[15px] ring-1 ring-border-strong ring-inset">Phòng ngủ<i data-lucide="chevron-down" class="size-4"></i></a>
+            <a href="#filter" class="press inline-flex h-11 items-center gap-1 rounded-full px-4 text-[15px] ring-1 ring-border-strong ring-inset">Tiện nghi<i data-lucide="chevron-down" class="size-4"></i></a>
+          </div>
+        </header>
+        <div class="scroll pad-tabbar">
+          <p class="px-4 pt-1 text-[13px] text-muted">128 chỗ ở · giá đã gồm mọi phí cho 2 đêm</p>
+          <ul class="mt-3 space-y-7 px-4" data-render="results"></ul>
+        </div>
+      </section>
+
+      <!-- ================= 7. LỌC KHÔNG RA CHỖ NÀO (J12: rỗng trong lọc là một dòng chữ mờ + gợi ý, không để trắng) ===== -->
+      <section class="screen is-pushed" data-screen="results-empty" data-tab-root="home" aria-label="Kết quả tìm kiếm, không có chỗ nào">
+        <header class="pad-top shrink-0 bg-surface">
+          <div class="flex items-center gap-2 px-4 pt-1">
+            <a href="#home" class="press grid size-11 shrink-0 place-items-center rounded-full bg-secondary" aria-label="Quay lại Khám phá"><i data-lucide="chevron-left" class="size-6"></i></a>
+            <a href="#search-dates" class="press flex min-h-12 min-w-0 flex-1 flex-col justify-center rounded-full px-4 py-1 ring-1 ring-border-strong ring-inset" aria-label="Sửa tìm kiếm">
+              <span class="block text-[15px] font-semibold">Đà Lạt</span>
+              <span class="block text-[13px] text-muted tabular-nums">24–26/12 · 6 khách</span>
+            </a>
+            <a href="#map" class="press grid size-11 shrink-0 place-items-center rounded-full" aria-label="Xem trên bản đồ"><i data-lucide="map" class="size-6"></i></a>
+          </div>
+          <div class="rail mt-3 gap-2 pb-3">
+            <a href="#filter" class="press relative grid size-11 place-items-center rounded-full ring-1 ring-border-strong ring-inset" aria-label="Bộ lọc, đang áp 4 điều kiện"><i data-lucide="sliders-horizontal" class="size-5"></i><span class="absolute top-0 right-0 grid h-4 min-w-4 place-items-center rounded-full bg-foreground px-1 text-[11px] font-semibold text-surface">4</span></a>
+            <a href="#filter" class="press inline-flex h-11 items-center rounded-full bg-foreground px-4 text-[15px] font-medium text-surface tabular-nums">Dưới 1.000.000đ</a>
+            <a href="#filter" class="press inline-flex h-11 items-center rounded-full bg-foreground px-4 text-[15px] font-medium text-surface">Hồ bơi</a>
+            <a href="#filter" class="press inline-flex h-11 items-center rounded-full bg-foreground px-4 text-[15px] font-medium text-surface">Nguyên căn</a>
+            <a href="#filter" class="press inline-flex h-11 items-center rounded-full bg-foreground px-4 text-[15px] font-medium text-surface">Huỷ miễn phí</a>
+          </div>
+        </header>
+        <div class="scroll pad-tabbar">
+          <div class="px-4 py-6">
+            <p class="text-base text-pretty text-muted">Không có chỗ nào ở Đà Lạt khớp cả 4 điều kiện cho 6 khách, 24–26/12. Bỏ lọc Hồ bơi thì có 9 chỗ.</p>
+            <a href="#results" class="press mt-4 inline-flex h-11 items-center rounded-full px-5 text-[15px] font-semibold ring-1 ring-border-strong ring-inset">Bỏ lọc Hồ bơi</a>
+          </div>
+          <h2 class="px-4 text-[20px]/[25px] font-semibold">Gần khớp nhất</h2>
+          <p class="mt-1 px-4 text-[13px] text-muted">Có hồ bơi, giá trên 1.000.000đ một đêm</p>
+          <ul class="mt-3 space-y-7 px-4" data-render="near-results"></ul>
+        </div>
+      </section>
+
+      <!-- ================= 8. BẢN ĐỒ (màn con của Khám phá, giữ thanh tab) =================
+           Bản đồ tràn cả màn, giá là ghim bấm được (cao 44). Chỗ đang chọn hiện thành thẻ ngay trên thanh tab. -->
+      <section class="screen is-pushed" data-screen="map" data-tab-root="home" aria-label="Bản đồ chỗ ở">
+        <div class="absolute inset-0 grid content-center justify-center overflow-hidden bg-[#efefef]" aria-hidden="true" data-render="map-tiles"></div>
+        <header class="pad-top relative z-10 shrink-0">
+          <div class="flex items-center gap-2 px-4 pt-1">
+            <a href="#results" class="press grid size-11 shrink-0 place-items-center rounded-full bg-surface shadow-[0_2px_8px_rgb(0_0_0/0.15)]" aria-label="Quay lại danh sách"><i data-lucide="chevron-left" class="size-6"></i></a>
+            <a href="#search-dates" class="press flex min-h-12 min-w-0 flex-1 flex-col justify-center rounded-full bg-surface px-4 py-1 shadow-[0_2px_8px_rgb(0_0_0/0.15)]" aria-label="Sửa tìm kiếm">
+              <span class="block text-[15px] font-semibold">Đà Lạt</span>
+              <span class="block text-[13px] text-muted tabular-nums">12–14/12 · 2 khách</span>
+            </a>
+            <a href="#results" class="press grid size-11 shrink-0 place-items-center rounded-full bg-surface shadow-[0_2px_8px_rgb(0_0_0/0.15)]" aria-label="Xem dạng danh sách"><i data-lucide="list" class="size-5"></i></a>
+          </div>
+        </header>
+        <div class="relative flex-1" data-render="map-pins"></div>
+        <a href="#listing" class="press above-tabbar absolute inset-x-4 z-20 flex gap-3 overflow-hidden rounded-[20px] bg-surface p-2 pr-3 shadow-[0_8px_24px_-8px_rgb(0_0_0/0.35)]">
+          <img src="https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?w=300&q=80&auto=format&fit=crop" alt="" class="size-[104px] shrink-0 rounded-2xl object-cover" />
+          <span class="min-w-0 py-1">
+            <span class="block text-[15px] font-semibold">Nhà gỗ giữa đồi thông, nhìn ra hồ Tuyền Lâm</span>
+            <span class="mt-0.5 flex items-center gap-1 text-[13px] text-muted"><i data-lucide="star" class="size-3.5 fill-current text-foreground"></i><span class="text-foreground">4,92</span> (128) · Phường 3</span>
+            <span class="mt-1 block text-[15px] tabular-nums"><span class="font-semibold">2.650.000đ</span> <span class="text-muted">tổng 2 đêm</span></span>
+          </span>
+        </a>
+        <p class="pointer-events-none absolute right-2 z-10 rounded bg-white/80 px-1.5 text-[11px] text-muted" style="bottom: calc(var(--inset-bottom) + 210px)">Bản đồ: Esri, OpenStreetMap</p>
+      </section>
+
+      <!-- ================= XEM CHỖ Ở =================
+           Màn xem nhưng có thanh giá dính đáy (đề yêu cầu): ẩn thanh tab, thanh giá thay chỗ (J2 dòng "ẩn khi có nút chính dính
+           đáy"). Ảnh tràn đầu màn; nút lùi tròn nền trắng (J3), phải chỉ một nút icon: Lưu. -->
+      <section class="screen is-pushed" data-screen="listing" aria-label="Chi tiết chỗ ở">
+        <div class="scroll">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?w=900&q=80&auto=format&fit=crop" alt="Nhà gỗ giữa rừng thông" class="h-[320px] w-full object-cover" />
+            <a href="#gallery" class="press absolute right-4 bottom-3 inline-flex h-11 items-center gap-1.5 rounded-full bg-black/65 px-4 text-[13px] font-medium text-white tabular-nums" aria-label="Xem cả 24 ảnh"><i data-lucide="images" class="size-4"></i>1 / 24</a>
+            <a href="#results" class="press absolute left-4 grid size-11 place-items-center rounded-full bg-surface shadow-[0_2px_8px_rgb(0_0_0/0.15)]" style="top: calc(var(--inset-top) + 4px)" aria-label="Quay lại kết quả"><i data-lucide="chevron-left" class="size-6"></i></a>
+            <button class="press absolute right-4 grid size-11 place-items-center rounded-full bg-surface shadow-[0_2px_8px_rgb(0_0_0/0.15)]" style="top: calc(var(--inset-top) + 4px)" aria-label="Lưu Nhà gỗ giữa đồi thông" aria-pressed="true" data-heart="Nhà gỗ giữa đồi thông"><i data-lucide="heart" class="size-5"></i></button>
+          </div>
+
+          <div class="px-4 pt-5">
+            <h1 class="text-2xl/[30px] font-semibold text-balance">Nhà gỗ giữa đồi thông, nhìn ra hồ Tuyền Lâm</h1>
+            <p class="mt-1.5 text-[15px] text-muted">Nguyên căn ở Phường 3, Đà Lạt</p>
+            <p class="mt-0.5 text-[15px]">4 khách · 2 phòng ngủ · 3 giường · 1 phòng tắm</p>
+            <a href="#reviews" class="press mt-1 inline-flex h-11 items-center gap-1.5 text-[15px]"><i data-lucide="star" class="size-4 fill-current"></i><span class="font-semibold">4,92</span><span class="text-muted">·</span><span class="font-medium underline underline-offset-2">128 đánh giá</span></a>
+          </div>
+
+          <!-- Chủ nhà, dòng gọn đầu màn; khối đủ ở dưới. -->
+          <div class="mx-4 flex items-center gap-3 border-y border-border py-4">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" class="size-12 shrink-0 rounded-full object-cover" />
+            <span class="min-w-0"><span class="block text-base font-semibold">Chủ nhà: Trần Minh Khoa</span><span class="block text-[15px] text-muted">Chủ nhà được yêu thích · 6 năm đón khách</span></span>
+          </div>
+
+          <ul class="space-y-5 px-4 py-6">
+            <li class="flex gap-4"><i data-lucide="key-round" class="mt-0.5 size-6 shrink-0"></i><span><span class="block text-base font-medium">Tự nhận phòng</span><span class="block text-[15px] text-muted">Khoá số ở cửa, mã gửi trước ngày nhận phòng.</span></span></li>
+            <li class="flex gap-4"><i data-lucide="flame" class="mt-0.5 size-6 shrink-0"></i><span><span class="block text-base font-medium">Lò sưởi và chăn điện</span><span class="block text-[15px] text-muted">Đêm tháng 12 ở đây xuống khoảng 13°C.</span></span></li>
+            <li class="flex gap-4"><i data-lucide="calendar-check" class="mt-0.5 size-6 shrink-0"></i><span><span class="block text-base font-medium">Huỷ miễn phí trước 14:00, 10/12</span><span class="block text-[15px] text-muted">Sau mốc đó vẫn hoàn 50% tiền phòng.</span></span></li>
+          </ul>
+
+          <div class="mx-4 border-t border-border py-6">
+            <p class="text-base/7 text-pretty">Căn nhà gỗ thông hai tầng nằm cuối con dốc đất, quay mặt ra hồ Tuyền Lâm. Sáng sớm sương phủ kín thung lũng, đứng ở ban công là thấy. Bếp đủ đồ để nấu lẩu, có sân nướng ngoài trời. Đi xe máy 15 phút tới chợ Đà Lạt.</p>
+          </div>
+
+          <div class="border-t border-border py-6">
+            <h2 class="px-4 text-[20px]/[25px] font-semibold">Nơi bạn sẽ ngủ</h2>
+            <div class="rail mt-4">
+              <div class="w-[220px]"><img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=500&q=80&auto=format&fit=crop" alt="" class="aspect-[4/3] w-full rounded-2xl object-cover" /><p class="mt-2 text-base font-semibold">Phòng ngủ 1</p><p class="text-[15px] text-muted">1 giường đôi lớn</p></div>
+              <div class="w-[220px]"><img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=500&q=80&auto=format&fit=crop" alt="" class="aspect-[4/3] w-full rounded-2xl object-cover" /><p class="mt-2 text-base font-semibold">Phòng ngủ 2</p><p class="text-[15px] text-muted">2 giường đơn</p></div>
+              <div class="w-[220px]"><img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=500&q=80&auto=format&fit=crop" alt="" class="aspect-[4/3] w-full rounded-2xl object-cover" /><p class="mt-2 text-base font-semibold">Phòng khách</p><p class="text-[15px] text-muted">1 sofa giường</p></div>
+            </div>
+          </div>
+
+          <div class="mx-4 border-t border-border py-6">
+            <h2 class="text-[20px]/[25px] font-semibold">Tiện nghi</h2>
+            <ul class="mt-3 text-base">
+              <li class="flex min-h-12 items-center gap-4"><i data-lucide="wifi" class="size-6 shrink-0"></i>Wifi 100 Mbps</li>
+              <li class="flex min-h-12 items-center gap-4"><i data-lucide="cooking-pot" class="size-6 shrink-0"></i>Bếp đủ dụng cụ, nồi lẩu</li>
+              <li class="flex min-h-12 items-center gap-4"><i data-lucide="flame" class="size-6 shrink-0"></i>Lò sưởi củi</li>
+              <li class="flex min-h-12 items-center gap-4"><i data-lucide="car" class="size-6 shrink-0"></i>Chỗ đậu ô tô miễn phí</li>
+              <li class="flex min-h-12 items-center gap-4"><i data-lucide="washing-machine" class="size-6 shrink-0"></i>Máy giặt</li>
+              <li class="flex min-h-12 items-center gap-4 text-muted"><i data-lucide="air-vent" class="size-6 shrink-0"></i><span class="line-through">Máy lạnh</span></li>
+            </ul>
+            <a href="#amenities" class="press mt-4 flex h-[52px] items-center justify-center rounded-2xl text-base font-semibold ring-1 ring-foreground ring-inset">Xem cả 32 tiện nghi</a>
+          </div>
+
+          <div class="mx-4 border-t border-border py-6">
+            <h2 class="text-[20px]/[25px] font-semibold">Vị trí</h2>
+            <p class="mt-1 text-[15px] text-muted">Phường 3, Đà Lạt · 6 km tới chợ Đà Lạt</p>
+            <div class="relative mt-4 grid h-48 content-center justify-center overflow-hidden rounded-2xl bg-[#efefef]" aria-hidden="true">
+              <div class="grid grid-cols-2"><img src="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/14/7645/13127" alt="" class="size-64" /><img src="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/14/7645/13128" alt="" class="size-64" /></div>
+              <span class="absolute inset-0 m-auto grid size-12 place-items-center rounded-full bg-foreground text-surface ring-4 ring-white"><i data-lucide="house" class="size-5"></i></span>
+            </div>
+            <p class="mt-3 text-[15px] text-muted">Địa chỉ chính xác gửi cho bạn sau khi đặt phòng.</p>
+          </div>
+
+          <div class="border-t border-border py-6">
+            <h2 class="flex items-center gap-1.5 px-4 text-[20px]/[25px] font-semibold"><i data-lucide="star" class="size-5 fill-current"></i>4,92 · 128 đánh giá</h2>
+            <div class="rail mt-4" data-render="review-cards"></div>
+            <div class="px-4"><a href="#reviews" class="press mt-4 flex h-[52px] items-center justify-center rounded-2xl text-base font-semibold ring-1 ring-foreground ring-inset">Xem cả 128 đánh giá</a></div>
+          </div>
+
+          <div class="mx-4 border-t border-border py-6">
+            <h2 class="text-[20px]/[25px] font-semibold">Gặp chủ nhà</h2>
+            <div class="mt-4 rounded-[20px] p-5 ring-1 ring-border-strong ring-inset">
+              <div class="flex items-center gap-4">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" class="size-16 shrink-0 rounded-full object-cover" />
+                <span class="min-w-0"><span class="block text-[20px]/[25px] font-semibold">Trần Minh Khoa</span><span class="mt-0.5 flex items-center gap-1 text-[15px] text-muted"><i data-lucide="badge-check" class="size-4"></i>Chủ nhà được yêu thích</span></span>
+              </div>
+              <dl class="mt-5 grid grid-cols-3 gap-2 text-center">
+                <div class="rounded-2xl bg-background px-2 py-3"><dt class="text-[13px] text-muted">Đánh giá</dt><dd class="text-[17px] font-semibold tabular-nums">412</dd></div>
+                <div class="rounded-2xl bg-background px-2 py-3"><dt class="text-[13px] text-muted">Điểm</dt><dd class="text-[17px] font-semibold tabular-nums">4,93</dd></div>
+                <div class="rounded-2xl bg-background px-2 py-3"><dt class="text-[13px] text-muted">Đón khách</dt><dd class="text-[17px] font-semibold tabular-nums">6 năm</dd></div>
+              </dl>
+              <p class="mt-4 text-base text-pretty">Mình là thợ mộc, tự dựng căn nhà này năm 2019. Khách tới sớm cứ nhắn, mình để sẵn ấm trà atiso.</p>
+              <p class="mt-3 text-[15px] text-muted">Trả lời tin nhắn 100% · thường trong 1 giờ</p>
+            </div>
+          </div>
+
+          <!-- Chính sách huỷ: mốc rõ ngày, số tiền hoàn cụ thể. -->
+          <div class="mx-4 border-t border-border py-6">
+            <h2 class="text-[20px]/[25px] font-semibold">Chính sách huỷ</h2>
+            <ol class="mt-4 space-y-4">
+              <li class="flex gap-4"><span class="w-24 shrink-0 text-[15px] font-semibold">Trước 14:00, 10/12</span><span class="text-[15px]">Hoàn đủ 2.650.000đ</span></li>
+              <li class="flex gap-4"><span class="w-24 shrink-0 text-[15px] font-semibold">Từ 10/12 tới lúc nhận phòng</span><span class="text-[15px]">Hoàn 50% tiền phòng (1.150.000đ), không hoàn phí dọn dẹp và phí dịch vụ</span></li>
+              <li class="flex gap-4"><span class="w-24 shrink-0 text-[15px] font-semibold">Sau khi nhận phòng</span><span class="text-[15px]">Không hoàn tiền</span></li>
+            </ol>
+          </div>
+
+          <div class="mx-4 border-t border-border pt-6 pb-8">
+            <h2 class="text-[20px]/[25px] font-semibold">Nội quy</h2>
+            <ul class="mt-3 text-base">
+              <li class="flex min-h-12 items-center gap-4"><i data-lucide="clock-3" class="size-6 shrink-0"></i>Nhận phòng sau 14:00</li>
+              <li class="flex min-h-12 items-center gap-4"><i data-lucide="clock-11" class="size-6 shrink-0"></i>Trả phòng trước 12:00</li>
+              <li class="flex min-h-12 items-center gap-4"><i data-lucide="users" class="size-6 shrink-0"></i>Tối đa 4 khách</li>
+              <li class="flex min-h-12 items-center gap-4"><i data-lucide="cigarette-off" class="size-6 shrink-0"></i>Không hút thuốc trong nhà</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Thanh giá dính đáy: tổng tiền và ngày trái (bấm để đổi ngày), nút chính phải. -->
+        <div class="flex shrink-0 items-center gap-3 border-t border-border bg-surface px-4 pt-3" style="padding-bottom: calc(var(--inset-bottom) + 12px)">
+          <a href="#book-dates" class="press min-w-0 flex-1">
+            <span class="block text-[17px] font-semibold tabular-nums">2.650.000đ</span>
+            <span class="block text-[13px] text-muted underline underline-offset-2 tabular-nums">Tổng 2 đêm · 12–14/12</span>
+          </a>
+          <a href="#book-dates" class="press flex h-[52px] shrink-0 items-center justify-center rounded-2xl bg-primary px-7 text-base font-semibold text-primary-foreground">Đặt phòng</a>
+        </div>
+      </section>
+
+      <!-- ================= BỘ ẢNH: chia theo phòng, ảnh to, bo 12. ================= -->
+      <section class="screen is-pushed" data-screen="gallery" aria-label="Bộ ảnh">
+        <header class="pad-top shrink-0 bg-surface">
+          <div class="relative flex h-11 items-center px-2">
+            <a href="#listing" class="press grid size-11 place-items-center rounded-full" aria-label="Quay lại chỗ ở"><i data-lucide="chevron-left" class="size-6"></i></a>
+            <p class="absolute inset-x-0 mx-auto w-fit text-[17px] font-semibold">24 ảnh</p>
+          </div>
+          <div class="rail gap-2 py-2">
+            <a href="#gallery" class="press inline-flex h-11 items-center rounded-full bg-foreground px-4 text-[15px] font-medium text-surface">Phòng khách</a>
+            <a href="#gallery" class="press inline-flex h-11 items-center rounded-full px-4 text-[15px] ring-1 ring-border-strong ring-inset">Phòng ngủ</a>
+            <a href="#gallery" class="press inline-flex h-11 items-center rounded-full px-4 text-[15px] ring-1 ring-border-strong ring-inset">Bếp</a>
+            <a href="#gallery" class="press inline-flex h-11 items-center rounded-full px-4 text-[15px] ring-1 ring-border-strong ring-inset">Phòng tắm</a>
+            <a href="#gallery" class="press inline-flex h-11 items-center rounded-full px-4 text-[15px] ring-1 ring-border-strong ring-inset">Ngoài trời</a>
+          </div>
+        </header>
+        <div class="scroll pad-bottom px-4" data-render="gallery"></div>
+      </section>
+
+      <!-- ================= ĐẶT PHÒNG: XÁC NHẬN VÀ THANH TOÁN (một trang cuộn như giỏ hàng J11, ẩn thanh tab) ===== -->
+      <section class="screen is-pushed" data-screen="checkout" aria-label="Xác nhận và thanh toán">
+        <header class="pad-top shrink-0 bg-surface">
+          <div class="relative flex h-11 items-center px-2">
+            <a href="#listing" class="press grid size-11 place-items-center rounded-full" aria-label="Quay lại chỗ ở"><i data-lucide="chevron-left" class="size-6"></i></a>
+            <p class="absolute inset-x-0 mx-auto w-fit text-[17px] font-semibold">Xác nhận và thanh toán</p>
+          </div>
+        </header>
+        <div class="scroll pb-4">
+          <div class="mx-4 mt-3 flex gap-3">
+            <img src="https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?w=300&q=80&auto=format&fit=crop" alt="" class="size-[88px] shrink-0 rounded-2xl object-cover" />
+            <div class="min-w-0">
+              <p class="text-base font-semibold">Nhà gỗ giữa đồi thông, nhìn ra hồ Tuyền Lâm</p>
+              <p class="text-[13px] text-muted">Nguyên căn · Phường 3, Đà Lạt</p>
+              <p class="mt-1 flex items-center gap-1 text-[13px]"><i data-lucide="star" class="size-3.5 fill-current"></i><span class="font-semibold">4,92</span><span class="text-muted">(128)</span></p>
+            </div>
+          </div>
+
+          <h2 class="mt-6 px-4 text-[20px]/[25px] font-semibold">Chuyến đi</h2>
+          <div class="mx-4 mt-2 divide-y divide-border">
+            <div class="flex min-h-16 items-center gap-3 py-2"><span class="min-w-0 flex-1"><span class="block text-base font-medium">Ngày</span><span class="block text-[15px] text-muted tabular-nums">12/12 – 14/12/2026 · 2 đêm</span></span><a href="#book-dates" class="press inline-flex h-11 items-center px-2 text-[15px] font-semibold underline underline-offset-2">Sửa</a></div>
+            <div class="flex min-h-16 items-center gap-3 py-2"><span class="min-w-0 flex-1"><span class="block text-base font-medium">Khách</span><span class="block text-[15px] text-muted">2 người lớn</span></span><a href="#book-guests" class="press inline-flex h-11 items-center px-2 text-[15px] font-semibold underline underline-offset-2">Sửa</a></div>
+          </div>
+
+          <h2 class="mt-6 px-4 text-[20px]/[25px] font-semibold">Chi tiết giá</h2>
+          <dl class="mx-4 mt-3 space-y-2 text-base">
+            <div class="flex justify-between gap-4"><dt class="text-muted">1.150.000đ × 2 đêm</dt><dd class="tabular-nums">2.300.000đ</dd></div>
+            <div class="flex justify-between gap-4"><dt class="text-muted">Phí dọn dẹp</dt><dd class="tabular-nums">150.000đ</dd></div>
+            <div class="flex justify-between gap-4"><dt class="text-muted">Phí dịch vụ</dt><dd class="tabular-nums">200.000đ</dd></div>
+            <div class="flex justify-between gap-4 border-t border-border pt-3 text-[17px] font-semibold"><dt>Tổng cộng</dt><dd class="tabular-nums">2.650.000đ</dd></div>
+          </dl>
+
+          <h2 class="mt-6 px-4 text-[20px]/[25px] font-semibold">Thanh toán</h2>
+          <a href="#pay-method" class="press mx-4 mt-2 flex min-h-14 items-center gap-3 rounded-2xl px-4 ring-1 ring-border-strong ring-inset">
+            <i data-lucide="credit-card" class="size-5 shrink-0"></i>
+            <span class="flex-1 text-base tabular-nums">Thẻ ghi nợ •••• 4821</span>
+            <span class="text-[15px] text-muted">Đổi</span>
+            <i data-lucide="chevron-right" class="size-5 shrink-0 text-muted"></i>
+          </a>
+
+          <label class="mx-4 mt-6 block">
+            <span class="text-[20px]/[25px] font-semibold">Lời nhắn cho chủ nhà</span>
+            <span class="mt-1 block text-[15px] text-muted">Không bắt buộc. Ví dụ giờ bạn tới, có mang trẻ nhỏ không.</span>
+            <textarea rows="3" enterkeyhint="done" placeholder="Chào anh Khoa, tụi em tới khoảng 16:00…" class="mt-3 w-full resize-none rounded-2xl border border-border-strong bg-surface px-4 py-3 text-base outline-none placeholder:text-muted focus:border-foreground"></textarea>
+          </label>
+
+          <h2 class="mt-6 px-4 text-[20px]/[25px] font-semibold">Chính sách huỷ</h2>
+          <p class="mx-4 mt-1 text-[15px] text-pretty">Huỷ trước 14:00, 10/12 được hoàn đủ. Sau mốc đó hoàn 50% tiền phòng.</p>
+
+          <p class="mx-4 mt-6 text-[13px] text-pretty text-muted">Bấm nút dưới đây là bạn đồng ý với <a href="#checkout" class="text-foreground underline underline-offset-2">Nội quy chỗ ở</a> và <a href="#checkout" class="text-foreground underline underline-offset-2">Điều khoản đặt phòng</a>.</p>
+        </div>
+        <div class="shrink-0 border-t border-border bg-surface px-4 pt-3" style="padding-bottom: calc(var(--inset-bottom) + 12px)">
+          <a href="#booked" class="press flex h-[52px] items-center justify-center gap-2 rounded-2xl bg-primary text-base font-semibold text-primary-foreground">Xác nhận và thanh toán<span class="font-normal">·</span><span class="tabular-nums">2.650.000đ</span></a>
+        </div>
+      </section>
+
+      <!-- ================= ĐẶT XONG (O3: thấy là đã xong, thấy nó ở đâu). Ảnh thật của chỗ ở, không nhân vật vẽ (J16). ===== -->
+      <section class="screen is-pushed" data-screen="booked" aria-label="Đặt xong">
+        <div class="scroll pad-top px-4">
+          <img src="https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?w=900&q=80&auto=format&fit=crop" alt="" class="mt-4 aspect-[4/3] w-full rounded-2xl object-cover" />
+          <h1 class="mt-5 flex items-center gap-2 text-2xl/[30px] font-semibold"><span class="grid size-8 shrink-0 place-items-center rounded-full bg-success text-white"><i data-lucide="check" class="size-5"></i></span>Đã đặt xong</h1>
+          <p class="mt-1 text-base text-pretty text-muted">Anh Khoa đã nhận đặt phòng. Mình gửi xác nhận tới lan.nguyen@gmail.com.</p>
+          <dl class="mt-5 divide-y divide-border text-base">
+            <div class="flex min-h-14 items-center justify-between gap-4"><dt class="text-muted">Mã đặt phòng</dt><dd class="font-semibold tracking-wide">HN7K2Q</dd></div>
+            <div class="flex min-h-14 items-center justify-between gap-4"><dt class="text-muted">Nhận phòng</dt><dd class="text-right font-medium tabular-nums">T7, 12/12 · sau 14:00</dd></div>
+            <div class="flex min-h-14 items-center justify-between gap-4"><dt class="text-muted">Trả phòng</dt><dd class="text-right font-medium tabular-nums">T2, 14/12 · trước 12:00</dd></div>
+            <div class="flex min-h-14 items-center justify-between gap-4"><dt class="text-muted">Đã trả</dt><dd class="text-right font-medium tabular-nums">2.650.000đ · thẻ •••• 4821</dd></div>
+          </dl>
+          <p class="mt-4 text-[15px] text-pretty text-muted">Mã khoá cửa và đường tới nhà gửi trong mục Chuyến đi, trước ngày nhận phòng một ngày.</p>
+        </div>
+        <div class="grid shrink-0 gap-1 border-t border-border bg-surface px-4 pt-3" style="padding-bottom: calc(var(--inset-bottom) + 8px)">
+          <a href="#trips" class="press flex h-[52px] items-center justify-center rounded-2xl bg-foreground text-base font-semibold text-surface">Xem chuyến đi</a>
+          <a href="#home" class="press flex h-11 items-center justify-center text-base font-medium text-muted">Về Khám phá</a>
+        </div>
+      </section>
+
+      <!-- ================= CHUYẾN ĐI (tab 3) ================= -->
+      <section class="screen" data-screen="trips" aria-label="Chuyến đi">
+        <div class="scroll pad-top pad-tabbar">
+          <header class="px-4 pt-3"><h1 class="text-[32px]/[38px] font-semibold tracking-tight">Chuyến đi</h1></header>
+          <h2 class="mt-5 px-4 text-[20px]/[25px] font-semibold">Sắp tới</h2>
+          <ul class="mt-3 space-y-7 px-4">
+            <li>
+              <a href="#trip" class="press block">
+                <span class="relative block"><img src="https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?w=900&q=80&auto=format&fit=crop" alt="" class="aspect-[16/9] w-full rounded-2xl object-cover" /><span class="absolute top-3 left-3 rounded-full bg-surface px-3 py-1 text-[13px] font-semibold">Mới đặt</span></span>
+                <span class="mt-3 block text-[13px] font-medium text-muted">Nhận phòng sau 35 ngày</span>
+                <span class="block text-base font-semibold">Nhà gỗ giữa đồi thông, nhìn ra hồ Tuyền Lâm</span>
+                <span class="block text-[15px] text-muted tabular-nums">12–14/12/2026 · 2 khách · Mã HN7K2Q</span>
+              </a>
+            </li>
+            <li>
+              <a href="#trip" class="press block">
+                <img src="https://images.unsplash.com/photo-1712580415180-6ef0a0a7a3a7?w=900&q=80&auto=format&fit=crop" alt="" class="aspect-[16/9] w-full rounded-2xl object-cover" />
+                <span class="mt-3 block text-[13px] font-medium text-muted">Nhận phòng sau 13 ngày</span>
+                <span class="block text-base font-semibold">Nhà cổ ven sông Hoài, có xe đạp miễn phí</span>
+                <span class="block text-[15px] text-muted tabular-nums">20–23/11/2026 · 4 khách · Mã HA3P9M</span>
+              </a>
+            </li>
+          </ul>
+          <h2 class="mt-8 px-4 text-[20px]/[25px] font-semibold">Đã qua</h2>
+          <ul class="mt-1 divide-y divide-border px-4">
+            <li class="flex items-center gap-3 py-3">
+              <img src="https://images.unsplash.com/photo-1666160416071-f760a7af9ea6?w=200&q=80&auto=format&fit=crop" alt="" class="size-16 shrink-0 rounded-xl object-cover" />
+              <span class="min-w-0 flex-1"><span class="block text-base font-medium">Bungalow giữa ruộng bậc thang Tả Van</span><span class="block text-[13px] text-muted tabular-nums">03–05/10/2026 · Sa Pa</span></span>
+              <a href="#trips" class="press inline-flex h-11 shrink-0 items-center rounded-full px-4 text-[15px] font-semibold ring-1 ring-border-strong ring-inset">Đánh giá</a>
+            </li>
+            <li class="flex items-center gap-3 py-3">
+              <img src="https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=200&q=80&auto=format&fit=crop" alt="" class="size-16 shrink-0 rounded-xl object-cover" />
+              <span class="min-w-0 flex-1"><span class="block text-base font-medium">Bungalow sát biển Ông Lang, có bếp riêng</span><span class="block text-[13px] text-muted tabular-nums">14–18/07/2026 · Phú Quốc · Bạn chấm 5★</span></span>
+            </li>
+            <li class="flex items-center gap-3 py-3">
+              <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=200&q=80&auto=format&fit=crop" alt="" class="size-16 shrink-0 rounded-xl object-cover" />
+              <span class="min-w-0 flex-1"><span class="block text-base font-medium">Villa Pháp cổ có lò sưởi, gần chợ Đà Lạt</span><span class="block text-[13px] text-muted tabular-nums">21–23/06/2026 · <span class="text-danger">Đã huỷ, hoàn 4.290.000đ</span></span></span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= CHI TIẾT CHUYẾN ĐI (màn con của Chuyến đi, giữ thanh tab) ================= -->
+      <section class="screen is-pushed" data-screen="trip" aria-label="Chi tiết chuyến đi">
+        <header class="pad-top shrink-0 bg-surface">
+          <div class="relative flex h-11 items-center px-2">
+            <a href="#trips" class="press inline-flex h-11 items-center gap-0.5 rounded-full pr-3 pl-1 text-base" aria-label="Quay lại Chuyến đi"><i data-lucide="chevron-left" class="size-6"></i>Chuyến đi</a>
+          </div>
+        </header>
+        <div class="scroll pad-tabbar px-4">
+          <img src="https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?w=900&q=80&auto=format&fit=crop" alt="" class="mt-2 aspect-[16/9] w-full rounded-2xl object-cover" />
+          <p class="mt-4 text-[13px] font-medium text-muted">Nhận phòng sau 35 ngày</p>
+          <h1 class="text-2xl/[30px] font-semibold">Nhà gỗ giữa đồi thông, nhìn ra hồ Tuyền Lâm</h1>
+          <div class="mt-4 grid grid-cols-2 gap-2">
+            <div class="rounded-2xl bg-background p-4"><p class="text-[13px] text-muted">Nhận phòng</p><p class="text-[17px] font-semibold tabular-nums">T7, 12/12</p><p class="text-[13px] text-muted">sau 14:00</p></div>
+            <div class="rounded-2xl bg-background p-4"><p class="text-[13px] text-muted">Trả phòng</p><p class="text-[17px] font-semibold tabular-nums">T2, 14/12</p><p class="text-[13px] text-muted">trước 12:00</p></div>
+          </div>
+          <dl class="mt-4 divide-y divide-border text-base">
+            <div class="flex min-h-14 items-center justify-between gap-4"><dt class="text-muted">Khách</dt><dd class="font-medium">2 người lớn</dd></div>
+            <div class="flex min-h-14 items-center justify-between gap-4"><dt class="text-muted">Mã đặt phòng</dt><dd class="font-semibold tracking-wide">HN7K2Q</dd></div>
+            <div class="flex min-h-14 items-center justify-between gap-4 py-2"><dt class="shrink-0 text-muted">Địa chỉ</dt><dd class="text-right font-medium">Hẻm 12 Đường Tuyền Lâm, Phường 3, Đà Lạt</dd></div>
+            <div class="flex min-h-14 items-center justify-between gap-4"><dt class="text-muted">Đã trả</dt><dd class="font-medium tabular-nums">2.650.000đ</dd></div>
+          </dl>
+          <div class="mt-4 rounded-[20px] p-4 ring-1 ring-border-strong ring-inset">
+            <p class="flex items-center gap-2 text-base font-semibold"><i data-lucide="key-round" class="size-5"></i>Hướng dẫn nhận phòng</p>
+            <p class="mt-1 text-[15px] text-pretty text-muted">Mã khoá cửa hiện ở đây lúc 14:00, 11/12. Ô tô đậu ở bãi đất trước cổng, xe máy dắt vào sân.</p>
+          </div>
+          <a href="#listing" class="press mt-4 flex h-[52px] items-center justify-center rounded-2xl text-base font-semibold ring-1 ring-foreground ring-inset">Xem chỗ ở</a>
+          <p class="mt-8 text-[15px] text-pretty text-muted">Huỷ trước 14:00, 10/12 được hoàn đủ 2.650.000đ.</p>
+          <!-- Huỷ đặt phòng: việc nguy hiểm, đỏ nhạt, đứng riêng cuối màn (I4). -->
+          <button class="press mt-3 flex h-[52px] w-full items-center justify-center rounded-2xl bg-danger-bg text-base font-semibold text-danger">Huỷ đặt phòng</button>
+        </div>
+      </section>
+
+      <!-- ================= CHƯA CÓ CHUYẾN ĐI (J12: màn gốc rỗng, icon trong vòng 80px vì app lấy ảnh làm chủ) ===== -->
+      <section class="screen" data-screen="trips-empty" data-tab-root="trips" aria-label="Chuyến đi">
+        <div class="scroll pad-top pad-tabbar flex flex-col">
+          <header class="px-4 pt-3"><h1 class="text-[32px]/[38px] font-semibold tracking-tight">Chuyến đi</h1></header>
+          <div class="flex flex-1 flex-col items-center justify-center px-8 pb-16 text-center">
+            <span class="grid size-20 place-items-center rounded-full bg-background"><i data-lucide="luggage" class="size-9"></i></span>
+            <h2 class="mt-5 text-[20px]/[25px] font-semibold">Chưa có chuyến đi nào</h2>
+            <p class="mt-2 text-base text-pretty text-muted">Chỗ ở bạn đặt sẽ hiện ở đây, kèm ngày nhận phòng và hướng dẫn từ chủ nhà.</p>
+            <a href="#home" class="press mt-6 inline-flex h-[52px] items-center rounded-2xl bg-foreground px-6 text-base font-semibold text-surface">Khám phá chỗ ở</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= ĐÃ LƯU (tab 2): lưới 2 cột ảnh vuông, chữ dưới ảnh không bọc thẻ (Photo) ================= -->
+      <section class="screen" data-screen="saved" aria-label="Đã lưu">
+        <div class="scroll pad-top pad-tabbar">
+          <header class="px-4 pt-3"><h1 class="text-[32px]/[38px] font-semibold tracking-tight">Đã lưu</h1></header>
+          <div class="rail mt-4 gap-2">
+            <a href="#saved" class="press inline-flex h-11 items-center rounded-full bg-foreground px-4 text-[15px] font-medium text-surface tabular-nums">Tất cả · 7</a>
+            <a href="#saved" class="press inline-flex h-11 items-center rounded-full px-4 text-[15px] ring-1 ring-border-strong ring-inset tabular-nums">Đà Lạt · 3</a>
+            <a href="#saved" class="press inline-flex h-11 items-center rounded-full px-4 text-[15px] ring-1 ring-border-strong ring-inset tabular-nums">Hội An · 2</a>
+            <a href="#saved" class="press inline-flex h-11 items-center rounded-full px-4 text-[15px] ring-1 ring-border-strong ring-inset tabular-nums">Phú Quốc · 1</a>
+            <a href="#saved" class="press inline-flex h-11 items-center rounded-full px-4 text-[15px] ring-1 ring-border-strong ring-inset tabular-nums">Sa Pa · 1</a>
+          </div>
+          <ul class="mt-5 grid grid-cols-2 gap-x-3 gap-y-6 px-4" data-render="saved"></ul>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="saved-empty" data-tab-root="saved" aria-label="Đã lưu">
+        <div class="scroll pad-top pad-tabbar flex flex-col">
+          <header class="px-4 pt-3"><h1 class="text-[32px]/[38px] font-semibold tracking-tight">Đã lưu</h1></header>
+          <div class="flex flex-1 flex-col items-center justify-center px-8 pb-16 text-center">
+            <span class="grid size-20 place-items-center rounded-full bg-background"><i data-lucide="heart" class="size-9"></i></span>
+            <h2 class="mt-5 text-[20px]/[25px] font-semibold">Chưa lưu chỗ nào</h2>
+            <p class="mt-2 text-base text-pretty text-muted">Bấm hình trái tim trên ảnh chỗ ở để lưu lại, so sánh trước khi đặt.</p>
+            <a href="#home" class="press mt-6 inline-flex h-[52px] items-center rounded-2xl bg-foreground px-6 text-base font-semibold text-surface">Khám phá chỗ ở</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TÀI KHOẢN (tab 4, danh sách nhóm) ================= -->
+      <section class="screen is-grouped" data-screen="account" aria-label="Tài khoản">
+        <div class="scroll pad-top pad-tabbar">
+          <header class="px-4 pt-3"><h1 class="text-[32px]/[38px] font-semibold tracking-tight">Tài khoản</h1></header>
+          <a href="#account" class="press mx-4 mt-4 flex items-center gap-3 rounded-[20px] bg-surface p-4">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" class="size-14 shrink-0 rounded-full object-cover" />
+            <span class="min-w-0 flex-1"><span class="block text-[17px] font-semibold">Nguyễn Thị Phương Lan</span><span class="block text-sm text-muted">lan.nguyen@gmail.com</span></span>
+            <i data-lucide="chevron-right" class="size-5 shrink-0 text-muted"></i>
+          </a>
+          <h2 class="mt-6 px-8 text-[13px] font-medium text-muted">ĐẶT PHÒNG</h2>
+          <ul class="mx-4 mt-2 divide-y divide-border overflow-hidden rounded-[20px] bg-surface text-base">
+            <li><a href="#account" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="user-round" class="size-5 text-muted"></i><span class="flex-1">Thông tin cá nhân</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+            <li><a href="#account" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="credit-card" class="size-5 text-muted"></i><span class="flex-1">Thanh toán</span><span class="text-muted tabular-nums">•••• 4821</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+          </ul>
+          <h2 class="mt-6 px-8 text-[13px] font-medium text-muted">CÀI ĐẶT</h2>
+          <ul class="mx-4 mt-2 divide-y divide-border overflow-hidden rounded-[20px] bg-surface text-base">
+            <li><a href="#account" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="bell" class="size-5 text-muted"></i><span class="flex-1">Thông báo</span><span class="text-muted">Đang bật</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+            <li><a href="#account" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="languages" class="size-5 text-muted"></i><span class="flex-1">Ngôn ngữ</span><span class="text-muted">Tiếng Việt</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+            <li><a href="#account" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="banknote" class="size-5 text-muted"></i><span class="flex-1">Tiền tệ</span><span class="text-muted">VND</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+          </ul>
+          <h2 class="mt-6 px-8 text-[13px] font-medium text-muted">HỖ TRỢ</h2>
+          <ul class="mx-4 mt-2 divide-y divide-border overflow-hidden rounded-[20px] bg-surface text-base">
+            <li><a href="#account" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="life-buoy" class="size-5 text-muted"></i><span class="flex-1">Trung tâm trợ giúp</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+            <li><a href="#account" class="press flex min-h-14 items-center gap-3 px-4"><i data-lucide="file-text" class="size-5 text-muted"></i><span class="flex-1">Điều khoản và quyền riêng tư</span><i data-lucide="chevron-right" class="size-5 text-muted"></i></a></li>
+          </ul>
+          <!-- Đăng xuất và Xoá tài khoản: chữ đỏ (I4), thẻ riêng cuối màn; Xoá tài khoản bắt buộc có trong app (J12). -->
+          <ul class="mx-4 mt-6 divide-y divide-border overflow-hidden rounded-[20px] bg-surface text-base">
+            <li><button class="press flex min-h-14 w-full items-center justify-center px-4 font-medium text-danger">Đăng xuất</button></li>
+            <li><a href="#account" class="press flex min-h-14 items-center justify-center px-4 font-medium text-danger">Xoá tài khoản</a></li>
+          </ul>
+          <p class="mt-4 text-center text-[13px] text-muted">Hiên · phiên bản 1.0.0</p>
+        </div>
+      </section>
+
+      <!-- ================= THANH TAB NỔI (J2): 4 mục có chữ, không nút thêm. ================= -->
+      <nav class="above-home absolute inset-x-4 z-30 grid h-16 grid-cols-4 rounded-full bg-surface/90 px-2 shadow-[0_0_0_1px_rgb(0_0_0/0.04),0_8px_24px_-8px_rgb(0_0_0/0.18)] backdrop-blur-xl" aria-label="Điều hướng chính" data-tabbar>
+        <a href="#home" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground" data-tab="home"><i data-lucide="compass" class="size-6"></i><span class="text-[11px] font-medium">Khám phá</span></a>
+        <a href="#saved" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground" data-tab="saved"><i data-lucide="heart" class="size-6"></i><span class="text-[11px] font-medium">Đã lưu</span></a>
+        <a href="#trips" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground" data-tab="trips"><i data-lucide="luggage" class="size-6"></i><span class="text-[11px] font-medium">Chuyến đi</span></a>
+        <a href="#account" class="press flex flex-col items-center justify-center gap-0.5 rounded-full text-muted aria-[current=page]:text-foreground" data-tab="account"><i data-lucide="circle-user-round" class="size-6"></i><span class="text-[11px] font-medium">Tài khoản</span></a>
+      </nav>
+
+      <div class="scrim absolute inset-0 z-40 bg-black/40" data-scrim></div>
+
+      <!-- ================= BỘ LỌC (sheet lọc, J6: ô tick mỗi dòng, nút áp dụng dính đáy sheet) ================= -->
+      <section class="sheet absolute inset-x-0 bottom-0 z-50 flex h-[92%] flex-col rounded-t-[28px] bg-surface" role="dialog" aria-modal="true" aria-label="Bộ lọc" data-sheet="filter">
+        <div class="flex justify-center pt-2"><span class="h-[5px] w-9 rounded-full bg-border-strong" aria-hidden="true"></span></div>
+        <div class="flex h-11 items-center justify-between pr-2 pl-4">
+          <p class="text-[17px] font-semibold">Bộ lọc</p>
+          <a href="#results" class="press grid size-11 place-items-center rounded-full" aria-label="Đóng" data-close><i data-lucide="x" class="size-6"></i></a>
+        </div>
+        <div class="scroll px-4 pb-4">
+          <h3 class="mt-4 text-[17px] font-semibold">Giá cho 2 đêm, gồm phí</h3>
+          <!-- Tay cầm canh tâm vào mốc phần trăm: dịch nửa cỡ của chính nó, không có cách dương nào khác (N11). -->
+          <div class="relative mt-2 h-11 touch-none" aria-hidden="true">
+            <span class="absolute inset-x-0 top-1/2 h-1 rounded-full bg-secondary"></span>
+            <span class="absolute top-1/2 left-[8%] right-[42%] h-1 rounded-full bg-foreground"></span>
+            <span class="absolute top-1/2 left-[8%] size-6 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-foreground bg-surface"></span>
+            <span class="absolute top-1/2 right-[42%] size-6 translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-foreground bg-surface"></span>
+          </div>
+          <div class="mt-1 grid grid-cols-2 gap-3">
+            <label class="block"><span class="text-[13px] text-muted">Từ</span><span class="mt-1 flex h-[52px] items-center rounded-2xl border border-border-strong px-4"><input inputmode="numeric" value="800.000" class="min-w-0 flex-1 bg-transparent text-base tabular-nums outline-none" aria-label="Giá từ" /><span class="text-base text-muted">đ</span></span></label>
+            <label class="block"><span class="text-[13px] text-muted">Đến</span><span class="mt-1 flex h-[52px] items-center rounded-2xl border border-border-strong px-4"><input inputmode="numeric" value="5.000.000" class="min-w-0 flex-1 bg-transparent text-base tabular-nums outline-none" aria-label="Giá đến" /><span class="text-base text-muted">đ</span></span></label>
+          </div>
+
+          <h3 class="mt-7 text-[17px] font-semibold">Loại chỗ ở</h3>
+          <div class="mt-3 grid grid-cols-2 gap-3" role="radiogroup" aria-label="Loại chỗ ở">
+            <button role="radio" aria-checked="true" class="press flex min-h-[88px] flex-col items-start justify-between rounded-2xl p-4 text-left ring-2 ring-foreground ring-inset"><i data-lucide="house" class="size-6"></i><span class="text-base font-semibold">Nguyên căn</span></button>
+            <button role="radio" aria-checked="false" class="press flex min-h-[88px] flex-col items-start justify-between rounded-2xl p-4 text-left ring-1 ring-border-strong ring-inset"><i data-lucide="door-open" class="size-6"></i><span class="text-base font-semibold">Phòng riêng</span></button>
+          </div>
+
+          <h3 class="mt-7 text-[17px] font-semibold">Phòng và giường</h3>
+          <ul class="mt-1 divide-y divide-border" data-render="rooms"></ul>
+
+          <h3 class="mt-7 text-[17px] font-semibold">Tiện nghi</h3>
+          <ul class="mt-1">
+            <li><label class="flex min-h-14 cursor-pointer items-center gap-3"><input type="checkbox" class="peer sr-only" checked /><span class="grid size-6 shrink-0 place-items-center rounded-md border-2 border-border-strong text-transparent peer-checked:border-foreground peer-checked:bg-foreground peer-checked:text-surface"><i data-lucide="check" class="size-4"></i></span><span class="flex-1 text-base">Lò sưởi</span></label></li>
+            <li><label class="flex min-h-14 cursor-pointer items-center gap-3"><input type="checkbox" class="peer sr-only" /><span class="grid size-6 shrink-0 place-items-center rounded-md border-2 border-border-strong text-transparent peer-checked:border-foreground peer-checked:bg-foreground peer-checked:text-surface"><i data-lucide="check" class="size-4"></i></span><span class="flex-1 text-base">Bếp</span></label></li>
+            <li><label class="flex min-h-14 cursor-pointer items-center gap-3"><input type="checkbox" class="peer sr-only" /><span class="grid size-6 shrink-0 place-items-center rounded-md border-2 border-border-strong text-transparent peer-checked:border-foreground peer-checked:bg-foreground peer-checked:text-surface"><i data-lucide="check" class="size-4"></i></span><span class="flex-1 text-base">Chỗ đậu ô tô</span></label></li>
+            <li><label class="flex min-h-14 cursor-pointer items-center gap-3"><input type="checkbox" class="peer sr-only" /><span class="grid size-6 shrink-0 place-items-center rounded-md border-2 border-border-strong text-transparent peer-checked:border-foreground peer-checked:bg-foreground peer-checked:text-surface"><i data-lucide="check" class="size-4"></i></span><span class="flex-1 text-base">Hồ bơi</span></label></li>
+            <li><label class="flex min-h-14 cursor-pointer items-center gap-3"><input type="checkbox" class="peer sr-only" /><span class="grid size-6 shrink-0 place-items-center rounded-md border-2 border-border-strong text-transparent peer-checked:border-foreground peer-checked:bg-foreground peer-checked:text-surface"><i data-lucide="check" class="size-4"></i></span><span class="flex-1 text-base">Cho mang thú cưng</span></label></li>
+          </ul>
+
+          <h3 class="mt-7 text-[17px] font-semibold">Đặt phòng</h3>
+          <ul class="mt-1">
+            <li><label class="flex min-h-16 cursor-pointer items-center gap-3 py-2"><span class="flex-1"><span class="block text-base">Huỷ miễn phí</span><span class="block text-[13px] text-muted">Hoàn đủ nếu huỷ trước mốc của chủ nhà</span></span><input type="checkbox" class="peer sr-only" checked /><span class="relative h-[31px] w-[51px] shrink-0 rounded-full bg-secondary transition-colors peer-checked:bg-foreground after:absolute after:top-[2px] after:left-[2px] after:size-[27px] after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:after:translate-x-5"></span></label></li>
+            <li><label class="flex min-h-16 cursor-pointer items-center gap-3 py-2"><span class="flex-1"><span class="block text-base">Tự nhận phòng</span><span class="block text-[13px] text-muted">Khoá số hay hộp chìa khoá, tới giờ nào cũng vào được</span></span><input type="checkbox" class="peer sr-only" /><span class="relative h-[31px] w-[51px] shrink-0 rounded-full bg-secondary transition-colors peer-checked:bg-foreground after:absolute after:top-[2px] after:left-[2px] after:size-[27px] after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:after:translate-x-5"></span></label></li>
+          </ul>
+        </div>
+        <div class="flex shrink-0 items-center gap-3 border-t border-border px-4 pt-3" style="padding-bottom: calc(var(--inset-bottom) + 12px)">
+          <a href="#results" class="press inline-flex h-11 items-center px-1 text-base font-semibold underline underline-offset-2" data-close>Xoá tất cả</a>
+          <a href="#results" class="press ml-auto flex h-[52px] items-center justify-center rounded-2xl bg-foreground px-6 text-base font-semibold text-surface" data-close>Hiện 86 chỗ ở</a>
+        </div>
+      </section>
+
+      <!-- ================= TIỆN NGHI (sheet xem, cao 92%, nút X) ================= -->
+      <section class="sheet absolute inset-x-0 bottom-0 z-50 flex h-[92%] flex-col rounded-t-[28px] bg-surface" role="dialog" aria-modal="true" aria-label="Tiện nghi" data-sheet="amenities">
+        <div class="flex justify-center pt-2"><span class="h-[5px] w-9 rounded-full bg-border-strong" aria-hidden="true"></span></div>
+        <div class="flex h-11 items-center justify-between pr-2 pl-4">
+          <p class="text-[17px] font-semibold">32 tiện nghi</p>
+          <a href="#listing" class="press grid size-11 place-items-center rounded-full" aria-label="Đóng" data-close><i data-lucide="x" class="size-6"></i></a>
+        </div>
+        <div class="scroll pad-bottom px-4" data-render="amenities"></div>
+      </section>
+
+      <!-- ================= ĐÁNH GIÁ (sheet xem, cao 92%) ================= -->
+      <section class="sheet absolute inset-x-0 bottom-0 z-50 flex h-[92%] flex-col rounded-t-[28px] bg-surface" role="dialog" aria-modal="true" aria-label="Đánh giá" data-sheet="reviews">
+        <div class="flex justify-center pt-2"><span class="h-[5px] w-9 rounded-full bg-border-strong" aria-hidden="true"></span></div>
+        <div class="flex h-11 items-center justify-between pr-2 pl-4">
+          <p class="text-[17px] font-semibold">128 đánh giá</p>
+          <a href="#listing" class="press grid size-11 place-items-center rounded-full" aria-label="Đóng" data-close><i data-lucide="x" class="size-6"></i></a>
+        </div>
+        <div class="scroll pad-bottom px-4">
+          <div class="mt-2 flex items-end gap-4">
+            <p class="text-[36px]/[42px] font-semibold tabular-nums">4,92</p>
+            <p class="pb-1.5 text-[15px] text-muted">trên 5 · 128 đánh giá</p>
+          </div>
+          <dl class="mt-4 grid grid-cols-3 gap-2 text-center">
+            <div class="rounded-2xl bg-background px-2 py-3"><dt class="text-[13px] text-muted">Sạch sẽ</dt><dd class="text-[17px] font-semibold tabular-nums">4,9</dd></div>
+            <div class="rounded-2xl bg-background px-2 py-3"><dt class="text-[13px] text-muted">Đúng mô tả</dt><dd class="text-[17px] font-semibold tabular-nums">5,0</dd></div>
+            <div class="rounded-2xl bg-background px-2 py-3"><dt class="text-[13px] text-muted">Vị trí</dt><dd class="text-[17px] font-semibold tabular-nums">4,7</dd></div>
+          </dl>
+          <ul class="mt-4 divide-y divide-border" data-render="review-list"></ul>
+        </div>
+      </section>
+
+      <!-- ================= CHỌN NGÀY (sheet xác nhận, J6: nút dính đáy sheet). Ngày đã kín mờ và khoá. ================= -->
+      <section class="sheet absolute inset-x-0 bottom-0 z-50 flex h-[92%] flex-col rounded-t-[28px] bg-surface" role="dialog" aria-modal="true" aria-label="Chọn ngày" data-sheet="book-dates">
+        <div class="flex justify-center pt-2"><span class="h-[5px] w-9 rounded-full bg-border-strong" aria-hidden="true"></span></div>
+        <div class="flex h-11 items-center justify-between pr-2 pl-4">
+          <p class="text-[17px] font-semibold">Chọn ngày</p>
+          <a href="#listing" class="press grid size-11 place-items-center rounded-full" aria-label="Đóng" data-close><i data-lucide="x" class="size-6"></i></a>
+        </div>
+        <p class="px-4 text-[15px] text-muted">Ngày mờ là đã có khách đặt.</p>
+        <div class="mt-2 grid grid-cols-7 border-b border-border px-4 pb-2 text-center text-[13px] text-muted" aria-hidden="true"><span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span><span>CN</span></div>
+        <div class="scroll px-4" data-render="calendar"></div>
+        <div class="shrink-0 border-t border-border px-4 pt-3" style="padding-bottom: calc(var(--inset-bottom) + 12px)">
+          <div class="flex items-baseline justify-between gap-3"><p class="text-[15px] font-medium tabular-nums">2 đêm · 12/12 – 14/12/2026</p><p class="text-[15px] text-muted tabular-nums">2.650.000đ</p></div>
+          <a href="#book-guests" class="press mt-2 flex h-[52px] items-center justify-center rounded-2xl bg-primary text-base font-semibold text-primary-foreground">Tiếp tục</a>
+        </div>
+      </section>
+
+      <!-- ================= SỐ KHÁCH (bước sau của cùng sheet, nút trái là quay lại như màn Nhập mã J12) ================= -->
+      <section class="sheet absolute inset-x-0 bottom-0 z-50 flex max-h-[92%] flex-col rounded-t-[28px] bg-surface" role="dialog" aria-modal="true" aria-label="Số khách" data-sheet="book-guests">
+        <div class="flex justify-center pt-2"><span class="h-[5px] w-9 rounded-full bg-border-strong" aria-hidden="true"></span></div>
+        <div class="relative flex h-11 items-center px-2">
+          <a href="#book-dates" class="press grid size-11 place-items-center rounded-full" aria-label="Quay lại chọn ngày"><i data-lucide="chevron-left" class="size-6"></i></a>
+          <p class="absolute inset-x-0 mx-auto w-fit text-[17px] font-semibold">Số khách</p>
+        </div>
+        <div class="overflow-y-auto px-4">
+          <ul class="divide-y divide-border" data-render="guests" data-max="4"></ul>
+          <p class="mt-2 text-[13px] text-muted">Tối đa 4 khách, không tính em bé. Chỗ này không nhận thú cưng.</p>
+        </div>
+        <div class="px-4 pt-4" style="padding-bottom: calc(var(--inset-bottom) + 12px)">
+          <a href="#checkout" class="press flex h-[52px] items-center justify-center rounded-2xl bg-primary text-base font-semibold text-primary-foreground">Tiếp tục</a>
+        </div>
+      </section>
+
+      <!-- ================= CÁCH THANH TOÁN (sheet chọn một, J6: bấm dòng là áp dụng và đóng) ================= -->
+      <section class="sheet absolute inset-x-0 bottom-0 z-50 flex max-h-[92%] flex-col rounded-t-[28px] bg-surface" role="dialog" aria-modal="true" aria-label="Thanh toán bằng" data-sheet="pay-method">
+        <div class="flex justify-center pt-2"><span class="h-[5px] w-9 rounded-full bg-border-strong" aria-hidden="true"></span></div>
+        <div class="flex h-11 items-center justify-between pr-2 pl-4">
+          <p class="text-[17px] font-semibold">Thanh toán bằng</p>
+          <a href="#checkout" class="press grid size-11 place-items-center rounded-full" aria-label="Đóng" data-close><i data-lucide="x" class="size-6"></i></a>
+        </div>
+        <ul class="px-2" style="padding-bottom: calc(var(--inset-bottom) + 12px)">
+          <li><a href="#checkout" class="press flex min-h-14 items-center gap-3 rounded-2xl px-2 active:bg-item-hover" aria-current="true"><i data-lucide="credit-card" class="size-6 shrink-0"></i><span class="flex-1 text-base tabular-nums">Thẻ ghi nợ •••• 4821</span><i data-lucide="check" class="size-5"></i></a></li>
+          <li><a href="#checkout" class="press flex min-h-16 items-center gap-3 rounded-2xl px-2 py-2 active:bg-item-hover"><i data-lucide="qr-code" class="size-6 shrink-0"></i><span class="flex-1"><span class="block text-base">Chuyển khoản qua mã QR</span><span class="block text-[13px] text-muted">Quét bằng app ngân hàng, xác nhận trong 1 phút</span></span></a></li>
+          <li><a href="#checkout" class="press flex min-h-14 items-center gap-3 rounded-2xl px-2 active:bg-item-hover"><i data-lucide="wallet" class="size-6 shrink-0"></i><span class="flex-1 text-base">Ví điện tử</span></a></li>
+          <li><a href="#checkout" class="press flex min-h-14 items-center gap-3 rounded-2xl px-2 active:bg-item-hover"><i data-lucide="plus" class="size-6 shrink-0"></i><span class="flex-1 text-base">Thêm thẻ mới</span></a></li>
+        </ul>
+      </section>
+
+      <!-- Thông báo ngắn (J7): trên thanh tab, giữa, tự đi sau 4 giây, có Hoàn tác. -->
+      <div class="pointer-events-none absolute inset-x-4 z-[60] flex justify-center" style="bottom: calc(var(--inset-bottom) + 88px)" aria-live="polite">
+        <p class="flex translate-y-2 items-center gap-3 rounded-full bg-foreground py-1 pr-1 pl-4 text-sm font-medium text-surface opacity-0 invisible shadow-lg transition-all duration-200" data-toast><span data-toast-text></span><button class="press h-11 rounded-full px-3 text-sm font-semibold text-surface underline underline-offset-2" data-undo>Hoàn tác</button></p>
+      </div>
+
+      <div class="home-indicator pointer-events-none absolute bottom-2 inset-x-0 mx-auto z-[70] h-[5px] w-[134px] rounded-full bg-foreground" aria-hidden="true"></div>
+    </div>
+
+    <main class="flow-board" aria-label="Bảng luồng">
+      <header class="flex items-end justify-between gap-6 px-12 pt-10 pb-6">
+        <div>
+          <p class="text-sm text-white/60">Bản mẫu app điện thoại · bộ mặt Photo</p>
+          <h1 class="mt-1 text-[28px] font-bold tracking-tight">Hiên — đặt homestay</h1>
+        </div>
+        <p class="text-sm text-white/60">Bấm một màn để chạy thử từ màn đó</p>
+      </header>
+      <div data-board-rows></div>
+    </main>
+
+    <script>
+      // Máy thật là .device đầu tiên. Script của app tìm phần tử trong đó, không tìm khắp trang: bảng luồng (J1) chép cả
+      // khung máy, giữ nguyên data-* để CSS theo trạng thái còn đúng, nên tìm khắp trang là đổi nhầm cả bản chép.
+      const liveDevice = document.querySelector(".device");
+      // ===== DỮ LIỆU GIẢ (S6, S8, S16): ảnh Unsplash và randomuser là ảnh mẫu, thay bằng ảnh thật trước khi chạy thật. =====
+      const photo = (id, width = 800) => `https://images.unsplash.com/photo-${id}?w=${width}&q=80&auto=format&fit=crop`;
+      const formatPrice = (amount) => `${amount.toLocaleString("vi-VN")}đ`;
+
+      const destinations = [
+        { name: "Đà Lạt", count: "1.284 chỗ ở", image: "1552310065-aad9ebece999" },
+        { name: "Hội An", count: "862 chỗ ở", image: "1701397955118-79059690ef50" },
+        { name: "Sa Pa", count: "517 chỗ ở", image: "1570366583862-f91883984fde" },
+        { name: "Phú Quốc", count: "1.045 chỗ ở", image: "1693282814784-649be45a459b" },
+        { name: "Ninh Bình", count: "298 chỗ ở", image: "1557750255-c76072a7aad1" },
+        { name: "Hà Giang", count: "176 chỗ ở", image: "1696276959983-2da1448e695a" },
+      ];
+
+      // total: tổng 2 đêm 12–14/12 gồm phí dọn dẹp, phí dịch vụ (khớp màn Xác nhận và thanh toán).
+      const listings = {
+        l1: { name: "Nhà gỗ giữa đồi thông, nhìn ra hồ Tuyền Lâm", place: "Phường 3, Đà Lạt", kind: "Nguyên căn · 2 phòng ngủ", rating: "4,92", reviews: 128, price: 1150000, total: 2650000, image: "1449158743715-0a90ebb6d2d8", badge: "Khách yêu thích", saved: true },
+        l2: { name: "Villa Pháp cổ có lò sưởi, gần chợ Đà Lạt", place: "Phường 1, Đà Lạt", kind: "Nguyên căn · 4 phòng ngủ", rating: "4,85", reviews: 64, price: 1890000, total: 4290000, image: "1568605114967-8130f3a36994", saved: true },
+        l3: { name: "Cabin kính ngắm mây sớm ở Trại Mát", place: "Trại Mát, Đà Lạt", kind: "Nguyên căn · 1 phòng ngủ", rating: null, reviews: 0, price: 980000, total: 2290000, image: "1542718610-a1d656d1884c" },
+        l4: { name: "Phòng riêng trong nhà vườn cẩm tú cầu của gia đình cô Phương, có bữa sáng và chỗ đậu xe máy", place: "Phường 8, Đà Lạt", kind: "Phòng riêng · 1 giường đôi", rating: "4,70", reviews: 9, price: 450000, total: 1040000, image: null, saved: true },
+        h1: { name: "Nhà cổ ven sông Hoài, có xe đạp miễn phí", place: "Minh An, Hội An", kind: "Nguyên căn · 2 phòng ngủ", rating: "4,96", reviews: 312, price: 1350000, image: "1712580415180-6ef0a0a7a3a7", saved: true },
+        h2: { name: "Villa hồ bơi giữa ruộng lúa Cẩm Thanh", place: "Cẩm Thanh, Hội An", kind: "Nguyên căn · 3 phòng ngủ", rating: "4,88", reviews: 97, price: 3200000, image: "1564013799919-ab600027ffc6", saved: true },
+        h3: { name: "Căn hộ sân vườn gần chùa Cầu", place: "Cẩm Phô, Hội An", kind: "Nguyên căn · 1 phòng ngủ", rating: "4,79", reviews: 41, price: 790000, image: "1502672260266-1c1ef2d93688" },
+        s1: { name: "Bungalow giữa ruộng bậc thang Tả Van, bếp củi", place: "Tả Van, Sa Pa", kind: "Nguyên căn · 1 phòng ngủ", rating: "4,94", reviews: 203, price: 850000, image: "1666160416071-f760a7af9ea6", saved: true },
+        s2: { name: "Nhà sàn người Dao Đỏ ở Tả Phìn", place: "Tả Phìn, Sa Pa", kind: "Phòng riêng · nệm sàn", rating: "4,81", reviews: 156, price: 420000, image: "1562948179-4a30e320b770" },
+        s3: { name: "Nhà gỗ nhìn thung lũng Mường Hoa", place: "Hầu Thào, Sa Pa", kind: "Nguyên căn · 2 phòng ngủ", rating: "4,90", reviews: 88, price: 1100000, image: "1480996408299-fc0e830b5db1" },
+        p1: { name: "Bungalow sát biển Ông Lang, có bếp riêng", place: "Cửa Dương, Phú Quốc", kind: "Nguyên căn · 1 phòng ngủ", rating: "4,87", reviews: 176, price: 1650000, image: "1499793983690-e29da59ef1c2" },
+        p2: { name: "Villa 4 phòng ngủ, hồ bơi riêng ở Bãi Trường", place: "Dương Tơ, Phú Quốc", kind: "Nguyên căn · 4 phòng ngủ", rating: "4,93", reviews: 52, price: 12500000, image: "1566073771259-6a8506099945", saved: true },
+        p3: { name: "Nhà gỗ ngắm hoàng hôn Gành Dầu", place: "Gành Dầu, Phú Quốc", kind: "Nguyên căn · 2 phòng ngủ", rating: "4,76", reviews: 23, price: 2100000, image: "1582719508461-905c673771fd" },
+      };
+      const homeSections = [
+        { title: "Đà Lạt", note: "Đêm tháng 12 khoảng 13°C, nhiều chỗ có lò sưởi", ids: ["l1", "l2", "l3"] },
+        { title: "Hội An", note: "Gần phố cổ, đi bộ ra sông Hoài", ids: ["h1", "h2", "h3"] },
+        { title: "Sa Pa", note: "Ruộng bậc thang, bản người Dao và H'Mông", ids: ["s1", "s2", "s3"] },
+        { title: "Phú Quốc", note: "Sát biển, có bếp để nấu hải sản", ids: ["p1", "p2", "p3"] },
+      ];
+
+      const reviews = [
+        { name: "Lê Hoàng Yến", month: "Tháng 10/2026", avatar: "women/68", text: "Sáng mở cửa ban công là sương phủ kín hồ. Anh Khoa chu đáo, để sẵn củi và trà. Đường dốc đất hơi trơn khi mưa." },
+        { name: "Phạm Quốc Bảo", month: "Tháng 9/2026", avatar: "men/75", text: "Nhà sạch, bếp đủ đồ nấu lẩu cho cả nhóm 4 người. Wifi ổn để làm việc buổi sáng." },
+        { name: "Thu Trang", month: "Tháng 9/2026", avatar: null, text: "Đúng như ảnh. Tối lạnh nhưng có lò sưởi với chăn điện nên ngủ ấm." },
+        { name: "Đỗ Minh Tuấn", month: "Tháng 8/2026", avatar: "men/46", text: "Chỗ yên tĩnh, xa trung tâm khoảng 15 phút xe máy. Nên thuê xe trước." },
+      ];
+
+      const amenityGroups = [
+        { title: "Phòng tắm", items: [["shower-head", "Nước nóng lạnh"], ["bath", "Bồn tắm gỗ"], ["sparkles", "Dầu gội, sữa tắm"]] },
+        { title: "Phòng ngủ và giặt giũ", items: [["bed-double", "Chăn ga gối đủ cho 4 người"], ["zap", "Chăn điện"], ["washing-machine", "Máy giặt"], ["shirt", "Móc treo, bàn ủi"]] },
+        { title: "Sưởi ấm", items: [["flame", "Lò sưởi củi"], ["heater", "Máy sưởi dầu ở phòng ngủ"]] },
+        { title: "Bếp và ăn uống", items: [["cooking-pot", "Bếp đủ dụng cụ, nồi lẩu"], ["refrigerator", "Tủ lạnh"], ["coffee", "Ấm siêu tốc, trà atiso"], ["beef", "Lò nướng than ngoài sân"]] },
+        { title: "Internet", items: [["wifi", "Wifi 100 Mbps"], ["laptop", "Bàn làm việc"]] },
+        { title: "Bên ngoài", items: [["car", "Chỗ đậu ô tô miễn phí"], ["trees", "Sân vườn nhìn ra hồ"]] },
+        { title: "Không có", isMissing: true, items: [["air-vent", "Máy lạnh"], ["tv", "Tivi"], ["alarm-smoke", "Báo khói"]] },
+      ];
+
+      const galleryRooms = [
+        { title: "Phòng khách", images: ["1505691938895-1758d7feb511", "1586023492125-27b2c045efd7", "1600210492486-724fe5c67fb0"] },
+        { title: "Phòng ngủ", images: ["1540518614846-7eded433c457", "1505693416388-ac5ce068fe85", "1616594039964-ae9021a400a0"] },
+        { title: "Bếp", images: ["1484154218962-a197022b5858"] },
+        { title: "Phòng tắm", images: ["1552321554-5fefe8c9ef14"] },
+        { title: "Ngoài trời", images: ["1449158743715-0a90ebb6d2d8", "1647363420357-50a77a7f2f55", "1626667973496-73be1fc96390"] },
+      ];
+
+      // ===== DỰNG CÁC KHỐI LẶP. Chỉ là hình (N10): bấm thì đi theo href, logic lưu, lọc, đặt do người dùng nối. =====
+      function heartButton(id, isOnPhoto) {
+        const item = listings[id];
+        const shape = isOnPhoto ? "bg-white/90 shadow-[0_1px_4px_rgb(0_0_0/0.2)]" : "";
+
+        return `<button class="press absolute top-2 right-2 grid size-11 place-items-center rounded-full ${shape}" aria-label="Lưu ${item.name}" aria-pressed="${Boolean(item.saved)}" data-heart="${item.name}"><i data-lucide="heart" class="size-5"></i></button>`;
+      }
+
+      function ratingLine(item) {
+        if (!item.rating) return `<span class="shrink-0 text-[15px] font-medium">Mới</span>`;
+
+        return `<span class="flex shrink-0 items-center gap-1 text-[15px]"><i data-lucide="star" class="size-3.5 fill-current"></i><span class="font-medium tabular-nums">${item.rating}</span><span class="text-muted tabular-nums">(${item.reviews})</span></span>`;
+      }
+
+      function listingImage(item, ratioClass) {
+        if (item.image) return `<img src="${photo(item.image)}" alt="" class="${ratioClass} w-full rounded-2xl object-cover" />`;
+
+        // Ca biên S16: chỗ ở chưa có ảnh. Khung cùng tỉ lệ, chữ nói rõ, không để ô xám trơn trông như app hỏng.
+        return `<span class="${ratioClass} grid w-full place-items-center rounded-2xl bg-background text-muted"><span class="flex flex-col items-center gap-2 text-[15px]"><i data-lucide="image-off" class="size-7"></i>Chủ nhà chưa đăng ảnh</span></span>`;
+      }
+
+      function railCard(id) {
+        const item = listings[id];
+
+        return `<li class="relative w-[264px]">
+          <a href="#listing" class="press block">${listingImage(item, "aspect-[4/3]")}
+            <span class="mt-2.5 block text-[15px] font-semibold text-pretty">${item.name}</span>
+            <span class="mt-0.5 flex items-center gap-1 text-[13px] text-muted">${item.rating ? `<i data-lucide="star" class="size-3.5 fill-current text-foreground"></i><span class="font-medium text-foreground tabular-nums">${item.rating}</span><span class="tabular-nums">(${item.reviews})</span>` : `<span class="font-medium text-foreground">Mới</span>`}<span>·</span><span>${item.place.split(", ")[0]}</span></span>
+            <span class="mt-1.5 block text-[15px] tabular-nums"><span class="font-semibold">${formatPrice(item.price)}</span> <span class="text-muted">/ đêm</span></span>
+          </a>${heartButton(id, true)}</li>`;
+      }
+
+      function resultCard(id) {
+        const item = listings[id];
+        const badge = item.badge ? `<span class="absolute top-3 left-3 rounded-full bg-surface px-3 py-1 text-[13px] font-semibold">${item.badge}</span>` : "";
+        const totalLine = item.total ? ` <span class="text-muted">·</span> <span class="text-muted underline underline-offset-2">${formatPrice(item.total)} tổng</span>` : "";
+
+        return `<li class="relative">
+          <a href="#listing" class="press block"><span class="relative block">${listingImage(item, "aspect-[4/3]")}${badge}</span>
+            <span class="mt-3 flex items-start justify-between gap-3"><span class="text-base font-semibold text-pretty">${item.name}</span>${ratingLine(item)}</span>
+            <span class="block text-[15px] text-muted">${item.place} · ${item.kind}</span>
+            <span class="mt-2 block text-[15px] tabular-nums"><span class="font-semibold">${formatPrice(item.price)}</span> <span class="text-muted">/ đêm</span>${totalLine}</span>
+          </a>${heartButton(id, true)}</li>`;
+      }
+
+      function stepperRow({ label, note, value, isMinusDisabled, isPlusDisabled }) {
+        const disabledClass = "disabled:opacity-40";
+
+        return `<li class="flex min-h-[72px] items-center gap-3 py-2">
+          <span class="min-w-0 flex-1"><span class="block text-base font-medium">${label}</span><span class="block text-[13px] text-muted">${note}</span></span>
+          <button class="press grid size-11 place-items-center rounded-full ring-1 ring-border-strong ring-inset ${disabledClass}" aria-label="Bớt ${label.toLowerCase()}" ${isMinusDisabled ? "disabled" : ""}><i data-lucide="minus" class="size-5"></i></button>
+          <span class="w-7 text-center text-base font-semibold tabular-nums">${value}</span>
+          <button class="press grid size-11 place-items-center rounded-full ring-1 ring-border-strong ring-inset ${disabledClass}" aria-label="Thêm ${label.toLowerCase()}" ${isPlusDisabled ? "disabled" : ""}><i data-lucide="plus" class="size-5"></i></button>
+        </li>`;
+      }
+
+      // Lịch tháng dọc (khoảng ngày của components/choice-controls.md, khuôn gọn một tháng, cuộn dọc trong màn hay sheet).
+      // Ô 44px (J4). Hai đầu khoảng tô đặc màu chữ, dải giữa bg-item-hover lót sau nửa ô đầu cuối. Ngày qua, ngày kín mờ và khoá.
+      function renderMonth(year, monthIndex) {
+        const today = new Date(2026, 10, 7);
+        const range = [new Date(2026, 11, 12), new Date(2026, 11, 14)];
+        const bookedDays = ["2026-11-20", "2026-11-21", "2026-11-22", "2026-12-04", "2026-12-05", "2026-12-24", "2026-12-25", "2026-12-26"];
+        const firstDay = new Date(year, monthIndex, 1);
+        const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+        const leading = (firstDay.getDay() + 6) % 7;
+        let cells = "";
+
+        for (let blank = 0; blank < leading; blank++) cells += "<span></span>";
+        for (let day = 1; day <= daysInMonth; day++) {
+          const date = new Date(year, monthIndex, day);
+          const key = `${year}-${String(monthIndex + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+          const isPast = date < today;
+          const isBooked = bookedDays.includes(key);
+          const isStart = date.getTime() === range[0].getTime();
+          const isEnd = date.getTime() === range[1].getTime();
+          const isBetween = date > range[0] && date < range[1];
+          const isToday = date.getTime() === today.getTime();
+          const column = (leading + day - 1) % 7;
+          let band = "";
+
+          if (isBetween) band = `<span class="absolute inset-y-0 inset-x-0 bg-item-hover ${column === 0 ? "rounded-l-full" : ""} ${column === 6 ? "rounded-r-full" : ""}"></span>`;
+          if (isStart) band = `<span class="absolute inset-y-0 right-0 left-1/2 bg-item-hover"></span>`;
+          if (isEnd) band = `<span class="absolute inset-y-0 right-1/2 left-0 bg-item-hover"></span>`;
+
+          const dayClass = isStart || isEnd ? "bg-foreground text-surface font-semibold" : isPast || isBooked ? "text-muted opacity-50 line-through decoration-1" : "font-medium";
+          const dot = isToday ? `<span class="absolute inset-x-0 bottom-1.5 mx-auto size-1 rounded-full bg-foreground"></span>` : "";
+          const disabled = isPast || isBooked ? "disabled" : "";
+          cells += `<span class="relative">${band}<button class="press relative mx-auto grid size-11 place-items-center rounded-full text-base tabular-nums ${dayClass}" ${disabled} aria-label="${day}/${monthIndex + 1}">${day}${dot}</button></span>`;
+        }
+
+        return `<h3 class="mt-5 scroll-mt-2 text-[17px] font-semibold" data-month="${year}-${monthIndex + 1}">Tháng ${monthIndex + 1}, ${year}</h3><div class="mt-2 grid grid-cols-7 gap-y-1">${cells}</div>`;
+      }
+
+      const renderers = {
+        destinations: () => destinations.map((place) => `<a href="#results" class="press block w-[112px]"><img src="${photo(place.image, 300)}" alt="" class="aspect-square w-full rounded-2xl object-cover" /><span class="mt-2 block text-[15px] font-semibold">${place.name}</span><span class="block text-[13px] text-muted">${place.count}</span></a>`).join(""),
+        "home-sections": () => homeSections.map((section) => `
+          <div class="mt-8 flex items-end justify-between gap-3 px-4">
+            <div><h2 class="text-[20px]/[25px] font-semibold">${section.title}</h2><p class="mt-0.5 text-[13px] text-pretty text-muted">${section.note}</p></div>
+            <a href="#results" class="press inline-flex h-11 shrink-0 items-center text-[15px] font-semibold underline underline-offset-2">Xem tất cả</a>
+          </div>
+          <ul class="rail mt-3">${section.ids.map(railCard).join("")}</ul>`).join(""),
+        results: () => ["l1", "l2", "l3", "l4"].map(resultCard).join(""),
+        "near-results": () => ["l2", "l1"].map(resultCard).join(""),
+        guests: (container) => {
+          const max = Number(container.dataset.max);
+
+          return [
+            stepperRow({ label: "Người lớn", note: "Từ 13 tuổi", value: 2, isPlusDisabled: false }),
+            stepperRow({ label: "Trẻ em", note: "Từ 2 tới 12 tuổi", value: 0, isMinusDisabled: true }),
+            stepperRow({ label: "Em bé", note: "Dưới 2 tuổi", value: 0, isMinusDisabled: true }),
+            stepperRow({ label: "Thú cưng", note: max > 4 ? "Chỉ hiện chỗ cho mang thú cưng" : "Chỗ này không nhận", value: 0, isMinusDisabled: true, isPlusDisabled: max <= 4 }),
+          ].join("");
+        },
+        rooms: () => [
+          stepperRow({ label: "Phòng ngủ", note: "Tối thiểu", value: 2 }),
+          stepperRow({ label: "Giường", note: "Tối thiểu", value: 0, isMinusDisabled: true }),
+          stepperRow({ label: "Phòng tắm", note: "Tối thiểu", value: 1 }),
+        ].join(""),
+        calendar: () => renderMonth(2026, 10) + renderMonth(2026, 11) + renderMonth(2027, 0) + `<div class="h-4"></div>`,
+        "review-cards": () => reviews.slice(0, 3).map((review) => `
+          <div class="flex w-[280px] flex-col rounded-[20px] p-4 ring-1 ring-border-strong ring-inset">
+            <p class="flex gap-0.5" aria-label="5 sao">${'<i data-lucide="star" class="size-3.5 fill-current"></i>'.repeat(5)}</p>
+            <p class="mt-2 flex-1 text-[15px] text-pretty">${review.text}</p>
+            <div class="mt-4 flex items-center gap-3">${avatar(review, "size-10")}<span><span class="block text-[15px] font-semibold">${review.name}</span><span class="block text-[13px] text-muted">${review.month}</span></span></div>
+          </div>`).join(""),
+        "review-list": () => reviews.map((review) => `
+          <li class="py-5">
+            <div class="flex items-center gap-3">${avatar(review, "size-11")}<span><span class="block text-base font-semibold">${review.name}</span><span class="block text-[13px] text-muted">${review.month} · 5★</span></span></div>
+            <p class="mt-3 text-base text-pretty">${review.text}</p>
+          </li>`).join(""),
+        amenities: () => amenityGroups.map((group) => `
+          <h3 class="mt-6 text-[17px] font-semibold">${group.title}</h3>
+          <ul class="mt-1 divide-y divide-border">${group.items.map(([icon, label]) => `<li class="flex min-h-14 items-center gap-4 text-base ${group.isMissing ? "text-muted" : ""}"><i data-lucide="${icon}" class="size-6 shrink-0"></i><span class="${group.isMissing ? "line-through" : ""}">${label}</span></li>`).join("")}</ul>`).join(""),
+        gallery: () => galleryRooms.map((room) => `
+          <h2 class="mt-5 text-[20px]/[25px] font-semibold">${room.title}</h2>
+          <div class="mt-3 grid grid-cols-2 gap-2">${room.images.map((image, index) => `<img src="${photo(image, index === 0 ? 900 : 500)}" alt="" class="${index === 0 ? "col-span-2 aspect-[4/3]" : "aspect-square"} w-full rounded-xl object-cover" />`).join("")}</div>`).join(""),
+        saved: () => ["l1", "h1", "p2", "l2", "h2", "s1", "l4"].map((id) => {
+          const item = listings[id];
+
+          return `<li class="relative"><a href="#listing" class="press block">${listingImage(item, "aspect-square")}
+            <span class="mt-2 block text-[15px] font-semibold text-pretty">${item.name}</span>
+            <span class="block text-[13px] text-muted">${item.place.split(", ").pop()} · ${item.rating ? `★ ${item.rating}` : "Mới"}</span>
+            <span class="mt-0.5 block text-[15px] tabular-nums"><span class="font-semibold">${formatPrice(item.price)}</span> <span class="text-muted">/ đêm</span></span></a>${heartButton(id, true)}</li>`;
+        }).join(""),
+        // Bản đồ: ô nền xám nhạt của Esri (z14, quanh hồ Xuân Hương), lưới 3×4 ô 256px canh giữa vùng nhìn.
+        "map-tiles": () => {
+          let tiles = "";
+          for (let row = 7643; row <= 7646; row++) for (let column = 13126; column <= 13128; column++) tiles += `<img src="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/14/${row}/${column}" alt="" class="size-64" />`;
+
+          return `<div class="grid grid-cols-3">${tiles}</div>`;
+        },
+        "map-pins": () => [
+          { label: "1,15 tr", left: 52, top: 50, isActive: true },
+          { label: "1,89 tr", left: 26, top: 22 },
+          { label: "980 k", left: 66, top: 14 },
+          { label: "450 k", left: 12, top: 40 },
+          { label: "2,4 tr", left: 70, top: 34 },
+          { label: "760 k", left: 30, top: 60 },
+        ].map((pin) => `<a href="#listing" class="press absolute inline-flex h-11 items-center rounded-full px-3.5 text-[15px] font-semibold tabular-nums shadow-[0_2px_8px_rgb(0_0_0/0.18)] ${pin.isActive ? "z-10 bg-foreground text-surface" : "bg-surface"}" style="left: ${pin.left}%; top: ${pin.top}%" aria-label="Chỗ ở giá ${pin.label} một đêm">${pin.label}</a>`).join(""),
+      };
+
+      function avatar(review, sizeClass) {
+        if (review.avatar) return `<img src="https://randomuser.me/api/portraits/${review.avatar}.jpg" alt="" class="${sizeClass} shrink-0 rounded-full object-cover" />`;
+
+        // Ca biên S16: người không có ảnh đại diện, rơi về chữ cái đầu (components/avatar.md).
+        return `<span class="${sizeClass} grid shrink-0 place-items-center rounded-full bg-(--avatar-bg) text-[15px] font-semibold text-(--avatar-text)">${review.name.trim().split(" ").pop()[0]}</span>`;
+      }
+
+      liveDevice.querySelectorAll("[data-render]").forEach((container) => {
+        container.innerHTML = renderers[container.dataset.render](container);
+      });
+      lucide.createIcons();
+
+      // ===== ĐIỀU HƯỚNG (theo mobile-order.html: tab, màn con, sheet trên màn nền của nó) =====
+      const tabScreens = ["home", "saved", "trips", "account"];
+      // Màn con để xem giữ thanh tab, sáng tab cha (J2). Màn không có ở đây (tìm kiếm, chi tiết có thanh giá, thanh toán,
+      // đặt xong, bộ ảnh) ẩn thanh tab.
+      const parentTabs = { results: "home", "results-empty": "home", map: "home", trip: "trips" };
+      const sheetBases = { filter: ["results", "results-empty"], amenities: ["listing"], reviews: ["listing"], "book-dates": ["listing", "checkout"], "book-guests": ["listing", "checkout"], "pay-method": ["checkout"] };
+      const scrim = document.querySelector("[data-scrim]");
+      const tabbar = document.querySelector("[data-tabbar]");
+      const toast = document.querySelector("[data-toast]");
+      let baseScreen = "home";
+
+      function showScreen(name) {
+        let tabName = tabScreens.includes(name) ? name : parentTabs[name];
+        liveDevice.querySelectorAll("[data-screen]").forEach((screen) => {
+          const isActive = screen.dataset.screen === name;
+          screen.classList.toggle("is-active", isActive);
+          if (isActive && screen.dataset.tabRoot) tabName = screen.dataset.tabRoot;
+        });
+        liveDevice.querySelectorAll("[data-tab]").forEach((tab) => {
+          if (tab.dataset.tab === tabName) tab.setAttribute("aria-current", "page");
+          else tab.removeAttribute("aria-current");
+        });
+        tabbar.hidden = !tabName;
+      }
+
+      function renderScreen(name) {
+        const bases = sheetBases[name];
+        if (!bases) baseScreen = name;
+        else if (!bases.includes(baseScreen)) baseScreen = bases[0];
+        showScreen(baseScreen);
+        liveDevice.querySelectorAll("[data-sheet]").forEach((panel) => {
+          const isOpen = panel.dataset.sheet === name;
+          panel.classList.toggle("is-open", isOpen);
+          panel.inert = !isOpen;
+        });
+        scrim.classList.toggle("is-open", Boolean(bases));
+      }
+
+      const wideScreen = matchMedia("(min-width: 900px)");
+      function route() {
+        const name = location.hash.slice(1);
+        document.body.classList.toggle("is-board", !name && wideScreen.matches);
+        renderScreen(name || "home");
+      }
+
+      // ===== BẢNG LUỒNG (J1): chép nguyên từ mobile-app.html. =====
+      function buildBoard(renderScreen) {
+        const rowsContainer = document.querySelector("[data-board-rows]");
+        const liveDevice = document.querySelector(".device");
+        const isReduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        let order = 0;
+        document.querySelectorAll("[data-flow]").forEach((flowList) => {
+          const links = [...flowList.querySelectorAll("a[href^='#']")];
+          const section = document.createElement("section");
+          section.className = "pb-8";
+          section.innerHTML = `
+            <div class="flex items-end justify-between gap-4 px-12 pb-3">
+              <div><h2 class="text-xl font-semibold">${flowList.dataset.flow}</h2><p class="mt-0.5 text-sm text-white/60">${links.length} màn · ${flowList.dataset.flowNote || ""}</p></div>
+              <div class="flex gap-2">
+                <button type="button" class="grid size-11 place-items-center rounded-full bg-white/10 hover:bg-white/20" aria-label="Cuộn sang trái" data-scroll="-1"><i data-lucide="arrow-left" class="size-5"></i></button>
+                <button type="button" class="grid size-11 place-items-center rounded-full bg-white/10 hover:bg-white/20" aria-label="Cuộn sang phải" data-scroll="1"><i data-lucide="arrow-right" class="size-5"></i></button>
+              </div>
+            </div>
+            <div class="flow-row"></div>`;
+          const row = section.querySelector(".flow-row");
+          const frames = [];
+          links.forEach((link, index) => {
+            const screenName = link.getAttribute("href").slice(1);
+            renderScreen(screenName);
+            const deviceCopy = liveDevice.cloneNode(true);
+            deviceCopy.classList.add("board-device");
+            deviceCopy.inert = true;
+            deviceCopy.querySelectorAll(".screen:not(.is-active), .sheet:not(.is-open), .scrim:not(.is-open), [data-toast], [hidden]").forEach((element) => element.remove());
+            // Gỡ data-screen để probe và script chỉ thấy màn của máy thật. Giữ các data-* khác: CSS hay ẩn hiện theo chúng
+            // (nút phát/dừng theo [data-play-toggle][aria-pressed]), gỡ đi thì bản chép hiện cả hai icon.
+            deviceCopy.querySelectorAll("[data-screen]").forEach((element) => element.removeAttribute("data-screen"));
+            // Bỏ name, id, for: radio cùng name ở bản chép giành mất dấu chọn của máy thật (sheet món mất "Vừa", giá sai).
+            deviceCopy.querySelectorAll("[name], [id], [for]").forEach((element) => ["name", "id", "for"].forEach((attribute) => element.removeAttribute(attribute)));
+            frames.push({ name: screenName, device: deviceCopy });
+            const card = document.createElement("a");
+            card.href = `#${screenName}`;
+            card.className = "board-card";
+            card.style.setProperty("--order", ++order);
+            const phone = document.createElement("div");
+            phone.className = "board-phone";
+            phone.append(deviceCopy);
+            const label = document.createElement("p");
+            label.className = "mt-3 text-sm text-white/70";
+            label.textContent = `${index + 1}. ${link.textContent.replace(/^\d+\.\s*/, "")}`;
+            card.append(phone, label);
+            row.append(card);
+          });
+          // Thẻ đầu hàng: tự phát cả luồng như một đoạn video, dùng chính các màn vừa chép.
+          if (frames.length > 1) row.prepend(createFlowPlayer(frames, isReduced));
+          section.querySelectorAll("[data-scroll]").forEach((button) => {
+            button.addEventListener("click", () => row.scrollBy({ left: Number(button.dataset.scroll) * row.clientWidth * 0.8, behavior: isReduced ? "auto" : "smooth" }));
+          });
+          rowsContainer.append(section);
+        });
+        lucide.createIcons();
+      }
+
+      // ===== CHẠY LUỒNG (J1): 1,6 giây mỗi màn, màn sau trượt vào như bấm thật, thanh tiến độ chạy tiếp. Chỉ phát khi thẻ nằm
+      // trong màn hình, rê chuột thì dừng, có nút dừng / phát (nội dung tự chạy quá 5 giây phải dừng được). Giảm chuyển
+      // động thì không tự phát, bấm ▶ mới chạy, đổi màn bằng mờ dần. Bấm khung máy là chạy thử đúng màn đang phát. =====
+      function createFlowPlayer(frames, isReduced) {
+        const card = document.createElement("div");
+        card.className = "board-card";
+        card.style.setProperty("--order", 0);
+        card.innerHTML = `
+          <a class="block" aria-label="Chạy thử từ màn đang phát" data-player-link><div class="board-phone" data-player-phone></div></a>
+          <div class="mt-3 flex w-[273px] items-center justify-between gap-2">
+            <p class="text-sm text-white/70">Chạy luồng · <span class="tabular-nums" data-player-step></span></p>
+            <button type="button" class="player-toggle grid size-11 place-items-center rounded-full bg-white/10 hover:bg-white/20" data-player-toggle><i data-lucide="pause" class="icon-pause size-5"></i><i data-lucide="play" class="icon-play size-5"></i></button>
+          </div>
+          <div class="mt-2 flex w-[273px] gap-1" aria-hidden="true" data-player-segments>${frames.map(() => '<span class="h-1 flex-1 rounded-full bg-white/20"></span>').join("")}</div>`;
+        const phone = card.querySelector("[data-player-phone]");
+        const link = card.querySelector("[data-player-link]");
+        const step = card.querySelector("[data-player-step]");
+        const segments = [...card.querySelector("[data-player-segments]").children];
+        const toggle = card.querySelector("[data-player-toggle]");
+        let index = 0;
+        let timer = null;
+        let isPlaying = !isReduced;
+        let isHovered = false;
+        let isVisible = false;
+        let lastWidth = null;
+
+        function show(nextIndex, shouldAnimate) {
+          index = nextIndex;
+          phone.replaceChildren(frames[index].device.cloneNode(true));
+          link.href = `#${frames[index].name}`;
+          step.textContent = `${index + 1}/${frames.length}`;
+          // Đổi hẳn class, không chồng bg-white lên bg-white/20: hai class cùng thuộc tính thì thứ tự trong CSS quyết định, đoạn đã
+          // phát không sáng lên.
+          segments.forEach((segment, segmentIndex) => { segment.className = `h-1 flex-1 rounded-full ${segmentIndex <= index ? "bg-white" : "bg-white/20"}`; });
+          const screen = phone.querySelector(".screen");
+          const fill = phone.querySelector('[role="progressbar"] > div');
+          if (shouldAnimate && screen) {
+            screen.animate(isReduced ? [{ opacity: 0 }, { opacity: 1 }] : [{ translate: "30% 0", opacity: 0.6 }, { translate: "0 0", opacity: 1 }], { duration: isReduced ? 200 : 300, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" });
+            if (fill && lastWidth && lastWidth !== fill.style.width && !isReduced) {
+              fill.animate([{ width: lastWidth }, { width: fill.style.width }], { duration: 400, delay: 150, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)", fill: "backwards" });
+            }
+          }
+          lastWidth = fill ? fill.style.width : null;
+        }
+
+        function sync() {
+          const shouldRun = isPlaying && isVisible && !isHovered;
+          if (shouldRun && !timer) timer = setInterval(() => show((index + 1) % frames.length, true), 1600);
+          if (!shouldRun && timer) { clearInterval(timer); timer = null; }
+          toggle.setAttribute("aria-pressed", String(isPlaying));
+          toggle.setAttribute("aria-label", isPlaying ? "Dừng chạy luồng" : "Chạy luồng");
+        }
+
+        toggle.addEventListener("click", () => { isPlaying = !isPlaying; sync(); });
+        card.addEventListener("mouseenter", () => { isHovered = true; sync(); });
+        card.addEventListener("mouseleave", () => { isHovered = false; sync(); });
+        // Hình gán sau (nhân vật J16 nạp từ CDN): chép lại màn đang hiện khi hình đã có.
+        document.addEventListener("art-ready", () => show(index, false));
+        new IntersectionObserver(([entry]) => { isVisible = entry.isIntersecting; sync(); }, { threshold: 0.5 }).observe(card);
+        show(0, false);
+        sync();
+
+        return card;
+      }
+
+      // ===== PHẢN HỒI: lưu / bỏ lưu có thông báo ngắn và Hoàn tác (J7). Lưu thật vào đâu là việc của người dùng (N10). =====
+      let lastHeart = null;
+      function hideToast() {
+        toast.classList.remove("pointer-events-auto");
+        toast.classList.add("opacity-0", "translate-y-2", "invisible");
+      }
+      function showToast(message) {
+        toast.querySelector("[data-toast-text]").textContent = message;
+        setTimeout(() => toast.classList.remove("opacity-0", "translate-y-2", "invisible"), 50);
+        toast.classList.add("pointer-events-auto");
+        clearTimeout(showToast.timer);
+        showToast.timer = setTimeout(hideToast, 4050);
+      }
+      liveDevice.querySelectorAll("[data-heart]").forEach((button) => button.addEventListener("click", (event) => {
+        event.preventDefault();
+        const isSaved = button.getAttribute("aria-pressed") !== "true";
+        button.setAttribute("aria-pressed", String(isSaved));
+        lastHeart = button;
+        showToast(isSaved ? "Đã lưu vào Đã lưu" : "Đã bỏ khỏi Đã lưu");
+      }));
+      toast.querySelector("[data-undo]").addEventListener("click", () => {
+        if (lastHeart) lastHeart.setAttribute("aria-pressed", String(lastHeart.getAttribute("aria-pressed") !== "true"));
+        hideToast();
+      });
+
+      buildBoard(renderScreen);
+      window.addEventListener("hashchange", route);
+      wideScreen.addEventListener("change", route);
+      scrim.addEventListener("click", () => { location.hash = baseScreen; });
+      liveDevice.querySelectorAll("[data-sheet] [data-close]").forEach((link) => link.addEventListener("click", (event) => {
+        event.preventDefault();
+        location.hash = baseScreen;
+      }));
+      route();
+    </script>
+  </body>
+</html>
