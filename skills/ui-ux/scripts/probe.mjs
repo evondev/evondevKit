@@ -9,10 +9,11 @@
 // --mobile: bản mẫu app điện thoại theo layouts/mobile-app.html (luật J, references/mobile.md). Ngoài các khổ của
 // --widths, mở TỪNG MÀN (mỗi [data-screen] và mỗi hash dẫn tới sheet như #add) ở 390×844 giả lập chạm và ở khung
 // máy tính 1280, chụp từng màn, đo: chữ dưới 11px, chữ ô nhập dưới 16px, chỗ bấm dưới 44px, thanh tab (3–5 mục,
-// mục nào cũng có chữ, không nút hành động trong thanh, màn con giữ thanh thì sáng tab cha, không cạnh nút dính đáy), nút nổi đè lên chữ, dòng cuối không
-// cuộn ra khỏi thanh tab được, chữ hay chỗ bấm chui vào vùng tai thỏ / thanh home của khung, cuộn xuống mà chữ
+// mục nào cũng có chữ, không mục "Thêm", không nút hành động trong thanh, màn con giữ thanh thì sáng tab cha, không cạnh nút dính đáy), nút nổi
+// đè lên chữ, dòng cuối không cuộn ra khỏi thanh tab được, sheet mở mà không có lớp phủ tối, chữ hay chỗ bấm chui vào vùng tai thỏ / thanh home của khung, cuộn xuống mà chữ
 // chạy dưới thanh trạng thái không có dải nền che. Trong khung `.device` bỏ các phép đo của web: vòng focus (màn
 // chạm), sàn chữ 12px (nhãn thanh tab 11), header trong suốt (tiêu đề lớn), bóng của sheet.
+// Lỗi app điện thoại cỡ Hỏng (bấm dưới 44, chữ dưới 11, dòng cuối bị che, sheet không lớp phủ…) vào danh sách P.
 //
 // Phép đo động (Tab, rê chuột, bấm, mở lớp nổi) chiếm phần lớn thời gian mà ít đổi theo bề rộng, nên mặc định
 // chỉ chạy ở các khổ mobile, khổ gần 768 và gần 1280 nhất; khổ khác đo trang đứng yên.
@@ -3429,6 +3430,9 @@ function measureMobileScreen({ isFrame, minTap }) {
       if (!label && isIconOnlyStyle && (item.getAttribute("aria-label") || "").trim().length < 2) problems.push(`mục thanh tab ${describe(item)} chỉ icon mà thiếu aria-label: kiểu ${tabStyle} cần aria-label mỗi mục (J2)`);
       if (!label && !isIconOnlyStyle) problems.push(`mục thanh tab ${describe(item)} không có chữ: mục nào cũng có chữ dưới icon, trừ kiểu chỉ icon có tên khai data-tab-style (J2)`);
       if (item.tagName === "BUTTON" || /^#(add|new|create|them)/i.test(item.getAttribute("href") || "") || /^\+$|thêm|add|new/i.test(item.getAttribute("aria-label") || "")) problems.push(`thanh tab chứa hành động ${describe(item)}: thanh tab chỉ để đi lại, nút thêm đứng riêng cạnh thanh (J2, J5)`);
+      // Mục "Thêm" / "More" gom phần còn lại: người dùng không đoán được trong có gì, ở app đặt món còn đọc thành
+      // "thêm món". J2 bắt đổi thành mục có tên (sót 11/2026, mồi app cà phê, bảng soi xếp Gu).
+      if (/^(thêm|more|khác|other)$/i.test(label)) problems.push(`mục thanh tab "${label}": không gom phần còn lại vào "Thêm" / "More", đổi thành mục có tên theo chỗ nó mở ra, ví dụ "Tài khoản" (J2)`);
     }
     // J2: nhãn kề nhau cách từ 8px, nhãn hai đầu cách mép bo của thanh từ 8px. Đo bằng Range trên chữ, không bằng
     // khung mục: thanh thu lại cho nút tròn mà có 5 mục thì nhãn tràn khung mục (bản dựng studio 10/10/2026).
@@ -3577,7 +3581,10 @@ function measureMobileScreen({ isFrame, minTap }) {
     // Trả về đúng chỗ cuộn ban đầu, không về 0: màn "vừa lưu" cuộn sẵn tới dòng mới (J1), về 0 thì ảnh chụp sai.
     const scrollBefore = scroller.scrollTop;
     scroller.scrollTop = scroller.scrollHeight;
-    const lastLeaf = [...textLeaves].sort((first, second) => second.getBoundingClientRect().bottom - first.getBoundingClientRect().bottom)[0];
+    // Lấy lại chữ SAU khi cuộn: isShown loại chữ nằm ngoài khung máy, nên danh sách lấy lúc chưa cuộn không có
+    // món cuối, phép đo không bao giờ bật (sót 11/2026, mồi app cà phê: vùng cuộn pb-4, hai món cuối nằm dưới thanh giỏ).
+    const leavesAfterScroll = [...screen.querySelectorAll("span, p, h1, h2, h3, dt, dd, li")].filter((element) => element.children.length === 0 && element.textContent.trim() && isShown(element) && !isInert(element) && !tabbar.contains(element) && scroller.contains(element));
+    const lastLeaf = [...leavesAfterScroll].sort((first, second) => second.getBoundingClientRect().bottom - first.getBoundingClientRect().bottom)[0];
     const barRect = tabbar.getBoundingClientRect();
     // Có thanh giỏ hàng xếp trên thanh tab thì dòng cuối phải ra khỏi cả thanh giỏ.
     const dockTops = [...device.querySelectorAll("a, button")].filter((element) => isShown(element) && !tabbar.contains(element) && ["absolute", "fixed"].includes(getComputedStyle(element).position)).map((element) => element.getBoundingClientRect()).filter((rect) => isDockedAboveTabbar(rect, barRect)).map((rect) => rect.top);
@@ -3642,6 +3649,49 @@ function measureMobileScreen({ isFrame, minTap }) {
   }
 
   if (device.scrollWidth > device.clientWidth + 1) problems.push(`màn cuộn ngang ${device.scrollWidth - device.clientWidth}px (J1)`);
+
+  // J6: sheet đang mở phải có lớp phủ tối phía sau (`bg-black/40`). Lớp phủ trong suốt hay không có, chỉ bóng đổ
+  // quanh sheet, thì màn sau vẫn sáng như bấm được, ảnh chụp nhìn như sheet "nổi" nên mắt dễ cho qua (sót 11/2026,
+  // mồi app cà phê: scrim bg-transparent, sheet đổ bóng, bảng soi khen "sheet làm đúng quy ước").
+  // Sheet = khối tuyệt đối / cố định, dính đáy khung, rộng gần hết, cao từ 120px, không phải thanh tab, đầu không
+  // chạm đỉnh (màn đầy đủ không phải sheet). Lấy điểm giữa phần màn lộ ra phía trên sheet, đi xuống chồng lớp:
+  // lớp phủ kín khung đầu tiên không chứa sheet phải tối mờ (nền alpha 0.15–0.9 nhân opacity, hay blur).
+  const readAlpha = (cssColor) => {
+    const canvasContext = document.createElement("canvas").getContext("2d");
+    canvasContext.clearRect(0, 0, 1, 1);
+    canvasContext.fillStyle = cssColor;
+    canvasContext.fillRect(0, 0, 1, 1);
+    return canvasContext.getImageData(0, 0, 1, 1).data[3] / 255;
+  };
+  const effectiveOpacity = (element) => {
+    let opacity = 1;
+    for (let node = element; node && node !== document.documentElement; node = node.parentElement) opacity *= Number(getComputedStyle(node).opacity);
+    return opacity;
+  };
+  const openSheets = [...device.querySelectorAll("*")].filter((element) => {
+    if (!isShown(element) || (tabbar && (tabbar === element || tabbar.contains(element)))) return false;
+    if (!["absolute", "fixed"].includes(getComputedStyle(element).position)) return false;
+    const rect = element.getBoundingClientRect();
+    return Math.abs(rect.bottom - deviceRect.bottom) <= 2 && rect.width >= deviceRect.width * 0.9 && rect.height >= 120 && rect.top > deviceRect.top + 60;
+  }).filter((element, index, all) => !all.some((other) => other !== element && other.contains(element)));
+  for (const sheet of openSheets.slice(0, 1)) {
+    const sheetTop = sheet.getBoundingClientRect().top;
+    const probeX = deviceRect.left + deviceRect.width / 2;
+    const probeY = (deviceRect.top + 60 + sheetTop) / 2;
+    if (sheetTop - (deviceRect.top + 60) < 24) continue;
+    const stack = document.elementsFromPoint(probeX, probeY);
+    const cover = stack.find((element) => {
+      if (element.contains(sheet) || sheet.contains(element)) return false;
+      const rect = element.getBoundingClientRect();
+      return rect.width >= deviceRect.width * 0.9 && rect.height >= deviceRect.height * 0.6;
+    });
+    const style = cover ? getComputedStyle(cover) : null;
+    const coverAlpha = style ? readAlpha(style.backgroundColor) : 0;
+    const dimAlpha = coverAlpha * (cover ? effectiveOpacity(cover) : 0);
+    const hasBlur = style ? /blur\((?!0)/.test(style.backdropFilter || style.webkitBackdropFilter || "") : false;
+    const isOpaqueScreen = coverAlpha > 0.9;
+    if (!cover || isOpaqueScreen || (dimAlpha < 0.15 && !hasBlur)) problems.push(`sheet ${describe(sheet)} đang mở mà màn phía sau không có lớp phủ tối (${cover ? `lớp kín khung đầu tiên nền alpha ${dimAlpha.toFixed(2)}` : "không có lớp phủ"}): thêm lớp phủ \`bg-black/40\` giữa màn và sheet, bóng đổ quanh sheet không thay được (J6)`);
+  }
 
   // J8: hàng cuộn ngang chỉ lố vài px: ô cuối dính mép màn, trông như bị cắt mà vuốt gần như không đi. Vừa thì
   // xếp lưới cho vừa khung (dải 7 ngày `grid-cols-7`), nhiều thì để lộ rõ nửa ô tiếp theo.
@@ -3764,8 +3814,13 @@ function formatMobileReport(screens) {
     }
   }
   if (byMessage.size === 0) lines.push("Không lỗi J đo được ở các màn.");
-  let index = 1;
-  for (const [problem, where] of byMessage) lines.push(`J${index++} [${[...new Set(where)].join(", ")}] ${problem}`);
+  // Không đánh số: J1, J2… trùng mã luật J (đọc thành "lỗi luật J1"), M trùng luật màu. Lỗi cần đối chiếu đã có
+  // mã P ở cuối báo cáo; khối này để tra màn nào dính (bảng soi mồi app cà phê 11/2026).
+  for (const [problem, where] of byMessage) {
+    const screensHit = [...new Set(where)];
+    const whereText = screensHit.length > 6 ? `${screensHit.slice(0, 6).join(", ")} và ${screensHit.length - 6} chỗ khác` : screensHit.join(", ");
+    lines.push(`- ${problem} [${whereText}]`);
+  }
   lines.push(`Ảnh từng màn: ${[...new Set(screens.map((screen) => dirname(screen.shotPath)))][0] || ""}/mobile-*.png`);
 
   return lines.join("\n");
@@ -5497,6 +5552,46 @@ function formatWireframeReport(comparisons) {
   return lines.join("\n");
 }
 
+// Lỗi app điện thoại mà V1 (review.md) xếp Hỏng: chỗ bấm dưới 44px, chữ dưới 11px (J4), dòng cuối nằm dưới thanh
+// tab / thanh giỏ (J2), sheet không lớp phủ (J6), nút nổi đè chữ (J5), chữ chui vào tai thỏ, chạy dưới thanh trạng
+// thái, màn cuộn ngang (J1). Trước đây chỉ nằm trong khối APP ĐIỆN THOẠI, bảng soi đọc ngưỡng web (bấm 24–31px,
+// chữ dưới 12px là Gu) nên hạ hạng, và phép đo cuộn đáy với sheet không có (mồi app cà phê 11/2026).
+// Gom theo loại lỗi (mỗi loại một mã P, kèm vài chỗ): báo từng nút 28px một dòng thì danh sách dài vô ích.
+const mobileMustReportKinds = [
+  { pattern: /^chữ dưới 11px: (.*) \(J4\)$/, title: "chữ dưới 11px, sàn của app điện thoại (J4)" },
+  { pattern: /^chỗ bấm dưới 44px: (.*) \(J4\)$/, title: "chỗ bấm dưới 44px, vùng bấm ngón cái (J4)" },
+  { pattern: /^cuộn hết mà "(.*?)" vẫn nằm dưới/, title: "cuộn hết vùng cuộn mà dòng cuối vẫn nằm dưới thanh tab / thanh giỏ: chừa đáy bằng .pad-tabbar, có thanh giỏ thì .pad-cartbar (J2, J11)" },
+  { pattern: /^sheet (.*) đang mở mà màn phía sau không có lớp phủ tối/, title: "sheet mở mà không có lớp phủ tối phía sau, chỉ bóng đổ: thêm lớp phủ bg-black/40 (J6)" },
+  { pattern: /^nút nổi (.*) đè lên chữ/, title: "nút nổi đè lên chữ của màn (J5)" },
+  { pattern: /^cuộn xuống thì "(.*?)" chạy dưới thanh trạng thái/, title: "cuộn xuống thì chữ chạy dưới thanh trạng thái, không dải nền che (J1)" },
+  { pattern: /^(.*) nằm trong vùng (?:tai thỏ|thanh home)/, title: "chữ hay chỗ bấm chui vào vùng tai thỏ / thanh home (J1)" },
+  { pattern: /^màn cuộn ngang (.*) \(J1\)$/, title: "màn cuộn ngang (J1)" },
+];
+
+function listMobileMustReportItems(screens) {
+  const groups = new Map();
+  for (const screen of screens) {
+    const width = Number(String(screen.view).match(/\d+/)?.[0]) || 390;
+    for (const problem of screen.problems) {
+      const kind = mobileMustReportKinds.find((candidate) => candidate.pattern.test(problem));
+      if (!kind) continue;
+      if (!groups.has(kind.title)) groups.set(kind.title, { widths: [], hashes: new Set(), details: new Set() });
+      const group = groups.get(kind.title);
+      group.widths.push(width);
+      group.hashes.add(`#${screen.hash}`);
+      group.details.add(problem.match(kind.pattern)[1]);
+    }
+  }
+
+  return [...groups.entries()].map(([title, group]) => {
+    const hashes = [...group.hashes];
+    const details = [...group.details];
+    const where = hashes.length > 3 ? `${hashes.slice(0, 3).join(", ")} và ${hashes.length - 3} màn khác` : hashes.join(", ");
+    const sample = details.length > 4 ? `${details.slice(0, 4).join("; ")}; và ${details.length - 4} chỗ khác` : details.join("; ");
+    return { widths: group.widths, text: `app điện thoại, ${title}. Màn ${where}. Chỗ: ${sample}` };
+  });
+}
+
 function listWireframeMustReportItems(comparisons) {
   const items = [];
 
@@ -5582,7 +5677,7 @@ async function main() {
   if (sweepSteps.length > 0) console.log(formatSweepReport(sweepSteps, options.sweep.step));
   if (wireframeComparisons.length > 0) console.log(formatWireframeReport(wireframeComparisons));
   if (options.isMobileApp) console.log(formatMobileReport(mobileScreens));
-  const mustReportItems = [...listMustReportItems(results, sweepSteps), ...listWireframeMustReportItems(wireframeComparisons)];
+  const mustReportItems = [...listMustReportItems(results, sweepSteps), ...listWireframeMustReportItems(wireframeComparisons), ...listMobileMustReportItems(mobileScreens)];
   console.log(formatMustReportList(mustReportItems, options.sweep?.step ?? 20));
   console.log(formatNextRoundHint(results, options));
   console.log(`\nChi tiết: ${join(options.out, "report.json")}`);
