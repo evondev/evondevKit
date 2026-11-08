@@ -119,7 +119,9 @@ thường đẻ ra triệu chứng khác ở lần dựng sau.
 - **Luật chưa qua vòng test nào thì gắn dấu ⚑**, để người dùng biết đang dùng thứ chưa ai thử.
 - **Giữ skill nhẹ.** `SKILL.md` và các file "luôn mở" bị nạp ở mọi task. Luật chỉ cần cho một loại
   việc thì đặt vào file của loại việc đó, `SKILL.md` chỉ trỏ tới. Đo bằng
-  `node skills/ui-ux/scripts/measure-skill.mjs` trước và sau khi thêm.
+  `node skills/ui-ux/scripts/measure-skill.mjs` trước và sau khi thêm. Lint báo khi vượt trần:
+  `SKILL.md` 48KB, bộ luôn mở 95KB, mỗi file references 70KB. Mục kiểm riêng của một màn, một
+  khối nằm cuối file của nó ("Kiểm trước khi giao"), không vào `checklist.md`.
 
 Mười ba nhóm, không nhóm nào trùng ký tự:
 
