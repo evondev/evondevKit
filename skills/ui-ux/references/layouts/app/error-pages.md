@@ -57,3 +57,11 @@ dựng được không:
 - **"Quay lại trang trước" chỉ khi có trang trước trong app.** Mở thẳng bằng link (tab mới) thì
   nút này đưa người dùng ra khỏi app hoặc không làm gì; ẩn đi. React Router: `location.key ===
   "default"` là trang đầu của phiên.
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Trang lỗi**: gõ một đường dẫn sai **bên trong** khung app (vd `/dashboard/khong-co`): có ra trang 404 trong khung, sidebar còn, header ghi "Không tìm thấy trang" không, hay vùng nội dung trống mà header vẫn tên trang cũ? 403, 500 của một trang cũng nằm trong khung; chỉ bảo trì, chưa đăng nhập, sập cả app mới đứng riêng, và đứng riêng cũng là khối căn giữa không card (logo ở trên), không thanh đen rộng hết. 404 có dòng "404" nhỏ mờ trên tiêu đề chưa? Tiêu đề `font-semibold`, không đỏ (`M30`: người dùng không có gì phải sửa), không hình? Email giữa câu có để dấu chấm rơi xuống đầu dòng không (`suffix` của `EmailText`), có bị bẻ sau `@` dù vừa một dòng không? 403 đã gửi: tiêu đề đổi thành "Đã gửi yêu cầu", hay dòng chữ xanh nằm trong ô nút làm hàng lệch tâm? "Đổi tài khoản" có đứng dòng riêng dưới email không, hay nối sau email làm dòng chân rộng nhất khối? Giờ mở lại viết kiểu câu văn chưa (`layouts/app.md`, "Trang lỗi")?

@@ -109,3 +109,11 @@ Vùng nguy hiểm
 - **Trang trạng thái** đủ các ca: đang tải (khung chờ đúng hình từng mục), lỗi tải từng mục, gói
   miễn phí (chưa có hoá đơn), trả theo năm (hoá đơn năm trước ghi đủ năm), trừ tiền thất bại
   (banner + badge), thẻ sắp hết hạn, thẻ đã hết hạn, gói đã huỷ còn hạn, hộp xác nhận huỷ gói.
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Trang thanh toán** (`layouts/app.md`): gói là một hàng (tên gói `text-base font-semibold`, giá và "Gia hạn ngày …" là hai dòng phụ riêng), không tách thành các hàng nhãn–ngày cao như hàng có ô? Có mục phương thức thanh toán (thẻ che số, hạn thẻ, "Đổi thẻ")? "Huỷ gói" nằm ở Vùng nguy hiểm cuối trang, nền đỏ mờ (`I4`, nút đứng riêng), không đứng cạnh "Đổi gói"? Hộp xác nhận huỷ đỏ như hộp xoá (không icon xám, nút đen)? Đang trừ lỗi thì khối gói đã bỏ dòng "Gia hạn ngày …" chưa, và câu ở Vùng nguy hiểm, hộp huỷ có còn hứa "dùng tới hết <ngày gia hạn>" không? Nút "Cập nhật thẻ" trong banner là nút viền trắng, không `primary`? Ca trừ tiền thất bại có banner lỗi đầu trang với nút "Cập nhật thẻ", không chỉ badge đỏ ở dòng hoá đơn?

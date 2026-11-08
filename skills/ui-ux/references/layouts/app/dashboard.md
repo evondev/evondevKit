@@ -142,3 +142,12 @@ dòng "1 / 5 bước".
 - **Trạng thái cần có ở trang `/states`**: vừa vào (xong một bước), làm không theo thứ tự, bước khoá
   đã mở khoá, chỉ còn bước tuỳ chọn (khung một hàng dưới việc chính), xong hết, và đã ẩn (tổng quan
   không còn khung).
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] Màn tổng quan: số đếm theo kỳ đã là cột chưa (`charts.md`, "Cột hay đường")? Thanh tiến độ trong danh sách có thanh nào tô hổ phách không (phải `bg-primary`, chỉ cụm "quá hạn" có màu)? "Hoạt động gần đây" có đang bê khuôn timeline không (phải avatar + một câu, 5 mục)? Hai cột lưới có kết thúc gần ngang nhau không? Workspace mới có khung "Các bước bắt đầu" (hoặc khối chào có nút "Tạo dự án"), không phải năm khung "Chưa có…"?
+- [ ] **Các bước bắt đầu** (`layouts/app/dashboard.md`): chỉ ở một chỗ, không có thêm trang "Chào mừng" lặp khối chào của tổng quan? Vòng bên trái là ô tick viền đứt, không số? Chỉ bước tiếp theo mở sẵn, nút nằm dưới câu vì sao, là nút đặc duy nhất? Bước khoá có nút mờ không (không được)? Tên bước xong có gạch ngang không (không được)? Có nút `X` ẩn, thẳng cột chevron? Xong hết thì khung thu lại, không in năm dòng đã xong? Mở một bước ra đo: tên → câu vì sao có nhỏ hơn câu → nút không (câu phải bám tên)? Khung cách lưới bên dưới 24px, dòng chú thích hàng số không lơ lửng giữa hai khối?

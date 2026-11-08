@@ -126,3 +126,11 @@ khoảng `gap-2`).
 
 *Phép thử:* đo `x` của chữ tên bằng `Range` và `x` của link cấp cha / câu mô tả: bằng nhau. Bấm
 vào một tên dài ở 1280px: số dòng và chữ đầu mỗi dòng không đổi.
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Tên sửa tại chỗ**: chữ tên có thẳng cột với link cấp cha, câu mô tả không, hay thụt vào bằng padding của khung? Bấm vào một tên dài: chữ có đứng yên, số dòng có giữ nguyên không, hay rớt dòng vì hai nút ✓ ✕ ăn mất chỗ? Câu lỗi thẳng chữ trong ô? Bấm Huỷ bằng chuột có thành lưu không (`components/inline-edit.md`)?

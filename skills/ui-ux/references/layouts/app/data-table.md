@@ -80,3 +80,11 @@ Khi có dòng được chọn, hàng tab + tìm + nút thêm được THAY bằn
 - **Nút "Thêm việc" nằm cuối hàng chuyển view**, căn phải, cả hai view dùng chung (`primary`, icon `plus`). Trang không có nút nào dẫn tới form tạo việc là trang chỉ xem được, không làm được.
 - **Tên view: "Danh sách" / "Kanban", không "Bảng".** Theo `S10` "bảng" là table, mà view danh sách ở đây chính là table: ghi "Bảng" cho view kanban là một chữ hai nghĩa trên cùng một màn. Chuyển view là `segmented` trong "Thanh tab" (`../../components/small-controls.md`), mỗi view kèm icon `list` / `square-kanban` được.
 - Hành động dòng, hover, badge ưu tiên, màu hạn chót theo các mục trên và `../../components/list-row.md`. Menu dòng đang mở thì dòng giữ nền hover.
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Bảng nhóm theo trạng thái**: liếc hàng nhóm có tách được nhóm nào với nhóm nào không, hay ba nhóm cùng pill xám? Hàng nhóm và đầu cột kanban cùng icon + tên + số (`M7`, `D2`)? Trong nhóm có xếp theo một khoá, tiêu đề cột đang sắp có mũi tên? Tên người có bị cắt mất tên gọi trong khi cột tiêu đề còn dư? Cột ngắn nào bị bóp còn một chữ (thiếu `whitespace-nowrap`)? Thu nhóm có bọc `<tr>` trong `<div>` trượt không? Rê lên ô sửa tại chỗ của dòng đang rê: ô có nổi lên không, hay nền ô trùng nền dòng? Ô trống mọi cột cùng `—`? Lịch mở từ ô hạn chót có "Xoá hạn" không, hay đặt rồi là hết đường gỡ? "Xoá hạn" là hàng rộng hết bề ngang kiểu mục menu, căn trái, không đỏ (`I4`: gỡ hạn không mất bản ghi), hay một nút nhỏ lẻ loi? Khung chờ có hàng nhóm? View kanban có bị ghi "Bảng" không? Ở 375, 768 và 1024px (sidebar mở) bảng có cuộn ngang không, nút ⋯ và cột hạn chót có nằm trong khung không? Khung hẹp thì người phụ trách chỉ còn avatar, dưới `@2xl` thành dòng với tên việc hai dòng `text-pretty` (dòng hai không trơ một chữ), mảnh trống bỏ hẳn chứ không còn "— —" (`layouts/app.md`)?

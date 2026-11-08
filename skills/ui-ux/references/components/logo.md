@@ -145,3 +145,11 @@ control, khung lý do). Chưa chọn thì không đụng file nào của dự á
   đó trên cùng trang, gửi lại.
 - **Lúc giao** một dòng trong phần mặc định của `S15`: *"Logo: hướng [n], [một câu vì sao]. Dấu
   ở `product-mark.tsx`, có logo thật thì thay path ở đó; muốn hướng khác thì nói."*
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Dự án mới chưa có logo**: đầu sidebar là dấu SVG trong ô màu nhấn, hay vẫn là ô chữ cái? Dấu còn nhận ra ở 16px không, favicon đã thay favicon mặc định của framework chưa? (`components/logo.md`)

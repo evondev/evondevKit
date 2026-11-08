@@ -65,3 +65,11 @@ hơn màn. Cột dài hơn màn thì để nó cuộn theo trang, đừng bó `m
 overflow-y-auto`: thanh cuộn riêng hiện thường trực, dài gần hết cột, dính sát viền khung.
 Nhóm dài (khu vực, tỉnh) thì hiện năm sáu mục kèm "Xem thêm N" dạng
 link, đừng cho cả cột thành khung cuộn.
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Popover Lọc**: chọn một người trong ô select bằng chuột rồi nhìn lại, ô còn viền đen + ring như đang mở không (phải `focus-visible:`)? Chữ "Xoá lọc" có thẳng mép trái các nhãn không, hay thụt 16px vì là nút `ghost`? Khung có mấy khối đen (chip chọn, nút Áp dụng): chỉ Áp dụng được đặc. Chọn đủ bốn mức: hàng chip có thành bốn vòng đen dày không (viền chip chọn `inset-ring-1`, không `ring-1 ring-inset`; chỉ khi bật `I14`: Tab tới chip đang chọn phải thấy cả viền chọn lẫn vòng focus)? Mở ô khoảng ngày ở 375px: hàng mốc nhanh có mốc nào bị cắt không (phải xuống dòng)? Ở 1280px: lịch có bung hai tháng tràn khỏi khung không, lọc hạn chót có mở ra tháng trước không (`layouts/overlay.md`, "Popover lọc")?

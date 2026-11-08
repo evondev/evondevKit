@@ -202,3 +202,11 @@ chuyển động, hover, khung, cách kiểm đều nằm ở đó). Phần riê
   gói, câu hỏi vẫn font body (`T2`).
 - **Cách dãy gói `mt-16 sm:mt-20`**: phần khác của trang, không phải card thứ tư.
 - **Đóng hết lúc vào trang.**
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] Trang bảng giá đứng riêng: đầu trang căn giữa, tên trang `sm:text-3xl` (không nhỏ hơn giá)? Dãy gói xếp chồng có `max-w-lg` không (mở ở 768px xem card có kéo dài 650px không)? FAQ là accordion (`components/accordion.md`) trong khung `max-w-3xl`, câu hỏi dài nhất một dòng ở desktop? `h2` cùng font với `h1`? Vạch dưới giá kẻ `--border-strong`? Gói nổi bật là card nền `--primary` với nút trắng? Nút gói `h-12`?

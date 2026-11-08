@@ -565,3 +565,13 @@ Chọn theo thứ tự, dừng ở bậc đầu tiên làm được việc:
 
 Thư viện nào cũng vẫn theo luật ở trên: chỉ `transform` và `opacity`, có bản `prefers-reduced-motion`, màn app làm việc không nảy.
 
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Panel thông báo**: có nút "Đánh dấu đã đọc" ở header không? Mục đã đọc có nhạt hơn mục chưa đọc (không chỉ thiếu chấm) không? Bấm sang tab rỗng thì panel có sụp chiều cao không? Tiêu đề dài có bị cắt ở 2 dòng không? Mép trên panel có cách đường kẻ header 8px, hay đường kẻ chọc vào góc bo (`layouts/overlay.md`)?
+- [ ] **Panel xem bản ghi có tab** (khách hàng, dự án): cuộn thân thì chỉ hàng tên + ✕ đứng yên, tab dính đỉnh, còn trạng thái và hàng nút cuộn đi chưa? Tên có phải chữ nặng nhất panel, hay số liệu to hơn tên? Ô số liệu là **một khung 2×2** số `text-lg`, hay bốn card rời số `text-3xl`? Kỳ so sánh ghi một lần hay lặp ở từng ô? Khách chưa có đơn nào thì còn lưới số 0 không? Tab tới hàng tab: không nền xám, không vòng (`components/small-controls.md`)?
+- [ ] **Modal xem bản ghi có nút trước / sau** (chi tiết đơn): modal neo đỉnh hay căn giữa dọc? Bấm Đơn sau sang đơn cao thấp khác thì nút ‹ › có đứng yên dưới con trỏ không? Tới đầu, cuối thì nút mờ nhưng vẫn giữ chỗ, tiêu điểm chuyển sang nút còn lại chưa? Chỉ phần mã `font-mono`? Tiền bám một mép phải, tạm tính đếm theo số lượng, các số cộng trừ có khớp không (`layouts/overlay.md`)?
+- [ ] **Menu con / menu tài khoản** (`layouts/overlay.md`): bay ra thì hàng đầu thẳng mục cha, mục cha giữ nền sáng, đi chéo chuột sang không tắt? Ở 375px menu con **thay chỗ** menu cha có nút `‹` lùi, hay đang xổ ra bên dưới mục cha? Hàng tài khoản có hàng nào quá hai dòng không (email phải một dòng, cắt phần trước `@`)? Đầu menu mở từ avatar có lặp lại avatar không? Header có avatar mà chân sidebar vẫn còn hàng profile là hai lối vào một menu.

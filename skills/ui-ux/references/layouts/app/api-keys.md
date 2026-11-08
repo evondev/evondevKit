@@ -78,3 +78,11 @@ Dùng để gọi API từ máy chủ của bạn. Giữ khoá như mật khẩu
   lỗi tải, chưa có khoá (một dòng chữ, nút tạo đã ở đầu mục), tên khoá rất dài, khoá sắp hết
   hạn, khoá đã hết hạn, menu `⋯` đang mở; hộp xác nhận thu hồi; hộp tạo trống, lỗi thiếu tên,
   lỗi trùng tên, đang tạo; bước hiện khoá, vừa sao chép; hai toast.
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Trang khoá API** (`layouts/app/api-keys.md`): thao tác của dòng là nút `⋯` (Đổi tên, Thu hồi khoá / Xoá), không nút viền lặp trên từng dòng? Ở 375px dòng phụ có dấu `·` nào rớt lên đầu dòng không (phải chia hai nhóm theo nghĩa)? Ngày năm nay có bỏ năm không ("Dùng 07/09", không "07/09/2026")? Khoá hết hạn có badge và không lặp mảnh hạn dùng? Hộp tạo sẵn "Chỉ đọc" và một hạn cụ thể, không sẵn "Không hết hạn"? Bước hiện khoá nằm trong cùng hộp, bấm ra ngoài không đóng?

@@ -428,3 +428,22 @@ Sau lỗi này: **giữ email, xoá ô mật khẩu và đưa con trỏ vào đ�
 từng ký tự, và ô còn chấm tròn cũ thì họ phải bôi đen xoá trước (cách Google, GitHub,
 Microsoft đều làm). Không tô đỏ ô nào, vì không biết ô nào sai. Gõ lại vào ô thì khối
 lỗi vẫn đứng yên tới lần gửi sau, không biến mất giữa lúc gõ làm nút nhảy lên (`N1`).
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Màn xác thực: đã báo một dòng** về "quên mật khẩu" / ghi nhớ đăng nhập / mạng xã hội chưa? Dựng theo mặc định thì được, dựng xong im lặng thì không.
+- [ ] Màn đăng nhập, đăng ký có đủ logo sản phẩm, nút Google, placeholder chưa? Đăng ký có đang thừa ô "Nhập lại mật khẩu" không? (`layouts/form.md`)
+- [ ] Luồng quên mật khẩu: bước nhập mã có đang xác nhận email có tài khoản không? Phiên hết hạn có còn để ô mật khẩu và nút Lưu dưới khối lỗi không? (`layouts/form.md`)
+- [ ] Màn OTP: bấm Xác nhận khi chưa đủ sáu số có ra câu lỗi không, hay im lặng?
+- [ ] Màn OTP: "Đổi email" có về form với dữ liệu điền sẵn không? Bấm "Gửi lại mã" có câu "Đã gửi mã mới" (`role="status"`) không? Sai mã, hết hạn có xoá sáu ô và đưa con trỏ về ô đầu không?
+- [ ] Form nhiều bước (`layouts/form.md`, kiểu C): thanh ngang chỉ có nhãn, không mô tả lặp câu dẫn trong card? Màn hẹp dòng trên thanh chỉ "Bước 2 / 3" khi card đã có tiêu đề bước? Vòng, đường nối, đoạn chưa tới là `bg-secondary` (mở trên nền trang xem vòng "3" còn thấy không)? Bước cuối `flex-none`, thanh trải hết bề ngang card? "Không bắt buộc" nói đúng một lần? Bước xác nhận có link "Sửa" từng nhóm, tiêu đề nhóm `font-semibold` khác hẳn kiểu chữ giá trị (xem ở 375px)? Bấm Tiếp khi trống, ô tự điền theo ô khác (đường dẫn) có đỏ theo không?
+- [ ] Đường chia "hoặc" kẻ bằng `--border-strong` chưa (`--border` tan trên card trắng)? Nút mắt `size-10` chưa? Form đúng mà bấm gửi có đi tiếp không, hay im lặng? Bước sau có hiện đúng email vừa gõ không?
+- [ ] Mọi màn trong luồng xác thực mở ra con trỏ đã nằm ở ô đầu chưa? Form đặt mật khẩu mới có ô `username` ẩn chưa (`I28`)?
+- [ ] "Quên mật khẩu?" có nằm cùng hàng với nhãn không? Dưới ô nhập là **tranh chỗ với câu lỗi**.
+- [ ] "Quên mật khẩu?" có bị làm mờ không? Mờ là đọc ra disabled (`I8`).
+- [ ] Từ ô email bấm Tab có vào thẳng ô mật khẩu không, hay rơi vào "Quên mật khẩu?" trước? Link phải đứng sau ô trong DOM.
+- [ ] Sai email hoặc mật khẩu: ô mật khẩu đã xoá và con trỏ nằm trong đó chưa? Khối lỗi có `role="alert"` không?

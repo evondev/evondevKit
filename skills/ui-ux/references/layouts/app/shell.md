@@ -388,3 +388,13 @@ Khách hàng từ 3/2024, 18 đơn hàng, doanh thu 1.284.500.000 đ
 - **Nút bên phải, bám mép trên** (`sm:items-start`), `shrink-0`. Tối đa một nút `primary` (hành động chính của trang, `I3`), còn lại nút viền có icon (`I1`). Từ nút thứ ba thì gom vào nút `MoreHorizontal`.
 - **Màn hẹp**: nút xuống dưới chữ, căn trái, giữ trên một hàng, không để hai nút trên một nút dưới (`../../responsive.md`).
 - Không có mô tả, không có nút thì đầu trang chỉ còn tên, không chừa chỗ trống.
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Sidebar**: nền trắng chứ không trùng nền trang; vùng nội dung nền xám thì **không `border-r`** giữa sidebar và nội dung; rê `hover:bg-item-hover`, mục đang chọn đậm hơn một bậc `bg-secondary` + `font-medium`, không màu nhấn, không viền (chủ dự án chốt; "rê và đã chọn cùng một nền" chỉ còn cho dòng bảng tick checkbox); hover vào thì icon và chữ cùng đậm lên; số đếm là số trơn `text-muted`, không pill, không badge màu brand (`I15`); nhãn nhóm IN HOA, giữa các nhóm không kẻ đường chia (chỉ khoảng trắng + nhãn), profile là hàng không viền có icon `ChevronsUpDown`, nhiều nhóm thì thu gọn được; thanh cuộn tự ẩn (`I18`); tên dài bị cắt thì rê vào có tooltip đủ tên, cả lúc sidebar mở; dưới `lg` sidebar là panel trượt trái, lớp phủ `bg-black/15`, 500/350ms đường cong sheet.
+- [ ] **Thu gọn sidebar**: thu về dải icon `w-16`; **mục nào đang hiện lúc mở thì lúc thu vẫn hiện**, nhóm đang đóng vẫn đóng; nhãn nhóm chỉ `opacity-0` + `inert`, giữ chiều cao hàng, **thay bằng gạch ngắn `w-4` thẳng tâm icon**; màn thấp thì mép vùng nav mờ dần ở phía còn mục bị khuất; chấm góc icon chỉ cho số cần xử lý, cùng độ đậm với số lúc mở; mục đang chọn vẫn sáng và được cuộn vào tầm nhìn; lúc thu ẩn thanh cuộn (vẫn cuộn được); bấm mở/thu thì icon, logo, avatar ĐỨNG YÊN (không `justify-center`, không đổi padding), chữ không gỡ khỏi DOM mà bị cắt dần và mờ đi; mỗi icon có tooltip kèm số đếm; focus theo `I13` (`layouts/app/shell.md`).
+- [ ] **Chân sidebar**: profile là một hàng `h-10` **không viền**, avatar không viền, icon `ChevronsUpDown` ở mép phải, cả hàng là nút mở menu; lúc thu rê vào thì vòng quanh avatar, không tô ô vuông; email ở đầu menu một dòng, chỉ cắt phần trước `@`, tên miền còn nguyên; menu rộng bằng hàng; Đăng xuất cuối menu, đỏ khi rê (`layouts/app/shell.md`). **Tải lại trang rồi bấm mở ngay lần đầu**, và thu/mở sidebar rồi bấm lại: menu có nằm sát nút không, hay trôi lên đầu sidebar? Menu tự dựng đo chiều cao trước khi có bề rộng là dính lỗi này (`layouts/overlay.md`).

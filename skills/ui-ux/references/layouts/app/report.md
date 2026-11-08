@@ -41,3 +41,11 @@ So với 30 ngày liền trước, 30/07/2026 – 28/08/2026           <- kỳ s
   tụt doanh thu" (bản dựng thử, khoảng 30 ngày bắt đầu thứ Sáu).
 - **Hai khối phân tích dưới biểu đồ**, hai cột từ `lg`, một cột ở màn hẹp: phần chia theo nhóm (kênh, khu vực) là danh sách thanh xếp lớn dần, mỗi dòng số + phần trăm (`../../components/charts.md`, "Thanh tiến độ trong danh sách"); top mục (sản phẩm, khách hàng) là danh sách dòng tên + dòng phụ bên trái, số bên phải `tabular-nums`, 5 dòng.
 - **Trạng thái**: đang tải giữ khung từng khối với skeleton đúng chiều cao (ô khoảng ngày vẫn dùng được); tải hỏng một khung `ListError` thay phần dưới ô khoảng ngày; khoảng không có đơn nào thì một khung câu "Không có đơn nào từ … tới …" + link về khoảng mặc định. Khoảng ở tương lai không có ca rỗng riêng: ngày sau hôm nay đã khoá trong lịch.
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Trang báo cáo** (`layouts/app/report.md`): chọn "Tháng này" và "Năm nay": dòng "So với…" ra cùng kỳ tháng trước / năm trước, hay "269 ngày liền trước" lùi tới một ngày lẻ? Chọn một ngày: biểu đồ chia theo giờ, hay thành khối chữ lặp số ở ô Doanh thu? Biểu đồ chính có lưới ngang và nhãn mức không? Lịch có cho chọn ngày sau hôm nay không?

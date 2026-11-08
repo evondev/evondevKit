@@ -81,3 +81,12 @@ Là trang cài đặt kiểu A. Bộ mục mặc định: **Kênh nhận** (trì
 - Nhiều loại việc × nhiều kênh mà cần chọn riêng từng ô (ví dụ bình luận chỉ qua email) thì mới dựng bảng lưới việc × kênh bằng checkbox. Quy ước chia đôi: sản phẩm có nhiều loại sự kiện và từ hai kênh gửi ra ngoài (email, đẩy) thì dùng lưới, sản phẩm ít sự kiện dùng danh sách công tắc. Mặc định của skill là ba mục trên, vì app dashboard thường ít sự kiện; dự án có trên ~6 loại việc và hai kênh gửi ra ngoài thì đề xuất lưới lúc giao.
 - Hàng có ô chọn cùng khuôn hàng công tắc (nhãn trái, ô phải `sm:w-48`); dưới `sm` ô xuống dưới chữ, rộng hết hàng.
 - Trình duyệt đang chặn quyền thông báo: công tắc khoá ở trạng thái tắt, câu lý do nói chỗ mở lại (biểu tượng ổ khoá cạnh địa chỉ trang). Email tắt thì email tổng hợp khoá theo, lý do "Bật Email ở trên để nhận bản tin."
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Trang cài đặt / hồ sơ cá nhân**: hàng có chữ gợi ý hoặc lỗi dưới ô thì nhãn còn thẳng tâm ô, hay tụt xuống giữa ô và dòng chữ (thiếu `sm:items-start` trên hàng)? Avatar lớn trên trang cùng màu với avatar của chính người đó trên header chưa? Xoá trống ô họ tên thì avatar có thành "?" không (phải giữ chữ của tên đã lưu)? Dấu `*` ở nhãn và ở dòng chú thích cùng đỏ chưa? Hàng Email nhiều dòng: nhãn thẳng dòng đầu hay trôi xuống giữa? Có đủ trạng thái có ảnh (Đổi ảnh + Xoá ảnh, cả hai `outline`, Xoá ảnh không đỏ vì có Hoàn tác (`I4`), không ghost xám trông như khoá), đang tải ảnh, email chờ xác nhận? Email trong hộp xoá tài khoản ở 375px xuống dòng sau `@`, hay vỡ giữa tên miền (`layouts/app.md`, "Trang hồ sơ cá nhân")?
+- [ ] **Khu cài đặt và trang thông báo**: bấm "Cài đặt" ở sidebar và ở đường dẫn trên header có ra trang con đầu, hay trang trắng? Có hàng tab `underline` nối các trang cài đặt (Hồ sơ, Thông báo, Bảo mật), tab là link có `aria-current`? Trang con còn đầu trang riêng lặp tên tab không? Câu lỗi, câu lý do khoá trong hàng cài đặt cùng cỡ `text-sm` với mô tả các hàng khác chưa? Mục "Báo cho bạn khi" nói rõ có áp cho chuông không, hay mâu thuẫn với câu "Chuông luôn nhận đủ"? Mô tả công tắc mở khu có trỏ vào thứ đang giấu ("khung giờ này") không (`layouts/app.md`, "Khu cài đặt có nhiều trang", "Trang tuỳ chọn thông báo")?

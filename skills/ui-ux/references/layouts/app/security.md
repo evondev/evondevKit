@@ -89,3 +89,11 @@ Thấy thiết bị lạ thì đăng xuất thiết bị đó rồi đổi mật
   dự phòng; danh sách đang tải, lỗi tải, đang đăng xuất một dòng (spinner trong nút, nút
   giữ cỡ), chỉ còn thiết bị này (không chân khung), tên thiết bị rất dài; hộp xác nhận
   đăng xuất hàng loạt; hai toast.
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Trang bảo mật**: "Bật xác thực hai lớp" là nút `primary` (`I2`: việc nên làm nhất của trang)? Nút đăng xuất hàng loạt đỏ sẵn nhưng cùng cỡ `h-11 md:h-10` với nút "Đăng xuất" trong dòng (cả trang một cỡ nút), còn nút trong dòng chỉ đỏ lúc rê (`I4`, `layouts/app/security.md`)?

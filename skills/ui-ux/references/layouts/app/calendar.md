@@ -96,3 +96,11 @@ một cột, ô hẹn cao theo thời lượng.
   thì chỉ hiện một cột rộng 650px, hai người trễ nằm ở hai cột đang ẩn; bốn cột 166px đọc đủ tên, trạng thái,
   "Trễ 25 phút". Cột hẹp dưới ~200px thì tên đầu cột dùng tên ngắn ("BS. Khoa", như hàng tab) thay vì cắt
   "BS. Nguyễn …".
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Trang lịch**: đọc được tên việc trong ô ở 1024px khi sidebar mở không, hay chỉ còn một chữ ("Chuẩn …")? Khuôn đổi theo bề rộng khung (`@container`), không theo viewport. Ở lịch gọn, chọn một ngày khác hôm nay: vòng đặc có nằm ở ngày đang chọn không, hay hôm nay vẫn là khối đậm nhất? Rê chuột, bấm chuột một ngày: nền là vòng quanh số, hay ô vuông cả ô chồng lên vòng? "Hôm nay" có đứng liền ‹ › không? Chuyển qua vài tháng: lưới có cao thấp không (đo cao hàng có 3 việc)? Chữ số "1" và "31" có thẳng mép tên thứ không (`layouts/app.md`, "Trang lịch")?

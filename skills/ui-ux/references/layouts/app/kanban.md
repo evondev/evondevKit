@@ -43,3 +43,12 @@ mấy gạch đầu dòng trên. File đó đã qua vòng tra tấn 375px, cuộ
 đầu, thẻ `p-4`, chip lọc `h-9`, header `h-16` nền trắng như khung app. Ba chip vừa 375px
 nên hàng chip không cuộn; nhiều chip hơn thì theo `R6`, `R10`. File tĩnh, không có menu ⋯,
 kéo thả và mép mờ của board: ba thứ đó theo các gạch đầu dòng trên và mục "Kéo thả thẻ".
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Cột kanban rỗng**: là viền đứt không nền, hay một mảng xám đặc nặng hơn thẻ (`components/empty-state.md`)?
+- [ ] **Board kanban ở 1366 và 1440px, sidebar mở**: đủ bốn cột, hay cột cuối hụt vài px ở mép phải? Khung cuộn có `scrollbar-clean` không (không được)? Nút ⋯ nằm ở hàng cuối trước avatar, đo ra 32×32, chỉ hiện khi rê / Tab vào thẻ? Đếm tên việc bị cắt "…" ở cột 248px: quá một hai thẻ là có thứ đang giữ chỗ bên phải tên? Có nút "Thêm việc" trên trang và `plus` ở đầu cột? Kéo thử đủ ba đường: chuột (nhích 4px), giữ tay 250ms, bàn phím Space / ← → / Enter / Esc có đọc qua `aria-live`; kéo tới mép thì board tự cuộn; nhấc bằng phím sang cột cuối thì cột đó nằm trọn trong khung, không dưới mép mờ (`layouts/app.md`, "Kéo thả thẻ").

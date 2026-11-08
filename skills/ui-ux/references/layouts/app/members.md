@@ -29,3 +29,11 @@ nhìn, không nằm sau lúc rê chuột hay trong menu ⋯.
 - **Thanh hàng loạt có "Đổi vai trò" (dropdown) cạnh "Xoá N thành viên"**: đổi vai trò cho cả nhóm người mới vào là việc hay làm hơn xoá hàng loạt. Đổi xong một toast gộp kèm Hoàn tác.
 - **Modal mời nhận nhiều email một lần**: ô email là tag input (`../../components/tag-input.md`), dán cả danh sách, một vai trò cho cả lô, nút ghi số ("Gửi 3 lời mời"). Ô một email thì mời năm người phải mở modal năm lần. Các app quản lý thành viên phổ biến đều cho mời nhiều người một lần. Chọn vai trò trong modal dùng cùng danh sách có câu mô tả như ở ô bảng.
   - **Email trùng nói đúng ca, đỏ ở đúng thẻ đó:** đã là thành viên thì "Đã là thành viên"; đã mời mà chưa chấp nhận thì "Đã mời 24/09, chưa chấp nhận". Không gộp hai ca thành "Email này đã có trong workspace": người đang chờ chấp nhận chưa ở trong workspace, và việc người mời cần làm là gửi lại lời mời chứ không phải bỏ cuộc.
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Trang thành viên**: ô vai trò đổi được có `ChevronDown` luôn hiện, dòng khoá (chủ sở hữu, chính mình) là chữ trơn không mũi tên, hay phải rê chuột mới biết đổi được? Có cột Trạng thái lặp "Đang hoạt động" trên gần hết các dòng không (chỉ lời mời mới có badge "Chờ chấp nhận" cạnh email)? Lọc vai trò là một dropdown cạnh ô tìm, hay thêm một hàng chip dưới hàng tab? Email của lời mời bị cắt mất tên miền không? Modal mời nhận nhiều email (tag input), email trùng phân biệt "Đã là thành viên" với "Đã mời …, chưa chấp nhận"? Thanh hàng loạt có "Đổi vai trò" (`layouts/app/members.md`, "Trang thành viên và phân quyền")?

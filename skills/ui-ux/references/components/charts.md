@@ -493,3 +493,11 @@ T6
   nhất: số nằm trong câu.
 - **Chưa có hoạt động nào**: không dựng 365 ô xám. Giữ chiều cao khung, một câu theo
   `empty-state.md` ("Chưa có hoạt động. Lịch sẽ dày dần từ buổi đầu tiên").
+
+---
+
+## Kiểm trước khi giao
+
+Chạy cùng cổng 2 của `checklist.md` khi trang có đúng thứ này.
+
+- [ ] **Biểu đồ đường** (`components/charts.md`): số ở điểm cuối có nằm đè lên đoạn nối không (điểm cuối thấp hơn điểm kề thì số phải xuống dưới chấm; probe báo "Nhãn số đè lên đường biểu đồ")? Điểm sát đáy (hôm nay mới vài giờ, số nhỏ): số có rơi xuống dưới đường 0, chen vào hàng nhãn trục ngay trên "27/09" không (probe báo "Nhãn số lòi ra ngoài vùng vẽ"; đặt sang cạnh chấm)? Rê vào một điểm giữa khi trục chỉ ghi vài nhãn: số có kèm ngày ("13/09 · 70,9 tr đ") không, hay chỉ còn con số không biết của ngày nào? Điểm chưa trọn kỳ có ghi "Hôm nay" không? Tab vào biểu đồ: số của mốc đang đứng có hiện ra không?
