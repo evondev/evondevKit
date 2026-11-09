@@ -8,7 +8,8 @@
 //
 // --mobile: bản mẫu app điện thoại theo layouts/mobile-app.html (luật J, references/mobile.md). Ngoài các khổ của
 // --widths, mở TỪNG MÀN (mỗi [data-screen] và mỗi hash dẫn tới sheet như #add) ở 390×844 giả lập chạm và ở khung
-// máy tính 1280, chụp từng màn, đo: chữ dưới 11px, chữ ô nhập dưới 16px, chỗ bấm dưới 44px, thanh tab (3–5 mục,
+// máy tính 1280, chụp từng màn, đo: chữ dưới 11px, chữ ô nhập dưới 16px, ô nhận số thiếu inputmode, ô không nhãn hiện,
+// chỗ bấm dưới 44px, thanh tab (3–5 mục,
 // mục nào cũng có chữ, không mục "Thêm", không nút hành động trong thanh, màn con giữ thanh thì sáng tab cha, không cạnh nút dính đáy), nút nổi
 // đè lên chữ, dòng cuối không cuộn ra khỏi thanh tab được, sheet mở mà không có lớp phủ tối, chữ hay chỗ bấm chui vào vùng tai thỏ / thanh home của khung, cuộn xuống mà chữ
 // chạy dưới thanh trạng thái không có dải nền che. Trong khung `.device` bỏ các phép đo của web: vòng focus (màn
@@ -3704,6 +3705,71 @@ function measureMobileScreen({ isFrame, minTap }) {
     }
   }
 
+  // J13 + T25: ô nhập trên máy (sót 11/2026, mồi app tài chính: hai lỗi này bảng soi không thấy, ảnh chụp vẫn đẹp).
+  //  - Ô nhận số (giá trị / placeholder toàn số, hay nhãn "số tiền", "số lượng", "số điện thoại") mà không khai
+  //    inputmode / type: máy thật bật bàn phím chữ, dù bản mẫu vẽ bàn phím số (mobile/inputs.md).
+  //  - Ô không có nhãn hiện, chỉ placeholder hay aria-label: gõ xong (hay có sẵn giá trị) là không biết ô để làm gì.
+  //    Trừ ô tìm, ô OTP, ô số tiền to giữa sheet (số chính, tự nói), màn một câu hỏi (một ô, tiêu đề màn là câu hỏi).
+  const textFields = [...device.querySelectorAll("input, textarea")].filter((field) => {
+    if (!isShown(field) || isInert(field) || field.classList.contains("sr-only")) return false;
+    return !["checkbox", "radio", "range", "hidden", "file", "submit", "button", "color", "date", "time", "datetime-local", "month", "week"].includes((field.getAttribute("type") || "text").toLowerCase());
+  });
+  const readVisibleText = (element) => {
+    if (!element) return "";
+    const clone = element.cloneNode(true);
+    clone.querySelectorAll(".sr-only, input, textarea, select, [aria-hidden='true']").forEach((node) => node.remove());
+    return clone.textContent.replace(/\s+/g, " ").trim();
+  };
+  const readFieldName = (field) => {
+    const wrapLabel = field.closest("label");
+    const forLabel = field.id ? document.querySelector(`label[for="${CSS.escape(field.id)}"]`) : null;
+    const labelledBy = (field.getAttribute("aria-labelledby") || "").split(/\s+/).filter(Boolean).map((id) => document.getElementById(id)).filter(Boolean);
+    // Nhãn đứng liền trên mà không gắn bằng <label> ("Đi cùng ai" trên hàng ô + nút Thêm): đi lên tối đa 3 tầng, xét
+    // khối có chữ liền trước (khối rỗng như dải chip chưa có gì thì bỏ qua). Khối đó phải là chữ ngắn, không chứa
+    // control; gặp khối có control (lưới danh mục) là dừng, nhãn của lưới không phải nhãn của ô.
+    let headingAbove = "";
+    for (let node = field, depth = 0; node && depth < 3 && !headingAbove; node = node.parentElement, depth += 1) {
+      let sibling = node.previousElementSibling;
+      while (sibling && (!isShown(sibling) || !readVisibleText(sibling))) sibling = sibling.previousElementSibling;
+      if (!sibling) continue;
+      const text = readVisibleText(sibling);
+      if (!sibling.querySelector("input, textarea, select, button, a[href]") && text.length >= 2 && text.length <= 40) headingAbove = text;
+      break;
+    }
+    const visible = [readVisibleText(wrapLabel), readVisibleText(forLabel), ...labelledBy.filter(isShown).map(readVisibleText), headingAbove].find((text) => text.length >= 2) || "";
+    const hidden = [field.getAttribute("aria-label"), wrapLabel?.textContent, forLabel?.textContent, field.placeholder].map((text) => (text || "").replace(/\s+/g, " ").trim()).join(" ");
+    return { visible, all: `${visible} ${hidden}` };
+  };
+  const isSearchField = (field, name) => field.type === "search" || Boolean(field.closest("[role='search']")) || /^(tìm|search)/i.test(name.all.trim()) || Boolean(field.closest("label")?.querySelector("[data-lucide='search'], .lucide-search"));
+  const isOtpField = (field) => field.autocomplete === "one-time-code" || field.maxLength === 1;
+  const isHeroAmount = (field) => parseFloat(getComputedStyle(field).fontSize) >= 28;
+  const namedFields = textFields.filter((field) => !isOtpField(field) && !isHeroAmount(field));
+  for (const field of textFields) {
+    const name = readFieldName(field);
+    const declaredMode = (field.getAttribute("inputmode") || "").toLowerCase();
+    const declaredType = (field.getAttribute("type") || "").toLowerCase();
+    const looksNumeric = /\d/.test(field.value || field.placeholder) && /^[\d.,\s+\-]+$/.test((field.value || field.placeholder).trim());
+    const isNumberByName = /số tiền|số lượng|số điện thoại|giá|amount|quantity|price|phone/i.test(name.all);
+    if ((looksNumeric || isNumberByName) && !declaredMode && !["number", "tel"].includes(declaredType) && !isSearchField(field, name)) problems.push(`ô nhập "${(name.visible || field.getAttribute("aria-label") || field.value || field.placeholder).slice(0, 24)}" nhận số mà không khai inputmode: máy thật bật bàn phím chữ, thêm inputmode="numeric" (có lẻ thì "decimal", số điện thoại type="tel") (J13)`);
+  }
+  for (const field of namedFields) {
+    const name = readFieldName(field);
+    if (name.visible || isSearchField(field, name)) continue;
+    // Ô soạn tin (chat, hỏi AI): ô cạnh nút gửi, quy ước là placeholder.
+    let row = field.parentElement;
+    let isComposer = false;
+    for (let depth = 0; row && depth < 3 && !isComposer; depth += 1, row = row.parentElement) {
+      isComposer = [...row.querySelectorAll("button, a")].some((control) => /gửi|send/i.test(control.getAttribute("aria-label") || "") || Boolean(control.querySelector("[data-lucide^='send'], [data-lucide='arrow-up'], .lucide-send, .lucide-arrow-up")));
+    }
+    if (isComposer) continue;
+    // Màn hay sheet một câu hỏi ("Số điện thoại của bạn", sheet "Ghi chú 20/11"): một ô, tiêu đề đứng ngay trên làm
+    // nhãn. Đếm cả ô số tiền to: sheet có số tiền + ô tên thì ô tên vẫn cần nhãn.
+    const container = field.closest("[data-screen], [data-sheet], [role='dialog']") || device;
+    const fieldsHere = textFields.filter((other) => container.contains(other) && !isOtpField(other));
+    if (fieldsHere.length === 1) continue;
+    problems.push(`ô nhập "${(field.value || field.placeholder || field.getAttribute("aria-label") || "").slice(0, 24)}" không có nhãn hiện, chỉ placeholder hay aria-label: có giá trị rồi là không biết ô để làm gì; nhãn chữ đặt trên ô (T25, J13)`);
+  }
+
   // J13: ô số tiền to có đơn vị đứng sau mà ô rộng cố định, chữ căn giữa nên "đ" đứng xa số (cùng phép 6d ở phép
   // đo chung; ô này hay nằm trong sheet, phép đo chung chỉ thấy màn đầu).
   const measureCanvas = document.createElement("canvas").getContext("2d");
@@ -5566,6 +5632,7 @@ const mobileMustReportKinds = [
   { pattern: /^cuộn xuống thì "(.*?)" chạy dưới thanh trạng thái/, title: "cuộn xuống thì chữ chạy dưới thanh trạng thái, không dải nền che (J1)" },
   { pattern: /^(.*) nằm trong vùng (?:tai thỏ|thanh home)/, title: "chữ hay chỗ bấm chui vào vùng tai thỏ / thanh home (J1)" },
   { pattern: /^màn cuộn ngang (.*) \(J1\)$/, title: "màn cuộn ngang (J1)" },
+  { pattern: /^ô nhập "(.*?)" nhận số mà không khai inputmode/, title: "ô nhận số mà không khai inputmode, máy thật bật bàn phím chữ (J13)" },
 ];
 
 function listMobileMustReportItems(screens) {

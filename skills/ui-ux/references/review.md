@@ -132,7 +132,7 @@ một chút nào"*.
 
 | Hạng | Căn cứ | Ví dụ | Mặc định |
 | --- | --- | --- | --- |
-| **Hỏng** | Sai với mọi brand | Tương phản dưới 4.5:1 (chữ lớn 3:1), trang cuộn ngang, chữ bị cắt hay bị giấu mất nghĩa, vùng bấm dưới 24px, lớp nổi lòi khỏi màn, dialog cao quá màn mà không cuộn, rê chuột làm nhảy bố cục | Đề xuất sửa |
+| **Hỏng** | Sai với mọi brand | Tương phản dưới 4.5:1 (chữ lớn 3:1), trang cuộn ngang, chữ bị cắt hay bị giấu mất nghĩa, vùng bấm dưới 24px, lớp nổi lòi khỏi màn, dialog cao quá màn mà không cuộn, rê chuột làm nhảy bố cục, màn hay khối lỗi chỉ ghi "Đã có lỗi xảy ra" (không nói vì sao, không nút Thử lại hay lối khác, `flows.md`), màn con không có nút quay lại | Đề xuất sửa |
 | **Lệch hệ** | Token và component **của chính dự án** | Ba kiểu bo góc nút, hai màu cho cùng một trạng thái, khoảng cách lẻ ngoài thang của họ, mã hex viết cứng gần giống token | Đề xuất sửa, theo hệ của họ |
 | **Gu** | `principles.md` và luật skill | Sidebar có viền phải, badge nền đậm, nền rê đậm nhạt | Chỉ nêu, ghi "gu, tuỳ bạn", mặc định không chọn |
 
