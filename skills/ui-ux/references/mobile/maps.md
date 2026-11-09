@@ -24,6 +24,10 @@ Màn tìm chỗ gần (bệnh viện trong mạng lưới, cửa hàng, chỗ �
     Stadia (401 khi không khoá); `World_Street_Map`, `World_Topo_Map` của Esri (đường hồng cam, đường đồng mức, chữ dày đặc);
     tile `tile.openstreetmap.org` (chính sách cấm dùng nhiều, nhìn rối). Kiểm nguồn bản đồ mới thì **mở ảnh tile ra xem**,
     không chỉ xem mã trả về.
+  - **Bản đồ trong màn đang ẩn phải `resize()` khi màn hiện.** MapLibre đo khung lúc tạo; màn còn ẩn (`display: none`,
+    khung chưa đủ cỡ) thì canvas nhỏ hơn khung, bản đồ chỉ phủ một góc, phần còn lại trống xám (màn tài xế đang đến ở 360
+    gần như trắng). Gọi `mapView.resize()` rồi `fitBounds` đường đi mỗi lần chuyển tới màn có bản đồ, hay tạo bản đồ lúc màn
+    hiện lần đầu.
   - Không tải được MapLibre (máy không WebGL) thì lùi về tile Esri xám nhạt ở trên, báo một dòng lúc giao.
 - **Ghim:** vùng bấm 44 dù ghim vẽ nhỏ hơn; ghim đang chọn đổi hình rõ (nền `--foreground` hay màu nhấn, to hơn), các ghim
   khác trắng có bóng. **Chấm "vị trí của bạn"**: chấm màu nhấn 16 viền trắng 3px, quầng cùng màu 20% đường kính 64, không
