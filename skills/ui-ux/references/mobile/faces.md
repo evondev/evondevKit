@@ -1,8 +1,8 @@
-# App điện thoại — Bộ mặt app điện thoại — tám bộ có tên
+# App điện thoại — Bộ mặt app điện thoại — chín bộ có tên
 
 Một mục của luật `J`. Luật nền `J1`–`J8` và bảng các mục ở `mobile.md`, mở file đó trước.
 
-## J15. Bộ mặt app điện thoại — tám bộ có tên
+## J15. Bộ mặt app điện thoại — chín bộ có tên
 
 Lý do giống `P13`: khung app điện thoại chỗ nào cũng như nhau (thanh tab, đầu màn, danh sách, sheet), nên ba app khác
 ngành dựng cùng một gu thì ra cùng một mặt. Thứ làm hai app khác nhau là **bộ mặt**: nền, màu nhấn dùng tới đâu,
@@ -12,7 +12,8 @@ vẫn áp nguyên).
 ⚑ Rút từ khoảng 300 màn của 10 app phổ biến ở 10 loại (đặt phòng, lưu ảnh ý tưởng, mạng xã hội chữ, bản tin, học
 ngôn ngữ, thiền và ngủ, sách tóm tắt, hẹn hò, đi bộ đường dài, việc cần làm). Sáu bộ đầu là
 các kiểu lặp lại ở nhiều app, không chép mặt riêng của app nào. Glow và Tinted thêm sau, cho bản mẫu cần gây ấn tượng
-lúc trình bày (app AI, sáng tạo; sức khoẻ, ăn uống, phong cách sống).
+lúc trình bày (app AI, sáng tạo; sức khoẻ, ăn uống, phong cách sống). Brand thêm sau cùng ⚑, cho app dịch vụ của một
+thương hiệu mà người dùng mở ra để gọi, đặt, trả tiền ngay: dựng bằng Clean thì đúng mà xám, không ai muốn bấm đặt.
 
 | Bộ mặt | Nền, bề mặt | Màu nhấn tới đâu | Chữ, font | Hình khối | Hợp khi người dùng là |
 | --- | --- | --- | --- | --- | --- |
@@ -24,6 +25,7 @@ lúc trình bày (app AI, sáng tạo; sức khoẻ, ăn uống, phong cách s�
 | **Editorial** ⚑ | Trắng hay kem ấm `#fbf8f3`, gần như không thẻ | Một sắc nhỏ cho link, nút theo dõi; nút chính đen hay màu đó | Tiêu đề bài và thân bài **Lora** (serif), thân 18/1.6; khung app (tab, nút, nhãn) vẫn Inter | Dòng bài: chữ trái, ảnh vuông 64 phải; trang đọc lề 20, không khung | Người **đọc** dài: bản tin, báo, sách, khoá học dạng đọc, công thức nấu ăn |
 | **Glow** | Gần đen `#0b0b0f` cả app, hai ba **quầng màu mờ** lớn (màu nhấn và một sắc kề) ở đầu màn và sau khối chính | Nút chính màu nhấn rực **chữ tối**, mic, nút gửi; quầng màu là chỗ màu nhiều nhất | Inter (lối trình diễn: font hình học của `J18`), tiêu đề màn 32–36 `tracking-tight`, chữ phụ trắng 65% | Thẻ trắng 8% viền trắng 10%, bo 20–24, **không blur** (kính chỉ cho lớp cố định: thanh tab, ô soạn, thanh trên); thanh tab `glass` (`J2`) | Người dùng app AI, sáng tạo, âm nhạc, đầu tư trẻ, học kỹ năng sáng tạo: cần cảm giác mới, năng lượng |
 | **Tinted** | **Cả app một màu nền nhạt** pha từ màu nhấn (tím nhạt, kem đào, bạc hà) thay trắng và xám; thẻ trắng nổi trên nền màu | Nút chính đen hay màu nhấn đậm; khối nhấn đầu màn là cùng sắc đậm hơn | Inter hay font tròn hơn, số lớn đậm | Bo 20–28, thẻ trắng không viền, bóng rất nhẹ; thanh tab `dark` hay `pill` (`J2`); hợp vòng và cung (`J17`), đồ vật 3D cho món, danh mục (`J16`) | Người tự chăm mình mỗi ngày mà không cần gamification: ăn uống, kcal, sức khoẻ, chi tiêu cá nhân nhẹ nhàng, du lịch, phong cách sống |
+| **Brand** ⚑ | Trắng; **màn gốc có khối đầu màn tô đặc `--primary`** chứa thanh trên, ô tìm trắng và một dòng ưu đãi; màn con trắng trơn | Màu brand ở **mọi chỗ có trạng thái**: nút chính đặc, nút phụ nền nhạt cùng sắc, thẻ và tab đang chọn, ô đang nhập, icon đầu dòng, đường đi trên bản đồ. Thêm một sắc ấm nhạt chỉ cho dải ưu đãi | Tiêu đề mục 20–22 đậm 800 font hình học (Plus Jakarta Sans, `J18`: thêm `word-spacing`, không khép chữ), thân Inter | Bo 16–24; dịch vụ, loại xe, lời khen là **đồ vật 3D** (`J16`), không icon nét trong vòng xám; nút bo tròn hết cao 52–56 | Người mở app để mua ngay một dịch vụ: gọi xe, giao hàng, giao đồ ăn nhiều quán, vé xe, vé xem phim, siêu app |
 
 **Token đổi theo bộ** (khối đổi thương hiệu của `mobile-app.html`, tương phản đã đo):
 
@@ -36,21 +38,25 @@ lúc trình bày (app AI, sáng tạo; sức khoẻ, ăn uống, phong cách s�
 | Editorial | Nạp thêm Lora 400, 700 (có bộ `vietnamese`, đã kiểm); `--background: #fbf8f3`, `--muted: #6b6459` (5.5:1 trên kem), sắc nhấn cam `#c2410c` (4.9:1 trên kem) |
 | Glow | Cả khung `force-dark` như Immersive. `--background: #0b0b0f`; quầng: `radial-gradient` 2–3 lớp từ `--primary` và một sắc cách nó 60–150° (như `J18`; cam với hồng tím, tím với xanh ngọc), độ phủ 45–60%, nằm ở đỉnh màn và sau khối chính, không sau chữ nhỏ; `--surface` trắng 8%, viền trắng 10%, không `backdrop-blur` trên thẻ trong vùng cuộn; `--muted` trắng 65% (từ 6.6:1 trên thẻ). Ngành AI, sáng tạo chưa có dòng đo thật trong `brand-tokens.md`: tạm dùng cam `#f97316` hay tím `#a78bfa` và báo một dòng lúc giao. `--primary` rực thì **chữ trên nút là `#111`** (6.7:1, 6.9:1); chữ trắng trên cam rực chỉ 2.8:1. Chữ, link màu nhấn trên nền tối là bản sáng hơn của nó (cam `#ffa45c`, tím `#c4b5fd`, từ 4.5:1 trên thẻ). Bong bóng tin nhắn của người dùng được tô màu nhấn chữ tối (đè `components/chat.md` "không màu nhấn", chỉ trong Glow) |
 | Tinted | Nền theo màu nhấn: `--background` = `color-mix(in oklab, var(--primary) 10%, #f6f3ee)` (tím ra tím nhạt `#eae1ee`, cam ra kem đào, xanh lá ra bạc hà, xanh dương ra xám xanh); muốn kem trung tính thì pha từ một `--tint` riêng thay `--primary`. `--surface: #fff`. Chữ phụ cùng sắc: `--muted` = `color-mix(in oklab, var(--primary) 15%, #4a4640)` (~7:1 trên nền, ~8.9:1 trên trắng); `--secondary` (rãnh điều khiển phân đoạn, nút phụ, ô nhập) = `color-mix(in oklab, var(--primary) 6%, #efeef1)`: xám nhạt ngả theo màu nhấn, nhẹ cả trên nền màu lẫn trên sheet trắng; xám `#e7e8ec` của `J4` lệch tông trên nền màu, còn pha từ nền màn thì trên sheet trắng thành một dải tím xám nặng. Khối nhấn (thẻ số chính, đầu màn có biểu đồ) = 30–35% `--primary` pha kem, **chữ tối** `--foreground`; chữ phụ trên khối `--hero-muted` = `color-mix(in oklab, var(--primary) 18%, #2c2c2c)` (~6.6:1); rãnh vòng và cung trên khối trắng 55% (`--hero-track`). Chữ trắng trên khối nhạt chỉ 1.6:1. Nút chính màu nhấn khi chữ trắng trên nó từ 4.5:1, không thì đen. Đè thẻ số chính `#1c1c1e` của `J5` |
+| Brand | `--primary` theo dòng ngành ở `brand-tokens.md` (gọi xe, giao hàng: Xanh lá `#15803d`, chữ trắng 5.02:1), dự án có màu brand thì dùng màu đó, đo chữ trắng từ 4.5:1 (màu brand rực như xanh lá `#00b14f` chỉ 2.84:1: khối đầu màn và nút lấy bản đậm hơn cùng sắc, giữ bản rực cho đồ hoạ). Thêm `--primary-soft` = `color-mix(in oklab, var(--primary) 10%, #fff)` (nền nút phụ, thẻ và tab đang chọn, quầng ô đang nhập) và `--primary-strong` = `color-mix(in oklab, var(--primary) 80%, #000)` (chữ, icon trên nền soft, icon đầu dòng; từ 6:1). Khối đầu màn: nền `--primary`, chữ trắng, giờ và pin trắng; mép dưới bo `0 0 50% 50% / 0 0 28px 28px` hay cong nhẹ, không đổ bóng. Sắc ưu đãi: nền `#fff4e8` viền `#fbd9b5`, chữ `--foreground`. Sao đánh giá vàng `#fbbf24` (`J8`) |
 
 **Chọn bộ nào.** Bộ mặt bám **người dùng và việc chính** ở `U1`, `U2`, không bám ngành: app spa mà người mở là kế toán
 đối soát thì Clean, không phải Photo. Người dùng nêu tên một bộ (kể cả bộ còn cờ) thì dựng bộ đó, không hỏi lại (`P1`).
-Skill **tự khuyên một bộ** trong bốn bộ đã qua test (Clean, Photo, Playful, Immersive), không hỏi, theo câu đầu tiên
+Skill **tự khuyên một bộ** trong bốn bộ đã qua test (Clean, Photo, Playful, Immersive; ngoại lệ Brand ở câu 2), không hỏi, theo câu đầu tiên
 khớp:
 
-1. Người dùng lướt và chọn bằng ảnh (đặt phòng, đặt món, mua sắm, nội thất) → **Photo**.
-2. Người dùng nghe, xem, thư giãn, thường buổi tối (thiền, ngủ, sách nói, nhạc, video) → **Immersive**.
-3. Một người tự làm việc của mình mỗi ngày và cần động lực quay lại (học, thói quen, thể dục) → **Playful**.
-4. Còn lại, nhất là ghi chép, quản lý, tài chính, app cho cửa hàng hay công ty → **Clean**.
+1. Người dùng lướt và chọn bằng ảnh (đặt phòng, đặt món ở một quán, mua sắm, nội thất) → **Photo**.
+2. Người dùng cuối mở app của một thương hiệu để mua ngay một dịch vụ (gọi xe, giao hàng, giao đồ ăn nhiều quán, vé, siêu
+   app) → **Brand** ⚑. Đây là ngoại lệ duy nhất của luật "chỉ tự khuyên bộ đã qua test": app loại này dựng bằng Clean
+   ra một màn xám chỉ có nút màu, khác hẳn mọi app thật cùng loại. Báo một dòng lúc giao rằng bộ còn cờ.
+3. Người dùng nghe, xem, thư giãn, thường buổi tối (thiền, ngủ, sách nói, nhạc, video) → **Immersive**.
+4. Một người tự làm việc của mình mỗi ngày và cần động lực quay lại (học, thói quen, thể dục) → **Playful**.
+5. Còn lại, nhất là ghi chép, quản lý, tài chính, app cho cửa hàng hay công ty → **Clean**.
 
 Tinted, Glow đã qua test: tự khuyên ở lối trình diễn (`J18`), Tinted cho app một người tự chăm mình, Glow cho AI, sáng tạo,
 âm nhạc; đề thường vẫn theo bốn câu trên, hợp rõ thì báo một dòng. Mono, Editorial còn cờ ⚑ (chưa qua test): không tự khuyên; đề hợp rõ thì báo một dòng lúc giao. Mẫu dòng báo, nói bằng
 người dùng: *"Bộ mặt: **Playful** (nút đậm, thẻ bấm được, phản hồi tô cả dải đáy) vì người học cần quay lại mỗi ngày.
-Muốn kiểu khác thì nói: Clean, Photo, Immersive, Mono, Editorial, Glow, Tinted."* Wireframe app điện thoại có nhóm Kiểu liệt kê tám bộ
+Muốn kiểu khác thì nói: Clean, Photo, Immersive, Mono, Editorial, Glow, Tinted, Brand."* Wireframe app điện thoại có nhóm Kiểu liệt kê chín bộ
 (`wireframe.md`, `U3`), mặc định là bộ khuyên dùng. Bộ nào qua test thì gỡ cờ ⚑ ở bảng trên.
 
 **Ghi lại bộ đã chọn** như `P13`: dòng Bộ mặt trong `DESIGN.md` và comment `/* Bộ mặt: Playful (J15) */` trên khối
@@ -65,6 +71,9 @@ font, để màn sau theo đúng bộ đó, không khuyên lại.
   hơn cả nút chính. Thanh tab: mục đang chọn có viên nền trắng 12% sau icon, vì trắng 100% với trắng 72% trên nền tối
   gần như không phân biệt được (`J2`).
 - Mono đè thẻ số chính nền tối của `J5`.
+- Brand đè dòng "dải đầu màn tô màu nhấn" của `J8` (chỉ màn gốc), "nhiều màu nhấn" (thêm đúng một sắc ấm nhạt cho ưu đãi),
+  "minh hoạ 3D ở màn làm việc" (đồ vật 3D cho dịch vụ, loại xe, lời khen, không nhân vật chiếm nửa màn), nền trắng của
+  `J1` ở khối đầu màn, và tile xám của `J19` (bản đồ màu nhạt).
 - Photo đè "ngày đang chọn tô `primary`" của `components/choice-controls.md` và "công tắc bật là `--primary`" của `J4`:
   đang chọn tô `--foreground`, để màu nhấn chỉ còn ở nút cam kết.
 
@@ -116,5 +125,24 @@ mỗi màn.
   màn, ngay sau thanh tab (`radial-gradient` màu nhấn 25%, cao 160px), để thanh kính không thành viên xám.
 - **Tinted: một sắc nền cho cả app, không đổi theo màn.** Sheet, hộp hỏi, bàn phím vẽ vẫn trắng. Màu trạng thái (đỏ
   vượt, xanh đạt) đo lại trên nền màu; ảnh món, ảnh phòng trên nền be thì thêm viền trắng 2px cho khỏi lẫn.
+- **Brand: màu ở chỗ có trạng thái, không rải lên chữ.** Thẻ chọn xe đang chọn viền 2px `--primary` nền `--primary-soft`;
+  tab phân đoạn (Gần đây · Gợi ý · Đã lưu), chip (Bây giờ · Hẹn giờ) đang chọn là viên `--primary-soft` chữ
+  `--primary-strong` đậm, mục khác chữ `--muted`; ô đang nhập viền `--primary` 2px quầng `--primary-soft` 3px. Hai nút đáy
+  cạnh nhau: nút chính đặc, nút phụ nền `--primary-soft` chữ `--primary-strong`, không nút viền xám. Icon đầu dòng (nhà,
+  công ty, lịch sử) `--primary-strong` không vòng nền, hay đồ vật 3D. Giá, tên, địa chỉ vẫn `--foreground` / `--muted`
+  (`M4`). Màn dựng xong mà chỗ màu duy nhất là nút đáy thì chưa phải Brand.
+- **Brand: dịch vụ và loại xe là hình, không là icon nét.** Lưới dịch vụ trang chủ 2 cột (chữ đậm 16 trái, đồ vật 3D 48–56
+  phải, cao 72–80, không viền thẻ) hay 4 cột (ô hình 56 trên, nhãn 13 dưới). Ô 2 cột chỉ có **tên dịch vụ**, tối đa hai dòng:
+  ở 360 mỗi ô còn ~155px, thêm dòng phụ ("Đón trong 2 phút") cạnh hình 48 thì dòng phụ gãy ba dòng; thời gian đón để ở màn
+  chọn xe; dòng chọn loại xe có hình xe 3D 56–72 bên
+  trái (Fluent: `Motor scooter`, `Automobile`, `Taxi`, `Minibus`, `Delivery truck`). Icon Lucide 20px trong vòng xám ở các
+  chỗ này là lý do bản dựng trông như bản nháp.
+- **Brand: màn đánh giá sau chuyến** (ride, giao hàng, dịch vụ tại nhà). Thanh trên: ✕ trái, "Đã xong chuyến" và địa chỉ một
+  dòng `truncate`, nút hỗ trợ phải. Giữa màn: tiêu đề hỏi 24–28 đậm 800 canh giữa, avatar 88–96 tròn, tên và điểm của người
+  làm, **năm sao 40–44 vàng** (`J8`) với dòng chữ dưới đổi theo số sao ("Tuyệt vời"). Chọn sao xong hiện "Điều gì làm bạn
+  hài lòng?" và **hàng lời khen là đồ vật 3D** trong vòng 64 nền nhạt mỗi vòng một sắc, nhãn 13–14 dưới tối đa hai dòng, hàng
+  cuộn ngang lộ nửa mục cuối (`J8`); đang chọn thì vòng viền `--primary` 3px và tick nhỏ ở góc. Sao thấp (1–3) thì đổi thành
+  "Điều gì chưa ổn?" với các mục chưa ổn. Ô góp ý, khối tiền tip (viên bo tròn hết, đang chọn viền `--primary` nền soft, mục
+  cuối "Số khác" có icon bút) rồi nút Gửi dính đáy. Không gói sao và lời khen vào một thẻ viền: màn này chỉ có một việc.
 - **Editorial: serif chỉ cho nội dung đọc.** Lora cho nhãn tab, nút, ô nhập thì khung app thành giả cổ, chữ nhỏ 11–13
   khó đọc. Nạp Lora mà quên bộ `vietnamese` thì "ữ", "ợ" rơi về font máy (`T5`).

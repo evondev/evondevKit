@@ -210,8 +210,8 @@ không mở file này.
   theo người dùng ở `U1`, có nhãn nhỏ "khuyên dùng" sau tên trong menu, không trên nút. Bộ khuyên
   dùng luôn là một trong bốn bộ không cờ (Clean, Dark Sidebar, Soft, Midnight); bộ còn cờ ⚑ đứng
   sau, không bao giờ mang nhãn "khuyên dùng", không là mặc định, người dùng tự chọn thì dựng theo. **App điện thoại** ⚑:
-  tám bộ mặt của `J15` (`mobile/faces.md`: `clean`, `mono`, `photo`, `playful`, `immersive`, `editorial`, `glow`, `tinted`), mặc định là bộ
-  khuyên dùng theo `J15` (Clean, Photo, Playful hay Immersive; Tinted, Glow khi bật Trình diễn (app tự chăm mình, app AI và sáng tạo); Mono, Editorial còn cờ, đứng sau), nạp sẵn Nunito
+  chín bộ mặt của `J15` (`mobile/faces.md`: `clean`, `mono`, `photo`, `playful`, `immersive`, `editorial`, `glow`, `tinted`, `brand`), mặc định là bộ
+  khuyên dùng theo `J15` (Clean, Photo, Playful hay Immersive; Brand cho app gọi xe, giao hàng, vé; Tinted, Glow khi bật Trình diễn (app tự chăm mình, app AI và sáng tạo); Mono, Editorial còn cờ, đứng sau), nạp sẵn Nunito
   và Lora trong link font. Màn khác (trang
   lướt để chọn, trang giá): Flat (`P6`) cùng hai khối hợp sản phẩm nhất trong `P7`–`P10` (`flat`,
   `toi`, `noi`; Glass chỉ khi phía sau có ảnh hay gradient, `F19`), mặc định Flat (`P1`). Không có

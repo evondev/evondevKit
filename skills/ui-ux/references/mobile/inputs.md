@@ -19,6 +19,9 @@ người dùng gặp ngay lần gõ đầu.
 | Tên, địa chỉ | `autocomplete="name"`, `street-address` | `textContentType="name"`, `fullStreetAddress` |
 | Tìm kiếm | `type="search"` `enterkeyhint="search"` | `returnKeyType="search"` |
 
+- `type="search"` tự vẽ nút × xanh của Chrome. Ô có nút xoá tự dựng thì tắt nút đó
+  (`[&::-webkit-search-cancel-button]:appearance-none`, `components/input.md`), không thì ô có hai nút xoá.
+
 - Email, mã, tên đăng nhập tắt tự viết hoa, tự sửa chữ (`autocapitalize="off"` `autocorrect="off"` `spellcheck="false"`).
 - **Phím Enter nói việc tiếp theo**: form nhiều ô thì `enterkeyhint="next"` nhảy sang ô sau, ô cuối `done` hay
   `send`; Enter ở ô cuối làm đúng việc của nút chính.

@@ -79,7 +79,8 @@ hay theo sáo ("spa thì hồng"); muốn sửa thì đo lại.
 | Bán lẻ, cửa hàng, bán hàng tại quầy | xanh dương 4, xanh lá 2 trên 6 | Xanh dương · Xanh lá · Cam |
 | Giáo dục, khoá học | xanh dương 3, tím vàng 1 trên 4 | Xanh dương · Tím · Cam |
 | Bất động sản, cho thuê | xanh dương, xanh than 3, xanh ngọc 1 trên 4 | Xanh dương · Xanh ngọc · Cam |
-| Vận tải, kho, giao hàng | xanh dương 3, hổ phách 1, xanh lá 1 trên 5 | Xanh dương · Cam · Xanh ngọc |
+| Vận tải, kho, giao hàng (phần mềm cho công ty: điều phối, kho) | xanh dương 3, hổ phách 1, xanh lá 1 trên 5 | Xanh dương · Cam · Xanh ngọc |
+| Gọi xe, giao hàng, giao đồ ăn cho người dùng cuối ⚑ | xanh lá 3, vàng, xanh ngọc, đen, hồng, cam, xanh chanh mỗi màu 1 trên 9 (đếm theo màu nhận diện của app, 08/11/2026, chưa đo trang) | Xanh lá · Cam · Xanh ngọc |
 | Nhân sự, chấm công | tím 2, xanh dương 1 trên 3 | Tím · Xanh dương · Xanh ngọc |
 | CRM, bán hàng B2B | cam, xanh dương, xanh lá, tím rải đều: **không có quy ước** | Chàm · Cam · Xanh ngọc |
 | Du lịch, khách sạn, homestay | hồng đỏ, cam, đỏ tím, xanh dương trên 4 | Cam · Hồng tím · Xanh dương |

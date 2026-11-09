@@ -28,7 +28,9 @@ thói quen), **Glow** cho AI, sáng tạo, âm nhạc, **Photo** cho lướt ch�
   (không câu chào to); hay hình chính 180–200px (đồ vật
   3D `J16`, ảnh cắt nền) có quầng trắng mờ phía sau và bóng bầu dục dưới đáy để vật đứng trên mặt.
 - **Font hình học có tiếng Việt:** Plus Jakarta Sans (mặc định), Lexend, Manrope, Be Vietnam Pro (đã kiểm có bộ
-  `vietnamese`). Tiêu đề màn 30–36 `font-extrabold`, chữ phụ 13.
+  `vietnamese`). Tiêu đề màn 30–36 `font-extrabold`, chữ phụ 13. **Plus Jakarta Sans có dấu cách hẹp**: đậm 800 cộng
+  `tracking-tight` thì "Chọn xe", "Tài xế" dính thành "Chọnxe", "Tàixế". Tiêu đề bằng font này luôn thêm
+  `word-spacing: 0.08em`, và chỉ khép chữ từ 30px (`T2`); tiêu đề mục 18–26 để `tracking-normal`.
 - **Bo to, không viền, bóng mềm ngả màu nhấn:** thẻ, dòng bo 20–24; khối nhấn bo 32. Tách khối bằng nền (`--soft`: 7% màu
   nhấn pha xám nhạt) hay bóng `--shadow-card` lan rộng, không viền 1px, không vạch ngăn giữa các dòng.
 - **Nút tròn trắng nổi 44px** cho quay lại, thông báo, lưu, bớt thêm; nhãn nhỏ trên quầng là viên kính trắng 70%. Nút cam

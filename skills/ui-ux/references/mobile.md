@@ -281,15 +281,24 @@ Dùng (gặp ở phần lớn ảnh mẫu, hợp quy ước):
   ngang chung** (`grid grid-flow-col grid-rows-2 w-max`), và hàng phải **lộ 30–50% cột kế tiếp** ở cả 390 lẫn 360: cột cuối
   vừa khít mép thì người dùng không biết còn mục, ba lối tắt sau mất hẳn (6 mục chỉ thấy 4).
   Không đủ lộ thì đổi thứ tự cho nhãn dài nằm cột cuối, hay về lưới 4 cột.
+- **Chấm sao** (đánh giá tài xế, món, người làm, chỗ ở): sao đặc vàng `#fbbf24`, sao chưa chọn xám `#d4d4d8`, cỡ 40–44 khi là
+  chỗ bấm, 14–16 khi chỉ hiện điểm cạnh chữ. Hầu hết app vẽ sao vàng, người dùng nhận ra ngay; sao nâu, cam đậm hay màu brand
+  trông như icon thường. Vàng trên trắng chỉ 1.7:1 nên **trạng thái phải có chữ đi kèm**: dòng dưới hàng sao đổi theo số sao
+  ("Tệ" … "Tuyệt vời"), hay điểm số cạnh sao ("4,9"); mỗi sao là `role="radio"` có `aria-label` "4 sao".
+- **Hàng cuộn ngang cắt luôn chiều dọc.** `overflow-x: auto` buộc chiều dọc cũng bị cắt, nên vòng đang chọn (`ring`), tick
+  lố góc, bóng, phóng to khi nhấn của mục trong hàng mất phần nhô ra trên và dưới (vòng lời khen bị cắt đỉnh). Hàng chừa
+  `py` bằng phần nhô ra nhiều nhất (vòng 3px và tick lố 4px: `py-2`), tick đặt trong lòng vòng (`top-0 right-0`), không lố
+  bằng toạ độ âm (`N11`).
 - **Hàng cuộn ngang có `scroll-snap`** (rail thẻ, carousel trên bản đồ): thêm `scroll-px-4` bằng lề 16, không thì thẻ hít
   sát mép màn, mất lề trái.
 
 Không dùng (đẹp trong ảnh, hỏng trên máy thật):
 - Chữ 9–10px, chữ pastel trên nền pastel (dưới 4.5:1).
-- Minh hoạ 3D, nhân vật trang trí chiếm nửa màn ở màn làm việc. Nhân vật và minh hoạ chỉ ở các chỗ của `J16`.
+- Minh hoạ 3D, nhân vật trang trí chiếm nửa màn ở màn làm việc. Nhân vật và minh hoạ chỉ ở các chỗ của `J16`. Bộ Brand dùng đồ vật 3D cho dịch vụ, loại xe, lời khen (`J15`).
 - Nhiều màu nhấn trên một màn; thanh tab không có chữ; nút "+" nằm giữa thanh tab.
 - Dải đầu màn tô màu nhấn, nút gradient, bóng đậm: kiểu cũ, ảnh mẫu được khen không còn dùng. Trừ khi người dùng gửi ảnh
-  có chúng (mục dưới).
+  có chúng (mục dưới), và trừ bộ **Brand** (`J15`): app dịch vụ của một thương hiệu (gọi xe, giao hàng) tô khối đầu màn gốc
+  bằng màu brand là quy ước của cả loại.
 
 **Ảnh mẫu là bản trình diễn** (ảnh kiểu Dribbble người dùng gửi kèm "như này", "like this") ⚑. Nhận ra: quầng hay
 gradient đầu màn, bóng mềm thay viền, nút tròn trắng nổi, bo 24 trở lên, nền xám hay kem nhạt. Ảnh là design ref (`S12`,
@@ -311,4 +320,4 @@ của nút: ảnh có nút cam kết màu đen thì màu cam đỏ của ảnh c
 
 ## Kiểm trước khi giao
 
-- [ ] **App điện thoại (`J`)**: dựng trong khung của `mobile-app.html` chưa (mép chừa bằng `--inset-top` / `--inset-bottom`)? Thanh tab 3–5 mục có chữ, không nút "+" trong thanh; màn con để xem giữ thanh và sáng tab cha, form / giỏ / thanh toán ẩn thanh? Dòng, nút, thẻ có chữ dùng `min-h-*` để chữ to lên không tràn? Chữ thân 16, không chữ dưới 11, mọi chỗ bấm ≥ 44px? Hành động chính không nổi đè lên nội dung? Cuộn màn gốc lên, chữ có lướt dưới dải nền `.status-cover` chứ không đè giờ và pin? Tên trong dòng danh sách có bị cắt `…` không? Đã chạy `probe.mjs --mobile --widths 390,1280` (đi qua từng màn, ở 390 và khung máy tính) và xem ảnh `mobile-*.png` chưa?
+- [ ] **App điện thoại (`J`)**: dựng trong khung của `mobile-app.html` chưa (mép chừa bằng `--inset-top` / `--inset-bottom`)? Thanh tab 3–5 mục có chữ, không nút "+" trong thanh; màn con để xem giữ thanh và sáng tab cha, form / giỏ / thanh toán ẩn thanh? Dòng, nút, thẻ có chữ dùng `min-h-*` để chữ to lên không tràn? Chữ thân 16, không chữ dưới 11, mọi chỗ bấm ≥ 44px? Hành động chính không nổi đè lên nội dung? Cuộn màn gốc lên, chữ có lướt dưới dải nền `.status-cover` chứ không đè giờ và pin? Tên trong dòng danh sách có bị cắt `…` không? Hàng chữ trái, giá phải (`justify-between`): giá có `shrink-0 whitespace-nowrap` chưa, ở 360 chữ `₫` có rơi xuống dòng riêng không (`rules-type.md`, số tiền là một khối)? Đã chạy `probe.mjs --mobile --widths 390,1280` (đi qua từng màn, ở 390 và khung máy tính) và xem ảnh `mobile-*.png` chưa?

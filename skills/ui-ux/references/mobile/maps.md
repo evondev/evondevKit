@@ -11,6 +11,20 @@ Màn tìm chỗ gần (bệnh viện trong mạng lưới, cửa hàng, chỗ �
   phố khác tính theo `z` (14–15 cho khu phố): `x = floor((lon + 180) / 360 · 2^z)`,
   `y = floor((1 − ln(tan(lat) + 1 / cos(lat)) / π) / 2 · 2^z)` (lat đổi ra radian); lưới 3×4 tile quanh điểm đó phủ đủ
   khung 390×844. Bản đồ phủ cả màn dưới thanh trên; thanh trên có nền mờ dần (nền màn → trong suốt) để tiêu đề đọc được.
+  **App gọi xe, giao hàng (bộ Brand, `J15`) dùng bản đồ màu nhạt**: đất xám rất nhạt, đường trắng, **nước xanh, công viên
+  xanh lá**. Bản đồ là nửa màn của mọi bước đặt, lọc xám thì cả luồng xám theo. Nguồn không cần khoá (kiểm 09/11/2026):
+  MapLibre GL `maplibre-gl@4.7.1` (unpkg) với style `https://tiles.openfreemap.org/styles/positron` của OpenFreeMap
+  (free, cho dùng thương mại), tô lại lúc `load`: `setPaintProperty("water", "fill-color", "#aadaf5")`, `waterway`
+  `line-color` cùng màu, `park` và `landcover_wood` `fill-color: #cdeccf`. Ghi công "© OpenFreeMap © OpenStreetMap". Tắt
+  kéo, xoay, cuộn phóng (`interactive: false`) cho màn chỉ xem; đường đi là lớp `line` GeoJSON, ghim là `maplibregl.Marker`
+  bằng HTML. Chromium mặc định của probe vẽ được WebGL này. Đường đi màu `--primary` dày 5–6 viền trắng 2px (hai lớp
+  `line`), điểm đón chấm `--primary`, điểm đến ghim đỏ cam (quy ước điểm đến, không phải nút); nhãn điểm đầu cuối là viên
+  trắng có bóng, tên đậm và mũi tên `›` để sửa.
+  - **Không dùng:** CARTO `basemaps.cartocdn.com` (đòi khoá API, ảnh trả về vẫn mã 200 nhưng ghi "API KEY REQUIRED");
+    Stadia (401 khi không khoá); `World_Street_Map`, `World_Topo_Map` của Esri (đường hồng cam, đường đồng mức, chữ dày đặc);
+    tile `tile.openstreetmap.org` (chính sách cấm dùng nhiều, nhìn rối). Kiểm nguồn bản đồ mới thì **mở ảnh tile ra xem**,
+    không chỉ xem mã trả về.
+  - Không tải được MapLibre (máy không WebGL) thì lùi về tile Esri xám nhạt ở trên, báo một dòng lúc giao.
 - **Ghim:** vùng bấm 44 dù ghim vẽ nhỏ hơn; ghim đang chọn đổi hình rõ (nền `--foreground` hay màu nhấn, to hơn), các ghim
   khác trắng có bóng. **Chấm "vị trí của bạn"**: chấm màu nhấn 16 viền trắng 3px, quầng cùng màu 20% đường kính 64, không
   bấm được. Ghim không lố mép màn (probe bắt cuộn ngang) và không đè dòng ghi công.
