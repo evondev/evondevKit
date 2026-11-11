@@ -188,6 +188,8 @@ Phần lớn landing dev để bảng giá ở trang riêng. Có thì theo `../.
 
 Lưới `lg:grid-cols-[2fr_3fr]`: trái nhãn mono, H2 canh trái, câu dẫn, `lg:border-r`; phải accordion
 ngăn `divide-y`, câu đầu mở sẵn, trượt `grid-rows` 0fr ↔ 1fr 250ms (không `<details>`: mở tức thì nhìn giật).
+**Cột trái canh trên**, nhãn mono ngang hàng câu hỏi đầu (cùng đệm đỉnh), không `justify-center` /
+`items-center` dọc: canh giữa thì tiêu đề trôi giữa cột, lệch hàng với câu đầu, và nhảy mỗi lần mở đóng một câu.
 
 - 4–6 câu **dev thật hỏi**: thay được cái đang dùng không, giữ config cũ được không, giá / giấy phép,
   chạy ở đâu (CI, editor), dữ liệu đi đâu. Không câu hỏi tự khen.

@@ -2647,7 +2647,10 @@ function readFollowerTops(probeId) {
     let follower = node.nextElementSibling;
     for (let count = 0; follower && count < 3; follower = follower.nextElementSibling, count++) {
       const rect = follower.getBoundingClientRect();
-      if (rect.height > 0) tops.push(rect.top);
+      // Ghi cả toạ độ màn lẫn toạ độ trang: rê nút trong header dính (`sticky`) làm Playwright cuộn trang. Khối thường
+      // đổi toạ độ màn, khối dính đổi toạ độ trang, bố cục nhảy thật thì đổi cả hai; so lấy độ dời nhỏ hơn (báo nhầm
+      // 458px ở mọi nút header, 11/11/2026, landing Lintel).
+      if (rect.height > 0) tops.push({ view: rect.top, page: rect.top + window.scrollY });
     }
   }
 
@@ -2712,7 +2715,7 @@ async function probeHoverStates(page) {
       return `${element.tagName.toLowerCase()} "${text}"`;
     });
     const largestShift = followerTopsBefore.length === followerTopsAfter.length
-      ? Math.max(0, ...followerTopsBefore.map((top, index) => Math.abs(followerTopsAfter[index] - top)))
+      ? Math.max(0, ...followerTopsBefore.map((top, index) => Math.min(Math.abs(followerTopsAfter[index].view - top.view), Math.abs(followerTopsAfter[index].page - top.page))))
       : 0;
     if (largestShift > 2) layoutShifts.push(`${label}: rê vào thì khối phía sau dời ${Math.round(largestShift)}px`);
     const vanishedIndex = before.childFills.findIndex((fill, index) => {
