@@ -38,6 +38,10 @@ audit, theo ngôn ngữ của đề:
 > nhưng kết quả có thể chưa đẹp bằng màn trong app. Phần nào trùng màn app (bảng giá, danh
 > sách lướt để chọn, form) thì vẫn theo mẫu đã duyệt.
 
+**Landing cho sản phẩm dành cho dev** (công cụ dev, API, SDK, CLI, hạ tầng, sản phẩm AI cho dev) thì
+không thuộc nhóm trên: mở skill anh em `../landing/SKILL.md` (kiểu Blueprint) và đi theo nó, không báo
+câu dưới.
+
 Chỉ báo, **không phải cổng**: không dừng hỏi có làm tiếp không, đi tiếp câu 1 như mọi đề.
 Phần trang không có mẫu thì theo luồng "Dựng một thứ chưa có mẫu" (cuối
 `references/principles.md`). ⚑
