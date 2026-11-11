@@ -371,8 +371,12 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     const isEllipsis = style.textOverflow === "ellipsis" || style.webkitLineClamp !== "none";
     const hasMoreContent = (isClippingX && element.scrollWidth > element.clientWidth + 1) || (isClippingY && element.scrollHeight > element.clientHeight + 1);
     if (isEllipsis || !hasMoreContent || !isVisible(element)) continue;
-
     const hiddenText = findHiddenText(element, isClippingX, isClippingY);
+    // Dải logo chạy ngang (landing B36): hàng logo nhân đôi trượt qua khung, phần ngoài khung là cố ý. Probe đã tắt
+    // animation nên nhận bằng chữ bị giấu xuất hiện từ hai lần trong khung (báo nhầm 11/11/2026, wireframe landing
+    // Lintel ở 375).
+    const isMarquee = isClippingX && hiddenText && element.textContent.split(hiddenText).length > 2;
+    if (isMarquee) continue;
     if (hiddenText) clippedBlocks.push({ element: describe(element), hiddenText });
   }
 
@@ -385,6 +389,9 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     // Nút "nhãn dài" cố ý đặt trong khung hẹp trên trang design system (`D9`, `data-demo-state`): báo mãi ở
     // cả 4a lẫn 4b ngày 30/09/2026.
     if (control.closest("[data-demo-state]")) continue;
+    // Nút mở câu hỏi FAQ, accordion: nhãn là cả câu hỏi, xuống dòng ở màn hẹp là bình thường, không phải nút bị bóp
+    // (báo nhầm vào danh sách P 11/11/2026, wireframe landing Lintel ở 375).
+    if (control.hasAttribute("aria-expanded") && !control.hasAttribute("aria-haspopup")) continue;
     // Ô dạng icon trên chữ dưới (ô danh mục cao từ 56px) thì nhãn hai dòng là thiết kế, không phải nút bị
     // bóp (báo nhầm 27/09/2026, ô danh mục ở dự án mồi phase 2).
     const controlStyle = getComputedStyle(control);
