@@ -1927,6 +1927,68 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     }
   }
 
+  // 18i2. Khung đặt cạnh nhau mà lệch đáy: hai ô cao bằng nhau (code trái, kết quả phải), khung có viền trong mỗi ô
+  //       cao theo nội dung nên một khung hụt, chừa mảng trống dưới đáy (landing Blueprint, hero code → kết quả và
+  //       khối code theo tab). Mắt thấy "lộn xộn" mà không gọi được tên.
+  const unevenPanels = [];
+  const borderedPanelIn = (cell) => [cell, ...cell.querySelectorAll("*")].find((node) => {
+    const style = getComputedStyle(node);
+    const hasFullBorder = ["Top", "Right", "Bottom", "Left"].every((side) => parseFloat(style[`border${side}Width`]) > 0);
+
+    return hasFullBorder && parseFloat(style.borderTopLeftRadius) >= 4 && node.getBoundingClientRect().width >= cell.getBoundingClientRect().width * 0.6 && isVisible(node);
+  });
+  for (const grid of allElements) {
+    if (unevenPanels.length >= 3) break;
+    const cells = [...grid.children].filter(isVisible);
+    if (cells.length !== 2) continue;
+    const [firstBox, secondBox] = cells.map((cell) => cell.getBoundingClientRect());
+    const isSideBySide = Math.abs(firstBox.top - secondBox.top) <= 2 && firstBox.right <= secondBox.left + 2;
+    if (!isSideBySide || Math.abs(firstBox.height - secondBox.height) > 2) continue;
+    const panels = cells.map(borderedPanelIn);
+    if (!panels.every(Boolean) || panels[0] === cells[0]) continue;
+    const [firstPanel, secondPanel] = panels.map((panel) => panel.getBoundingClientRect());
+    const bottomGap = Math.round(Math.abs(firstPanel.bottom - secondPanel.bottom));
+    if (Math.abs(firstPanel.top - secondPanel.top) <= 4 && bottomGap > 8) {
+      unevenPanels.push(`lệch đáy ${bottomGap}px: ${describe(panels[0])} | ${describe(panels[1])}`);
+    }
+  }
+
+  // 18i3. Đường kẻ dọc dừng giữa khung: cột nút copy, cột số thứ tự kẻ `border-l` theo từng dòng; cột dòng ngắn hơn
+  //       khung (khung cao theo terminal bên cạnh) thì đường kẻ dừng lửng, dưới là mảng trống (khối các bước).
+  const strandedDividers = [];
+  for (const card of allElements) {
+    if (strandedDividers.length >= 3) break;
+    const cardStyle = getComputedStyle(card);
+    const isCard = ["Top", "Right", "Bottom", "Left"].every((side) => parseFloat(cardStyle[`border${side}Width`]) > 0) && parseFloat(cardStyle.borderTopLeftRadius) >= 4;
+    if (!isCard || !isVisible(card)) continue;
+    const cardBox = card.getBoundingClientRect();
+    const segmentsByX = new Map();
+    for (const node of card.querySelectorAll("*")) {
+      const style = getComputedStyle(node);
+      if (!(parseFloat(style.borderLeftWidth) > 0) || !isVisible(node) || node.closest("pre, code")) continue;
+      const box = node.getBoundingClientRect();
+      if (box.height < 32) continue;
+      const key = Math.round(box.left);
+      const segments = segmentsByX.get(key) || [];
+      segments.push({ node, top: box.top, bottom: box.bottom });
+      segmentsByX.set(key, segments);
+    }
+    for (const segments of segmentsByX.values()) {
+      const top = Math.min(...segments.map((segment) => segment.top));
+      const lowest = segments.reduce((best, segment) => (segment.bottom > best.bottom ? segment : best));
+      const startsAtTop = top - cardBox.top <= 2;
+      const gapBelow = Math.round(cardBox.bottom - lowest.bottom);
+      if (startsAtTop && gapBelow > 16) strandedDividers.push(`dừng cách đáy khung ${gapBelow}px: ${describe(lowest.node)}`);
+    }
+  }
+
+  // 18i4. Đầu ra tự chạy không vừa khung: khung thử (`aria-live`) cao cố định mà kết quả mẫu dài hơn, dòng tổng kết
+  //       ("7 problems", "Done in 2ms") bị cắt ngang ở mép dưới; khách thấy kết quả cụt, không biết phải cuộn.
+  const overflowingOutputs = [...document.querySelectorAll("[aria-live]")]
+    .filter((element) => isVisible(element) && ["auto", "scroll", "hidden"].includes(getComputedStyle(element).overflowY) && element.scrollHeight > element.clientHeight + 4)
+    .slice(0, 3)
+    .map((element) => `cao ${element.clientHeight}px, kết quả ${element.scrollHeight}px: ${describe(element)}`);
+
   // 18j. Mục lặp dày chữ: card hay dòng lặp từ ba cái trở lên mà một cái có từ năm dòng chữ. Người dùng không tự
   //      thấy "card chữ quá trời" (28/09/2026, wireframe danh sách + chi tiết năm dòng mỗi mục); đặt ra số dòng
   //      thì thấy. Đếm dòng bằng các hộp dòng của chữ (Range), không bằng số thẻ.
@@ -2136,6 +2198,14 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   if (wireframeBar && viewportWidth >= 1280 && wireframeBar.scrollWidth > wireframeBar.clientWidth + 1) {
     wireframeChromeProblems.push(`thanh công cụ tràn ${wireframeBar.scrollWidth - wireframeBar.clientWidth}px ở ${viewportWidth}px: rút nhãn (Màn một hai chữ, Phương án chỉ chữ cái)`);
   }
+  // Menu thả của thanh (Trạng thái, Kiểu) neo mép phải màn (`right: 8px`) thay vì dưới nút: thanh ngắn hơn màn
+  // hay đang cuộn ngang thì menu bung ở góc phải, xa nút (11/11/2026, wireframe landing Lintel).
+  for (const barPopover of document.querySelectorAll(".wf-bar .wf-popover")) {
+    const popoverStyle = getComputedStyle(barPopover);
+    if (popoverStyle.position === "fixed" && popoverStyle.right !== "auto") {
+      wireframeChromeProblems.push(`menu thả của thanh công cụ neo mép phải màn (right: ${popoverStyle.right}): bung xa nút; đặt left theo nút như mẫu trong wireframe.md`);
+    }
+  }
   // Token focus theo màu nhấn đang áp (wireframe.md, U3): đổi --primary trên body mà --border-focus khai
   // `var(--primary)` ở :root thì đã tính xong ở :root, viền focus giữ màu cũ; --ring-focus viết cứng cũng vậy (đã dính
   // 01/10/2026, wireframe lớp học: chọn xanh ngọc mà ô tìm focus viền chàm ở mọi nấc). Đo ở khối thiết kế, nền sáng.
@@ -2238,6 +2308,9 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     untransitionedMotion,
     heavySeparators,
     clippedBars,
+    unevenPanels,
+    strandedDividers,
+    overflowingOutputs,
     denseItems,
     repeatedCardIssues,
     misalignedControlRows,
@@ -3991,6 +4064,19 @@ async function probeWidth(browser, options, width) {
   // Ghi `transition` sau khi trang đã hydrate: gắn thuộc tính trước đó thì React báo lệch HTML (báo nhầm
   // lỗi console 28/09/2026, Next).
   await page.waitForTimeout(options.waitMs);
+  // Khung thử tự chạy (landing B14) in kết quả sau ~1 giây, từng dòng: đo lúc còn rỗng thì không thấy kết quả tràn khung.
+  // Chờ các vùng `aria-live` đứng yên 600ms, tối đa 5 giây; trang không có vùng nào thì qua ngay.
+  await page.waitForFunction(() => {
+    const regions = [...document.querySelectorAll("[aria-live]")];
+    const snapshot = regions.map((region) => region.textContent.length).join(",");
+    const now = Date.now();
+    if (window.__probeLiveSnapshot !== snapshot) {
+      window.__probeLiveSnapshot = snapshot;
+      window.__probeLiveSince = now;
+    }
+
+    return regions.length === 0 || now - window.__probeLiveSince >= 600;
+  }, null, { timeout: 5000, polling: 150 }).catch(() => {});
   // Bản mẫu app điện thoại mở trên màn rộng ra bảng luồng (J1): bản chép thu nhỏ cho người duyệt, không phải app.
   // Đo màn đầu trong khung máy thay cho bảng; từng màn đã có chế độ --mobile đo.
   const isFlowBoard = await page.evaluate(() => {
@@ -5194,6 +5280,18 @@ function formatReport(results) {
     if (result.repeatedCardIssues?.length > 0) {
       problems.push(`KHỐI LẶP: THỨ BẬC, NHỊP, TÊN BỊ CẮT (${result.repeatedCardIssues.length} nhóm, N12 trong principles.md):`);
       for (const item of result.repeatedCardIssues) problems.push(`  ${item}`);
+    }
+    if (result.unevenPanels?.length > 0) {
+      problems.push(`KHUNG CẠNH NHAU LỆCH ĐÁY (${result.unevenPanels.length} chỗ, khung trong hai ô cạnh nhau phải cao bằng nhau, h-full):`);
+      for (const item of result.unevenPanels) problems.push(`  ${item}`);
+    }
+    if (result.strandedDividers?.length > 0) {
+      problems.push(`ĐƯỜNG KẺ DỌC DỪNG GIỮA KHUNG (${result.strandedDividers.length} chỗ, cột dòng phải cao hết khung, dòng chia đều flex-1):`);
+      for (const item of result.strandedDividers) problems.push(`  ${item}`);
+    }
+    if (result.overflowingOutputs?.length > 0) {
+      problems.push(`ĐẦU RA TỰ CHẠY KHÔNG VỪA KHUNG (${result.overflowingOutputs.length} chỗ, kết quả mẫu cắt ngang ở mép dưới):`);
+      for (const item of result.overflowingOutputs) problems.push(`  ${item}`);
     }
     if (result.denseItems?.length > 0) {
       problems.push(`MỤC LẶP DÀY CHỮ (từ 5 dòng mỗi mục; danh sách + chi tiết thì mục trái tối đa 3 dòng, layouts/app/filtered-list.md):`);
