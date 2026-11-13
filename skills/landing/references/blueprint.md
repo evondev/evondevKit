@@ -72,6 +72,9 @@ Chọn theo sản phẩm, không mặc nhiên cam. Ba mã mặc định đạt 4
   kiểu. Một trang một kiểu, mọi nút chính giống nhau.
 - **Không có màu thứ hai**. Trạng thái (lỗi, cảnh báo) trong mảnh giao diện dùng màu ngữ nghĩa nhỏ,
   không thành màu nhấn thứ hai.
+- **Chữ chuyển màu** (tuỳ): cụm màu nhấn của H1 (và H2 cuối trang) chuyển từ màu nhấn sang một sắc
+  kề (tím → hồng, xanh dương → tím, cam → hồng), `bg-clip-text text-transparent`. Cả hai đầu đạt 4.5:1
+  trên nền; chỉ H1 và một hai tiêu đề lớn, không cho chữ thân hay nút.
 
 ## B5. Khung có hai đường kẻ dọc
 
@@ -86,6 +89,11 @@ khung lùi vào `mx-4` (`sm:mx-6`) và **vẫn giữ hai đường kẻ**: trang
   Đây là chỗ được dùng số âm (`N11` của `ui-ux`): ghi comment ngay trên. Chỉ từ `lg`; ở màn hẹp dấu cộng
   sát mép màn đọc thành vết bẩn.
 - Nội dung trong section đệm `px-6 lg:px-12`; lưới ô (`B6`) thì **không đệm ngang**, chạm hai đường khung.
+- **Lề sọc chéo** (tuỳ, từ `lg`): dải 40px ngay ngoài hai đường khung tô sọc chéo mảnh,
+  `repeating-linear-gradient(135deg, var(--border) 0 1px, transparent 1px 8px)`, có đường kẻ ở mép
+  ngoài. Đánh dấu "ngoài bản vẽ", khung đọc rõ hơn trên màn rộng.
+- **Đường kẻ ngang tràn mép** (tuỳ): đường ngăn section kéo ra hết bề ngang màn, đường dọc thì vẫn dừng
+  ở khung. Dựng bằng phần tử bọc full ngang có `border-t`, khung nằm trong; không kéo bằng margin âm.
 - **Chú thích kiểu bản vẽ** (tuỳ, thêm chất kỹ thuật): dấu góc chữ L 8px ôm khung món chính, đường kích
   thước có hai vạch đầu và số mono (`1200px`, `24 rules`), toạ độ mono nhỏ ở góc (`x: 0 y: 0`), dấu
   chữ thập ở tâm sơ đồ. Nét 1px `--border-strong`, chữ `text-[11px] font-mono text-muted`,
@@ -176,14 +184,24 @@ Cách làm từng hiệu ứng (code, mốc cuộn, cuộn ghim, hình động h
 viện, component nào cấm) ở `references/motion.md` (`B33`–`B40`). Chuyển động nào cũng phải cho khách
 thấy sản phẩm làm gì; chỉ để đẹp thì bỏ.
 
-## B11. Không làm
+## B11. Hiệu ứng dùng được, theo cách nào; và mấy thứ không làm
 
-- Ngoài món ký tên (`B41`): không quầng sáng, không gradient, không ảnh 3D. Món ký tên là chỗ duy nhất
-  được có, và chỉ một món mỗi trang.
-- Không gradient tím, không video nền, không ảnh trình bày (laptop, điện thoại nghiêng, mockup xếp chéo):
-  che mất sản phẩm thật.
+**Hiệu ứng không cấm**: quầng sáng, đèn chiếu, chữ chuyển màu, sao băng, tia sáng nền, hạt, 3D, nền
+shader, video nền, ảnh trình bày (laptop, điện thoại) đều dùng được. Trang gây ấn tượng dùng chúng; trang
+rẻ cũng dùng chúng. Khác nhau ở cách dùng:
+
+- **Rọi vào sản phẩm hay câu chính**: đèn chiếu xuống khung code, quầng sáng sau món chính, chữ chuyển
+  màu ở cụm nói giá trị của H1. Hiệu ứng nằm lơ ở góc trống, không chỉ vào gì, là thứ làm trang trông
+  như mẫu.
+- **Mỗi hiệu ứng nền một chỗ**: đèn chiếu ở hero, sao băng ở khối cảm nhận, quầng ở CTA cuối: được.
+  Cùng một hiệu ứng lặp ở mọi section thì nhàm từ màn thứ ba. Đếm vòng lặp theo `B39`.
+- Chữ đè lên hiệu ứng vẫn 4.5:1; giảm chuyển động thì đứng yên (`B33`); dừng khi ra khỏi khung nhìn.
+- Kiểu trang dựng quanh hiệu ứng sáng trên nền tối (đèn chiếu, chữ chuyển màu, nút có quầng): `B44`.
+
+**Không làm** (lỗi hình, không phải gu):
+
 - Không bo góc ô lưới, không bóng ô, không viền đậm hơn `--border` cho khung.
-- Không quá một màu nhấn. Không icon emoji.
+- Không quá một màu nhấn, trừ chữ chuyển màu (`B4`). Không icon emoji.
 - Không carousel lời khách, không tweet nhúng.
 - Không chữ tên sản phẩm khổng lồ ở footer (2/20 làm; không phải mặc định).
 - Không banner cookie hay popup che hero (5/24 trang đo được bị che ở 390).
@@ -210,6 +228,7 @@ Cuộn hết trang ở 1440 và 375, đánh dấu từng dòng:
   cột bước cao bằng terminal (`B21`); kết quả mẫu của khung thử vừa khung, không cắt ngang (`B14`).
 - [ ] Không ý nào lặp trong màn đầu (phiên bản, license ở nhãn góc và ở nhãn tin mới); dấu góc L tối đa
   hai chỗ, chỉ quanh khung vuông góc (`B5`).
+- [ ] Hiệu ứng sáng (nếu có) rọi vào sản phẩm hay câu chính, mỗi loại một chỗ (`B11`).
 - [ ] Màn đầu có đúng một món ký tên cỡ lớn, đúng việc sản phẩm làm, đứng yên khi giảm chuyển động,
   không đè chữ ở 375 (`B41`).
 - [ ] Có ảnh share 1200×630 dựng bằng code, có đủ thẻ meta, thu còn 500px rộng vẫn đọc được H1 (`B32`).

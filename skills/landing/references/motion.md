@@ -267,8 +267,9 @@ thuộc nhóm ít (17/20 chỉ vài chỗ động), **mặc định không quá 
   "camera" bám chấm thì dời khung bằng `gsap.quickTo` trong `onUpdate` (rẻ khi gọi mỗi khung). Bọc
   trong `gsap.matchMedia()`: nhánh `(prefers-reduced-motion: no-preference)` mới tạo timeline, nhánh
   `reduce` không pin, hiện sẵn khung cuối (dây đủ, chấm ở đích). Dưới `lg` không pin, xếp các bước dọc.
-- **3D (three.js), Rive, Spline**: Blueprint không dùng (`B11`); món ký tên 3D thì dựng bằng chấm trên
-  canvas 2D hay ảnh render theo `B31` (`B41`). Cần file người làm bằng editor, AI không
+- **3D (three.js), Rive, Spline**: dùng được khi người dùng xin hay món ký tên cần (`B41`), báo một dòng
+  về dung lượng tải (three.js ~150 KB). Không xin thì món 3D dựng bằng chấm trên canvas 2D hay ảnh render
+  theo `B31`. Cần file người làm bằng editor, AI không
   tự dựng ra hồn. Tách lớp thì làm bằng CSS ở `B38`.
 - **Con trỏ đổi kiểu**: không dùng (0/18).
 
@@ -324,10 +325,10 @@ compiler / CLI. Đổi màu về đúng màu nhấn và nền của trang, giả
 ba cửa ở trên (giảm chuyển động thì đứng yên). Cùng món đó đặt thêm ở chỗ thứ hai, hay đặt vì "cho sinh
 động" mà không nói gì về sản phẩm, thì vẫn là trang trí.
 
-**Không dùng** (ngoài món ký tên ở trên; trang trí đặt lên sản phẩm nào cũng được, đọc thành rẻ, trái `B11`): hạt, sao băng, tia
-sáng nền, cực quang, đèn chụp, lốc xoáy, pháo giấy, lưới lùi xa, nền shader, con trỏ để vệt (`particles`,
-`meteors`, `retro-grid`, `warp-background`, `confetti`, `sparkles`, `background-beams`, `vortex`,
-`aurora`, `shooting-stars`, `lamp`, `Hyperspeed`, `Galaxy`, `Ballpit`, `SplashCursor`, `LetterGlitch`,
-`blurry-blob`, `moving-gradient`, `pixel-trail`, `image-trail`, `gravity`, `glow-effect`), đèn rọi
-theo chuột trên card (`spotlight`), card nghiêng 3D theo chuột (`tilt`), nút hút theo chuột
-(`magnetic`), con trỏ thay hình, nền nước / lụa / kính / hạt dựng bằng WebGL, icon và huy hiệu 3D.
+**Nền động và hiệu ứng khác** (hạt, sao băng, tia sáng nền, cực quang, đèn chụp, lốc xoáy, lưới lùi xa,
+nền shader, đèn rọi theo chuột trên card, card nghiêng theo chuột, nút hút theo chuột, con trỏ để vệt):
+**dùng được**, theo `B11`: rọi vào sản phẩm hay câu chính, mỗi loại một khối, chữ đè lên vẫn đọc được,
+đi qua đủ ba cửa ở trên. Gợi ý chỗ hợp: đèn chụp (`lamp`) rọi xuống món chính hero, sao băng (`meteors`,
+`shooting-stars`) sau tiêu đề khối cảm nhận, đèn rọi theo chuột (`spotlight`) và viền sáng chạy trên card
+khuyên dùng, pháo giấy (`confetti`) chỉ sau một hành động thành công (copy lệnh, đăng ký), không làm nền.
+Kiểu trang dựng quanh ánh sáng: `dark-glow.md` (`B44`).

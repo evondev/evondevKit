@@ -92,6 +92,8 @@ nhau. Hero chỉ có sản phẩm trong khung thì gọn, đúng, mà phẳng: k
 | API, mạng, edge, CDN | Bản đồ chấm, đường cong nối điểm có gói tin chạy |
 | AI, dữ liệu, tìm kiếm | Trường hạt hay sóng nét mảnh nhiều đường song song, chuyển nhẹ |
 | Logo là hình khối đơn giản | Logo cỡ lớn, quầng sáng màu nhấn phía sau |
+| Trang cá nhân của dev (`B42`) | **Chú thích như devtools**: trên mỗi khối chính một nhãn mono 11px `--muted` ghi thẻ và class của chính nó (`h1 · text-7xl font-semibold tracking-tighter`), nằm trên đường kẻ ngang, `aria-hidden`. Class ghi đúng class thật của phần tử |
+| Dạy code, khoá học lập trình | Đèn chiếu từ trên rọi xuống khung code, một dòng lỗi được tô và gắn nhãn ("Phát hiện lỗi") |
 
 - **Nguồn**: mặc định **dựng bằng code** (CSS, SVG, canvas 2D), người dùng không phải làm gì. Muốn
   vật thể render 3D hay minh hoạ (khối thuỷ tinh, icon 3D, cảnh vẽ) thì theo `B31`
@@ -106,6 +108,45 @@ nhau. Hero chỉ có sản phẩm trong khung thì gọn, đúng, mà phẳng: k
   "Món ký tên lấy từ thư viện". Dự án `index.html` thuần thì viết tay bằng canvas 2D.
 - **375**: bản thu gọn hay đứng yên, không đè lên chữ, không đẩy nút chính xuống dưới màn đầu.
 - **Wireframe**: mỗi phương án một món ký tên khác nhau (cùng một món khác màu là một phương án).
+
+## B42. Trang cá nhân của dev ⚑
+
+Portfolio, trang giới thiệu bản thân của dev, người làm nội dung lập trình. Khung Blueprint giữ nguyên
+(`B5`, `B6`); việc chính là **theo dõi kênh**, xem dự án, liên hệ. Thứ tự khối:
+
+1. Hero canh trái: nhãn tin mới (sản phẩm mới nhất), H1 xưng tên kiểu nói chuyện ("Xin chào, mình là …,
+   mọi người hay gọi là …", cụm sau màu nhấn), câu dẫn 3–4 dòng kể nghề và việc đang làm, nút chính theo
+   dõi kênh + nút viền xem hành trình, nhãn mono mấy chủ đề. Dưới: **khối code tự mô tả** (`const tên =
+   { role, since, stack, loves, building }`, tô màu như `B14`) cạnh **ảnh thật** của người đó (`B43`).
+   Món ký tên là chú thích devtools (`B41`).
+2. Hàng số kênh (người theo dõi, lượt xem, video), mỗi ô có nhãn nguồn mono nhỏ.
+3. Dải stack chạy (logo công nghệ chữ + icon, `B36`).
+4. **Hành trình theo năm**: mỗi năm một hàng lưới `[năm | mốc + đoạn văn | ảnh]`; năm mono cỡ H3, chấm
+   mốc trên một đường dọc, ảnh thật bo `rounded-xl` viền `--border`; mốc hiện tại chữ màu nhấn, chấm đặc.
+   Cuối có hàng "Còn tiếp…" dẫn về kênh.
+5. Khoá học / bài viết / dự án đã làm: lưới 4 cột thẻ có ảnh bìa, số học viên / lượt xem mono.
+6. Sản phẩm đang làm: tab dọc bên trái (tên, mô tả một dòng, badge trạng thái), bên phải màn sản phẩm.
+7. Đồ đã làm cho cộng đồng (theme, extension, thư viện): thẻ có ảnh, số lượt cài, nút xem.
+8. **Chữ chạy cỡ lớn** hai hàng ngược chiều: hàng trên chữ đặc, hàng dưới chữ viền (`-webkit-text-stroke:
+   1px var(--border-strong)`, chữ trong suốt), cỡ `text-7xl`, các chủ đề ngăn bằng dấu `·`. Một lần mỗi
+   trang, `aria-hidden`, nội dung thật có ở chỗ khác.
+9. Sở thích (ô lưới icon), cảm nhận, FAQ, CTA cuối "Cảm ơn bạn đã cuộn tới đây".
+
+Chữ xưng hô theo người đó (mình / tôi / I), giọng kể chuyện, không viết như CV.
+
+## B43. Ảnh thật của người dùng ⚑
+
+Trang có người thật (chân dung, ảnh làm việc, ảnh sự kiện, ảnh đội) **không dùng ảnh kho hay ảnh AI thay
+người thật**: ảnh người lạ gắn tên thật là giả mạo.
+
+- Tìm trước trong dự án: `public/`, `assets/`, `images/`, thư mục người dùng chỉ trong đề. Có thì dùng,
+  đặt theo nội dung tên file (`2019-ktcity.jpg` vào mốc 2019).
+- Thiếu thì dựng khung giữ chỗ đúng tỉ lệ (nền `--surface`, viền `--border`, chữ mono "ảnh 2019 · 4:3")
+  và viết **`photos-needed.md`** ở gốc dự án: mỗi ảnh một dòng với tên file, chỗ đặt, tỉ lệ, cỡ xuất
+  (chân dung 4:5 900px, ảnh mốc 4:3 1200px), gợi ý nên chụp gì ("ảnh đang đứng lớp", "màn hình sản phẩm
+  năm đó"). Lúc giao ghi vào mục **Cần bạn làm**.
+- Người dùng bỏ ảnh vào thì mở xem từng ảnh: mặt không bị cắt (`object-position` theo chỗ có mặt), cùng
+  tông, nén `webp`. Ảnh minh hoạ không phải người (bìa khoá học, cảnh) thì được sinh theo `B31`.
 
 ## B15. Sơ đồ kỹ thuật vẽ nét
 
