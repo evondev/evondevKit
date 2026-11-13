@@ -92,7 +92,7 @@ nhau. Hero chỉ có sản phẩm trong khung thì gọn, đúng, mà phẳng: k
 | API, mạng, edge, CDN | Bản đồ chấm, đường cong nối điểm có gói tin chạy |
 | AI, dữ liệu, tìm kiếm | Trường hạt hay sóng nét mảnh nhiều đường song song, chuyển nhẹ |
 | Logo là hình khối đơn giản | Logo cỡ lớn, quầng sáng màu nhấn phía sau |
-| Trang cá nhân của dev (`B42`) | **Chú thích như devtools**: trên mỗi khối chính một nhãn mono 11px `--muted` ghi thẻ và class của chính nó (`h1 · text-7xl font-semibold tracking-tighter`), nằm trên đường kẻ ngang, `aria-hidden`. Class ghi đúng class thật của phần tử |
+| Trang cá nhân của dev (`B42`) | **Chú thích như devtools**: nhãn mono 11px `--muted` ghi thẻ và class của phần tử ngay dưới (`h1 · text-7xl font-semibold tracking-tighter`), `aria-hidden`. Cách đặt và chọn class ở `B42` mục 1 |
 | Dạy code, khoá học lập trình | Đèn chiếu từ trên rọi xuống khung code, một dòng lỗi được tô và gắn nhãn ("Phát hiện lỗi") |
 
 - **Nguồn**: mặc định **dựng bằng code** (CSS, SVG, canvas 2D), người dùng không phải làm gì. Muốn
@@ -118,9 +118,30 @@ Portfolio, trang giới thiệu bản thân của dev, người làm nội dung 
    mọi người hay gọi là …", cụm sau màu nhấn), câu dẫn 3–4 dòng kể nghề và việc đang làm, nút chính theo
    dõi kênh + nút viền xem hành trình, nhãn mono mấy chủ đề. Dưới: **khối code tự mô tả** (`const tên =
    { role, since, stack, loves, building }`, tô màu như `B14`) cạnh **ảnh thật** của người đó (`B43`).
-   Món ký tên là chú thích devtools (`B41`).
-2. Hàng số kênh (người theo dõi, lượt xem, video), mỗi ô có nhãn nguồn mono nhỏ.
-3. Dải stack chạy (logo công nghệ chữ + icon, `B36`).
+   Món ký tên là chú thích devtools (`B41`), làm đủ năm điều thì mới thành món ký tên, thiếu thì thành chữ rác:
+   - **Mỗi phần tử hero một hàng riêng**: nhãn tin mới, H1, câu dẫn, hàng nút (kèm nhãn chủ đề) xếp dọc, mỗi
+     hàng kẹp giữa hai **đường kẻ ngang tràn mép màn** (`B5`); nhãn chú thích nằm trong khoảng trống 32–40px
+     ngay trên phần tử, không đè lên đường kẻ, không lơ lửng giữa khung.
+   - **Ghi 2–5 class về hình** lấy từ class thật: cỡ chữ, nét, màu, khoảng chữ, khoảng cách (`text-7xl
+     font-semibold tracking-tighter text-balance`, `p · text-lg text-muted`, `div · flex gap-3`). Bỏ tiền tố
+     responsive (`sm:`, `lg:`) và class bố cục (`relative`, `mt-*`, `max-w-*`, `grid-cols-*`, `bg-border`):
+     nhãn dài cả dòng class là nhiễu.
+   - **Chỗ có nhãn**: các hàng hero, khối code, ô ảnh, tiêu đề section (`h2 · text-5xl font-semibold`); 6–10
+     nhãn cả trang. Không gắn lên lưới thẻ, FAQ, footer.
+   - **375 vẫn hiện**, một dòng, cắt bằng `truncate` (`text-…`).
+   - **Chữ phải xứng với nhãn**: nhãn khoe `text-7xl font-semibold` thì H1 phải đúng cỡ đó.
+   **Cỡ chữ**: H1 `text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tighter text-balance`, ở 1440
+   chiếm từ 70% bề ngang khung; cả cụm sau tên màu nhấn (một hai dòng chữ cam, không chỉ một chữ). H2
+   section `text-4xl lg:text-5xl font-semibold tracking-tighter`. Nét `font-medium` cỡ `text-6xl` là chữ
+   trang SaaS, không ra chất trang cá nhân. Chữ tiêu đề dùng font có cá tính (`B3`) có subset `vietnamese`.
+   **Khối code tự mô tả nền tối** (đảo màu) cả khi trang nền Sáng / Kem: là mảng đậm nhất màn đầu, kéo mắt;
+   có số dòng, tô màu cú pháp. Ở 375 không dòng nào tràn khung: mảng dài xuống dòng mỗi phần tử một dòng
+   hay rút còn 2–3 phần tử (probe báo `KHỐI CODE TRÀN NGANG`). **Ảnh thật** tràn ô (không khung lồng trong
+   ô, không padding), cao bằng khối code.
+2. Hàng số kênh (người theo dõi, lượt xem, video): số `text-4xl lg:text-5xl font-semibold` **màu nhấn**, dưới
+   là nhãn thường và nguồn mono nhỏ (`@tenkenh`); ô đầu có thể là nhãn mono màu nhấn ("ĐANG THEO DÕI").
+3. Dải stack chạy: **icon logo + tên** (SVG logo có sẵn trong dự án, hay `simple-icons` từ `cdn.jsdelivr.net`),
+   không chỉ chữ mono ngăn bằng chấm; nhãn mono màu nhấn đứng đầu dải (`B36`).
 4. **Hành trình theo năm**: mỗi năm một hàng lưới `[năm | mốc + đoạn văn | ảnh]`; năm mono cỡ H3, chấm
    mốc trên một đường dọc, ảnh thật bo `rounded-xl` viền `--border`; mốc hiện tại chữ màu nhấn, chấm đặc.
    Cuối có hàng "Còn tiếp…" dẫn về kênh.

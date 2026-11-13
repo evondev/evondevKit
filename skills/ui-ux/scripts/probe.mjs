@@ -2022,6 +2022,18 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     .slice(0, 3)
     .map((element) => `khung ${element.clientWidth}px, lệnh ${element.scrollWidth}px${getComputedStyle(element).maskImage.includes("gradient") ? ", mép mờ đè chữ cuối" : ""}${element.getClientRects().length && element.getBoundingClientRect().height > parseFloat(getComputedStyle(element).lineHeight || "0") * 1.5 ? ", gãy dòng" : ""}: ${describe(element)}`);
 
+  // 18i6. Khối code nhiều dòng tràn ngang: khung code ở landing (code tự mô tả, đoạn diff, terminal) có dòng dài hơn
+  //       khung, ở 375 chữ cắt giữa chừng (`"Ne`, `chụp ảnh film`) như hỏng. Landing không cuộn ngang code: xuống
+  //       dòng mảng, rút bớt phần tử hay hạ cỡ chữ (13/11/2026, wireframe trang cá nhân, cả ba phương án ở 375).
+  const clippedCodeBlocks = [...document.querySelectorAll("pre")]
+    .filter((element) => {
+      if (!isVisible(element) || element.closest("[aria-hidden='true'], .device")) return false;
+      if (!element.textContent.trim().includes("\n")) return false;
+      return element.scrollWidth > element.clientWidth + 4;
+    })
+    .slice(0, 3)
+    .map((element) => `khung ${element.clientWidth}px, dòng dài nhất ${element.scrollWidth}px: ${describe(element)}`);
+
   // 18j. Mục lặp dày chữ: card hay dòng lặp từ ba cái trở lên mà một cái có từ năm dòng chữ. Người dùng không tự
   //      thấy "card chữ quá trời" (28/09/2026, wireframe danh sách + chi tiết năm dòng mỗi mục); đặt ra số dòng
   //      thì thấy. Đếm dòng bằng các hộp dòng của chữ (Range), không bằng số thẻ.
@@ -2345,6 +2357,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     strandedDividers,
     overflowingOutputs,
     clippedCommands,
+    clippedCodeBlocks,
     denseItems,
     repeatedCardIssues,
     misalignedControlRows,
@@ -5333,6 +5346,10 @@ function formatReport(results) {
     if (result.clippedCommands?.length > 0) {
       problems.push(`LỆNH BỊ CẮT HAY MÉP MỜ ĐÈ CHỮ (${result.clippedCommands.length} chỗ, lệnh phải hiện đủ, landing B9):`);
       for (const item of result.clippedCommands) problems.push(`  ${item}`);
+    }
+    if (result.clippedCodeBlocks?.length > 0) {
+      problems.push(`KHỐI CODE TRÀN NGANG (${result.clippedCodeBlocks.length} chỗ, dòng cắt giữa chừng; xuống dòng mảng, rút phần tử hay hạ cỡ chữ, landing B42):`);
+      for (const item of result.clippedCodeBlocks) problems.push(`  ${item}`);
     }
     if (result.denseItems?.length > 0) {
       problems.push(`MỤC LẶP DÀY CHỮ (từ 5 dòng mỗi mục; danh sách + chi tiết thì mục trái tối đa 3 dòng, layouts/app/filtered-list.md):`);
