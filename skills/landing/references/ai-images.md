@@ -3,7 +3,8 @@
 Mở file này khi trang **cần ảnh vẽ riêng để tạo không khí**: ảnh nền hero, ảnh minh hoạ từng mục,
 nền một dải section, mặt lá bài, nhân vật. Thường gặp ở loại landing ngoài Blueprint (huyền học,
 spa, nhà hàng, game, khoá học, sự kiện, sản phẩm tiêu dùng), hoặc khi đề xin "có ảnh", "có hình
-minh hoạ". **Blueprint không dùng** (`B11`): Blueprint đẹp nhờ sản phẩm thật, không nhờ ảnh vẽ.
+minh hoạ". **Blueprint chỉ dùng cho món ký tên** (`B41`) dạng vật thể render 3D hay minh hoạ, một
+ảnh mỗi trang; phần còn lại Blueprint đẹp nhờ sản phẩm thật, không nhờ ảnh vẽ.
 Ảnh chụp cho **mục dữ liệu** (sản phẩm, phòng, avatar) vẫn theo `S16` của `ui-ux`
 (`../ui-ux/references/mock-photos.md`), không theo file này.
 

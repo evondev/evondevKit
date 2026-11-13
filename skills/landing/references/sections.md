@@ -72,6 +72,39 @@ dưới. Code chữ `font-mono text-[13px]/6`, tô màu cú pháp tối đa ba m
 **Mảnh giao diện** (sản phẩm có UI): ảnh chụp hay dựng HTML của màn thật trong khung `--surface`
 `rounded-xl`, thẳng (không nghiêng), có thể chia tab theo tính năng. Dữ liệu trong mảnh đúng sản phẩm.
 
+## B41. Món ký tên ở hero ⚑
+
+Mỗi trang Blueprint có **đúng một món hình riêng, cỡ lớn**, ở màn đầu, để người xem nhớ trang. Tra 24
+landing dev được nhắc nhiều nhất: trang nào gây ấn tượng cũng có một món như vậy (logo phát sáng, khối
+3D bằng chấm sáng, lưới chấm chạy, tường code nghiêng, sóng nét, vạch sáng); giữa trang thì tĩnh như
+nhau. Hero chỉ có sản phẩm trong khung thì gọn, đúng, mà phẳng: không ai nhớ.
+
+- **Sống cùng món chính** (`B14`): sản phẩm thật vẫn nằm trong màn đầu. Món ký tên đặt một trong hai
+  chỗ: **nền sau H1** (chữ đè lên vẫn đạt 4.5:1, món mờ dần quanh vùng chữ bằng `mask-image`), hoặc
+  **khối lớn** ở cột phải hero chia đôi / giữa H1 và món chính.
+- **Chọn theo việc sản phẩm làm**, không chọn vì đẹp:
+
+| Sản phẩm | Món ký tên |
+| --- | --- |
+| Hàng đợi, workflow, agent, tác vụ song song | Lưới chấm lớn sáng theo trạng thái (`B38`), phủ cả khung |
+| Database, storage, cache | Khối 3D dựng bằng chấm sáng (canvas, xoay chậm) hay tấm xếp tầng (`B38`) |
+| Compiler, linter, CLI, SDK | Tường chữ code nghiêng phủ nền, mờ dần; hoặc dòng log trôi |
+| API, mạng, edge, CDN | Bản đồ chấm, đường cong nối điểm có gói tin chạy |
+| AI, dữ liệu, tìm kiếm | Trường hạt hay sóng nét mảnh nhiều đường song song, chuyển nhẹ |
+| Logo là hình khối đơn giản | Logo cỡ lớn, quầng sáng màu nhấn phía sau |
+
+- **Nguồn**: mặc định **dựng bằng code** (CSS, SVG, canvas 2D), người dùng không phải làm gì. Muốn
+  vật thể render 3D hay minh hoạ (khối thuỷ tinh, icon 3D, cảnh vẽ) thì theo `B31`
+  (`ai-images.md`): prompt một vật thể, nền đúng mã màu nền trang, màu nhấn của trang; chưa có ảnh thì
+  hiện bản dựng bằng code.
+- **Màu**: món ký tên là chỗ duy nhất màu nhấn được thành **mảng**: quầng sáng (`radial-gradient` màu
+  nhấn, đậm tối đa 30%), chuyển từ màu nhấn về nền, chấm sáng. Vẫn một màu nhấn (`B4`), không thêm màu thứ hai.
+- **Cỡ**: ở 1440 chiếm từ 40% bề ngang hero, hoặc phủ cả nền. Nhỏ hơn thì thành icon trang trí.
+- **Chuyển động** (`B33`): chậm, lặp, dừng khi ra khỏi khung nhìn (`IntersectionObserver`), đứng yên ở
+  khung đẹp nhất khi giảm chuyển động. Canvas giới hạn 30 khung/giây, `devicePixelRatio` tối đa 2.
+- **375**: bản thu gọn hay đứng yên, không đè lên chữ, không đẩy nút chính xuống dưới màn đầu.
+- **Wireframe**: mỗi phương án một món ký tên khác nhau (cùng một món khác màu là một phương án).
+
 ## B15. Sơ đồ kỹ thuật vẽ nét
 
 Cho sản phẩm không có UI (hạ tầng, queue, sandbox) hoặc khối "cách hoạt động". Là kiểu được xem nhiều
@@ -232,10 +265,10 @@ không "Lorem ipsum":
   ("Staff engineer").
 - Lúc giao, mục **Cần bạn nối** liệt kê từng chỗ là số / tên mẫu cần thay. Không ghi chữ "GIẢ" lên trang.
 
-## B31. Ảnh vẽ riêng (không dùng cho Blueprint)
+## B31. Ảnh vẽ riêng
 
-Blueprint không dùng ảnh vẽ tạo không khí (`B11`). Trang loại khác cần ảnh như vậy thì theo
-`ai-images.md`.
+Blueprint không dùng ảnh vẽ tạo không khí (`B11`), trừ món ký tên dạng vật thể render (`B41`). Trang
+loại khác cần ảnh như vậy thì theo `ai-images.md`.
 
 ## B32. Ảnh share link
 

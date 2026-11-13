@@ -106,6 +106,8 @@ Xám / Màu), cộng luật riêng:
 - **2–3 phương án khác nhau thật** ở ít nhất hai trong ba trục: **bố cục hero** (canh giữa, canh trái
   chữ lớn, chia đôi; `B13`), **nền** (Sáng, Kem, Tối), **món chính hero** (khung thử, terminal / code,
   mảnh giao diện, sơ đồ). Ba bản cùng hero canh giữa khác mỗi màu là **một** phương án.
+- Mỗi phương án **một món ký tên khác nhau** ở màn đầu (`B41`); ít nhất một phương án nền Tối, ít nhất
+  một phương án dùng font tiêu đề có cá tính (`B3`).
 - Mỗi phương án vẽ **cả trang**, đủ các khối của brief, không chỉ hero.
 - Mỗi phương án ghi một dòng đầu: hợp khi nào, đổi lại cái gì.
 

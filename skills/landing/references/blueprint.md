@@ -31,7 +31,9 @@ tông tối, không để giá trị sáng của `tokens.css` lọt vào (ô nh�
 - **Nền sáng không trắng tinh**: trang đo được nền `#f7`–`#fa`, trắng dành cho `--surface` để khung
   thử và khung code nổi lên mà không cần bóng.
 - **Kem** (4/20) hợp sản phẩm muốn ấm, gần người (AI cho người dùng cuối, công cụ dữ liệu); **Tối**
-  (5/20) hợp hạ tầng, bảo mật, terminal. Sáng là mặc định khi không có lý do.
+  (5/20 trang khung lộ, nhưng 11/24 landing dev được nhắc nhiều nhất) hợp hạ tầng, bảo mật, terminal,
+  AI, và làm món ký tên (`B41`) sáng lên rõ nhất. Hạ tầng, bảo mật, terminal, AI cho dev thì phương án
+  **khuyên dùng** là nền Tối; còn lại Sáng. Wireframe luôn có ít nhất một phương án Tối.
 - Một màu cho mọi đường kẻ. Đường đậm hơn (`--border-strong`) chỉ cho viền control, không cho khung.
 
 ## B3. Font
@@ -46,6 +48,9 @@ Một sans cho chữ, một mono **cùng họ** cho nhãn, số, lệnh, code.
 Cả hai cặp có trên Google Fonts; copy tiếng Việt phải có subset `vietnamese` (`T5` của `ui-ux`), nên
 không dùng cặp đầu cho tiếng Việt. Nạp nét 400, 500, 600.
 
+- **Font tiêu đề có cá tính** (chỉ H1, H2; thân chữ giữ sans ở bảng trên): serif mảnh, sans đặc hẹp
+  viết hoa, hay nghiêng. Trang gây ấn tượng hay đổi chữ tiêu đề, không đổi chữ thân. Wireframe có ít nhất
+  một phương án dùng; font phải có trên Google Fonts, copy tiếng Việt thì kiểm có subset `vietnamese`.
 - **Biến thể toàn mono** (3/20): cả trang chữ mono, kể cả đoạn văn. Chỉ khi đề xin ("kiểu terminal",
   "toàn mono") hay sản phẩm sống trong terminal. Đoạn văn mono khó đọc hơn: tối đa `max-w-2xl`, `text-[15px]/7`.
 
@@ -173,8 +178,10 @@ thấy sản phẩm làm gì; chỉ để đẹp thì bỏ.
 
 ## B11. Không làm
 
-- Không ảnh 3D, không quầng sáng mờ, không gradient tím, không video nền, không ảnh trình bày (laptop,
-  điện thoại nghiêng, mockup xếp chéo): đều cần người vẽ, và che mất sản phẩm thật.
+- Ngoài món ký tên (`B41`): không quầng sáng, không gradient, không ảnh 3D. Món ký tên là chỗ duy nhất
+  được có, và chỉ một món mỗi trang.
+- Không gradient tím, không video nền, không ảnh trình bày (laptop, điện thoại nghiêng, mockup xếp chéo):
+  che mất sản phẩm thật.
 - Không bo góc ô lưới, không bóng ô, không viền đậm hơn `--border` cho khung.
 - Không quá một màu nhấn. Không icon emoji.
 - Không carousel lời khách, không tweet nhúng.
@@ -203,4 +210,6 @@ Cuộn hết trang ở 1440 và 375, đánh dấu từng dòng:
   cột bước cao bằng terminal (`B21`); kết quả mẫu của khung thử vừa khung, không cắt ngang (`B14`).
 - [ ] Không ý nào lặp trong màn đầu (phiên bản, license ở nhãn góc và ở nhãn tin mới); dấu góc L tối đa
   hai chỗ, chỉ quanh khung vuông góc (`B5`).
+- [ ] Màn đầu có đúng một món ký tên cỡ lớn, đúng việc sản phẩm làm, đứng yên khi giảm chuyển động,
+  không đè chữ ở 375 (`B41`).
 - [ ] Có ảnh share 1200×630 dựng bằng code, có đủ thẻ meta, thu còn 500px rộng vẫn đọc được H1 (`B32`).
