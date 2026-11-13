@@ -102,6 +102,8 @@ nhau. Hero chỉ có sản phẩm trong khung thì gọn, đúng, mà phẳng: k
 - **Cỡ**: ở 1440 chiếm từ 40% bề ngang hero, hoặc phủ cả nền. Nhỏ hơn thì thành icon trang trí.
 - **Chuyển động** (`B33`): chậm, lặp, dừng khi ra khỏi khung nhìn (`IntersectionObserver`), đứng yên ở
   khung đẹp nhất khi giảm chuyển động. Canvas giới hạn 30 khung/giây, `devicePixelRatio` tối đa 2.
+- **Lấy từ thư viện component** được (nền động, quả cầu chấm, trường hạt): xem `motion.md` `B40`, mục
+  "Món ký tên lấy từ thư viện". Dự án `index.html` thuần thì viết tay bằng canvas 2D.
 - **375**: bản thu gọn hay đứng yên, không đè lên chữ, không đẩy nút chính xuống dưới màn đầu.
 - **Wireframe**: mỗi phương án một món ký tên khác nhau (cùng một món khác màu là một phương án).
 

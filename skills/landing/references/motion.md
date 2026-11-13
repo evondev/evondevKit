@@ -251,7 +251,8 @@ Chọn theo việc sản phẩm làm, **một hai kiểu** mỗi trang, không g
 thuộc nhóm ít (17/20 chỉ vài chỗ động), **mặc định không quá 3 loại**, trần 8 loại mỗi trang (trang
 11–29 vòng lặp là trang bị chê nặng). 50 chấm cùng một nhịp là một loại.
 
-- Canvas giới hạn ~15 khung/giây, chỉ vẽ khi trong khung nhìn, giảm chuyển động vẽ một khung đứng.
+- Canvas giới hạn ~15 khung/giây (món ký tên `B41` được 30, vì là thứ người xem nhìn chính), chỉ vẽ khi
+  trong khung nhìn, giảm chuyển động vẽ một khung đứng.
 - **Không chạm chữ**: vòng lặp, đường mảnh, SVG rộng không đặt sau hay giao khung chữ H1, H2, câu dẫn.
 
 **Chỉ khi người dùng xin:**
@@ -266,7 +267,8 @@ thuộc nhóm ít (17/20 chỉ vài chỗ động), **mặc định không quá 
   "camera" bám chấm thì dời khung bằng `gsap.quickTo` trong `onUpdate` (rẻ khi gọi mỗi khung). Bọc
   trong `gsap.matchMedia()`: nhánh `(prefers-reduced-motion: no-preference)` mới tạo timeline, nhánh
   `reduce` không pin, hiện sẵn khung cuối (dây đủ, chấm ở đích). Dưới `lg` không pin, xếp các bước dọc.
-- **3D (three.js), Rive, Spline**: Blueprint không dùng (`B11`). Cần file người làm bằng editor, AI không
+- **3D (three.js), Rive, Spline**: Blueprint không dùng (`B11`); món ký tên 3D thì dựng bằng chấm trên
+  canvas 2D hay ảnh render theo `B31` (`B41`). Cần file người làm bằng editor, AI không
   tự dựng ra hồn. Tách lớp thì làm bằng CSS ở `B38`.
 - **Con trỏ đổi kiểu**: không dùng (0/18).
 
@@ -314,7 +316,15 @@ kia là mưa sao băng trên nền. Xem demo của đúng registry đang cài, k
 **một** card (gói giá khuyên dùng) bằng `border-beam` hay `shine-border`; **một** câu tuyên bố sáng dần
 từng từ theo cuộn bằng `text-reveal` (một câu ngắn, không cho đoạn văn).
 
-**Không dùng** (trang trí đặt lên sản phẩm nào cũng được, đọc thành rẻ, trái `B11`): hạt, sao băng, tia
+**Món ký tên lấy từ thư viện** (`B41`, một món mỗi trang, ở hero): được dùng nền động có sẵn **khi nó
+nói đúng việc sản phẩm làm** theo bảng `B41`, kể cả món nằm trong danh sách "không dùng" dưới đây: lưới
+chấm nháy (`flickering-grid`, `dot-pattern`) cho hàng đợi / tác vụ song song, quả cầu chấm (`globe` dùng
+`cobe`, ~5 KB WebGL) cho mạng / edge / CDN, trường hạt hay sóng nét cho AI / tìm kiếm, chữ code trôi cho
+compiler / CLI. Đổi màu về đúng màu nhấn và nền của trang, giảm mật độ cho chữ đè lên đọc được, đi qua đủ
+ba cửa ở trên (giảm chuyển động thì đứng yên). Cùng món đó đặt thêm ở chỗ thứ hai, hay đặt vì "cho sinh
+động" mà không nói gì về sản phẩm, thì vẫn là trang trí.
+
+**Không dùng** (ngoài món ký tên ở trên; trang trí đặt lên sản phẩm nào cũng được, đọc thành rẻ, trái `B11`): hạt, sao băng, tia
 sáng nền, cực quang, đèn chụp, lốc xoáy, pháo giấy, lưới lùi xa, nền shader, con trỏ để vệt (`particles`,
 `meteors`, `retro-grid`, `warp-background`, `confetti`, `sparkles`, `background-beams`, `vortex`,
 `aurora`, `shooting-stars`, `lamp`, `Hyperspeed`, `Galaxy`, `Ballpit`, `SplashCursor`, `LetterGlitch`,
