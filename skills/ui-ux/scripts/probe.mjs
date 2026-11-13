@@ -1996,6 +1996,22 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     .slice(0, 3)
     .map((element) => `cao ${element.clientHeight}px, kết quả ${element.scrollHeight}px: ${describe(element)}`);
 
+  // 18i5. Lệnh một dòng bị cắt hay bị mép mờ đè: chip lệnh cài (`code` nowrap, cuộn ngang, `mask-image` mờ mép phải)
+  //       mà lệnh dài hơn hay gần bằng khung, chữ cuối mờ mất ("tideway/tidewa"), đọc thành lệnh sai (landing B9).
+  const clippedCommands = [...document.querySelectorAll("code, kbd, pre, [class*='font-mono']")]
+    .filter((element) => {
+      if (!isVisible(element) || element.closest("[aria-hidden='true']")) return false;
+      const style = getComputedStyle(element);
+      const isOneLine = style.whiteSpace.startsWith("nowrap") || style.whiteSpace === "pre";
+      const isFaded = style.maskImage.includes("linear-gradient") || style.webkitMaskImage?.includes("linear-gradient");
+      const isScrollable = ["auto", "scroll", "hidden", "clip"].includes(style.overflowX);
+      const isCommand = /^\$?\s*(npm|npx|pnpm|yarn|bun|pip|brew|curl|docker|go |cargo|git )/.test(element.textContent.trim());
+
+      return isOneLine && isScrollable && isCommand && element.textContent.trim().length < 200 && (element.scrollWidth > element.clientWidth + 1 || (isFaded && element.scrollWidth > element.clientWidth - 24));
+    })
+    .slice(0, 3)
+    .map((element) => `khung ${element.clientWidth}px, lệnh ${element.scrollWidth}px${getComputedStyle(element).maskImage.includes("gradient") ? ", mép mờ đè chữ cuối" : ""}: ${describe(element)}`);
+
   // 18j. Mục lặp dày chữ: card hay dòng lặp từ ba cái trở lên mà một cái có từ năm dòng chữ. Người dùng không tự
   //      thấy "card chữ quá trời" (28/09/2026, wireframe danh sách + chi tiết năm dòng mỗi mục); đặt ra số dòng
   //      thì thấy. Đếm dòng bằng các hộp dòng của chữ (Range), không bằng số thẻ.
@@ -2318,6 +2334,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     unevenPanels,
     strandedDividers,
     overflowingOutputs,
+    clippedCommands,
     denseItems,
     repeatedCardIssues,
     misalignedControlRows,
@@ -5302,6 +5319,10 @@ function formatReport(results) {
     if (result.overflowingOutputs?.length > 0) {
       problems.push(`ĐẦU RA TỰ CHẠY KHÔNG VỪA KHUNG (${result.overflowingOutputs.length} chỗ, kết quả mẫu cắt ngang ở mép dưới):`);
       for (const item of result.overflowingOutputs) problems.push(`  ${item}`);
+    }
+    if (result.clippedCommands?.length > 0) {
+      problems.push(`LỆNH BỊ CẮT HAY MÉP MỜ ĐÈ CHỮ (${result.clippedCommands.length} chỗ, lệnh phải hiện đủ, landing B9):`);
+      for (const item of result.clippedCommands) problems.push(`  ${item}`);
     }
     if (result.denseItems?.length > 0) {
       problems.push(`MỤC LẶP DÀY CHỮ (từ 5 dòng mỗi mục; danh sách + chi tiết thì mục trái tối đa 3 dòng, layouts/app/filtered-list.md):`);

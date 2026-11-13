@@ -143,6 +143,11 @@ Chữ nhỏ mono đứng trên tiêu đề section, ở góc khung, cạnh số 
 - **Chip lệnh cài**: `font-mono text-sm`, nền `--surface`, viền `--border`, `h-10`, dấu `$` màu
   `--muted` đầu dòng, nút copy icon ở cuối. Bấm copy: icon thành dấu tích và `aria-live` báo "Copied"
   1,5 giây.
+  **Lệnh hiện đủ ở 1024 trở lên**: chip rộng theo lệnh (`w-fit`, không `flex-1` trong hàng hẹp), không làm
+  mờ mép (`mask-image`) khi lệnh vừa khung; mép mờ chỉ khi lệnh thật sự tràn (JS gắn class khi
+  `scrollWidth > clientWidth`). Lệnh dài hơn ~44 ký tự (docker run nhiều cờ, curl | sh) thì chip **xuống
+  dòng riêng dưới hàng nút**, đủ rộng, hoặc rút lệnh gọn (cờ đưa vào bước Bắt đầu). Dev muốn đọc hết thứ mình
+  sắp dán vào terminal: lệnh mất chữ cuối (`tideway/tidewa…`) đọc thành lệnh sai.
 - **Phản hồi khi nhấn, không khi rê**: rê chỉ đổi nền / màu (`--hover`); nhấn co `scale-[0.97]` 120ms.
   Mũi tên trong nút và link chữ trượt 2px khi rê.
 - Tab (code, khung thử): `role="tablist"`, ← → Home End chuyển tab, tab rộng theo chữ.
