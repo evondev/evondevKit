@@ -2007,10 +2007,20 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
       const isScrollable = ["auto", "scroll", "hidden", "clip"].includes(style.overflowX);
       const isCommand = /^\$?\s*(npm|npx|pnpm|yarn|bun|pip|brew|curl|docker|go |cargo|git )/.test(element.textContent.trim());
 
-      return isOneLine && isScrollable && isCommand && element.textContent.trim().length < 200 && (element.scrollWidth > element.clientWidth + 1 || (isFaded && element.scrollWidth > element.clientWidth - 24));
+      if (!isCommand || element.textContent.trim().length >= 200 || element.textContent.includes("\n")) return false;
+      // Lệnh gãy làm hai dòng (thiếu nowrap) đọc thành hai lệnh (13/11/2026, landing Tideway ở 1024 và 375).
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      // Gom hộp chữ theo dòng, lệch dưới 8px là cùng dòng: dấu `$` nhỏ hơn hay canh giữa trong chip flex có đỉnh
+      // khác chữ lệnh vài px, không phải gãy dòng (báo nhầm chip Lintel).
+      const tops = [...range.getClientRects()].filter((rect) => rect.width > 0).map((rect) => rect.top).sort((first, second) => first - second);
+      const lineCount = tops.filter((top, index) => index === 0 || top - tops[index - 1] >= 8).length;
+      if (lineCount > 1) return true;
+
+      return isOneLine && isScrollable && (element.scrollWidth > element.clientWidth + 1 || (isFaded && element.scrollWidth > element.clientWidth - 24));
     })
     .slice(0, 3)
-    .map((element) => `khung ${element.clientWidth}px, lệnh ${element.scrollWidth}px${getComputedStyle(element).maskImage.includes("gradient") ? ", mép mờ đè chữ cuối" : ""}: ${describe(element)}`);
+    .map((element) => `khung ${element.clientWidth}px, lệnh ${element.scrollWidth}px${getComputedStyle(element).maskImage.includes("gradient") ? ", mép mờ đè chữ cuối" : ""}${element.getClientRects().length && element.getBoundingClientRect().height > parseFloat(getComputedStyle(element).lineHeight || "0") * 1.5 ? ", gãy dòng" : ""}: ${describe(element)}`);
 
   // 18j. Mục lặp dày chữ: card hay dòng lặp từ ba cái trở lên mà một cái có từ năm dòng chữ. Người dùng không tự
   //      thấy "card chữ quá trời" (28/09/2026, wireframe danh sách + chi tiết năm dòng mỗi mục); đặt ra số dòng

@@ -37,7 +37,10 @@ Trang đo được nghiêng về canh trái (14/20); khảo sát lớn thì nghi
 **wireframe phải có ít nhất một bản canh giữa và một bản canh trái / chia đôi.**
 
 - Nền hero: lưới ô vuông 64px nhạt tan dần ra mép (`background-image` hai `linear-gradient` 1px màu
-  `--border` + `mask-image` radial), hoặc trơn. Không ảnh.
+  `--border` + `mask-image` radial), hoặc trơn. Không ảnh. **Đường lưới trùng đường kẻ có sẵn**: một lớp
+  lưới cho cả hero, `background-position` neo vào đường chia cột (chia đôi: `center top`) và mép khung, để
+  đường lưới rơi đúng lên `border-r` của cột trái. Lưới lệch thì một đường lưới chạy song song cách đường chia
+  cột 20–30px, thành đôi đường (`B5`), ở 1440 lẫn 1024.
 - **Nhãn tin mới** trên H1 (tuỳ): pill nhỏ `font-mono text-xs`, "v2.0 is out →", dẫn tới changelog.
 - Hai góc trên của hero (từ `lg`) có thể đặt nhãn mono nói về sản phẩm (`[ v2.4.0 ]`, `[ MIT ]`), **chỉ khi
   hero chưa nói điều đó**: nhãn tin mới đã có phiên bản, dòng dưới nút đã có "MIT" thì góc bỏ hay đổi
