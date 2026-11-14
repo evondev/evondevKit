@@ -566,6 +566,9 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   for (const element of allElements) {
     const style = getComputedStyle(element);
     if (style.display !== "grid" || !isVisible(element) || element.children.length < 2) continue;
+    // Dòng code trong `pre` (cột số dòng, dấu `+` của đoạn diff): ký tự mono căn theo ý nghĩa, không phải hai kiểu căn
+    // trộn nhau (báo nhầm 14/11/2026, đoạn diff khối sản phẩm trang cá nhân).
+    if (element.closest("pre")) continue;
 
     const columnCount = style.gridTemplateColumns.split(" ").length;
     if (columnCount < 2) continue;
