@@ -126,18 +126,21 @@ Portfolio, trang giới thiệu bản thân của dev, người làm nội dung 
      font-semibold tracking-tighter text-balance`, `p · text-lg text-muted`, `div · flex gap-3`). Bỏ tiền tố
      responsive (`sm:`, `lg:`) và class bố cục (`relative`, `mt-*`, `max-w-*`, `grid-cols-*`, `bg-border`):
      nhãn dài cả dòng class là nhiễu.
-   - **Chỗ có nhãn**: các hàng hero, khối code, ô ảnh, tiêu đề section (`h2 · text-5xl font-semibold`); 6–10
-     nhãn cả trang. Không gắn lên lưới thẻ, FAQ, footer.
+   - **Chỗ có nhãn**: các hàng hero, khối code, ô ảnh; 5–8 nhãn cả trang. Không gắn lên tiêu đề section (đã
+     có nhãn section `B19`, hai dòng mono chồng nhau thành nhiễu), lưới thẻ, FAQ, footer.
    - **375 vẫn hiện**, một dòng, cắt bằng `truncate` (`text-…`).
    - **Chữ phải xứng với nhãn**: nhãn khoe `text-7xl font-semibold` thì H1 phải đúng cỡ đó.
-   **Cỡ chữ**: H1 `text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tighter text-balance`, ở 1440
-   chiếm từ 70% bề ngang khung; cả cụm sau tên màu nhấn (một hai dòng chữ cam, không chỉ một chữ). H2
-   section `text-4xl lg:text-5xl font-semibold tracking-tighter`. Nét `font-medium` cỡ `text-6xl` là chữ
+   **Cỡ chữ**: H1 `text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tighter text-balance
+   leading-[1.05]`; cỡ tuỳ ý (`text-[min(3rem,12.8vw)]`) thì **phải kèm `leading-*`**, lớp tuỳ ý không mang
+   khoảng dòng, H1 ăn 1.5 của thân, ba dòng rời nhau (probe báo `TIÊU ĐỀ LỚN DÒNG THƯA`); cả cụm sau tên
+   màu nhấn (một hai dòng chữ cam, không chỉ một chữ). H2 section `text-4xl lg:text-5xl font-semibold
+   tracking-tighter`. Nét `font-medium` cỡ `text-6xl` là chữ
    trang SaaS, không ra chất trang cá nhân. Chữ tiêu đề dùng font có cá tính (`B3`) có subset `vietnamese`.
    **Khối code tự mô tả nền tối** (đảo màu) cả khi trang nền Sáng / Kem: là mảng đậm nhất màn đầu, kéo mắt;
-   có số dòng, tô màu cú pháp. Ở 375 không dòng nào tràn khung: mảng dài xuống dòng mỗi phần tử một dòng
-   hay rút còn 2–3 phần tử (probe báo `KHỐI CODE TRÀN NGANG`). **Ảnh thật** tràn ô (không khung lồng trong
-   ô, không padding), cao bằng khối code.
+   có số dòng, tô màu cú pháp. Ở 375 không dòng nào tràn khung (probe báo `KHỐI CODE TRÀN NGANG`, áp cho mọi
+   khối code trên trang, kể cả đoạn diff ở khối sản phẩm) và **tối đa 14 dòng**: mảng ngắn giữ một dòng,
+   mảng dài rút còn 2 phần tử; xuống dòng mỗi phần tử một dòng cho cả object thành 22 dòng, dài hơn hero.
+   **Ảnh thật** tràn ô (không khung lồng trong ô, không padding), cao bằng khối code.
 2. Hàng số kênh (người theo dõi, lượt xem, video): số `text-4xl lg:text-5xl font-semibold` **màu nhấn**, dưới
    là nhãn thường và nguồn mono nhỏ (`@tenkenh`); ô đầu có thể là nhãn mono màu nhấn ("ĐANG THEO DÕI").
 3. Dải stack chạy: **icon logo + tên** (SVG logo có sẵn trong dự án, hay `simple-icons` từ `cdn.jsdelivr.net`),

@@ -1384,6 +1384,9 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     }
 
     const style = getComputedStyle(element);
+    // Chữ viền (`color: transparent` + `-webkit-text-stroke`): thứ thấy là nét viền, không phải màu chữ; chấm màu chữ
+    // thì ra nền trên nền 1:1, báo nhầm (14/11/2026, chữ chạy hai hàng đặc + viền của trang cá nhân, landing B42).
+    if (parseFloat(style.webkitTextStrokeWidth) > 0 && readColor(cssColor).alpha === 0) return;
     const textColor = readColor(cssColor);
     const opacityChain = readOpacityChain(element);
     // Đang ẩn bằng độ mờ (thông báo ngắn chờ hiện, lớp đang mờ dần): người dùng không thấy, không chấm. Chấm vào thì
@@ -2028,11 +2031,29 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   const clippedCodeBlocks = [...document.querySelectorAll("pre")]
     .filter((element) => {
       if (!isVisible(element) || element.closest("[aria-hidden='true'], .device")) return false;
-      if (!element.textContent.trim().includes("\n")) return false;
-      return element.scrollWidth > element.clientWidth + 4;
+      // Nhiều dòng: có ký tự xuống dòng, hay mỗi dòng là một `span` block (đoạn diff tô nền từng dòng, không có `\n`;
+      // lọt ở khối sản phẩm trang cá nhân 14/11/2026).
+      const lineHeight = parseFloat(getComputedStyle(element).lineHeight) || 20;
+      const isMultiLine = element.textContent.trim().includes("\n") || element.scrollHeight >= lineHeight * 2.5;
+      return isMultiLine && element.scrollWidth > element.clientWidth + 4;
     })
     .slice(0, 3)
     .map((element) => `khung ${element.clientWidth}px, dòng dài nhất ${element.scrollWidth}px: ${describe(element)}`);
+
+  // 18i7. Tiêu đề lớn dòng thưa: chữ từ 32px xuống từ hai dòng mà khoảng dòng trên 1.3 lần cỡ chữ, các dòng rời nhau
+  //       như ba câu. Hay gặp khi cỡ chữ tuỳ ý (`text-[min(3rem,12.8vw)]`) không kèm `leading-*`: lớp tuỳ ý không mang
+  //       khoảng dòng, chữ ăn khoảng dòng 1.5 của thân (14/11/2026, H1 trang cá nhân ở 375).
+  const looseHeadings = [];
+  for (const element of document.querySelectorAll("h1, h2, h3, [class*='text-']")) {
+    if (looseHeadings.length >= 3) break;
+    if (!isVisible(element) || element.closest("[aria-hidden='true']")) continue;
+    const style = getComputedStyle(element);
+    const fontSize = parseFloat(style.fontSize);
+    const lineHeight = parseFloat(style.lineHeight);
+    if (fontSize < 32 || !lineHeight || lineHeight / fontSize <= 1.3) continue;
+    if (Math.round(element.getBoundingClientRect().height / lineHeight) < 2) continue;
+    looseHeadings.push(`cỡ ${fontSize}px, dòng ${Math.round(lineHeight)}px (${(lineHeight / fontSize).toFixed(2)}): ${describe(element)}`);
+  }
 
   // 18j. Mục lặp dày chữ: card hay dòng lặp từ ba cái trở lên mà một cái có từ năm dòng chữ. Người dùng không tự
   //      thấy "card chữ quá trời" (28/09/2026, wireframe danh sách + chi tiết năm dòng mỗi mục); đặt ra số dòng
@@ -2322,8 +2343,10 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     const ownText = [...element.childNodes].filter((node) => node.nodeType === Node.TEXT_NODE).map((node) => node.textContent).join("").trim();
     if (ownText.length <= 3 || element.closest("svg") || !isVisible(element)) continue;
     const fontSize = parseFloat(getComputedStyle(element).fontSize);
-    // App điện thoại: nhãn thanh tab 11px là cỡ chuẩn (mobile.md J4), sàn là 11.
-    if (fontSize >= (element.closest(".device") ? 11 : 12)) continue;
+    // App điện thoại: nhãn thanh tab 11px là cỡ chuẩn (mobile.md J4), sàn là 11. Nhãn trang trí `aria-hidden` (chú
+    // thích devtools 11px của trang cá nhân, landing B41) cũng sàn 11: không phải nội dung để đọc.
+    const isDecorative = Boolean(element.closest("[aria-hidden='true']"));
+    if (fontSize >= (element.closest(".device") || isDecorative ? 11 : 12)) continue;
     tinyTextCount += 1;
     if (tinyTexts.length < 10) tinyTexts.push(`${fontSize}px "${ownText.slice(0, 32)}": ${describe(element)}`);
   }
@@ -2358,6 +2381,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     overflowingOutputs,
     clippedCommands,
     clippedCodeBlocks,
+    looseHeadings,
     denseItems,
     repeatedCardIssues,
     misalignedControlRows,
@@ -5350,6 +5374,10 @@ function formatReport(results) {
     if (result.clippedCodeBlocks?.length > 0) {
       problems.push(`KHỐI CODE TRÀN NGANG (${result.clippedCodeBlocks.length} chỗ, dòng cắt giữa chừng; xuống dòng mảng, rút phần tử hay hạ cỡ chữ, landing B42):`);
       for (const item of result.clippedCodeBlocks) problems.push(`  ${item}`);
+    }
+    if (result.looseHeadings?.length > 0) {
+      problems.push(`TIÊU ĐỀ LỚN DÒNG THƯA (${result.looseHeadings.length} chỗ, khoảng dòng 1.05–1.2; cỡ chữ tuỳ ý text-[…] phải kèm leading-*):`);
+      for (const item of result.looseHeadings) problems.push(`  ${item}`);
     }
     if (result.denseItems?.length > 0) {
       problems.push(`MỤC LẶP DÀY CHỮ (từ 5 dòng mỗi mục; danh sách + chi tiết thì mục trái tối đa 3 dòng, layouts/app/filtered-list.md):`);
