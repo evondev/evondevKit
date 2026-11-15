@@ -1,6 +1,6 @@
 ---
 name: landing
-description: Dựng landing page kiểu Blueprint cho sản phẩm dành cho dev - công cụ dev, API, SDK, CLI, hạ tầng, database, sản phẩm AI cho dev - và trang cá nhân / portfolio của dev; kiểu Dark glow (nền tối, đèn chiếu, chữ chuyển màu) cho trang bán khoá học lập trình, cộng đồng dev. Khung có đường kẻ lộ, ô lưới chung đường kẻ, nhãn mono, một màu nhấn, hero cho thấy sản phẩm chạy thật (khung thử, terminal, code, sơ đồ), lệnh cài copy được, benchmark có số. Mặc định như một designer - brief, 2–3 wireframe, người dùng chọn rồi mới dựng; "dựng luôn" thì dựng thẳng. Nền sáng, kem hay tối. Đi cùng skill ui-ux (token, nút, probe). kiểu SaaS cho tiệm và doanh nghiệp nhỏ (app đặt lịch, bán hàng, CRM; người thật ở tiệm, giao diện nổi trên ảnh). Trang của chính tiệm (spa, nhà hàng, cửa hàng), trang thu lead chưa được dạy - vẫn làm, báo trước. Dùng khi dựng, làm lại hay xem giúp landing page, trang chủ sản phẩm cho dev, khi người dùng nhắc "landing page", "landing", "trang chủ sản phẩm", "homepage", "landing SaaS", "dev tool", "developer tool", "API landing", "blueprint", "portfolio", "trang cá nhân", "dark glow", "glow", "phần mềm cho tiệm", "app đặt lịch", "SaaS", "evon".
+description: Dựng landing page kiểu Blueprint cho sản phẩm dành cho dev - công cụ dev, API, SDK, CLI, hạ tầng, database, sản phẩm AI cho dev - và trang cá nhân / portfolio của dev; kiểu Dark glow (nền tối, đèn chiếu, chữ chuyển màu) cho trang bán khoá học lập trình, cộng đồng dev. Khung có đường kẻ lộ, ô lưới chung đường kẻ, nhãn mono, một màu nhấn, hero cho thấy sản phẩm chạy thật (khung thử, terminal, code, sơ đồ), lệnh cài copy được, benchmark có số. Mặc định như một designer - brief, 2–3 wireframe, người dùng chọn rồi mới dựng; "dựng luôn" thì dựng thẳng. Nền sáng, kem hay tối. Đi cùng skill ui-ux (token, nút, probe). kiểu SaaS cho tiệm và doanh nghiệp nhỏ (app đặt lịch, bán hàng, CRM; người thật ở tiệm, giao diện nổi trên ảnh). kiểu landing-lead (thư bán hàng dài do founder đứng tên, bán đăng ký workshop, khoá học, tư vấn; chữ của người dùng). Trang của chính tiệm (spa, nhà hàng, cửa hàng) chưa được dạy - vẫn làm, báo trước. Dùng khi dựng, làm lại hay xem giúp landing page, trang chủ sản phẩm cho dev, khi người dùng nhắc "landing page", "landing", "trang chủ sản phẩm", "homepage", "landing SaaS", "dev tool", "developer tool", "API landing", "blueprint", "portfolio", "trang cá nhân", "dark glow", "glow", "phần mềm cho tiệm", "app đặt lịch", "SaaS", "thu lead", "landing lead", "workshop", "thư bán hàng", "sales letter", "evon".
 ---
 
 # Landing page Blueprint cho sản phẩm dành cho dev
@@ -24,12 +24,14 @@ tối, đèn chiếu rọi vào sản phẩm, chữ chuyển màu, nút có qu�
 khoá học lập trình, cộng đồng dev (trang bán khoá học đi theo `B44` thay vì báo "chưa dạy"). Kiểu thứ ba
 là **SaaS cho tiệm và doanh nghiệp nhỏ** (`references/smb-saas.md`, `B45`): phần mềm người mua không phải
 dev (đặt lịch, bán hàng, CRM, kế toán cho tiệm tóc, spa, phòng khám, cửa hàng); nền sáng, người thật ở
-tiệm trong hero, giao diện app nổi trên ảnh.
+tiệm trong hero, giao diện app nổi trên ảnh. Kiểu thứ tư là **landing-lead** (`references/lead.md`,
+`B46`): thư bán hàng dài do founder đứng tên, bán đăng ký workshop, buổi live, khoá học, gói tư vấn,
+dịch vụ agency; thắng nhờ chữ, **chữ là của người dùng**, skill dựng khung chương và hình quanh chữ.
 
 **Loại landing khác chưa được dạy** (trang của chính tiệm / spa / nhà hàng / cửa hàng để thu khách,
-B2B sản xuất, workshop / thu lead không phải lập trình, portfolio không phải dev, trang sự kiện). Đầu câu
+B2B sản xuất, portfolio không phải dev, trang sự kiện có nhiều diễn giả, cửa hàng bán sản phẩm). Đầu câu
 trả lời đầu tiên báo một dòng theo ngôn ngữ của đề: *"Lưu ý: skill landing mới dạy landing cho sản phẩm
-dành cho dev, khoá học lập trình và phần mềm cho tiệm nhỏ; trang này mình làm theo luật chung của ui-ux,
+dành cho dev, khoá học lập trình, phần mềm cho tiệm nhỏ và trang thu lead do founder đứng tên; trang này mình làm theo luật chung của ui-ux,
 kết quả có thể chưa đẹp bằng."* rồi đi theo `../ui-ux/SKILL.md` như đề
 loại chưa được dạy. Trang loại khác cần ảnh vẽ riêng để tạo không khí (nền hero, ảnh từng mục) thì
 theo `references/ai-images.md` (`B31`): viết danh sách ảnh kèm prompt, người dùng sinh ảnh, skill
@@ -82,6 +84,7 @@ Câu này quyết **món chính ở hero** (`B14`) và khối nào bật:
 | Hạ tầng không có UI (database, queue, sandbox, mạng) | **Sơ đồ kỹ thuật vẽ nét** (`B15`) hoặc code | Benchmark, hàng số, kiến trúc |
 | Trang cá nhân / portfolio của dev | **Khối code tự mô tả** cạnh ảnh thật (`B42`, `B43`) | Hành trình theo năm, dự án, sản phẩm, cảm nhận |
 | Khoá học lập trình, cộng đồng dev | Khung code có lỗi được bắt dưới đèn chiếu (`B44`) | Video, thẻ khoá học, người dạy, các bước, FAQ |
+| Workshop, buổi live, khoá học, tư vấn, agency do founder đứng tên (thu lead) | **H1 lời hứa + ảnh founder thật trên sân khấu** (`B46`) | Khung chương: nói trước, nỗi đau, người kể, cách làm, bằng chứng, phản đối, chương trình, giá, một form cuối trang |
 | Phần mềm cho tiệm, doanh nghiệp nhỏ (người mua không phải dev) | **Người thật ở tiệm + thẻ giao diện nổi** (`B45`) | Kết nối quen (Zalo, Facebook, Maps), tính năng có mảnh giao diện, theo ngành, giá, cảm nhận chủ tiệm |
 
 ### Câu 4 — Nền nào?
@@ -103,6 +106,8 @@ Một tin ngắn, không hỏi câu nào ngoài cổng:
   (`B16`).
 - **Bằng chứng có gì**: số đo (nhanh hơn bao nhiêu, rẻ hơn bao nhiêu), sao GitHub, lượt tải, khách
   dùng, lời dev. Đề không cho số thì dựng số mẫu đúng cỡ, đánh dấu để người dùng thay (`B30`).
+  Landing-lead (`B46`) thì khác: không dựng số mẫu, không cảm nhận mẫu; brief hỏi **bản chữ** (có sẵn
+  thì dựng quanh nó, chưa có thì dựng khung chương với chỗ `[cần: …]`).
 - **Kiểu sản phẩm** (câu 3) → món chính hero; **ngôn ngữ copy**; **danh sách khối** theo thứ tự
   (`references/sections.md`, `B12`).
 
@@ -130,7 +135,8 @@ Chép nguyên phương án đã chọn (`U4` của `ui-ux`), theo `references/bl
 (màn mở, hiện khi cuộn, demo tự chạy, sơ đồ, dải logo, đếm số) thì mở `references/motion.md`.
 Kiểu Dark glow mở thêm `references/dark-glow.md`; kiểu SaaS cho tiệm nhỏ mở `references/smb-saas.md`
 **thay cho** `blueprint.md` (giữ `sections.md` cho khối dùng chung: FAQ, giá, cảm nhận), và
-`references/ai-images.md` cho ảnh người ở tiệm.
+`references/ai-images.md` cho ảnh người ở tiệm. Landing-lead mở `references/lead.md` thay cho
+`blueprint.md`.
 
 ### B3. Tự rà rồi giao
 
