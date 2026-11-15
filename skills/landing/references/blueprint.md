@@ -241,3 +241,5 @@ Cuộn hết trang ở 1440 và 375, đánh dấu từng dòng:
   quá 6 ô cùng khuôn (`B20`).
 - [ ] Chữ trong mọi ảnh chụp sản phẩm còn từ 11px khi hiện trên trang (`B14`).
 - [ ] 375: dải thông báo một dòng, header còn logo có chữ và nút chính (`B17`).
+- [ ] Có khối phạm vi (dùng được cho gì, chưa làm gì) và khối cách dùng đi một lượt thật từ cài tới
+  kết quả; hai câu đầu FAQ là phạm vi và cách dùng (`B12`, `B21`, `B26`).

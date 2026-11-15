@@ -27,6 +27,12 @@ khối phụ → CTA cuối**. Cụ thể:
 - **Không ô giữ chỗ**: ô skeleton (vạch xám thay chữ), ô "Chưa công bố", "Coming soon" xếp cho đủ hàng
   là khối rỗng, người xem đọc thành trang dựng bằng khuôn còn sót chỗ chưa điền. Lộ trình chỉ ghi mục có
   thật; một mục thì một dòng dưới khối gần nhất, không cả section.
+- **Khối phạm vi "dùng cho gì" khi tên hay loại sản phẩm dễ hiểu nhầm.** Người xem đoán phạm vi từ
+  chính trang: trang giới thiệu là landing nên họ hỏi "có làm web app không"; công cụ "AI" thì hỏi "có
+  chạy trên editor của tôi không". Ngay sau hero (hay sau dải công cụ) đặt một lưới 2–4 ô: **làm tốt
+  nhất** (liệt kê loại cụ thể, kèm một mảnh sản phẩm), **đang thử / beta**, **chưa làm hay dùng sản
+  phẩm khác** (chỉ đường sang đó). Câu dẫn trả lời thẳng câu đang bị hỏi ("Dùng cho web được không:
+  được"). Câu hỏi đó cũng lên đầu FAQ (`B26`).
 
 ## B13. Hero: ba bố cục
 
@@ -287,6 +293,13 @@ Cho thứ cài và dùng bằng code.
   (chia đều phần dư), terminal không đặt `min-h` cao hơn cột bước. Cột bước ngắn hơn thì đường kẻ của cột
   nút copy dừng lửng giữa khung, dưới là mảng trống.
 - Code thật chạy được, đúng tên gói của sản phẩm. Code dài cuộn ngang trong khung, không gãy dòng.
+- **Cài xong rồi dùng sao.** Lệnh cài mới là bước 1; người mới hỏi tiếp "rồi gõ gì, ở đâu, nhận lại
+  gì". Sản phẩm dùng qua hội thoại hay qua nhiều bước (skill, agent, CLI tương tác, plugin editor) thì
+  các bước đánh số đi **một lượt dùng thật từ đầu tới cuối**: cài → gõ / chạy gì đầu tiên (câu mẫu copy
+  được) → sản phẩm trả lại gì → người dùng trả lời gì ở mỗi chỗ nó dừng hỏi → kết quả cuối nằm ở đâu.
+  Bên cạnh là transcript hay ảnh của chính lượt đó, đánh số khớp từng bước. Chỉ ghi lệnh cài thì khối
+  này trả lời "cài thế nào", câu người ta hay hỏi lại nhất ("dùng thế nào") vẫn bỏ ngỏ. Đặt ngay sau
+  khối phạm vi (`B12`), trước tính năng.
 
 ## B22. Benchmark
 
@@ -324,6 +337,9 @@ ngăn `divide-y`, câu đầu mở sẵn, trượt `grid-rows` 0fr ↔ 1fr 250ms
 
 - 4–6 câu **dev thật hỏi**: thay được cái đang dùng không, giữ config cũ được không, giá / giấy phép,
   chạy ở đâu (CI, editor), dữ liệu đi đâu. Không câu hỏi tự khen.
+- **Hai câu đầu là phạm vi và cách dùng** ("Dùng cho X được không?", "Cài xong dùng thế nào?"), trả lời
+  ngắn rồi link về khối phạm vi và khối cách dùng (`B12`, `B21`). Người dùng hay chủ sản phẩm kể "người
+  ta hay hỏi …" thì câu đó vào FAQ nguyên văn, lên đầu.
 
 ## B27. CTA cuối
 
@@ -357,6 +373,10 @@ dòng bản quyền và trạng thái hệ thống (chấm xanh "All systems nor
   *"có bài viết cũ hay file giọng văn thì gửi, mình viết lại chữ cho đúng giọng"*. Ba cấu trúc làm chữ
   lộ AI dù từ ngữ sạch: câu đối "không phải X, mà là Y"; câu twist đứng riêng ("Giờ thì khác."); câu
   chốt "Từ X thành Y". Kể việc thẳng thay vì dựng đối lập.
+- **Trạng thái phát hành đúng với bản người dùng cài được hôm nay.** Trước khi viết "có", "cài là
+  có", lệnh gọi một tính năng hay sản phẩm anh em, đối chiếu bản đã phát hành (nhánh chính, file
+  manifest, gói trên registry). Chưa phát hành thì ghi "đang test" kèm việc người dùng làm được ngay
+  bây giờ. Người cài theo trang mà lệnh không chạy thì mất tin cả trang.
 
 ## B30. Dữ liệu mẫu
 
