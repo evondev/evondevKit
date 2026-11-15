@@ -59,7 +59,9 @@ một giây nữa...?", "Cho đến khi tôi mất tất cả...", "“Tôi ph�
   (`#f5f3ee`) hay tối (`#0d0f0e`), một màu nhấn đậm (xanh lá, đỏ, cam).
 - **Nhãn chương mono nhỏ** ("● VÌ SAO CHỈ TỪ 299K?", "[ĐỐI TÁC / KHÁCH HÀNG]") trên H2, màu nhấn.
 - Ảnh chụp màn hình thật (tin nhắn, dashboard, bảng doanh thu) luôn có **chú thích nhỏ** dưới ảnh nói
-  ảnh gì, của ai, khi nào.
+  ảnh gì, của ai, khi nào. Mảnh **dựng minh hoạ** (khung chat AI trả lời, màn sản phẩm làm bằng HTML) ghi
+  rõ trong chú thích "Minh hoạ, không phải tin nhắn thật": trang sống nhờ lòng tin, người đọc tưởng là
+  bằng chứng thật rồi phát hiện ra là dựng thì mất cả trang.
 - Không hiệu ứng nền, không chữ chuyển màu, không đèn chiếu: chuyển động chỉ `B34` hiện khi cuộn, nhẹ.
 
 ## Nút và form
@@ -67,6 +69,9 @@ một giây nữa...?", "Cho đến khi tôi mất tất cả...", "“Tôi ph�
 - **Một chữ nút cho cả trang** ("Giữ chỗ miễn phí →"), lặp **sau mỗi chương bằng chứng hay lời hứa**,
   khoảng 3–5 chương một lần (6–7 lần trên trang dài nhất). Nút đặc màu nhấn, cao từ 48px (trang đo:
   48, 56, và một nút hai dòng chữ condensed cao 136px), kèm một dòng nhỏ dưới nút ("Chỗ miễn phí tháng 11 sắp hết · Không ràng buộc").
+- **Header luôn có nút** cùng chữ (2/3 trang đo; trang còn lại có ô email ngay hero). Nhờ đó nút ở hero
+  được nằm dưới màn đầu khi H1 là một câu dài: trang dài nhất đặt nút đầu tiên trong thân trang sau cả
+  đoạn mở đầu, người đọc vẫn bấm được nút trên header.
 - **Mọi nút cuộn về một form ở cuối trang** (`href="#giu-cho"`). Một form: họ tên, số điện thoại (có
   Zalo), email; thêm trường chỉ khi việc sau đó cần (vai trò, công ty cho buổi B2B). Có gói thì chọn gói
   bằng thẻ radio ngay đầu form.
