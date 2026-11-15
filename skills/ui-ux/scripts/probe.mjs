@@ -1292,6 +1292,10 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   }
 
   // Màu các điểm dừng của nền chỉ có gradient; nền có ảnh thì null. Computed style đã đổi màu sang rgb().
+  function isClipText(style) {
+    return style.backgroundClip === "text" || style.webkitBackgroundClip === "text";
+  }
+
   function readGradientStops(backgroundImage) {
     if (backgroundImage === "none") return [];
     if (/url\(|image-set\(|element\(|cross-fade\(/.test(backgroundImage)) return null;
@@ -1308,6 +1312,8 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
 
     for (let node = element; node; node = node.parentElement) {
       const style = getComputedStyle(node);
+      // Chữ chuyển màu (`background-clip: text`): dải màu là màu của chữ, không vẽ sau chữ.
+      if (isClipText(style)) continue;
       const stops = readGradientStops(style.backgroundImage);
       if (!stops) return null;
       const color = readColor(style.backgroundColor);
@@ -1358,6 +1364,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
         if (layerStyle.backgroundImage === "none" && readColor(layerStyle.backgroundColor).alpha === 0) continue;
         break;
       }
+      if (isClipText(getComputedStyle(layer))) continue;
       if (["IMG", "VIDEO", "CANVAS", "svg"].includes(layer.tagName) || getComputedStyle(layer).backgroundImage !== "none") return "pixels";
       if (readColor(getComputedStyle(layer).backgroundColor).alpha > 0) return readAncestorBackdrops(layer);
     }
@@ -1432,11 +1439,19 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
       entry.gradientId = null;
       return;
     }
-    element.dataset.evonGradientText = entry.gradientId;
+    markGradientText(element, entry.gradientId);
   }
 
   // Chữ trên ảnh: chưa biết tỉ lệ, ghi tạm là một mục tương phản thấp và đánh dấu để chụp pixel nền; đạt ngưỡng thì
   // `verifyGradientContrast` gỡ mục đi. Chữ ngoài khung nhìn không chụp được: tính là chỗ không đo, không báo nhầm.
+  // Một chữ có thể thuộc nhiều cặp cần chụp (chữ chuyển màu: mỗi điểm dừng một cặp): giữ cả danh sách mã, gán đè thì
+  // cặp trước mất chữ, không chụp được, báo nhầm không kèm số đo.
+  function markGradientText(element, gradientId) {
+    const ids = new Set((element.dataset.evonGradientText || "").split(" ").filter(Boolean));
+    ids.add(gradientId);
+    element.dataset.evonGradientText = [...ids].join(" ");
+  }
+
   function markPhotoText(element, cssColor, sample) {
     const rect = element.getBoundingClientRect();
     const isInViewport = rect.width > 0 && rect.height > 0 && rect.left >= 0 && rect.top >= 0 && rect.right <= innerWidth && rect.bottom <= innerHeight;
@@ -1464,7 +1479,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
         textColor,
       });
     }
-    element.dataset.evonGradientText = lowContrastTexts.get(key).gradientId;
+    markGradientText(element, lowContrastTexts.get(key).gradientId);
   }
 
   // Nhãn của ô đang khoá mờ theo ô là cố ý (choice-controls.md, bảng Khoá) và WCAG miễn chữ của control khoá.
@@ -1477,7 +1492,13 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
   for (const element of allElements) {
     if (element.closest(":disabled, [aria-disabled='true']") || isLabelOfDisabledControl(element) || !isVisible(element)) continue;
     const ownText = [...element.childNodes].filter((node) => node.nodeType === Node.TEXT_NODE).map((node) => node.textContent.trim()).join(" ").trim();
-    if (ownText) checkContrast(element, getComputedStyle(element).color, ownText.slice(0, 24));
+    // Chữ chuyển màu: thứ thấy là các điểm dừng của dải màu, chấm từng điểm dừng trên nền phía sau (báo nhầm 1:1 khi lấy
+    // `color` dự phòng chấm trên chính dải màu, 15/11/2026, H1 trang bán khoá học nền tối).
+    const elementStyle = getComputedStyle(element);
+    const clipStops = isClipText(elementStyle) ? readGradientStops(elementStyle.backgroundImage) || [] : [];
+    if (ownText && clipStops.length > 0) {
+      for (const stop of clipStops) checkContrast(element, `rgba(${stop.red}, ${stop.green}, ${stop.blue}, ${stop.alpha})`, ownText.slice(0, 24));
+    } else if (ownText) checkContrast(element, elementStyle.color, ownText.slice(0, 24));
 
     const isEmptyField = (element.tagName === "INPUT" || element.tagName === "TEXTAREA") && element.placeholder && !element.value;
     if (isEmptyField) checkContrast(element, getComputedStyle(element, "::placeholder").color, `placeholder: ${element.placeholder.slice(0, 20)}`);
@@ -2058,6 +2079,23 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     looseHeadings.push(`cỡ ${fontSize}px, dòng ${Math.round(lineHeight)}px (${(lineHeight / fontSize).toFixed(2)}): ${describe(element)}`);
   }
 
+  // 18i8. Khối hiện khi cuộn kẹt mờ: `animation-timeline: view()` bám khung cuộn gần nhất; cha `overflow: hidden`
+  //       (cắt sao băng, quầng tràn) là một khung cuộn không bao giờ cuộn, tiến trình đứng yên, khối mờ dở mãi
+  //       (15/11/2026, trang bán khoá học: sáu thẻ cảm nhận kẹt 0.57–0.73). `overflow: clip` cắt mà không tạo khung cuộn.
+  const stuckReveals = [];
+  for (const element of allElements) {
+    if (stuckReveals.length >= 3) break;
+    const timeline = getComputedStyle(element).animationTimeline || "";
+    if (!timeline.includes("view(")) continue;
+    for (let node = element.parentElement; node && node !== document.body && node !== document.documentElement; node = node.parentElement) {
+      const style = getComputedStyle(node);
+      const isScrollContainer = [style.overflowX, style.overflowY].some((value) => ["hidden", "auto", "scroll"].includes(value));
+      if (!isScrollContainer) continue;
+      if (node.scrollHeight <= node.clientHeight + 1) stuckReveals.push(`cha ${describe(node)} (overflow ${style.overflowY}) giữ: ${describe(element)}`);
+      break;
+    }
+  }
+
   // 18j. Mục lặp dày chữ: card hay dòng lặp từ ba cái trở lên mà một cái có từ năm dòng chữ. Người dùng không tự
   //      thấy "card chữ quá trời" (28/09/2026, wireframe danh sách + chi tiết năm dòng mỗi mục); đặt ra số dòng
   //      thì thấy. Đếm dòng bằng các hộp dòng của chữ (Range), không bằng số thẻ.
@@ -2385,6 +2423,7 @@ function measureInPage({ minTapSize, isMobile, isSweep = false }) {
     clippedCommands,
     clippedCodeBlocks,
     looseHeadings,
+    stuckReveals,
     denseItems,
     repeatedCardIssues,
     misalignedControlRows,
@@ -4087,17 +4126,22 @@ async function verifyGradientContrast(page, measurements) {
 
   const passedLines = new Set();
   const updatedLines = new Map();
-  const hideStyle = await page.addStyleTag({ content: "[data-evon-hide-text], [data-evon-hide-text] * { color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; caret-color: transparent !important; }" });
+  const hideStyle = await page.addStyleTag({ content: "[data-evon-hide-text], [data-evon-hide-text] * { color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; caret-color: transparent !important; } [data-evon-hide-text] [data-evon-clip-text], [data-evon-hide-text][data-evon-clip-text] { background-image: none !important; }" });
+  // Chữ chuyển màu vẽ bằng nền (`background-clip: text`): ẩn màu chữ chưa đủ, dải màu vẫn hiện và bị chụp thành nền.
+  await page.evaluate(() => document.querySelectorAll("*").forEach((element) => {
+    const style = getComputedStyle(element);
+    if (style.backgroundClip === "text" || style.webkitBackgroundClip === "text") element.setAttribute("data-evon-clip-text", "");
+  }));
 
   for (const check of checks.slice(0, 24)) {
-    const rects = await page.evaluate((gradientId) => [...document.querySelectorAll(`[data-evon-gradient-text="${gradientId}"]`)].slice(0, 6).map((element) => {
+    const rects = await page.evaluate((gradientId) => [...document.querySelectorAll(`[data-evon-gradient-text~="${gradientId}"]`)].slice(0, 6).map((element) => {
       const box = element.getBoundingClientRect();
 
       return { x: box.left, y: box.top, width: box.width, height: box.height, sample: element.textContent.trim().slice(0, 24) };
     }), check.gradientId);
     if (rects.length === 0) continue;
 
-    await page.evaluate((gradientId) => document.querySelectorAll(`[data-evon-gradient-text="${gradientId}"]`).forEach((element) => element.setAttribute("data-evon-hide-text", "")), check.gradientId);
+    await page.evaluate((gradientId) => document.querySelectorAll(`[data-evon-gradient-text~="${gradientId}"]`).forEach((element) => element.setAttribute("data-evon-hide-text", "")), check.gradientId);
     let worstRatio = Infinity;
     let worstSample = "";
     for (const { sample, ...rect } of rects) {
@@ -4114,6 +4158,7 @@ async function verifyGradientContrast(page, measurements) {
   }
 
   await hideStyle.evaluate((styleElement) => styleElement.remove());
+  await page.evaluate(() => document.querySelectorAll("[data-evon-clip-text]").forEach((element) => element.removeAttribute("data-evon-clip-text")));
   await page.evaluate(() => document.querySelectorAll("[data-evon-gradient-text]").forEach((element) => element.removeAttribute("data-evon-gradient-text")));
   const lowContrastTexts = measurements.lowContrastTexts.filter((line) => !passedLines.has(line)).map((line) => updatedLines.get(line) || line);
 
@@ -5377,6 +5422,10 @@ function formatReport(results) {
     if (result.clippedCodeBlocks?.length > 0) {
       problems.push(`KHỐI CODE TRÀN NGANG (${result.clippedCodeBlocks.length} chỗ, dòng cắt giữa chừng; xuống dòng mảng, rút phần tử hay hạ cỡ chữ, landing B42):`);
       for (const item of result.clippedCodeBlocks) problems.push(`  ${item}`);
+    }
+    if (result.stuckReveals?.length > 0) {
+      problems.push(`KHỐI HIỆN KHI CUỘN KẸT MỜ (${result.stuckReveals.length} chỗ, cha overflow-hidden thành khung cuộn của view(); đổi sang overflow-clip, landing B34):`);
+      for (const item of result.stuckReveals) problems.push(`  ${item}`);
     }
     if (result.looseHeadings?.length > 0) {
       problems.push(`TIÊU ĐỀ LỚN DÒNG THƯA (${result.looseHeadings.length} chỗ, khoảng dòng 1.05–1.2; cỡ chữ tuỳ ý text-[…] phải kèm leading-*):`);

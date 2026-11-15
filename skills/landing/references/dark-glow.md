@@ -100,7 +100,7 @@ Thêm một quầng mờ ở đỉnh hero (dưới header) để đầu trang kh
 | Hero | đèn chiếu rọi món chính, chữ chuyển màu H1 |
 | Dải chip công nghệ | chạy ngang, mép tan (`B36`) |
 | Video / màn sản phẩm lớn | quầng sau khung, nút play tròn trắng giữa |
-| Cảm nhận | **sao băng**: 8–12 vệt sáng mảnh rơi chéo chậm (6–12 giây một vệt), sau tiêu đề, mật độ thấp |
+| Cảm nhận | **sao băng**: 8–12 vệt sáng mảnh rơi chéo chậm (6–12 giây một vệt), sau tiêu đề, mật độ thấp; section cắt vệt tràn bằng `overflow-clip`, không `overflow-hidden` (thẻ `reveal` bên trong kẹt mờ, `B34`) |
 | CTA cuối | card có quầng màu nhấn loang từ đáy |
 
 ## Khối

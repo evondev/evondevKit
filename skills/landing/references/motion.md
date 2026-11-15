@@ -109,6 +109,12 @@ khối hiện sẵn như thường.
 - Các ô trong một hàng lệch **theo cuộn, không theo thời gian**: ô hai, ô ba lùi mốc 40px
   (`[animation-range:entry_80px_entry_460px]`), tối đa ba nấc.
 - Không hiện lại khi cuộn ngược (`view()` giữ trạng thái theo vị trí, không nháy).
+- **Cha của khối `reveal` không được `overflow-hidden` / `overflow-auto`**: `view()` bám khung cuộn gần nhất,
+  section `overflow-hidden` (để cắt sao băng, quầng, chữ chạy tràn) thành một khung cuộn không bao giờ cuộn,
+  khối đứng mờ dở mãi (thẻ cảm nhận kẹt ở 0.73). Cần cắt thì dùng **`overflow-clip`** (cắt mà không tạo khung
+  cuộn). Probe báo `KHỐI HIỆN KHI CUỘN KẸT MỜ`.
+- Soát chuyển động bằng **ảnh từng màn khi cuộn**, không bằng ảnh chụp cả trang: ảnh cả trang không cuộn,
+  mọi khối `reveal` dưới màn đầu ra trống.
 
 ## B35. Demo tự chạy: gõ chữ, terminal, màn sản phẩm ⚑
 
