@@ -59,6 +59,20 @@ thật hay chữ cái đầu, tên tiệm + quận) → bảng giá (gói giữa
 nhấn hay pastel.
 
 - **Cảm nhận** ghi tên tiệm và nơi ("Tóc Mai Anh, Quận 3") để chủ tiệm khác nhận ra người giống mình.
+- **Avatar trong cảm nhận và hàng avatar dưới hero**:
+  - Chưa có ảnh thật của chủ tiệm thì **cả hàng dùng chữ cái đầu** trên nền pastel màu nhấn, giống nhau
+    ở mọi thẻ.
+  - Không lấy ảnh avatar ngẫu nhiên (randomuser, pravatar, ảnh kho). Mặt người nước ngoài đứng cạnh tên
+    Việt ("Đỗ Mai Anh, Quận 3") nhìn ra ngay là bịa. Thêm nữa, đó là ảnh người thật bị gắn vào lời họ
+    không nói.
+  - Không trộn trong một hàng thẻ có ảnh với thẻ chữ cái đầu.
+  - Luật ảnh mẫu của app (`mock-photos.md`) không áp ở đây.
+- **Hàng kết nối** mục nào cũng có logo. Zalo, Facebook, Google Maps, Instagram, TikTok, Shopee đều có
+  trong `simple-icons` (`zalo`, `facebook`, `googlemaps` …). Không để một mục chỉ có chữ đứng cạnh các
+  mục có logo.
+- **Ngoài hero còn ít nhất một khối có người ở tiệm**: thẻ theo ngành có ảnh, hay một dải ảnh xen giữa
+  các ô tính năng. Mỗi ảnh có một mục trong `image-prompts.md`. Nếu ảnh chỉ có ở hero, lúc chưa sinh ảnh
+  cả trang không có người nào và đọc như một trang SaaS chung chung, mất cái riêng của kiểu này.
 - **Bảng giá** giá theo tháng, nói ai hợp gói nào ("Cho tiệm có vài thợ"), gói miễn phí có thật thì
   để đầu.
 - Không khối code, không lệnh cài, không benchmark kỹ thuật.
@@ -71,3 +85,6 @@ nhấn hay pastel.
 - [ ] Không chữ kỹ thuật (API, sync, dashboard, tích hợp) trong H1 và câu dẫn.
 - [ ] Ô tính năng nào cũng có mảnh giao diện, dữ liệu là tên khách, dịch vụ, giá tiền Việt.
 - [ ] Ở 375: thẻ nổi xếp dưới ảnh hay thu còn một thẻ, không che mặt người trong ảnh.
+- [ ] Ngoài hero có ít nhất một khối ảnh người ở tiệm (theo ngành, hay dải ảnh), mỗi ảnh có prompt.
+- [ ] Avatar cảm nhận là ảnh thật hoặc chữ cái đầu, đồng bộ cả hàng; không có ảnh randomuser hay ảnh kho.
+- [ ] Hàng kết nối mục nào cũng có logo.
