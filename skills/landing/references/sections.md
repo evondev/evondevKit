@@ -24,6 +24,9 @@ khối phụ → CTA cuối**. Cụ thể:
   trên 15 là đang độn. Thêm khối theo nội dung thật của sản phẩm, không thêm khối rỗng cho đủ.
 - Bỏ khối được (sản phẩm chưa có khách thì bỏ dải logo, dùng một lời dev thay). Thêm khối thì dùng một
   khuôn ô có sẵn ở dưới, không khuôn lạ.
+- **Không ô giữ chỗ**: ô skeleton (vạch xám thay chữ), ô "Chưa công bố", "Coming soon" xếp cho đủ hàng
+  là khối rỗng, người xem đọc thành trang dựng bằng khuôn còn sót chỗ chưa điền. Lộ trình chỉ ghi mục có
+  thật; một mục thì một dòng dưới khối gần nhất, không cả section.
 
 ## B13. Hero: ba bố cục
 
@@ -71,6 +74,12 @@ dưới. Code chữ `font-mono text-[13px]/6`, tô màu cú pháp tối đa ba m
 
 **Mảnh giao diện** (sản phẩm có UI): ảnh chụp hay dựng HTML của màn thật trong khung `--surface`
 `rounded-xl`, thẳng (không nghiêng), có thể chia tab theo tính năng. Dữ liệu trong mảnh đúng sản phẩm.
+
+- **Chữ trong ảnh đọc được**: ảnh chụp màn thật hiện ở tỉ lệ đủ để chữ thân trong ảnh còn từ 11px
+  (ảnh chụp chữ 14px thì hiện từ ~80% cỡ gốc). Màn rộng 1440 nhét vào khung 700px thành chữ 6px: người
+  xem chỉ thấy một mảng xám, bằng chứng mạnh nhất của trang biến thành hoạ tiết. **Cắt một vùng** (bảng,
+  form, một card) cho đủ cỡ thay vì thu cả màn; lưới nhiều ảnh nhỏ thì bấm vào mở cỡ thật. Áp cho mọi
+  ảnh sản phẩm trên trang (trước / sau, showcase, ô tính năng), không riêng hero.
 
 ## B41. Món ký tên ở hero ⚑
 
@@ -192,6 +201,10 @@ nhất trên gallery thiết kế cho dev tool, và **dựng được bằng cod
 - **H1 nói sản phẩm là gì và hơn ở đâu**, chữ thường, thường dưới 10 từ: "Webhooks you can replay",
   "Feature flags in one line of code", "Background jobs for TypeScript". Không "Supercharge your
   workflow", không "Build the future".
+- **Không tự nhận chất lượng mà người xem chấm được bằng mắt**: "đẹp", "chuyên nghiệp", "tinh tế",
+  "không còn mùi AI", "pixel-perfect", "beautiful UI". Trang chính là bài kiểm tra của câu đó: người xem
+  soi ngay chính trang, thấy một chỗ chưa đẹp là cả câu thành nói quá. Nói việc sản phẩm làm và một con
+  số; để bằng chứng (mảnh sản phẩm, trước / sau) tự nói phần đẹp.
 - **Câu dẫn có một con số hay một chi tiết kiểm được** (nhanh hơn bao nhiêu lần, chạy trên cái gì, thay
   cho cái gì), tối đa hai dòng ở 1440.
 - **Hai nút**: nút chính đặc, chữ là **động từ cụ thể** theo việc chính của brief ("Get API key",
@@ -212,7 +225,11 @@ ngang; nội dung trong `.frame` nên hai đường dọc chạy xuyên qua.
   mono** (sản phẩm mã nguồn mở: icon GitHub + `12.4k`), "Log in" chữ, và **một** nút đặc cùng chữ nút
   chính hero.
 - Link giữa chỉ hiện từ `lg`; dưới đó nút menu mở panel. Probe báo header xuống dòng ở 768.
-- Dải thông báo trên header (tuỳ): một dòng `text-xs` có link, đóng được.
+- Dải thông báo trên header (tuỳ): một dòng `text-xs` có link, đóng được. **Ở 375 vẫn một dòng**
+  (`truncate`, hay chỉ còn chữ link), nền `--surface` hay trong suốt, không nền màu nhấn đặc: dải cam
+  ba dòng ăn 140px đầu màn điện thoại và là mảng màu to nhất trang, to hơn cả nút chính (`B4`).
+- **375 giữ logo có chữ và nút chính**; thứ được giấu là link giữa, nút đổi ngôn ngữ, đổi giao diện
+  (vào panel menu). Giấu nút chính mà để lại công tắc ngôn ngữ là đảo thứ bậc.
 
 ## B18. Dải logo / dùng bởi
 
@@ -232,6 +249,13 @@ giữa hai khoảng trống bằng nhau, không thuộc về khối nào, cả t
 
 - Cụm màu nhấn trong H2: tối đa nửa số H2 của trang; còn lại có thể làm câu hai `--muted` cùng dòng
   ("Retries in 40ms. **Without writing a queue.**" kiểu chữ đậm + chữ nhạt).
+- **Một nhãn mỗi section.** Dải số thứ tự (`[ 02 / 09 ] · PROCESS`) hoặc nhãn trên H2, không cả hai:
+  hai nhãn liền nhau nói cùng một ý (đây là khối gì).
+- **Nhãn là chữ trơn** theo `B7`, không bọc thành pill có icon ✦, không kẹp `// … \\`. Cùng một cụm
+  "pill trang trí → H2 nửa đen nửa màu → câu dẫn xám canh giữa" lặp ở mọi section là dấu hiệu dễ nhận
+  nhất của trang dựng bằng AI: người xem thấy tới lần thứ ba là gọi tên được.
+- **Câu dẫn chỉ khi nó thêm điều H2 chưa nói** (con số, giới hạn, cách làm). Câu dẫn diễn lại H2 bằng
+  chữ dài hơn thì bỏ; khối có mảnh sản phẩm tự giải thích thì H2 đứng một mình.
 
 ## B20. Tính năng
 
@@ -243,6 +267,10 @@ giữa hai khoảng trống bằng nhau, không thuộc về khối nào, cả t
 - Kể theo **vấn đề người dùng gặp**, không liệt kê chức năng: "Replay any failed webhook" hơn
   "Event replay support".
 - Mảnh trong ô không cắt "…" ở 1280 trở lên: rút dữ liệu cho vừa.
+- **Quá 6 mục thì không xếp hết thành ô cùng khuôn.** Mười ô icon + tiêu đề + đoạn văn + khung mẫu
+  giống hệt nhau là một bức tường, không ô nào nổi lên, người xem lướt qua cả khối. Chọn 2–3 việc chính
+  làm ô lớn có mảnh sản phẩm; phần còn lại thành danh sách gọn (một dòng mỗi mục, hay bảng hai cột
+  "việc / câu lệnh mẫu"). Không gắn icon trong ô vuông cho từng mục của danh sách gọn.
 
 ## B21. Code theo tab, cách bắt đầu
 
@@ -321,6 +349,14 @@ dòng bản quyền và trạng thái hệ thống (chấm xanh "All systems nor
   khối quảng cáo.
 - CTA là động từ + vật: "Install Hookline", "Get API key". "Get started" chỉ khi không có chữ cụ thể hơn.
 - Không nói thay người đọc ("You'll love it"). Không chấm than.
+- **Giọng của chủ sản phẩm, không giọng AI chung chung.** Trước khi viết chữ, tìm trong dự án và chỗ
+  người dùng chỉ ra một nguồn giọng văn (file brand voice, voice profile, tone guide, bài blog hay bài
+  đăng cũ của họ) và viết theo nó: từ hay dùng, từ cấm, cách xưng hô, độ dài câu. Trang nói ở ngôi thứ
+  nhất (sản phẩm một người làm, mã nguồn mở) thì câu dẫn, hỏi đáp, dòng lộ trình xưng "mình" như chủ
+  sản phẩm đang nói. Không có nguồn thì viết thẳng, cụ thể theo các dòng trên, báo lúc giao một dòng:
+  *"có bài viết cũ hay file giọng văn thì gửi, mình viết lại chữ cho đúng giọng"*. Ba cấu trúc làm chữ
+  lộ AI dù từ ngữ sạch: câu đối "không phải X, mà là Y"; câu twist đứng riêng ("Giờ thì khác."); câu
+  chốt "Từ X thành Y". Kể việc thẳng thay vì dựng đối lập.
 
 ## B30. Dữ liệu mẫu
 

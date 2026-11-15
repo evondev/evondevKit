@@ -125,6 +125,19 @@ không mở file này.
 - **Wireframe có đủ trạng thái như bản thật**: một mục đang chọn đánh dấu `aria-current` (hay
   `aria-selected`), có nền rê. Wireframe tĩnh không có rê thì không ai thấy
   "rê trùng nền đang chọn" cho tới khi đã dựng xong.
+- **Xong phương án nào thì gửi link phương án đó, không đợi đủ ba** ⚑. Người dùng mở xem được
+  ngay, không phải ngồi chờ vẽ và probe xong cả ba. Thứ tự:
+  1. Khung chung (thanh công cụ, dữ liệu, CSS) và server tĩnh (mục "Gửi link" cuối file) dựng trước.
+  2. Vẽ **phương án khuyên dùng trước**, probe nhanh (dưới), sửa sạch, rồi **gửi ngay** một dòng:
+     *"A · Lưới card + hàng lọc gọn (khuyên dùng): <link> (B đang vẽ)"*. Lần gửi đầu kèm câu báo
+     (dưới).
+  3. Vẽ phương án tiếp theo, đi đúng vòng 2.
+
+  Phương án chưa vẽ: nút của nó trên nhóm Phương án mờ, nhãn "đang vẽ"; mở `?v=c` lúc đó thì thấy
+  một dòng *"Phương án C đang vẽ, tải lại sau ít phút"*, không phải trang trắng hay lỗi JS.
+  Người dùng chọn hay góp ý khi chưa đủ ba thì **dừng vẽ phần còn lại** và đi theo câu trả lời
+  (chọn thì sang `U4`, góp ý thì sửa phương án đó), không vẽ nốt cho đủ.
+  Tin cuối (cổng 2) vẫn liệt kê đủ link, dòng Ghép, câu kết như cũ.
 - **Probe nhanh từng phương án trước khi gửi**: `probe.mjs "<link phương án>&mau=mau" --quick
   --widths 1280,375`, ~6 giây mỗi phương án. Sửa tới khi sạch các mục: danh sách `P`, vạch trái bị
   bo góc cắt, mục lặp dày chữ, cột dính cuộn riêng, nội dung trôi giữa màn rộng, hàng nút rớt một
@@ -136,22 +149,22 @@ không mở file này.
   trời" hay "vạch bị cắt" trên wireframe xám, họ chọn theo bố cục rồi vấp lỗi ở bản dựng (probe
   đo ra cả hai trên chính file wireframe). Rồi chạy luật Cấu trúc (`V1b` trong `review.md`) bằng
   mắt. Không probe nấc Xám: cùng bố cục, chỉ khác màu.
-- **Tự rà trước cổng 2, như lúc người dùng gõ "rà lại wireframe"** ⚑. Probe nhanh xong, mỗi
-  phương án ở nấc Màu đi đúng lối rà của `review.md` `V3`: `probe.mjs "<link phương án>&mau=mau"
-  --sweep` (đủ Tab, rê, bấm, mở lớp nổi, quét 1440→375), mở ảnh 375, 768, 1280 và các khung
-  sweep báo lỗi ra soi bằng mắt: hàng lệch, khối vỡ giữa hai khổ, nền rê trùng nền đang chọn
-  hay trùng nền card, lớp nổi tràn mép. Chỉ probe nhanh thì người dùng mở wireframe ra vẫn thấy
-  ngay mấy lỗi đó, phải gõ thêm một lệnh rà mới ra hết, và mỗi lần rà lại ra thêm một mớ.
-  - **Có công cụ Agent thì giao mỗi phương án cho một subagent mới, chạy song song**: đưa link,
-    đường dẫn skill, dặn làm theo `V3` và `V1b`, chỉ báo lỗi kèm khổ màn và cách sửa, không sửa
-    file. Mắt mới không bênh cái vừa vẽ, và ba phương án song song không cộng dồn thời gian.
-    Không có Agent thì tự rà từng phương án.
-  - Sửa hết lỗi được báo rồi rà lại, **tối đa hai vòng**. Vòng hai còn lỗi thì ghi vào khung lý do
-    của phương án đó, không giấu.
-  - Lỗi mắt thấy mà probe không báo (lệch px, nền rê trùng, cắt chữ) thì thêm phép đo vào
-    `probe.mjs`, để lần sau probe nhanh bắt luôn.
-  - Ghi một dòng khi gửi: *"Tự rà: A sạch, B sửa 2 chỗ (hàng lọc lệch ở 768, rê trùng nền mục
-    đang chọn), C sạch"*.
+- **Wireframe chỉ probe nhanh, không rà kỹ** (`--sweep`, soi ảnh từng khổ, subagent). Rà kỹ
+  cả ba phương án thì chậm, mà hai phương án không được chọn là rà phí. Bản dựng `U4` đã chạy
+  `--sweep` trên UI thật và sửa tới sạch. Probe nhanh giữ lại vì nó bắt lỗi của **bố cục**: để
+  tới `U4` mới đổi bố cục thì bản dựng khác cái người dùng đã chọn. Lỗi **chi tiết** (hàng lệch
+  vài px ở 768, nền rê trùng nền đang chọn, menu thả tràn mép, chữ bị cắt một chỗ) để `U4` sửa.
+  - **Báo trước để người dùng không lo bản dựng cũng lỗi**, một lần, ở lần gửi link đầu tiên,
+    bằng ngôn ngữ của đề: *"Wireframe là bản phác bố cục, mình chỉ kiểm nhanh phần bố cục (tràn
+    ngang, khối bị cắt, chữ quá dày). Chi tiết nhỏ như lệch vài px, màu khi rê chuột, menu tràn
+    mép có thể còn: bản dựng thật được rà kỹ từng chỗ đó trước khi giao, nên không mang sang."*
+    (tiếng Anh: *"The wireframe is a layout sketch, only checked for layout problems (sideways
+    scroll, cut-off blocks, crowded text). Small details like a few px off, hover colors or a
+    menu touching the edge may remain: the real build is checked for those before delivery, so
+    they won't carry over."*). Trên trang, cuối phần mở của khung lý do có một dòng xám cùng ý
+    (*"Bản phác bố cục: chi tiết nhỏ được rà và sửa ở bản dựng"*), cho người được chuyển link.
+  - Người dùng gõ "rà lại wireframe" thì mới rà kỹ phương án đang xem theo `review.md` `V3` và
+    `V1b`; chỉ ra một lỗi thì sửa đúng lỗi đó. Sửa xong báo một dòng.
 - **Hai công tắc nội dung, Gọn chữ và Bỏ lặp, áp cho mọi phương án** (`?gon=1`, `?bolap=1`,
   bật cả hai cùng lúc được). Cùng bố cục, chỉ bớt nội dung, để người dùng bật lên là thấy cái họ
   không tự nghĩ ra, trên đúng phương án họ đang xem:
@@ -317,6 +330,10 @@ không mở file này.
   - **Trạng thái là menu thả**, nhãn xám "Trạng thái:" kèm giá trị đang xem đậm và mũi tên nhỏ;
     bấm thì ra bốn link. Bốn trạng thái ít đổi, không đáng chiếm bốn nút trên thanh. **Kiểu cũng
     là menu thả** ("Kiểu: Flat ⌄"), cùng lý do, và để thanh có đủ Nhấn, Logo vẫn vừa 1280.
+    **Menu bung ngay dưới nút của nó, mép trái thẳng mép trái nút** (mẫu JS dưới: `top`, `left`
+    lấy từ nút lúc mở), không neo mép phải màn (`right: 8px`) dù Trạng thái là nhóm cuối: thanh
+    ngắn hơn màn hay đang cuộn ngang thì menu bung ở góc phải, cách nút nửa màn. Menu sát mép phải
+    thì lùi vào cho vừa màn, vẫn dưới nút. Probe báo "menu thả của thanh công cụ neo mép phải màn".
   - **Nút trong rãnh và mục trong menu Trạng thái cách nhau 4px** (luật chốt 19): hai nút cùng nền
     trắng (Gọn chữ, Bỏ lặp cùng bật) hay mục rê cạnh mục đang xem mà dính sát thì đọc thành một khối.
   - **Màu là công tắc** có nhãn "Màu" đứng trước, không phải segmented: chỉ còn hai nấc.
@@ -360,6 +377,8 @@ không mở file này.
     và hàng lọc"*; tiêu đề mảnh thì *"Tiêu đề đậm hơn"*; khối sát nhau thì *"Thoáng hơn, tăng
     khoảng cách giữa các khối"*; *"Font khác hợp sản phẩm hơn"*; *"Bỏ khối 3"*. Không gợi ý
     thứ trang đã có (đã nhiều màu thì không "thêm màu").
+  - **Dòng cuối**, chữ 12px xám, không icon: *"Bản phác bố cục: chi tiết nhỏ được rà và sửa ở
+    bản dựng"* (tiếng Anh: *"Layout sketch: small details are checked and fixed in the build"*).
 
   Đừng viết mọi thứ thành chữ 13px xám `#737373` liền một khối (Ưu, Nhược, Hợp khi nối đuôi, nút
   Chép chen giữa câu, một câu gợi ý gãy làm hai dòng): người xem thấy "màu chìm, cấu trúc loạn xạ".
@@ -628,9 +647,16 @@ không mở file này.
     for (const barMenu of barMenus) {
       barMenu.addEventListener("toggle", () => {
         const summaryRect = barMenu.querySelector("summary").getBoundingClientRect();
-        Object.assign(barMenu.querySelector(".wf-popover").style, { top: `${summaryRect.bottom + 6}px`, left: `${summaryRect.left}px` });
+        const popover = barMenu.querySelector(".wf-popover");
+        // Dưới nút; sát mép phải thì lùi vào cho vừa màn (8px lề).
+        const left = Math.min(summaryRect.left, innerWidth - popover.offsetWidth - 8);
+        Object.assign(popover.style, { top: `${summaryRect.bottom + 6}px`, left: `${Math.max(8, left)}px` });
       });
     }
+    // Menu fixed không trôi theo thanh: thanh cuộn ngang hay đổi cỡ màn thì đóng menu.
+    const closeBarMenus = () => { for (const barMenu of barMenus) barMenu.open = false; };
+    document.querySelector(".wf-bar").addEventListener("scroll", closeBarMenus);
+    addEventListener("resize", closeBarMenus);
     document.addEventListener("click", (event) => {
       for (const barMenu of barMenus) if (!barMenu.contains(event.target)) barMenu.open = false;
     });
@@ -686,8 +712,8 @@ không mở file này.
   sẵn trong trang, chỉ hiện khi `body[data-kho="mobile"][data-nav="duoi"]` (trong khung là
   `frame=1` kèm `nav=duoi`).
 
-- **Gửi link bấm được cho từng phương án**, không chỉ đường dẫn ảnh. Chạy một server tĩnh nền
-  trên thư mục wireframe (`python3 -m http.server <cổng> -d "$TMPDIR/evon-design"`, chạy nền),
+- **Gửi link bấm được cho từng phương án**, không chỉ đường dẫn ảnh. Chạy một server tĩnh nền,
+  **trước khi vẽ phương án đầu** để gửi được link từng cái khi xong, trên thư mục wireframe (`python3 -m http.server <cổng> -d "$TMPDIR/evon-design"`, chạy nền),
   rồi liệt kê mỗi phương án một dòng dạng link đầy đủ, người dùng bấm hoặc chép vào trình
   duyệt được ngay:
 

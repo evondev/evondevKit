@@ -31,7 +31,7 @@ trả lời `dựng luôn`."* (tiếng Anh: *"Reply `just build it` to skip the 
 | --- | --- | --- |
 | `U1` Brief | Một khối ngắn: sản phẩm, người dùng, việc chính, nền tảng | Gộp với `U2`, **cổng 1** |
 | `U2` Việc chính của từng màn | Bảng: đến để làm gì, so sánh bằng gì, hành động cuối, quy ước loại sản phẩm | **Cổng 1**: người dùng sửa hoặc trả lời `ok` |
-| `U3` Wireframe | 2–3 phương án bố cục khác nhau thật, nội dung thật, có ảnh; một thanh công cụ: phương án, gọn chữ, bỏ lặp, màu, desktop / mobile, trạng thái, khung lý do; tự rà đủ như lối rà trước khi gửi | **Cổng 2**: người dùng chọn |
+| `U3` Wireframe | 2–3 phương án bố cục khác nhau thật, nội dung thật, có ảnh; một thanh công cụ: phương án, gọn chữ, bỏ lặp, màu, desktop / mobile, trạng thái, khung lý do; xong phương án nào gửi link phương án đó ngay; chỉ probe nhanh lỗi bố cục, báo người dùng chi tiết nhỏ rà ở bản dựng | **Cổng 2**: người dùng chọn |
 | `U4` Dựng thật | Code theo phương án đã chọn, probe tới khi danh sách `P` trống | Như cổng 3 của `checklist.md` |
 
 Chưa qua cổng 2 thì **không đụng file nào của dự án**. Wireframe và ảnh để ở
@@ -142,8 +142,10 @@ không mở. Lối dựng luôn không đọc cả file: màu nhấn và bộ m�
     33px, wireframe 16px"*), cỡ chữ, độ đậm, cỡ icon khác, màu chữ, màu icon, nền khác (gom theo
     cặp màu, một token sai là một dòng), chữ và icon thiếu hay thêm. Thiếu `mau=mau` thì probe
     không so màu, vì nấc Xám cố ý tắt màu nhấn. Các mục đó vào danh sách
-    `P`, sửa tới khi trống như mọi mục `P`. Chỉ được lệch khi người dùng dặn hoặc dữ liệu thật khác
-    wireframe (chữ dài hơn nên thêm dòng); lúc giao ghi từng chỗ.
+    `P`, sửa tới khi trống như mọi mục `P`. Chỉ được lệch khi người dùng dặn, dữ liệu thật khác
+    wireframe (chữ dài hơn nên thêm dòng), hoặc đang sửa lỗi chi tiết mà sweep bắt được ở bản
+    dựng (wireframe chỉ probe nhanh nên có thể mang sẵn lỗi đó, `U3`): sửa ở bản dựng, lệch đúng
+    chỗ đó. Lúc giao ghi từng chỗ.
 
   Lệch vài px mỗi khối, đổi chữ đếm, đổi placeholder, mất dòng cuối danh sách thì kéo thanh so
   sánh wireframe với bản dựng qua lại là mọi khối nhảy.

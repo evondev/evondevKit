@@ -193,6 +193,9 @@ rẻ cũng dùng chúng. Khác nhau ở cách dùng:
 - **Rọi vào sản phẩm hay câu chính**: đèn chiếu xuống khung code, quầng sáng sau món chính, chữ chuyển
   màu ở cụm nói giá trị của H1. Hiệu ứng nằm lơ ở góc trống, không chỉ vào gì, là thứ làm trang trông
   như mẫu.
+- **Hoạ tiết đứng yên cũng tính**: icon pixel, dấu `+` trong vòng tròn, khối chấm / ký tự ASCII, ngôi
+  sao ✦ rải ở góc trống, nhất là đặt **đối xứng hai bên H1**, là trang trí lấp chỗ, không chỉ vào gì.
+  Màn đầu chỉ có món ký tên (`B41`) và sản phẩm; chỗ trống quanh H1 để trống.
 - **Mỗi hiệu ứng nền một chỗ**: đèn chiếu ở hero, sao băng ở khối cảm nhận, quầng ở CTA cuối: được.
   Cùng một hiệu ứng lặp ở mọi section thì nhàm từ màn thứ ba. Đếm vòng lặp theo `B39`.
 - Chữ đè lên hiệu ứng vẫn 4.5:1; giảm chuyển động thì đứng yên (`B33`); dừng khi ra khỏi khung nhìn.
@@ -232,3 +235,9 @@ Cuộn hết trang ở 1440 và 375, đánh dấu từng dòng:
 - [ ] Màn đầu có đúng một món ký tên cỡ lớn, đúng việc sản phẩm làm, đứng yên khi giảm chuyển động,
   không đè chữ ở 375 (`B41`).
 - [ ] Có ảnh share 1200×630 dựng bằng code, có đủ thẻ meta, thu còn 500px rộng vẫn đọc được H1 (`B32`).
+- [ ] Đọc tiêu đề các section liền một lượt: không cùng một cụm "pill → H2 tô nửa → câu dẫn xám" lặp
+  lại, mỗi section một nhãn, câu dẫn nào diễn lại H2 thì bỏ (`B19`). H1 không tự khen cái nhìn (`B16`).
+- [ ] Không hoạ tiết lơ ở góc trống, không ô giữ chỗ skeleton / "sắp có" (`B11`, `B12`); không khối nào
+  quá 6 ô cùng khuôn (`B20`).
+- [ ] Chữ trong mọi ảnh chụp sản phẩm còn từ 11px khi hiện trên trang (`B14`).
+- [ ] 375: dải thông báo một dòng, header còn logo có chữ và nút chính (`B17`).

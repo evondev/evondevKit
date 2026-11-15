@@ -9,43 +9,48 @@ Ghi chú cho người sửa skill. Người dùng skill đọc `README.md`.
 ├── plugin.json           khai báo plugin "evon"
 └── marketplace.json      marketplace "evondevkit", cài được cả local lẫn GitHub
 skills/
-└── ui-ux/                → gọi bằng /evon:ui-ux
-    ├── SKILL.md          bộ định tuyến: 4 câu hỏi vào việc, luật phạm vi, bảng mở doc
-    ├── VERSION           version cho người cài bằng npx skills, phải khớp plugin.json
-    ├── scripts/
-    │   ├── audit.sh      audit câu 2: DESIGN.md, stack, thứ sắp dựng đã có chưa, phong cách
-    │   ├── measure-skill.mjs đo skill nặng bao nhiêu token, file nào lớn, một đề nạp bao nhiêu
-    │   ├── probe.mjs     mở trang thật ở 6 bề rộng, đo lỗi đo được, chụp ảnh, quét bề rộng, --stress bơm dữ liệu khó
-    │   ├── lint-skill.mjs soát câu chữ của skill, và VERSION khớp plugin.json, trước khi commit
-    │   └── check-update.mjs báo bản mới cho người cài bằng npx skills (so VERSION với master)
+├── ui-ux/                → gọi bằng /evon:ui-ux
+│   ├── SKILL.md          bộ định tuyến: 4 câu hỏi vào việc, luật phạm vi, bảng mở doc
+│   ├── VERSION           version cho người cài bằng npx skills, phải khớp plugin.json
+│   ├── scripts/
+│   │   ├── audit.sh      audit câu 2: DESIGN.md, stack, thứ sắp dựng đã có chưa, phong cách
+│   │   ├── measure-skill.mjs đo skill nặng bao nhiêu token, file nào lớn, một đề nạp bao nhiêu
+│   │   ├── probe.mjs     mở trang thật ở 6 bề rộng, đo lỗi đo được, chụp ảnh, quét bề rộng, --stress bơm dữ liệu khó
+│   │   ├── lint-skill.mjs soát câu chữ của skill, và VERSION khớp plugin.json, trước khi commit
+│   │   └── check-update.mjs báo bản mới cho người cài bằng npx skills (so VERSION với master)
+│   └── references/
+│       ├── principles.md           N — mười hai nguyên tắc đứng sau mọi luật, phép thử cho thứ chưa có mẫu
+│       ├── review.md               V — soi UI đang có, ba chế độ, bảng trước/sau
+│       ├── design-process.md       U — thiết kế từ đầu: brief, việc chính, dựng; U6 phân tích sản phẩm
+│       ├── wireframe.md            U3 — wireframe phương án, chỉ mở sau cổng 1
+│       ├── flows.md                O — luồng qua nhiều màn, onboarding, lối soi luồng
+│       ├── industry-patterns.md    quy ước màn theo ngành, đo thật, dùng ở U2 và U6
+│       ├── mock-photos.md          S16 — ảnh thật cho dữ liệu giả
+│       ├── locked-rules.md         luật chủ dự án đã chốt, lý lẽ đã bị bác
+│       ├── rules-color.md          M — màu, viền, bóng, dark mode, token
+│       ├── rules-type.md           T — chữ, font, xuống dòng, cắt chữ, copy, tiếng Anh
+│       ├── rules-form.md           F — khối, lưới, bo góc, khoảng thở, icon
+│       ├── rules-state.md          I — nút, hover, focus, danh sách, modal
+│       ├── responsive.md           R — màn hẹp, ngưỡng 375px
+│       ├── mobile.md               J — app điện thoại: luật nền J1–J8, bảng mở file mục khác
+│       ├── mobile/                 J9–J19 mỗi mục một file; faces.md (bộ mặt) mở ở mọi lần dựng
+│       ├── system.md               D — đề nhiều hơn một màn, dựng design system trước (D9), DESIGN.md (D10)
+│       ├── refactor.md             L — refactor codebase đã có
+│       ├── tailwind-v4-traps.md    W — bẫy Tailwind v4 khi có CSS cũ
+│       ├── styles.md               P — phong cách: flat, nổi, glass, gradient, tối; tương phản
+│       ├── budgets.md              ngân sách, nhịp, thang cỡ chữ
+│       ├── brand-tokens.md         bảng màu, font, cách đổi thương hiệu
+│       ├── tokens.css              bộ token copy thẳng được
+│       ├── checklist.md            3 cổng kiểm
+│       ├── components/             24 khối code thật
+│       └── layouts/                thư viện bố cục + code mẫu đã duyệt
+│           ├── app.md              mục lục màn trong app, tra mục theo tên
+│           └── app/                mỗi loại màn một file; shell.md là khung, shell-*.md các kiểu khung
+└── landing/              → gọi bằng /evon:landing, đi cùng ui-ux (token, nút, probe, wireframe U3)
+    ├── SKILL.md          bộ định tuyến: phạm vi landing cho dev, 4 câu hỏi, brief B0, wireframe B1, giao B3
     └── references/
-        ├── principles.md           N — mười hai nguyên tắc đứng sau mọi luật, phép thử cho thứ chưa có mẫu
-        ├── review.md               V — soi UI đang có, ba chế độ, bảng trước/sau
-        ├── design-process.md       U — thiết kế từ đầu: brief, việc chính, dựng; U6 phân tích sản phẩm
-        ├── wireframe.md            U3 — wireframe phương án, chỉ mở sau cổng 1
-        ├── flows.md                O — luồng qua nhiều màn, onboarding, lối soi luồng
-        ├── industry-patterns.md    quy ước màn theo ngành, đo thật, dùng ở U2 và U6
-        ├── mock-photos.md          S16 — ảnh thật cho dữ liệu giả
-        ├── locked-rules.md         luật chủ dự án đã chốt, lý lẽ đã bị bác
-        ├── rules-color.md          M — màu, viền, bóng, dark mode, token
-        ├── rules-type.md           T — chữ, font, xuống dòng, cắt chữ, copy, tiếng Anh
-        ├── rules-form.md           F — khối, lưới, bo góc, khoảng thở, icon
-        ├── rules-state.md          I — nút, hover, focus, danh sách, modal
-        ├── responsive.md           R — màn hẹp, ngưỡng 375px
-        ├── mobile.md               J — app điện thoại: luật nền J1–J8, bảng mở file mục khác
-        ├── mobile/                 J9–J19 mỗi mục một file; faces.md (bộ mặt) mở ở mọi lần dựng
-        ├── system.md               D — đề nhiều hơn một màn, dựng design system trước (D9), DESIGN.md (D10)
-        ├── refactor.md             L — refactor codebase đã có
-        ├── tailwind-v4-traps.md    W — bẫy Tailwind v4 khi có CSS cũ
-        ├── styles.md               P — phong cách: flat, nổi, glass, gradient, tối; tương phản
-        ├── budgets.md              ngân sách, nhịp, thang cỡ chữ
-        ├── brand-tokens.md         bảng màu, font, cách đổi thương hiệu
-        ├── tokens.css              bộ token copy thẳng được
-        ├── checklist.md            3 cổng kiểm
-        ├── components/             24 khối code thật
-        └── layouts/                thư viện bố cục + code mẫu đã duyệt
-            ├── app.md              mục lục màn trong app, tra mục theo tên
-            └── app/                mỗi loại màn một file; shell.md là khung, shell-*.md các kiểu khung
+        ├── blueprint.md    B2–B11 — lớp nhìn: token ba nền, font, màu nhấn, khung, ô lưới, nhãn mono, chuyển động; danh sách soát cuối
+        └── sections.md     B12–B30 — thứ tự khối, hero, món chính, sơ đồ, benchmark, FAQ, CTA cuối, chữ viết cho dev, dữ liệu mẫu
 archive/                  nhánh landing đã gỡ khỏi skill, giữ lại để tham khảo
 ```
 
